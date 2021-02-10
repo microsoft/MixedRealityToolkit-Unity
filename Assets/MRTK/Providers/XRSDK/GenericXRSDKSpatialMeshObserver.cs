@@ -79,7 +79,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             int level = (int)levelOfDetail;
             if (XRSubsystemHelpers.MeshSubsystem != null)
             {
-                XRSubsystemHelpers.MeshSubsystem.meshDensity = level / (float)SpatialAwarenessMeshLevelOfDetail.Fine; // For now, map Coarse to 0.0 and Fine to 1.0
+                if (levelOfDetail == SpatialAwarenessMeshLevelOfDetail.Unlimited)
+                {
+                    XRSubsystemHelpers.MeshSubsystem.meshDensity = 1;
+                }
+                else
+                {
+                    XRSubsystemHelpers.MeshSubsystem.meshDensity = level / (float)SpatialAwarenessMeshLevelOfDetail.Fine; // For now, map Coarse to 0.0 and Fine to 1.0
+                }
             }
             return level;
         }
@@ -506,5 +513,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 
         #endregion Helpers
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            if (SpatialAwarenessSystem == null || XRSubsystemHelpers.MeshSubsystem == null) { return; }
+
+            if (RuntimeSpatialMeshPrefab != null)
+            {
+                AddRuntimeSpatialMeshPrefabToHierarchy();
+            }
+        }
     }
 }

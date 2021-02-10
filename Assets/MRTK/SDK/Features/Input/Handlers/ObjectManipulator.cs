@@ -419,6 +419,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 constraintsManager = gameObject.EnsureComponent<ConstraintManager>();
             }
+
+            // Get child objects with NearInteractionGrabbable attached
+            var children = GetComponentsInChildren<NearInteractionGrabbable>();
+
+            if (children.Length == 0)
+            {
+                Debug.Log($"Near interactions are not enabled for {gameObject.name}. To enable near interactions, add a " +
+                    $"{nameof(NearInteractionGrabbable)} component to {gameObject.name} or to a child object of {gameObject.name} that contains a collider.");
+            }
         }
 
         #endregion

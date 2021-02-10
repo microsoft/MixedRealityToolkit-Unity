@@ -614,6 +614,8 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/SDK/MRTK.SDK.asmdef",
     "Assets/MRTK/SDK/Editor/MRTK.SDK.Editor.asmdef",
     "Assets/MRTK/SDK/Experimental/Editor/MRTK.SDK.Experimental.Editor.asmdef",
+    "Assets/MRTK/SDK/Editor/Inspectors/Experimental/InteractiveElement/MRTK.SDK.Editor.Experimental.Interactive.asmdef",
+    "Assets/MRTK/SDK/Experimental/InteractiveElement/MRTK.SDK.Experimental.Interactive.asmdef",
     "Assets/MRTK/Services/BoundarySystem/XR2018/MRTK.BoundarySystem.asmdef",
     "Assets/MRTK/Services/CameraSystem/MRTK.CameraSystem.asmdef",
     "Assets/MRTK/Services/DiagnosticsSystem/MRTK.DiagnosticsSystem.asmdef",
@@ -628,7 +630,9 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",
     "Assets/MRTK/Tools/MRTK.Tools.asmdef",
     "Assets/MRTK/Tools/MSBuild/MRTK.Tools.MSBuild.asmdef",
-    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef"
+    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/MRTK.WSU.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/Editor/MRTK.WSU.Editor.asmdef"
 )
 
 function CheckAsmDef {

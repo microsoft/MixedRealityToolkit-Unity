@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using System.Linq;
-using System.Text;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -108,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (!MixedRealityOptimizeUtils.IsOptimalRenderingPath())
             {
-                Debug.LogWarning($"XR stereo rendering mode not set to <b>{RenderingMode}</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                Debug.LogWarning($"XR stereo rendering mode not set to <b>{RenderingMode}</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance.\nPlease note: The Mixed Reality Toolkit Tools package is required to use the Optimize Window.");
             }
 
             // If targeting Windows Mixed Reality platform
@@ -117,23 +116,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (!MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled())
                 {
                     // If depth buffer sharing not enabled, advise to enable setting
-                    Debug.LogWarning("<b>Depth Buffer Sharing</b> is not enabled to improve hologram stabilization. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                    Debug.LogWarning("<b>Depth Buffer Sharing</b> is not enabled to improve hologram stabilization. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance.\nPlease note: The Mixed Reality Toolkit Tools package is required to use the Optimize Window.");
                 }
 
                 if (!MixedRealityOptimizeUtils.IsWMRDepthBufferFormat16bit())
                 {
                     // If depth format is 24-bit, advise to consider 16-bit for performance.
-                    Debug.LogWarning("<b>Depth Buffer Sharing</b> has 24-bit depth format selected. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                    Debug.LogWarning("<b>Depth Buffer Sharing</b> has 24-bit depth format selected. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance.\nPlease note: The Mixed Reality Toolkit Tools package is required to use the Optimize Window.");
                 }
 
                 if (!UwpRecommendedAudioSpatializers.Contains(SpatializerUtilities.CurrentSpatializer))
                 {
-                    Debug.LogWarning($"This application is not using the recommended <b>Audio Spatializer Plugin</b>. Go to <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i> and select one of the following: {string.Join(", ", UwpRecommendedAudioSpatializers)}.");
+                    Debug.Log($"This application is not using the recommended <b>Audio Spatializer Plugin</b>. Go to <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i> and select one of the following: {string.Join(", ", UwpRecommendedAudioSpatializers)}.");
                 }
             }
             else if (SpatializerUtilities.CurrentSpatializer == null)
             {
-                Debug.LogWarning($"This application is not using an <b>Audio Spatializer Plugin</b>. Go to <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i> and select one of the available options.");
+                Debug.Log($"This application is not using an <b>Audio Spatializer Plugin</b>. Go to <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i> and select one of the available options.");
             }
         }
 

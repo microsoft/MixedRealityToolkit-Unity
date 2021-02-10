@@ -3090,14 +3090,17 @@ PrefabInstance:
 
 
         This scene
-        demonstrates the use of pulse shader for spatial mesh visualization. Please
-        make sure to turn on the ''Spatial Awareness'' in the MRTK Profiles. PulseControlScripts_SpatialMesh
-        object contains the script for the pulse.'
+        demonstrates the use of pulse shader as the spatial mesh visualization. Please
+        make sure to turn on the ''Spatial Awareness'' in the MRTK Profiles.  The
+        PulseShaderSpatialMeshHandler script is attached to the PulseShaderSpatialMeshParent
+        prefab.  This prefab is instantiated and added to the runtime spatial mesh
+        hierarchy while using the HoloLens device.  The prefab is referenced in the
+        Runtime Spatial Mesh Prefab property contained the Spatial Awareness Profile. '
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 7
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -3107,27 +3110,27 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 39
+      value: 73
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 38
+      value: 77
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 256
+      value: 505
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 150
+      value: 153
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.43192557
+      value: 0.53183
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -3137,7 +3140,7 @@ PrefabInstance:
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.151
+      value: -0.201
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -4393,57 +4396,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300118, guid: 2d029f2a1321676428ce89872882c605, type: 3}
---- !u!1 &1484131176
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1484131178}
-  - component: {fileID: 1484131177}
-  m_Layer: 0
-  m_Name: PulseControlScripts_SpatialMesh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1484131177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1484131176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212b6d3a710a3874397a07ef2bf4b8d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paramName: _Pulse_
-  originParamName: _Pulse_Origin_
-  pulseDuration: 5
-  pulseRepeatMinDelay: 0
-  autoStart: 0
-  surfaceMat: {fileID: 2100000, guid: b24e702ba4a7dd14bb78e04ea42311ff, type: 2}
-  pulseOnSelect: 1
-  originFollowCamera: 0
---- !u!4 &1484131178
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1484131176}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1484699820 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100090, guid: 2d029f2a1321676428ce89872882c605,
@@ -6284,34 +6236,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1742161141}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e736ec19b1c5543a9bb27c150f94fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 212b6d3a710a3874397a07ef2bf4b8d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFocusRequired: 1
-  MarkEventsAsUsed: 0
-  OnPointerDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerUp:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1484131177}
-        m_MethodName: OnPointerClicked
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointerDragged:
-    m_PersistentCalls:
-      m_Calls: []
+  paramName: _Pulse_
+  originParamName: _Pulse_Origin_
+  pulseAnimationDuration: 5
+  pulseRepeatMinDelay: 1
+  autoStart: 0
+  surfaceMat: {fileID: 2100000, guid: b24e702ba4a7dd14bb78e04ea42311ff, type: 2}
+  pulseOnSelect: 1
+  originFollowCamera: 0
 --- !u!1 &1749611678 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100458, guid: 2d029f2a1321676428ce89872882c605,
@@ -6673,7 +6608,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1889003900 stripped
 GameObject:

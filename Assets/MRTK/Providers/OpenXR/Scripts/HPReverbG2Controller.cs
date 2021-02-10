@@ -19,18 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// Constructor.
         /// </summary>
         public HPReverbG2Controller(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new HPMotionControllerDefinition(controllerHandedness))
         {
-            controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
         }
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition.DefaultLeftHandedInteractions;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition.DefaultRightHandedInteractions;
-
-        private readonly HPMotionControllerDefinition controllerDefinition = null;
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;

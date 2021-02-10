@@ -14,22 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
     [Serializable]
     public class DwellProfileWithDecay : DwellProfile
     {
-        [Tooltip("Should the system allow for dwell to resume if the pointer exits the target briefly.")]
-        [SerializeField]
-        private bool allowDwellDecayOnCancel = false;
-
         [Tooltip("Time in seconds when gaze can fall off the target and come back.")]
         [SerializeField]
         [Range(0, 20)]
         private float timeToAllowDwellDecay = 20;
-
-        public bool AllowDwellDecayOnCancel
-        {
-            get
-            {
-                return allowDwellDecayOnCancel;
-            }
-        }
 
         public float TimeToAllowDwellDecay
         {

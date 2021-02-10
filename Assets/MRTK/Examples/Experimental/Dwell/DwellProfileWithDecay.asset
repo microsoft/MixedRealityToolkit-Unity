@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: DwellProfileWithDecay
   m_EditorClassIdentifier: 
   dwellTriggerPointerType: 4
-  dwellIntentDelay: 0
-  dwellStartDelay: 1.5
-  timeToCompleteDwell: 5
+  dwellIntentDelay: 0.5
+  dwellStartDelay: 0.5
+  timeToCompleteDwell: 2
   timeToAllowDwellResume: 5
-  allowDwellDecayOnCancel: 1
-  timeToAllowDwellDecay: 5
+  timeToAllowDwellDecay: 2
