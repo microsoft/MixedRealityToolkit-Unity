@@ -6,7 +6,7 @@ parameters:
 
 steps:
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish NuGet Packages'
+  displayName: 'Publish NuGet artifacts'
   inputs:
     PathToPublish: ${{ parameters.packageLocation }}
     ArtifactName: 'mrtk-nuget'
