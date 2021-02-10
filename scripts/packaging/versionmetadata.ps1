@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Adds version metadata to the MRTK prior to building and packagine.
+    Adds version metadata to the MRTK prior to building and packaging.
 .DESCRIPTION
     This script represents a step in the build process where certain version
     metadata is added to specific locations in the code, such that the ultimately
@@ -27,7 +27,7 @@
     ProjectSettings/ProjectSettings.asset, which are ultimately not consumed by
     consumers, but should stay in sync for consistency's sake)
 
-    A generaly note on how to update the version values:
+    A general note on how to update the version values:
     There are three locations to update:
     pipelines/config/settings.yml (MRTKVersion)
     ProjectSettings/ProjectSettings.asset (bundleVersion, metroPackageVersion)
@@ -35,7 +35,7 @@
     They should have the same value (except metroPackageVersion which will contain
     one more trailing .0 value)
 .EXAMPLE
-    .\versiondata.ps1 -Directory c:\path\to\mrtkroot -Version 2.5.0
+    .\versionmetadata.ps1 -Directory c:\path\to\mrtkroot -Version 2.5.0
 #>
 param(
     # The root directory of the MRTK (i.e. the folder that contains the Assets/
@@ -66,38 +66,7 @@ function AddVersionTxt {
             "Assets/MRTK/Providers",
             "Assets/MRTK/SDK",
             "Assets/MRTK/Services",
-            "Assets/MRTK/Tests",
-            "Assets/MRTK/Tools"
-        )
-
-        $content = "Microsoft Mixed Reality Toolkit $Version"
-        foreach ($location in $locations) {
-            $filename = Join-Path -Path $location -ChildPath "Version.txt"
-            Set-Content -Path $filename -Value $content
-            Write-Host "Added Version.txt at $filename"
-        }
-    }
-}
-
-<#
-.SYNOPSIS
-    Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
-    have an .asmdef file.
-#>
-function AddVersionTxt {
-    [CmdletBinding()]
-    param(
-        [string]$Directory,
-        [string]$Version
-    )
-    process {
-        $locations = @(
-            "Assets/MRTK/Core",
-            "Assets/MRTK/Examples",
-            "Assets/MRTK/Extensions",
-            "Assets/MRTK/Providers",
-            "Assets/MRTK/SDK",
-            "Assets/MRTK/Services",
+            "Assets/MRTK/StandardAssets",
             "Assets/MRTK/Tests",
             "Assets/MRTK/Tools"
         )
@@ -158,8 +127,8 @@ function AddAssemblyInfo {
             # ends up looking reasonable.
             $copyright = 
 @"
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 "@
 
             $content =
@@ -172,7 +141,7 @@ function AddAssemblyInfo {
 "@
 
             # If the AssemblyInfo already exists, then we should check that it doesn't already contain
-            # a version - this would be bad as we'd duply-define the version
+            # a version - this would be bad as we'd doubly-define the version
             if (Test-Path -Path $filename) {
                 if (Get-Content $filename | Select-String "AssemblyVersion") {
                     $containsIssue = $true

@@ -1,0 +1,11 @@
+# [Template] Publish packages to UPM registry
+
+steps:
+- task: PowerShell@2
+  displayName: 'UPM packages to registry'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/packaging/publishupmpackages.ps1
+    arguments: >
+      -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
+      -RegistryPath $(UpmRegistry)

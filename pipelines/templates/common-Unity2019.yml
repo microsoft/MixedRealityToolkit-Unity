@@ -1,4 +1,5 @@
 # [Template] Common build tasks shared between CI builds and PR validation.
+
 parameters:
   UnityVersion: ""
 

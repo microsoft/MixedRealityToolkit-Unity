@@ -1,6 +1,6 @@
 parameters:
   # The MRTK Version to use (i.e. 2.3.0).
-  MRTKVersion: ''
+  MRTKVersion: $(MRTKVersion)
 
 steps:
 - task: PowerShell@2

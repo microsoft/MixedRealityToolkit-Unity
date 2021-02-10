@@ -25,4 +25,3 @@ jobs:
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2018Version)
-      MRTKVersion: $(MRTKVersion)
