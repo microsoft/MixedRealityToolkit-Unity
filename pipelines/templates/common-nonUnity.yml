@@ -6,7 +6,6 @@ parameters:
   # for pull request validation, since this functionality requires a pull request
   # ID in order to determine the two commits to diff.
   scopedValidation: false
-  publishPackagesToFeed: false
 
 steps:
   - template: validation.yml
@@ -14,8 +13,4 @@ steps:
       scopedValidation: ${{ parameters.scopedValidation }}
 
   - template: tasks/versionmetadata.yml
-
   - template: tasks/pack-upm.yml
-
-  - ${{ if eq(parameters.publishPackagesToFeed, true) }}:
-    - template: tasks/publish-upm.yml

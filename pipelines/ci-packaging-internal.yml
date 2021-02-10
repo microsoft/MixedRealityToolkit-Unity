@@ -8,9 +8,7 @@ jobs:
   pool:
     vmImage: windows-2019
   steps:
-  - template: templates/common-nonUnity.yml
-    parameters:
-      publishPackagesToFeed: true
+  - template: templates/validation.yml
 
 - job: UnityValidation
   timeoutInMinutes: 90
@@ -25,6 +23,11 @@ jobs:
     parameters:
       UnityVersion: $(Unity2018VersionInternal)
 
+  # UPM
+  - template: tasks/pack-upm.yml
+  - template: tasks/publish-upm.yml
+
+  # NuGet
   - template: compilemsbuild.yml
     parameters:
       UnityVersion: $(Unity2018VersionInternal)
