@@ -8,7 +8,7 @@ jobs:
   pool:
     vmImage: windows-2019
   steps:
-  - template: templates/validation.yml
+  - template: templates/common-nonUnity.yml
     parameters:
       # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
       # the set of changed files, so that we can save some time. There's no need to

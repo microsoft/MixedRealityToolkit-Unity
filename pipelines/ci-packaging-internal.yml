@@ -8,7 +8,9 @@ jobs:
   pool:
     vmImage: windows-2019
   steps:
-  - template: templates/validation.yml
+  - template: templates/common-nonUnity.yml
+    parameters:
+      publishPackagesToFeed: true
 
 - job: UnityValidation
   timeoutInMinutes: 90

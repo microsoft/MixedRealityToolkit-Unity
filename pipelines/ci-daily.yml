@@ -10,7 +10,7 @@ jobs:
   pool:
       vmImage: windows-2019
   steps:
-    - template: templates/validation.yml
+    - template: templates/common-nonUnity.yml
     
 - job: Unity2019Validation
   timeoutInMinutes: 120
