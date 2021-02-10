@@ -23,6 +23,10 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packagingEnabled: true
-      packagePublishing: true
       UnityVersion: $(Unity2018VersionInternal)
+
+  - template: compilemsbuild.yml
+    parameters:
+      UnityVersion: $(Unity2018VersionInternal)
+  - template: tasks/pack-nuget.yml
+  - template: tasks/publish-nuget.yml

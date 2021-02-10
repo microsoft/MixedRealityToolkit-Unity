@@ -21,6 +21,4 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packagingEnabled: true
-      packagePublishing: false
       UnityVersion: $(Unity2018Version)
