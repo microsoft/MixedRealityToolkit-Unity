@@ -15,10 +15,5 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-      UnityVersion: $(Unity2018Version)
-
-  - template: templates/compilemsbuild.yml
-    parameters:
-      UnityVersion: $(Unity2018Version)
-  - template: templates/tasks/pack-nuget.yml
-  - template: templates/tasks/publish-nuget.yml
+        packageNuGet: true # deprecated and temporary
+        UnityVersion: $(Unity2018Version)
