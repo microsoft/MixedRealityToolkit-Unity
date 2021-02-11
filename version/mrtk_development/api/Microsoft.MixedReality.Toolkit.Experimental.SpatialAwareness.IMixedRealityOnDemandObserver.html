@@ -110,7 +110,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_AutoUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.AutoUpdate*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_AutoUpdate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.AutoUpdate">AutoUpdate</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the observer can autoupdate on interval.</p>
+  <div class="markdown level1 summary"><p>Whether the observer updates its observations automatically on interval.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -133,18 +133,18 @@
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_AutoUpdate_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>When false, calling UpdateOnDemand() is the ONLY way to update an observer.</p>
+  <div class="markdown level1 remarks"><p>When false, call <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.html#Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnDemand">UpdateOnDemand()</a> to manually update an observer when needed.</p>
 </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_FirstUpdateDelay_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.FirstUpdateDelay*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_FirstUpdateDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.FirstUpdateDelay">FirstUpdateDelay</h4>
-  <div class="markdown level1 summary"><p>Delay in seconds before the observer will update automatically, once.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_FirstAutoUpdateDelay_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.FirstAutoUpdateDelay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_FirstAutoUpdateDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.FirstAutoUpdateDelay">FirstAutoUpdateDelay</h4>
+  <div class="markdown level1 summary"><p>Delay in seconds before the observer starts to update automatically for the first time after initialization</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">float FirstUpdateDelay { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">float FirstAutoUpdateDelay { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -161,16 +161,19 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_FirstAutoUpdateDelay_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only applies when <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.html#Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_AutoUpdate">AutoUpdate</a> is set to true.</p>
+</div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnceOnLoad_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.UpdateOnceOnLoad*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnceOnLoad" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.UpdateOnceOnLoad">UpdateOnceOnLoad</h4>
-  <div class="markdown level1 summary"><p>Observer will update once after initialization then require manual update thereafter. Uses <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.html#Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_FirstUpdateDelay">FirstUpdateDelay</a> to determine when.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnceInitialized_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.UpdateOnceInitialized*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnceInitialized" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.UpdateOnceInitialized">UpdateOnceInitialized</h4>
+  <div class="markdown level1 summary"><p>Whether the observer updates once after initialization (regardless whether <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.html#Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_AutoUpdate">AutoUpdate</a> is true).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool UpdateOnceOnLoad { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">bool UpdateOnceInitialized { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,7 +196,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnDemand_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.UpdateOnDemand*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnDemand" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.UpdateOnDemand">UpdateOnDemand()</h4>
-  <div class="markdown level1 summary"><p>Tells the observer to run a cycle</p>
+  <div class="markdown level1 summary"><p>Tells the observer to update the observations.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -201,8 +204,7 @@
     <pre><code class="lang-csharp hljs">void UpdateOnDemand()</code></pre>
   </div>
   <h5 id="Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_UpdateOnDemand_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>regardless of AutoUpdate, calling this method will force the observer to update.
-When AutoUpdate is false, this is the ONLY way to update an observer.</p>
+  <div class="markdown level1 remarks"><p>Regardless of <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.html#Microsoft_MixedReality_Toolkit_Experimental_SpatialAwareness_IMixedRealityOnDemandObserver_AutoUpdate">AutoUpdate</a>, calling this method will force the observer to update.</p>
 </div>
 </article>
           </div>

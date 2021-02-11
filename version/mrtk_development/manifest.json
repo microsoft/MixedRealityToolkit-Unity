@@ -7551,6 +7551,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SpatialAwareness/ImportPlaneFinding.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/ImportPlaneFinding.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
       "output": {
         "resource": {
@@ -7709,6 +7720,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/SpatialAwareness/SpatialAwarenessSystemArchitecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SpatialAwareness/SurfaceMeshesToPlanes.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SurfaceMeshesToPlanes.png"
         }
       },
       "is_incremental": false,
@@ -9196,11 +9218,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "../../Documentation/SpatialAwareness/README_SceneUnderstanding.md",
+      "source_relative_path": "../../Documentation/SpatialAwareness/SceneUnderstanding.md",
       "output": {
         ".html": {
-          "relative_path": "Documentation/SpatialAwareness/README_SceneUnderstanding.html",
-          "hash": "gNnXPpG06NweeEmU+5DocQ=="
+          "relative_path": "Documentation/SpatialAwareness/SceneUnderstanding.html",
+          "hash": "XhbxsrU6isxufvE/ellkIQ=="
         }
       },
       "is_incremental": false,
@@ -9212,7 +9234,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "HufcyNKCBwV3p9n2Y2L30w=="
+          "hash": "VTbBWStN8iAjxQINLEOmpQ=="
         }
       },
       "is_incremental": false,
@@ -9225,6 +9247,18 @@
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.html",
           "hash": "WkG+0vTOJhUbjbIXCQ0D9A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../../Documentation/SpatialAwareness/SurfaceMeshesToPlanes.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SpatialAwareness/SurfaceMeshesToPlanes.html",
+          "hash": "32S36BpXZcixleo4+9MGJw=="
         }
       },
       "is_incremental": false,
@@ -12532,6 +12566,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ShowPlaneFindingInstructions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ShowPlaneFindingInstructions.html",
+          "hash": "MOvUdMZNf93+qdgDIQh4aw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ShowSliderValue.yml",
       "output": {
         ".html": {
@@ -12728,7 +12774,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "DCC23qktL7FDZF3i58CssQ=="
+          "hash": "2sMi5tCRfbA1E6InENre6g=="
         }
       },
       "is_incremental": false,
@@ -14000,7 +14046,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealityOnDemandObserver.html",
-          "hash": "I/t0ojm2g17g7AXgk9nVtg=="
+          "hash": "4LwSa8A03bF24r0uT+Oj5w=="
         }
       },
       "is_incremental": false,
@@ -14012,7 +14058,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.IMixedRealitySceneUnderstandingObserver.html",
-          "hash": "jL7kgPXnHdjRY+wVVu4a3A=="
+          "hash": "j8FtaqR7mD18+WjMKb549g=="
         }
       },
       "is_incremental": false,
@@ -14068,11 +14114,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.SurfaceMeshesToPlanes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.SurfaceMeshesToPlanes.html",
+          "hash": "xx5pxDCofhKU+p41udWbNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.html",
-          "hash": "8V4dg+bKS8Du6XXi7Gf3NQ=="
+          "hash": "AlioPizW94bl8EI8DqgiNg=="
         }
       },
       "is_incremental": false,
@@ -22568,7 +22626,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessPlanarObject.html",
-          "hash": "J+DSGLDzv+SOH+7sRe1Gkg=="
+          "hash": "qbyE/S1i9tePM9BkQu23vA=="
         }
       },
       "is_incremental": false,
@@ -30764,7 +30822,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.html",
-          "hash": "lcRhPCJrXkKphHdZAIyFXQ=="
+          "hash": "ojbGXgZ0dnNE7U5NLB3OcQ=="
         }
       },
       "is_incremental": false,
@@ -30776,7 +30834,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver.html",
-          "hash": "M99HoE1i2RrIyOAK+TAOVA=="
+          "hash": "keMtqSX2UJBkSuIOAItbLQ=="
         }
       },
       "is_incremental": false,
@@ -31196,7 +31254,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "wkjSlv7S74GtaOtTXFkC7Q=="
+          "hash": "ArMbBWElCQxIWcsyjuyIbA=="
         }
       },
       "is_incremental": false,
@@ -31262,13 +31320,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 171,
+          "total_file_count": 172,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1809,
+          "total_file_count": 1811,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

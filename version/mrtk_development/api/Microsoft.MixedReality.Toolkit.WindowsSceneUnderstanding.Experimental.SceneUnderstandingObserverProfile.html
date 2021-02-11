@@ -116,7 +116,7 @@ public class SceneUnderstandingObserverProfile : BaseSpatialAwarenessObserverPro
   
   <a id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_AutoUpdate_" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.AutoUpdate*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_AutoUpdate" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.AutoUpdate">AutoUpdate</h4>
-  <div class="markdown level1 summary"><p>Indicates if the observer is to start immediately or wait for manual startup.</p>
+  <div class="markdown level1 summary"><p>Whether the observer updates its observations automatically on interval.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -139,7 +139,7 @@ public class SceneUnderstandingObserverProfile : BaseSpatialAwarenessObserverPro
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_AutoUpdate_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>When false, the observer will only update when UpdateOnDemand() is called.</p>
+  <div class="markdown level1 remarks"><p>When false, call UpdateOnDemand() to manually update an observer when needed.</p>
 </div>
   
   
@@ -247,14 +247,14 @@ public class SceneUnderstandingObserverProfile : BaseSpatialAwarenessObserverPro
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_FirstUpdateDelay_" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.FirstUpdateDelay*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_FirstUpdateDelay" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.FirstUpdateDelay">FirstUpdateDelay</h4>
-  <div class="markdown level1 summary"><p>The amount of delay before the scene us updated the first time</p>
+  <a id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_FirstAutoUpdateDelay_" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.FirstAutoUpdateDelay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_FirstAutoUpdateDelay" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.FirstAutoUpdateDelay">FirstAutoUpdateDelay</h4>
+  <div class="markdown level1 summary"><p>Delay in seconds before the observer starts to update automatically for the first time after initialization</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float FirstUpdateDelay { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float FirstAutoUpdateDelay { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -510,7 +510,7 @@ When disabled, renders only the observed regions for scene objects.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_ShouldLoadFromFile_" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.ShouldLoadFromFile*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_ShouldLoadFromFile" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.ShouldLoadFromFile">ShouldLoadFromFile</h4>
-  <div class="markdown level1 summary"><p>Load saved scan into scene understanding.</p>
+  <div class="markdown level1 summary"><p>Load saved scan data from a file instead of getting live date from device. Only works in Editor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -560,14 +560,14 @@ When disabled, renders only the observed regions for scene objects.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_UpdateOnceOnLoad_" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.UpdateOnceOnLoad*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_UpdateOnceOnLoad" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.UpdateOnceOnLoad">UpdateOnceOnLoad</h4>
-  <div class="markdown level1 summary"><p>Observer will update once after initialization then require manual update thereafter. Uses <a class="xref" href="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.html#Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_FirstUpdateDelay">FirstUpdateDelay</a> to determine when.</p>
+  <a id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_UpdateOnceInitialized_" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.UpdateOnceInitialized*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_UpdateOnceInitialized" data-uid="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.UpdateOnceInitialized">UpdateOnceInitialized</h4>
+  <div class="markdown level1 summary"><p>Whether the observer updates once after initialization (regardless whether <a class="xref" href="Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.SceneUnderstandingObserverProfile.html#Microsoft_MixedReality_Toolkit_WindowsSceneUnderstanding_Experimental_SceneUnderstandingObserverProfile_AutoUpdate">AutoUpdate</a> is true).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool UpdateOnceOnLoad { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool UpdateOnceInitialized { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
