@@ -18,7 +18,7 @@ MonoBehaviour:
   observationExtents: {x: 3, y: 3, z: 3}
   observerVolumeType: 1
   updateInterval: 5
-  updateOnceOnLoad: 1
+  updateOnceInitialized: 1
   autoUpdate: 0
   defaultPhysicsLayer: 31
   surfaceTypes: 190
@@ -32,7 +32,7 @@ MonoBehaviour:
   requestPlaneData: 0
   requestMeshData: 1
   inferRegions: 0
-  firstUpdateDelay: 1
+  firstAutoUpdateDelay: 1
   worldMeshLevelOfDetail: 1
   usePersistentObjects: 1
   queryRadius: 10

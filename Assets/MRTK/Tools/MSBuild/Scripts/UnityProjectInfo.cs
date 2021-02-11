@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             "Windows.UI.Input.Spatial",
             "LeapMotion",
             "LeapMotion.LeapCSharp",
+            "Microsoft.MixedReality.Toolkit.PlaneFinding",
 #if UNITY_2019_3_OR_NEWER
             "Oculus.VR",
             "Oculus.VR.Editor",

@@ -38,7 +38,7 @@ steps:
         -ExcludeBuildNumber
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish UPM packages'
+  displayName: 'Publish UPM artifacts'
   inputs:
     PathtoPublish: ${{ parameters.outputDirectory }}
     ArtifactName: 'mrtk-upm'

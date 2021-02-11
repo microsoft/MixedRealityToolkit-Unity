@@ -39,7 +39,7 @@ The scene demonstrates the following:
 
 #### Configuring the observer service
 
-Select the 'MixedRealityTookit' game object and check the inspector.
+Select the 'MixedRealityToolkit' game object and check the inspector.
 
 ![scene understanding location in heirarchy](../../Documentation/Images/SceneUnderstanding/MRTKHierarchy.png)
 
