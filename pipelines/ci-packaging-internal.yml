@@ -24,12 +24,12 @@ jobs:
       UnityVersion: $(Unity2018VersionInternal)
 
   # UPM
-  - template: tasks/pack-upm.yml
-  - template: tasks/publish-upm.yml
+  - template: templates/tasks/pack-upm.yml
+  - template: templates/tasks/publish-upm.yml
 
   # NuGet
-  - template: compilemsbuild.yml
+  - template: templates/compilemsbuild.yml
     parameters:
       UnityVersion: $(Unity2018VersionInternal)
-  - template: tasks/pack-nuget.yml
-  - template: tasks/publish-nuget.yml
+  - template: templates/tasks/pack-nuget.yml
+  - template: templates/tasks/publish-nuget.yml
