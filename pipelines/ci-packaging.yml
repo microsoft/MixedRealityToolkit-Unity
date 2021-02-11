@@ -17,8 +17,8 @@ jobs:
     parameters:
       UnityVersion: $(Unity2018Version)
 
-  - template: compilemsbuild.yml
+  - template: templates/compilemsbuild.yml
     parameters:
       UnityVersion: $(Unity2018Version)
-  - template: tasks/pack-nuget.yml
-  - template: tasks/publish-nuget.yml
+  - template: templates/tasks/pack-nuget.yml
+  - template: templates/tasks/publish-nuget.yml
