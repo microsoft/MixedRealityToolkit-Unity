@@ -2,6 +2,7 @@
 
 parameters:
   packagingEnabled: true
+  publishPackagesToFeed : false
   UnityVersion: ""
 
 steps:
@@ -14,4 +15,7 @@ steps:
   - template: tasks/pack-unitypackages.yml
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
+  - template: tasks/pack-upm.yml
+  - ${{ if eq(parameters.publishPackagesToFeed, true) }}:
+    - template: tasks/publish-upm.yml
 - template: end.yml

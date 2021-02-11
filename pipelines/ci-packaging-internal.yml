@@ -21,11 +21,8 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
+      publishPackagesToFeed: true
       UnityVersion: $(Unity2018VersionInternal)
-
-  # UPM
-  - template: templates/tasks/pack-upm.yml
-  - template: templates/tasks/publish-upm.yml
 
   # NuGet
   - template: templates/compilemsbuild.yml
