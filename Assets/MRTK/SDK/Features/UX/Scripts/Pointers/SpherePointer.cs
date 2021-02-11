@@ -303,19 +303,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (TryGetDistanceToNearestSurfacePerfMarker.Auto())
             {
-                var focusProvider = CoreServices.InputSystem?.FocusProvider;
-                if (focusProvider != null)
-                {
-                    FocusDetails focusDetails;
-                    if (focusProvider.TryGetFocusDetails(this, out focusDetails))
-                    {
-                        distance = focusDetails.RayDistance;
-                        return true;
-                    }
-                }
-
-                distance = 0.0f;
-                return false;
+                // Leaving it like this because currently the sphere pointer does not track the closest grabbable object.
+                distance = 0.0f; 
+                return IsNearObject;
             }
         }
 
@@ -336,8 +326,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return true;
                     }
                 }
-
-                normal = Vector3.forward;
+                
+                normal = Rotation * Vector3.forward;
                 return false;
             }
         }
