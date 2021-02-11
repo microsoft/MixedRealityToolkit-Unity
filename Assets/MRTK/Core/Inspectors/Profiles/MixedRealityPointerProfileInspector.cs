@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.LabelField("Gaze Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(gazeCursorPrefab);
+                    EditorGUILayout.PropertyField(gazeCursorPrefab, new GUIContent("Gaze Cursor Prefab"));
                     EditorGUILayout.PropertyField(gazeProviderType);
                     EditorGUILayout.PropertyField(useHeadGazeOverride);
                     EditorGUILayout.PropertyField(isEyeTrackingEnabled);
