@@ -67,6 +67,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - John (johnppella)
 - Jon Palmer (JonathanPalmerGD)
 - Jonathan Dana (Nakda)
+- Jonathan Palmer (JPalmerDev)
 - Joost van Schaik (LocalJoost)
 - Josh Wittner (jwittner)
 - julesra
@@ -115,6 +116,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Shinya Tachihara (decoc)
 - Simon (Darkside) Jackson (SimonDarksideJ)
 - sostel
+- Srinjoy Majumdar (srinjoym)
 - Stefan Wasserbauer (wassx)
 - Stephen Hodgson (StephenHodgson)
 - Steve Leigh (xwipeoutx)
