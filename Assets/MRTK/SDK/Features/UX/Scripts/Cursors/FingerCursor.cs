@@ -76,9 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 bool surfaceNormalFound = false;
                 bool showVisual = true;
+                bool nearPokeable = nearPointer.IsNearObject;
 
-                //Show the cursor if we are deemed to be near an object or if it is near a grabbable object
-                if (nearPointer.IsNearObject)
+
+                // Show the cursor if we are deemed to be near an object or if it is near a grabbable object
+                if (nearPokeable)
                 {
                     // If the pointer is near an object translate the primary ring to the index finger tip and rotate to surface normal if close.
                     // The secondary ring should be hidden.
