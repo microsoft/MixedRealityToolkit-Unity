@@ -34,6 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private int proximityDistanceID;
         private readonly Quaternion fingerPadRotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
 
+        private const float MinVisibleRingDistance = 0.1f;
+
         protected virtual void Awake()
         {
             materialPropertyBlock = new MaterialPropertyBlock();
@@ -62,9 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     indexFingerPosition = transform.position;
                     indexFingerRotation = transform.rotation;
                 }
-
-                //Debug.Log(indexFingerPosition);
-                Debug.Log(indexFingerRotation);
 
                 Vector3 indexKnucklePosition;
                 if (!TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnucklePosition, out _)) // knuckle rotation not used
@@ -96,7 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // else hide it.
 
                     bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject();
-                    distance = nearGrabbable ? 0.1f : 1.0f;   // There is no good way to get the dstance of the nearest grabbable object at the moment, so we either return 0.2 (visible ring) or 1 (invisible).
+                    
+                    // There is no good way to get the dstance of the nearest grabbable object at the moment, so we either return the MinVisibleRingDistance or 1 (invisible).
+                    distance = nearGrabbable ? MinVisibleRingDistance : 1.0f;
 
                     // Only show the visual if we are near a grabbable
                     showVisual = nearGrabbable;

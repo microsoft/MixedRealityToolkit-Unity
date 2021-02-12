@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private Dialog dialogComponent;
         private DialogButtonType dialogResult;
 
-        private const float DIALOG_STABILIZATION_TIME = 1.5f;
+        private const float DialogStabilizationTime = 1.5f;
 
         [UnitySetUp]
         public IEnumerator Setup()
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.OK, true);
 
             // Wait for the dialog to move to a stable position
-            yield return new WaitForSeconds(DIALOG_STABILIZATION_TIME);
+            yield return new WaitForSeconds(DialogStabilizationTime);
 
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(dialogComponent.State == DialogState.WaitingForInput);
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, true);
 
             // Wait for the dialog to move to a stable position
-            yield return new WaitForSeconds(DIALOG_STABILIZATION_TIME);
+            yield return new WaitForSeconds(DialogStabilizationTime);
 
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(dialogComponent.State == DialogState.WaitingForInput);
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, false);
             
             // Wait for the dialog to move to a stable position
-            yield return new WaitForSeconds(DIALOG_STABILIZATION_TIME);
+            yield return new WaitForSeconds(DialogStabilizationTime);
 
 
             Assert.IsTrue(dialogComponent.State == DialogState.WaitingForInput);

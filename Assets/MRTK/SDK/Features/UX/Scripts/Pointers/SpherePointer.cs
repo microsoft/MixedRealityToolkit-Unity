@@ -301,11 +301,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
         {
-            using (TryGetDistanceToNearestSurfacePerfMarker.Auto())
+            using (TryGetNormalToNearestSurfacePerfMarker.Auto())
             {
-                // Leaving it like this because currently the sphere pointer does not track the closest grabbable object.
-                distance = 0.0f; 
-                return IsNearObject;
+                var focusProvider = CoreServices.InputSystem?.FocusProvider;
+                if (focusProvider != null)
+                {
+                    FocusDetails focusDetails;
+                    if (focusProvider.TryGetFocusDetails(this, out focusDetails))
+                    {
+                        distance = focusDetails.RayDistance;
+                        return true;
+                    }
+                }
+
+                distance = 0.0f;
+                return false;
             }
         }
 
