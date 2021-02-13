@@ -78,6 +78,7 @@ try {
     dotnet msbuild ..\NuGet\BuildSource.proj -target:BuildWSAEditor > "Logs\Build.InEditor.WSA.$($Version).log"
     if ($lastexitcode -ge 1) {
         Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WSA.$($Version).log";
+        Copy-Item -Path "Logs\Unity.MSBuildGeneration.$($Version).log" -Destination "$OutputDirectory\"
         exit($lastexitcode)
     }
     
@@ -95,6 +96,5 @@ try {
     
 }
 finally {
-    Copy-Item -Path "Logs\Unity.MSBuildGeneration.$($Version).log" -Destination "$OutputDirectory\"
     Set-Location $OriginalPath
 }
