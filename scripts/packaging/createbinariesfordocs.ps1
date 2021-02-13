@@ -91,9 +91,10 @@ try {
     Copy-Item "$($UnityDirectory)\Data\Managed\UnityEngine.dll" "MRTK_$($Version)\dependencies\"
     nuget install Microsoft.Windows.MixedReality.DotNetWinRT -OutputDirectory packages
     Copy-Item "packages\Microsoft.Windows.MixedReality.DotNetWinRT*\lib\unity\net46\Microsoft.Windows.MixedReality.DotNetWinRT.dll" "MRTK_$($Version)\dependencies\"
-    Copy-Item -Path "MRTK_$($Version)\*" -Destination "$OutputDirectory\MRTK_$($Version)" -Recurse
+    Copy-Item -Path "MRTK_$($Version)" -Destination "$OutputDirectory" -Recurse
     
 }
 finally {
+    Copy-Item -Path "Logs\Unity.MSBuildGeneration.$($Version).log" -Destination "$OutputDirectory\"
     Set-Location $OriginalPath
 }
