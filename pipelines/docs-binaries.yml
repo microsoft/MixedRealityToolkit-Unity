@@ -30,11 +30,12 @@ jobs:
 
   - task: PublishPipelineArtifact@1
     displayName: Publish docs binaries
+    condition: always()
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
       artifactName: DocsBinariesForUnity2020
 
-- job: BuildUnity219
+- job: BuildUnity2019
   pool:
     name: Analog On-Prem
     demands:
@@ -58,6 +59,7 @@ jobs:
 
   - task: PublishPipelineArtifact@1
     displayName: Publish docs binaries
+    condition: always()
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
       artifactName: DocsBinariesForUnity2019
