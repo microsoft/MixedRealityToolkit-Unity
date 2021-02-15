@@ -24,6 +24,9 @@ def get_all_authors(github_repo: Repository) -> str:
     authors = sorted(authors, key=lambda author: str.lower(author.login) if author.name is None else str.lower(author.name))
     author_list = ""
     for author in authors:
+        # Filter the MRTK 🤖 from the list
+        if author.login == "mrtk-bld":
+            continue
         if author.name is None:
             author_list += "- " + author.login + "\n"
         else:
