@@ -28,6 +28,11 @@
             "define": "MSFT_OPENXR"
         },
         {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "[0.1.0,0.1.3)",
+            "define": "MSFT_OPENXR_PRE_013"
+        },
+        {
             "name": "com.unity.xr.openxr",
             "expression": "",
             "define": "UNITY_OPENXR"
