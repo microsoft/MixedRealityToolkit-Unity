@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (SetCursorPerfMarker.Auto())
             {
-                // Destory the old cursor and replace it with the new one if a new cursor was provided
+                // Destroy the old cursor and replace it with the new one if a new cursor was provided
                 if (cursorInstance != null && newCursor != null)
                 {
                     DestroyCursorInstance();
