@@ -73,7 +73,7 @@ try {
     ### Run MSBuild Generation
     RunUnityTask -taskName "MSBuildGeneration" -methodToExecute "Microsoft.MixedReality.Toolkit.MSBuild.MSBuildTools.GenerateSDKProjects"
 
-    ### Build all the needed flavors for MRTK
+    ### Build the needed flavor for MRTK
     Write-Output "============ Building InEditor WSA ============ "
     dotnet msbuild ..\NuGet\BuildSource.proj -target:BuildWSAEditor > "Logs\Build.InEditor.WSA.$($Version).log"
     if ($lastexitcode -ge 1) {
