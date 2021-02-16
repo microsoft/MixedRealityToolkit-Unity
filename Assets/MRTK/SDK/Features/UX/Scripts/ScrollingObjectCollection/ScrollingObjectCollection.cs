@@ -1994,6 +1994,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void Reset()
         {
+            ScrollContainer.UpdateChildren();
             ResetInteraction();
             UpdateContent();
             ResetScrollOffset();
@@ -2018,12 +2019,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            var itemRenderers = item.GetComponentsInChildren<Renderer>();
-            if (itemRenderers != null)
+            var renderersInContainer = ScrollContainer.ItemRenderersMap.Values;
+            foreach (var renderers in renderersInContainer)
             {
-                foreach (var renderer in item.GetComponentsInChildren<Renderer>())
+                foreach (var renderer in renderers)
                 {
-                    renderersToUnclip.Add(renderer);
+                    if (renderer.gameObject == item || renderer.transform.parent.gameObject == item)
+                        renderersToUnclip.Add(renderer);
                 }
             }
 

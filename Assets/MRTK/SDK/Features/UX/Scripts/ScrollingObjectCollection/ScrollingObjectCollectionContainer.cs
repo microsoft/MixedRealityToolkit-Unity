@@ -4,38 +4,34 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Container for all renderers and colliders used in the ScrollingObjectCollection.
-    /// Its main purpose is to find and cache those Components.
-    /// Thanks to that we don't have to run GetComponentsInChildren every frame. 
+    ///     Container for all renderers and colliders used in the ScrollingObjectCollection.
+    ///     It's main purpose is to find and cache those Components.
+    ///     Thanks to that we don't have to run GetComponentsInChildren every frame. 
     /// </summary>
-    [ExecuteAlways]
     public class ScrollingObjectCollectionContainer : MonoBehaviour
     {
         [SerializeField]
         private GameObject[] children;
 
         /// <summary>
-        /// Dictionary containing ScrollingObjectCollection's items child renderers.
+        ///     Dictionary containing ScrollingObjectCollection's items child renderers.
         /// </summary>
-        public Dictionary<GameObject, Renderer[]> ItemRenderersMap { get; } = new Dictionary<GameObject, Renderer[]>();
+        public Dictionary<GameObject, Renderer[]> ItemRenderersMap { get; private set; } 
+            = new Dictionary<GameObject, Renderer[]>();
 
         /// <summary>
-        /// Dictionary containing ScrollingObjectCollection's items child colliders.
+        ///     Dictionary containing ScrollingObjectCollection's items child colliders.
         /// </summary>
-        public Dictionary<GameObject, Collider[]> ItemCollidersMap { get; } = new Dictionary<GameObject, Collider[]>();
+        public Dictionary<GameObject, Collider[]> ItemCollidersMap { get; private set; } 
+            = new Dictionary<GameObject, Collider[]>();
 
         /// <summary>
-        /// Position of the Container.
+        ///     Position of the Container.
         /// </summary>
         public Vector3 LocalPosition
         {
             get => transform.localPosition;
             set => transform.localPosition = value;
-        }
-
-        private void Awake()
-        {
-            OnTransformChildrenChanged();
         }
 
         private GameObject[] Children
@@ -54,50 +50,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public void UpdateChildren()
+        {
+            ItemRenderersMap = new Dictionary<GameObject, Renderer[]>();
+            ItemCollidersMap = new Dictionary<GameObject, Collider[]>();
+            OnTransformChildrenChanged();
+        }
+        
         private void OnTransformChildrenChanged()
         {
             foreach (var child in Children)
             {
-                AddItemWithRenderers(child);
-                AddItemWithColliders(child);
+                AddItem(child, ItemRenderersMap);
+                AddItem(child, ItemCollidersMap);
             }
         }
-
-        private void AddItemWithRenderers(GameObject child)
+        
+        private static void AddItem<T>(GameObject child, IDictionary<GameObject, T[]> collection) where T : Component
         {
             if (!child)
             {
-                if (ItemRenderersMap.ContainsKey(child))
-                    ItemRenderersMap.Remove(child);
+                if (collection.ContainsKey(child))
+                    collection.Remove(child);
                 return;
             }
 
-            if (ItemRenderersMap.ContainsKey(child))
+            var componentsInChildren = child.GetComponentsInChildren<T>(true);
+            if (collection.ContainsKey(child))
             {
-                ItemRenderersMap[child] = child.GetComponentsInChildren<Renderer>(true);
+                collection[child] = componentsInChildren;
                 return;
             }
 
-            ItemRenderersMap.Add(child, child.GetComponentsInChildren<Renderer>(true));
-        }
-
-        private void AddItemWithColliders(GameObject child)
-        {
-            if (!child)
-            {
-                if (ItemCollidersMap.ContainsKey(child))
-                    ItemCollidersMap.Remove(child);
-                return;
-            }
-
-
-            if (ItemCollidersMap.ContainsKey(child))
-            {
-                ItemCollidersMap[child] = child.GetComponentsInChildren<Collider>(true);
-                return;
-            }
-
-            ItemCollidersMap.Add(child, child.GetComponentsInChildren<Collider>(true));
+            collection.Add(child, componentsInChildren);
         }
     }
 }
