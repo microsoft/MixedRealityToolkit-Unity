@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Spatial Awareness Mesh Observer Profile", fileName = "MixedRealitySpatialAwarenessMeshObserverProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwarenessMeshObserver)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySpatialAwarenessMeshObserver))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.html")]
+    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/spatial-awareness/configuring-spatial-awareness-mesh-observer")]
     public class MixedRealitySpatialAwarenessMeshObserverProfile : BaseSpatialAwarenessObserverProfile
     {
         #region IMixedRealitySpatialAwarenessMeshObserver settings

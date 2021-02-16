@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (PlayerSettings.stripUnusedMeshComponents)
             {
-                /// For more information please see <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Performance/PerfGettingStarted.html#optimize-mesh-data">Optimize Mesh Data</see>
+                /// For more information please see <see href="https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/performance/perf-getting-started#optimize-mesh-data">Optimize Mesh Data</see>
                 Debug.LogWarning("<b>Optimize Mesh Data</b> is enabled. This setting can drastically increase build times. It is recommended to disable this setting during development and re-enable during \"Master\" build creation. See <i>Player Settings</i> > <i>Other Settings</i> > <i>Optimize Mesh Data</i>");
             }
         }
