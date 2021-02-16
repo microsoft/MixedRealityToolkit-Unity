@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
-#if XR_PLUGIN_WINDOWSMR
+#if WMR_ENABLED
 using UnityEngine.XR.WindowsMR;
 #endif
 using Unity.Profiling;
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             base.Enable();
 
-#if XR_PLUGIN_WINDOWSMR
+#if WMR_ENABLED
             if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
                 return null;
 #endif
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
-#if XR_PLUGIN_WINDOWSMR
+#if WMR_ENABLED
             if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
                 return null;
 #endif
@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
-#if XR_PLUGIN_WINDOWSMR
+#if WMR_ENABLED
             if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
                 return null;
 #endif
