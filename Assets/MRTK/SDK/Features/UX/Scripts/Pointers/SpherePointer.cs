@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
         {
-            using (TryGetDistanceToNearestSurfacePerfMarker.Auto())
+            using (TryGetNormalToNearestSurfacePerfMarker.Auto())
             {
                 var focusProvider = CoreServices.InputSystem?.FocusProvider;
                 if (focusProvider != null)
@@ -336,8 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return true;
                     }
                 }
-
-                normal = Vector3.forward;
+                normal = Rotation * Vector3.forward;
                 return false;
             }
         }
