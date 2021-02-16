@@ -336,7 +336,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return true;
                     }
                 }
-                
                 normal = Rotation * Vector3.forward;
                 return false;
             }
