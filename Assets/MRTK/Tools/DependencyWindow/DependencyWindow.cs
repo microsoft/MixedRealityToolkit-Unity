@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ".pdf",
         };
 
-        private const string DependencyWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/DependencyWindow.html";
+        private const string DependencyWindow_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/dependency-window";
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()

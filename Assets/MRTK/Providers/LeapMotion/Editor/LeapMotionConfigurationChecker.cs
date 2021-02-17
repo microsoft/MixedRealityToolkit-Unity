@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 else
                 {
                     Debug.LogError("The Leap Motion Unity Modules version imported is not currently supported by MRTK, compatible versions are listed in the Leap Motion MRTK documentation: " +
-                        "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html");
+                        "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/leap-motion-mrtk");
                 }
             }
         }

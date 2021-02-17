@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// Because so much of this service's functionality is editor-only, it has been split into a partial class.
     /// This part handles the runtime parts of the service.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/scene-system/scene-system-getting-started")]
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
         /// <summary>
