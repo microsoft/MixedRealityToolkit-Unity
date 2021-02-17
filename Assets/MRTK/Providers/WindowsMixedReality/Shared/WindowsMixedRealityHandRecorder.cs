@@ -23,9 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The joint positioned at the origin at the start of the recording.
         /// </summary>
         /// <remarks>
-        /// If the reference joint moves between start and stop of recording then final position is used as an offset.
-        /// Example: A "poke" gesture can be simulated by moving the index finger forward between start and stop,
-        /// giving an offset that creates a poking motion when interpolated.
+        /// <para>If the reference joint moves between start and stop of recording then final position is used as an offset.</para>
+        /// <para>Example: A "poke" gesture can be simulated by moving the index finger forward between start and stop,
+        /// giving an offset that creates a poking motion when interpolated.</para>
         /// </remarks>
         public TrackedHandJoint ReferenceJoint { get; set; } = TrackedHandJoint.IndexTip;
 

@@ -10,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// bulge point.
     /// </summary>
     /// <remarks>
-    /// The characteristics of the distortion are also heavily controlled by the BulgeFalloff
-    /// property, which should contain key frames that cover the [0, 1] time range.
+    /// <para>The characteristics of the distortion are also heavily controlled by the BulgeFalloff
+    /// property, which should contain key frames that cover the [0, 1] time range.</para>
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/Core/DistorterBulge")]
     public class DistorterBulge : Distorter

@@ -14,9 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// for focus with hand and gesture-based input and interaction across it.
     /// </summary>
     /// <remarks>
-    /// GGV stands for gaze, gesture, and voice.
+    /// <para>GGV stands for gaze, gesture, and voice.
     /// This pointer's position is given by hand position (grip pose),
-    /// and the input focus is given by head gaze.
+    /// and the input focus is given by head gaze.</para>
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/SDK/GGVPointer")]
     public class GGVPointer : InputSystemGlobalHandlerListener,
