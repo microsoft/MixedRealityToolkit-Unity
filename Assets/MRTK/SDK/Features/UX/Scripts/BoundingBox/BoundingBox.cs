@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// BoundingBox provides scale and rotation handles that can be used for far and near interaction manipulation
     /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/bounding-box")]
     [AddComponentMenu("Scripts/MRTK/SDK/BoundingBox (deprecated)")]
     public class BoundingBox : MonoBehaviour,
         IMixedRealitySourceStateHandler,
