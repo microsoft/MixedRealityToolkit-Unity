@@ -30,9 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         Package,
 
         /// <summary>
-        /// Inside the Packages folder shipped with the Unity version.
+        /// Inside the Packages folder shipped with the Unity version (without source).
         /// </summary>
-        BuiltInPackage
+        BuiltInPackage,
+
+        /// <summary>
+        /// Inside the Packages folder shipped with the Unity version (with source).
+        /// </summary>
+        BuiltInPackageWithSource
     }
 
     /// <summary>
@@ -145,6 +150,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 return AssetLocation.Project;
             }
+#if UNITY_2019_3_OR_NEWER
+            else if (UnityProjectInfo.SpecialPluginNameMappingUnity2019.Keys.Any(s => absolutePath.ToLower().Contains(s.ToLower())))
+            {
+                return AssetLocation.BuiltInPackageWithSource;
+            }
+#endif
             else if (absolutePath.Contains(packagesPath) || absolutePath.Contains(PackagesCopyPath))
             {
                 return AssetLocation.Package;
