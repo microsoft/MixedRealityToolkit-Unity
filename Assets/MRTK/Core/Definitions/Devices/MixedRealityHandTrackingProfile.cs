@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Hand Tracking Profile", fileName = "MixedRealityHandTrackingProfile", order = (int)CreateProfileMenuItemIndices.HandTracking)]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/HandTracking.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/hand-tracking")]
     public class MixedRealityHandTrackingProfile : BaseMixedRealityProfile
     {
         [SerializeField]

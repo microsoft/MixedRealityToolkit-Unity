@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <para>A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
         /// before the new profile is properly setup.</para>
         /// <para>You are strongly recommended to see 
-        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching.</para>
         /// </remarks>
         public MixedRealityToolkitConfigurationProfile ActiveProfile
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <para>This function requires the caller script to be executed earlier than the <see cref="MixedRealityToolkit"/> script, which can be achieved by setting 
         /// <see href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</see>.</para>
         /// <para>You are strongly recommended to see 
-        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching.</para>
         /// </remarks>
         public static void SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile profile)
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <para>This function should only be used by editor code in most cases.</para>
         /// <para>Do not call this function if resetting profile at runtime.
         /// Instead see 
-        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching at runtime.</para>
         /// </remarks>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
