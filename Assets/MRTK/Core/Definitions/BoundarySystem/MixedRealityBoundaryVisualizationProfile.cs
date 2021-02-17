@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityBoundarySystem))]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
     public class MixedRealityBoundaryVisualizationProfile : BaseMixedRealityProfile
     {
         [SerializeField]

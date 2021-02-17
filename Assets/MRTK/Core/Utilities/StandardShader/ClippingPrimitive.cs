@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// used to drive per pixel based clipping.
     /// </summary>
     [ExecuteAlways]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/rendering/clipping-primitive")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/clipping-primitive")]
     public abstract class ClippingPrimitive : MonoBehaviour, IMaterialInstanceOwner
     {
         [Tooltip("The renderer(s) that should be affected by the primitive.")]

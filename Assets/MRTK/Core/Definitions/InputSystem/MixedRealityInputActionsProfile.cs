@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Configuration profile settings for setting up and consuming Input Actions.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input Actions Profile", fileName = "MixedRealityInputActionsProfile", order = (int)CreateProfileMenuItemIndices.InputActions)]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input/input-actions")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/input-actions")]
     public class MixedRealityInputActionsProfile : BaseMixedRealityProfile
     {
         private readonly string[] defaultInputActions =

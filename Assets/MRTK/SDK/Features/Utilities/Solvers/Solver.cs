@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// as long as updateLinkedTransform is false.
     /// </summary>
     [RequireComponent(typeof(SolverHandler))]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/solvers/solver")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/solvers/solver")]
     public abstract class Solver : MonoBehaviour
     {
         [SerializeField]

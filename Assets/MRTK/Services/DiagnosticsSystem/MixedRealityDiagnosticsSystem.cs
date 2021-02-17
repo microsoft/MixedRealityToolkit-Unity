@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// <summary>
     /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/diagnostics/diagnostics-system-getting-started")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/diagnostics/diagnostics-system-getting-started")]
     public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
         /// <summary>

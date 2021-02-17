@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/object-manipulator")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/object-manipulator")]
     [RequireComponent(typeof(ConstraintManager))]
     public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler, IMixedRealitySourcePoseHandler
     {

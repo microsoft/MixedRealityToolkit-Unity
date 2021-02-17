@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private const string missingIconWarningMessage = "The icon used by this button was not found in the icon set. You can see the icon currently being used is in the field below:";
         private const string missingCharIconWarningMessage = "The icon used by this button was not found in the icon set. It may be part of another char icon font that was previously part of this icon set";
         private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
-        private const string upgradeDocUrl = "https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button#how-to-change-the-icon-and-text";
+        private const string upgradeDocUrl = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button#how-to-change-the-icon-and-text";
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;

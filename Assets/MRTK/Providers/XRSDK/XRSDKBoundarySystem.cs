@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
     public class XRSDKBoundarySystem : BaseBoundarySystem
     {
         /// <summary>

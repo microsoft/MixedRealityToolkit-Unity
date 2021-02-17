@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The focus provider handles the focused objects per input source.
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input/overview")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class FocusProvider : BaseCoreSystem,
         IMixedRealityFocusProvider,
         IPointerPreferences

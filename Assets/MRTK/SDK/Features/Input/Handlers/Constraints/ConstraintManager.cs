@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Manages constraints for a given object and ensures that Scale/Rotation/Translation 
     /// constraints are executed separately.
     /// </summary>
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/constraint-manager")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/constraint-manager")]
     public class ConstraintManager : MonoBehaviour
     {
         [SerializeField]

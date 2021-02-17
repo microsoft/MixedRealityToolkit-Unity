@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         "SceneTransitionService/Profiles/DefaultSceneTransitionServiceProfile.asset",
         "MixedRealityToolkit.Extensions",
         true)]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/extensions/scene-transition-service")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/extensions/scene-transition-service")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
         /// <summary>

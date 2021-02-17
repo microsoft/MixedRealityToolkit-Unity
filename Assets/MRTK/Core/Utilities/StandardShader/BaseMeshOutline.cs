@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Abstract component to encapsulate common functionality around outline components. 
     /// </summary>
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/rendering/mrtk-standard-shader#mesh-outlines")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/mrtk-standard-shader#mesh-outlines")]
     public abstract class BaseMeshOutline : MonoBehaviour
     {
         /// <summary>

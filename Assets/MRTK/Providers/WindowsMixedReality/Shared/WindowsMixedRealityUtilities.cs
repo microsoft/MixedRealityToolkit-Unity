@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// <para>On .NET Native, IInspectable pointers cannot be marshaled from native to managed code using Marshal.GetObjectForIUnknown.
         /// This class calls into a native method that specifically marshals the type as a specific WinRT interface, which
         /// is supported by the marshaller on both .NET Core and .NET Native.</para>
-        /// <para>Please see https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input/hand-tracking#net-native for more info.</para>
+        /// <para>Please see https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/hand-tracking#net-native for more info.</para>
         /// </remarks>
         private static SpatialCoordinateSystem GetSpatialCoordinateSystem(IntPtr nativePtr)
         {

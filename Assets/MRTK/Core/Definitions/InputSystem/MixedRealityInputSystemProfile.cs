@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input/overview")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// the "MixedRealityToolkit/Standard" shader "_HoverLight" feature.
     /// </summary>
     [ExecuteInEditMode]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/rendering/hover-light")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/hover-light")]
     [AddComponentMenu("Scripts/MRTK/Core/HoverLight")]
     public class HoverLight : MonoBehaviour
     {

@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Scene System Profile", fileName = "MixedRealitySceneSystemProfile", order = (int)CreateProfileMenuItemIndices.SceneSystem)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySceneSystem))]
-    [HelpURL("https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/scene-system/scene-system-getting-started")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/scene-system/scene-system-getting-started")]
     public class MixedRealitySceneSystemProfile : BaseMixedRealityProfile
     {
         /// <summary>
