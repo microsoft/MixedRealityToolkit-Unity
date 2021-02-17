@@ -69,7 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
 #if WMR_ENABLED
             if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
-                return null;
+            {
+                return;
+            }
 #endif
 
             if (WindowsMixedRealityUtilities.UtilitiesProvider == null)
@@ -163,8 +165,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
-
         #region Controller Utilities
+
 #if HP_CONTROLLER_ENABLED
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindwosMixedRealityXRSDKDeviceManager.GetOrAddController");
 
@@ -172,7 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
 #if WMR_ENABLED
             if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+            {
                 return null;
+            }
 #endif
 
             using (GetOrAddControllerPerfMarker.Auto())
@@ -226,6 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         }
 #endif
 
+#if HP_CONTROLLER_ENABLED
         // Creates a unique key for the controller based on it's vendor ID, product ID, version number, and handedness
         private uint GetControllerId(uint handedness)
         {
@@ -245,13 +250,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             var handedness = ((uint)(inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right) ? 2 : inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ? 1 : 0));
             return GetControllerId(handedness);
         }
+#endif
 
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
 #if WMR_ENABLED
             if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+            {
                 return null;
+            }
 #endif
             switch (supportedControllerType)
             {
@@ -304,11 +312,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
-                List<InputFeatureUsage> featureUsages = new List<InputFeatureUsage>();
-                bool hasTouchpad = inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out var reading);
-
+                bool hasTouchpad = inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out _);
                 bool isHPController = !hasTouchpad;
-                uint controllerId = GetControllerId(inputDevice);
 
                 if (isHPController)
                 {
@@ -323,6 +328,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             return base.GetCurrentControllerType(inputDevice);
         }
 
-#endregion Controller Utilities
+        #endregion Controller Utilities
     }
 }

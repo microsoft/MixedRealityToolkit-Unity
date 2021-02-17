@@ -1,14 +1,13 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus",
-    "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.Management",
         "Unity.XR.Oculus",
-        "Oculus.VR",
-        "Unity.XR.Management"
+        "Oculus.VR"
     ],
     "includePlatforms": [
         "Android",
