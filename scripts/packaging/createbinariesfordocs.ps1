@@ -90,6 +90,9 @@ try {
     Move-Item "..\MSBuild\Publish\InEditor\WSA\*.dll" "MRTK_$($Version)\dependencies\"
     Copy-Item "$($UnityDirectory)\Data\Managed\UnityEditor.dll" "MRTK_$($Version)\dependencies\"
     Copy-Item "$($UnityDirectory)\Data\Managed\UnityEngine.dll" "MRTK_$($Version)\dependencies\"
+    if ($UnityDirectory.Contains("2018")) {
+        Copy-Item "$($UnityDirectory)\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll" "MRTK_$($Version)\dependencies\"
+    }
     nuget install Microsoft.Windows.MixedReality.DotNetWinRT -OutputDirectory packages
     Copy-Item "packages\Microsoft.Windows.MixedReality.DotNetWinRT*\lib\unity\net46\Microsoft.Windows.MixedReality.DotNetWinRT.dll" "MRTK_$($Version)\dependencies\"
     Copy-Item -Path "MRTK_$($Version)" -Destination "$OutputDirectory" -Recurse
