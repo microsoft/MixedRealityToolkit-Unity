@@ -80,8 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <param name="geometryEdges">The boundary geometry.</param>
         /// <param name="randomSeed">Random number generator seed.</param>
         /// <remarks>
-        /// For the most reproducible results, use the same randomSeed value 
-        /// each time this method is called.
+        /// For the most reproducible results, use the same randomSeed value each time this method is called.
         /// </remarks>
         public InscribedRectangle(Edge[] geometryEdges, int randomSeed)
         {

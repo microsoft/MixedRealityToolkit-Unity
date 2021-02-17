@@ -164,8 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// Converts a Unity finger bone into an MRTK hand joint.
         /// </summary>
         /// <remarks>
-        /// For HoloLens 2, Unity provides four joints per finger, in index order of metacarpal (0) to tip (4).
-        /// The first joint for the thumb is the wrist joint. Palm joint is not provided.
+        /// <para>For HoloLens 2, Unity provides four joints per finger, in index order of metacarpal (0) to tip (4).
+        /// The first joint for the thumb is the wrist joint. Palm joint is not provided.</para>
         /// </remarks>
         /// <param name="finger">The Unity classification of the current finger.</param>
         /// <param name="index">The Unity index of the current finger bone.</param>
