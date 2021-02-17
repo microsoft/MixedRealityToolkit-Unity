@@ -7,9 +7,7 @@ using Unity.Profiling;
 using UnityEngine.XR;
 
 #if HP_CONTROLLER_ENABLED
-using Microsoft.MixedReality.Input;
-using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
-using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
