@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
     [System.Serializable]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/interactable")]
     [AddComponentMenu("Scripts/MRTK/SDK/Interactable")]
     public class Interactable :
         MonoBehaviour,

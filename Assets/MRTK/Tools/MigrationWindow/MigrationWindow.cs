@@ -13,7 +13,7 @@ using Object = UnityEngine.Object;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html"/>This is an utility window for the MigrationTool. 
+    /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/migration-window"/>This is an utility window for the MigrationTool. 
     /// </summary>
     public class MigrationWindow : EditorWindow
     {
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private Vector2 scrollPosition = Vector2.zero;
         private Vector2 logScrollPosition = Vector2.zero;
 
-        private const string MigrationWindowURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html";
+        private const string MigrationWindowURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/migration-window";
         private const string WindowTitle = "Migration Window";
         private const string WindowDescription = "This tool allows the migration of obsolete components into up-to-date versions.";
 
