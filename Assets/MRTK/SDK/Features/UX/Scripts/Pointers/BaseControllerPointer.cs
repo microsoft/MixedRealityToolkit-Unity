@@ -82,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (SetCursorPerfMarker.Auto())
             {
-                if (cursorInstance != null)
+                // Destroy the old cursor and replace it with the new one if a new cursor was provided
+                if (cursorInstance != null && newCursor != null)
                 {
                     DestroyCursorInstance();
                     cursorInstance = newCursor;
@@ -90,7 +91,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (cursorInstance == null && cursorPrefab != null)
                 {
-                    cursorInstance = Instantiate(cursorPrefab, transform);
+                    // We spawn the cursor at the same level as this pointer by setting it's parent to be the same as the pointer's
+                    // In the future, the pointer will not be responsible for instantiating the cursor, so we'll avoid making this assumption about the hierarchy
+                    cursorInstance = Instantiate(cursorPrefab, transform.parent);
                     isCursorInstantiatedFromPrefab = true;
                 }
 
@@ -224,8 +227,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (base.Controller != null && this != null)
                 {
-                    PointerName = gameObject.name;
+                    PointerName = $"{Handedness}_{gameObject.name}";
                     InputSourceParent = base.Controller.InputSource;
+                    SetCursor();
                 }
             }
         }
