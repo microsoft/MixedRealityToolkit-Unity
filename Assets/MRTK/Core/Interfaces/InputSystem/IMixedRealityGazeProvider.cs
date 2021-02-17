@@ -86,8 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Notifies this gaze provider of its new hit details.
         /// </summary>
         /// <remarks>
-        /// For components that care where the user's looking, we need
-        /// to separately update the gaze info even if gaze isn't used for focus.
+        /// <para>For components that care where the user's looking, we need
+        /// to separately update the gaze info even if gaze isn't used for focus.</para>
         /// </remarks>
         void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit);
     }

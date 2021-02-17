@@ -86,14 +86,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Suggest performance optimizations for mobile VR devices with mobile class specifications",
             "Suggest performance optimizations for VR devices tethered to a PC" };
 
-        private const string OptimizeWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/OptimizeWindow.html";
+        private const string OptimizeWindow_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/migration-window";
 #if UNITY_ANDROID
         private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html";
 #else
         private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
 #endif
-        private const string DepthBufferSharing_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-sharing";
-        private const string DepthBufferFormat_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-format";
+        private const string DepthBufferSharing_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/performance/hologram-stabilization#depth-buffer-sharing";
+        private const string DepthBufferFormat_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/performance/hologram-stabilization#depth-buffer-format";
         private const string GlobalIllumination_URL = "https://docs.unity3d.com/Manual/GlobalIllumination.html";
 
 #if UNITY_ANDROID

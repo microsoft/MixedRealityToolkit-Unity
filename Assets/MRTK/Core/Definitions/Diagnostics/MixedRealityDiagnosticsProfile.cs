@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Diagnostics Profile", fileName = "MixedRealityDiagnosticsProfile", order = (int)CreateProfileMenuItemIndices.Diagnostics)]
     [MixedRealityServiceProfile(typeof(IMixedRealityDiagnosticsSystem))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/diagnostics/diagnostics-system-getting-started")]
     public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile
     {
         [SerializeField]
