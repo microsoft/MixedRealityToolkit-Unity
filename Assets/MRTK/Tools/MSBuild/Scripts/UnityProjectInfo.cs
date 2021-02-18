@@ -182,9 +182,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
-            // Ignore test projects when generating docs
+            // Ignore test projects when generating docs with Unity 2019
+#if UNITY_2019_3_OR_NEWER
             projectsMap.Remove("Microsoft.MixedReality.Toolkit.Tests.EditModeTests");
             projectsMap.Remove("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests");
+#endif
             return projectsMap;
         }
 
