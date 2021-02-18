@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
     [MixedRealityServiceProfile(typeof(IMixedRealityCameraSystem))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#camera")]
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         [SerializeField]

@@ -33,8 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// A raised, horizontal surface such as a shelf.
         /// </summary>
         /// <remarks>
-        /// Platforms, like floors, that can be used for placing objects
-        /// requiring a horizontal surface.
+        /// Platforms, like floors, that can be used for placing objects requiring a horizontal surface.
         /// </remarks>
         Platform = 1 << 4
     }

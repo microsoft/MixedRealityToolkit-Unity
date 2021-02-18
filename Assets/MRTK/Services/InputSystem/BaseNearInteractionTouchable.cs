@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Base class for all NearInteractionTouchables.
     /// </summary>
     /// <remarks>
-    /// Add this component to objects to raise touch events when in [PokePointer](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) proximity.
-    /// The object layer must be included of the [PokeLayerMasks](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.PokeLayerMasks).
+    /// <para>Add this component to objects to raise touch events when in [PokePointer](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) proximity.
+    /// The object layer must be included of the [PokeLayerMasks](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.PokeLayerMasks).</para>
     /// </remarks>
     public abstract class BaseNearInteractionTouchable : MonoBehaviour
     {
@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Distance in front of the surface at which you will receive a touch completed event.
         /// </summary>
         /// <remarks>
-        /// When the touchable is active and the pointer distance becomes greater than +DebounceThreshold (i.e. in front of the surface),
-        /// then the Touch Completed event is raised and the touchable object is released by the pointer.
+        /// <para>When the touchable is active and the pointer distance becomes greater than +DebounceThreshold (i.e. in front of the surface),
+        /// then the Touch Completed event is raised and the touchable object is released by the pointer.</para>
         /// </remarks>
         public float DebounceThreshold { get => debounceThreshold; set => debounceThreshold = value; }
 
