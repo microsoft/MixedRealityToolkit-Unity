@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
-using System.Linq;
 using UnityEngine.XR;
 
 #if OCULUSINTEGRATION_PRESENT
@@ -14,7 +13,6 @@ using System.Collections.Generic;
 using Unity.XR.Oculus;
 #endif // OCULUS_ENABLED
 using UnityEngine;
-using UnityEngine.XR.Management;
 #endif // OCULUSINTEGRATION_PRESENT
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
@@ -140,15 +138,31 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         #endregion Controller Utilities
 
 #if OCULUSINTEGRATION_PRESENT
+        private bool? isActiveLoader = null;
+        private bool IsActiveLoader
+        {
+            get
+            {
+#if OCULUS_ENABLED
+                if (!isActiveLoader.HasValue)
+                {
+                    isActiveLoader = IsLoaderActive<OculusLoader>();
+                }
+#endif // OCULUS_ENABLED
+
+                return isActiveLoader ?? false;
+            }
+        }
+
         /// <inheritdoc/>
         public override void Enable()
         {
-            base.Enable();
-            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is OculusLoader loader && loader.displaySubsystem != null))
-
+            if (!IsActiveLoader)
             {
                 return;
             }
+
+            base.Enable();
 
             SetupInput();
             ConfigurePerformancePreferences();
@@ -158,6 +172,11 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         /// <inheritdoc/>
         public override void Update()
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             base.Update();
 
             if (OVRPlugin.GetHandTrackingEnabled())

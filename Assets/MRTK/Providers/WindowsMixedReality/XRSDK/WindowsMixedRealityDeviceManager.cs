@@ -50,6 +50,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
+#if WMR_ENABLED
+        private bool? isActiveLoader = null;
+        private bool IsActiveLoader
+        {
+            get
+            {
+                if (!isActiveLoader.HasValue)
+                {
+                    isActiveLoader = IsLoaderActive("WindowsMRLoader");
+                }
+
+                return isActiveLoader ?? false;
+            }
+        }
+#endif // WMR_ENABLED
+
         #region IMixedRealityDeviceManager Interface
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -58,14 +74,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override void Enable()
         {
-            base.Enable();
-
 #if WMR_ENABLED
-            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+            if (!IsActiveLoader)
             {
                 return;
             }
 #endif // WMR_ENABLED
+
+            base.Enable();
 
             if (WindowsMixedRealityUtilities.UtilitiesProvider == null)
             {
@@ -86,6 +102,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override void Update()
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             // Override gaze before base.Update() updates the controllers
             if (mixedRealityGazeProviderHeadOverride != null && mixedRealityGazeProviderHeadOverride.UseHeadGazeOverride && WindowsMixedRealityUtilities.SpatialCoordinateSystem != null)
             {
@@ -166,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
 #if WMR_ENABLED
-            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+            if (!IsActiveLoader)
             {
                 return null;
             }
@@ -245,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
 #if WMR_ENABLED
-            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+            if (!IsActiveLoader)
             {
                 return null;
             }
