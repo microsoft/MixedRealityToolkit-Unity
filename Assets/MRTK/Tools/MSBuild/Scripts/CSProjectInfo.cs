@@ -243,13 +243,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             switch (sourceFile.AssetLocation)
             {
                 case AssetLocation.BuiltInPackage:
-                    relativeSourcePath = sourceFile.File.FullName;
                     return;
                 case AssetLocation.Project:
                     relativeSourcePath = $"..\\..\\{Utilities.GetAssetsRelativePathFrom(sourceFile.File.FullName)}";
                     break;
                 case AssetLocation.Package:
                     relativeSourcePath = $"..\\{Utilities.GetPackagesRelativePathFrom(sourceFile.File.FullName)}";
+                    break;
+                case AssetLocation.BuiltInPackageWithSource:
+                    relativeSourcePath = Path.GetFullPath(sourceFile.File.FullName);
                     break;
                 default: throw new InvalidDataException("Unknown asset location.");
             }

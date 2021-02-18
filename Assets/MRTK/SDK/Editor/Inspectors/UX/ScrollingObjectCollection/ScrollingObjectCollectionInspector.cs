@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string BackReleasePlaneDescription = "Back release Plane";
         private const string FrontReleasePlaneDescription = "Front Release Plane";
 
-        private const string ScrollViewDocURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ScrollView.html";
+        private const string ScrollViewDocURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/scrolling-object-collection";
 
         protected const string ShowAdvancedPrefKey = "ScrollViewInspectorShowAdvanced";
         protected const string ShowEventsPrefKey = "ScrollViewInspectorShowEvents";

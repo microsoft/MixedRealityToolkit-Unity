@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         protected SerializedProperty enterPinchDistance;
         protected SerializedProperty exitPinchDistance;
 
-        private const string leapDocURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html";
+        private const string leapDocURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/leap-motion-mrtk";
 
         // Used for setting the leapVRDeviceOrigin object reference value
         Transform leapVRDeviceOriginTransform;

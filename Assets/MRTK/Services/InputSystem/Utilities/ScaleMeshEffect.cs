@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     /// in one attribute but UGUI only supports two scalers per attribute (even in the tangent attribute).
     /// </summary>
     [RequireComponent(typeof(RectTransform), typeof(Graphic))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html#ugui-support")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/mrtk-standard-shader#ugui-support")]
     [AddComponentMenu("Scripts/MRTK/Services/ScaleMeshEffect")]
     public class ScaleMeshEffect : BaseMeshEffect
     {
