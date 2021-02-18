@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-#if WMR_ENABLED
         private bool? isActiveLoader = null;
         private bool IsActiveLoader
         {
@@ -58,28 +57,23 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 if (!isActiveLoader.HasValue)
                 {
-                    isActiveLoader = IsLoaderActive("WindowsMRLoader");
+                    isActiveLoader = IsLoaderActive("Windows MR Loader");
                 }
 
                 return isActiveLoader ?? false;
             }
         }
-#endif // WMR_ENABLED
 
         #region IMixedRealityDeviceManager Interface
-
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-        private IMixedRealityGazeProviderHeadOverride mixedRealityGazeProviderHeadOverride = null;
 
         /// <inheritdoc />
         public override void Enable()
         {
-#if WMR_ENABLED
             if (!IsActiveLoader)
             {
+                IsEnabled = false;
                 return;
             }
-#endif // WMR_ENABLED
 
             base.Enable();
 
@@ -88,7 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 WindowsMixedRealityUtilities.UtilitiesProvider = new XRSDKWindowsMixedRealityUtilitiesProvider();
             }
 
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
             mixedRealityGazeProviderHeadOverride = Service?.GazeProvider as IMixedRealityGazeProviderHeadOverride;
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
 #if HP_CONTROLLER_ENABLED
             // Listens to events to track the HP Motion Controller
@@ -98,6 +94,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             var nowait = motionControllerWatcher.StartAsync();
 #endif // HP_CONTROLLER_ENABLED
         }
+
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+        private IMixedRealityGazeProviderHeadOverride mixedRealityGazeProviderHeadOverride = null;
 
         /// <inheritdoc />
         public override void Update()
@@ -186,13 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
-#if WMR_ENABLED
-            if (!IsActiveLoader)
-            {
-                return null;
-            }
-#endif // WMR_ENABLED
-
             using (GetOrAddControllerPerfMarker.Auto())
             {
                 GenericXRSDKController detectedController = base.GetOrAddController(inputDevice);
@@ -265,13 +257,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
-#if WMR_ENABLED
-            if (!IsActiveLoader)
-            {
-                return null;
-            }
-#endif // WMR_ENABLED
-
             switch (supportedControllerType)
             {
                 case SupportedControllerType.WindowsMixedReality:

@@ -7,11 +7,12 @@ using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
 using UnityEngine.XR;
 
-#if OCULUSINTEGRATION_PRESENT
-using System.Collections.Generic;
 #if OCULUS_ENABLED
 using Unity.XR.Oculus;
 #endif // OCULUS_ENABLED
+
+#if OCULUSINTEGRATION_PRESENT
+using System.Collections.Generic;
 using UnityEngine;
 #endif // OCULUSINTEGRATION_PRESENT
 
@@ -137,7 +138,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
         #endregion Controller Utilities
 
-#if OCULUSINTEGRATION_PRESENT
         private bool? isActiveLoader = null;
         private bool IsActiveLoader
         {
@@ -159,16 +159,19 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         {
             if (!IsActiveLoader)
             {
+                IsEnabled = false;
                 return;
             }
 
             base.Enable();
 
+#if OCULUSINTEGRATION_PRESENT
             SetupInput();
             ConfigurePerformancePreferences();
+#endif // OCULUSINTEGRATION_PRESENT
         }
 
-
+#if OCULUSINTEGRATION_PRESENT
         /// <inheritdoc/>
         public override void Update()
         {
@@ -349,6 +352,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         }
 
         #endregion
-#endif
+#endif // OCULUSINTEGRATION_PRESENT
     }
 }

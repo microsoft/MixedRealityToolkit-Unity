@@ -79,6 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             using (UpdatePerfMarker.Auto())
             {
+                if (!IsEnabled)
+                {
+                    return;
+                }
+
                 base.Update();
 
                 if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.running)
