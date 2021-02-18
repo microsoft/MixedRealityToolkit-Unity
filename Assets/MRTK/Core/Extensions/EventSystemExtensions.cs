@@ -25,8 +25,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Fixes the current issue with Unity's raycast sorting which does not consider separate canvases.
         /// </summary>
         /// <remarks>
-        /// Takes an optional RaycastResultComparer, which will be used to select the highest priority
-        /// raycast result.
+        /// Takes an optional RaycastResultComparer, which will be used to select the highest priority raycast result.
         /// </remarks>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
         public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks, RaycastResultComparer raycastResultComparer = null)
