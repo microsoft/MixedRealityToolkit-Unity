@@ -850,12 +850,10 @@ Used only in editor tests.</p>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlaceRelativeToPlayspace_Transform__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If the transform has no parent, then this is equivalent to the following sequence:</p>
-<ol>
-<li>transform.SetParent(MixedRealityPlayspace.Transform, false);</li>
-<li>transform.SetParent(null, true);
-However, if the transform has a parent, then the transform's world transform, not just its local transform,
-will determine its final pose relative to the playspace.</li>
-</ol>
+<p>1) transform.SetParent(MixedRealityPlayspace.Transform, false);</p>
+<p>2) transform.SetParent(null, true);</p>
+<p>However, if the transform has a parent, then the transform&apos;s world transform, not just its local transform,
+will determine its final pose relative to the playspace.</p>
 </div>
   
   
@@ -954,7 +952,7 @@ will determine its final pose relative to the playspace.</li>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlaceRelativeToPlayspace_Vector3_Quaternion__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This computes the world pose an object with the input local pose would have if it were
-a child of the playspace.</p>
+a child of the playspace. </p>
 </div>
   
   
@@ -972,7 +970,7 @@ a child of the playspace.</p>
 real world scenarios, it can be convenient to use the *RelativeToPlayspace() helpers below.
 For example, to place an object directly 8 meters in front of the camera, set its position
 to TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f).
-See also <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlaceRelativeToPlayspace_Transform_">PlaceRelativeToPlayspace(Transform)</a> to convert an object's local
+See also <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlaceRelativeToPlayspace_Transform_">PlaceRelativeToPlayspace(Transform)</a> to convert an object&apos;s local
 transform into a transform relative to the playspace.</p>
 </div>
   
@@ -1022,9 +1020,9 @@ transform into a transform relative to the playspace.</p>
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToPositionAndRotation_Vector3_Quaternion__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Note that this has no effect on the camera's local space transform, but
-will change the camera's world space position. If and only if the camera's
-local transform is identity with the camera's world transform equal the playspace's.</p>
+  <div class="markdown level1 remarks"><p>Note that this has no effect on the camera&apos;s local space transform, but
+will change the camera&apos;s world space position. If and only if the camera&apos;s
+local transform is identity with the camera&apos;s world transform equal the playspace&apos;s.</p>
 </div>
   
   
