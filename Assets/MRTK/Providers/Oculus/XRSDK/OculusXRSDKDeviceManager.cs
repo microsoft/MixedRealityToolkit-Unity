@@ -5,9 +5,14 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+#if OCULUSINTEGRATION_PRESENT
+using Unity.XR.Oculus;
+#endif
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Management;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
@@ -39,14 +44,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         public override void Initialize()
         {
             base.Initialize();
-            Debug.Log(@"Detected a potential deployment issue for the Oculus Quest. In order to use handtracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
+            Debug.Log(@"Detected a potential deployment issue for the Oculus Quest. In order to use hand tracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
 The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
         }
 #endif
 
-        private Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
-
 #if OCULUSINTEGRATION_PRESENT
+        private readonly Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
+
         private OVRCameraRig cameraRig;
 
         private OVRHand rightHand;
@@ -80,8 +85,9 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
-        
+
         #region Controller Utilities
+
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
@@ -133,12 +139,16 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
         #endregion Controller Utilities
 
-
 #if OCULUSINTEGRATION_PRESENT
         /// <inheritdoc/>
         public override void Enable()
         {
             base.Enable();
+            
+            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is OculusLoader loader && loader.displaySubsystem != null))
+            {
+                return;
+            }
 
             SetupInput();
             ConfigurePerformancePreferences();
@@ -239,6 +249,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         }
 
         #region Hand Utilities
+
         protected void UpdateHands()
         {
             UpdateHand(rightHand, rightSkeleton, Handedness.Right);
@@ -317,8 +328,8 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
             RecyclePointers(handDevice.InputSource);
         }
+
         #endregion
-        
 #endif
     }
 }
