@@ -55,10 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             get
             {
+#if WMR_ENABLED
                 if (!isActiveLoader.HasValue)
                 {
                     isActiveLoader = IsLoaderActive("Windows MR Loader");
                 }
+#endif // WMR_ENABLED
 
                 return isActiveLoader ?? false;
             }
