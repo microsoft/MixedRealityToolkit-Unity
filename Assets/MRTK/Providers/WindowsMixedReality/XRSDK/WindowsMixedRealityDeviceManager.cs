@@ -165,6 +165,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             return false;
         }
 
+        #endregion IMixedRealityCapabilityCheck Implementation
+
+        #region Controller Utilities
+
 #if HP_CONTROLLER_ENABLED
         private MotionControllerWatcher motionControllerWatcher;
 
@@ -174,13 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private readonly Dictionary<uint, MotionControllerState> trackedMotionControllerStates = new Dictionary<uint, MotionControllerState>();
 
         private readonly Dictionary<uint, GenericXRSDKController> activeMotionControllers = new Dictionary<uint, GenericXRSDKController>();
-#endif // HP_CONTROLLER_ENABLED
 
-        #endregion IMixedRealityCapabilityCheck Implementation
-
-        #region Controller Utilities
-
-#if HP_CONTROLLER_ENABLED
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindwosMixedRealityXRSDKDeviceManager.GetOrAddController");
 
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
