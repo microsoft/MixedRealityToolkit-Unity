@@ -9,6 +9,10 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
+#if XR_MANAGEMENT_ENABLED
+using UnityEngine.XR.Management;
+#endif // XR_MANAGEMENT_ENABLED
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 {
     /// <summary>
@@ -51,6 +55,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             InputDeviceCharacteristics.Controller,
             InputDeviceCharacteristics.HandTracking
         };
+
+#if XR_MANAGEMENT_ENABLED
+        /// <summary>
+        /// Checks if the active loader has a specific name. Used in cases where the loader class is internal, like WindowsMRLoader.
+        /// </summary>
+        /// <param name="loaderName">The string name to compare against the active loader.</param>
+        /// <returns>True if the active loader has the same name as the parameter.</returns>
+        protected virtual bool IsLoaderActive(string loaderName) => XRGeneralSettings.Instance.Manager.activeLoader.name == loaderName;
+
+        /// <summary>
+        /// Checks if the active loader is of a specific type. Used in cases where the loader class is accessible, like OculusLoader.
+        /// </summary>
+        /// <typeparam name="T">The loader class type to check against the active loader.</typeparam>
+        /// <returns>True if the active loader is of the specified type.</returns>
+        protected virtual bool IsLoaderActive<T>() where T : XRLoader => XRGeneralSettings.Instance.Manager.activeLoader is T;
+#endif // XR_MANAGEMENT_ENABLED
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
