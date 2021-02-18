@@ -4,23 +4,16 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.Management;
-#if WMR_ENABLED
-using UnityEngine.XR.WindowsMR;
-#endif
-using Unity.Profiling;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 
 #if HP_CONTROLLER_ENABLED
 using Microsoft.MixedReality.Input;
 using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
-using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
+using System.Collections.Generic;
+using Unity.Profiling;
 #endif
 
 #if WINDOWS_UWP
@@ -72,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 return;
             }
-#endif
+#endif // WMR_ENABLED
 
             if (WindowsMixedRealityUtilities.UtilitiesProvider == null)
             {
@@ -87,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             motionControllerWatcher.MotionControllerAdded += AddTrackedMotionController;
             motionControllerWatcher.MotionControllerRemoved += RemoveTrackedMotionController;
             var nowait = motionControllerWatcher.StartAsync();
-#endif
+#endif // HP_CONTROLLER_ENABLED
         }
 
         /// <inheritdoc />
@@ -161,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private readonly Dictionary<uint, MotionControllerState> trackedMotionControllerStates = new Dictionary<uint, MotionControllerState>();
 
         private readonly Dictionary<uint, GenericXRSDKController> activeMotionControllers = new Dictionary<uint, GenericXRSDKController>();
-#endif
+#endif // HP_CONTROLLER_ENABLED
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
@@ -177,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 return null;
             }
-#endif
+#endif // WMR_ENABLED
 
             using (GetOrAddControllerPerfMarker.Auto())
             {
@@ -228,29 +221,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
         }
-#endif
 
-#if HP_CONTROLLER_ENABLED
-        // Creates a unique key for the controller based on it's vendor ID, product ID, version number, and handedness
+        // Creates a unique key for the controller based on its vendor ID, product ID, version number, and handedness
         private uint GetControllerId(uint handedness)
         {
             return handedness;
         }
 
-#if HP_CONTROLLER_ENABLED
         private uint GetControllerId(MotionController mc)
         {
-            var handedness = ((uint)(mc.Handedness == MotionControllerHandedness.Right ? 2 : (mc.Handedness == MotionControllerHandedness.Left ? 1 : 0)));
+            var handedness = (uint)(mc.Handedness == MotionControllerHandedness.Right ? 2 : (mc.Handedness == MotionControllerHandedness.Left ? 1 : 0));
             return GetControllerId(handedness);
         }
-#endif
 
         private uint GetControllerId(InputDevice inputDevice)
         {
-            var handedness = ((uint)(inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right) ? 2 : inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ? 1 : 0));
+            var handedness = (uint)(inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right) ? 2 : (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ? 1 : 0));
             return GetControllerId(handedness);
         }
-#endif
+#endif // HP_CONTROLLER_ENABLED
 
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
@@ -260,7 +249,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 return null;
             }
-#endif
+#endif // WMR_ENABLED
+
             switch (supportedControllerType)
             {
                 case SupportedControllerType.WindowsMixedReality:

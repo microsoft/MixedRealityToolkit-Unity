@@ -46,16 +46,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         private readonly List<InputDevice> inputDevicesSubset = new List<InputDevice>();
         private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
 
-        private List<InputDeviceCharacteristics> GenericDesiredInputCharacteristics = new List<InputDeviceCharacteristics>()
+        protected virtual List<InputDeviceCharacteristics> DesiredInputCharacteristics { get; set; } = new List<InputDeviceCharacteristics>()
         {
             InputDeviceCharacteristics.Controller,
             InputDeviceCharacteristics.HandTracking
         };
-        protected virtual List<InputDeviceCharacteristics> DesiredInputCharacteristics
-        {
-            get { return GenericDesiredInputCharacteristics; }
-            set { GenericDesiredInputCharacteristics = value; }
-        }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
@@ -163,7 +158,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 Type controllerType = GetControllerType(currentControllerType);
 
                 if (controllerType == null)
+                {
                     return null;
+                }
 
                 InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
 

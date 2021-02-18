@@ -6,13 +6,16 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-#if OCULUSINTEGRATION_PRESENT
-using Unity.XR.Oculus;
-#endif
-using UnityEngine;
 using UnityEngine.XR;
+
+#if OCULUSINTEGRATION_PRESENT
+using System.Collections.Generic;
+#if OCULUS_ENABLED
+using Unity.XR.Oculus;
+#endif // OCULUS_ENABLED
+using UnityEngine;
 using UnityEngine.XR.Management;
+#endif // OCULUSINTEGRATION_PRESENT
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
@@ -55,13 +58,10 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         private OVRCameraRig cameraRig;
 
         private OVRHand rightHand;
-        private OVRMeshRenderer rightMeshRenderer;
         private OVRSkeleton rightSkeleton;
 
         private OVRHand leftHand;
-        private OVRMeshRenderer leftMeshRenderer;
         private OVRSkeleton leftSkeleton;
-
 
         /// <summary>
         /// The profile that contains settings for the Oculus XRSDK Device Manager input data provider.  This profile is nested under 
@@ -144,8 +144,8 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         public override void Enable()
         {
             base.Enable();
-            
             if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is OculusLoader loader && loader.displaySubsystem != null))
+
             {
                 return;
             }
@@ -159,6 +159,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         public override void Update()
         {
             base.Update();
+
             if (OVRPlugin.GetHandTrackingEnabled())
             {
                 UpdateHands();
@@ -203,7 +204,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             }
 
             bool useAvatarHands = SettingsProfile.RenderAvatarHandsInsteadOfController;
-            // If using Avatar hands, de-activate ovr controller rendering
+            // If using Avatar hands, deactivate ovr controller rendering
             foreach (var controllerHelper in cameraRig.gameObject.GetComponentsInChildren<OVRControllerHelper>())
             {
                 controllerHelper.gameObject.SetActive(!useAvatarHands);
@@ -280,8 +281,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             var pointers = RequestPointers(SupportedControllerType.ArticulatedHand, handedness);
             var inputSourceType = InputSourceType.Hand;
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"Oculus Quest {handedness} Hand", pointers, inputSourceType);
+            var inputSource = Service?.RequestNewGenericInputSource($"Oculus Quest {handedness} Hand", pointers, inputSourceType);
 
 
             OculusHand handDevice = new OculusHand(TrackingState.Tracked, handedness, inputSource);
@@ -292,7 +292,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
                 handDevice.InputSource.Pointers[i].Controller = handDevice;
             }
 
-            inputSystem?.RaiseSourceDetected(handDevice.InputSource, handDevice);
+            Service?.RaiseSourceDetected(handDevice.InputSource, handDevice);
 
             trackedHands.Add(handedness, handDevice);
 
