@@ -5,6 +5,7 @@
         "Microsoft.MixedReality.OpenXR",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.Management",
         "Unity.XR.OpenXR"
     ],
     "includePlatforms": [
