@@ -118,11 +118,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private RadialView radialView = null;
         private Coroutine autoFollowDistanceCheck = null;
 
-        [Header("Events")]
+        [SerializeField]
+        [Tooltip("Event that gets fired when auto follow is triggered.")]
+        private UnityEvent autoFollowTriggered = new UnityEvent();
         /// <summary>
-        /// Event that gets fired when auto follow is triggered
+        /// Event that gets fired when auto follow is triggered.
         /// </summary>
-        public UnityEvent AutoFollowTriggered = new UnityEvent();
+        public UnityEvent AutoFollowTriggered
+        {
+            get => autoFollowTriggered;
+            set => autoFollowTriggered = value;
+        }
 
 
         #region MonoBehaviour Implementation
