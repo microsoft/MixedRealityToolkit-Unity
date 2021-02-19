@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -117,6 +118,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private RadialView radialView = null;
         private Coroutine autoFollowDistanceCheck = null;
 
+        [Header("Events")]
+        /// <summary>
+        /// Event that gets fired when auto follow is triggered
+        /// </summary>
+        public UnityEvent AutoFollowTriggered = new UnityEvent();
+
+
         #region MonoBehaviour Implementation
 
         private void Awake()
@@ -203,6 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         if ((mainCamera.transform.position - autoFollowTransformTarget.position).sqrMagnitude >= autoFollowDistanceSq)
                         {
                             SetFollowMeBehavior(true);
+                            AutoFollowTriggered?.Invoke();
                         }
                     }
                 }
