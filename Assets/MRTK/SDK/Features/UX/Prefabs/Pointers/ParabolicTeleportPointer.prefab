@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 114917070612713698}
   - component: {fileID: 5571717125842689191}
   m_Layer: 0
-  m_Name: ParabolicPointer
+  m_Name: ParabolicTeleportPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -447,6 +447,10 @@ MonoBehaviour:
     id: 6
     description: Trigger
     axisConstraint: 3
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 1
   overrideGlobalPointerExtent: 0
@@ -606,6 +610,7 @@ MonoBehaviour:
     id: 5
     description: Teleport
     axisConstraint: 4
+  hotSpotCursorVisibility: 1
   inputThreshold: 0.5
   angleOffset: 0
   teleportActivationAngle: 45
