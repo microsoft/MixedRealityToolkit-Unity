@@ -66,49 +66,46 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region IMixedRealityServiceState Implementation
 
-        protected bool? isInitialized = null;
+        private bool? isInitialized = null;
 
         /// <inheritdoc />
         public virtual bool IsInitialized
         {
             get
             {
-                Debug.Assert(isInitialized.HasValue, $"{this.GetType()} has not set a value for IsInitialized, returning false.");
+                Debug.Assert(isInitialized.HasValue, $"{GetType()} has not set a value for IsInitialized, returning false.");
                 return isInitialized ?? false;
             }
 
-            set => isInitialized = value;
+            protected set => isInitialized = value;
         }
 
-        protected bool? isEnabled = null;
+        private bool? isEnabled = null;
 
         /// <inheritdoc />
         public virtual bool IsEnabled
         {
             get
             {
-                Debug.Assert(isEnabled.HasValue, $"{this.GetType()} has not set a value for IsEnabled, returning false.");
+                Debug.Assert(isEnabled.HasValue, $"{GetType()} has not set a value for IsEnabled, returning false.");
                 return isEnabled ?? false;
             }
 
-            set => isEnabled = value;
+            protected set => isEnabled = value;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        protected bool? isMarkedDestroyed = null;
+        private bool? isMarkedDestroyed = null;
 
         /// <inheritdoc />
         public virtual bool IsMarkedDestroyed
         {
             get
             {
-                Debug.Assert(isMarkedDestroyed.HasValue, $"{this.GetType()} has not set a value for IsMarkedDestroyed, returning false.");
+                Debug.Assert(isMarkedDestroyed.HasValue, $"{GetType()} has not set a value for IsMarkedDestroyed, returning false.");
                 return isMarkedDestroyed ?? false;
             }
 
-            set => isMarkedDestroyed = value;
+            protected set => isMarkedDestroyed = value;
         }
 
         #endregion IMixedRealityServiceState Implementation
