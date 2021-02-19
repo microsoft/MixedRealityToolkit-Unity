@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// The default value for a Six Dof Transform.
+        /// The default value for a Six DoF Transform.
         /// </summary>
         public static MixedRealityTransform Identity { get; } = new MixedRealityTransform(Vector3.zero, Quaternion.identity, Vector3.one);
 

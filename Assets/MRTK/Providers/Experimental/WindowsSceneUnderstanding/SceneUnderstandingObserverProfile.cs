@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public bool UsePersistentObjects => usePersistentObjects;
 
         [SerializeField]
-        [Tooltip("Calculate surfaces upto radius distance")]
+        [Tooltip("Calculate surfaces up to radius distance")]
         private float queryRadius = 5.0f;
         /// <summary>
         /// Keep previously observed objects when updating the scene

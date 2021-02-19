@@ -335,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         selected = i;
                     }
 
-                    // popups will only show unqiue elements
+                    // popups will only show unique elements
                     // in case of auto selection we don't care which one we're selecting as the behavior will be the same.
                     // in case of manual selection users might want to differentiate which constraintmanager they are referring to.
                     if (manager.AutoConstraintSelection == true)

@@ -1154,7 +1154,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ApplyPosition(workingScrollerPos);
             }
 
-            // Setting HasMomentum to true if scroll velocity state has changed or any movement happend during this update
+            // Setting HasMomentum to true if scroll velocity state has changed or any movement happened during this update
             if (CurrentVelocityState != VelocityState.None || previousVelocityState != VelocityState.None)
             {
                 HasMomentum = true;
@@ -1711,7 +1711,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     renderersToClip.Add(renderer);
                 }
 
-                // Complete or partialy visible renders should be clipped and its game object should be active
+                // Complete or partially visible renders should be clipped and its game object should be active
                 if (isRestoringVisibility
                     || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
                     || clippingThresholdBounds.Intersects(renderer.bounds)) 

@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
 #if UNITY_2020_2_OR_NEWER
             // Starting from Unity 2020.2 there are two versions of UnityEditor.dll in the Editor\Data\Managed folder.
-            // Here we want to reference the "full version" (i.e. verion with submodules)
+            // Here we want to reference the "full version" (i.e. version with submodules)
             string[] editorReferences = builder.defaultReferences.ToArray();
             if (editorReferences[1].EndsWith("/UnityEngine/UnityEditor.dll"))
             {

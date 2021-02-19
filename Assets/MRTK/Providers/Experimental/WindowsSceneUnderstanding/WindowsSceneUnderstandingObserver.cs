@@ -797,7 +797,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
                 // Ideally you'd call SceneObserver.ComputeAsync() like this:
                 // scene = await SceneObserver.ComputeAsync(...);
-                // however this has has been problematic (buggy?)
+                // however this has been problematic (buggy?)
                 // For the time being we force it to be synchronous with the ...GetAwaiter().GetResult() pattern
 
                 if (UsePersistentObjects && previousScene != null)

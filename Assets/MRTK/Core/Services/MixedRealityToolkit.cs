@@ -87,11 +87,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <remarks>
         /// <para>If changing the Active profile prior to the initialization (i.e. Awake()) of <see cref="MixedRealityToolkit"/> is desired, 
-        /// call the static funtion <see cref="SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile)"/> instead.</para>
+        /// call the static function <see cref="SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile)"/> instead.</para>
         /// <para>When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
         /// of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
         /// first Update() of all services.</para>
-        /// <para>A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
+        /// <para>A noticeable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
         /// before the new profile is properly setup.</para>
         /// <para>You are strongly recommended to see 
         /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#changing-profiles-at-runtime">here</see> 

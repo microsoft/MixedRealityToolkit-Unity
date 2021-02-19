@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject();
                     
-                    // There is no good way to get the dstance of the nearest grabbable object at the moment, so we either return the MinVisibleRingDistance or 1 (invisible).
+                    // There is no good way to get the distance of the nearest grabbable object at the moment, so we either return the MinVisibleRingDistance or 1 (invisible).
                     distance = nearGrabbable ? MinVisibleRingDistance : 1.0f;
 
                     // Only show the visual if we are near a grabbable

@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Note that only unique components will be added to the list.
         /// </summary>	
         /// <param name="constraint">Constraint to add to the managers manual constraint list.</param>
-        /// <returns>Returns true if insertion was successful. If the comopnent was already in the list the insertion will fail.</returns>	
+        /// <returns>Returns true if insertion was successful. If the component was already in the list the insertion will fail.</returns>	
         public bool AddConstraintToManualSelection(TransformConstraint constraint)
         {
             var existingConstraint = selectedConstraints.Find(t => t == constraint);

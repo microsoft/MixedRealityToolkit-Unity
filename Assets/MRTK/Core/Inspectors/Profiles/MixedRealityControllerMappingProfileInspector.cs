@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         /// <summary>
         /// Resets the input actions of the controller mapping according to the mapping's GetDefaultInteractionMappings() function
         /// </summary>
-        /// <param name="controllerMapping">A reference to the controller mapping struct geing reset</param>
+        /// <param name="controllerMapping">A reference to the controller mapping struct getting reset</param>
         private void ResetInputActions(ref MixedRealityControllerMapping controllerMapping)
         {
             controllerMapping.SetDefaultInteractionMapping(true);

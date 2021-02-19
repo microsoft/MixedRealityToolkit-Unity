@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 joints[TrackedHandJoint.PinkyTip] = RetrieveChild(TrackedHandJoint.PinkyDistalJoint);
             }
 
-            // Give the hand mesh it's own material to avoid modifying both hand materials when making property changes
+            // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
             var handMaterialInstance = new Material(handMaterial);
             handRenderer.sharedMaterial = handMaterialInstance;
             handRendererInitialized = true;
