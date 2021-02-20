@@ -3315,6 +3315,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 0
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 589130342}
   linksConfiguration: {fileID: 269292274}
@@ -3512,6 +3513,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 0
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 323831377}
   linksConfiguration: {fileID: 1742904529}
@@ -4286,6 +4288,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 3
   flattenAxis: 4
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0.01, y: 0.01, z: 0.01}
   boxDisplayConfiguration: {fileID: 1723668357}
   linksConfiguration: {fileID: 1259952563}
@@ -4850,6 +4853,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 0
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 756750852}
   linksConfiguration: {fileID: 354167283}
@@ -10138,6 +10142,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 3
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 1726820403}
   linksConfiguration: {fileID: 854647054}
@@ -13117,6 +13122,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 4
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 2107814813}
   linksConfiguration: {fileID: 135819929}

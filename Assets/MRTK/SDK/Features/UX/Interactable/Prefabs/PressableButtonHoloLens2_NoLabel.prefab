@@ -499,7 +499,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 2204069621878992595}
   interactable: {fileID: 8779034279059886464}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -509,7 +509,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 2204069623052342153}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &2204069621797983326
 GameObject:
   m_ObjectHideFlags: 0
