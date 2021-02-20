@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         }
 
         /// <summary>
-        /// Change whether to request occulusion mask from the observer followed by
+        /// Change whether to request occlusion mask from the observer followed by
         /// clearing existing observations and requesting an update
         /// </summary>
         public void ToggleOcclusionMask()
@@ -302,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         }
 
         /// <summary>
-        /// Change whether to request infered region data from the observer followed by
+        /// Change whether to request inferred region data from the observer followed by
         /// clearing existing observations and requesting an update
         /// </summary>
         public void ToggleInferRegions()

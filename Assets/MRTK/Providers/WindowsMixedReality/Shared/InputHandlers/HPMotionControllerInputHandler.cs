@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             using (UpdateSingleAxisDataPerfMarker.Auto())
             {
                 Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
-                // First handle updating the bool values, since those events are only raised once the trigger/gripped is presssed
+                // First handle updating the bool values, since those events are only raised once the trigger/gripped is pressed
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.TriggerPress:

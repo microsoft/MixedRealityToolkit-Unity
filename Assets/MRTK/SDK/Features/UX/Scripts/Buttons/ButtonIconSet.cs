@@ -574,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         spriteIconsProp.isExpanded = true;
 
-                        // Check if the sprite Icons were udpated
+                        // Check if the sprite Icons were updated
                         EditorGUI.BeginChangeCheck();
                         EditorGUILayout.PropertyField(spriteIconsProp, true);
                         // End the code block and update the label if a change occurred

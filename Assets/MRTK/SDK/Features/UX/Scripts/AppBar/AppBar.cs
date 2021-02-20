@@ -575,7 +575,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 case AppBarStateEnum.Hidden:
                     switch (buttonType)
                     {
-                        // Show show button
+                        // Show the show button
                         // The rest are hidden
                         case ButtonTypeEnum.Show:
                             return true;

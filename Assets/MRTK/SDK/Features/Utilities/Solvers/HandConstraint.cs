@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             var newHandedness = trackedController == null ? Handedness.None : trackedController.ControllerHandedness;
             if (previousHandedness.IsNone() && !newHandedness.IsNone())
             {
-                // Toggle cursor off for hand that is going to suppor the hand menu
+                // Toggle cursor off for hand that is going to support the hand menu
                 StartCoroutine(ToggleCursors(trackedController, false, true));
 
                 previousHandedness = newHandedness;

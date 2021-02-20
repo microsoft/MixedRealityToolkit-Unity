@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Maanages the Mixed Reality Toolkit code preservation settings. Please see
+    /// Manages the Mixed Reality Toolkit code preservation settings. Please see
     /// https://docs.unity3d.com/Manual/ManagedCodeStripping.html for more information.
     /// </summary>
     internal static class MixedRealityToolkitPreserveSettings

@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (cursorInstance == null && cursorPrefab != null)
                 {
-                    // We spawn the cursor at the same level as this pointer by setting it's parent to be the same as the pointer's
+                    // We spawn the cursor at the same level as this pointer by setting its parent to be the same as the pointer's
                     // In the future, the pointer will not be responsible for instantiating the cursor, so we'll avoid making this assumption about the hierarchy
                     cursorInstance = Instantiate(cursorPrefab, transform.parent);
                     isCursorInstantiatedFromPrefab = true;

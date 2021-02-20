@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// The default value for a Six Dof Transform.
+        /// The default value for a Six DoF Transform.
         /// </summary>
         /// <returns>
         /// <see href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</see> and <see href="https://docs.unity3d.com/ScriptReference/Quaternion-identity.html">Quaternion.identity</see>.

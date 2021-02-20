@@ -333,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 {
 #if UNITY_EDITOR
                     // Let Unity handle unload of unused assets if lifecycle is transitioning from editor to play mode
-                    // Defering the call during this transition would destroy reference only after play mode Awake, leading to possible broken material references on TMPro objects
+                    // Deferring the call during this transition would destroy reference only after play mode Awake, leading to possible broken material references on TMPro objects
                     if (!EditorApplication.isPlayingOrWillChangePlaymode)
                     {
                         EditorApplication.delayCall += () =>
