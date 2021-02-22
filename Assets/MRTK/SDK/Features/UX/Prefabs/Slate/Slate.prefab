@@ -1713,7 +1713,7 @@ MonoBehaviour:
   m_Name: BoxDisplayConfiguration
   m_EditorClassIdentifier: 
   boxMaterial: {fileID: 2100000, guid: 6f044b5d95469d64ea8feb1225b1d5fa, type: 2}
-  boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
+  boxGrabbedMaterial: {fileID: 2100000, guid: f671b04930fdad54c8b50a4c6d7d9b02, type: 2}
   flattenAxisDisplayScale: 0
 --- !u!114 &114688429180390370
 MonoBehaviour:
