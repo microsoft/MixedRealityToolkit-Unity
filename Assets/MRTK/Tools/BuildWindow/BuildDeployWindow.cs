@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent UseSSLLabel = new GUIContent("Use SSL?", "Use SSL to communicate with Device Portal");
 
-        private readonly GUIContent VerifySSLLabel = new GUIContent("Verify SSL Certificates?", "When using SSL for Device Portal communication, verfiy the SSL certificate against Root Certificates. For self-signed Device Portal certificates disabling this omits SSL rejection errors.");
+        private readonly GUIContent VerifySSLLabel = new GUIContent("Verify SSL Certificates?", "When using SSL for Device Portal communication, verify the SSL certificate against Root Certificates. For self-signed Device Portal certificates disabling this omits SSL rejection errors.");
 
         private readonly GUIContent TargetTypeLabel = new GUIContent("Target Type", "Target either local connection or a remote device");
 

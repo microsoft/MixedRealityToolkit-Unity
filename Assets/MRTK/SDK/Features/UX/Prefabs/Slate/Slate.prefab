@@ -1067,6 +1067,9 @@ MonoBehaviour:
   autoFollowAtDistance: 0
   autoFollowDistance: 2
   autoFollowTransformTarget: {fileID: 0}
+  autoFollowTriggered:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7779420039263858274
 MonoBehaviour:
   m_ObjectHideFlags: 0

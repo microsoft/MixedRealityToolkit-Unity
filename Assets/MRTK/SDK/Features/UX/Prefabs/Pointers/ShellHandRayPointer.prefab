@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 114269887534944512}
   - component: {fileID: 3980487836371375048}
   m_Layer: 0
-  m_Name: DefaultControllerPointer
+  m_Name: ShellHandRayPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -345,6 +345,10 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 0
   overrideGlobalPointerExtent: 0

@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void DrawTouchReleaseThresholdsSection()
         {
             Rect rect = EditorGUILayout.GetControlRect(true, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PrefixLabel(rect, new GUIContent("Release threshold", "Withdraw amount, in meters, from the the scroll view boundaries that triggers a touch release."), EditorStyles.boldLabel);
+            EditorGUI.PrefixLabel(rect, new GUIContent("Release threshold", "Withdraw amount, in meters, from the scroll view boundaries that triggers a touch release."), EditorStyles.boldLabel);
 
             int oldIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;

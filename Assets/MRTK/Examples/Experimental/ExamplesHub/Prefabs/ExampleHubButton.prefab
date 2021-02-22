@@ -107,29 +107,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 448945022554300895}
     Themes:
     - {fileID: 11400000, guid: 67481c8ca0b33ba47a2d7963f6e2f1b1, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 448945022374937490}
     Themes:
     - {fileID: 11400000, guid: 67481c8ca0b33ba47a2d7963f6e2f1b1, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -238,13 +232,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 448945022374937503}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0.00000023841858, y: 0.00000017881393, z: -0.50000006}
   bounds: {x: 1.0000001, y: 1.0000001}
+  touchableCollider: {fileID: 448945022374937503}
 --- !u!82 &448945022374937500
 AudioSource:
   m_ObjectHideFlags: 0

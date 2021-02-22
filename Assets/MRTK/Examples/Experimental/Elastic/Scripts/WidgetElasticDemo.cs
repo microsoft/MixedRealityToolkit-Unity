@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
         // inflated in the order that they're listed.
         public List<Transform> FlipPanels = new List<Transform>();
 
-        // Internal list of of the elastic systems. Each ElasticSystem holds its
+        // Internal list of the elastic systems. Each ElasticSystem holds its
         // own state. We use a LinearElasticSystem because we are only controlling
         // a single value for each element that will be elastic-ified.
         private List<LinearElasticSystem> flipElastics = new List<LinearElasticSystem>();

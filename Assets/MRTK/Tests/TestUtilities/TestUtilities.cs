@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.LessOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -380,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.LessOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -392,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -403,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert((Mathf.Abs(observed - expected) <= tolerance) || (observed > expected));
         }
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>

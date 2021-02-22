@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.enabled = standardMaterial != null && IsUnityStandardMaterial(standardMaterial);
 
-            if (GUILayout.Button("Autopopulate from Standard Material"))
+            if (GUILayout.Button("Auto-populate from Standard Material"))
             {
                 Autopopulate();
             }

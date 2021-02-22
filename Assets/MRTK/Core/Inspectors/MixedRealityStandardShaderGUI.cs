@@ -713,6 +713,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             materialEditor.EnableInstancingField();
 
+            GUI.enabled = true;
+
             materialEditor.ShaderProperty(stencil, Styles.stencil);
 
             if (PropertyEnabled(stencil))

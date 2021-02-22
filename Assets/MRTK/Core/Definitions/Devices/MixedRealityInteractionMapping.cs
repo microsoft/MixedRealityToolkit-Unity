@@ -396,9 +396,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// The ThreeDof Vector3 Position data value.
+        /// The ThreeDoF Vector3 Position data value.
         /// </summary>
-        /// <remarks>Only supported for a ThreeDof mapping axis type</remarks>
+        /// <remarks>Only supported for a ThreeDoF mapping axis type</remarks>
         public Vector3 PositionData
         {
             get
@@ -421,9 +421,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// The ThreeDof Quaternion Rotation data value.
+        /// The ThreeDoF Quaternion Rotation data value.
         /// </summary>
-        /// <remarks>Only supported for a ThreeDof mapping axis type</remarks>
+        /// <remarks>Only supported for a ThreeDoF mapping axis type</remarks>
         public Quaternion RotationData
         {
             get
@@ -446,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The Pose data value.
         /// </summary>
-        /// <remarks>Only supported for a SixDof mapping axis type</remarks>
+        /// <remarks>Only supported for a SixDoF mapping axis type</remarks>
         public MixedRealityPose PoseData
         {
             get

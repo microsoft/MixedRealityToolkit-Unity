@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 if (MotionControllerState != null)
                 {
                     // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data
-                    // the interaction source updates the 6-dof data first since some interaction mappings rely on 6dof data
+                    // the interaction source updates the 6-DoF data first since some interaction mappings rely on 6-DoF data
                     UpdateSixDofData(interactionSourceState);
                     InputHandler.UpdateController(MotionControllerState);
                 }

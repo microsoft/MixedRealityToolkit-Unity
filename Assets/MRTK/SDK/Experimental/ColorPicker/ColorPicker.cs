@@ -325,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                     rend.color = CustomColor;
                     if (rend.name == "Dragger")
                     {
-                        // dont fade the alpha of the dragger object
+                        // don't fade the alpha of the dragger object
                         rend.color = new Color(CustomColor.r, CustomColor.g, CustomColor.b, 1);
                     }
                 }
