@@ -1692,14 +1692,14 @@ MonoBehaviour:
     type: 2}
   handlePrefab: {fileID: 3868891704370700786, guid: 969c9b04d1b1848489de0d6efe6250fc,
     type: 3}
-  handleSize: 0.016
-  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  handleSize: 0.032
+  colliderPadding: {x: 0.032, y: 0.016, z: 0.016}
   drawTetherWhenManipulating: 1
   handlesIgnoreCollider: {fileID: 0}
   handlePrefabColliderType: 1
   showHandleForX: 1
   showHandleForY: 1
-  showHandleForZ: 1
+  showHandleForZ: 0
 --- !u!114 &114307133794489298
 MonoBehaviour:
   m_ObjectHideFlags: 0
