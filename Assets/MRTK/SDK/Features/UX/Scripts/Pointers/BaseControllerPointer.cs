@@ -168,6 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             await EnsureInputSystemValid();
 
+            // Setting the pointerName
+            PointerName = $"{Handedness}_{gameObject.name}";
+
             // We've been destroyed during the await.
             if (this == null)
             {
