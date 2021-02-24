@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// </summary>
         private void InitializeProjectionOverride()
         {
-            if (reprojectionUpdater == null && Profile != null && Profile.ReadingModeEnabled)
+            if (projectionOverride == null && Profile != null && Profile.ReadingModeEnabled)
             {
                 projectionOverride = CameraCache.Main.EnsureComponent<ProjectionOverride>();
                 projectionOverride.ReadingModeEnabled = Profile.ReadingModeEnabled;
