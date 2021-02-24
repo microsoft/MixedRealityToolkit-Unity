@@ -168,9 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             await EnsureInputSystemValid();
 
-            // Setting the pointerName
-            PointerName = $"{Handedness}_{gameObject.name}";
-
             // We've been destroyed during the await.
             if (this == null)
             {
@@ -230,6 +227,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (base.Controller != null && this != null)
                 {
+                    // Ensures that the basePointerName is only initialized once
+                    if(basePointerName == string.Empty)
+                    {
+                        basePointerName = gameObject.name;
+                    }
+                    PointerName = $"{Handedness}_{basePointerName}";
                     InputSourceParent = base.Controller.InputSource;
                     SetCursor();
                 }
@@ -252,6 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private string basePointerName = string.Empty;
         private string pointerName = string.Empty;
 
         /// <inheritdoc />
