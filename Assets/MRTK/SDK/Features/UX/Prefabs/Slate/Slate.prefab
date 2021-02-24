@@ -1026,6 +1026,7 @@ GameObject:
   - component: {fileID: 1720691180653164336}
   - component: {fileID: 8573989461166582953}
   - component: {fileID: 8306022778500059610}
+  - component: {fileID: 8892923248051100357}
   m_Layer: 0
   m_Name: Slate
   m_TagString: Untagged
@@ -1177,7 +1178,7 @@ MonoBehaviour:
   scaleLerpTime: 0.001
   translateLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1720691180653164336}
   rotateStarted:
     m_PersistentCalls:
       m_Calls:
@@ -1262,6 +1263,20 @@ MonoBehaviour:
   scaleMinimum: 0.3
   scaleMaximum: 5
   relativeToInitialState: 1
+--- !u!114 &8892923248051100357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7779420039263858270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
 --- !u!1 &8623592401023769555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,14 +1692,14 @@ MonoBehaviour:
     type: 2}
   handlePrefab: {fileID: 3868891704370700786, guid: 969c9b04d1b1848489de0d6efe6250fc,
     type: 3}
-  handleSize: 0.016
-  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  handleSize: 0.032
+  colliderPadding: {x: 0.032, y: 0.016, z: 0.016}
   drawTetherWhenManipulating: 1
   handlesIgnoreCollider: {fileID: 0}
   handlePrefabColliderType: 1
   showHandleForX: 1
   showHandleForY: 1
-  showHandleForZ: 1
+  showHandleForZ: 0
 --- !u!114 &114307133794489298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1697,8 +1712,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 240d9483db94993408ff1d02335ea212, type: 3}
   m_Name: BoxDisplayConfiguration
   m_EditorClassIdentifier: 
-  boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
-  boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
+  boxMaterial: {fileID: 2100000, guid: 6f044b5d95469d64ea8feb1225b1d5fa, type: 2}
+  boxGrabbedMaterial: {fileID: 2100000, guid: f671b04930fdad54c8b50a4c6d7d9b02, type: 2}
   flattenAxisDisplayScale: 0
 --- !u!114 &114688429180390370
 MonoBehaviour:

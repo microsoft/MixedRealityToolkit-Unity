@@ -46,11 +46,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
             if (VisualUtils.FaceAxisType[handleIndex] == CardinalAxisType.X)
             {
-                return Quaternion.FromToRotation(Vector3.up, directionSign * Vector3.right);
+                return Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.right);
             }
             else if (VisualUtils.FaceAxisType[handleIndex] == CardinalAxisType.Z)
             {
-                return Quaternion.FromToRotation(Vector3.up, directionSign * Vector3.forward);
+                return Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.forward);
             }
             else // y axis
             {

@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (cursorInstance != null)
                 {
-                    cursorInstance.name = $"{Handedness}_{name}_Cursor";
+                    cursorInstance.name = $"{name}_Cursor";
 
                     BaseCursor oldC = BaseCursor as BaseCursor;
                     if (oldC != null && enabled)
@@ -227,7 +227,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (base.Controller != null && this != null)
                 {
-                    PointerName = $"{Handedness}_{gameObject.name}";
+                    // Ensures that the basePointerName is only initialized once
+                    if(basePointerName == string.Empty)
+                    {
+                        basePointerName = gameObject.name;
+                    }
+                    PointerName = $"{Handedness}_{basePointerName}";
                     InputSourceParent = base.Controller.InputSource;
                     SetCursor();
                 }
@@ -250,6 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private string basePointerName = string.Empty;
         private string pointerName = string.Empty;
 
         /// <inheritdoc />
