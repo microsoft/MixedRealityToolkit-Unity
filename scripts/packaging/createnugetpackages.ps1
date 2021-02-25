@@ -18,7 +18,7 @@ param(
     [string]$Version = "0.0.0",
     [Parameter(Mandatory=$true)]
     [string]$UnityDirectory,
-    [string]$VisualStudioDirectory = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"
+    [string]$VisualStudioDirectory = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise"
 )
 
 Write-Verbose "Reconciling Unity binary:"
