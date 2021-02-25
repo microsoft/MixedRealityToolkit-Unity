@@ -65,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private const string ScriptFileIdConstant = "11500000";
 
         private const string OculusProfileGUID = "4f726b4cb3605994fac74d508110ec62";
+        private const string GUIDDictionaryGUID = "b6b2157d9826c484cbfa88e3289178ef";
 
         [Obsolete("Obsolete and removed after deprecation of the NuGet distribution. Use RetargetAssetsToScript() to retarget to script GUIDs.")]
         public static void RetargetAssets()
@@ -163,42 +164,29 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private static void RunRetargetToScript()
         {
-            string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
+            Dictionary<string, Tuple<string, long>> remapDictionary = null;
 
-            Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
-            Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
-
-            // DLL name to GUID
-            Dictionary<string, string> asmDefMappings = RetrieveAsmDefGuids(allFilesUnderAssets);
-
-            Dictionary<string, AssemblyInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
-            Debug.Log($"Found {compiledClassReferences.Select(t => t.Value.CompiledClasses.Count).Sum()} compiled class references.");
-
-            Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
-
-            foreach (KeyValuePair<string, AssemblyInformation> pair in compiledClassReferences)
+            string dictionaryPath = AssetDatabase.GUIDToAssetPath(GUIDDictionaryGUID);
+            if (!string.IsNullOrWhiteSpace(dictionaryPath))
             {
-                foreach (KeyValuePair<string, ClassInformation> compiledClass in pair.Value.CompiledClasses)
-                {
-                    ClassInformation compiledClassInfo = compiledClass.Value;
-                    if (scriptFilesReferences.TryGetValue(compiledClass.Key, out ClassInformation scriptClassInfo))
-                    {
-                        if (scriptClassInfo.ExecutionOrder != 0)
-                        {
-                            pair.Value.ExecutionOrderEntries.Add($"{scriptClassInfo.Namespace}.{scriptClassInfo.Name}", scriptClassInfo.ExecutionOrder);
-                        }
-
-                        remapDictionary.Add(scriptClassInfo.Guid, new Tuple<string, long>(compiledClassInfo.Guid, compiledClassInfo.FileId));
-                        scriptFilesReferences.Remove(compiledClass.Key);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"Can't find a script version of the compiled class: {compiledClass.Key}; {pair.Key}.dll. This generally means the compiled class is second or later in a script file, and Unity doesn't parse it as two different assets.");
-                    }
-                }
+                remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(dictionaryPath)));
             }
 
-            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
+            ProcessYAMLAssets(remapDictionary);
+        }
+
+        private static Dictionary<string, Tuple<string, long>> ReadDictionaryFile(IEnumerable<string> dictionaryFileLines)
+        {
+            Dictionary<string, Tuple<string, long>> returnDictionary = new Dictionary<string, Tuple<string, long>>();
+
+            foreach (string line in dictionaryFileLines)
+            {
+                string[] split = line.Split('|');
+                string[] split2 = split[1].Split(',');
+                returnDictionary.Add(split[0].Trim(), new Tuple<string, long>(split2[0].Trim(), long.Parse(split2[1].Trim())));
+            }
+
+            return returnDictionary;
         }
 
         private static Dictionary<string, string> RetrieveAsmDefGuids(string[] allFiles)
@@ -219,6 +207,23 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
 
             return dllGuids;
+        }
+
+        private static void ProcessYAMLAssets(Dictionary<string, Tuple<string, long>> remapDictionary)
+        {
+            HashSet<string> yamlAssets = new HashSet<string>();
+            string[] allFilePaths = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
+
+            foreach (string filePath in allFilePaths)
+            {
+                if (IsYamlFile(filePath))
+                {
+                    yamlAssets.Add(filePath);
+                }
+            }
+
+            IEnumerable<Task> tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t, t, remapDictionary, true)));
+            Task.WhenAll(tasks).Wait();
         }
 
         /// <param name="remapDictionary">Script file GUID references to final editor DLL GUID and fileID.</param>
