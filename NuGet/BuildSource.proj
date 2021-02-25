@@ -35,7 +35,7 @@
   </Target>
 
   <Target Name="BuildWSAPlayer">
-    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WSA;BuildProjectReferences=false;MSBuildExtensionsPathOverride=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild;GenerateDocumentationFile=true">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WSA;BuildProjectReferences=false;MSBuildExtensionsPathOverride=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild;GenerateDocumentationFile=true">
       <Output TaskParameter="TargetOutputs" ItemName="BuildWSAPlayerOutputs" />
     </MSBuild>
   </Target>
