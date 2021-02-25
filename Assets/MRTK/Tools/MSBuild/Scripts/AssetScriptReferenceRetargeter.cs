@@ -365,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
                         {
                             Type type = monoScript.GetClass();
-                            if (type != null)
+                            if (type != null && typeof(Component).IsAssignableFrom(type) && !type.IsAbstract)
                             {
                                 toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid, ExecutionOrder = MonoImporter.GetExecutionOrder(monoScript) });
                             }
@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 {
                                     throw new InvalidDataException($"Type {type.Name} is not a member of an approved (typically, 'Microsoft.MixedReality.Toolkit') namespace");
                                 }
-                                else
+                                else if (typeof(Component).IsAssignableFrom(type) && !type.IsAbstract)
                                 {
                                     assemblyInformation.CompiledClasses.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = newDllGuid });
                                 }
