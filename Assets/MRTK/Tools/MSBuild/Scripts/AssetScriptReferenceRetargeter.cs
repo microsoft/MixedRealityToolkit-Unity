@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc", ".rsp", ".xml", ".targets", ".props", ".template", ".csproj", ".sln", ".psd", ".room" };
         private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
 
-        private static readonly Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); // Guid, FileName
+        private static readonly Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); // GUID, FileName
 
         // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
-            // DLL name to Guid
+            // DLL name to GUID
             Dictionary<string, string> asmDefMappings = RetrieveAsmDefGuids(allFilesUnderAssets);
 
             Dictionary<string, AssemblyInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
-            // DLL name to Guid
+            // DLL name to GUID
             Dictionary<string, string> asmDefMappings = RetrieveAsmDefGuids(allFilesUnderAssets);
 
             Dictionary<string, AssemblyInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 string guid = File.ReadAllLines($"{asmdefFile}.meta")[1].Substring(6);
                 if (!Guid.TryParse(guid, out Guid _))
                 {
-                    throw new InvalidDataException("AsmDef meta file must have changed, as we can no longer parse a guid out of it.");
+                    throw new InvalidDataException("AsmDef meta file must have changed, as we can no longer parse a GUID out of it.");
                 }
                 guid = CycleGuidForward(guid);
                 dllGuids.Add($"{dllName}.dll", guid);
@@ -202,8 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             return dllGuids;
         }
 
-        /// <param name="remapDictionary">Script file guid references to final editor DLL guid and fileID.</param>
-        /// <param name="dllGuids">DLL name to DLL file guid mapping.</param>
+        /// <param name="remapDictionary">Script file GUID references to final editor DLL GUID and fileID.</param>
+        /// <param name="assemblyInformation">DLL name to DLL file GUID mapping.</param>
         private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary, Dictionary<string, AssemblyInformation> assemblyInformation)
         {
             if (Directory.Exists(outputDirectory))
@@ -289,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             Match regexResults = Regex.Match(line, Utilities.MetaFileGuidRegex);
                             if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
                             {
-                                throw new InvalidDataException($"Failed to find the guid in line: {line}.");
+                                throw new InvalidDataException($"Failed to find the GUID in line: {line}.");
                             }
 
                             string guid = regexResults.Groups[1].Captures[0].Value;
@@ -372,8 +372,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             else
                             {
                                 nonClassDictionary.Add(guid, Path.GetFileName(filePath));
-                                // anborod: This warning is very noisy, and often is correct due to "interface", "abstract", "enum" classes that won't return type with call to GetClass above.
-                                // To turn it on, we should do extra checking, but removing for now.
+                                // This warning is very noisy, and often is correct due to "interface", "abstract", "enum" classes that won't return type with call to GetClass above.
+                                // Turn this on for extra debugging.
                                 // Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
                             }
                         }
@@ -423,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     {
                         if (!asmDefMappings.TryGetValue($"{dll.name}.dll", out string newDllGuid))
                         {
-                            throw new InvalidOperationException($"No guid based on .asmdef was generated for DLL '{dll.name}'.");
+                            throw new InvalidOperationException($"No GUID based on .asmdef was generated for DLL '{dll.name}'.");
                         }
 
                         AssemblyInformation assemblyInformation = new AssemblyInformation(dll.name, newDllGuid);
@@ -599,28 +599,28 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
 
-            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.WSA, out FileInfo uapMetaFile))
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.WSA, out FileInfo uwpMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample UWP dll.meta template.");
             }
 
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Standalone, out FileInfo standaloneMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample standalone dll.meta template.");
             }
 
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Android, out FileInfo androidMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample Android dll.meta template.");
             }
 
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.iOS, out FileInfo iOSMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample iOS dll.meta template.");
             }
 
             string editorMetaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
-            string uapMetaFileTemplate = File.ReadAllText(uapMetaFile.FullName);
+            string uapMetaFileTemplate = File.ReadAllText(uwpMetaFile.FullName);
             string standaloneMetaFileTemplate = File.ReadAllText(standaloneMetaFile.FullName);
             string androidMetaFileTemplate = File.ReadAllText(androidMetaFile.FullName);
             string iOSMetaFileTemplate = File.ReadAllText(iOSMetaFile.FullName);
@@ -633,16 +633,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             foreach (KeyValuePair<AssemblyInformation, FileInfo[]> mapping in mappings)
             {
-                // Editor is guid + 1; which has done when we processed Editor DLLs
-                // Standalone is guid + 2
-                // UAP is guid + 3
+                // Editor is GUID + 1; which has done when we processed Editor DLLs
+                // Standalone is GUID + 2
+                // UAP is GUID + 3
                 // Editor PDB is + 4
-                // Standalone PDB is +5
-                // UAP PDB is +6
-                // Android is guid + 7
-                // iOS is guid + 8
-                // Android PDB is +9
-                // iOS  PDB is +10
+                // Standalone PDB is + 5
+                // UAP PDB is + 6
+                // Android is GUID + 7
+                // iOS is GUID + 8
+                // Android PDB is + 9
+                // iOS PDB is + 10
                 string templateToUse = editorMetaFileTemplate;
                 foreach (FileInfo file in mapping.Value)
                 {
@@ -741,7 +741,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             StringBuilder guidBuilder = new StringBuilder();
             guid = guid.ToLower();
 
-            // Add one to each hexit in the guid to make it unique, but also reproducible
+            // Add one to each hexit in the GUID to make it unique, but also reproducible
             foreach (char hexit in guid)
             {
                 switch (hexit)
