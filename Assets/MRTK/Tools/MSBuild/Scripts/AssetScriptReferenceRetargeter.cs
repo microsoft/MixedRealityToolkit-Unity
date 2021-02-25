@@ -305,7 +305,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     Match regexResults = Regex.Match(line, scriptRemapping ? Utilities.MetaFileIdRegex : Utilities.MetaFileGuidRegex);
                     if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
                     {
-                        throw new InvalidDataException($"Failed to find the ID in line: {line}.");
+                        Debug.LogWarning($"Failed to find the ID in {Path.GetFileName(filePath)} in line: {line}.");
+                        continue;
                     }
 
                     string id = regexResults.Groups[1].Captures[0].Value;
@@ -325,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             throw new InvalidDataException($"A script without a class ({NonClassDictionary[id]}) is being processed.");
                         }
                     }
-                    else if (id != ScriptFileIdConstant)
+                    else if (id != ScriptFileIdConstant && !scriptRemapping)
                     {
                         // Switch to error later
                         Debug.LogWarning($"Couldn't find a script remap for {id} in file: '{filePath}' at line '{lineNum}'.");
