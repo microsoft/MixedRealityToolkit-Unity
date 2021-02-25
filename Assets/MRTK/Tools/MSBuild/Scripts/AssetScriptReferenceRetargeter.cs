@@ -326,13 +326,13 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         // Also bypass this exception for scripts in an InteractiveElement directory as those files are only supported in Unity 2019.
                         if (id != OculusProfileGUID && !filePath.Contains("InteractiveElement"))
                         {
-                            throw new InvalidDataException($"A script without a class ({NonClassDictionary[id]}) is being processed.");
+                            throw new InvalidDataException($"A script without a class ({NonClassDictionary[id]}) is being processed on {Path.GetFileName(filePath)}.");
                         }
                     }
-                    else if (id != ScriptFileIdConstant && !scriptRemapping)
+                    else if (!scriptRemapping)
                     {
                         // Switch to error later
-                        Debug.LogWarning($"Couldn't find a script remap for {id} in file: '{filePath}' at line '{lineNum}'.");
+                        Debug.LogWarning($"Couldn't find a script remap for {id} in file: '{Path.GetFileName(filePath)}' at line '{lineNum}'.");
                     }
                 }
                 else if (line.Contains(ScriptFileIdConstant))
@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
                         {
                             Type type = monoScript.GetClass();
-                            if (type != null && typeof(Component).IsAssignableFrom(type) && !type.IsAbstract)
+                            if (type != null && typeof(Object).IsAssignableFrom(type) && !type.IsAbstract)
                             {
                                 toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid, ExecutionOrder = MonoImporter.GetExecutionOrder(monoScript) });
                             }
@@ -468,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 {
                                     throw new InvalidDataException($"Type {type.Name} is not a member of an approved (typically, 'Microsoft.MixedReality.Toolkit') namespace");
                                 }
-                                else if (typeof(Component).IsAssignableFrom(type) && !type.IsAbstract)
+                                else if (typeof(Object).IsAssignableFrom(type) && !type.IsAbstract)
                                 {
                                     assemblyInformation.CompiledClasses.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = newDllGuid });
                                 }
