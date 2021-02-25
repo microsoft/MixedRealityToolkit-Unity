@@ -16,7 +16,7 @@ steps:
     $method = "Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets"
     # Uses unitysetup.powershell
     try {
-      Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -AdditionalArguments "-NoGraphics -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+      Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -AdditionalArguments "-NoGraphics -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01} -dictionaryFileOutputFolder `"$(Build.SourcesDirectory)/NuGet/Content/MRTK/Tools/MSBuild`""
     }
     finally {
       if (Test-Path $logFile)

@@ -140,6 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
+            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
+
             string folderPath = null;
             string[] arguments = Environment.GetCommandLineArgs();
 
@@ -156,10 +158,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (!string.IsNullOrWhiteSpace(folderPath))
             {
-                File.WriteAllLines(Path.Combine(folderPath, GUIDDictionaryFileName), remapDictionary.Select(x => $"{x.Value.Item2} | {x.Key}, {ScriptFileIdConstant}"));
+                string filePath = Path.Combine(folderPath, GUIDDictionaryFileName);
+                Debug.Log($"Writing remapping dictionary to {filePath}");
+                File.WriteAllLines(filePath, remapDictionary.Select(x => $"{x.Value.Item2} | {x.Key}, {ScriptFileIdConstant}"));
             }
-
-            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
         }
 
         private static void RunRetargetToScript()
