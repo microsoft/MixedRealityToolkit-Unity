@@ -1,8 +1,12 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <ItemGroup>
-    <ProjectReferences  Include="..\MSBuild\Projects\MixedRealityToolkit.sln"/>
+    <ProjectReferences Include="..\MSBuild\Projects\MixedRealityToolkit.sln"/>
   </ItemGroup>
+
+  <PropertyGroup>
+    <XamlTargetsPath>C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\WindowsXaml\v16.0</XamlTargetsPath>
+  </PropertyGroup>
 
   <Target Name="BuildStandaloneEditor">
     <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=InEditor;Platform=WindowsStandalone32;BuildProjectReferences=false;GenerateDocumentationFile=true">
@@ -27,7 +31,7 @@
       <Output TaskParameter="TargetOutputs" ItemName="BuildAndroidPlayerOutputs" />
     </MSBuild>
   </Target>
-  
+
   <Target Name="BuildIOSPlayer">
     <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=IOS;BuildProjectReferences=false;GenerateDocumentationFile=true">
       <Output TaskParameter="TargetOutputs" ItemName="BuildIOSPlayerOutputs" />
@@ -35,7 +39,7 @@
   </Target>
 
   <Target Name="BuildWSAPlayer">
-    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WSA;BuildProjectReferences=false;MSBuildExtensionsPathOverride=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild;GenerateDocumentationFile=true">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WSA;BuildProjectReferences=false;XamlTargetsPathOverride=$(XamlTargetsPath);GenerateDocumentationFile=true">
       <Output TaskParameter="TargetOutputs" ItemName="BuildWSAPlayerOutputs" />
     </MSBuild>
   </Target>
