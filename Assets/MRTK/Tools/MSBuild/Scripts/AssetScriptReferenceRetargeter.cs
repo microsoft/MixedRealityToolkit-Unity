@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private const string YamlPrefix = "%YAML 1.1";
 
-        private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> SourceToOutputFolders = new Dictionary<string, string>
         {
             { "MSBuild/Publish/Player/Android", "AndroidPlayer" },
             { "MSBuild/Publish/Player/iOS", "iOSPlayer" },
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc", ".rsp", ".xml", ".targets", ".props", ".template", ".csproj", ".sln", ".psd", ".room" };
         private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
 
-        private static readonly Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); // GUID, FileName
+        private static readonly Dictionary<string, string> NonClassDictionary = new Dictionary<string, string>(); // GUID, FileName
 
         // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             {
                                 line = Regex.Replace(line, @"fileID: \d+, guid: \w+", $"fileID: {tuple.Item2}, guid: {tuple.Item1}");
                             }
-                            else if (nonClassDictionary.ContainsKey(guid))
+                            else if (NonClassDictionary.ContainsKey(guid))
                             {
                                 // The OculusProfileGUID bypasses throwing the exception. The reason for this is that there is currently an asset (DefaultOculusXRSDKDeviceManagerProfile.asset) that is reliant
                                 // on Unity 2019+ specific code (OculusXRSDKDeviceManagerProfile.cs), which causes CI to fail since it's running on Unity 2018.
@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 // Also bypass this exception for scripts in an InteractiveElement directory as those files are only supported in Unity 2019.
                                 if (guid != OculusProfileGUID && !filePath.Contains("InteractiveElement"))
                                 {
-                                    throw new InvalidDataException($"A script without a class ({nonClassDictionary[guid]}) is being processed.");
+                                    throw new InvalidDataException($"A script without a class ({NonClassDictionary[guid]}) is being processed.");
                                 }
                             }
                             else
@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             }
                             else
                             {
-                                nonClassDictionary.Add(guid, Path.GetFileName(filePath));
+                                NonClassDictionary.Add(guid, Path.GetFileName(filePath));
                                 // This warning is very noisy, and often is correct due to "interface", "abstract", "enum" classes that won't return type with call to GetClass above.
                                 // Turn this on for extra debugging.
                                 // Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
@@ -520,7 +520,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private static void CopyPluginContents(string outputPath)
         {
-            foreach (KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
+            foreach (KeyValuePair<string, string> sourceToOutputPair in SourceToOutputFolders)
             {
                 DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
                 if (!directory.Exists)
