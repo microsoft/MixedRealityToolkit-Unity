@@ -139,6 +139,25 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
+            string filePath = null;
+            string[] arguments = Environment.GetCommandLineArgs();
+
+            for (int i = 0; i < arguments.Length; ++i)
+            {
+                switch (arguments[i])
+                {
+                    case "-dictionaryFileOutput":
+                        filePath = arguments[++i];
+                        break;
+
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                File.WriteAllLines(filePath, remapDictionary.Select(x => $"{x.Value.Item2} | {x.Key}, {ScriptFileIdConstant}"));
+            }
+
             ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
         }
 
