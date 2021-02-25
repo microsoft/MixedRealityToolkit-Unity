@@ -342,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 // { fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
             }
 
-            if (fileEdited)
+            if (fileEdited || !scriptRemapping)
             {
                 File.WriteAllLines(targetPath, fileLines);
             }
