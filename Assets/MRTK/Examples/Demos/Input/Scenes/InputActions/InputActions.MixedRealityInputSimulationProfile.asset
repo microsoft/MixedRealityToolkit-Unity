@@ -34,7 +34,7 @@ MonoBehaviour:
   currentControlMode: 0
   fastControlKey:
     bindingType: 2
-    code: 305
+    code: 303
   controlSlowSpeed: 1
   controlFastSpeed: 5
   moveHorizontal: Horizontal
@@ -43,7 +43,7 @@ MonoBehaviour:
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
   defaultEyeGazeSimulationMode: 0
-  defaultControllerSimulationMode: 1
+  defaultControllerSimulationMode: 2
   toggleLeftControllerKey:
     bindingType: 2
     code: 116
