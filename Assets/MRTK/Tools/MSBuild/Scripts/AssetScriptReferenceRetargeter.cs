@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private const string ScriptFileIdConstant = "11500000";
 
         private const string OculusProfileGUID = "4f726b4cb3605994fac74d508110ec62";
-        private const string GUIDDictionaryGUID = "b6b2157d9826c484cbfa88e3289178ef";
+        private const string GUIDDictionaryFileName = "mrtk_guid_remapping_dictionary.txt";
 
         [Obsolete("Obsolete and removed after deprecation of the NuGet distribution. Use RetargetAssetsToScript() to retarget to script GUIDs.")]
         public static void RetargetAssets()
@@ -140,23 +140,23 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
-            string filePath = null;
+            string folderPath = null;
             string[] arguments = Environment.GetCommandLineArgs();
 
             for (int i = 0; i < arguments.Length; ++i)
             {
                 switch (arguments[i])
                 {
-                    case "-dictionaryFileOutput":
-                        filePath = arguments[++i];
+                    case "-dictionaryFileOutputFolder":
+                        folderPath = arguments[++i];
                         break;
 
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(filePath))
+            if (!string.IsNullOrWhiteSpace(folderPath))
             {
-                File.WriteAllLines(filePath, remapDictionary.Select(x => $"{x.Value.Item2} | {x.Key}, {ScriptFileIdConstant}"));
+                File.WriteAllLines(Path.Combine(folderPath, GUIDDictionaryFileName), remapDictionary.Select(x => $"{x.Value.Item2} | {x.Key}, {ScriptFileIdConstant}"));
             }
 
             ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
@@ -164,13 +164,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private static void RunRetargetToScript()
         {
-            Dictionary<string, Tuple<string, long>> remapDictionary = null;
-
-            string dictionaryPath = AssetDatabase.GUIDToAssetPath(GUIDDictionaryGUID);
-            if (!string.IsNullOrWhiteSpace(dictionaryPath))
+            string[] dictionaryPaths = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(GUIDDictionaryFileName));
+            if (dictionaryPaths.Length != 1)
             {
-                remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(dictionaryPath)));
+                Debug.LogError($"Couldn't locate single mapping file. Found {dictionaryPaths.Length}.");
+                return;
             }
+
+            Dictionary<string, Tuple<string, long>> remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(AssetDatabase.GUIDToAssetPath(dictionaryPaths[0]))));
 
             ProcessYAMLAssets(remapDictionary);
         }
