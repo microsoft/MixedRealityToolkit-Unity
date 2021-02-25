@@ -279,71 +279,66 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             PostProcess(outputDirectory, assemblyInformation);
         }
 
-        private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
+        private static bool ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary, bool scriptRemapping = false)
         {
-            int lineNum = 0;
-            using (StreamReader reader = new StreamReader(filePath))
-            using (StreamWriter writer = new StreamWriter(targetPath))
+            string[] fileLines = File.ReadAllLines(filePath);
+            bool fileEdited = false;
+            for (int lineNum = 0; lineNum < fileLines.Length; lineNum++)
             {
-                while (!reader.EndOfStream)
+                string line = fileLines[lineNum];
+                if (line.Contains("m_Script") || (filePath.EndsWith(".anim") && line.Contains("script")))
                 {
-                    string line = await reader.ReadLineAsync();
-                    lineNum++;
-                    if (line.Contains("m_Script") || (filePath.EndsWith(".anim") && line.Contains("script")))
+                    if (!line.Contains('}'))
                     {
-                        if (!line.Contains('}'))
+                        // Check the next line
+                        if (!fileLines[lineNum + 1].Contains('}'))
                         {
-                            // Read the second line as well
-                            line += await reader.ReadLineAsync();
-                            lineNum++;
-
-                            if (!line.Contains('}'))
-                            {
-                                throw new InvalidDataException($"Unexpected part of YAML line split over more than two lines, starting two lines: {line}");
-                            }
+                            throw new InvalidDataException($"Unexpected part of YAML line split over more than two lines, starting two lines: {line}\n{fileLines[lineNum + 1]}");
                         }
-
-                        if (line.Contains(ScriptFileIdConstant))
-                        {
-                            Match regexResults = Regex.Match(line, Utilities.MetaFileGuidRegex);
-                            if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
-                            {
-                                throw new InvalidDataException($"Failed to find the GUID in line: {line}.");
-                            }
-
-                            string guid = regexResults.Groups[1].Captures[0].Value;
-                            if (remapDictionary.TryGetValue(guid, out Tuple<string, long> tuple))
-                            {
-                                line = Regex.Replace(line, @"fileID: \d+, guid: \w+", $"fileID: {tuple.Item2}, guid: {tuple.Item1}");
-                            }
-                            else if (NonClassDictionary.ContainsKey(guid))
-                            {
-                                // The OculusProfileGUID bypasses throwing the exception. The reason for this is that there is currently an asset (DefaultOculusXRSDKDeviceManagerProfile.asset) that is reliant
-                                // on Unity 2019+ specific code (OculusXRSDKDeviceManagerProfile.cs), which causes CI to fail since it's running on Unity 2018.
-
-                                // Also bypass this exception for scripts in an InteractiveElement directory as those files are only supported in Unity 2019.
-                                if (guid != OculusProfileGUID && !filePath.Contains("InteractiveElement"))
-                                {
-                                    throw new InvalidDataException($"A script without a class ({NonClassDictionary[guid]}) is being processed.");
-                                }
-                            }
-                            else
-                            {
-                                // Switch to error later
-                                Debug.LogWarning($"Couldn't find a script remap for {guid} in file: '{filePath}' at line '{lineNum}'.");
-                            }
-                        }
-                        // else this is not a script file reference
                     }
-                    else if (line.Contains(ScriptFileIdConstant))
+
+                    Match regexResults = Regex.Match(line, scriptRemapping ? Utilities.MetaFileIdRegex : Utilities.MetaFileGuidRegex);
+                    if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
                     {
-                        throw new InvalidDataException($"Line in file {filePath} contains script type but not m_Script: {line.Trim()}");
+                        throw new InvalidDataException($"Failed to find the ID in line: {line}.");
                     }
-                    // { fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
 
-                    await writer.WriteLineAsync(line);
+                    string id = regexResults.Groups[1].Captures[0].Value;
+                    if (remapDictionary.TryGetValue(id, out Tuple<string, long> tuple))
+                    {
+                        fileLines[lineNum] = Regex.Replace(line, @"fileID: -?\d+, guid: \w+", $"fileID: {tuple.Item2}, guid: {tuple.Item1}");
+                        fileEdited = true;
+                    }
+                    else if (NonClassDictionary.ContainsKey(id))
+                    {
+                        // The OculusProfileGUID bypasses throwing the exception. The reason for this is that there is currently an asset (DefaultOculusXRSDKDeviceManagerProfile.asset) that is reliant
+                        // on Unity 2019+ specific code (OculusXRSDKDeviceManagerProfile.cs), which causes CI to fail since it's running on Unity 2018.
+
+                        // Also bypass this exception for scripts in an InteractiveElement directory as those files are only supported in Unity 2019.
+                        if (id != OculusProfileGUID && !filePath.Contains("InteractiveElement"))
+                        {
+                            throw new InvalidDataException($"A script without a class ({NonClassDictionary[id]}) is being processed.");
+                        }
+                    }
+                    else if (id != ScriptFileIdConstant)
+                    {
+                        // Switch to error later
+                        Debug.LogWarning($"Couldn't find a script remap for {id} in file: '{filePath}' at line '{lineNum}'.");
+                    }
                 }
+                else if (line.Contains(ScriptFileIdConstant))
+                {
+                    throw new InvalidDataException($"Line in file {filePath} contains script type but not m_Script: {line.Trim()}");
+                }
+                // { fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
             }
+
+            if (fileEdited)
+            {
+                File.WriteAllLines(targetPath, fileLines);
+            }
+
+            return fileEdited;
         }
 
         private static bool IsYamlFile(string filePath)
