@@ -161,6 +161,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 string filePath = Path.Combine(folderPath, GUIDDictionaryFileName);
                 Debug.Log($"Writing remapping dictionary to {filePath}");
                 File.WriteAllLines(filePath, remapDictionary.Select(x => $"{x.Value.Item2} | {x.Key}, {ScriptFileIdConstant}"));
+                if (filePath.Contains("Assets"))
+                {
+                    string nugetFilePath = filePath.Replace("Assets", "NuGet/Content");
+                    Debug.Log($"Copying remapping dictionary to {nugetFilePath}");
+                    File.Copy(filePath, nugetFilePath, true);
+                }
             }
         }
 
