@@ -92,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 Debug.Log("Starting to retarget assets.");
                 RunRetargetToScript();
+                AssetDatabase.Refresh();
                 Debug.Log("Completed asset retargeting.");
             }
             catch (Exception ex)
@@ -100,6 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 Debug.LogException(ex);
 
                 throw ex;
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
             }
         }
 
@@ -179,6 +184,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 return;
             }
 
+            EditorUtility.DisplayProgressBar("GUID Remapping", "Loading remapping dictionary...", 0f);
+
             Dictionary<string, Tuple<string, long>> remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(AssetDatabase.GUIDToAssetPath(dictionaryPaths[0]))));
 
             if (remapDictionary.Count > 0)
@@ -236,16 +243,28 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             HashSet<string> yamlAssets = new HashSet<string>();
             string[] allFilePaths = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
 
-            foreach (string filePath in allFilePaths)
+            int allFilePathsCount = allFilePaths.Length;
+            // Use half count for the progress bar, so this step takes a full half of the bar (2 / 4)
+            float halfPathsCount = allFilePathsCount / 2f;
+
+            for (int i = 0; i < allFilePathsCount; i++)
             {
+                EditorUtility.DisplayProgressBar("GUID Remapping", "Parsing assets...", (1 + (i / halfPathsCount))  / 4f);
+
+                string filePath = allFilePaths[i];
+
                 if (IsYamlFile(filePath))
                 {
                     yamlAssets.Add(filePath);
                 }
             }
 
+            EditorUtility.DisplayProgressBar("GUID Remapping", "Processing assets...", 3 / 4f);
+
             IEnumerable<Task> tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t, t, remapDictionary, true)));
             Task.WhenAll(tasks).Wait();
+
+            EditorUtility.DisplayProgressBar("GUID Remapping", "Finishing up...", 1f);
         }
 
         /// <param name="remapDictionary">Script file GUID references to final editor DLL GUID and fileID.</param>
