@@ -181,7 +181,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             Dictionary<string, Tuple<string, long>> remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(AssetDatabase.GUIDToAssetPath(dictionaryPaths[0]))));
 
-            ProcessYAMLAssets(remapDictionary);
+            if (remapDictionary.Count > 0)
+            {
+                ProcessYAMLAssets(remapDictionary);
+            }
+            else
+            {
+                Debug.LogError("No valid dictionary mapping file was found.");
+            }
         }
 
         private static Dictionary<string, Tuple<string, long>> ReadDictionaryFile(IEnumerable<string> dictionaryFileLines)
@@ -191,8 +198,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             foreach (string line in dictionaryFileLines)
             {
                 string[] split = line.Split('|');
-                string[] split2 = split[1].Split(',');
-                returnDictionary.Add(split[0].Trim(), new Tuple<string, long>(split2[0].Trim(), long.Parse(split2[1].Trim())));
+                if (split.Length == 2)
+                {
+                    string[] split2 = split[1].Split(',');
+                    if (split2.Length == 2)
+                    {
+                        returnDictionary.Add(split[0].Trim(), new Tuple<string, long>(split2[0].Trim(), long.Parse(split2[1].Trim())));
+                    }
+                }
             }
 
             return returnDictionary;
