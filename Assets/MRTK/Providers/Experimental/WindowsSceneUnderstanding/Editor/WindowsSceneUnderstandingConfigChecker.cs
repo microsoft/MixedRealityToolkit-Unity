@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
     /// </summary>
     static class WindowsSceneUnderstandingConfigurationChecker
     {
-        private const string FileName = "Microsoft.MixedReality.SceneUnderstanding.DotNet.dll";
+        private const string FileName = "Microsoft.MixedReality.SceneUnderstanding.dll";
         private static readonly string[] definitions = { "SCENE_UNDERSTANDING_PRESENT" };
 
         /// <summary>
