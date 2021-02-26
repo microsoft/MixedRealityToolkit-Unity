@@ -86,27 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         [MenuItem("Mixed Reality Toolkit/MSBuild/Retarget assets to scripts")]
-        public static void RetargetAssetsToScript()
-        {
-            try
-            {
-                Debug.Log("Starting to retarget assets.");
-                RunRetargetToScript();
-                AssetDatabase.Refresh();
-                Debug.Log("Completed asset retargeting.");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("Failed to retarget assets.");
-                Debug.LogException(ex);
-
-                throw ex;
-            }
-            finally
-            {
-                EditorUtility.ClearProgressBar();
-            }
-        }
+        public static void RetargetAssetsToScript() => RunRetargetToScript();
 
         private static void RunRetargetToDLL()
         {
@@ -178,15 +158,50 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static void RunRetargetToScript()
         {
             string[] dictionaryPaths = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(GUIDDictionaryFileName));
-            if (dictionaryPaths.Length != 1)
+            for (int i = 0; i < dictionaryPaths.Length; i++)
             {
-                Debug.LogError($"Couldn't locate single mapping file. Found {dictionaryPaths.Length}.");
-                return;
+                dictionaryPaths[i] = AssetDatabase.GUIDToAssetPath(dictionaryPaths[i]);
             }
 
+            if (dictionaryPaths.Length > 0)
+            {
+                DictionaryChoiceWindow window = EditorWindow.GetWindow(typeof(DictionaryChoiceWindow)) as DictionaryChoiceWindow;
+                window.titleContent = new GUIContent("GUID Remapping");
+                window.DictionaryPaths = dictionaryPaths;
+                window.Callback = (string path) =>
+                {
+                    try
+                    {
+                        Debug.Log("Starting to retarget assets.");
+                        StartRemapping(path);
+                        AssetDatabase.Refresh();
+                        Debug.Log("Completed asset retargeting.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError("Failed to retarget assets.");
+                        Debug.LogException(ex);
+
+                        throw ex;
+                    }
+                    finally
+                    {
+                        EditorUtility.ClearProgressBar();
+                    }
+                };
+                window.Show();
+            }
+            else
+            {
+                Debug.LogError($"Couldn't locate any mapping files. Looking for files with {Path.GetFileNameWithoutExtension(GUIDDictionaryFileName)} in the name.");
+            }
+        }
+
+        private static void StartRemapping(string dictionaryPath)
+        {
             EditorUtility.DisplayProgressBar("GUID Remapping", "Loading remapping dictionary...", 0f);
 
-            Dictionary<string, Tuple<string, long>> remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(AssetDatabase.GUIDToAssetPath(dictionaryPaths[0]))));
+            Dictionary<string, Tuple<string, long>> remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(dictionaryPath)));
 
             if (remapDictionary.Count > 0)
             {
@@ -854,6 +869,39 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 #pragma warning disable CS0649
             public string name;
 #pragma warning restore CS0649
+        }
+
+        private class DictionaryChoiceWindow : EditorWindow
+        {
+            public string[] DictionaryPaths { get; internal set; } = null;
+            public Action<string> Callback { get; internal set; }
+
+            private void OnGUI()
+            {
+                if (DictionaryPaths != null)
+                {
+                    using (new EditorGUILayout.VerticalScope())
+                    {
+                        foreach (string path in DictionaryPaths)
+                        {
+                            using (new EditorGUILayout.HorizontalScope())
+                            {
+                                EditorGUILayout.LabelField(path);
+                                if (GUILayout.Button("Select"))
+                                {
+                                    Callback?.Invoke(path);
+                                    Close();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (GUILayout.Button("Cancel"))
+                {
+                    Close();
+                }
+            }
         }
     }
 }
