@@ -3831,7 +3831,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HoloLens 2 Only
+  m_text: HoloLens 2 & Unity 2019.4+ Only
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
   m_sharedMaterial: {fileID: 21433621844796372, guid: f137eba12ee10834cb19632437cfdb2e,
@@ -3901,10 +3901,10 @@ MonoBehaviour:
   m_margin: {x: -0.4731984, y: 0.000020836515, z: -0.99050045, w: 1.3652543}
   m_textInfo:
     textComponent: {fileID: 1155140273}
-    characterCount: 15
+    characterCount: 31
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 5
+    wordCount: 6
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -4926,22 +4926,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 699
+      value: 541
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 94
+      value: 76
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 92
+      value: 76
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 18
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -4961,14 +4961,10 @@ PrefabInstance:
 
         <size=24><b>Important - Required packages</b></size>
 
-        Use Nuget for Unity tool to get the Dot Net WinRT and SceneUnderstanding packages.
-        Please remember to Click Mixed Reality Toolkit -> Utilities -> Windows Mixed
-        Reality -> Check Configuration and Mixed Reality Toolkit -> Utilities -> Scene
-        Understanding -> Check Configuration after importing those two packages.
-
-
-        Uncheck ''Should Load From File'' in the DemoSceneUnderstandingObserverProfile
-        which can be accessed from MRTK''s Spatial Awareness profile.'
+        Use MixedReality Feature Tool to get the Dot Net WinRT and Scene Understanding
+        packages. The Scene Understanding package may not be available at MRTK 2.6
+        launch time but will be released soon after. Please check issue #9402 on the
+        MRTK-Unity GitHub repository for updates on its availability.'
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -6250,8 +6246,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139668523}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.11993182, y: 0.08893815, z: -0.018035235}
-  m_LocalScale: {x: 0.08666847, y: 0.016785234, z: 0.04809894}
+  m_LocalPosition: {x: 0.0793, y: 0.08893815, z: -0.018}
+  m_LocalScale: {x: 0.168, y: 0.016785234, z: 0.04809894}
   m_Children: []
   m_Father: {fileID: 615958088}
   m_RootOrder: 1
