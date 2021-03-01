@@ -31,6 +31,12 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 {
+    /// <summary>
+    /// A Spatial Awareness observer with Scene Understanding capabilities. 
+    /// </summary>
+    /// <remarks>
+    /// Only works with HoloLens 2 and Unity 2019.4+
+    /// </remarks>
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
@@ -38,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         "Experimental/WindowsSceneUnderstanding/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
         "MixedRealityToolkit.Providers",
         true)]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/scene-understanding")]
     public class WindowsSceneUnderstandingObserver :
         BaseSpatialObserver,
         IMixedRealitySceneUnderstandingObserver
