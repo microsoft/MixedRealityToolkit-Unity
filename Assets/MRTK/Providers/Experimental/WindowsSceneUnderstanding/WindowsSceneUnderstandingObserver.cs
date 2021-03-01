@@ -113,13 +113,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <inheritdoc />
         public override void Initialize()
         {
-            base.Initialize();
 #if !SCENE_UNDERSTANDING_PRESENT
             if (Application.isPlaying)
             {
                 Debug.LogWarning("The required package Microsoft.MixedReality.SceneUnderstanding is not installed or properly configured. Please visit https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/scene-understanding for more information.");
             }
 #else
+            base.Initialize();
             sceneEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>(EventSystem.current);
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
 
@@ -142,16 +142,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 #endif // SCENE_UNDERSTANDING_PRESENT
         }
 
-#if SCENE_UNDERSTANDING_PRESENT
-
         /// <inheritdoc />
         public override void Enable()
         {
+#if SCENE_UNDERSTANDING_PRESENT
+            base.Enable();
             // Terminate the background thread when we stop in editor.
             cancelToken = cancelTokenSource.Token;
 
             task = Task.Run(() => RunObserverAsync(cancelToken));
+#endif // SCENE_UNDERSTANDING_PRESENT
         }
+
+#if SCENE_UNDERSTANDING_PRESENT
 
         /// <inheritdoc />
         public override void Update()

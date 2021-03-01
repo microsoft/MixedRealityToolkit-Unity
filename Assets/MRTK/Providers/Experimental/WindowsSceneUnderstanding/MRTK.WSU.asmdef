@@ -17,7 +17,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_2019_4_OR_NEWER"
+    ],
     "versionDefines": [
         {
             "name": "com.microsoft.mixedreality.sceneunderstanding",
