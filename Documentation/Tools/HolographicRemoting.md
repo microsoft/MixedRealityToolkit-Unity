@@ -33,20 +33,13 @@ These issues are particularly relevant when running on **Unity 2019.3** or later
 
 #### Import DotNetWinRT into the project
 
-1. Install a NuGet client
+1. Download the [Mixed Reality Feature Tool](https://aka.ms/MRFeatureTool)
 
-    > [!Note]
-    > The following instructions presume use of [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases)
+1. In the **Discover features** view, select *Mixed Reality WinRT Projections*
 
-1. Navigate to the NuGet client UI
+    ![Select DotNetWinRT package](../images/tools/remoting/SelectDotNetWinRT.png)
 
-    ![Launch NuGet UI](../Images/Tools/Remoting/LaunchNuGetForUnity.png)
-
-1. Locate the `Microsoft.Windows.MixedReality.DotNetWinRT` package
-
-    ![Locate Package](../Images/Tools/Remoting/LocateDotNetWinRT.png)
-
-1. Select Install
+1. Click **Get Features** and continue to [import the package](https://docs.microsoft.com/windows/mixed-reality/develop/unity/welcome-to-mr-feature-tool#3-importing-feature-packages).
 
 #### DOTNETWINRT_PRESENT define written into player settings
 
