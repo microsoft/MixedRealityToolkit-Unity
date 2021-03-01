@@ -56,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         public static string MSBuildOutputFolder { get; } = GetNormalizedPath(ProjectPath + MSBuildFolderName, true);
         public static string PackagesCopyPath { get; } = Path.Combine(MSBuildOutputFolder, PackagesCopyFolderName);
         public const string MetaFileGuidRegex = @"guid:\s*([0-9a-fA-F]{32})";
+        public const string MetaFileIdRegex = @"fileID:\s*(-?[0-9]+)";
 
         private static readonly string packagesPath;
 
@@ -118,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
-                    Match match = Regex.Match(line, Utilities.MetaFileGuidRegex);
+                    Match match = Regex.Match(line, MetaFileGuidRegex);
 
                     if (match.Success)
                     {
