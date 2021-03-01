@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.ReadingMode
         private PinchSlider renderViewportScaleSlider = null;
 
         private float previousSliderValue = -1;
+        private const float MinScale = 0.001f;
 
         private void Update()
         {
@@ -37,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.ReadingMode
 #if UNITY_2019_3_OR_NEWER
             if (XRSubsystemHelpers.DisplaySubsystem != null)
             {
-                XRSubsystemHelpers.DisplaySubsystem.scaleOfAllViewports = renderViewportScaleSlider.SliderValue;
+                XRSubsystemHelpers.DisplaySubsystem.scaleOfAllViewports = Mathf.Max(renderViewportScaleSlider.SliderValue, MinScale);
                 return;
             }
 #endif // UNITY_2019_3_OR_NEWER
@@ -45,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.ReadingMode
 #if !UNITY_2020_1_OR_NEWER
             if (XRDevice.isPresent)
             {
-                XRSettings.renderViewportScale = renderViewportScaleSlider.SliderValue;
+                XRSettings.renderViewportScale = Mathf.Max(renderViewportScaleSlider.SliderValue, MinScale);
             }
 #endif // !UNITY_2020_1_OR_NEWER
         }
