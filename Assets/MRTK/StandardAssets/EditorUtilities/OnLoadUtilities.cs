@@ -151,8 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Reads the version number out of the shader 
         /// </summary>
-        /// <param name="sentinelPath"></param>
-        /// <returns></returns>
+        /// <param name="sentinelPath">The path to the sentinel file.</param>
+        /// <returns>The version number found in the file, or -1.</returns>
         private static int ReadSentinelVersion(string sentinelPath)
         {
             using (FileStream fs = new FileStream(sentinelPath, FileMode.Open, FileAccess.Read))
