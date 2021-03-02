@@ -158,6 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             cancelToken = cancelTokenSource.Token;
 
             task = Task.Run(() => RunObserverAsync(cancelToken));
+#else
+            IsEnabled = false;
 #endif // SCENE_UNDERSTANDING_PRESENT
         }
 
