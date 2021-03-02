@@ -7925,6 +7925,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/Tools/Remoting/SelectDotNetWinRT.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/SelectDotNetWinRT.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/Tools/Remoting/SelectEmulationMode.png",
       "output": {
         "resource": {
@@ -9342,7 +9353,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "t1Efjf1Y9wOurzu0KSLMpg=="
+          "hash": "8kpNjUC/vJ9A1ZOxMau2JA=="
         }
       },
       "is_incremental": false,
