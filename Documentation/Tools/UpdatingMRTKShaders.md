@@ -4,7 +4,7 @@ Starting with version 2.6.0, the MRTK shaders are being versioned via the MRTK.S
 
 ![Update shaders prompt](../Images/Tools/UpdateShaderPrompt.png)
 
-Selecting **Yes** instructs MRTK to overwrite the contents of **Assets** > **MRTK** > **Shaders** with the latest version.
+Selecting **Yes** instructs MRTK to overwrite the contents of **Assets** > **MRTK** > **Shaders** with the latest version. Selecting **No** will preserve the current files. **Ignore** will create a file (`IgnoreUpdateCheck.sentinel`) in **Assets** > **MRTK** > **Shaders**, which will suppress future shader update checks.
 
 > [!IMPORTANT]
 > When overwriting the shader files, any custom modifications will be lost. Be sure to backup any modified shader files before upgrading.
@@ -15,6 +15,8 @@ Selecting **Yes** instructs MRTK to overwrite the contents of **Assets** > **MRT
 At is also possible to check for shader updates at any time using **Mixed Reality Toolkit** > **Utilities** > **Check for Shader Updates** on the Unity Editor's menu bar.
 
 ![Check for shader updates](../Images/Tools/ShaderUpdateMenu.png)
+
+**Check for Shader Updates** disregards the `IgnoreUpdateCheck.sentinel` file and allows on-demand shader updating.
 
 > [!NOTE]
 > Checking for shader updates is not required when importing the MRTK .unitypackage files.
