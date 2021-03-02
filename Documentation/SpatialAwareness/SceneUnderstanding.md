@@ -8,7 +8,7 @@ Some expected use cases of this technology are:
 * Provide physics engine friendly geometry as quads
 * Accelerate development by avoiding the need to write similar algorithms
 
-Currently Scene Understanding is available as an __experimental__ feature. It is integrated into MRTK as a [spatial observer](SpatialAwarenessGettingStarted.md#register-observers) called [`WindowsSceneUnderstandingObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver).
+Currently Scene Understanding is available as an __experimental__ feature. It is integrated into MRTK as a [spatial observer](SpatialAwarenessGettingStarted.md#register-observers) called [`WindowsSceneUnderstandingObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver). Scene Understanding works both with the Legacy XR pipeline and the XR SDK pipeline. In both cases the `WindowsSceneUnderstandingObserver` is used.
 
 ## Observer overview
 
@@ -33,6 +33,9 @@ The scene demonstrates the following:
 * Example `DemoSceneUnderstandingController` script that shows how to change observer settings and listen to relevant events
 * Saving scene data to device for offline development
 * Loading previously saved scene data (.bytes files) to support in-editor development workflow
+
+> [!NOTE] 
+> The sample scene is based on the Legacy XR pipeline. If you are using the XR SDK pipeline you should modify the profiles accordingly. The provided Scene Understanding Spatial Awareness System profile (`DemoSceneUnderstandingSystemProfile`) and the Scene Understanding Observer profiles (`DefaultSceneUnderstandingObserverProfile` and `DemoSceneUnderstandingObserverProfile`) works for both pipelines.
 
 #### Configuring the observer service
 
