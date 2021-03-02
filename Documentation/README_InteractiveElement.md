@@ -619,7 +619,7 @@ The Shader Vector Animatable property refers to a shader property of type Vector
 
 ## See also
 
-- [**Buttons**](button.md)
-- [**Bounds Control**](bounds-control.md)
-- [**Grid Object Collection**](object-collection.md)
-- [**RadialView Solver**](solvers/solver.md)
+- [**Buttons**](README_Button.md)
+- [**Bounds Control**](README_BoundsControl.md)
+- [**Grid Object Collection**](README_ObjectCollection.md)
+- [**Tap to Place**](README_TapToPlace.md)
