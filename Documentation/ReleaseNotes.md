@@ -21,6 +21,18 @@ Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality
 >
 > Currently, it also only supports x64 and ARM64 builds.
 
+### Experimental Interactive Element + State Visualizer 
+
+Interactive Element is a simplified centralized entry point to the MRTK input system. It contains state management methods, event management and the state setting logic for Core Interaction States. For more information see [Interactive Element Documentation](README_InteractiveElement.md).
+
+![InteractiveElementAddCoreState](Images/InteractiveElement/InEditor/Gifs/InspectorHighlightEditor.gif)
+
+The State Visualizer is an animation component that depends on Interactive Element.  This component creates Animation Clips, sets keyframes and generates an Animator State Machine. For more information see [State Visualizer Documentation](README_InteractiveElement.md#state-visualizer-experimental)
+
+![FocusColorChange](Images/InteractiveElement/InEditor/Gifs/FocusColorChange.gif)
+
+Interactive Element and State Visualizer are experimental components.
+
 ### HP Motion Controllers now supported with MRTK
 
 Controllers for the HP Reverb G2 now work natively with MRTK.

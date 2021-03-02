@@ -242,6 +242,8 @@
       href: README_SystemKeyboard.md
     - name: Interactable
       href: README_Interactable.md
+    - name: Interactive Element 
+      href: README_InteractiveElement.md
     - name: Solvers
       href: README_Solver.md
       items:
