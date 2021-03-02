@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Ensures that MRTK shader files are present in a writable location. To support the 
         /// Universal Render Pipeline, shader modifications must be persisted.
         /// </summary>
-        /// <param name="bypassIgnore"></param>
+        /// <param name="bypassIgnore">Causes the shader update code to disregard the ignore file.</param>
         private static void EnsureShaders(bool bypassIgnore)
         {
             DirectoryInfo packageShaderFolder = FindShaderFolderInPackage();
