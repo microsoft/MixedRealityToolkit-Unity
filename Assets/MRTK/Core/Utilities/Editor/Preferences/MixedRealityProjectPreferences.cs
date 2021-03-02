@@ -67,6 +67,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Ignore startup settings prompt
 
+        #region Ignore shader update prompt
+
+        private static readonly GUIContent IgnoreShaderUpdateContent = new GUIContent("Ignore MRTK shader update", "Prevents shader update popup from showing.");
+        private const string IGNORE_SHADER_UPDATE_KEY = "_MixedRealityToolkit_Editor_IgnoreShaderUpdate";
+        private static bool ignoreShaderUpdatePrefLoaded;
+        private static bool ignoreShaderUpdatePrompt;
+
+        /// <summary>
+        /// Should the shader update message show when a package contains updated shaders?
+        /// </summary>
+        public static bool IgnoreShaderUpdatePrompt
+        {
+            get
+            {
+                if (!ignoreShaderUpdatePrefLoaded)
+                {
+                    ignoreShaderUpdatePrompt = ProjectPreferences.Get(IGNORE_SHADER_UPDATE_KEY, false);
+                    ignoreShaderUpdatePrefLoaded = true;
+                }
+
+                return ignoreShaderUpdatePrompt;
+            }
+            set => ProjectPreferences.Set(IGNORE_SHADER_UPDATE_KEY, ignoreShaderUpdatePrompt = value);
+        }
+
+        #endregion Ignore shader update prompt
+
         #region Auto-Enable UWP Capabilities
 
         private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-enable UWP capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");

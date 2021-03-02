@@ -35,11 +35,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Ensures that MRTK shader files are present in a writable location. To support the 
         /// Universal Render Pipeline, shader modifications must be persisted.
         /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Check for Shader Updates")]
         private static void EnsureShaders()
         {
-            if (!AssetsContainsShaders())
+            DirectoryInfo packageShaderFolder = FindShaderFolderInPackage();
+
+            if (!AssetsContainsShaders(packageShaderFolder))
             {
-                ImportShaderFiles();
+                ImportShaderFiles(packageShaderFolder);
             }
         }
 
@@ -47,9 +50,48 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Checks to see if the Assets or Packages (if embedded) folder trees contains the MRTK shaders.
         /// </summary>
         /// <returns>True if the shader sentinel file is found, otherwise false.</returns>
-        private static bool AssetsContainsShaders()
+        private static bool AssetsContainsShaders(DirectoryInfo packageShaderFolder)
         {
-            return !string.IsNullOrWhiteSpace(AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid));
+            string sentinelPath = AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid);
+
+            // If we do not find the sentinel, we need to import the shaders.
+            if (string.IsNullOrWhiteSpace(sentinelPath))
+            { 
+                return false; 
+            }
+
+            // Getting here indicates that the project's Assets folder contains the shader sentinel.
+
+            // If the package shader folder does not exist, there is nothing for us to do.
+            if ((packageShaderFolder == null) || !packageShaderFolder.Exists)
+            {
+                return true;
+            }
+
+            // Get the versions of the sentinel files,
+            int packageVer = ReadSentinelVersion(Path.Combine(packageShaderFolder.FullName, ShaderSentinelFile));
+            int assetVer = ReadSentinelVersion(sentinelPath);
+
+            // No need to copy if the versions are the same.
+            if (packageVer == assetVer) 
+            { 
+                return true; 
+            }
+
+            string message = (packageVer < assetVer) ?
+                "The MRTK shaders older than those in your project, do you wish to overwrite the existing shaders?" :
+                "Updated MRTK shaders are available, do you wish to overwrite the existing shaders?";
+
+            bool dialogResponse = EditorUtility.DisplayDialog(
+                "Mixed Reality Toolkit Standard Assets",
+                message + 
+                "\n\nNOTE: Overwriting will lose any customizations and may require reconfiguring the render pipeline.",
+                "Yes",
+                "No");
+
+            // Return the inverse of the dialog result. Result of true means we want to overwrite, this method returns false
+            // to cause an overwrite.
+            return (!dialogResponse);
         }
 
         /// <summary>
@@ -85,10 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Copies the shader files from the package cache to the Assets folder tree.
         /// </summary>
-        private static void ImportShaderFiles()
+        private static void ImportShaderFiles(DirectoryInfo packageShaderFolder)
         {
-            DirectoryInfo source = FindShaderFolderInPackage();
-            if (source == null)
+            if (packageShaderFolder == null)
             {
                 Debug.LogError("Unable to locate the shader source folder in the package");
                 return;
@@ -100,11 +141,43 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 destination.Create();
             }
 
-            FileInfo[] sourceFiles = source.GetFiles();
+            FileInfo[] sourceFiles = packageShaderFolder.GetFiles();
             foreach (FileInfo fi in sourceFiles)
             {
-                fi.CopyTo(Path.Combine(destination.FullName, fi.Name));
+                fi.CopyTo(Path.Combine(destination.FullName, fi.Name), true);
             }
+        }
+
+        /// <summary>
+        /// Reads the version number out of the shader 
+        /// </summary>
+        /// <param name="sentinelPath"></param>
+        /// <returns></returns>
+        private static int ReadSentinelVersion(string sentinelPath)
+        {
+            using (FileStream fs = new FileStream(sentinelPath, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    string token = "ver:";
+
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        if (line.StartsWith(token))
+                        {
+                            line = line.Substring(token.Length).Trim();
+                            if (!int.TryParse(line, out int ver))
+                            {
+                                break;
+                            }
+                            return ver;
+                        }
+                    }
+                }
+            }
+
+            return -1;
         }
     }
 }
