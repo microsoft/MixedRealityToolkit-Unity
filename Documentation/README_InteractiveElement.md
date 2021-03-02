@@ -1,7 +1,6 @@
 # Interactive Element [Experimental]
 
-A simplified centralized entry point to the MRTK input system. Contains state management methods, event management and the state setting logic for 
-Core Interaction States.
+A simplified centralized entry point to the MRTK input system. Contains state management methods, event management and the state setting logic for Core Interaction States.
 
 Interactive Element is an experimental Unity 2019.3 and up feature as it utilizes a feature new to Unity 2019.3: [Serialize Reference](https://docs.unity3d.com/ScriptReference/SerializeReference.html).
 
