@@ -33,6 +33,15 @@ see our updated [Input Simulation Service documentation](InputSimulation/InputSi
 
   ![Teleport Gesture](Images/ReleaseNotes/HandTeleport.gif)
 
+### Scene Understanding now available in MRTK as an experimental spatial awareness observer
+
+Experimental support of [Scene Understanding](https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding) is introduced in MRTK 2.6. Users can incorporate the scene understanding capabilities of HoloLens 2 as a spatial awareness observer in MRTK based projects. Please read the [Scene Understanding documentation](SpatialAwareness/SceneUnderstanding.md) for more information.
+
+> [!IMPORTANT]
+> Scene Understanding is only supported on HoloLens 2 and Unity 2019.4 and higher.
+>
+> This feature requires the Scene Understanding package, which may not be available at the launch date of MRTK 2.6 but will be available soon after via the [Mixed Reality Feature Tool](https://aka.ms/MRFeatureTool). Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9402) for updates on its availability.
+
 ### Runtime profile switching support
 
 MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the [documentation on profile switching](MixedRealityConfigurationGuide.md#changing-profiles-at-runtime) for more information and code samples.
