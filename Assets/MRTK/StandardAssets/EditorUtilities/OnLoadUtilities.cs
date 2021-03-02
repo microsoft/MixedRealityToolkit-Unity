@@ -11,34 +11,52 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [InitializeOnLoad]
     static class OnLoadUtilities
     {
-        private const string SessionStateKey = "StandardAssetsOnLoadUtilitiesSessionStateKey";
-
         private const string ShaderSentinelGuid = "05852dd420bb9ec4cb7318bfa529d37c";
         private const string ShaderSentinelFile = "MRTK.Shaders.sentinel";
 
         private const string ShaderImportDestination = "MRTK/Shaders";
 
+        private const string IgnoreFileName = "IgnoreUpdateCheck.sentinel";
+
         static OnLoadUtilities()
         {
-            // This InitializeOnLoad handler only runs once at editor launch in order to adjust for Unity version
-            // differences. These don't need to (and should not be) run on an ongoing basis. This uses the
-            // volatile SessionState which is clear when Unity launches to ensure that this only runs the
-            // expensive work (file system i/o) once.
-            if (!SessionState.GetBool(SessionStateKey, false))
-            {
-                SessionState.SetBool(SessionStateKey, true);
-                EnsureShaders();
-            }
+            EnsureShaders(false);
+        }
+
+        /// <summary>
+        /// Checks for updated shaders and bypasses the ignore update check.
+        /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Check for Shader Updates")]
+        private static void CheckForShaderUpdates()
+        {
+            EnsureShaders(true);
         }
 
         /// <summary>
         /// Ensures that MRTK shader files are present in a writable location. To support the 
         /// Universal Render Pipeline, shader modifications must be persisted.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Check for Shader Updates")]
-        private static void EnsureShaders()
+        /// <param name="bypassIgnore"></param>
+        private static void EnsureShaders(bool bypassIgnore)
         {
             DirectoryInfo packageShaderFolder = FindShaderFolderInPackage();
+
+            if (bypassIgnore)
+            {
+                // The customer is manually checking for updates, delete the ignore file
+                string sentinelPath = AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid);
+                if (!string.IsNullOrWhiteSpace(sentinelPath))
+                {
+                    FileInfo ignoreFile = new FileInfo(Path.Combine(new FileInfo(sentinelPath).Directory.FullName, IgnoreFileName));
+                    Debug.Log(ignoreFile.FullName);
+                    if (ignoreFile.Exists)
+                    {
+                        ignoreFile.Delete();
+                        AssetDatabase.Refresh();
+                    }
+                    ignoreFile.Refresh();
+                }
+            }
 
             if (!AssetsContainsShaders(packageShaderFolder))
             {
@@ -53,14 +71,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static bool AssetsContainsShaders(DirectoryInfo packageShaderFolder)
         {
             string sentinelPath = AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid);
+            Debug.LogWarning(sentinelPath);
 
             // If we do not find the sentinel, we need to import the shaders.
             if (string.IsNullOrWhiteSpace(sentinelPath))
-            { 
-                return false; 
+            {
+                return false;
             }
 
             // Getting here indicates that the project's Assets folder contains the shader sentinel.
+
+            // Check for the "ignore this check" file, if present we do NOT import
+            FileInfo ignoreFile = new FileInfo(Path.Combine(new FileInfo(sentinelPath).Directory.FullName, IgnoreFileName));
+            if (ignoreFile.Exists)
+            {
+                return true;
+            }
 
             // If the package shader folder does not exist, there is nothing for us to do.
             if ((packageShaderFolder == null) || !packageShaderFolder.Exists)
@@ -73,25 +99,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             int assetVer = ReadSentinelVersion(sentinelPath);
 
             // No need to copy if the versions are the same.
-            if (packageVer == assetVer) 
-            { 
-                return true; 
+            if (packageVer == assetVer)
+            {
+                return true;
             }
 
             string message = (packageVer < assetVer) ?
                 "The MRTK shaders older than those in your project, do you wish to overwrite the existing shaders?" :
                 "Updated MRTK shaders are available, do you wish to overwrite the existing shaders?";
 
-            bool dialogResponse = EditorUtility.DisplayDialog(
+            int dialogResponse = EditorUtility.DisplayDialogComplex(
                 "Mixed Reality Toolkit Standard Assets",
-                message + 
+                message +
                 "\n\nNOTE: Overwriting will lose any customizations and may require reconfiguring the render pipeline.",
-                "Yes",
-                "No");
+                "Yes",      // returns 0
+                "Ignore",   // returns 1 - placed in the cancel slot to force the button order as Yes, No, Ignore
+                "No");      // returns 2
+
+            if (dialogResponse == 1)
+            {
+                // Write an "ignore this check" file to prevent future prompting
+                if (!ignoreFile.Directory.Exists)
+                {
+                    ignoreFile.Directory.Create();
+                }
+                ignoreFile.Create();
+                AssetDatabase.Refresh();
+            }
+            ignoreFile.Refresh();
 
             // Return the inverse of the dialog result. Result of true means we want to overwrite, this method returns false
             // to cause an overwrite.
-            return (!dialogResponse);
+            return (dialogResponse != 0);
         }
 
         /// <summary>
@@ -146,6 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 fi.CopyTo(Path.Combine(destination.FullName, fi.Name), true);
             }
+
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
