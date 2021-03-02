@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         /// <param name="loaderName">The string name to compare against the active loader.</param>
         /// <returns>True if the active loader has the same name as the parameter.</returns>
-        protected virtual bool IsLoaderActive(string loaderName) => XRGeneralSettings.Instance.Manager.activeLoader.name == loaderName;
+        protected virtual bool IsLoaderActive(string loaderName) => XRGeneralSettings.Instance.Manager.activeLoader != null && XRGeneralSettings.Instance.Manager.activeLoader.name == loaderName;
 
         /// <summary>
         /// Checks if the active loader is of a specific type. Used in cases where the loader class is accessible, like OculusLoader.
