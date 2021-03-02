@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 using (StreamReader reader = new StreamReader(fs))
                 {
-                    string token = "ver:";
+                    const string token = "ver:";
 
                     while (!reader.EndOfStream)
                     {
