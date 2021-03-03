@@ -51,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     if (ignoreFile.Exists)
                     {
                         ignoreFile.Delete();
-                        AssetDatabase.Refresh();
                     }
                     ignoreFile.Refresh();
                 }
@@ -122,7 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     ignoreFile.Directory.Create();
                 }
                 ignoreFile.Create();
-                AssetDatabase.Refresh();
             }
             ignoreFile.Refresh();
 
@@ -183,8 +181,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 fi.CopyTo(Path.Combine(destination.FullName, fi.Name), true);
             }
-
-            AssetDatabase.Refresh();
         }
 
         /// <summary>
