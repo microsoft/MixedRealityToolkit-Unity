@@ -61,7 +61,7 @@ If using OpenXR, choose "DefaultOpenXRConfigurationProfile" as the active profil
 
 If using other XR runtimes in the XR Plug-in Management configuration, like Windows Mixed Reality or Oculus, choose "DefaultXRSDKConfigurationProfile" as the active profile or clone it to make customizations.
 
-These profiles are set up with the correct systems and providers, where needed.
+These profiles are set up with the correct systems and providers, where needed. See [the profiles docs](Profiles/Profiles.md#xr-sdk) for more information on profile and sample support with XR SDK.
 
 To migrate an existing profile to XR SDK, the following services and data providers should be updated:
 

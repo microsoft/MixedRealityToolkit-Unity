@@ -7,6 +7,13 @@ For example, the input system's behavior is governed by an input system profile,
 <img src="../../Documentation/Images/Profiles/input_profile.png" width="650px" style="display:block;">
 <sup>Profile Inspector</sup>
 
+## XR SDK
+
+Currently, there are two profiles provided for XR SDK, `DefaultXRSDKConfigurationProfile` and `DefaultHoloLens2XRSDKConfigurationProfile`. As a result, not all samples scenes are fully supported due to scene- and scenario-specific configurations. Any samples that use `DefaultMixedRealityToolkitConfigurationProfile` and `DefaultHoloLens2ConfigurationProfile` _can_ be swapped over to their corresponding XR SDK profiles. If you're using OpenXR with XR SDK, use the `DefaultOpenXRConfigurationProfile` instead.
+
+Additional work is being undertaken to ease configuration and support all sample scenes, allowing for both legacy XR and XR SDK to be configured side-by-side. See issue [#9419](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9419) for tracking.
+
+See [Configuring MRTK for the XR SDK pipeline](../GettingStartedWithMRTKAndXRSDK.md#configuring-mrtk-for-the-xr-sdk-pipeline) for more information on converting profiles between legacy XR and XR SDK.
 
 ## Default profile
 
