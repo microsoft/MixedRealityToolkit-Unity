@@ -17,9 +17,6 @@ using Microsoft.MixedReality.SceneUnderstanding;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
-#else
-using Microsoft.Windows.Perception.Spatial;
-using Microsoft.Windows.Perception.Spatial.Preview;
 #endif // WINDOWS_UWP
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -766,12 +763,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private System.Numerics.Matrix4x4 GetSceneToWorldTransform()
         {
             var result = System.Numerics.Matrix4x4.Identity;
-
-            if (Application.isEditor)
-            {
-                return result;
-            }
-
+#if WINDOWS_UWP
             SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
             SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
 
@@ -781,7 +773,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             {
                 result = sceneToWorld.Value; // numerics
             }
-
+#endif
             return result;
         }
 
