@@ -1582,8 +1582,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
         }
 
-#endregion Private
+        #endregion Private
 
 #endif // SCENE_UNDERSTANDING_PRESENT
-        }
     }
+}
