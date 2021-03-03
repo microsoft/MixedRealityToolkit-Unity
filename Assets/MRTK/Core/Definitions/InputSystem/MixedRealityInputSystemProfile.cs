@@ -23,12 +23,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = System.Array.Empty<MixedRealityInputDataProviderConfiguration>();
 
         /// <summary>
-        /// List of input data provider configurations to initialize and manage by the Input System registrar
+        /// List of legacy XR input data provider configurations to initialize and manage by the Input System registrar
         /// </summary>
         public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations
         {
             get { return dataProviderConfigurations; }
             internal set { dataProviderConfigurations = value; }
+        }
+
+        [SerializeField]
+        private MixedRealityInputDataProviderConfiguration[] xrsdkDataProviderConfigurations = System.Array.Empty<MixedRealityInputDataProviderConfiguration>();
+
+        /// <summary>
+        /// List of XR SDK input data provider configurations to initialize and manage by the Input System registrar
+        /// </summary>
+        public MixedRealityInputDataProviderConfiguration[] XRSDKDataProviderConfigurations
+        {
+            get { return xrsdkDataProviderConfigurations; }
+            internal set { xrsdkDataProviderConfigurations = value; }
         }
 
         [SerializeField]
@@ -137,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The list of cultures where speech recognition is supported
         /// </summary>
-        private List<CultureInfo> supportedVoiceCultures = new List<CultureInfo>
+        private static readonly List<CultureInfo> SupportedVoiceCultures = new List<CultureInfo>
         {
             new CultureInfo("en-US"),
             new CultureInfo("en-CA"),
@@ -155,13 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Returns whether speech is supported for the current language or not
         /// </summary>
-        public bool IsSpeechSupported
-        {
-            get
-            {
-                return supportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
-            }
-        }
+        public bool IsSpeechSupported => SupportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]

@@ -90,6 +90,7 @@ MonoBehaviour:
     priority: 0
     runtimePlatform: 208
     deviceManagerProfile: {fileID: 0}
+  xrsdkDataProviderConfigurations: []
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:

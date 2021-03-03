@@ -197,6 +197,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         }
 
         /// <inheritdoc/>
+        protected override SerializedProperty GetXRSDKDataProviderConfigurationList()
+        {
+            return serializedObject.FindProperty("xrsdkDataProviderConfigurations");
+        }
+
+        /// <inheritdoc/>
         protected override ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry)
         {
             return new ServiceConfigurationProperties()
@@ -211,14 +217,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
-            MixedRealityInputSystemProfile targetProfile = target as MixedRealityInputSystemProfile;
-            if (targetProfile != null)
+            MixedRealityInputSystemProfile profile = target as MixedRealityInputSystemProfile;
+            var configurations = (profile != null) ? profile.DataProviderConfigurations : null;
+            if (configurations != null && index >= 0 && index < configurations.Length)
             {
-                var configurations = targetProfile.DataProviderConfigurations;
-                if (configurations != null && index >= 0 && index < configurations.Length)
-                {
-                    return configurations[index];
-                }
+                return configurations[index];
             }
 
             return null;
