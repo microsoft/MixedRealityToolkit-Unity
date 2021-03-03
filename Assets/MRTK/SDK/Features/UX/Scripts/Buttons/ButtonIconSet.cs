@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
-using System.Text;
-using System.Collections.Generic;
 using UnityEngine.TextCore;
-using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

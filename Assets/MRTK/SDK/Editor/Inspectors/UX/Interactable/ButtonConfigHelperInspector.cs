@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {

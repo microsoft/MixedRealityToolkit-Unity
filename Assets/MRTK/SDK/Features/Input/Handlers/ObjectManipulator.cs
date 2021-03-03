@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;

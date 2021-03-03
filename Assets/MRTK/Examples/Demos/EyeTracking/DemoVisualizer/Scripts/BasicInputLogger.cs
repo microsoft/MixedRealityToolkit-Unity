@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 using System;
-using UnityEngine;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 #if WINDOWS_UWP
 using Windows.Storage;

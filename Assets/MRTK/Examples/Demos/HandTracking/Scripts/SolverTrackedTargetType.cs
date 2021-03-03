@@ -3,11 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
