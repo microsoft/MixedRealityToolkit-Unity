@@ -4,7 +4,7 @@ XR SDK is Unity's [new XR pipeline in Unity 2019.3 and beyond](https://blogs.uni
 
 ## Prerequisites
 
-To get started with the Mixed Reality Toolkit, follow [the provided steps](WelcomeToMRTK.md) to add MRTK to a project.
+To get started with the Mixed Reality Toolkit, follow [the provided steps](Installation.md) to add MRTK to a project.
 
 ## Configuring Unity for the XR SDK pipeline
 
