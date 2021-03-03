@@ -31,6 +31,12 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 {
+    /// <summary>
+    /// A Spatial Awareness observer with Scene Understanding capabilities. 
+    /// </summary>
+    /// <remarks>
+    /// Only works with HoloLens 2 and Unity 2019.4+
+    /// </remarks>
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
@@ -38,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         "Experimental/WindowsSceneUnderstanding/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
         "MixedRealityToolkit.Providers",
         true)]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/scene-understanding")]
     public class WindowsSceneUnderstandingObserver :
         BaseSpatialObserver,
         IMixedRealitySceneUnderstandingObserver
@@ -97,9 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             OrientScene = profile.OrientScene;
         }
 
-#if SCENE_UNDERSTANDING_PRESENT
-
         #region IMixedRealityService
+
+#if SCENE_UNDERSTANDING_PRESENT
 
         /// <inheritdoc />
         public override void Reset()
@@ -108,14 +115,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             Initialize();
         }
 
+#endif // SCENE_UNDERSTANDING_PRESENT
+
         /// <inheritdoc />
         public override void Initialize()
         {
+#if !SCENE_UNDERSTANDING_PRESENT
+            if (Application.isPlaying)
+            {
+                Debug.LogWarning("The required package Microsoft.MixedReality.SceneUnderstanding is not installed or properly configured. Please visit https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/scene-understanding for more information.");
+            }
+#else
             base.Initialize();
             sceneEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>(EventSystem.current);
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
 
-            var accessStatus = SceneObserver.RequestAccessAsync().GetAwaiter().GetResult();
+            SceneObserverAccessStatus accessStatus = Task.Run(RequestAccess).GetAwaiter().GetResult();
             if (accessStatus == SceneObserverAccessStatus.Allowed)
             {
                 IsRunning = true;
@@ -131,19 +146,24 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             {
                 observerState = ObserverState.GetScene;
             }
+#endif // SCENE_UNDERSTANDING_PRESENT
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+#if SCENE_UNDERSTANDING_PRESENT
+            base.Enable();
             // Terminate the background thread when we stop in editor.
             cancelToken = cancelTokenSource.Token;
 
-            // there is odd behavior with WaitForBackgroundTask
-            // it will sometimes run on the main thread unless we start it this way
-            task = RunObserverAsync(cancelToken);
-            task.ConfigureAwait(true);
+            task = Task.Run(() => RunObserverAsync(cancelToken));
+#else
+            IsEnabled = false;
+#endif // SCENE_UNDERSTANDING_PRESENT
         }
+
+#if SCENE_UNDERSTANDING_PRESENT
 
         /// <inheritdoc />
         public override void Update()
@@ -171,7 +191,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             CleanupObserver();
         }
 
+#endif // SCENE_UNDERSTANDING_PRESENT
+
         #endregion IMixedRealityService
+
+#if SCENE_UNDERSTANDING_PRESENT
 
         #region BaseService
 
@@ -280,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public void SaveScene(string filenamePrefix)
         {
 #if WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
-            SaveToFile(filenamePrefix);
+            Task.Run(() => SaveToFile(filenamePrefix));
 #else // WINDOWS_UWP
             Debug.LogWarning("SaveScene() only supported at runtime! Ignoring request.");
 #endif // WINDOWS_UWP
@@ -523,6 +547,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectRemoved);
         }
 
+        private async Task<SceneObserverAccessStatus> RequestAccess()
+        {
+            return await SceneObserver.RequestAccessAsync();
+        }
+
         /// <summary>
         /// Sets up and starts update timers
         /// </summary>
@@ -630,7 +659,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         }
                         await new WaitForBackgroundThread();
                         {
-                            scene = GetSceneAsync(previousScene);
+                            scene = await GetSceneAsync(previousScene);
                             previousScene = scene;
                             sceneOriginId = scene.OriginSpatialGraphNodeId;
                         }
@@ -761,7 +790,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// </summary>
         /// <param name="previousScene">The previous scene</param>
         /// <returns>The retrieved scene</returns>
-        private Scene GetSceneAsync(Scene previousScene)
+        private async Task<Scene> GetSceneAsync(Scene previousScene)
         {
             Scene scene = null;
 
@@ -795,18 +824,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                     RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
                 };
 
-                // Ideally you'd call SceneObserver.ComputeAsync() like this:
-                // scene = await SceneObserver.ComputeAsync(...);
-                // however this has been problematic (buggy?)
-                // For the time being we force it to be synchronous with the ...GetAwaiter().GetResult() pattern
-
                 if (UsePersistentObjects && previousScene != null)
                 {
-                    scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene).GetAwaiter().GetResult();
+                    scene = await SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene);
                 }
                 else
                 {
-                    scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();
+                    scene = await SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
                 }
             }
 
@@ -1301,7 +1325,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
             };
 
-            var serializedScene = SceneObserver.ComputeSerializedAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();
+            var serializedScene = await SceneObserver.ComputeSerializedAsync(sceneQuerySettings, QueryRadius);
             var bytes = new byte[serializedScene.Size];
             serializedScene.GetData(bytes);
             var timestamp = DateTime.Now.ToString("yyyyMMdd_hhmmss");
