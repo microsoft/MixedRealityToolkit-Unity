@@ -37,7 +37,7 @@ jobs:
 
 - job: BuildUnity2019
   pool:
-    name: Analog N-1
+    name: Analog On-Prem
     demands:
     - ${{ variables.Unity2019VersionInternal }}
     - COG-UnityCache-WUS2-01
