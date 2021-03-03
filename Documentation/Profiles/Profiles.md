@@ -7,6 +7,12 @@ For example, the input system's behavior is governed by an input system profile,
 <img src="../../Documentation/Images/Profiles/input_profile.png" width="650px" style="display:block;">
 <sup>Profile Inspector</sup>
 
+## Background
+
+Profiles are mainly intended to support specific scenarios across multiple devices, which are handled via the data providers. This way, an app can be designed as device-agnosticly as possible and let the MRTK and the profile's data providers handle cross-platform support.
+
+There are also profiles built around the input features of specific devices, such as the HoloLens 1 profile which defaults to GGV-style interactions.
+
 ## XR SDK
 
 Currently, there are two profiles provided for XR SDK, `DefaultXRSDKConfigurationProfile` and `DefaultHoloLens2XRSDKConfigurationProfile`. As a result, not all samples scenes are fully supported due to scene- and scenario-specific configurations. Any samples that use `DefaultMixedRealityToolkitConfigurationProfile` and `DefaultHoloLens2ConfigurationProfile` _can_ be swapped over to their corresponding XR SDK profiles. If you're using OpenXR with XR SDK, use the `DefaultOpenXRConfigurationProfile` instead.
