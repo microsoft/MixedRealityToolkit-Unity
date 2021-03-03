@@ -10,52 +10,52 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     {
         [SerializeField]
         [Tooltip("The GridObjectColletion to fit")]
-        private GridObjectCollection GridObjectCollection = null;
+        private GridObjectCollection gridObjectCollection = null;
 
         [SerializeField]
         [Range(0.001f, .5f)]
         [Tooltip("Scale factor for the border. Stored in local Z scale.")]
-        private float BorderScale = 0.02f;
+        private float borderScale = 0.02f;
 
         [SerializeField]
         [Range(0, .1f)]
         [Tooltip("Total margin added to left and right")]
-        private float HorizontalMargin = 0.0f;
+        private float horizontalMargin = 0.0f;
 
         [SerializeField]
         [Range(0, .1f)]
         [Tooltip("Total margin added to top and bottom")]
-        private float VerticalMargin = 0.0f;
+        private float verticalMargin = 0.0f;
 
         [SerializeField]
         [Range(0.001f, .1f)]
         [Tooltip("Distance behind GridObjectCollection")]
-        private float Distance = 0.001f;
+        private float distance = 0.001f;
 
         private void Start()
         {
-            if (GridObjectCollection)
+            if (gridObjectCollection)
             {
-                GridObjectCollection.OnCollectionUpdated = (BaseObjectCollection box) => UpdateLayout();
+                gridObjectCollection.OnCollectionUpdated = (BaseObjectCollection box) => UpdateLayout();
                 UpdateLayout();
             }
         }
 
         private void OnValidate()
         {
-            if (GridObjectCollection)
+            if (gridObjectCollection)
             {
-                GridObjectCollection.OnCollectionUpdated = (BaseObjectCollection box) => UpdateLayout();
+                gridObjectCollection.OnCollectionUpdated = (BaseObjectCollection box) => UpdateLayout();
                 UpdateLayout();
             }
         }
 
         private void UpdateLayout()
         {
-            if (GridObjectCollection)
+            if (gridObjectCollection)
             {
-                transform.localPosition = new Vector3(GridObjectCollection.Center.x, GridObjectCollection.Center.y, GridObjectCollection.Distance + Distance);
-                transform.localScale = new Vector3(GridObjectCollection.Width + HorizontalMargin, GridObjectCollection.Height + VerticalMargin, BorderScale);
+                transform.localPosition = new Vector3(gridObjectCollection.Center.x, gridObjectCollection.Center.y, gridObjectCollection.Distance + distance);
+                transform.localScale = new Vector3(gridObjectCollection.Width + horizontalMargin, gridObjectCollection.Height + verticalMargin, borderScale);
             }
         }
     }
