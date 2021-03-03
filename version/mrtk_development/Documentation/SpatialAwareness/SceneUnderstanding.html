@@ -99,16 +99,13 @@
 <li>Provide physics engine friendly geometry as quads</li>
 <li>Accelerate development by avoiding the need to write similar algorithms</li>
 </ul>
-<p>Currently Scene Understanding is available as an <strong>experimental</strong> feature. It is integrated into MRTK as a <a href="SpatialAwarenessGettingStarted.html#register-observers">spatial observer</a> called <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver.html"><code>WindowsSceneUnderstandingObserver</code></a>.</p>
+<p>Currently Scene Understanding is available as an <strong>experimental</strong> feature. It is integrated into MRTK as a <a href="SpatialAwarenessGettingStarted.html#register-observers">spatial observer</a> called <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver.html"><code>WindowsSceneUnderstandingObserver</code></a>. Scene Understanding works both with the Legacy XR pipeline and the XR SDK pipeline. In both cases the <code>WindowsSceneUnderstandingObserver</code> is used.</p>
 <h2 id="observer-overview">Observer overview</h2>
 <p>When asked, the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver.html"><code>WindowsSceneUnderstandingObserver</code></a> will return <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.SpatialAwarenessSceneObject.html">SpatialAwarenessSceneObject</a> with attributes useful for the application to understand its surroundings. The observation frequency, returned object type (e.g. wall, floor) and other observer behaviors are dependent on the configuration of the observer via profile. For instance, if the occlusion mask is desired the observer must be configured to generate quads. The observed scene can be saved as serialized file that can be later loaded to recreate the scene in editor play mode.</p>
 <h2 id="setup">Setup</h2>
 <ol>
 <li>Ensure the platform is set to UWP in build settings.</li>
-<li>Ensure dotnetwinrt is installed.</li>
-<li>Acquire the SceneUnderstanding package that contains the binaries required for the feature</li>
-<li>In the menu bar click Mixed Reality Toolkit -&gt; Utilities -&gt; Windows Mixed Reality -&gt; Check Configuration (this operation may take a while)</li>
-<li>In the menu bar click Mixed Reality Toolkit -&gt; Utilities -&gt; Scene Understanding -&gt; Check Configuration (this operation may take a while)</li>
+<li>Acquire the Scene Understanding package via <a href="https://aka.ms/MRFeatureTool">Mixed Reality Feature Tool</a>. Note the package may not be available at the launch date of MRTK 2.6 but will be available soon after. Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9402">this issue</a> for updates on its availability.</li>
 </ol>
 <h2 id="using-scene-understanding">Using Scene Understanding</h2>
 <p>The quickest way to get started with Scene Understanding is to check out the sample scene.</p>
@@ -121,6 +118,10 @@
 <li>Saving scene data to device for offline development</li>
 <li>Loading previously saved scene data (.bytes files) to support in-editor development workflow</li>
 </ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The sample scene is based on the Legacy XR pipeline. If you are using the XR SDK pipeline you should modify the profiles accordingly. The provided Scene Understanding Spatial Awareness System profile (<code>DemoSceneUnderstandingSystemProfile</code>) and the Scene Understanding Observer profiles (<code>DefaultSceneUnderstandingObserverProfile</code> and <code>DemoSceneUnderstandingObserverProfile</code>) works for both pipelines.</p>
+</div>
 <h4 id="configuring-the-observer-service">Configuring the observer service</h4>
 <p>Select the 'MixedRealityToolkit' game object and check the inspector.</p>
 <p><img src="../Images/SceneUnderstanding/MRTKHierarchy.png" alt="scene understanding location in heirarchy"></p>

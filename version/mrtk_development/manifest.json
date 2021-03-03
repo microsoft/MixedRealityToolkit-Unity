@@ -4515,10 +4515,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/InteractiveElement/HowToExamples/AddCoreState.gif",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/AddKeyboardState.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InteractiveElement/HowToExamples/AddCoreState.gif"
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/AddKeyboardState.png"
         }
       },
       "is_incremental": false,
@@ -4526,10 +4526,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/InteractiveElement/HowToExamples/AddNewState.gif",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/ClickedStateInspector.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InteractiveElement/HowToExamples/AddNewState.gif"
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/ClickedStateInspector.png"
         }
       },
       "is_incremental": false,
@@ -4537,10 +4537,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/InteractiveElement/HowToExamples/NewCoreStates.png",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/ExampleScene.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InteractiveElement/HowToExamples/NewCoreStates.png"
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/ExampleScene.png"
         }
       },
       "is_incremental": false,
@@ -4548,10 +4548,582 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/InteractiveElement/HowToExamples/SetNewStateInEditor.gif",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/FocusFarStateInspector.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InteractiveElement/HowToExamples/SetNewStateInEditor.gif"
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/FocusFarStateInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/FocusNearStateInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/FocusNearStateInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/FocusStateInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/FocusStateInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/ClickedStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/ClickedStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/F5RotateInputActionScene.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/F5RotateInputActionScene.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/FocusColorChange.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/FocusColorChange.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/FocusFarStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/FocusFarStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/FocusNearFocusFar.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/FocusNearFocusFar.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/FocusNearStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/FocusNearStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/FocusStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/FocusStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/InspectorHighlightEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/InspectorHighlightEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/NearFarClickedState.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/NearFarClickedState.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/NearFarToggleStates.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/NearFarToggleStates.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/PositionOffset.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/PositionOffset.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/ScaleOffset.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/ScaleOffset.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/SelectFarStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/SelectFarStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/ShaderColor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/ShaderColor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/ShaderFloat.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/ShaderFloat.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/ShaderVector.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/ShaderVector.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/SpeechKeywordStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/SpeechKeywordStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/ToggleOnToggleOffStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/ToggleOnToggleOffStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/Gifs/TouchStateEditor.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/Gifs/TouchStateEditor.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/InteractiveElementAddCoreState.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/InteractiveElementAddCoreState.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/InteractiveElementAddCoreStateSelectState.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/InteractiveElementAddCoreStateSelectState.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/InteractiveElementAddCoreStateSelectStateEventConfig.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/InteractiveElementAddCoreStateSelectStateEventConfig.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomState.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomState.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateEventConfig.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateEventConfig.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateName.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateName.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateNameSet.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateNameSet.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/KeyboardStateFiles.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/KeyboardStateFiles.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SelectFarStateInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SelectFarStateInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SetKeyboardStateName.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SetKeyboardStateName.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SpeechKeywordAddKeyword.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SpeechKeywordAddKeyword.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SpeechKeywordAddKeywordBlank.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SpeechKeywordAddKeywordBlank.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SpeechKeywordEnterKeyword.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SpeechKeywordEnterKeyword.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SpeechKeywordProfileAddKeyword.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SpeechKeywordProfileAddKeyword.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SpeechKeywordProfileAddKeywordName.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SpeechKeywordProfileAddKeywordName.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SpeechKeywordProfileClone.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SpeechKeywordProfileClone.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/SpeechKeywordStateInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/SpeechKeywordStateInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/ToggleOnToggleOffStateInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/ToggleOnToggleOffStateInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/InEditor/TouchStateInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/InEditor/TouchStateInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/AddColorProperty.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/AddColorProperty.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/AddTarget.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/AddTarget.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/AnimationClips.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/AnimationClips.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/AnimationWindow.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/AnimationWindow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/GenerateAnimationClips.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/GenerateAnimationClips.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/GenerateAnimationClips2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/GenerateAnimationClips2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/MeshRendererProperties.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/MeshRendererProperties.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/SetBlueColor.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/SetBlueColor.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/SetColor.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/SetColor.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/SetColorProperty.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/SetColorProperty.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/SetTarget.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/SetTarget.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/InteractiveElement/StateVisualizer/UnityStateMachine.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InteractiveElement/StateVisualizer/UnityStateMachine.png"
         }
       },
       "is_incremental": false,
@@ -7980,6 +8552,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/Tools/ShaderUpdateMenu.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/ShaderUpdateMenu.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/Tools/UpdateShaderPrompt.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/UpdateShaderPrompt.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/Tooltip/MRTK_Tooltip_Connector.png",
       "output": {
         "resource": {
@@ -8849,7 +9443,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_InteractiveElement.html",
-          "hash": "3tNQscaCEOmA89q3HHZP2Q=="
+          "hash": "gZhD6VOLy4Kq2tJpSSWmpQ=="
         }
       },
       "is_incremental": false,
@@ -9077,7 +9671,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "x2M+A3CmmgumouGaDPJhqA=="
+          "hash": "gb7vHggdxeS1DKWcKAfzqg=="
         }
       },
       "is_incremental": false,
@@ -9233,7 +9827,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SceneUnderstanding.html",
-          "hash": "XhbxsrU6isxufvE/ellkIQ=="
+          "hash": "wWbPvwnTL85Ahf5T3+uGCw=="
         }
       },
       "is_incremental": false,
@@ -9421,6 +10015,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../Documentation/Tools/UpdatingMRTKShaders.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/UpdatingMRTKShaders.html",
+          "hash": "5Qhkm/+pSFgEyyOUEHjtkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../Documentation/Updating.md",
       "output": {
         ".html": {
@@ -9473,7 +10079,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "zW6gn0EkQ3aNZE6twyfgEg=="
+          "hash": "JbFZOPE4Ry/QcKPgcwQiww=="
         }
       },
       "is_incremental": false,
@@ -30845,7 +31451,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver.html",
-          "hash": "keMtqSX2UJBkSuIOAItbLQ=="
+          "hash": "EZwKVJJk6rBjreXuAkrWtA=="
         }
       },
       "is_incremental": false,
@@ -30857,7 +31463,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.html",
-          "hash": "XI8MkLyYOlfzwO+P9NqQzQ=="
+          "hash": "N6umcKm0W/D0Yr03jGCSfA=="
         }
       },
       "is_incremental": false,
@@ -31331,7 +31937,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 172,
+          "total_file_count": 173,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

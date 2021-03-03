@@ -111,6 +111,12 @@ please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package 
 <p>OpenXR in Unity is only supported on Unity 2020.2 and higher.</p>
 <p>Currently, it also only supports x64 and ARM64 builds.</p>
 </div>
+<h3 id="experimental-interactive-element--state-visualizer">Experimental Interactive Element + State Visualizer</h3>
+<p>Interactive Element is a simplified centralized entry point to the MRTK input system. It contains state management methods, event management and the state setting logic for Core Interaction States. For more information see <a href="README_InteractiveElement.html">Interactive Element Documentation</a>.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/InspectorHighlightEditor.gif" alt="InteractiveElementAddCoreState"></p>
+<p>The State Visualizer is an animation component that depends on Interactive Element.  This component creates Animation Clips, sets keyframes and generates an Animator State Machine. For more information see <a href="README_InteractiveElement.html#state-visualizer-experimental">State Visualizer Documentation</a></p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/FocusColorChange.gif" alt="FocusColorChange"></p>
+<p>Interactive Element and State Visualizer are experimental components.</p>
 <h3 id="hp-motion-controllers-now-supported-with-mrtk">HP Motion Controllers now supported with MRTK</h3>
 <p>Controllers for the HP Reverb G2 now work natively with MRTK.</p>
 <h3 id="teleportation-with-the-teleport-gesture-now-supported-on-all-platforms">Teleportation with the teleport gesture now supported on all platforms</h3>
@@ -118,11 +124,21 @@ please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package 
 articulated hands, make a gesture with your palm facing up with the index and thumb sticking outwards, completing the teleport by curling the index finger. To teleport with input simulation, please
 see our updated <a href="InputSimulation/InputSimulationService.html#hand-gestures">Input Simulation Service documentation</a>.</p>
 <p><img src="Images/ReleaseNotes/HandTeleport.gif" alt="Teleport Gesture"></p>
+<h3 id="scene-understanding-now-available-in-mrtk-as-an-experimental-spatial-awareness-observer">Scene Understanding now available in MRTK as an experimental spatial awareness observer</h3>
+<p>Experimental support of <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding">Scene Understanding</a> is introduced in MRTK 2.6. Users can incorporate the scene understanding capabilities of HoloLens 2 as a spatial awareness observer in MRTK based projects. Please read the <a href="SpatialAwareness/SceneUnderstanding.html">Scene Understanding documentation</a> for more information.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Scene Understanding is only supported on HoloLens 2 and Unity 2019.4 and higher.</p>
+<p>This feature requires the Scene Understanding package, which may not be available at the launch date of MRTK 2.6 but will be available soon after via the <a href="https://aka.ms/MRFeatureTool">Mixed Reality Feature Tool</a>. Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9402">this issue</a> for updates on its availability.</p>
+</div>
 <h3 id="runtime-profile-switching-support">Runtime profile switching support</h3>
 <p>MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the <a href="MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">documentation on profile switching</a> for more information and code samples.</p>
 <h3 id="directional-indicator-and-follow-solvers-graduated-from-experimental">Directional Indicator and Follow Solvers Graduated from Experimental</h3>
 <p>Two new solvers are ready for use with mainline MRTK.</p>
 <p><img src="Images/Solver/DirectionalIndicatorExampleScene.gif" alt="Directional Indicator Solver"></p>
+<h3 id="pulse-shader-graduated-from-experimental">Pulse Shader Graduated from Experimental</h3>
+<p>The Pulse Shader scripts have graduated from experimental. For more information see: <a href="README_PulseShader.html">Pulse Shader Documentation</a></p>
+<p><img src="https://user-images.githubusercontent.com/13754172/68261851-3489e200-fff6-11e9-9f6c-5574a7dd8db7.gif" alt="MRTK_SpatialMesh_Pulse"></p>
 <h3 id="input-recording-service-improvements">Input Recording Service improvements</h3>
 <p><code>InputRecordingService</code> and <code>InputPlaybackService</code> can now record and play back eye gaze input. Recording has been optimized to ensure a consistent framerate throughout the recording period while recording file size and save time are also reduced by about 50%. Saving and loading of recording files can now be performed asynchronously. Note the file format of the recording has changed in this MRTK version, please see <a href="InputSimulation/InputAnimationFileFormat.html">here</a> for more information on the new version 1.1 specifications.</p>
 <h3 id="reading-mode">Reading mode</h3>
