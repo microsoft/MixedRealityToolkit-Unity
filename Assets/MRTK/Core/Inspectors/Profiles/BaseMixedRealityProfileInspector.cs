@@ -139,6 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         profileType = typeof(BaseMixedRealityProfile);
                     }
                 }
+            }
 
             // Draw the profile dropdown if a valid profileType exists
             if (profileType != null)
