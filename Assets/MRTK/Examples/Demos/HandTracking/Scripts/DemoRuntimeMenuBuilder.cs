@@ -10,10 +10,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Demo script that dynamically adds and removes buttons from a GridObjectCollection.
     /// </summary>
+    [RequireComponent(typeof(GridObjectCollection))]
     public class DemoRuntimeMenuBuilder : MonoBehaviour
     {
         [SerializeField]
-        private ButtonConfigHelper ButtonPrefab;
+        private ButtonConfigHelper buttonPrefab;
 
         private GridObjectCollection gridObjectCollection;
 
@@ -41,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             while (transform.childCount < numberButtons)
             {
-                var button = GameObject.Instantiate(ButtonPrefab, transform);
+                var button = GameObject.Instantiate(buttonPrefab, transform);
                 button.MainLabelText = string.Format("Button {0}", transform.childCount);
                 button.SetQuadIcon(button.IconSet.QuadIcons[transform.childCount]);
             }
