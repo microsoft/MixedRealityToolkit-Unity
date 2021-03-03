@@ -126,17 +126,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         profileType = availableTypes.First();
                     }
+                    // If there are no profiles with a ProfileType suitable for the serviceType, we keep the profileType as null, since there are no valid ones.
+                    // This prevents the user from being able to configure the profile (which is appropriate in this case)
+                    else if (availableTypes.Count == 0)
+                    {
+                        profileType = null;
+                    }
+                    // If there are more than 1 valid availableType for the serviceType, default the profileType to BaseMixedRealityProfile since the 
+                    // EditorGUILayout.ObjectField can only restrict the set of profiles to a single type
+                    else
+                    {
+                        profileType = typeof(BaseMixedRealityProfile);
+                    }
                 }
 
-                // If the profile type is still null, just set it to base profile type
-                if (profileType == null)
-                {
-                    profileType = typeof(BaseMixedRealityProfile);
-                }
+            // Draw the profile dropdown if a valid profileType exists
+            if (profileType != null)
+            {
+                changed |= MixedRealityInspectorUtility.DrawProfileDropDownList(property, profile, oldObject, profileType, showAddButton);
             }
-
-            // Draw the profile dropdown
-            changed |= MixedRealityInspectorUtility.DrawProfileDropDownList(property, profile, oldObject, profileType, showAddButton);
 
             Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
 
