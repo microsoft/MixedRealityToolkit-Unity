@@ -48,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (!string.IsNullOrWhiteSpace(sentinelPath))
                 {
                     FileInfo ignoreFile = new FileInfo(Path.Combine(new FileInfo(sentinelPath).Directory.FullName, IgnoreFileName));
-                    Debug.Log(ignoreFile.FullName);
                     if (ignoreFile.Exists)
                     {
                         ignoreFile.Delete();
@@ -71,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static bool AssetsContainsShaders(DirectoryInfo packageShaderFolder)
         {
             string sentinelPath = AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid);
-            Debug.LogWarning(sentinelPath);
 
             // If we do not find the sentinel, we need to import the shaders.
             if (string.IsNullOrWhiteSpace(sentinelPath))
