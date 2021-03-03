@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     {
         [SerializeField]
         [Tooltip("The GridObjectColletion to fit")]
-        private GridObjectCollection GridObjectCollection;
+        private GridObjectCollection GridObjectCollection = null;
 
         [SerializeField]
         [Range(0.001f, .5f)]
