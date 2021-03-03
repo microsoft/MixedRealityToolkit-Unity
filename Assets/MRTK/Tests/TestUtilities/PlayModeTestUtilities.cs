@@ -480,8 +480,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             Debug.Assert(
-                ((inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures) || 
-                (inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand)), 
+                ((inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures) ||
+                (inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand)),
                 "The current ControllerSimulationMode must be HandGestures or ArticulatedHand!");
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation, Quaternion.identity));

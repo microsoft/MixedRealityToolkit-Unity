@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move hands beyond max scale limit
             yield return hand.MoveTo(new Vector3(scaleHandler.ScaleMaximum * 2, scaleHandler.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
-            
+
             // Assert scale at max
             Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, bbox.Target.transform.localScale);
 

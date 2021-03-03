@@ -28,14 +28,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 {
                     HandlePositions[i] = VisualUtils.GetFaceCenterPosition(i, ref boundsCorners);
                 }
-            
+
                 UpdateHandles();
             }
         }
 
-        internal TranslationHandles(TranslationHandlesConfiguration configuration) 
+        internal TranslationHandles(TranslationHandlesConfiguration configuration)
             : base(configuration)
-        { 
+        {
         }
 
         protected override Quaternion GetRotationRealignment(int handleIndex)
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 return Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.up);
             }
         }
-      
+
         #region BoundsControlHandlerBase 
 
         internal override HandleType GetHandleType()

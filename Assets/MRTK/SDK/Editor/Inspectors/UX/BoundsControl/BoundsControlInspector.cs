@@ -137,8 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     using (new EditorGUI.IndentLevelScope())
                     {
-                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
-                                                                                                                 "Box Configuration", 
+                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration,
+                                                                                                                 "Box Configuration",
                                                                                                                  showBoxConfiguration);
 
                         showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
@@ -153,12 +153,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                                                                                                                         "Translation Handles Configuration",
                                                                                                                                         showTranslationHandlesConfiguration);
 
-                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
-                                                                                                              "Links Configuration", 
+                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration,
+                                                                                                              "Links Configuration",
                                                                                                               showLinksConfiguration);
 
-                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
-                                                                                                                            "Proximity Configuration", 
+                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration,
+                                                                                                                            "Proximity Configuration",
                                                                                                                             showProximityConfiguration);
                     }
 

@@ -158,10 +158,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
             {
                 InteractionType = InteractionType.NearAndFar;
             }
-            else 
+            else
             {
                 InteractionType = InteractionType.Other;
-            }  
+            }
         }
 
         // Trim the name of a state if it contains "Near" or "Far" if the current state contains "Focus" in the name

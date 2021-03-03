@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         /// far interaction input.
         /// </summary>
         Far,
-        
+
         /// <summary>
         /// Encompasses both near and far interaction support. 
         /// </summary>

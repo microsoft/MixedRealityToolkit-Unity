@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The time of the first keyframe in the buffer
         /// </summary>
         public float StartTime => keyframes.Peek().Time;
-        
+
         private Keyframe currentKeyframe;
         private Queue<Keyframe> keyframes;
 

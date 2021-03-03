@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             curve.keys = keys;
         }
-        
+
         /// <summary>
         /// Serialize an animation curve with tangents as binary data. Only encodes keyframe position and time.
         /// </summary>

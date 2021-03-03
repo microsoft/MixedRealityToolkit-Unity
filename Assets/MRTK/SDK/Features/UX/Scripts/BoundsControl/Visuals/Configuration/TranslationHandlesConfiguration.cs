@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             ShowHandleForY = false;
             ShowHandleForZ = false;
         }
-       
+
         /// <summary>
         /// Fabricates an instance of TranslationHandles, applying
         /// this config to it whilst creating it.

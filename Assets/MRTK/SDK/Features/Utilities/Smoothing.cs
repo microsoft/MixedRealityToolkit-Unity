@@ -9,7 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Provides several utility functions for smoothing and lerping.
     /// </summary>
-    internal class Smoothing {
+    internal class Smoothing
+    {
 
         /// <summary>
         /// Smooths from source to goal, provided lerptime and a deltaTime.

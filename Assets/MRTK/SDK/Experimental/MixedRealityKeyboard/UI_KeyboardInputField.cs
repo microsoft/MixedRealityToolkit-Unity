@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private bool disableUGUIWorkaround = false;
 
         private MRTKUGUIInputField inputField;
-        
+
         private void OnValidate()
         {
             if (inputField == null)

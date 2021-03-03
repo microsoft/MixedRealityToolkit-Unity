@@ -267,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testHand = new TestHand(Handedness.Right);
             yield return testHand.Show(Vector3.forward);
             yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return testHand.MoveTo(interactable.transform.position-Vector3.forward * 0.1f);
+            yield return testHand.MoveTo(interactable.transform.position - Vector3.forward * 0.1f);
             yield return testHand.MoveTo(Vector3.forward);
             yield return testHand.Hide();
             Assert.True(didTouch, "Did not receive touch event");

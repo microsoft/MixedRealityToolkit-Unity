@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 // when pointing straight up, angle should be close to 1.
                 // when pointing straight down, angle should be close to -1.	
                 // when pointing straight forward in any direction, upDot should be 0.
-                var angle = (Vector3.Angle(stabilizedRay.StabilizedDirection, Vector3.down) - 90.0f)/90.0f;
+                var angle = (Vector3.Angle(stabilizedRay.StabilizedDirection, Vector3.down) - 90.0f) / 90.0f;
                 var sqr_angle = angle * angle;
 
                 var velocity = minParabolaVelocity;
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 // If we're pointing below the horizon, always use the minimum modifiers.
                 // We use square angle so that the velocity change is less noticeable the closer the teleport point
                 // is to the user            
-                if(sqr_angle > 0)
+                if (sqr_angle > 0)
                 {
                     velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, sqr_angle);
                     distance = Mathf.Lerp(minDistanceModifier, maxDistanceModifier, sqr_angle);

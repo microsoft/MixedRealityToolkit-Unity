@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                 if (!HasFocus)
                 {
                     HasFocus = true;
-                    
+
                     // check intent to resume
                     if (CurrentDwellState == DwellStateType.DwellCanceled
                         && (DateTime.UtcNow - focusExitTime) <= dwellProfile.TimeToAllowDwellResume)
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     }
                 }
                 pointerCount++;
-                
+
             }
             else if (eventData.OldFocusedObject == gameObject
                 && eventData.Pointer.InputSourceParent.SourceType == dwellProfile.DwellPointerType)

@@ -366,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         CaretIndex = Mathf.Clamp(CaretIndex + 1, 0, Text.Length);
                     }
                 }
-                
+
                 // Handle commit via the return key.
                 if (!multiLine)
                 {

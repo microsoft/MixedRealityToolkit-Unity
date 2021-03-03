@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public ScaleHandlesConfiguration ScaleHandlesConfig
         {
             get => scaleHandlesConfiguration;
-            set 
+            set
             {
                 scaleHandlesConfiguration = value;
                 scaleHandles = scaleHandlesConfiguration.ConstructInstance();
@@ -698,7 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             scaleHandles = scaleHandlesConfiguration.ConstructInstance();
             rotationHandles = rotationHandlesConfiguration.ConstructInstance();
             translationHandles = translationHandlesConfiguration.ConstructInstance();
-            
+
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
@@ -1206,8 +1206,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     }
                     if (!transformUpdated.HasFlag(TransformFlags.Rotate))
                     {
-                        Target.transform.rotation = smoothingActive ? 
-                            Smoothing.SmoothTo(Target.transform.rotation, constraintRotation.Rotation, rotateLerpTime, Time.deltaTime) : 
+                        Target.transform.rotation = smoothingActive ?
+                            Smoothing.SmoothTo(Target.transform.rotation, constraintRotation.Rotation, rotateLerpTime, Time.deltaTime) :
                             constraintRotation.Rotation;
                     }
                 }
@@ -1261,8 +1261,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     }
                     if (!transformUpdated.HasFlag(TransformFlags.Scale))
                     {
-                        Target.transform.localScale = smoothingActive ? 
-                            Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : 
+                        Target.transform.localScale = smoothingActive ?
+                            Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) :
                             clampedTransform.Scale;
                     }
 
@@ -1286,10 +1286,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     }
                     if (!transformUpdated.HasFlag(TransformFlags.Move))
                     {
-                        Target.transform.position = smoothingActive ? 
-                            Smoothing.SmoothTo(Target.transform.position, constraintTranslate.Position, translateLerpTime, Time.deltaTime) : 
+                        Target.transform.position = smoothingActive ?
+                            Smoothing.SmoothTo(Target.transform.position, constraintTranslate.Position, translateLerpTime, Time.deltaTime) :
                             constraintTranslate.Position;
-                    } 
+                    }
                 }
             }
         }
@@ -1514,7 +1514,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             proximityEffect.ClearObjects();
             links.Clear();
-            
+
             scaleHandles.DestroyHandles();
             rotationHandles.DestroyHandles();
             translationHandles.DestroyHandles();

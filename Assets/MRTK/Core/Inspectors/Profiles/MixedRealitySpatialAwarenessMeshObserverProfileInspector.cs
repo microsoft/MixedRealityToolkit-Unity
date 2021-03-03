@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 {
     [CustomEditor(typeof(MixedRealitySpatialAwarenessMeshObserverProfile))]
     public class MixedRealitySpatialAwarenessMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
-    { 
+    {
         private SerializedProperty runtimeSpatialMeshPrefab;
 
         // General settings
