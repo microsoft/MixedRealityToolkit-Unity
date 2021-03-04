@@ -3,7 +3,7 @@ variables:
   Unity2018Version: Unity2018.4.26f1
   Unity2019Version: Unity2019.4.8f1
   # Unity version on internal build agents (release builds)
-  Unity2018VersionInternal: Unity2018.4.23f1
+  Unity2018VersionInternal: Unity2018.4.26f1
   Unity2019VersionInternal: Unity2019.4.6f1
   Unity2020VersionInternal: Unity2020.2.2f1
 
