@@ -2,10 +2,11 @@
 
 schedules:
 # Cron schedules use UTC time. This is 2pm UTC on every weekday.
-- cron: 0 14 * * 1,2,3,4,5
-  branches:
-    include:
-    - mrtk_development
+# Uncomment the following lines when mergetool is needed again.
+# - cron: 0 14 * * 1,2,3,4,5
+#   branches:
+#     include:
+#     - mrtk_development
 
 pr: none
 trigger: none
