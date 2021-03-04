@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -78,6 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const string BuildWindowTabKey = "_BuildWindow_Tab";
 
+        private const string WINDOWS_10_KITS_PATH_REGISTRY_PATH = @"SOFTWARE\Microsoft\Windows Kits\Installed Roots";
+
+        private const string WINDOWS_10_KITS_PATH_REGISTRY_KEY = "KitsRoot10";
+
+        private const string WINDOWS_10_KITS_PATH_POSTFIX = "Lib";
+
+        private const string WINDOWS_10_KITS_DEFAULT_PATH = @"C:\Program Files (x86)\Windows Kits\10\Lib";
+
         #endregion Constants and Readonly Values
 
         #region Labels
@@ -90,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent UseCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
 
-        private readonly GUIContent gazeInputCapabilityLabel =
+        private readonly GUIContent GazeInputCapabilityLabel =
             new GUIContent("Gaze Input Capability",
                            "If checked, the 'Gaze Input' capability will be added to the AppX manifest after the Unity build.");
 
@@ -100,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent UseSSLLabel = new GUIContent("Use SSL?", "Use SSL to communicate with Device Portal");
 
-        private readonly GUIContent VerifySSLLabel = new GUIContent("Verify SSL Certificates?", "When using SSL for Device Portal communication, verfiy the SSL certificate against Root Certificates. For self-signed Device Portal certificates disabling this omits SSL rejection errors.");
+        private readonly GUIContent VerifySSLLabel = new GUIContent("Verify SSL Certificates?", "When using SSL for Device Portal communication, verify the SSL certificate against Root Certificates. For self-signed Device Portal certificates disabling this omits SSL rejection errors.");
 
         private readonly GUIContent TargetTypeLabel = new GUIContent("Target Type", "Target either local connection or a remote device");
 
@@ -225,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment. 
+        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment.
         /// Saves state for duration of current Unity session
         /// </summary>
         private static bool UseRemoteTarget
@@ -243,7 +248,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private string[] targetIps;
         private readonly List<Version> windowsSdkVersions = new List<Version>();
 
+        private Vector2 buildSceneListScrollPosition;
         private Vector2 deployBuildListScrollPosition;
+        private Vector2 appxBuildOptionsScrollPosition;
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
         private Action[] tabRenders;
@@ -269,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // Dock it next to the Scene View.
             var window = GetWindow<BuildDeployWindow>(typeof(SceneView));
-            window.titleContent = new GUIContent("Build Window", EditorGUIUtility.IconContent("Collab.Build").image);
+            window.titleContent = new GUIContent("Build Window", EditorGUIUtility.IconContent("CustomTool").image);
             window.Show();
         }
 
@@ -409,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 
-            // Generate C# Project References for debugging	
+            // Generate C# Project References for debugging
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
             {
                 bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
@@ -425,12 +432,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 EditorGUILayout.LabelField("Scenes in Build", EditorStyles.boldLabel);
 
-                using (new EditorGUI.DisabledGroupScope(true))
+                using (var scrollView = new EditorGUILayout.ScrollViewScope(buildSceneListScrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
                 {
-                    var scenes = EditorBuildSettings.scenes;
-                    for (int i = 0; i < scenes.Length; i++)
+                    buildSceneListScrollPosition = scrollView.scrollPosition;
+
+                    using (new EditorGUI.DisabledGroupScope(true))
                     {
-                        EditorGUILayout.ToggleLeft($"{i} {scenes[i].path}", scenes[i].enabled);
+                        var scenes = EditorBuildSettings.scenes;
+                        for (int i = 0; i < scenes.Length; i++)
+                        {
+                            EditorGUILayout.ToggleLeft($"{i} {scenes[i].path}", scenes[i].enabled);
+                        }
                     }
                 }
             }
@@ -453,104 +465,113 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderAppxBuildView()
         {
-            // SDK and MS Build Version (and save setting, if it's changed)
-            // Note that this is the 'Target SDK Version' which is required to physically build the
-            // code on a build machine, not the minimum platform version.
-            string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
-
-            Version chosenSDKVersion = null;
-            for (var i = 0; i < windowsSdkVersions.Count; i++)
+            using (var scrollView = new EditorGUILayout.ScrollViewScope(appxBuildOptionsScrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
-                // windowsSdkVersions is sorted in ascending order, so we always take
-                // the highest SDK version that is above our minimum.
-                if (windowsSdkVersions[i] >= UwpBuildDeployPreferences.MIN_SDK_VERSION)
-                {
-                    chosenSDKVersion = windowsSdkVersions[i];
-                }
-            }
+                appxBuildOptionsScrollPosition = scrollView.scrollPosition;
 
-            EditorGUILayout.HelpBox($"Windows SDK Version: {currentSDKVersion}", MessageType.Info);
+                // SDK and MS Build Version (and save setting, if it's changed)
+                // Note that this is the 'Target SDK Version' which is required to physically build the
+                // code on a build machine, not the minimum platform version.
+                string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
 
-            // Throw exception if user has no Windows 10 SDK installed
-            if (chosenSDKVersion == null)
-            {
-                if (IsValidSdkInstalled)
+                Version chosenSDKVersion = null;
+                for (var i = 0; i < windowsSdkVersions.Count; i++)
                 {
-                    Debug.LogError($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.");
+                    // windowsSdkVersions is sorted in ascending order, so we always take
+                    // the highest SDK version that is above our minimum.
+                    if (windowsSdkVersions[i] >= UwpBuildDeployPreferences.MIN_SDK_VERSION)
+                    {
+                        chosenSDKVersion = windowsSdkVersions[i];
+                    }
                 }
 
-                EditorGUILayout.HelpBox($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.", MessageType.Error);
-                IsValidSdkInstalled = false;
-                return;
-            }
+                EditorGUILayout.HelpBox($"Windows SDK Version: {currentSDKVersion}", MessageType.Info);
 
-            IsValidSdkInstalled = true;
-
-            string newSDKVersion = chosenSDKVersion.ToString();
-            if (!newSDKVersion.Equals(currentSDKVersion))
-            {
-                EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
-            }
-
-            string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
-            if (string.IsNullOrWhiteSpace(currentMinPlatformVersion))
-            {
-                // If the min platform version hasn't been specified, set it to the recommended value.
-                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
-            }
-            else if (UwpBuildDeployPreferences.MIN_PLATFORM_VERSION != new Version(currentMinPlatformVersion))
-            {
-                // If the user has manually changed the minimum platform version in the 'Build Settings' window
-                // provide a warning that the generated application may not be deployable to older generation
-                // devices. We generally recommend setting to the lowest value and letting the app model's
-                // capability and versioning checks kick in for applications at runtime.
-                EditorGUILayout.HelpBox(
-                    "Minimum platform version is set to a different value from the recommended value: " +
-                        $"{UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}, the generated app may not be deployable to older generation devices. " +
-                        $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}",
-                    MessageType.Warning);
-            }
-
-            using (var c = new EditorGUI.ChangeCheckScope())
-            {
-                EditorGUILayout.LabelField("Build Options", EditorStyles.boldLabel);
-                var newBuildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", UwpBuildDeployPreferences.BuildConfigType, GUILayout.Width(HALF_WIDTH));
-                UwpBuildDeployPreferences.BuildConfig = newBuildConfigOption.ToString().ToLower();
-
-                // Build Platform
-                int currentPlatformIndex = Array.IndexOf(ARCHITECTURE_OPTIONS, EditorUserBuildSettings.wsaArchitecture);
-                int buildPlatformIndex = EditorGUILayout.Popup("Build Platform", currentPlatformIndex, ARCHITECTURE_OPTIONS, GUILayout.Width(HALF_WIDTH));
-
-                // Platform Toolset
-                int currentPlatformToolsetIndex = Array.IndexOf(PLATFORM_TOOLSET_VALUES, UwpBuildDeployPreferences.PlatformToolset);
-                int newPlatformToolsetIndex = EditorGUILayout.Popup("Platform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
-
-                // Force rebuild
-                bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
-
-                // Multicore Appx Build
-                bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft("Multicore Build", UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
-
-                EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
-
-                // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
-                // existing versions of Unity don't have support for automatically adding the capability to the generated
-                // AppX manifest during the build. This option provides a mechanism for people using the
-                // MRTK build tools to auto-append this capability if desired, instead of having to manually
-                // do this each time on their own.
-                bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(gazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
-
-                // Enable Research Mode Capability
-                bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
-
-                if (c.changed)
+                // Throw exception if user has no Windows 10 SDK installed
+                if (chosenSDKVersion == null)
                 {
-                    UwpBuildDeployPreferences.PlatformToolset = PLATFORM_TOOLSET_VALUES[newPlatformToolsetIndex];
-                    EditorUserBuildSettings.wsaArchitecture = ARCHITECTURE_OPTIONS[buildPlatformIndex];
-                    UwpBuildDeployPreferences.GazeInputCapabilityEnabled = gazeInputCapabilityEnabled;
-                    UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = researchModeEnabled;
-                    UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
-                    UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
+                    if (IsValidSdkInstalled)
+                    {
+                        Debug.LogError($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.");
+                    }
+
+                    EditorGUILayout.HelpBox($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.", MessageType.Error);
+                    IsValidSdkInstalled = false;
+                    return;
+                }
+
+                IsValidSdkInstalled = true;
+
+                string newSDKVersion = chosenSDKVersion.ToString();
+                if (!newSDKVersion.Equals(currentSDKVersion))
+                {
+                    EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
+                }
+
+                string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
+                if (string.IsNullOrWhiteSpace(currentMinPlatformVersion))
+                {
+                    // If the min platform version hasn't been specified, set it to the recommended value.
+                    EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
+                }
+                else if (UwpBuildDeployPreferences.MIN_PLATFORM_VERSION != new Version(currentMinPlatformVersion))
+                {
+                    // If the user has manually changed the minimum platform version in the 'Build Settings' window
+                    // provide a warning that the generated application may not be deployable to older generation
+                    // devices. We generally recommend setting to the lowest value and letting the app model's
+                    // capability and versioning checks kick in for applications at runtime.
+                    EditorGUILayout.HelpBox(
+                        "Minimum platform version is set to a different value from the recommended value: " +
+                            $"{UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}, the generated app may not be deployable to older generation devices. " +
+                            $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}",
+                        MessageType.Warning);
+                }
+
+                using (var c = new EditorGUI.ChangeCheckScope())
+                {
+                    EditorGUILayout.LabelField("Build Options", EditorStyles.boldLabel);
+                    var newBuildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", UwpBuildDeployPreferences.BuildConfigType, GUILayout.Width(HALF_WIDTH));
+                    UwpBuildDeployPreferences.BuildConfig = newBuildConfigOption.ToString().ToLower();
+
+                    // Build Platform
+                    int currentPlatformIndex = Array.IndexOf(ARCHITECTURE_OPTIONS, EditorUserBuildSettings.wsaArchitecture);
+                    int buildPlatformIndex = EditorGUILayout.Popup("Build Platform", currentPlatformIndex, ARCHITECTURE_OPTIONS, GUILayout.Width(HALF_WIDTH));
+
+                    // Platform Toolset
+                    int currentPlatformToolsetIndex = Array.IndexOf(PLATFORM_TOOLSET_VALUES, UwpBuildDeployPreferences.PlatformToolset);
+                    int newPlatformToolsetIndex = EditorGUILayout.Popup("Platform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
+
+                    // Force rebuild
+                    bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
+
+                    // Multicore Appx Build
+                    bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft("Multicore Build", UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
+
+                    EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
+
+                    // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but
+                    // existing versions of Unity don't have support for automatically adding the capability to the generated
+                    // AppX manifest during the build. This option provides a mechanism for people using the
+                    // MRTK build tools to auto-append this capability if desired, instead of having to manually
+                    // do this each time on their own.
+                    bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(GazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
+
+                    // Enable Research Mode Capability
+                    bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
+
+                    // Don't draw the preview while building (when appxCancellationTokenSource will be non-null),
+                    // since there's a null texture issue when Unity reloads the assets during a build
+                    MixedRealityBuildPreferences.DrawAppLauncherModelField(appxCancellationTokenSource == null);
+
+                    if (c.changed)
+                    {
+                        UwpBuildDeployPreferences.PlatformToolset = PLATFORM_TOOLSET_VALUES[newPlatformToolsetIndex];
+                        EditorUserBuildSettings.wsaArchitecture = ARCHITECTURE_OPTIONS[buildPlatformIndex];
+                        UwpBuildDeployPreferences.GazeInputCapabilityEnabled = gazeInputCapabilityEnabled;
+                        UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = researchModeEnabled;
+                        UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
+                        UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
+                    }
                 }
             }
 
@@ -607,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
                 {
-                    if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                    if (GUILayout.Button("Open AppX Packages Location", GUILayout.Width(HALF_WIDTH)))
                     {
                         EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
                     }
@@ -617,7 +638,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
                     {
-                        if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
+                        if (GUILayout.Button("Build AppX", GUILayout.Width(HALF_WIDTH)))
                         {
                             // Check if solution exists
                             string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
@@ -885,6 +906,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                         foreach (var fullBuildLocation in Builds)
                         {
+                            if (!Directory.Exists(fullBuildLocation))
+                            {
+                                continue;
+                            }
+
                             int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\", StringComparison.Ordinal);
 
                             var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
@@ -1368,7 +1394,23 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void LoadWindowsSdkPaths()
         {
-            var windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
+            string win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+#if UNITY_EDITOR_WIN
+            // Windows 10 sdk might not be installed on C: drive.
+            // Try to detect the installation path by checking the registry.
+            try
+            {
+                var registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
+                var registryValue = registryKey.GetValue(WINDOWS_10_KITS_PATH_REGISTRY_KEY) as string;
+                win10KitsPath = Path.Combine(registryValue, WINDOWS_10_KITS_PATH_POSTFIX);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"Could not find the Windows 10 SDK installation path via registry. Reverting to default path. {e}");
+                win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+            }
+#endif
+            var windowsSdkPaths = Directory.GetDirectories(win10KitsPath);
             for (int i = 0; i < windowsSdkPaths.Length; i++)
             {
                 windowsSdkVersions.Add(new Version(windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1)));

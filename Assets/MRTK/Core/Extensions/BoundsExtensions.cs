@@ -121,8 +121,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="positions">Output corner positions</param>
         /// <param name="bounds">Input bounds, in local space</param>
         /// <remarks>
-        /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
-        /// corners array.
+        /// <para>Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
+        /// corners array.</para>
         /// </remarks>
         public static void GetCornerPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
@@ -158,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// Gets all the corner points of the bounds 
         /// </summary>
         /// <remarks>
-        /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
-        /// corners array.
+        /// <para>Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
+        /// corners array.</para>
         /// </remarks>
         public static void GetCornerPositions(this Bounds bounds, ref Vector3[] positions)
         {
@@ -593,11 +593,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// Transforms 'bounds' using the specified transform matrix.
         /// </summary>
         /// <remarks>
-        /// Transforming a 'Bounds' instance means that the function will construct a new 'Bounds' 
+        /// <para>Transforming a 'Bounds' instance means that the function will construct a new 'Bounds' 
         /// instance which has its center translated using the translation information stored in
         /// the specified matrix and its size adjusted to account for rotation and scale. The size
         /// of the new 'Bounds' instance will be calculated in such a way that it will contain the
-        /// old 'Bounds'.
+        /// old 'Bounds'.</para>
         /// </remarks>
         /// <param name="bounds">
         /// The 'Bounds' instance which must be transformed.

@@ -15,19 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
     {
         public override void OnInspectorGUI()
         {
-            DrawPropertiesExcluding(this.serializedObject, "timeToAllowDwellDecay", "timeToAllowDwellResume");
-            DrawConditionalParameter("timeToAllowDwellDecay", "allowDwellDecayOnCancel");
+            DrawPropertiesExcluding(this.serializedObject, "timeToAllowDwellResume");
 
             this.serializedObject.ApplyModifiedProperties();
-        }
-
-        public void DrawConditionalParameter(string propertyToDraw, string conditionalProperty)
-        {
-            var propertyRef = serializedObject.FindProperty(conditionalProperty);
-            if (propertyRef.boolValue)
-            {
-                EditorGUILayout.PropertyField(this.serializedObject.FindProperty(propertyToDraw));
-            }
         }
     }
 }

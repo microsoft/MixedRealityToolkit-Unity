@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/manipulation-handler")]
     [AddComponentMenu("Scripts/MRTK/SDK/ManipulationHandler")]
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
@@ -973,8 +973,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-
-            for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
+            for (int i = 0; i < (pointer.Controller?.Interactions?.Length ?? 0); i++)
             {
                 if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
                 {

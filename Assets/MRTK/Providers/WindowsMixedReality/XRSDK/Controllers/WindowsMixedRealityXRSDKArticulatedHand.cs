@@ -30,18 +30,20 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityXRSDKArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+        public WindowsMixedRealityXRSDKArticulatedHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
             handMeshProvider = new WindowsMixedRealityHandMeshProvider(this);
         }
 
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
+        private ArticulatedHandDefinition handDefinition;
+        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
-        private readonly ArticulatedHandDefinition handDefinition;
         private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
 
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
@@ -64,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         #endregion IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
+        public override bool IsInPointingPose => HandDefinition.IsInPointingPose;
 
         #region Update data functions
 
@@ -86,7 +88,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     switch (Interactions[i].InputType)
                     {
                         case DeviceInputType.IndexFinger:
-                            handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
+                            HandDefinition?.UpdateCurrentIndexPose(Interactions[i]);
+                            break;
+                        case DeviceInputType.ThumbStick:
+                            HandDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
                             break;
                     }
                 }
@@ -155,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         }
                     }
 
-                    handDefinition?.UpdateHandJoints(unityJointPoses);
+                    HandDefinition?.UpdateHandJoints(unityJointPoses);
                 }
             }
         }
@@ -164,8 +169,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// Converts a Unity finger bone into an MRTK hand joint.
         /// </summary>
         /// <remarks>
-        /// For HoloLens 2, Unity provides four joints per finger, in index order of metacarpal (0) to tip (4).
-        /// The first joint for the thumb is the wrist joint. Palm joint is not provided.
+        /// <para>For HoloLens 2, Unity provides four joints per finger, in index order of metacarpal (0) to tip (4).
+        /// The first joint for the thumb is the wrist joint. Palm joint is not provided.</para>
         /// </remarks>
         /// <param name="finger">The Unity classification of the current finger.</param>
         /// <param name="index">The Unity index of the current finger bone.</param>

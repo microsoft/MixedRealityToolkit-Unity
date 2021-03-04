@@ -3,7 +3,6 @@
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
         "WSA",
@@ -15,5 +14,18 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.input",
+            "expression": "",
+            "define": "HP_CONTROLLER_ENABLED"
+        },
+        {
+            "name": "com.microsoft.windows.mixedreality.dotnetwinrt",
+            "expression": "",
+            "define": "DOTNETWINRT_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
 }

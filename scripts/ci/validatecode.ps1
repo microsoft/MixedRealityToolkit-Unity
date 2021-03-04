@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Validates the code and assets to check for common patterns and usage that shouldn't be
@@ -83,7 +86,7 @@ function CheckEmptyDoccomment {
             # ///\s*<returns[\sa-zA-Z"=]*>\s*</returns>
             # which basically looks for an empty tag (allowing for alphanumeric param names
             # and values in the tag itself)
-            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=]*>\s*</$tag>"
+            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=_]*>\s*</$tag>"
             if ($FileContent[$LineNumber] -match $matcher) {
                 Write-Host "An empty doccomment was found in $FileName at line $LineNumber "
                 Write-Host "Delete the line or add a description "
@@ -366,10 +369,6 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
     "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/WindowsMixedRealityXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/XRSDK/Editor/XRSDKConfigurationChecker.cs",
     "Assets/MRTK/StandardAssets/EditorUtilities/OnLoadUtilities.cs"
 )
 
@@ -601,7 +600,6 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/LeapMotion/MRTK.LeapMotion.asmdef",
     "Assets/MRTK/Providers/LeapMotion/Editor/MRTK.LeapMotion.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.Oculus.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/MRTK.Oculus.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
     "Assets/MRTK/Providers/OpenXR/MRTK.OpenXR.asmdef",
@@ -616,6 +614,8 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/SDK/MRTK.SDK.asmdef",
     "Assets/MRTK/SDK/Editor/MRTK.SDK.Editor.asmdef",
     "Assets/MRTK/SDK/Experimental/Editor/MRTK.SDK.Experimental.Editor.asmdef",
+    "Assets/MRTK/SDK/Editor/Inspectors/Experimental/InteractiveElement/MRTK.SDK.Editor.Experimental.Interactive.asmdef",
+    "Assets/MRTK/SDK/Experimental/InteractiveElement/MRTK.SDK.Experimental.Interactive.asmdef",
     "Assets/MRTK/Services/BoundarySystem/XR2018/MRTK.BoundarySystem.asmdef",
     "Assets/MRTK/Services/CameraSystem/MRTK.CameraSystem.asmdef",
     "Assets/MRTK/Services/DiagnosticsSystem/MRTK.DiagnosticsSystem.asmdef",
@@ -630,7 +630,9 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",
     "Assets/MRTK/Tools/MRTK.Tools.asmdef",
     "Assets/MRTK/Tools/MSBuild/MRTK.Tools.MSBuild.asmdef",
-    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef"
+    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/MRTK.WSU.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/Editor/MRTK.WSU.Editor.asmdef"
 )
 
 function CheckAsmDef {

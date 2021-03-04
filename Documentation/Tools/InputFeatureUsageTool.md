@@ -33,3 +33,4 @@ The smaller panel along the top lists the names of all detected sources.
 
 - [Creating an input system data provider](../Input/CreateDataProvider.md)
 - [Controller mapping tool](./ControllerMappingTool.md)
+- [MixedRealityInteractionMapping tool](./MixedRealityInteractionTool.md)

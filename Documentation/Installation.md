@@ -83,7 +83,7 @@ MRTK is attempting to set up your project for building Mixed Reality solutions b
 
 Accepting these options is completely optional, but recommended.
 
-Some prefabs and assets require TextMesh Pro, meaning you need the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+Some prefabs and assets require TextMesh Pro, meaning you need the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to reopen the scene to see changes**. Double click the selected scene in the Project tab to see the TMP changes reflected in the scene.
 
 ### 3. Switch your Unity project to the target platform
 
@@ -120,6 +120,7 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
     > * See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
     You will then see the following in your Scene hierarchy:
+
     <img src="../Documentation/Images/MRTK_SceneSetup.png" width="300">
 
     Which contains the following:

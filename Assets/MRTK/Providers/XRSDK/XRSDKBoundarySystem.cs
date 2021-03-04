@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
     public class XRSDKBoundarySystem : BaseBoundarySystem
     {
         /// <summary>
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     break;
             }
 
-            if (!XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+            if (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
             {
                 Debug.LogWarning("Tracking origin unable to be set.");
             }

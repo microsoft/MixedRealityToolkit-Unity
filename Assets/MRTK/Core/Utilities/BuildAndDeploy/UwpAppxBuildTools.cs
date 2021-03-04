@@ -559,10 +559,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Adds the 'Gaze Input' capability to the manifest.
         /// </summary>
         /// <remarks>
-        /// This is a workaround for versions of Unity which don't have native support
+        /// <para>This is a workaround for versions of Unity which don't have native support
         /// for the 'Gaze Input' capability in its Player Settings preference location.
         /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
+        /// take a dependency on this function.</para>
         /// </remarks>
         public static void AddGazeInputCapability(XElement rootNode)
         {
@@ -584,10 +584,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Adds the 'Research Mode' capability to the manifest.
         /// </summary>
         /// <remarks>
-        /// This is only for research projects and should not be used in production.
+        /// <para>This is only for research projects and should not be used in production.
         /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
         /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
+        /// take a dependency on this function.</para>
         /// </remarks>
         public static void AddResearchModeCapability(XElement rootNode)
         {
@@ -620,12 +620,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Enables unsafe code in the generated Assembly-CSharp project.
         /// </summary>
         /// <remarks>
-        /// This is not required by the research mode, but not using unsafe code with
-        /// direct memory access results in poor performance. So its kinda recommended
-        /// to use unsafe code.
-        /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
-        /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
+        /// <para>This is not required by the research mode, but not using unsafe code with
+        /// direct memory access results in poor performance. So it is recommended
+        /// to use unsafe code to an extent.</para>
+        /// <para>For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode. </para>
+        /// <para>Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.</para>
         /// </remarks>
         public static void AllowUnsafeCode(XElement rootNode)
         {

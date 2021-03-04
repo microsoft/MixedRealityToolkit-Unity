@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK",
         true)]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class WindowsMixedRealitySpatialMeshObserver :
         BaseSpatialMeshObserver,
         IMixedRealityCapabilityCheck
@@ -125,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     break;
 
                 case SpatialAwarenessMeshLevelOfDetail.Fine:
+                case SpatialAwarenessMeshLevelOfDetail.Unlimited:
                     triangleDensity = 2000;
                     break;
 
@@ -175,6 +176,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     UnityEditor.PlayerSettings.WSACapability.SpatialPerception,
                     this.GetType());
 #endif
+            // If we aren't using a HoloLens or there isn't an XR device present, return.
+            if (observer == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
+
+            if (RuntimeSpatialMeshPrefab != null)
+            {
+                AddRuntimeSpatialMeshPrefabToHierarchy();
+            }
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.Update");
@@ -184,6 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         {
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
                 UpdateObserver();
             }
         }
@@ -419,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-        private static readonly ProfilerMarker RequestMeshPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver+PlayspaceAdapter.RequestMesh");
+        private static readonly ProfilerMarker RequestMeshPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.RequestMesh");
 
         /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
@@ -494,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-        private static readonly ProfilerMarker RemoveMeshObjectPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver+PlayspaceAdapter.RemoveMeshObject");
+        private static readonly ProfilerMarker RemoveMeshObjectPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.RemoveMeshObject");
 
         /// <summary>
         /// Removes the <see cref="SpatialAwarenessMeshObject"/> associated with the specified id.
@@ -520,7 +529,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-        private static readonly ProfilerMarker ReclaimMeshObjectPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver+PlayspaceAdapter.ReclaimMeshObject");
+        private static readonly ProfilerMarker ReclaimMeshObjectPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.ReclaimMeshObject");
 
         /// <summary>
         /// Reclaims the <see cref="SpatialAwarenessMeshObject"/> to allow for later reuse.
@@ -549,7 +558,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-        private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver+PlayspaceAdapter.ConfigureObserverVolume");
+        private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.ConfigureObserverVolume");
 
         /// <summary>
         /// Applies the configured observation extents.
@@ -595,7 +604,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-        private static readonly ProfilerMarker OnSurfaceChangedPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver+PlayspaceAdapter.SurfaceObserver_OnSurfaceChanged");
+        private static readonly ProfilerMarker OnSurfaceChangedPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.SurfaceObserver_OnSurfaceChanged");
 
         /// <summary>
         /// Handles the SurfaceObserver's OnSurfaceChanged event.
@@ -624,7 +633,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
         }
 
-        private static readonly ProfilerMarker OnDataReadyPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver+PlayspaceAdapter.SurfaceObserver_OnDataReady");
+        private static readonly ProfilerMarker OnDataReadyPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.SurfaceObserver_OnDataReady");
 
         /// <summary>
         /// Handles the SurfaceObserver's OnDataReady event.
@@ -711,6 +720,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 }
             }
         }
+
 #endif // UNITY_WSA
 
         #endregion Helpers

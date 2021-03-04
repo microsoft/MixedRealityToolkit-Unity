@@ -5,10 +5,7 @@
         "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [
-        "Editor",
-        "WSA"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

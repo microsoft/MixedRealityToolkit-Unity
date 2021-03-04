@@ -20,13 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private const string customIconSetsFolderName = "CustomIconSets";
         private const string customIconUpgradeMessage = "This button appears to have a custom icon material. This is no longer required for custom icons.\n\n" +
             "We recommend upgrading the buttons in your project by installing the Microsoft.MixedRealityToolkit.Unity.Tools package and using the Migration Tool.";
-        private const string missingIconWarningMessage = "The icon used by this button's custom material was not found in the icon set.";
+        private const string missingIconWarningMessage = "The icon used by this button was not found in the icon set. You can see the icon currently being used is in the field below:";
+        private const string missingCharIconWarningMessage = "The icon used by this button was not found in the icon set. It may be part of another char icon font that was previously part of this icon set";
         private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
-        private const string upgradeDocUrl = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text";
+        private const string upgradeDocUrl = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button#how-to-change-the-icon-and-text";
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;
-        private SerializedProperty seeItSatItLabelTextProp;
+        private SerializedProperty seeItSayItLabelTextProp;
 
         private SerializedProperty interactableProp;
 
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             mainLabelTextProp = serializedObject.FindProperty("mainLabelText");
             seeItSayItLabelProp = serializedObject.FindProperty("seeItSayItLabel");
-            seeItSatItLabelTextProp = serializedObject.FindProperty("seeItSatItLabelText");
+            seeItSayItLabelTextProp = serializedObject.FindProperty("seeItSayItLabelText");
 
             interactableProp = serializedObject.FindProperty("interactable");
 
@@ -161,12 +162,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             {
                                 if (showComponents)
                                 {
-                                    EditorGUILayout.PropertyField(seeItSatItLabelTextProp);
+                                    EditorGUILayout.PropertyField(seeItSayItLabelTextProp);
                                 }
 
                                 EditorGUI.BeginChangeCheck();
 
-                                SerializedObject sisiLabelTextObject = new SerializedObject(seeItSatItLabelTextProp.objectReferenceValue);
+                                SerializedObject sisiLabelTextObject = new SerializedObject(seeItSayItLabelTextProp.objectReferenceValue);
                                 SerializedProperty sisiTextProp = sisiLabelTextObject.FindProperty("m_text");
                                 EditorGUILayout.PropertyField(sisiTextProp, new GUIContent("See it / Say it Label"));
                                 EditorGUILayout.Space();
@@ -279,19 +280,40 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             EditorGUILayout.Space();
+
             EditorGUILayout.PropertyField(iconSetProp);
-            if (iconSet != null)
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(EditorGUIUtility.IconContent("d_Refresh"), EditorStyles.miniButtonRight, GUILayout.Width(24f)))
             {
-                Sprite newIconSprite;
-                if (iconSet.EditorDrawSpriteIconSelector(currentIconSprite, out newIconSprite, 1))
-                {
-                    iconSpriteProp.objectReferenceValue = newIconSprite;
-                    cb.SetSpriteIcon(newIconSprite);
-                }
+                iconSet.UpdateSpriteIconTextures();
             }
-            else
+            EditorGUILayout.EndHorizontal();
+            if (iconSet == null)
             {
                 EditorGUILayout.HelpBox("No icon set assigned. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);
+                EditorGUILayout.PropertyField(iconQuadTextureProp);
+                return;
+            }
+            if (iconSet.SpriteIcons == null || iconSet.SpriteIcons.Length == 0)
+            {
+                EditorGUILayout.HelpBox("No sprite icons assigned to the icon set. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);
+                EditorGUILayout.PropertyField(iconQuadTextureProp);
+                return;
+            }
+
+            Sprite newIconSprite;
+            bool foundSprite;
+            if (iconSet.EditorDrawSpriteIconSelector(currentIconSprite, out foundSprite, out newIconSprite, 1))
+            {
+                iconSpriteProp.objectReferenceValue = newIconSprite;
+                cb.SetSpriteIcon(newIconSprite);
+            }
+
+            if (!foundSprite)
+            {
+                EditorGUILayout.HelpBox(missingIconWarningMessage, MessageType.Warning);
                 EditorGUILayout.PropertyField(iconSpriteProp);
             }
         }
@@ -324,24 +346,30 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(iconSetProp);
-            if (iconSet != null)
-            {
-                Texture newIconTexture;
-                bool foundTexture;
-                if (iconSet.EditorDrawQuadIconSelector(currentIconTexture, out foundTexture, out newIconTexture, 1))
-                {
-                    iconQuadTextureProp.objectReferenceValue = newIconTexture;
-                    cb.SetQuadIcon(newIconTexture);
-                }
-
-                if (!foundTexture)
-                {
-                    EditorGUILayout.HelpBox(missingIconWarningMessage, MessageType.Warning);
-                }
-            }
-            else
+            if (iconSet == null)
             {
                 EditorGUILayout.HelpBox("No icon set assigned. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);
+                EditorGUILayout.PropertyField(iconQuadTextureProp);
+                return;
+            }
+            if (iconSet.QuadIcons == null || iconSet.QuadIcons.Length == 0)
+            {
+                EditorGUILayout.HelpBox("No quad icons assigned to the icon set. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);
+                EditorGUILayout.PropertyField(iconQuadTextureProp);
+                return;
+            }
+
+            Texture newIconTexture;
+            bool foundTexture;
+            if (iconSet.EditorDrawQuadIconSelector(currentIconTexture, out foundTexture, out newIconTexture, 1))
+            {
+                iconQuadTextureProp.objectReferenceValue = newIconTexture;
+                cb.SetQuadIcon(newIconTexture);
+            }
+
+            if (!foundTexture)
+            {
+                EditorGUILayout.HelpBox(missingIconWarningMessage, MessageType.Warning);
                 EditorGUILayout.PropertyField(iconQuadTextureProp);
             }
         }
@@ -377,22 +405,27 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(iconSetProp);
-            if (iconSet != null)
-            {
-                uint newIconChar;
-                if (iconSet.EditorDrawCharIconSelector(currentIconChar, out newIconChar, 1))
-                {
-                    iconCharProp.longValue = newIconChar;
-                    SerializedObject iconSetObject = new SerializedObject(iconSet);
-                    SerializedProperty charIconFontProp = iconSetObject.FindProperty("charIconFont");
-                    iconFontProp.objectReferenceValue = charIconFontProp.objectReferenceValue;
-                    cb.SetCharIcon(newIconChar);
-                }
-            }
-            else
+            if (iconSet == null)
             {
                 EditorGUILayout.HelpBox("No icon set assigned. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);
                 EditorGUILayout.PropertyField(iconQuadTextureProp);
+                return;
+            }
+
+            uint newIconChar;
+            bool foundChar;
+            if (iconSet.EditorDrawCharIconSelector(currentIconChar, out foundChar, out newIconChar, 1))
+            {
+                iconCharProp.longValue = newIconChar;
+                SerializedObject iconSetObject = new SerializedObject(iconSet);
+                SerializedProperty charIconFontProp = iconSetObject.FindProperty("charIconFont");
+                iconFontProp.objectReferenceValue = charIconFontProp.objectReferenceValue;
+                cb.SetCharIcon(newIconChar);
+
+                if (!foundChar)
+                {
+                    EditorGUILayout.HelpBox(missingCharIconWarningMessage, MessageType.Warning);
+                }
             }
         }
     }

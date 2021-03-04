@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The focus provider handles the focused objects per input source.
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class FocusProvider : BaseCoreSystem,
         IMixedRealityFocusProvider,
         IPointerPreferences
@@ -514,6 +514,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!IsSetupValid) { return; }
 
+            base.Initialize();
+
             if (Application.isPlaying)
             {
                 Debug.Assert(uiRaycastCamera == null);
@@ -540,8 +542,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 primaryPointerSelector.Destroy();
             }
+            if (!MixedRealityToolkit.Instance.IsProfileSwitching)
+            {
+                CleanUpUiRaycastCamera();
+            }
 
-            CleanUpUiRaycastCamera();
             base.Destroy();
         }
 
@@ -553,6 +558,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (UpdatePerfMarker.Auto())
             {
                 if (!IsSetupValid) { return; }
+
+                base.Update();
 
                 UpdatePointers();
                 UpdateGazeProvider();
@@ -889,10 +896,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer
         {
             List<T> typePointers = new List<T>();
-            foreach (var pointer in pointers.Values)
+            foreach (PointerData pointer in pointers.Values)
             {
-                T typePointer = pointer.Pointer as T;
-                if (typePointer != null)
+                if (pointer.Pointer is T typePointer && !typePointer.IsNull())
                 {
                     typePointers.Add(typePointer);
                 }
@@ -1160,7 +1166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 foreach (var pointerData in pointers.Values)
                 {
-                    if (pointerData.Pointer is IMixedRealityNearPointer nearPointer)
+                    if (pointerData.Pointer is IMixedRealityNearPointer nearPointer && !nearPointer.IsNull())
                     {
                         if (nearPointer.IsInteractionEnabled || nearPointer.IsNearObject)
                         {

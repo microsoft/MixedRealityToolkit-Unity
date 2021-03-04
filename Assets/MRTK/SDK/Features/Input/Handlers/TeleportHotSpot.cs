@@ -20,12 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.OnBeforeFocusChange(eventData);
 
-            if (!(eventData.Pointer is TeleportPointer)) { return; }
-
-            IMixedRealityTeleportPointer teleportPointer = eventData.Pointer as IMixedRealityTeleportPointer;
-
-            if (teleportPointer == null)
+            if (!(eventData.Pointer is IMixedRealityTeleportPointer teleportPointer) || teleportPointer.IsNull())
+            {
                 return;
+            }
 
             if (eventData.NewFocusedObject == gameObject)
             {

@@ -55,15 +55,18 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                     continue;
                 }
 
-                if (i >= inputDevices.Count && textMesh.text != string.Empty)
+                if (i >= inputDevices.Count)
                 {
-                    textMesh.text = string.Empty;
+                    if (textMesh.text != string.Empty)
+                    {
+                        textMesh.text = string.Empty;
+                    }
                     continue;
                 }
 
                 InputDevice inputDevice = inputDevices[i];
 
-                listInputDevicesTextMesh.text += $"{inputDevice.name}\n";
+                listInputDevicesTextMesh.text += $"{inputDevice.name} | {inputDevice.manufacturer} | {inputDevice.serialNumber}\n";
                 textMesh.text = $"{inputDevice.name}\n";
 
                 if (inputDevice.TryGetFeatureUsages(featureUsages))

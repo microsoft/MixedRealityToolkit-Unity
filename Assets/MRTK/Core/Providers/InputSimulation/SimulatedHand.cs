@@ -93,35 +93,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected SimulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions) { }
+        protected SimulatedHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
+        { }
 
         /// <inheritdoc />
         public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => jointPoses.TryGetValue(joint, out pose);
 
         public void UpdateState(SimulatedHandData handData)
         {
-            for (int i = 0; i < jointCount; i++)
-            {
-                TrackedHandJoint handJoint = (TrackedHandJoint)i;
-
-                if (!jointPoses.ContainsKey(handJoint))
-                {
-                    jointPoses.Add(handJoint, handData.Joints[i]);
-                }
-                else
-                {
-                    jointPoses[handJoint] = handData.Joints[i];
-                }
-            }
-
-            CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
-
+            UpdateHandJoints(handData);
             UpdateVelocity();
-
+            
             UpdateInteractions(handData);
         }
 
+        /// <summary>
+        /// Updates the positions and orientations of the hand joints of the simulated hand
+        /// </summary>
+        /// <param name="handData">hand data provided by the simulation</param>
+        protected abstract void UpdateHandJoints(SimulatedHandData handData);
+
+        /// <summary>
+        /// Updates the interactions raised by the simulated hand
+        /// </summary>
+        /// <param name="handData">hand data provided by the simulation</param>
         protected abstract void UpdateInteractions(SimulatedHandData handData);
     }
 }

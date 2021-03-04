@@ -1,0 +1,35 @@
+# [Template] Run a Unity script that generates MSBuild projects.
+
+parameters:
+  UnityVersion: ""
+
+steps:
+- powershell: |
+    # Some machines require that the protocol be explicitly set to Tls12
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Install-Module -Name UnitySetup -Scope CurrentUser -Force
+  displayName: Install unitysetup.powershell
+
+- powershell: |
+    $logFile = New-Item -Path "$(Build.ArtifactStagingDirectory)\build\projectgeneration_log.log" -ItemType File -Force
+
+    $method = "Microsoft.MixedReality.Toolkit.MSBuild.MSBuildTools.GenerateSDKProjects"
+    # Uses unitysetup.powershell
+    try {
+      Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -AdditionalArguments "-NoGraphics -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+    }
+    finally {
+      if (Test-Path $logFile)
+      {
+        Write-Output '====================================================='
+        Write-Output '           Begin Unity Player Log                    '
+        Write-Output '====================================================='
+
+        Get-Content $logFile
+
+        Write-Output '====================================================='
+        Write-Output '           End Unity Player Log                      '
+        Write-Output '====================================================='
+      }
+    }
+  displayName: 'Generate SDK Projects'

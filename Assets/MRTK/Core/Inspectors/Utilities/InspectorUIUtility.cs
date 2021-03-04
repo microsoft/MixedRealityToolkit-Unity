@@ -431,7 +431,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             Color prevColor = GUI.color;
 
-            GUI.color = ColorTint100;
+            GUI.color = ColorTint50;
             using (new EditorGUILayout.VerticalScope(EditorStyles.textArea))
             {
                 EditorGUILayout.LabelField(notice, EditorStyles.wordWrappedMiniLabel);
@@ -639,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     // case 5: only show the link
 
                     // case 5 -> can't create and/or store the local scriptable above - show link
-                    bool isStoredAsset = (scriptable.objectReferenceValue == null) ? false : AssetDatabase.Contains(scriptable.objectReferenceValue);
+                    bool isStoredAsset = scriptable.objectReferenceValue != null && AssetDatabase.Contains(scriptable.objectReferenceValue);
                     bool isEmptyInStagedPrefab = !isStoredAsset && ((Component)scriptable.serializedObject.targetObject).gameObject.scene.path == "";
                     if (scriptable.objectReferenceValue == null ||  isEmptyInStagedPrefab)
                     {
@@ -710,7 +710,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         /// <summary>
         /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed gameobject.
-        /// Adds a button for adding any of the component (or dervied types) and a follow button to highlight existing attached components.
+        /// Adds a button for adding any of the component (or derived types) and a follow button to highlight existing attached components.
         /// </summary>
         static public bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
         {

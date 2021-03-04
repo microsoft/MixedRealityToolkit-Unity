@@ -5,7 +5,7 @@
 The Spatial Awareness system provides real-world environmental awareness in mixed reality applications. When introduced on Microsoft HoloLens, Spatial Awareness provided a collection of meshes, representing the geometry of the environment, which allowed for compelling interactions between holograms and the real-world.
 
 > [!NOTE]
-> At this time, the Mixed Reality Toolkit does not ship with Spatial Understanding algorithms as originally packaged in the HoloToolkit. Spatial Understanding generally involves transforming Spatial Mesh data to create simplified and/or grouped Mesh data such as planes, walls, floors, ceilings, etc.
+> At this time, the Mixed Reality Toolkit does not ship with Scene Understanding algorithms as originally packaged in the HoloToolkit. Scene Understanding generally involves transforming Spatial Mesh data to create simplified and/or grouped Mesh data such as planes, walls, floors, ceilings, etc. Starting from version 2.6 Scene Understanding is available as a experimental [spatial observer](#register-observers) called [`WindowsSceneUnderstandingObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver). However to use `WindowsSceneUnderstandingObserver` a separate package is needed. Please see the [Scene Understanding page](SceneUnderstanding.md) for more details.
 
 ## Getting started
 

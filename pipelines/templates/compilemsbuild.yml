@@ -1,9 +1,10 @@
-# [Template] Generate MSBuild projects and compile projects for Nuget.
+# [Template] Generate MSBuild projects and compile projects for NuGet.
+
 parameters:
   UnityVersion: ""
 
 steps:
-- template: generateprojects.yml
+- template: tasks/generate-projects.yml
   parameters:
     UnityVersion: ${{ parameters.UnityVersion }}
 
@@ -12,7 +13,7 @@ steps:
     command: 'restore'
     restoreSolution: '$(Build.SourcesDirectory)\MSBuild\Projects\MixedRealityToolkit.sln'
     feedsToUse: 'select'
-  displayName: "Nuget Restore"
+  displayName: "NuGet Restore"
 
 - task: MSBuild@1
   inputs:
@@ -110,6 +111,6 @@ steps:
     msbuildArguments: '/p:BuildProjectReferences=false'
   displayName: 'Build Player WSA'
 
-- template: assetretargeting.yml
+- template: tasks/assetretargeting.yml
   parameters:
     UnityVersion: ${{ parameters.UnityVersion }}

@@ -221,7 +221,9 @@
       - name: Controller Mapping tool
         href: Tools/ControllerMappingTool.md
       - name: InputFeatureUsage tool
-        href: Tools/InputFeatureUsageTool.md 
+        href: Tools/InputFeatureUsageTool.md
+      - name: MixedRealityInteractionMapping tool
+        href: Tools/MixedRealityInteractionTool.md 
   - name: UX Building Blocks
     items:
     - name: Toolbox Window
@@ -240,6 +242,8 @@
       href: README_SystemKeyboard.md
     - name: Interactable
       href: README_Interactable.md
+    - name: Interactive Element 
+      href: README_InteractiveElement.md
     - name: Solvers
       href: README_Solver.md
       items:
@@ -259,22 +263,22 @@
       href: README_NearMenu.md
     - name: App Bar
       href: README_AppBar.md
+    - name: Rigged Hand Visualizer
+      href: README_RiggedHandVisualizer.md     
     - name: Fingertip Visualization
       href: README_FingertipVisualization.md
     - name: Progress Indicator
       href: README_ProgressIndicator.md
-    - name: Dialog [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.md
-    - name: Hand Coach [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
-    - name: Pulse Shader [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
+    - name: Dialog
+      href: README_Dialog.md
+    - name: Hand Coach
+      href: README_HandCoach.md
+    - name: Pulse Shader 
+      href: README_PulseShader.md
     - name: Dock Control [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
     - name: HoloLens Keyboard Helpers [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
-    - name: Rigged Hand Visualizer [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md     
     - name: Elastic System [Experimental]
       href: Elastics/ElasticSystem.md 
     - name: Bounding Box [Obsolete]

@@ -27,8 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Should the observer remain stationary in the scene?
         /// </summary>
         /// <remarks>
-        /// Set IsStationaryObserver to false to move the volume with the user. 
-        /// If set to true, the origin will be 0,0,0 or the last known location.
+        /// <para>Set IsStationaryObserver to false to move the volume with the user. 
+        /// If set to true, the origin will be 0,0,0 or the last known location.</para>
         /// </remarks>
         bool IsStationaryObserver { get; set; }
 
@@ -41,8 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Gets or sets the extents( 1/2 size) of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
         /// <remarks>
-        /// When used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.Sphere"/> the X  value of the extents will be
-        /// used as the radius.
+        /// <para>When used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.Sphere"/>.
+        /// The X value of the extents will be used as the radius.</para>
         /// </remarks>
         Vector3 ObservationExtents { get; set; }
 
@@ -58,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Gets or sets the origin, in World Space, of the observer.
         /// </summary>
         /// <remarks>
-        /// Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
-        /// navigates the environment.
+        /// <para>Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
+        /// navigates the environment.</para>
         /// </remarks>
         Vector3 ObserverOrigin { get; set; }
 

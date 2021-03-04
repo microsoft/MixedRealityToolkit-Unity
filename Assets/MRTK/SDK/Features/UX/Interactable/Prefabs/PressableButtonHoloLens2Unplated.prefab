@@ -503,7 +503,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 937783102}
   interactable: {fileID: 7440800412470431853}
   seeItSayItLabel: {fileID: 329340111926477333}
-  seeItSatItLabelText: {fileID: 9181818329810857364}
+  seeItSayItLabelText: {fileID: 9181818329810857364}
   iconStyle: 0
   iconCharLabel: {fileID: 5182697764271180019}
   iconCharFont: {fileID: 0}

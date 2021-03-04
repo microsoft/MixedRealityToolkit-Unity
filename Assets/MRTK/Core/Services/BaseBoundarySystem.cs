@@ -58,11 +58,13 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Boundary System";
 
-        private bool isInitialized = false;
+        private bool boundarySystemInitialized = false;
 
         /// <inheritdoc/>
         public override void Initialize()
         {
+            base.Initialize();
+
             // The profile needs to be read on initialization to ensure that re-initialization
             // after profile change reads the correct data.
             ReadProfile();
@@ -74,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             SetTrackingSpace();
             CalculateBoundaryBounds();
 
-            isInitialized = true;
+            boundarySystemInitialized = true;
 
             RefreshVisualization();
             RaiseBoundaryVisualizationChanged();
@@ -174,6 +176,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             showCeiling = false;
 
             RaiseBoundaryVisualizationChanged();
+
+            base.Destroy();
         }
 
 
@@ -522,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         {
             // If not done initializing, no need to raise the changed event or check the visualization.
             // These will both happen at the end of the initialization flow.
-            if (!isInitialized)
+            if (!boundarySystemInitialized)
             {
                 return;
             }

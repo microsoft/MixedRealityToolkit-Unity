@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Spatial Awareness Mesh Observer Profile", fileName = "MixedRealitySpatialAwarenessMeshObserverProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwarenessMeshObserver)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySpatialAwarenessMeshObserver))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/configuring-spatial-awareness-mesh-observer")]
     public class MixedRealitySpatialAwarenessMeshObserverProfile : BaseSpatialAwarenessObserverProfile
     {
         #region IMixedRealitySpatialAwarenessMeshObserver settings
@@ -89,7 +89,52 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         public PhysicMaterial PhysicsMaterial => physicsMaterial;
 
-        
+        [SerializeField]
+        [Tooltip("Optional prefab that is added to the runtime spatial mesh hierarchy.  This prefab will only" +
+            " be instantiated and appended to the hierarchy in a build, the behavior associated with this property is not" + 
+            " enabled in editor.\n" +
+            "\n" +
+            "Default Runtime Spatial Awareness Hierarchy: \n" +
+            "\n" +
+            "Spatial Awareness System \n" +
+            "   Windows Mixed Reality Spatial Mesh Observer\n" +
+            "       Spatial Mesh - ID\n" +
+            "       Spatial Mesh - ID\n" +
+            "       ...\n" +
+            "\n" +
+            "Runtime Spatial Awareness Hierarchy with this prefab:\n" +
+            "\n" +
+            "Spatial Awareness System \n" +
+            "   Runtime Spatial Mesh Prefab\n" +
+            "       Windows Mixed Reality Spatial Mesh Observer\n" +
+            "           Spatial Mesh - ID\n" +
+            "           Spatial Mesh - ID\n" +
+            "            ...\n")]
+        private GameObject runtimeSpatialMeshPrefab = null;
+
+        /// <summary>
+        /// Optional prefab that is added to the runtime spatial mesh hierarchy.  This prefab will only
+        /// be instantiated and appended to the hierarchy in a build, the behavior associated with this property is not 
+        /// enabled in editor.
+        /// 
+        /// Runtime Spatial Awareness Hierarchy without this prefab:
+        /// 
+        /// Spatial Awareness System 
+        ///     Windows Mixed Reality Spatial Mesh Observer
+        ///         Spatial Mesh - ID
+        ///         Spatial Mesh - ID
+        ///         ...
+        ///         
+        /// Runtime Spatial Awareness Hierarchy with this prefab:
+        /// 
+        /// Spatial Awareness System 
+        ///         Runtime Spatial Mesh Prefab
+        ///             Windows Mixed Reality Spatial Mesh Observer
+        ///                 Spatial Mesh - ID
+        ///                 Spatial Mesh - ID
+        ///                 ...
+        /// </summary>
+        public GameObject RuntimeSpatialMeshPrefab => runtimeSpatialMeshPrefab;
 
         #endregion IMixedRealitySpatialAwarenessMeshObserver settings
     }

@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private const string YamlPrefix = "%YAML 1.1";
 
-        private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> SourceToOutputFolders = new Dictionary<string, string>
         {
             { "MSBuild/Publish/Player/Android", "AndroidPlayer" },
             { "MSBuild/Publish/Player/iOS", "iOSPlayer" },
@@ -56,15 +56,18 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             { "MSBuild/Publish/Player/WindowsStandalone32", "StandalonePlayer" },
         };
 
-        private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc", ".rsp", ".xml", ".targets", ".props", ".template", ".csproj", ".sln", ".psd", ".room" };
-        private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
+        private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc", ".rsp", ".xml", ".targets", ".props", ".template", ".csproj", ".sln", ".psd", ".room", ".sentinel", ".npmignore", ".bytes" };
+        private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta", ".rsp" };
 
-        private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); // Guid, FileName
+        private static readonly Dictionary<string, string> NonClassDictionary = new Dictionary<string, string>(); // GUID, FileName
 
         // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
 
-        [MenuItem("Mixed Reality Toolkit/MSBuild/Assets/Retarget To DLL")]
+        private const string OculusProfileGUID = "4f726b4cb3605994fac74d508110ec62";
+        private const string GUIDDictionaryFileName = "mrtk_guid_remapping_dictionary.txt";
+
+        [Obsolete("Obsolete and removed after deprecation of the NuGet distribution. Use RetargetAssetsToScript() to retarget to script GUIDs.")]
         public static void RetargetAssets()
         {
             try
@@ -82,6 +85,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
         }
 
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Retarget assets to scripts")]
+        public static void RetargetAssetsToScript() => RunRetargetToScript();
+
         private static void RunRetargetToDLL()
         {
             string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
@@ -89,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
             Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
 
-            // DLL name to Guid
+            // DLL name to GUID
             Dictionary<string, string> asmDefMappings = RetrieveAsmDefGuids(allFilesUnderAssets);
 
             Dictionary<string, AssemblyInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
@@ -120,6 +126,111 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
 
             ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
+
+            string folderPath = null;
+            string[] arguments = Environment.GetCommandLineArgs();
+
+            for (int i = 0; i < arguments.Length; ++i)
+            {
+                switch (arguments[i])
+                {
+                    case "-dictionaryFileOutputFolder":
+                        folderPath = arguments[++i];
+                        break;
+
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(folderPath))
+            {
+                string filePath = Path.Combine(folderPath, GUIDDictionaryFileName);
+                Debug.Log($"Writing remapping dictionary to {filePath}");
+                File.WriteAllLines(filePath, remapDictionary.Select(x => $"{x.Value.Item2} | {x.Key}, {ScriptFileIdConstant}"));
+                if (filePath.Contains("Assets"))
+                {
+                    string nugetFilePath = filePath.Replace("Assets", "NuGet/Content");
+                    Debug.Log($"Copying remapping dictionary to {nugetFilePath}");
+                    File.Copy(filePath, nugetFilePath, true);
+                }
+            }
+        }
+
+        private static void RunRetargetToScript()
+        {
+            string[] dictionaryPaths = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(GUIDDictionaryFileName));
+            for (int i = 0; i < dictionaryPaths.Length; i++)
+            {
+                dictionaryPaths[i] = AssetDatabase.GUIDToAssetPath(dictionaryPaths[i]);
+            }
+
+            if (dictionaryPaths.Length > 0)
+            {
+                DictionaryChoiceWindow window = EditorWindow.GetWindow(typeof(DictionaryChoiceWindow)) as DictionaryChoiceWindow;
+                window.titleContent = new GUIContent("GUID Remapping");
+                window.DictionaryPaths = dictionaryPaths;
+                window.Callback = (string path) =>
+                {
+                    try
+                    {
+                        Debug.Log("Starting to retarget assets.");
+                        StartRemapping(path);
+                        AssetDatabase.Refresh();
+                        Debug.Log("Completed asset retargeting.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError("Failed to retarget assets.");
+                        Debug.LogException(ex);
+
+                        throw ex;
+                    }
+                    finally
+                    {
+                        EditorUtility.ClearProgressBar();
+                    }
+                };
+                window.Show();
+            }
+            else
+            {
+                Debug.LogError($"Couldn't locate any mapping files. Looking for files with {Path.GetFileNameWithoutExtension(GUIDDictionaryFileName)} in the name.");
+            }
+        }
+
+        private static void StartRemapping(string dictionaryPath)
+        {
+            EditorUtility.DisplayProgressBar("GUID Remapping", "Loading remapping dictionary...", 0f);
+
+            Dictionary<string, Tuple<string, long>> remapDictionary = ReadDictionaryFile(File.ReadLines(Path.GetFullPath(dictionaryPath)));
+
+            if (remapDictionary.Count > 0)
+            {
+                ProcessYAMLAssets(remapDictionary);
+            }
+            else
+            {
+                Debug.LogError("No valid dictionary mapping file was found.");
+            }
+        }
+
+        private static Dictionary<string, Tuple<string, long>> ReadDictionaryFile(IEnumerable<string> dictionaryFileLines)
+        {
+            Dictionary<string, Tuple<string, long>> returnDictionary = new Dictionary<string, Tuple<string, long>>();
+
+            foreach (string line in dictionaryFileLines)
+            {
+                string[] split = line.Split('|');
+                if (split.Length == 2)
+                {
+                    string[] split2 = split[1].Split(',');
+                    if (split2.Length == 2)
+                    {
+                        returnDictionary.Add(split[0].Trim(), new Tuple<string, long>(split2[0].Trim(), long.Parse(split2[1].Trim())));
+                    }
+                }
+            }
+
+            return returnDictionary;
         }
 
         private static Dictionary<string, string> RetrieveAsmDefGuids(string[] allFiles)
@@ -133,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 string guid = File.ReadAllLines($"{asmdefFile}.meta")[1].Substring(6);
                 if (!Guid.TryParse(guid, out Guid _))
                 {
-                    throw new InvalidDataException("AsmDef meta file must have changed, as we can no longer parse a guid out of it.");
+                    throw new InvalidDataException("AsmDef meta file must have changed, as we can no longer parse a GUID out of it.");
                 }
                 guid = CycleGuidForward(guid);
                 dllGuids.Add($"{dllName}.dll", guid);
@@ -142,8 +253,37 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             return dllGuids;
         }
 
-        /// <param name="remapDictionary">Script file guid references to final editor DLL guid and fileID.</param>
-        /// <param name="dllGuids">DLL name to DLL file guid mapping.</param>
+        private static void ProcessYAMLAssets(Dictionary<string, Tuple<string, long>> remapDictionary)
+        {
+            HashSet<string> yamlAssets = new HashSet<string>();
+            string[] allFilePaths = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
+
+            int allFilePathsCount = allFilePaths.Length;
+            // Use half count for the progress bar, so this step takes a full half of the bar (2 / 4)
+            float halfPathsCount = allFilePathsCount / 2f;
+
+            for (int i = 0; i < allFilePathsCount; i++)
+            {
+                EditorUtility.DisplayProgressBar("GUID Remapping", "Parsing assets...", (1 + (i / halfPathsCount))  / 4f);
+
+                string filePath = allFilePaths[i];
+
+                if (IsYamlFile(filePath))
+                {
+                    yamlAssets.Add(filePath);
+                }
+            }
+
+            EditorUtility.DisplayProgressBar("GUID Remapping", "Processing assets...", 3 / 4f);
+
+            IEnumerable<Task> tasks = yamlAssets.Select(t => Task.Run(() => ProcessYamlFile(t, t, remapDictionary, true)));
+            Task.WhenAll(tasks).Wait();
+
+            EditorUtility.DisplayProgressBar("GUID Remapping", "Finishing up...", 1f);
+        }
+
+        /// <param name="remapDictionary">Script file GUID references to final editor DLL GUID and fileID.</param>
+        /// <param name="assemblyInformation">DLL name to DLL file GUID mapping.</param>
         private static void ProcessYAMLAssets(string[] allFilePaths, string outputDirectory, Dictionary<string, Tuple<string, long>> remapDictionary, Dictionary<string, AssemblyInformation> assemblyInformation)
         {
             if (Directory.Exists(outputDirectory))
@@ -200,69 +340,67 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             PostProcess(outputDirectory, assemblyInformation);
         }
 
-        private static async Task ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary)
+        private static bool ProcessYamlFile(string filePath, string targetPath, Dictionary<string, Tuple<string, long>> remapDictionary, bool scriptRemapping = false)
         {
-            int lineNum = 0;
-            using (StreamReader reader = new StreamReader(filePath))
-            using (StreamWriter writer = new StreamWriter(targetPath))
+            string[] fileLines = File.ReadAllLines(filePath);
+            bool fileEdited = false;
+            for (int lineNum = 0; lineNum < fileLines.Length; lineNum++)
             {
-                while (!reader.EndOfStream)
+                string line = fileLines[lineNum];
+                if (line.Contains("m_Script") || (filePath.EndsWith(".anim") && line.Contains("script")))
                 {
-                    string line = await reader.ReadLineAsync();
-                    lineNum++;
-                    if (line.Contains("m_Script") || (filePath.EndsWith(".anim") && line.Contains("script")))
+                    if (!line.Contains('}'))
                     {
-                        if (!line.Contains('}'))
+                        // Check the next line
+                        if (!fileLines[lineNum + 1].Contains('}'))
                         {
-                            // Read the second line as well
-                            line += await reader.ReadLineAsync();
-                            lineNum++;
-
-                            if (!line.Contains('}'))
-                            {
-                                throw new InvalidDataException($"Unexpected part of YAML line split over more than two lines, starting two lines: {line}");
-                            }
+                            throw new InvalidDataException($"Unexpected part of YAML line split over more than two lines, starting two lines: {line}\n{fileLines[lineNum + 1]}");
                         }
-
-                        if (line.Contains(ScriptFileIdConstant))
-                        {
-                            Match regexResults = Regex.Match(line, Utilities.MetaFileGuidRegex);
-                            if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
-                            {
-                                throw new InvalidDataException($"Failed to find the guid in line: {line}.");
-                            }
-
-                            string guid = regexResults.Groups[1].Captures[0].Value;
-                            if (remapDictionary.TryGetValue(guid, out Tuple<string, long> tuple))
-                            {
-                                line = Regex.Replace(line, @"fileID: \d+, guid: \w+", $"fileID: {tuple.Item2}, guid: {tuple.Item1}");
-                            }
-                            else if (nonClassDictionary.ContainsKey(guid))
-                            {
-                                // this guid bypasses throwing the exception. The reason for this is that there is currently an asset (OculusXRSDKDeviceManagerProfile.asset) that is reliant
-                                // on Unity 2019+ specific code (OculusXRSDKDeviceManagerProfile.cs), which causes CI to fail since it's running on Unity 2018.
-                                if (guid != "4f726b4cb3605994fac74d508110ec62")
-                                {
-                                    throw new InvalidDataException($"A script without a class ({nonClassDictionary[guid]}) is being processed.");
-                                }
-                            }
-                            else
-                            {
-                                // Switch to error later
-                                Debug.LogWarning($"Couldn't find a script remap for {guid} in file: '{filePath}' at line '{lineNum}'.");
-                            }
-                        }
-                        // else this is not a script file reference
                     }
-                    else if (line.Contains(ScriptFileIdConstant))
+
+                    Match regexResults = Regex.Match(line, scriptRemapping ? Utilities.MetaFileIdRegex : Utilities.MetaFileGuidRegex);
+                    if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
                     {
-                        throw new InvalidDataException($"Line in file {filePath} contains script type but not m_Script: {line.Trim()}");
+                        Debug.LogWarning($"Failed to find the ID in {Path.GetFileName(filePath)} in line: {line}.");
+                        continue;
                     }
-                    // { fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
 
-                    await writer.WriteLineAsync(line);
+                    string id = regexResults.Groups[1].Captures[0].Value;
+                    if (remapDictionary.TryGetValue(id, out Tuple<string, long> tuple))
+                    {
+                        fileLines[lineNum] = Regex.Replace(line, @"fileID: -?\d+, guid: \w+", $"fileID: {tuple.Item2}, guid: {tuple.Item1}");
+                        fileEdited = true;
+                    }
+                    else if (NonClassDictionary.ContainsKey(id))
+                    {
+                        // The OculusProfileGUID bypasses throwing the exception. The reason for this is that there is currently an asset (DefaultOculusXRSDKDeviceManagerProfile.asset) that is reliant
+                        // on Unity 2019+ specific code (OculusXRSDKDeviceManagerProfile.cs), which causes CI to fail since it's running on Unity 2018.
+
+                        // Also bypass this exception for scripts in the InteractiveElement and SceneUnderstanding directories as those files are only supported in Unity 2019.
+                        if (id != OculusProfileGUID && !filePath.Contains("InteractiveElement") && !filePath.Contains("SceneUnderstanding"))
+                        {
+                            throw new InvalidDataException($"A script without a class ({NonClassDictionary[id]}) is being processed on {Path.GetFileName(filePath)}.");
+                        }
+                    }
+                    else if (!scriptRemapping)
+                    {
+                        // Switch to error later
+                        Debug.LogWarning($"Couldn't find a script remap for {id} in file: '{Path.GetFileName(filePath)}' at line '{lineNum}'.");
+                    }
                 }
+                else if (line.Contains(ScriptFileIdConstant))
+                {
+                    throw new InvalidDataException($"Line in file {filePath} contains script type but not m_Script: {line.Trim()}");
+                }
+                // { fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
             }
+
+            if (fileEdited || !scriptRemapping)
+            {
+                File.WriteAllLines(targetPath, fileLines);
+            }
+
+            return fileEdited;
         }
 
         private static bool IsYamlFile(string filePath)
@@ -303,15 +441,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
                         {
                             Type type = monoScript.GetClass();
-                            if (type != null)
+                            if (type != null && typeof(Object).IsAssignableFrom(type) && !type.IsAbstract)
                             {
                                 toReturn.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = guid, ExecutionOrder = MonoImporter.GetExecutionOrder(monoScript) });
                             }
                             else
                             {
-                                nonClassDictionary.Add(guid, Path.GetFileName(filePath));
-                                // anborod: This warning is very noisy, and often is correct due to "interface", "abstract", "enum" classes that won't return type with call to GetClass above.
-                                // To turn it on, we should do extra checking, but removing for now.
+                                NonClassDictionary.Add(guid, Path.GetFileName(filePath));
+                                // This warning is very noisy, and often is correct due to "interface", "abstract", "enum" classes that won't return type with call to GetClass above.
+                                // Turn this on for extra debugging.
                                 // Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
                             }
                         }
@@ -361,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     {
                         if (!asmDefMappings.TryGetValue($"{dll.name}.dll", out string newDllGuid))
                         {
-                            throw new InvalidOperationException($"No guid based on .asmdef was generated for DLL '{dll.name}'.");
+                            throw new InvalidOperationException($"No GUID based on .asmdef was generated for DLL '{dll.name}'.");
                         }
 
                         AssemblyInformation assemblyInformation = new AssemblyInformation(dll.name, newDllGuid);
@@ -370,8 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                         foreach (Object asset in assets)
                         {
-                            MonoScript monoScript = asset as MonoScript;
-                            if (!(monoScript is null) && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
+                            if (asset is MonoScript monoScript && monoScript != null && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
                             {
                                 Type type = monoScript.GetClass();
 
@@ -384,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 {
                                     throw new InvalidDataException($"Type {type.Name} is not a member of an approved (typically, 'Microsoft.MixedReality.Toolkit') namespace");
                                 }
-                                else
+                                else if (typeof(Object).IsAssignableFrom(type) && !type.IsAbstract)
                                 {
                                     assemblyInformation.CompiledClasses.Add(type.FullName, new ClassInformation() { Name = type.Name, Namespace = type.Namespace, FileId = fileId, Guid = newDllGuid });
                                 }
@@ -459,7 +596,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private static void CopyPluginContents(string outputPath)
         {
-            foreach (KeyValuePair<string, string> sourceToOutputPair in sourceToOutputFolders)
+            foreach (KeyValuePair<string, string> sourceToOutputPair in SourceToOutputFolders)
             {
                 DirectoryInfo directory = new DirectoryInfo(Application.dataPath.Replace("Assets", sourceToOutputPair.Key));
                 if (!directory.Exists)
@@ -538,28 +675,28 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
 
-            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.WSA, out FileInfo uapMetaFile))
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.WSA, out FileInfo uwpMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample UWP dll.meta template.");
             }
 
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Standalone, out FileInfo standaloneMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample standalone dll.meta template.");
             }
 
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Android, out FileInfo androidMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample Android dll.meta template.");
             }
 
             if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.iOS, out FileInfo iOSMetaFile))
             {
-                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+                throw new FileNotFoundException("Could not find sample iOS dll.meta template.");
             }
 
             string editorMetaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
-            string uapMetaFileTemplate = File.ReadAllText(uapMetaFile.FullName);
+            string uapMetaFileTemplate = File.ReadAllText(uwpMetaFile.FullName);
             string standaloneMetaFileTemplate = File.ReadAllText(standaloneMetaFile.FullName);
             string androidMetaFileTemplate = File.ReadAllText(androidMetaFile.FullName);
             string iOSMetaFileTemplate = File.ReadAllText(iOSMetaFile.FullName);
@@ -572,16 +709,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             foreach (KeyValuePair<AssemblyInformation, FileInfo[]> mapping in mappings)
             {
-                // Editor is guid + 1; which has done when we processed Editor DLLs
-                // Standalone is guid + 2
-                // UAP is guid + 3
+                // Editor is GUID + 1; which has done when we processed Editor DLLs
+                // Standalone is GUID + 2
+                // UAP is GUID + 3
                 // Editor PDB is + 4
-                // Standalone PDB is +5
-                // UAP PDB is +6
-                // Android is guid + 7
-                // iOS is guid + 8
-                // Android PDB is +9
-                // iOS  PDB is +10
+                // Standalone PDB is + 5
+                // UAP PDB is + 6
+                // Android is GUID + 7
+                // iOS is GUID + 8
+                // Android PDB is + 9
+                // iOS PDB is + 10
                 string templateToUse = editorMetaFileTemplate;
                 foreach (FileInfo file in mapping.Value)
                 {
@@ -680,7 +817,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             StringBuilder guidBuilder = new StringBuilder();
             guid = guid.ToLower();
 
-            // Add one to each hexit in the guid to make it unique, but also reproducible
+            // Add one to each hexit in the GUID to make it unique, but also reproducible
             foreach (char hexit in guid)
             {
                 switch (hexit)
@@ -732,6 +869,39 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 #pragma warning disable CS0649
             public string name;
 #pragma warning restore CS0649
+        }
+
+        private class DictionaryChoiceWindow : EditorWindow
+        {
+            public string[] DictionaryPaths { get; internal set; } = null;
+            public Action<string> Callback { get; internal set; }
+
+            private void OnGUI()
+            {
+                if (DictionaryPaths != null)
+                {
+                    using (new EditorGUILayout.VerticalScope())
+                    {
+                        foreach (string path in DictionaryPaths)
+                        {
+                            using (new EditorGUILayout.HorizontalScope())
+                            {
+                                EditorGUILayout.LabelField(path);
+                                if (GUILayout.Button("Select"))
+                                {
+                                    Callback?.Invoke(path);
+                                    Close();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (GUILayout.Button("Cancel"))
+                {
+                    Close();
+                }
+            }
         }
     }
 }

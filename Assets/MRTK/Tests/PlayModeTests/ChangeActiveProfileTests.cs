@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Log("Validating DefaultCursor count.");
             foreach (Transform child in MixedRealityPlayspace.Transform.GetComponentsInChildren<Transform>())
             {
-                if ("DefaultCursor(Clone)" == child.name)
+                if ("DefaultGazeCursor(Clone)" == child.name)
                 {
                     defaultCursorCount++;
                 }

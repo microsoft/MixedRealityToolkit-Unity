@@ -18,8 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected BaseWindowsMixedRealityXRSDKSource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, sourceHandedness, inputSource, interactions) { }
+        protected BaseWindowsMixedRealityXRSDKSource(
+            TrackingState trackingState,
+            Handedness sourceHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
+            : base(trackingState, sourceHandedness, inputSource, interactions, definition)
+        { }
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
@@ -34,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             using (UpdatePoseDataPerfMarker.Auto())
             {
-                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);      
+                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
                 // Update the interaction data source
                 switch (interactionMapping.InputType)

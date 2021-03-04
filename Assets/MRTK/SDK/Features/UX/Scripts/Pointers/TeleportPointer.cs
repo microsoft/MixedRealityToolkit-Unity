@@ -36,9 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
         /// <summary>
-        /// Teleport pointer will only respond to input events for teleportation that match this MixedRealityInputAction.
+        /// Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction
         /// </summary>
         public MixedRealityInputAction TeleportInputAction => teleportAction;
+
+        [SerializeField]
+        [Tooltip("Teleport Pointer Cursor visibility when a hotspot is in focus")]
+        private bool hotSpotCursorVisibility = true;
+
+        /// <summary>
+        /// Teleport pointer cursor visibility if pointer is focused on hotspot
+        /// </summary>
+        public bool TeleportHotSpotCursorVisibility
+        {
+            get => hotSpotCursorVisibility;
+            set => hotSpotCursorVisibility = value;
+        }
 
         [SerializeField]
         [Range(0f, 1f)]
@@ -330,7 +343,14 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                         // Clamp the end of the parabola to the result hit's point
                         LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
-                        BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+                        if (hotSpotCursorVisibility)
+                        {
+                            BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+                        }
+                        else
+                        {
+                            BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid);
+                        }
                     }
                     else
                     {

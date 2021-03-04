@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             var newHandedness = trackedController == null ? Handedness.None : trackedController.ControllerHandedness;
             if (previousHandedness.IsNone() && !newHandedness.IsNone())
             {
-                // Toggle cursor off for hand that is going to suppor the hand menu
+                // Toggle cursor off for hand that is going to support the hand menu
                 StartCoroutine(ToggleCursors(trackedController, false, true));
 
                 previousHandedness = newHandedness;
@@ -612,7 +612,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 return CalculateRayForSafeZone(origin, targetTransform, hand, handSafeZone, offsetBehavior);
             }
 
-            angleOffset = angleOffset % 360;
+            angleOffset %= 360;
             while (angleOffset < 0)
             {
                 angleOffset = (angleOffset + 360) % 360;
@@ -653,9 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private static MixedRealityPose? GetPalmPose(IMixedRealityController hand)
         {
             MixedRealityPose palmPose;
-            var jointedHand = hand as IMixedRealityHand;
 
-            if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+            if (hand is IMixedRealityHand jointedHand && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
             {
                 return palmPose;
             }
@@ -667,8 +666,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Returns true if the given controller is a valid target for this solver.
         /// </summary>
         /// <remarks>
-        /// Certain types of controllers (i.e. Xbox controllers) do not contain a handedness
-        /// and should not trigger the HandConstraint to show its corresponding UX.
+        /// <para>Certain types of controllers (i.e. Xbox controllers) do not contain a handedness
+        /// and should not trigger the HandConstraint to show its corresponding UX.</para>
         /// </remarks>
         private static bool IsApplicableController(IMixedRealityController controller)
         {

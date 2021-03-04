@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private const string noIconFontMessage = "No icon font selected. Icon fonts will be unavailable.";
         private const string downloadIconFontMessage = "For instructions on how to install the HoloLens icon font, click the button below.";
-        private const string hololensIconFontUrl = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html";
+        private const string hololensIconFontUrl = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button";
         private const string mdl2IconFontName = "holomdl2";
         private const string textMeshProMenuItem = "Window/TextMeshPro/Font Asset Creator";
 
@@ -223,9 +223,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Draws a selectable grid of character icons.
         /// </summary>
         /// <returns>True if a new icon was selected.</returns>
-        public bool EditorDrawCharIconSelector(uint currentChar, out uint newChar, int indentLevel = 0)
+        public bool EditorDrawCharIconSelector(uint currentChar, out bool foundChar, out uint newChar, int indentLevel = 0)
         {
             newChar = 0;
+            foundChar = false;
+            int currentSelection = -1;
 
             if (charIconFont == null)
             {
@@ -233,7 +235,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            int currentSelection = -1;
             for (int i = 0; i < charIcons.Length; i++)
             {
                 if (charIcons[i].Character == currentChar)
@@ -246,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             using (new EditorGUI.IndentLevelScope(indentLevel))
             {
                 int column = 0;
-                int newSelection = -1;
+                int newSelection = currentSelection;
 
                 if (charIcons.Length > 0)
                 {
@@ -282,9 +283,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     EditorGUILayout.LabelField("(No icons in set)");
                 }
 
-                if (newSelection >= 0 && newSelection != currentSelection)
+                if (newSelection >= 0)
                 {
-                    newChar = charIcons[newSelection].Character;
+                    foundChar = true;
+                    if (newSelection != currentSelection)
+                    {
+                        newChar = charIcons[newSelection].Character;
+                    }
                 }
             }
 
@@ -295,11 +300,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Draws a selectable grid of sprite icons.
         /// </summary>
         /// <returns>True if a new icon was selected.</returns>
-        public bool EditorDrawSpriteIconSelector(Sprite currentSprite, out Sprite newSprite, int indentLevel = 0)
+        public bool EditorDrawSpriteIconSelector(Sprite currentSprite, out bool foundSprite, out Sprite newSprite, int indentLevel = 0)
         {
             newSprite = null;
-
             int currentSelection = -1;
+            foundSprite = false;
+
             for (int i = 0; i < spriteIcons.Length; i++)
             {
                 if (spriteIcons[i] == currentSprite)
@@ -311,11 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (spriteIconTextures == null || spriteIconTextures.Length != spriteIcons.Length)
             {
-                spriteIconTextures = new Texture[spriteIcons.Length];
-                for (int i = 0; i < spriteIcons.Length; i++)
-                {
-                    spriteIconTextures[i] = GetTextureFromSprite(spriteIcons[i]);
-                }
+                UpdateSpriteIconTextures();
             }
 
             using (new EditorGUI.IndentLevelScope(indentLevel))
@@ -328,13 +330,41 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var maxWidth = GUILayout.MaxWidth(maxButtonSize * maxButtonsPerColumn);
                 int newSelection = GUILayout.SelectionGrid(currentSelection, spriteIconTextures, maxButtonsPerColumn, maxHeight, maxWidth);
 #endif
-                if (newSelection >= 0 && newSelection != currentSelection)
+                if (newSelection >= 0)
                 {
-                    newSprite = spriteIcons[newSelection];
+                    foundSprite = true;
+                    if (newSelection != currentSelection)
+                    {
+                        newSprite = spriteIcons[newSelection];
+                    }
                 }
             }
 
             return newSprite != null;
+        }
+
+
+        /// <summary>
+        /// Updates the cached sprite icon textures to the latest textures in spriteIcons
+        /// </summary>
+        public void UpdateSpriteIconTextures()
+        {
+            if(spriteIcons != null)
+            {
+                spriteIconTextures = new Texture[spriteIcons.Length];
+                for (int i = 0; i < spriteIcons.Length; i++)
+                {
+                    try
+                    {
+                        spriteIconTextures[i] = GetTextureFromSprite(spriteIcons[i]);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError("There was an issue processing the Sprite Icons of this IconSet. Ensure that your IconSet is configured properly");
+                        throw e;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -543,7 +573,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     using (new EditorGUI.IndentLevelScope(1))
                     {
                         spriteIconsProp.isExpanded = true;
+
+                        // Check if the sprite Icons were updated
+                        EditorGUI.BeginChangeCheck();
                         EditorGUILayout.PropertyField(spriteIconsProp, true);
+                        // End the code block and update the label if a change occurred
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            serializedObject.ApplyModifiedProperties();
+                            bis.UpdateSpriteIconTextures();
+                        }
                     }
                 }
 #if UNITY_2019_3_OR_NEWER

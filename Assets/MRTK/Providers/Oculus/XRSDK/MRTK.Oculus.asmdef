@@ -5,6 +5,7 @@
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.Management",
         "Unity.XR.Oculus",
         "Oculus.VR"
     ],

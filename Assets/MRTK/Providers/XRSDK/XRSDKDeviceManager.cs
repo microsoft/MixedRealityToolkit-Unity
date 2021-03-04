@@ -9,6 +9,10 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
+#if XR_MANAGEMENT_ENABLED
+using UnityEngine.XR.Management;
+#endif // XR_MANAGEMENT_ENABLED
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 {
     /// <summary>
@@ -46,16 +50,27 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         private readonly List<InputDevice> inputDevicesSubset = new List<InputDevice>();
         private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
 
-        private List<InputDeviceCharacteristics> GenericDesiredInputCharacteristics = new List<InputDeviceCharacteristics>()
+        protected virtual List<InputDeviceCharacteristics> DesiredInputCharacteristics { get; set; } = new List<InputDeviceCharacteristics>()
         {
             InputDeviceCharacteristics.Controller,
             InputDeviceCharacteristics.HandTracking
         };
-        protected virtual List<InputDeviceCharacteristics> DesiredInputCharacteristics
-        {
-            get { return GenericDesiredInputCharacteristics; }
-            set { GenericDesiredInputCharacteristics = value; }
-        }
+
+#if XR_MANAGEMENT_ENABLED
+        /// <summary>
+        /// Checks if the active loader has a specific name. Used in cases where the loader class is internal, like WindowsMRLoader.
+        /// </summary>
+        /// <param name="loaderName">The string name to compare against the active loader.</param>
+        /// <returns>True if the active loader has the same name as the parameter.</returns>
+        protected virtual bool IsLoaderActive(string loaderName) => XRGeneralSettings.Instance.Manager.activeLoader != null && XRGeneralSettings.Instance.Manager.activeLoader.name == loaderName;
+
+        /// <summary>
+        /// Checks if the active loader is of a specific type. Used in cases where the loader class is accessible, like OculusLoader.
+        /// </summary>
+        /// <typeparam name="T">The loader class type to check against the active loader.</typeparam>
+        /// <returns>True if the active loader is of the specified type.</returns>
+        protected virtual bool IsLoaderActive<T>() where T : XRLoader => XRGeneralSettings.Instance.Manager.activeLoader is T;
+#endif // XR_MANAGEMENT_ENABLED
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
@@ -64,6 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             using (UpdatePerfMarker.Auto())
             {
+                if (!IsEnabled)
+                {
+                    return;
+                }
+
                 base.Update();
 
                 if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.running)
@@ -111,6 +131,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             }
         }
 
+        /// <inheritdoc/>
+        public override void Disable()
+        {
+            var controllersCopy = ActiveControllers.ToReadOnlyCollection();
+            foreach (var controller in controllersCopy)
+            {
+                RemoveController(controller.Key);
+            }
+
+            base.Disable();
+        }
+
         #region Controller Utilities
 
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.GetOrAddController");
@@ -149,6 +181,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 SupportedControllerType currentControllerType = GetCurrentControllerType(inputDevice);
                 Type controllerType = GetControllerType(currentControllerType);
+
+                if (controllerType == null)
+                {
+                    return null;
+                }
+
                 InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
 
                 IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
@@ -187,25 +225,31 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             using (RemoveControllerPerfMarker.Auto())
             {
-                if (ActiveControllers.ContainsKey(inputDevice))
+                if (ActiveControllers.TryGetValue(inputDevice, out GenericXRSDKController controller))
                 {
-                    GenericXRSDKController controller = ActiveControllers[inputDevice];
-
                     if (controller != null)
                     {
-                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-
-                        RecyclePointers(controller.InputSource);
-
-                        if (controller.Visualizer != null &&
-                            controller.Visualizer.GameObjectProxy != null)
-                        {
-                            controller.Visualizer.GameObjectProxy.SetActive(false);
-                        }
+                        RemoveControllerFromScene(controller);
                     }
 
                     ActiveControllers.Remove(inputDevice);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Removes the controller from the scene and handles any additional cleanup
+        /// </summary>
+        protected void RemoveControllerFromScene(GenericXRSDKController controller)
+        {
+            CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
+            RecyclePointers(controller.InputSource);
+
+            if (controller.Visualizer != null &&
+                controller.Visualizer.GameObjectProxy != null)
+            {
+                controller.Visualizer.GameObjectProxy.SetActive(false);
             }
         }
 

@@ -135,6 +135,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 AskForETPermission();
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 ReadProfile();
+
+                // Call the base after initialization to ensure any early exits do not
+                // artificially declare the service as initialized.
+                base.Initialize();
             }
         }
 
@@ -169,6 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     return;
                 }
 
+                base.Update();
+
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 if (pointerPose != null)
                 {
@@ -179,7 +185,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                         if (eyes.Gaze.HasValue)
                         {
-                            Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
+                            Vector3 origin = MixedRealityPlayspace.TransformPoint(eyes.Gaze.Value.Origin.ToUnityVector3());
+                            Vector3 direction = MixedRealityPlayspace.TransformDirection(eyes.Gaze.Value.Direction.ToUnityVector3());
+
+                            Ray newGaze = new Ray(origin, direction);
 
                             if (SmoothEyeTracking)
                             {

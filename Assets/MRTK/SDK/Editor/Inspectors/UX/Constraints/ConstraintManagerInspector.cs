@@ -278,9 +278,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.LabelField("ComponentId: " + constraintManager.GetInstanceID(), EditorStyles.miniLabel);
 
                     // deferred delete elements from array to not break unity layout
-                    foreach (int i in indicesToRemove)
+                    for (int i = indicesToRemove.Count - 1; i > -1; i--)
                     {
-                        selectedConstraints.DeleteArrayElementAtIndex(i);
+                        var currentArraySize = selectedConstraints.arraySize;
+                        selectedConstraints.DeleteArrayElementAtIndex(indicesToRemove[i]);
+                        if (currentArraySize == selectedConstraints.arraySize)
+                        {
+                            selectedConstraints.DeleteArrayElementAtIndex(indicesToRemove[i]);
+                        }
                     }
 
                     indicesToRemove.Clear();
@@ -330,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         selected = i;
                     }
 
-                    // popups will only show unqiue elements
+                    // popups will only show unique elements
                     // in case of auto selection we don't care which one we're selecting as the behavior will be the same.
                     // in case of manual selection users might want to differentiate which constraintmanager they are referring to.
                     if (manager.AutoConstraintSelection == true)

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class MixedRealityInputSystem : BaseDataProviderAccessCoreSystem, IMixedRealityInputSystem, IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -118,6 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private MixedRealityInputActionRulesProfile CurrentInputActionRulesProfile { get; set; }
 
+        private bool inputModuleChecked = false;
+        private MixedRealityInputModule inputModule;
+
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -171,11 +174,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 DebugUtilities.LogVerbose("MixedRealityInputModule added to main camera");
                 // There is no input module attached to the camera, add one.
-                CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                inputModule = CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
                 isInputModuleAdded = true;
             }
             else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
-            { /* Nothing to do, a MixedRealityInputModule was applied in the editor. */ }
+            {
+                inputModule = inputModules[0] as MixedRealityInputModule;
+            }
             else
             {
                 Debug.LogError($"For Mixed Reality Toolkit input to work properly, please remove your other input module(s) and add a {typeof(MixedRealityInputModule).Name} to your main camera.", inputModules[0]);
@@ -234,6 +239,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
 
             CreateDataProviders();
+
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
+            base.Initialize();
         }
 
         /// <inheritdoc />
@@ -245,6 +254,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Enable();
 
             InputEnabled?.Invoke();
+        }
+
+        public override void LateUpdate()
+        {
+            // Check whether manual initialization of input module is needed.
+            // The check is only required once after input system is created.
+            if (!isInputModuleAdded && !inputModuleChecked)
+            {
+                if (inputModule.ManualInitializationRequired)
+                {
+                    inputModule.Initialize();
+                }
+                inputModuleChecked = true;
+            }
+            base.LateUpdate();
         }
 
         private void CreateDataProviders()
@@ -356,7 +380,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (isInputModuleAdded)
             {
-                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
                 if (inputModule)
                 {
                     if (Application.isPlaying)
@@ -367,7 +390,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UnityObjectExtensions.DestroyObject(inputModule);
                 }
             }
+            // If the MRTK profile is being switched and there is an input module in the scene in the beginning
+            else if (Application.isPlaying && inputModule != null)
+            {
+                inputModule.Suspend();
+            }
 
+            inputModule = null;
             base.Destroy();
         }
         #endregion IMixedRealityService Implementation
@@ -1156,9 +1185,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     foreach (var component in currentObject.GetComponents<Component>())
                     {
-                        if (component is IMixedRealityPointerHandler)
+                        if (component is IMixedRealityPointerHandler handler)
                         {
-                            ancestorPointerHandler = (IMixedRealityPointerHandler)component;
+                            ancestorPointerHandler = handler;
                             break;
                         }
                     }
@@ -1276,14 +1305,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var inputHandler = handler as IMixedRealityInputHandler;
-                if (inputHandler != null)
+                if (handler is IMixedRealityInputHandler inputHandler && !inputHandler.IsNull())
                 {
                     inputHandler.OnInputDown(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(inputData);
                 }
@@ -1330,14 +1357,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var inputHandler = handler as IMixedRealityInputHandler;
-                if (inputHandler != null)
+                if (handler is IMixedRealityInputHandler inputHandler && !inputHandler.IsNull())
                 {
                     inputHandler.OnInputUp(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionEnded(inputData);
                 }
@@ -1520,14 +1545,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var gestureHandler = handler as IMixedRealityGestureHandler;
-                if (gestureHandler != null)
+                if (handler is IMixedRealityGestureHandler gestureHandler && !gestureHandler.IsNull())
                 {
                     gestureHandler.OnGestureStarted(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(inputData);
                 }
@@ -1657,14 +1680,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var gestureHandler = handler as IMixedRealityGestureHandler;
-                if (gestureHandler != null)
+                if (handler is IMixedRealityGestureHandler gestureHandler && !gestureHandler.IsNull())
                 {
                     gestureHandler.OnGestureCompleted(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionEnded(inputData);
                 }
@@ -1800,14 +1821,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var speechData = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
                 Debug.Assert(speechData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var speechHandler = handler as IMixedRealitySpeechHandler;
-                if (speechHandler != null)
+                if (handler is IMixedRealitySpeechHandler speechHandler && !speechHandler.IsNull())
                 {
                     speechHandler.OnSpeechKeywordRecognized(speechData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(speechData);
                     actionHandler.OnActionEnded(speechData);

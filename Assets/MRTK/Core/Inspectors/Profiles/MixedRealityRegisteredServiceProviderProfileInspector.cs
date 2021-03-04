@@ -181,9 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (componentType != null)
             {
-                MixedRealityExtensionServiceAttribute attr = MixedRealityExtensionServiceAttribute.Find(componentType) as MixedRealityExtensionServiceAttribute;
-
-                if (attr != null)
+                if (MixedRealityExtensionServiceAttribute.Find(componentType) is MixedRealityExtensionServiceAttribute attr)
                 {
                     componentName.stringValue = !string.IsNullOrWhiteSpace(attr.Name) ? attr.Name : componentType.Name;
                     configurationProfile.objectReferenceValue = attr.DefaultProfile;

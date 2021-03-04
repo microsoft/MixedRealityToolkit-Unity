@@ -1,8 +1,11 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
-    Builds the Mixed Reality Toolkit nuget packacges.
+    Builds the Mixed Reality Toolkit NuGet packages.
 .DESCRIPTION
-    Builds nuget packages for the Mixed Reality Toolkit.
+    Builds NuGet packages for the Mixed Reality Toolkit.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER Version
@@ -101,7 +104,7 @@ try {
         exit($lastexitcode)
     }
 
-    ### Run Asset regargetting:
+    ### Run Asset retargeting:
     RunUnityTask -taskName "AssetRetargeting" -methodToExecute "Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets"
     
     ### Package NuGet

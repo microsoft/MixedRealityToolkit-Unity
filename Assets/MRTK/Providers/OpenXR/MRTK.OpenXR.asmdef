@@ -5,6 +5,7 @@
         "Microsoft.MixedReality.OpenXR",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.Management",
         "Unity.XR.OpenXR"
     ],
     "includePlatforms": [
@@ -26,6 +27,11 @@
             "name": "com.microsoft.mixedreality.openxr",
             "expression": "",
             "define": "MSFT_OPENXR"
+        },
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "[0.1.0,0.1.3)",
+            "define": "MSFT_OPENXR_PRE_013"
         },
         {
             "name": "com.unity.xr.openxr",

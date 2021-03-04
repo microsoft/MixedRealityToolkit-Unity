@@ -15,10 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericXRSDKController : BaseController
     {
-        public GenericXRSDKController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-        }
+        public GenericXRSDKController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
+        { }
 
         /// <summary>
         /// The current pose of this XR SDK controller.
@@ -40,12 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         protected Quaternion CurrentControllerRotation = Quaternion.identity;
 
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
-
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdateController");
 
         /// <summary>
@@ -63,45 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     Enabled = false;
                 }
 
-                var lastState = TrackingState;
-                LastControllerPose = CurrentControllerPose;
-
-                // Check for position and rotation.
-                IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
-                IsPositionApproximate = false;
-
-                IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
-
-                // Devices are considered tracked if we receive position OR rotation data from the sensors.
-                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
-                CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
-
-                CurrentControllerPose.Position = CurrentControllerPosition;
-                CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-                // Raise input system events if it is enabled.
-                if (lastState != TrackingState)
-                {
-                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-                }
-
-                if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
-                {
-                    if (IsPositionAvailable && IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
-                    }
-                    else if (IsPositionAvailable && !IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
-                    }
-                    else if (!IsPositionAvailable && IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
-                    }
-                }
+                UpdateSixDofData(inputDevice);
 
                 for (int i = 0; i < Interactions?.Length; i++)
                 {
@@ -118,10 +78,60 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         case AxisType.DualAxis:
                             UpdateDualAxisData(Interactions[i], inputDevice);
                             break;
-                        case AxisType.SixDof:
-                            UpdatePoseData(Interactions[i], inputDevice);
-                            break;
                     }
+                }
+            }
+        }
+
+        protected virtual void UpdateSixDofData(InputDevice inputDevice)
+        {
+            var lastState = TrackingState;
+            LastControllerPose = CurrentControllerPose;
+
+            // Check for position and rotation.
+            IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
+            IsPositionApproximate = false;
+
+            IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
+
+            // Devices are considered tracked if we receive position OR rotation data from the sensors.
+            TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+            CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
+            CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
+
+            CurrentControllerPose.Position = CurrentControllerPosition;
+            CurrentControllerPose.Rotation = CurrentControllerRotation;
+
+            // Raise input system events if it is enabled.
+            if (lastState != TrackingState)
+            {
+                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+            }
+
+            if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
+            {
+                if (IsPositionAvailable && IsRotationAvailable)
+                {
+                    CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                }
+                else if (IsPositionAvailable && !IsRotationAvailable)
+                {
+                    CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                }
+                else if (!IsPositionAvailable && IsRotationAvailable)
+                {
+                    CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                }
+            }
+
+            for (int i = 0; i < Interactions?.Length; i++)
+            {
+                switch (Interactions[i].AxisType)
+                {
+                    case AxisType.SixDof:
+                        UpdatePoseData(Interactions[i], inputDevice);
+                        break;
                 }
             }
         }
@@ -227,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             using (UpdateSingleAxisDataPerfMarker.Auto())
             {
                 Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
-                // Update the interaction data source
+                // First handle updating the bool values, since those events are only raised once the trigger/gripped is presssed
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.TriggerPress:
@@ -260,6 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     }
                 }
 
+                // Next handle updating the float values
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.Trigger:

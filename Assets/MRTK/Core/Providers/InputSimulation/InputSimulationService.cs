@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK",
         true)]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input-simulation/input-simulation-service")]
     public class InputSimulationService :
         BaseInputSimulationService,
         IInputSimulationService,
@@ -62,21 +62,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SimulatedMotionControllerData MotionControllerDataRight { get; } = new SimulatedMotionControllerData();
 
         /// <inheritdoc />
-        public bool IsSimulatingControllerLeft => (dataProvider != null ? dataProvider.IsSimulatingLeft : false);
+        public bool IsSimulatingControllerLeft => dataProvider != null && dataProvider.IsSimulatingLeft;
         /// <inheritdoc />
-        public bool IsSimulatingControllerRight => (dataProvider != null ? dataProvider.IsSimulatingRight : false);
+        public bool IsSimulatingControllerRight => dataProvider != null && dataProvider.IsSimulatingRight;
 
         /// <inheritdoc />
         public bool IsAlwaysVisibleControllerLeft
         {
-            get { return dataProvider != null ? dataProvider.IsAlwaysVisibleLeft : false; }
+            get { return dataProvider != null && dataProvider.IsAlwaysVisibleLeft; }
             set { if (dataProvider != null) { dataProvider.IsAlwaysVisibleLeft = value; } }
         }
 
         /// <inheritdoc />
         public bool IsAlwaysVisibleControllerRight
         {
-            get { return dataProvider != null ? dataProvider.IsAlwaysVisibleRight : false; }
+            get { return dataProvider != null && dataProvider.IsAlwaysVisibleRight; }
             set { if (dataProvider != null) { dataProvider.IsAlwaysVisibleRight = value; } }
         }
 

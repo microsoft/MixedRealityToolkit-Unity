@@ -187,6 +187,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             #endregion  Interaction Constraint Setup
         }
 
+        /// <summary>
+        /// Displays the controller mapping window for the specified controller mapping
+        /// </summary>
+        /// <param name="controllerMapping"> The controller mapping being modified</param>
+        /// <param name="interactionsList"> The underlying serialized property being modified</param>
+        /// <param name="handedness"> The handedness of the controller </param>
+        /// <param name="mappedControllers"> The list of controller types affected by this mapping</param>
         public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None, List<string> mappedControllers = null)
         {
             if (window != null)
@@ -195,6 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             window = null;
+
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                throw new InvalidOperationException("Mixed Reality Toolkit hasn't been initialized yet! Open a scene with a Mixed Reality Toolkit to initialize it before editing the controller mappings.");
+            }
 
             window = CreateInstance<ControllerPopupWindow>();
             window.thisWindow = window;
@@ -247,6 +259,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
+        }
+
+        /// <summary>
+        /// Use this to repaint the popup window
+        /// </summary>
+        public static void RepaintWindow()
+        {
+            if (window != null && window.thisWindow != null)
+            {
+                window.thisWindow.Repaint();
+            }
         }
 
         private void Update()

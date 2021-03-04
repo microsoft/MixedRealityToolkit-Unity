@@ -24,22 +24,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SimulatedArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+        public SimulatedArticulatedHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
+        { }
+
+        private ArticulatedHandDefinition handDefinition;
+        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
+
+        /// <inheritdoc />
+        protected override void UpdateHandJoints(SimulatedHandData handData)
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
+            for (int i = 0; i < jointCount; i++)
+            {
+                TrackedHandJoint handJoint = (TrackedHandJoint)i;
+
+                if (!jointPoses.ContainsKey(handJoint))
+                {
+                    jointPoses.Add(handJoint, handData.Joints[i]);
+                }
+                else
+                {
+                    jointPoses[handJoint] = handData.Joints[i];
+                }
+            }
+
+            HandDefinition?.UpdateHandJoints(jointPoses);
         }
-
-        /// <summary>
-        /// The definition and data store for this articulated hand class.
-        /// </summary>
-        protected ArticulatedHandDefinition handDefinition;
-
-        /// <summary>
-        /// The simulated articulated hand's default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
         /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)
@@ -121,6 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentIndexPose);
                         }
+                        break;
+                    case DeviceInputType.ThumbStick:
+                        HandDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }

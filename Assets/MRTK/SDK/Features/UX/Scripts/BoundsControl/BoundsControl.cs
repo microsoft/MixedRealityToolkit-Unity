@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// Bounds Control provides scale and rotation handles that can be used for far and near interaction manipulation
     /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundsControl.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/bounds-control")]
     [RequireComponent(typeof(ConstraintManager))]
     [AddComponentMenu("Scripts/MRTK/SDK/BoundsControl")]
     public class BoundsControl : MonoBehaviour,
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     if (rigRoot != null)
                     {
                         rigRoot.parent = targetObject.transform;
-                        OnTargetBoundsChanged();
+                        UpdateBounds();
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         prevBoundsOverride = new Bounds();
                     }
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (boundsCalculationMethod != value)
                 {
                     boundsCalculationMethod = value;
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -151,6 +151,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         [SerializeField]
+        [Tooltip("Whether scale the flattened axis when uniform scale is used.")]
+        private bool uniformScaleOnFlattenedAxis = true;
+
+        /// <summary>
+        /// Whether scale the flattened axis when uniform scale is used.
+        /// </summary>
+        public bool UniformScaleOnFlattenedAxis
+        {
+            get => uniformScaleOnFlattenedAxis;
+            set => uniformScaleOnFlattenedAxis = value;
+        }
+
+        [SerializeField]
         [Tooltip("Extra padding added to the actual Target bounds")]
         private Vector3 boxPadding = Vector3.zero;
 
@@ -165,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (Vector3.Distance(boxPadding, value) > float.Epsilon)
                 {
                     boxPadding = value;
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -179,7 +192,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public BoxDisplayConfiguration BoxDisplayConfig
         {
             get => boxDisplayConfiguration;
-            set => boxDisplayConfiguration = value;
+            set
+            {
+                boxDisplayConfiguration = value;
+                boxDisplay = new BoxDisplay(boxDisplayConfiguration);
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -191,7 +209,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public LinksConfiguration LinksConfig
         {
             get => linksConfiguration;
-            set => linksConfiguration = value;
+            set
+            {
+                linksConfiguration = value;
+                links = new Links(linksConfiguration);
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -203,7 +226,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public ScaleHandlesConfiguration ScaleHandlesConfig
         {
             get => scaleHandlesConfiguration;
-            set => scaleHandlesConfiguration = value;
+            set 
+            {
+                scaleHandlesConfiguration = value;
+                scaleHandles = scaleHandlesConfiguration.ConstructInstance();
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -215,7 +243,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public RotationHandlesConfiguration RotationHandlesConfig
         {
             get => rotationHandlesConfiguration;
-            set => rotationHandlesConfiguration = value;
+            set
+            {
+                rotationHandlesConfiguration = value;
+                rotationHandles = rotationHandlesConfiguration.ConstructInstance();
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -227,7 +260,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public TranslationHandlesConfiguration TranslationHandlesConfig
         {
             get => translationHandlesConfiguration;
-            set => translationHandlesConfiguration = value;
+            set
+            {
+                translationHandlesConfiguration = value;
+                translationHandles = translationHandlesConfiguration.ConstructInstance();
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -239,7 +277,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public ProximityEffectConfiguration HandleProximityEffectConfig
         {
             get => handleProximityEffectConfiguration;
-            set => handleProximityEffectConfiguration = value;
+            set
+            {
+                handleProximityEffectConfiguration = value;
+                proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
+                CreateRig();
+            }
         }
 
         [Tooltip("Debug only. Component used to display debug messages.")]
@@ -335,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             "changes will be post processed by the linked constraint manager.")]
         private bool enableConstraints = true;
         /// <summary>
-        /// nable or disable constraint support of this component. When enabled, transform
+        /// Enable or disable constraint support of this component. When enabled, transform
         /// changes will be post processed by the linked constraint manager.
         /// </summary>
         public bool EnableConstraints
@@ -513,10 +556,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
-        private static readonly string rigRootName = "rigRoot";
+        private const string RigRootName = "rigRoot";
 
         // Cache for the corner points of either renderers or colliders during the bounds calculation phase
-        private static List<Vector3> totalBoundsCorners = new List<Vector3>();
+        private static readonly List<Vector3> TotalBoundsCorners = new List<Vector3>();
 
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
@@ -543,7 +586,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (active != value)
                 {
                     active = value;
-                    rigRoot?.gameObject.SetActive(value);
+                    if (rigRoot != null)
+                    {
+                        rigRoot.gameObject.SetActive(value);
+                    }
                     ResetVisuals();
 
                     if (active)
@@ -618,6 +664,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             ResetVisuals();
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
+        }
+
+        /// <summary>
+        /// Update the bounds.
+        /// Call this function after modifying the transform of the target externally to make sure the bounds are also updated accordingly.
+        /// </summary>
+        public void UpdateBounds()
+        {
+            DetermineTargetBounds();
+            UpdateExtents();
+            UpdateVisuals();
         }
 
         #endregion
@@ -727,7 +784,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 // also only use proximity effect if nothing is being dragged or grabbed
                 if (!wireframeOnly && currentPointer == null)
                 {
-                    proximityEffect.UpdateScaling(Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + Target.transform.position, currentBoundsExtents);
+                    proximityEffect.UpdateScaling(TargetBounds.transform.TransformPoint(TargetBounds.center), currentBoundsExtents);
                 }
             }
         }
@@ -795,7 +852,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private Bounds GetTargetBounds()
         {
-            totalBoundsCorners.Clear();
+            TotalBoundsCorners.Clear();
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
             // Its possible we have two rigRoots here, the one about to be deleted and the new one
@@ -810,7 +867,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
             foreach (Transform childTransform in Target.transform)
             {
-                if (childTransform.name.Equals(rigRootName)) { continue; }
+                if (childTransform.name.Equals(RigRootName)) { continue; }
                 childTransforms.AddRange(childTransform.GetComponentsInChildren<Transform>());
             }
 
@@ -826,16 +883,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             Transform targetTransform = Target.transform;
 
             // In case we found nothing and this is the Target, we add its inevitable collider's bounds
-            if (totalBoundsCorners.Count == 0 && Target == gameObject)
+            if (TotalBoundsCorners.Count == 0 && Target == gameObject)
             {
                 ExtractBoundsCorners(targetTransform, BoundsCalculationMethod.ColliderOnly);
             }
 
-            Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(totalBoundsCorners[0]), Vector3.zero);
+            Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(TotalBoundsCorners[0]), Vector3.zero);
 
-            for (int i = 1; i < totalBoundsCorners.Count; i++)
+            for (int i = 1; i < TotalBoundsCorners.Count; i++)
             {
-                finalBounds.Encapsulate(targetTransform.InverseTransformPoint(totalBoundsCorners[i]));
+                finalBounds.Encapsulate(targetTransform.InverseTransformPoint(TotalBoundsCorners[i]));
             }
 
             return finalBounds;
@@ -899,7 +956,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
-            totalBoundsCorners.AddRange(cornersToWorld);
+            TotalBoundsCorners.AddRange(cornersToWorld);
             return true;
         }
 
@@ -907,7 +964,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             if (colliderByTransform.Key != null)
             {
-                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, TotalBoundsCorners, 0);
             }
 
             return colliderByTransform.Key != null;
@@ -1109,7 +1166,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void InitializeRigRoot()
         {
-            var rigRootObj = new GameObject(rigRootName);
+            var rigRootObj = new GameObject(RigRootName);
             rigRoot = rigRootObj.transform;
             rigRoot.parent = Target.transform;
 
@@ -1173,6 +1230,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                         scaleFactor = Vector3.one + grabDiff.Div(initialDist);
                     }
 
+                    // If non-uniform scaling or uniform scaling only on the non-flattened axes
+                    if (ScaleHandlesConfig.ScaleBehavior != HandleScaleMode.Uniform || !UniformScaleOnFlattenedAxis)
+                    {
+                        FlattenModeType determinedType = FlattenAxis == FlattenModeType.FlattenAuto ? VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents) : FlattenAxis;
+                        if (determinedType == FlattenModeType.FlattenX)
+                        {
+                            scaleFactor.x = 1;
+                        }
+                        if (determinedType == FlattenModeType.FlattenY)
+                        {
+                            scaleFactor.y = 1;
+                        }
+                        if (determinedType == FlattenModeType.FlattenZ)
+                        {
+                            scaleFactor.z = 1;
+                        }
+                    }
+
                     Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
                     MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
                     if (EnableConstraints && constraintsManager != null)
@@ -1217,13 +1292,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     } 
                 }
             }
-        }
-        
-        private void OnTargetBoundsChanged()
-        {
-            DetermineTargetBounds();
-            UpdateExtents();
-            UpdateVisuals();
         }
 
         #endregion Private Methods
@@ -1388,7 +1456,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         #endregion Unused Event Handlers
 
-
         #region BoundsControl Visuals Private Methods
 
         private void SetHighlighted(Transform activeHandle, IMixedRealityPointer pointer = null)
@@ -1484,6 +1551,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         #endregion BoundsControl Visuals Private Methods
-
     }
 }

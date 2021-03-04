@@ -20,9 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectManipulator.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/object-manipulator")]
     [RequireComponent(typeof(ConstraintManager))]
-    public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
+    public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler, IMixedRealitySourcePoseHandler
     {
         #region Public Enums
 
@@ -126,9 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Whether physics forces are used to move the object when performing near manipulations.
         /// </summary>
         /// <remarks>
-        /// Setting this to <c>false</c> will make the object feel more directly connected to the
+        /// <para>Setting this to <c>false</c> will make the object feel more directly connected to the
         /// users hand. Setting this to <c>true</c> will honor the mass and inertia of the object,
-        /// but may feel as though the object is connected through a spring. The default is <c>false</c>.
+        /// but may feel as though the object is connected through a spring. The default is <c>false</c>.</para>
         /// </remarks>
         public bool UseForcesForNearManipulation
         {
@@ -397,6 +397,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
 
+        private Quaternion leftHandRotation;
+        private Quaternion rightHandRotation;
+
         #endregion Private Properties
 
         #region MonoBehaviour Functions
@@ -418,6 +421,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (constraintsManager == null && EnableConstraints)
             {
                 constraintsManager = gameObject.EnsureComponent<ConstraintManager>();
+            }
+
+            // Get child objects with NearInteractionGrabbable attached
+            var children = GetComponentsInChildren<NearInteractionGrabbable>();
+
+            if (children.Length == 0)
+            {
+                Debug.Log($"Near interactions are not enabled for {gameObject.name}. To enable near interactions, add a " +
+                    $"{nameof(NearInteractionGrabbable)} component to {gameObject.name} or to a child object of {gameObject.name} that contains a collider.");
             }
         }
 
@@ -984,17 +996,65 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-            for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
-            {
-                if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
-                {
-                    rotation = pointer.Controller.Interactions[i].RotationData;
-                    return true;
-                }
-            }
             rotation = Quaternion.identity;
-            return false;
+            switch (pointer.Controller?.ControllerHandedness)
+            {
+                case Handedness.Left:
+                    rotation = leftHandRotation;
+                    break;
+                case Handedness.Right:
+                    rotation = rightHandRotation;
+                    break;
+                default:
+                    return false;
+            }
+            return true;
         }
+
+        #endregion
+
+        #region Source Pose Handler Implementation
+        /// <summary>
+        /// Raised when the source pose tracking state is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData) { }
+
+        /// <summary>
+        /// Raised when the source position is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData) { }
+
+        /// <summary>
+        /// Raised when the source position is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<Vector3> eventData) { }
+
+        /// <summary>
+        /// Raised when the source rotation is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<Quaternion> eventData) { }
+
+        /// <summary>
+        /// Raised when the source pose is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
+        {
+            switch (eventData.Controller?.ControllerHandedness)
+            {
+                case Handedness.Left:
+                    leftHandRotation = eventData.SourceData.Rotation;
+                    break;
+                case Handedness.Right:
+                    rightHandRotation = eventData.SourceData.Rotation;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void OnSourceDetected(SourceStateEventData eventData) { }
+
+        public void OnSourceLost(SourceStateEventData eventData) { }
 
         #endregion
     }

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// layout parameters.  The collection can be used to quickly create 
     /// control panels or sets of prefab/objects.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/object-collection")]
     [AddComponentMenu("Scripts/MRTK/SDK/GridObjectCollection")]
     [ExecuteAlways]
     public partial class GridObjectCollection : BaseObjectCollection
@@ -147,11 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { distance = value; }
         }
 
-        private static readonly int defaultValueRowsCols = 3;
+        private const int DefaultValueRowsCols = 3;
 
         [Tooltip("Number of rows per column")]
         [SerializeField]
-        private int rows = defaultValueRowsCols;
+        private int rows = DefaultValueRowsCols;
 
         /// <summary>
         /// Number of rows per column. Can only be assigned when layout type is
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [Tooltip("Number of columns per row")]
         [SerializeField]
-        private int columns = defaultValueRowsCols;
+        private int columns = DefaultValueRowsCols;
 
         /// <summary>
         /// Number of columns per row. Can only be assigned when layout type is 

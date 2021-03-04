@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
         {
-            using (TryGetDistanceToNearestSurfacePerfMarker.Auto())
+            using (TryGetNormalToNearestSurfacePerfMarker.Auto())
             {
                 var focusProvider = CoreServices.InputSystem?.FocusProvider;
                 if (focusProvider != null)
@@ -336,8 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return true;
                     }
                 }
-
-                normal = Vector3.forward;
+                normal = Rotation * Vector3.forward;
                 return false;
             }
         }
@@ -510,8 +509,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void OnDrawGizmos()
         {
-            bool NearObjectCheck = queryBufferNearObjectRadius != null ? IsNearObject : false;
-            bool IsInteractionEnabledCheck = queryBufferInteractionRadius != null ? IsInteractionEnabled : false;
+            bool NearObjectCheck = queryBufferNearObjectRadius != null && IsNearObject;
+            bool IsInteractionEnabledCheck = queryBufferInteractionRadius != null && IsInteractionEnabled;
 
             TryGetNearGraspAxis(out Vector3 sectorForwardAxis);
             TryGetNearGraspPoint(out Vector3 point);

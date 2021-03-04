@@ -14,14 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     public class ClippingBox : ClippingPrimitive
     {
         /// <summary>
-        /// The property name of the clip box data within the shader.
-        /// </summary>
-        protected int clipBoxSizeID;
-
-        /// <summary>
         /// The property name of the clip box inverse transformation matrix within the shader.
         /// </summary>
         protected int clipBoxInverseTransformID;
+        private Matrix4x4 clipBoxInverseTransform;
+
 
         /// <inheritdoc />
         protected override string Keyword
@@ -52,17 +49,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             base.Initialize();
 
-            clipBoxSizeID = Shader.PropertyToID("_ClipBoxSize");
             clipBoxInverseTransformID = Shader.PropertyToID("_ClipBoxInverseTransform");
+        }
+
+        protected override void BeginUpdateShaderProperties()
+        {   
+            clipBoxInverseTransform = transform.worldToLocalMatrix;
+
+            base.BeginUpdateShaderProperties();
         }
 
         protected override void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock)
         {
-            Vector3 lossyScale = transform.lossyScale * 0.5f;
-            Vector4 boxSize = new Vector4(lossyScale.x, lossyScale.y, lossyScale.z, 0.0f);
-            materialPropertyBlock.SetVector(clipBoxSizeID, boxSize);
-            Matrix4x4 boxInverseTransform = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one).inverse;
-            materialPropertyBlock.SetMatrix(clipBoxInverseTransformID, boxInverseTransform);
+            materialPropertyBlock.SetMatrix(clipBoxInverseTransformID, clipBoxInverseTransform);
         }
     }
 }

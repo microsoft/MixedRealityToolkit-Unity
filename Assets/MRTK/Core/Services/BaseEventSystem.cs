@@ -406,14 +406,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// Utility function for registering parent interfaces of a given handler.
         /// </summary>
         /// <remarks>
-        /// Event handler interfaces may derive from each other. Some events will be raised using a base handler class, and are supposed to trigger on
+        /// <para>Event handler interfaces may derive from each other. Some events will be raised using a base handler class, and are supposed to trigger on
         /// all derived handler classes too. Example of that is IMixedRealityBaseInputHandler hierarchy.
         /// To support that current implementation registers multiple dictionary entries per handler, one for each level of event handler hierarchy.
         /// Alternative would be to register just one root type and 
         /// then determine which handlers to call dynamically in 'HandleEvent'.
         /// Implementation was chosen based on performance of 'HandleEvent'. Without determining type it is about 2+ times faster.
         /// There are possible ways to bypass that, but this will make implementation of classes 
-        /// that derive from Input System unnecessarily more complicated.
+        /// that derive from Input System unnecessarily more complicated.</para>
         /// </remarks>
         private void TraverseEventSystemHandlerHierarchy<T>(IEventSystemHandler handler, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
         {

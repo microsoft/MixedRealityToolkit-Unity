@@ -628,7 +628,6 @@ GameObject:
   - component: {fileID: 941829593}
   - component: {fileID: 941829598}
   - component: {fileID: 941829597}
-  - component: {fileID: 941829596}
   - component: {fileID: 941829595}
   - component: {fileID: 941829599}
   - component: {fileID: 941829594}
@@ -695,18 +694,6 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
---- !u!114 &941829596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 941829592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!81 &941829597
 AudioListener:
   m_ObjectHideFlags: 0

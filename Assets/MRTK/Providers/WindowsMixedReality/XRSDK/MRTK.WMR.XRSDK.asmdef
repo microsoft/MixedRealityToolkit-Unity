@@ -25,6 +25,16 @@
             "name": "com.unity.xr.windowsmr",
             "expression": "",
             "define": "WMR_ENABLED"
+        },
+        {
+            "name": "com.microsoft.mixedreality.input",
+            "expression": "",
+            "define": "HP_CONTROLLER_ENABLED"
+        },
+        {
+            "name": "com.microsoft.windows.mixedreality.dotnetwinrt",
+            "expression": "",
+            "define": "DOTNETWINRT_PRESENT"
         }
     ],
     "noEngineReferences": false

@@ -10,10 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     /// ElasticsManager can be used to add elastics simulation to supporting components.
     /// Call Initialize on manipulation start.
     /// Call ApplyHostTransform to apply elastics calculation to target transform.
-    /// Elastics will continue simulating once manipulation ends through it's update function - 
-    /// to block the elastics auto update set EnableElasticsUpdate to false. 
+    /// Elastics will continue simulating once manipulation ends through its update function - 
+    /// to block the elastics auto update set EnableElasticsUpdate to false.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Elastics/ElasticSystem.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/experimental/elastic-system")]
     [AddComponentMenu("Scripts/MRTK/SDK/Experimental/Elastics Manager")]
     public class ElasticsManager : MonoBehaviour
     {

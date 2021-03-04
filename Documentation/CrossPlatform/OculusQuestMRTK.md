@@ -32,15 +32,17 @@ This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipel
 1. Download and import [Oculus Integration](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) from the Unity Asset Store. The latest version tested to
 work is 20.0.0. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
 
-1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules. Doing this will update the asmdefs with definitions and references needed for the
-relevant Oculus Quest code to function. It will also update the csc file to filter out the obsolete warnings produced by the Oculus Integration assets. The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-Quest configuration process.
+1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it. Doing this will update the asmdefs with definitions and references needed for the
+relevant Oculus Quest code to function. Additionally, it should populate the **Prefab reference** fields of the **DefaultOculusXRSDKDeviceManagerProfile** if they are unfilled.
+It will also update the csc file to filter out the obsolete warnings produced by the Oculus Integration assets. The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-Quest configuration process.
 
     ![OculusIntegrationAsmdef](../Images/CrossPlatform/OculusQuest/OculusIntegrationAsmdef.png)
 
-1. In the imported Oculus folder (It should be found at Assets/Oculus), there is a scriptable object called OculusProjectConfig. In that config file, you need to set HandTrackingSupport 
-to "Controllers and Hands".
+1. After the modules have been integrated, navigate to Mixed Reality Toolkit > Utilities > Oculus > Initialize Oculus Project Config and run it. This will modify a scriptable object called OculusProjectConfig (It should be found at Assets/Oculus).
+In that config file, you should see the HandTrackingSupport field set to "Controllers and Hands" and the Requires System Keyboard field checked off. This will enable handtracking and keyboard input on the Quest.
 
-    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationControllerAndHands.png)
+    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationConfig.png)
+    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationConfigSettings.png)
    
 ## Setting up the scene
 1. Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
@@ -65,7 +67,7 @@ to "Controllers and Hands".
 
         ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
 
-        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
+        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**. Set the **Device Manager Profile** to **DefaultOculusXRSDKDeviceManagerProfile** or a custom cloned profile.
 
         ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png)
 
@@ -109,3 +111,12 @@ Make sure your Android paths are properly configured. If you continue to encount
 **Edit > Preferences > External Tools > Android**
 
 ![AndroidToolsConfig](../Images/CrossPlatform/OculusQuest/AndroidToolsConfig.png)
+
+### The ovrCameraRigPrefab of OculusXRSDKDeviceManagerProfile has not been assigned.
+
+If you encounter an error that looks like this
+
+**UnassignedReferenceException: The variable ovrCameraRigPrefab of OculusXRSDKDeviceManagerProfile has not been assigned. You probably need to assign the ovrCameraRigPrefab variable of the OculusXRSDKDeviceManagerProfile script in the inspector.**
+
+Then the project is not fully integrated with the Oculus Unity Modules. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it.
+Doing so populate the **Prefab reference** fields of the **OculusXRSDKDeviceManagerProfile**.

@@ -139,20 +139,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Mesh mesh;
         private MeshFilter meshFilter;
         private BoxCollider boxCollider;
-        private bool touchActive
-        {
-            get
-            {
-                return handDataMap.Count > 0;
-            }
-        }
-        private bool scaleActive
-        {
-            get
-            {
-                return enableZoom && handDataMap.Count > 1;
-            }
-        }
+
+        private bool TouchActive => handDataMap.Count > 0;
+        private bool ScaleActive => enableZoom && handDataMap.Count > 1;
+
         private float previousContactRatio = 1.0f;
         private float initialTouchDistance = 0.0f;
         private float lastTouchDistance = 0.0f;
@@ -220,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (isEnabled)
             {
-                if (touchActive)
+                if (TouchActive)
                 {
                     foreach (uint key in handDataMap.Keys)
                     {
@@ -236,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateIdle();
                 UpdateUVMapping();
 
-                if (!touchActive && affordancesVisible)
+                if (!TouchActive && affordancesVisible)
                 {
                     SetAffordancesActive(false);
                 }
@@ -374,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateIdle()
         {
-            if (!touchActive)
+            if (!TouchActive)
             {
                 if (Mathf.Abs(totalUVOffset.x) < 0.01f && Mathf.Abs(totalUVOffset.y) < 0.01f)
                 {
@@ -399,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector2 scaleUVCentroid = Vector2.zero;
             float currentContactRatio = 0.0f;
 
-            if (scaleActive)
+            if (ScaleActive)
             {
                 scaleUVCentroid = GetDisplayedUVCentroid(uvs);
                 currentContactRatio = GetUVScaleFromTouches();
@@ -458,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private float GetUVScaleFromTouches()
         {
-            if (!scaleActive || initialTouchDistance == 0)
+            if (!ScaleActive || initialTouchDistance == 0)
             {
                 return 0.0f;
             }
@@ -477,7 +467,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Vector2 GetUvOffset()
         {
-            if (touchActive && AreSourcesCompatible())
+            if (TouchActive && AreSourcesCompatible())
             {
                 Vector2 offset = Vector2.zero;
                 foreach (uint key in handDataMap.Keys)
@@ -570,7 +560,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Vector3 GetTouchPoint()
         {
-            if (touchActive)
+            if (TouchActive)
             {
                 Vector3 touchingPoint = Vector3.zero;
                 foreach (uint key in handDataMap.Keys)
@@ -601,7 +591,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private float GetContactDistance()
         {
-            if (!scaleActive || handDataMap.Keys.Count < 2)
+            if (!ScaleActive || handDataMap.Keys.Count < 2)
             {
                 return 0.0f;
             }
@@ -764,8 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
         {
-            var hand = controller as IMixedRealityHand;
-            if (hand != null)
+            if (controller is IMixedRealityHand hand)
             {
                 if (hand.TryGetJoint(joint, out MixedRealityPose pose))
                 {
@@ -799,8 +788,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void EndAllTouches()
         {
-            handDataMap.Clear();
-            RaisePanEnded(0);
+            if (handDataMap.Count > 0)
+            {
+                handDataMap.Clear();
+                RaisePanEnded(0);
+            }
         }
 
         private void MoveTouch(uint sourceId)
@@ -878,14 +870,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            bool isNear = eventData.Pointer is IMixedRealityNearPointer;
             oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
-            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            if (!isNear && eventData.Pointer.Controller.IsRotationAvailable)
             {
                 eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
             }
             SetAffordancesActive(false);
             EndTouch(eventData.SourceId);
-            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer, false);
+            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer, isNear);
             eventData.Use();
         }
 

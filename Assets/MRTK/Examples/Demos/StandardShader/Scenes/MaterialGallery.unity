@@ -743,6 +743,7 @@ MonoBehaviour:
   - {fileID: 1494842152}
   clippingSide: 1
   useOnPreRender: 0
+  applyToSharedMaterial: 0
 --- !u!4 &143898495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d,
@@ -4135,6 +4136,7 @@ MonoBehaviour:
   - {fileID: 1481098058}
   clippingSide: 1
   useOnPreRender: 0
+  applyToSharedMaterial: 0
 --- !u!1001 &914966059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4410,6 +4412,8 @@ MonoBehaviour:
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -7953,6 +7957,7 @@ MonoBehaviour:
   - {fileID: 683618883}
   clippingSide: -1
   useOnPreRender: 0
+  applyToSharedMaterial: 0
 --- !u!1001 &1479115759
 PrefabInstance:
   m_ObjectHideFlags: 0

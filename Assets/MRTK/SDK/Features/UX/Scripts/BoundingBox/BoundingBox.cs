@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// BoundingBox provides scale and rotation handles that can be used for far and near interaction manipulation
     /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/bounding-box")]
     [AddComponentMenu("Scripts/MRTK/SDK/BoundingBox (deprecated)")]
     public class BoundingBox : MonoBehaviour,
         IMixedRealitySourceStateHandler,
@@ -69,8 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// consists of. 
         /// </summary>
         /// <remarks>
-        /// Wireframe refers to the thin linkage between the handles. When the handles are invisible
-        /// the wireframe looks like an outline box around an object.
+        /// <para>Wireframe refers to the thin linkage between the handles. When the handles are invisible
+        /// the wireframe looks like an outline box around an object.</para>
         /// </remarks> 
         public enum WireframeType
         {
@@ -1099,13 +1099,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
-        private static readonly string rigRootName = "rigRoot";
+        private const string RigRootName = "rigRoot";
 
         // Cache for the corner points of either renderers or colliders during the bounds calculation phase
-        private static List<Vector3> totalBoundsCorners = new List<Vector3>();
+        private static readonly List<Vector3> TotalBoundsCorners = new List<Vector3>();
 
-        private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
-        private List<Vector3> proximityPoints = new List<Vector3>();
+        private readonly HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
+        private readonly List<Vector3> proximityPoints = new List<Vector3>();
 
         #endregion
 
@@ -1126,7 +1126,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (active != value)
                 {
                     active = value;
-                    rigRoot?.gameObject.SetActive(value);
+                    if (rigRoot != null)
+                    {
+                        rigRoot.gameObject.SetActive(value);
+                    }
                     ResetHandleVisibility();
 
                     if (value && proximityEffectActive)
@@ -1164,7 +1167,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion Public Properties
-
 
         #region Public Methods
 
@@ -1229,7 +1231,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion
-
 
         #region MonoBehaviour Methods
 
@@ -1320,7 +1321,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion MonoBehaviour Methods
-
 
         #region Private Methods
 
@@ -1818,7 +1818,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Bounds GetTargetBounds()
         {
-            totalBoundsCorners.Clear();
+            TotalBoundsCorners.Clear();
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
             // Its possible we have two rigRoots here, the one about to be deleted and the new one
@@ -1833,7 +1833,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             foreach (Transform childTransform in Target.transform)
             {
-                if (childTransform.name.Equals(rigRootName)) { continue; }
+                if (childTransform.name.Equals(RigRootName)) { continue; }
                 childTransforms.AddRange(childTransform.GetComponentsInChildren<Transform>());
             }
 
@@ -1850,18 +1850,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // In case we found nothing and this is the Target, we add its inevitable collider's bounds
 
-            if (totalBoundsCorners.Count == 0 && Target == gameObject)
+            if (TotalBoundsCorners.Count == 0 && Target == gameObject)
             {
                 ExtractBoundsCorners(targetTransform, BoundsCalculationMethod.ColliderOnly);
             }
 
             // Gather all corners and calculate their bounds
 
-            Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(totalBoundsCorners[0]), Vector3.zero);
+            Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(TotalBoundsCorners[0]), Vector3.zero);
 
-            for (int i = 1; i < totalBoundsCorners.Count; i++)
+            for (int i = 1; i < TotalBoundsCorners.Count; i++)
             {
-                finalBounds.Encapsulate(targetTransform.InverseTransformPoint(totalBoundsCorners[i]));
+                finalBounds.Encapsulate(targetTransform.InverseTransformPoint(TotalBoundsCorners[i]));
             }
 
             return finalBounds;
@@ -1925,7 +1925,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
-            totalBoundsCorners.AddRange(cornersToWorld);
+            TotalBoundsCorners.AddRange(cornersToWorld);
 
             return true;
         }
@@ -1934,7 +1934,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (colliderByTransform.Key == null) { return false; }
 
-            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, TotalBoundsCorners, 0);
 
             return colliderByTransform.Key != null;
         }
@@ -1976,7 +1976,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void InitializeRigRoot()
         {
-            var rigRootObj = new GameObject(rigRootName);
+            var rigRootObj = new GameObject(RigRootName);
             rigRoot = rigRootObj.transform;
             rigRoot.parent = Target.transform;
 
@@ -2550,7 +2550,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Private Methods
 
-
         #region Used Event Handlers
 
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
@@ -2692,7 +2691,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion Used Event Handlers
-
 
         #region Unused Event Handlers
 

@@ -125,6 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
 
+            // NearInteractionTouchable only works with BoxColliders
+            Object.Destroy(interactable.GetComponent<Collider>());
+            interactable.gameObject.AddComponent<BoxCollider>();
+
             // Add a touchable and configure for touch events
             NearInteractionTouchable touchable = interactable.gameObject.AddComponent<NearInteractionTouchable>();
             touchable.EventsToReceive = TouchableEventType.Touch;
@@ -270,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             AssembleInteractableButton(
                 out Interactable interactable,
-                out Transform translateTargetObject);
+                out _);
 
             // Test Button type
             interactable.NumOfDimensions = 1;
@@ -364,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.True(interactable.IsVisited, "Interactable was not visited.");
 
-            GameObject.Destroy(interactable.gameObject);
+            Object.Destroy(interactable.gameObject);
         }
 
         /// <summary>
@@ -376,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultPushButton,
                 out Interactable interactable,
-                out Transform translateTargetObject);
+                out _);
 
             interactable.gameObject.AddComponent<NearInteractionTouchableVolume>();
 
@@ -625,6 +629,90 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test the TriggerOnClick API for Interactable in toggle mode both when Can(De)Select and not.
+        /// Also test the force parameter of TriggerOnClick.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestToggleTriggerOnClick()
+        {
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultPushButton,
+                out Interactable toggle,
+                out Transform innerCylinderTransform);
+
+            toggle.NumOfDimensions = 2;
+            toggle.IsToggled = false;
+
+            // Subscribe to toggle's on click so we know the click went through
+            bool wasClicked = false;
+            toggle.OnClick.AddListener(() => { wasClicked = true; });
+
+            // Test TriggerOnClick when CanSelect is false
+            toggle.CanSelect = false;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.False(wasClicked, "Toggle was clicked.");
+            Assert.False(toggle.IsToggled, "Toggle was selected.");
+
+            // Test TriggerOnClick when CanSelect is true
+            toggle.CanSelect = true;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.True(toggle.IsToggled, "Toggle was not selected.");
+
+            toggle.IsToggled = false;
+            wasClicked = false;
+
+            // Test force TriggerOnClick when CanSelect is false
+            toggle.CanSelect = false;
+
+            toggle.TriggerOnClick(true);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.True(toggle.IsToggled, "Toggle was not selected.");
+
+            wasClicked = false;
+
+            // Test TriggerOnClick when CanDeselect is false
+            toggle.CanDeselect = false;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.False(wasClicked, "Toggle was clicked.");
+            Assert.True(toggle.IsToggled, "Toggle was not selected.");
+
+            // Test TriggerOnClick when CanDeselect is true
+            toggle.CanDeselect = true;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.False(toggle.IsToggled, "Toggle was selected.");
+
+            toggle.IsToggled = true;
+            wasClicked = false;
+
+            // Test force TriggerOnClick when CanDeselect is false
+            toggle.CanDeselect = false;
+
+            toggle.TriggerOnClick(true);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.False(toggle.IsToggled, "Toggle was selected.");
+
+            GameObject.Destroy(toggle.gameObject);
+        }
+
+        /// <summary>
         /// Tests that radial buttons can be selected and deselected, and that a radial button
         /// set allows just one button to be selected at a time
         /// </summary>
@@ -674,7 +762,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestPressableToggleHoloLens2()
         {
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 p2 = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.015f, 0f, 0.3f));
+            Vector3 p2 = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.010f, 0f, 0.3f));
 
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultHL2ToggleButton,
@@ -821,18 +909,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Pose noRollPose = restorePose;
             noRollPose.rotation.eulerAngles = new Vector3(noRollPose.rotation.eulerAngles.x, noRollPose.rotation.eulerAngles.y, 0.0f);
             TestUtilities.ArbitraryPlayspacePose = noRollPose;
-            TestUtilities.PlayspaceToArbitraryPose();
 
+            TestUtilities.PlayspaceToArbitraryPose();
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultHL2Button,
                 out Interactable interactable,
-                out Transform interactableTransform);
+                out _);
 
             interactable.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0f, 0.1f, 0.4f));
             Assert.True(interactable.IsEnabled);
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 focusPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0155f, 0.0145f, 0.3f));
+            Vector3 focusPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0175f, 0.0145f, 0.3f));
             Vector3 releaseDelta = TestUtilities.DirectionRelativeToPlayspace(new Vector3(0.05f, 0, 0));
 
             // Focus the hand on the Button using the far ray pointer
@@ -939,7 +1027,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.True(wasClicked, "Interactable was not clicked.");
             }
 
-            GameObject.Destroy(result);
+            Object.Destroy(result);
         }
 
         #region Test Helpers
@@ -969,7 +1057,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             childObject.transform.localPosition = new Vector3(0f, 1.5f, 0f);
             childObject.transform.localRotation = Quaternion.identity;
             // Only use a collider on the main object
-            GameObject.Destroy(childObject.GetComponent<Collider>());
+            Object.Destroy(childObject.GetComponent<Collider>());
 
             translateTargetObject = childObject.transform;
 
