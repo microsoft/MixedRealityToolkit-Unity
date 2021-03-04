@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 #if UNITY_OPENXR
                 if (!isActiveLoader.HasValue)
                 {
-                    isActiveLoader = IsLoaderActive<OpenXRLoader>() || IsLoaderActive<OpenXRLoaderNoPreInit>();
+                    isActiveLoader = IsLoaderActive<OpenXRLoaderBase>();
                 }
 #endif // UNITY_OPENXR
 
