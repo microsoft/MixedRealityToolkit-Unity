@@ -1,5 +1,11 @@
 # Mixed Reality Toolkit and Unity Package Manager
 
+> [!CAUTION]
+># We've moved! 
+>See this page on the ***[new docs website](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/usingupm)***.
+>We've moved so we can provide you with a better docs experience. We will no longer be maintaing documentation on Github.
+>Check out the new site to get started with MRTK in Unity!
+
 Starting with version 2.5.0, using the [Mixed Reality Feature Tool](https://aka.ms/MRFeatureToolDocs), the Microsoft Mixed Reality Toolkit integrates with the Unity Package Manager (UPM) when using Unity 2019.4 and newer.
 
 ## Using the Mixed Reality Feature Tool
