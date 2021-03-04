@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             solverHandler = gameObject.GetComponent<SolverHandler>();
 
-            if(solverHandler != null)
+            if (solverHandler != null)
             {
                 solverHandler.TrackedTargetType = TrackedObjectType.Head;
             }

@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         protected override void BeginUpdateShaderProperties()
-        {   
+        {
             clipBoxInverseTransform = transform.worldToLocalMatrix;
 
             base.BeginUpdateShaderProperties();

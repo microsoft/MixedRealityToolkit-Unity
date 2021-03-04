@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Accessor for the bounds associated with a handedness, calculated in global-axis-aligned space.
         /// </summary>
         public Dictionary<Handedness, Bounds> Bounds { get; private set; } = new Dictionary<Handedness, Bounds>();
-        
+
         /// <summary>
         /// Accessor for the bounds associated with a handedness, calculated in local hand-space, locally axis aligned.
         /// </summary>

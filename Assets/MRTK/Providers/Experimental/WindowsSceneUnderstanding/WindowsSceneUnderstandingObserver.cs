@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <inheritdoc />
         public bool UpdateOnceInitialized { get; set; }
 
-#endregion IMixedRealityOnDemandObserver
+        #endregion IMixedRealityOnDemandObserver
 
         #region Public Profile
 
@@ -417,9 +417,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <param name="mask">Mask result</param>
         /// <returns>Returns false if fails to get the mask</returns>
         public bool TryGetOcclusionMask(
-            int quadId, 
-            ushort textureWidth, 
-            ushort textureHeight, 
+            int quadId,
+            ushort textureWidth,
+            ushort textureHeight,
             out byte[] mask)
         {
             mask = null;
@@ -447,8 +447,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
         /// <inheritdoc/>
         public bool TryFindCentermostPlacement(
-            int quadId, 
-            Vector2 objExtents, 
+            int quadId,
+            Vector2 objExtents,
             out Vector3 placementPosOnQuad)
         {
             placementPosOnQuad = Vector3.zero;

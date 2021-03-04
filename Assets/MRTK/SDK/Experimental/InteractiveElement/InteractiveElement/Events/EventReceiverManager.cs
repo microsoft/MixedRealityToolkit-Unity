@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         /// </summary>
         internal void InitializeEventReceivers()
         {
-            foreach (KeyValuePair<string,InteractionState> state in stateManager.States)
+            foreach (KeyValuePair<string, InteractionState> state in stateManager.States)
             {
                 // If an interactive element component is created via script instead of initialized in the inspector,
                 // an instance of the event configuration needs to be created
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
                 }
 
                 // Initialize runtime event receiver classes for the states 
-                InitializeAndAddEventReceiver(state.Key);  
+                InitializeAndAddEventReceiver(state.Key);
             }
         }
 

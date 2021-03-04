@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             scrollView.MaskEnabled = maskEnabled.boolValue;
                             EditorUtility.SetDirty(target);
                         }
-                    }              
+                    }
 
                     using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying))
                     {

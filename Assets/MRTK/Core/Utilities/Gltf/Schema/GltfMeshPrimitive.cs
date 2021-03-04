@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         [SerializeField]
         private string mode = null;
 
-        
         /// <summary>
         /// An array of Morph Targets, each  Morph Target is a dictionary mapping
         /// attributes (only "POSITION" and "NORMAL" supported) to their deviations

@@ -18,13 +18,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
     /// Interactive State in an attached Interactive Element component.
     /// </summary>
     [Serializable]
-    public class StateContainer 
+    public class StateContainer
     {
         /// <summary>
         /// The state container constructor.
         /// </summary>
         /// <param name="stateName">The state name for this state container</param>
-        public StateContainer(string stateName) 
+        public StateContainer(string stateName)
         {
             StateName = stateName;
         }
@@ -101,11 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
         public float AnimationTransitionDuration
         {
             get => animationTransitionDuration;
-            set 
+            set
             {
                 animationTransitionDuration = value;
                 SetAnimationTransitionDuration(StateName);
-            } 
+            }
         }
 
         internal AnimatorStateMachine AnimatorStateMachine { get; set; }

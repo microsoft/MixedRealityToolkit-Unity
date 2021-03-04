@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
         {
             if (Target != null && Target.GetComponent<MeshRenderer>() != null)
             {
-                SetColorAnimationCurve(animationClip, null, null, null, null); 
+                SetColorAnimationCurve(animationClip, null, null, null, null);
             }
         }
 

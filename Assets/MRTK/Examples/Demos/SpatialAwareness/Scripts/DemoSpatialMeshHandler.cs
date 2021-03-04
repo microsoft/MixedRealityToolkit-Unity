@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         protected virtual void RegisterEventHandlers<T, U>()
             where T : IMixedRealitySpatialAwarenessObservationHandler<U>
-            where U: BaseSpatialAwarenessObject
+            where U : BaseSpatialAwarenessObject
         {
             if (!isRegistered && (CoreServices.SpatialAwarenessSystem != null))
             {

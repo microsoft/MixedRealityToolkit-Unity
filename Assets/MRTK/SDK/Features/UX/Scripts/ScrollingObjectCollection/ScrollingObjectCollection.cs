@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool MaskEnabled
         {
             get { return maskEnabled; }
-            set 
+            set
             {
                 if (!value && value != wasMaskEnabled)
                 {
@@ -699,7 +699,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return clipBox;
             }
         }
-       
+
         // This collider will be used for checking intersection of the scroll visible area with any content collider or renderer bounds.
         private Collider clippingBoundsCollider;
         private Collider ClippingBoundsCollider
@@ -908,7 +908,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     contentBounds.Encapsulate(renderer.bounds);
                 }
-               
+
                 Vector3 localSize;
 
                 localSize.y = SafeDivisionFloat(contentBounds.size.y, transform.lossyScale.y);
@@ -941,7 +941,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             Vector3 colliderPosition;
             colliderPosition.x = ScrollingCollider.size.x / 2;
-            colliderPosition.y = - ScrollingCollider.size.y / 2;
+            colliderPosition.y = -ScrollingCollider.size.y / 2;
             colliderPosition.z = cellDepth / 2 + ScrollingColliderDepth;
             ScrollingCollider.center = colliderPosition;
 
@@ -950,7 +950,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Math.Abs(Vector3.Dot(ScrollingCollider.size, ScrollingTouchable.LocalUp)));
 
             Vector3 touchablePosition = colliderPosition;
-            touchablePosition.z = - cellDepth / 2;
+            touchablePosition.z = -cellDepth / 2;
 
             ScrollingTouchable.SetBounds(size);
             ScrollingTouchable.SetLocalCenter(touchablePosition);
@@ -1111,7 +1111,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, OverDampLerpInterval);
                         }
-                        else 
+                        else
                         {
                             workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, DragLerpInterval);
                         }
@@ -1143,8 +1143,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     lastPointerPos = currentPointerPos;
                 }
             }
-            else if ((CurrentVelocityState != VelocityState.None 
-                      || previousVelocityState != VelocityState.None) 
+            else if ((CurrentVelocityState != VelocityState.None
+                      || previousVelocityState != VelocityState.None)
                       && CurrentVelocityState != VelocityState.Animating) // Prevent the Animation coroutine from being overridden
             {
                 // We're not engaged, so handle any not touching behavior
@@ -1713,8 +1713,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Complete or partially visible renders should be clipped and its game object should be active
                 if (isRestoringVisibility
-                    || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
-                    || clippingThresholdBounds.Intersects(renderer.bounds)) 
+                    || clippingThresholdBounds.ContainsBounds(renderer.bounds)
+                    || clippingThresholdBounds.Intersects(renderer.bounds))
                 {
                     if (disableClippedGameObjects)
                     {

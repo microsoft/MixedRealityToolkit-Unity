@@ -72,13 +72,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (controllerData != null)
             {
-                if(controllerData is SimulatedHandData handData && handData.IsTracked)
+                if (controllerData is SimulatedHandData handData && handData.IsTracked)
                 {
-                    
+
                     SimulatedHand hand = GetOrAddControllerDevice(handedness, simulationMode) as SimulatedHand;
                     hand.UpdateState(handData);
                     return;
-                    
+
                 }
                 else if (controllerData is SimulatedMotionControllerData motionControllerData && motionControllerData.IsTracked)
                 {
@@ -87,9 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
             }
-            
+
             RemoveControllerDevice(handedness);
-            
         }
 
         public BaseController GetControllerDevice(Handedness handedness)
@@ -240,7 +239,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion
-
-        
     }
 }

@@ -6,9 +6,9 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Examples
 {
-     /// <summary>
-     /// Example receiver class for the Keyboard state
-     /// </summary>
+    /// <summary>
+    /// Example receiver class for the Keyboard state
+    /// </summary>
     public class KeyboardReceiver : BaseEventReceiver
     {
         /// <summary>

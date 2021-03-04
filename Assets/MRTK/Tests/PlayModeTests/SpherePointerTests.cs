@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.MoveTo(nearObjectPos + margin + pullbackDelta, numFramesPerMove);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            
+
             // Move hand back out to disable IsNearObject
             yield return rightHand.MoveTo(nearObjectPos - nearObjectMargin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            
+
             yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);

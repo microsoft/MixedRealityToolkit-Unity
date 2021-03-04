@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void UpdateSpriteIconTextures()
         {
-            if(spriteIcons != null)
+            if (spriteIcons != null)
             {
                 spriteIconTextures = new Texture[spriteIcons.Length];
                 for (int i = 0; i < spriteIcons.Length; i++)

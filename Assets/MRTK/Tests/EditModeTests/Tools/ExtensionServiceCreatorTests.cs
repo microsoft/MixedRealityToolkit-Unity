@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Editor
         private const string DefaultExtensionFolder = "MixedRealityToolkit.Generated/ExtensionFolder";
         private bool GeneratedFolderExisted = false;
         private bool ExtensionFolderExisted = false;
-        
+
         [TearDown]
         public void TearDown()
         {
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Editor
         {
             GeneratedFolderExisted = AssetDatabase.IsValidFolder(Path.Combine("Assets", DefaultGeneratedFolder));
             ExtensionFolderExisted = AssetDatabase.IsValidFolder(Path.Combine("Assets", DefaultExtensionFolder));
-            
+
             // This test intentionally no-ops in the case that the extension folder already exists - we
             // don't to destroy local state, or risk bugs in moving that temporarily. This test is designed
             // to work on a fresh clone (i.e. on CI).
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Editor
             {
                 return;
             }
-            
+
             ExtensionServiceCreator creator = new ExtensionServiceCreator();
             creator.ValidateAssets(new List<string>());
             Assert.IsNotNull(creator.ServiceFolderObject);

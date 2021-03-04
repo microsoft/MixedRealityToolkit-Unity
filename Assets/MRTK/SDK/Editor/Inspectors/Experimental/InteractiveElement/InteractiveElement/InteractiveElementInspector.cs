@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
     /// </summary>
     [CustomEditor(typeof(InteractiveElement))]
     public class InteractiveElementInspector : BaseInteractiveElementInspector
-    { 
-       // Interactive Element is a place holder class  
+    {
+        // Interactive Element is a place holder class  
     }
 }
