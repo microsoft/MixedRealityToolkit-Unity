@@ -98,6 +98,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             return allPointers;
         }
+
+        /// <summary>
+        /// Tests that the camera system initializes with the floor height specified in the profile.
+        /// </summary>
+        /// <returns>enumerator for Unity</returns>
+        [UnityTest]
+        public IEnumerator TestProfileFloorHeight()
+        {
+            float floorHeight = 3.0f;
+
+            var hl1Profile = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>()
+            .FirstOrDefault(x => x.name.Equals(HoloLens1ProfileName));
+            hl1Profile.FloorHeight = floorHeight;
+            TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
+
+            TestUtilities.InitializeCamera();
+            yield return new WaitForSeconds(0.5f);
+
+            TestUtilities.AssertAboutEqual(TestUtilities.PositionRelativeToPlayspace(Vector3.zero), Vector3.down * floorHeight, "The floor height was not set correctly");
+        }
     }
 }
 
