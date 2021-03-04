@@ -1,0 +1,922 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CompressableButton
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CompressableButton
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton" class="text-break">Class CompressableButton
+  </h1>
+  <div class="markdown level0 summary"><p>A button that can be pushed via direct touch.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html">BaseInteractiveElement</a></div>
+    <div class="level2"><span class="xref">CompressableButton</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityFocusHandler</span></div>
+    <div><span class="xref">IMixedRealityTouchHandler</span></div>
+    <div><span class="xref">IMixedRealityPointerHandler</span></div>
+    <div><span class="xref">IMixedRealitySpeechHandler</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_Active">BaseInteractiveElement.Active</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_States">BaseInteractiveElement.States</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_StateManager">BaseInteractiveElement.StateManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_EventReceiverManager">BaseInteractiveElement.EventReceiverManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_DefaultStateName">BaseInteractiveElement.DefaultStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_FocusStateName">BaseInteractiveElement.FocusStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_FocusNearStateName">BaseInteractiveElement.FocusNearStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_FocusFarStateName">BaseInteractiveElement.FocusFarStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_TouchStateName">BaseInteractiveElement.TouchStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_SelectFarStateName">BaseInteractiveElement.SelectFarStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_ClickedStateName">BaseInteractiveElement.ClickedStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_ToggleOnStateName">BaseInteractiveElement.ToggleOnStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_ToggleOffStateName">BaseInteractiveElement.ToggleOffStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_SpeechKeywordStateName">BaseInteractiveElement.SpeechKeywordStateName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnFocusEnter_FocusEventData_">BaseInteractiveElement.OnFocusEnter(FocusEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnFocusExit_FocusEventData_">BaseInteractiveElement.OnFocusExit(FocusEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnTouchStarted_HandTrackingInputEventData_">BaseInteractiveElement.OnTouchStarted(HandTrackingInputEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnTouchCompleted_HandTrackingInputEventData_">BaseInteractiveElement.OnTouchCompleted(HandTrackingInputEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnTouchUpdated_HandTrackingInputEventData_">BaseInteractiveElement.OnTouchUpdated(HandTrackingInputEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnPointerDown_MixedRealityPointerEventData_">BaseInteractiveElement.OnPointerDown(MixedRealityPointerEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnPointerDragged_MixedRealityPointerEventData_">BaseInteractiveElement.OnPointerDragged(MixedRealityPointerEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnPointerClicked_MixedRealityPointerEventData_">BaseInteractiveElement.OnPointerClicked(MixedRealityPointerEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnPointerUp_MixedRealityPointerEventData_">BaseInteractiveElement.OnPointerUp(MixedRealityPointerEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnSpeechKeywordRecognized_SpeechEventData_">BaseInteractiveElement.OnSpeechKeywordRecognized(SpeechEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_SetStateAndInvokeEvent_System_String_System_Int32_BaseEventData_">BaseInteractiveElement.SetStateAndInvokeEvent(String, Int32, BaseEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_GetStateEvents__1_System_String_">BaseInteractiveElement.GetStateEvents&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_SetStateOn_System_String_">BaseInteractiveElement.SetStateOn(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_SetStateOff_System_String_">BaseInteractiveElement.SetStateOff(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_GetState_System_String_">BaseInteractiveElement.GetState(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_AddNewState_System_String_">BaseInteractiveElement.AddNewState(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_RemoveState_System_String_">BaseInteractiveElement.RemoveState(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_AddNewStateWithEventConfiguration_System_String_Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractionEventConfiguration_">BaseInteractiveElement.AddNewStateWithEventConfiguration(String, BaseInteractionEventConfiguration)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_IsStatePresent_System_String_">BaseInteractiveElement.IsStatePresent(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_IsStateActive_System_String_">BaseInteractiveElement.IsStateActive(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_ResetAllStates">BaseInteractiveElement.ResetAllStates()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_TriggerClickedState">BaseInteractiveElement.TriggerClickedState()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_AddToggleStates">BaseInteractiveElement.AddToggleStates()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_SetToggleStates">BaseInteractiveElement.SetToggleStates()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_ForceSetToggleStates_System_Boolean_">BaseInteractiveElement.ForceSetToggleStates(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_SetToggles_System_Boolean_">BaseInteractiveElement.SetToggles(Boolean)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.html">Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CompressableButton : BaseInteractiveElement, IMixedRealityFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_movingButtonVisuals" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.movingButtonVisuals">movingButtonVisuals</h4>
+  <div class="markdown level1 summary"><p>The object that is being pushed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GameObject movingButtonVisuals</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_PressedNearStateName" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.PressedNearStateName">PressedNearStateName</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected string PressedNearStateName</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_startPushDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.startPushDistance">startPushDistance</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected float startPushDistance</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_CompressableButtonVisuals_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.CompressableButtonVisuals*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_CompressableButtonVisuals" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.CompressableButtonVisuals">CompressableButtonVisuals</h4>
+  <div class="markdown level1 summary"><p>The visuals which become compressed (scaled) along the z-axis when pressed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject CompressableButtonVisuals { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_CurrentPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.CurrentPushDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_CurrentPushDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.CurrentPushDistance">CurrentPushDistance</h4>
+  <div class="markdown level1 summary"><p>Current push distance relative to the start push plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CurrentPushDistance { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_DistanceSpaceMode_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.DistanceSpaceMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_DistanceSpaceMode" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.DistanceSpaceMode">DistanceSpaceMode</h4>
+  <div class="markdown level1 summary"><p>Describes in which coordinate space the plane distances are stored and calculated</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CompressableButton.SpaceMode DistanceSpaceMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.SpaceMode.html">CompressableButton.SpaceMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_EnforceFrontPush_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.EnforceFrontPush*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_EnforceFrontPush" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.EnforceFrontPush">EnforceFrontPush</h4>
+  <div class="markdown level1 summary"><p>Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnforceFrontPush { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_IsPressing_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.IsPressing*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_IsPressing" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.IsPressing">IsPressing</h4>
+  <div class="markdown level1 summary"><p>Represents the state of whether the button is currently being pressed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPressing { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_IsTouching_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.IsTouching*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_IsTouching" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.IsTouching">IsTouching</h4>
+  <div class="markdown level1 summary"><p>Represents the state of whether or not a finger is currently touching this button.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsTouching { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_LocalToWorldScale_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.LocalToWorldScale*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_LocalToWorldScale" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.LocalToWorldScale">LocalToWorldScale</h4>
+  <div class="markdown level1 summary"><p>Transform for local to world space in the world direction of a press
+Multiply local scale positions by this value to convert to world space</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float LocalToWorldScale { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_MaxPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.MaxPushDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_MaxPushDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.MaxPushDistance">MaxPushDistance</h4>
+  <div class="markdown level1 summary"><p>Maximum push distance. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxPushDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_MinCompressPercentage_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.MinCompressPercentage*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_MinCompressPercentage" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.MinCompressPercentage">MinCompressPercentage</h4>
+  <div class="markdown level1 summary"><p>The minimum percentage of the original scale the compressableButtonVisuals can be compressed to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinCompressPercentage { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_MovingButtonIconText_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.MovingButtonIconText*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_MovingButtonIconText" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.MovingButtonIconText">MovingButtonIconText</h4>
+  <div class="markdown level1 summary"><p>Public property to set the moving content part(icon and text) of the button.
+This content part moves 1/2 distance of the front cage</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject MovingButtonIconText { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_PressDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.PressDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_PressDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.PressDistance">PressDistance</h4>
+  <div class="markdown level1 summary"><p>Distance the button must be pushed until it is considered pressed. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float PressDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_ReleaseDistanceDelta_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.ReleaseDistanceDelta*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_ReleaseDistanceDelta" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.ReleaseDistanceDelta">ReleaseDistanceDelta</h4>
+  <div class="markdown level1 summary"><p>Withdraw amount needed to transition from Pressed to Released.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ReleaseDistanceDelta { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_ReleaseOnTouchEnd_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.ReleaseOnTouchEnd*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_ReleaseOnTouchEnd" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.ReleaseOnTouchEnd">ReleaseOnTouchEnd</h4>
+  <div class="markdown level1 summary"><p>Button will send the release event on touch end after successful press even if release plane hasn't been passed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReleaseOnTouchEnd { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_StartPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.StartPushDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_StartPushDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.StartPushDistance">StartPushDistance</h4>
+  <div class="markdown level1 summary"><p>The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float StartPushDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_AnimateInHighlightPlate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.AnimateInHighlightPlate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_AnimateInHighlightPlate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.AnimateInHighlightPlate">AnimateInHighlightPlate()</h4>
+  <div class="markdown level1 summary"><p>Animates in the highlight plate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AnimateInHighlightPlate()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_AnimateOutHighlightPlate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.AnimateOutHighlightPlate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_AnimateOutHighlightPlate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.AnimateOutHighlightPlate">AnimateOutHighlightPlate()</h4>
+  <div class="markdown level1 summary"><p>Animates out the highlight plate and disables it when animated out.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AnimateOutHighlightPlate()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_GetDistanceAlongPushDirection_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.GetDistanceAlongPushDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_GetDistanceAlongPushDirection_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.GetDistanceAlongPushDirection(Vector3)">GetDistanceAlongPushDirection(Vector3)</h4>
+  <div class="markdown level1 summary"><p>Returns the local distance along the push direction for the passed in world position</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetDistanceAlongPushDirection(Vector3 positionWorldSpace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">positionWorldSpace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_GetLocalPositionAlongPushDirection_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.GetLocalPositionAlongPushDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_GetLocalPositionAlongPushDirection_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.GetLocalPositionAlongPushDirection(System.Single)">GetLocalPositionAlongPushDirection(Single)</h4>
+  <div class="markdown level1 summary"><p>Returns local position along the push direction for the given local distance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetLocalPositionAlongPushDirection(float localDistance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">localDistance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_GetWorldPositionAlongPushDirection_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.GetWorldPositionAlongPushDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_GetWorldPositionAlongPushDirection_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.GetWorldPositionAlongPushDirection(System.Single)">GetWorldPositionAlongPushDirection(Single)</h4>
+  <div class="markdown level1 summary"><p>Returns world space position along the push direction for the given local distance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetWorldPositionAlongPushDirection(float localDistance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">localDistance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.OnValidate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_OnValidate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.OnValidate">OnValidate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnValidate()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_OnValidate">BaseInteractiveElement.OnValidate()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_Start_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.Start*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_Start" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.Start">Start()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Start()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.BaseInteractiveElement.html#Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_BaseInteractiveElement_Start">BaseInteractiveElement.Start()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_UpdateMovingVisualsPosition_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.UpdateMovingVisualsPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_InteractiveElement_CompressableButton_UpdateMovingVisualsPosition" data-uid="Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.CompressableButton.UpdateMovingVisualsPosition">UpdateMovingVisualsPosition()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void UpdateMovingVisualsPosition()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityFocusHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityTouchHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityPointerHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealitySpeechHandler</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

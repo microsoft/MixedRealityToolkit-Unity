@@ -1,0 +1,700 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interactive Element [Experimental] | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interactive Element [Experimental] | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="interactive-element-experimental">Interactive Element [Experimental]</h1>
+
+<p>A simplified centralized entry point to the MRTK input system. Contains state management methods, event management and the state setting logic for Core Interaction States.</p>
+<p>Interactive Element is an experimental Unity 2019.3 and up feature as it utilizes a feature new to Unity 2019.3: <a href="https://docs.unity3d.com/ScriptReference/SerializeReference.html">Serialize Reference</a>.</p>
+<h3 id="interactive-element-inspector">Interactive Element Inspector</h3>
+<p>During play mode, the Interactive Element inspector provides visual feedback that indicates whether or not the current state is active. If a state is active, it will be highlighted with a cyan color.  If the state is not active, the color is not changed. The numbers next to the states in the inspector are the state values, if the state is active then the value is 1, if the state is not active the value is 0.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/InspectorHighlightEditor.gif" alt="InteractiveElementAddCoreState"></p>
+<h2 id="core-states">Core States</h2>
+<p>Interactive Element contains core states and supports the addition of <a href="#custom-states">custom states</a>.  A core state is one that already has the state setting logic defined in <code>BaseInteractiveElement</code>. The following is a list of the current input-driven core states:</p>
+<h3 id="current-core-states">Current Core States</h3>
+<ul>
+<li><a href="#default-state">Default</a></li>
+</ul>
+<p>Near and Far Interaction Core States:</p>
+<ul>
+<li><a href="#focus-state">Focus</a></li>
+</ul>
+<p>Near Interaction Core States:</p>
+<ul>
+<li><a href="#focus-near-state">Focus Near</a></li>
+<li><a href="#touch-state">Touch</a></li>
+</ul>
+<p>Far Interaction Core States:</p>
+<ul>
+<li><a href="#focus-far-state">Focus Far</a></li>
+<li><a href="#select-far-state">Select Far</a></li>
+</ul>
+<p>Other Core States:</p>
+<ul>
+<li><a href="#clicked-state">Clicked</a></li>
+<li><a href="#toggle-on-and-toggle-off-state">Toggle On and Toggle Off</a></li>
+<li><a href="#speech-keyword-state">Speech Keyword</a></li>
+</ul>
+<h3 id="how-to-add-a-core-state-via-inspector">How to Add a Core State via Inspector</h3>
+<ol>
+<li><p>Navigate to <strong>Add Core State</strong> in the inspector for Interactive Element.</p>
+<p><img src="Images/InteractiveElement/InEditor/InteractiveElementAddCoreState.png" alt="InteractiveElementAddCoreState"></p>
+</li>
+<li><p>Select the <strong>Select State</strong> button to choose the core state to add. The states in the menu are sorted by interaction type.</p>
+<p><img src="Images/InteractiveElement/InEditor/InteractiveElementAddCoreStateSelectState.png" alt="InteractiveElementAddCoreStateSelectState"></p>
+</li>
+<li><p>Open the Event Configuration foldout to view the events and properties associated with the state.</p>
+<p><img src="Images/InteractiveElement/InEditor/InteractiveElementAddCoreStateSelectStateEventConfig.png" alt="InteractiveElementAddCoreStateSelectStateEventConfig"></p>
+</li>
+</ol>
+<h3 id="how-to-add-a-core-state-via-script">How to Add a Core State via Script</h3>
+<p>Use the <code>AddNewState(stateName)</code> method to add a core state. For a list of the available core state names, use the <code>CoreInteractionState</code> enum.</p>
+<pre><code class="lang-c#">// Add by name or add by CoreInteractionState enum to string
+
+interactiveElement.AddNewState(&quot;SelectFar&quot;);
+
+interactiveElement.AddNewState(CoreInteractionState.SelectFar.ToString());
+</code></pre>
+<h3 id="states-internal-structure">States Internal Structure</h3>
+<p>The states in Interactive Element are of type <code>InteractionState</code>.  An <code>InteractionState</code> contains the following properties:</p>
+<ul>
+<li><strong>Name</strong>: The name of the state.</li>
+<li><strong>Value</strong>: The state value.  If the state is on, the state value is 1. If the state is off, the state value is 0.</li>
+<li><strong>Active</strong>: Whether or not the state is currently active. The value for the Active property is true when the state is on, false if the state is off.</li>
+<li><strong>Interaction Type</strong>: The Interaction Type of a state is the type of interaction a state is intended for.
+<ul>
+<li><code>None</code>: Does not support any form of input interaction.</li>
+<li><code>Near</code>: Near interaction support. Input is considered near interaction when an articulated hand has direct contact with another game object, i.e. the position the articulated hand is close to the position of the game object in world space.</li>
+<li><code>Far</code>: Far interaction support. Input is considered far interaction when direct contact with the game object is not required. For example, input via controller ray or gaze is considered far interaction input.</li>
+<li><code>NearAndFar</code>: Encompasses both near and far interaction support.</li>
+<li><code>Other</code>: Pointer independent interaction support.</li>
+</ul>
+</li>
+<li><strong>Event Configuration</strong>: The event configuration for a state is the serialized events profile entry point.</li>
+</ul>
+<p>All of these properties are set internally in the <code>State Manager</code> contained in Interactive Element. For modification of states use the following helper methods:</p>
+<p><strong>State Setting Helper Methods</strong></p>
+<pre><code class="lang-c#">// Get the InteractionState
+interactiveElement.GetState(&quot;StateName&quot;);
+
+// Set a state value to 1/on
+interactiveElement.SetStateOn(&quot;StateName&quot;);
+
+// Set a state value to 0/off
+interactiveElement.SetStateOff(&quot;StateName&quot;);
+
+// Check if a state is present in the state list
+interactiveElement.IsStatePresent(&quot;StateName&quot;);
+
+// Check whether or not a state is active
+interactiveElement.IsStateActive(&quot;StateName&quot;);
+
+// Add a new state to the state list
+interactiveElement.AddNewState(&quot;StateName&quot;);
+
+// Remove a state from the state list
+interactiveElement.RemoveState(&quot;StateName&quot;);
+</code></pre>
+<p>Getting the event configuration of a state is specific to the state itself. Each core state has a specific event configuration type which is outlined below under the sections describing each core state.</p>
+<p>Here is a generalized example of getting a state's event configuration:</p>
+<pre><code class="lang-c#">// T varies depending on the core state - the specific T's are specified under each of the core state sections
+T stateNameEvents = interactiveElement.GetStateEvents&lt;T&gt;(&quot;StateName&quot;);
+</code></pre>
+<h3 id="default-state">Default State</h3>
+<p>The Default state is always present on an Interactive Element.  This state will be active only when all other states are not active.  If any other state becomes active, then the Default state will be set to off internally.</p>
+<p>An Interactive Element is initialized with the Default and Focus states present in the state list. The Default state always needs to be present in the state list.</p>
+<h4 id="getting-default-state-events">Getting Default State Events</h4>
+<p>Event configuration type for the Default State: <code>StateEvents</code></p>
+<pre><code class="lang-c#">StateEvents defaultEvents = interactiveElement.GetStateEvents&lt;StateEvents&gt;(&quot;Default&quot;);
+
+defaultEvents.OnStateOn.AddListener(() =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Default State On&quot;);
+});
+
+defaultEvents.OnStateOff.AddListener(() =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Default State Off&quot;);
+});
+</code></pre>
+<h3 id="focus-state">Focus State</h3>
+<p>The Focus state is a near and far interaction state that can be thought of as the mixed reality equivalent to hover. The distinguishing factor between near and far interaction for the Focus state is the current active pointer type.  If the pointer type for the Focus state is the Poke Pointer, then the interaction is considered near interaction.  If the primary pointer is not the Poke Pointer, then the interaction is considered far interaction. The Focus state is present in Interactive Element by default.</p>
+<table>
+<thead>
+<tr>
+<th>Focus State Behavior</th>
+<th>Focus State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/FocusStateEditor.gif" alt="FocusStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/FocusStateInspector.png" alt="FocusStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="getting-focus-state-events">Getting Focus State Events</h4>
+<p>Event configuration type for the Focus State: <code>FocusEvents</code></p>
+<pre><code class="lang-c#">FocusEvents focusEvents = interactiveElement.GetStateEvents&lt;FocusEvents&gt;(&quot;Focus&quot;);
+
+focusEvents.OnFocusOn.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Focus On&quot;);
+});
+
+focusEvents.OnFocusOff.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Focus Off&quot;);
+});
+</code></pre>
+<h4 id="focus-near-vs-focus-far-behavior">Focus Near vs Focus Far Behavior</h4>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/FocusNearFocusFar.gif" alt="FocusNearFocusFar"></p>
+<h3 id="focus-near-state">Focus Near State</h3>
+<p>The Focus Near state is set when a focus event is raised and the primary pointer is the Poke pointer, an indication of near interaction.</p>
+<table>
+<thead>
+<tr>
+<th>Focus Near State Behavior</th>
+<th>Focus Near State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/FocusNearStateEditor.gif" alt="FocusNearStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/FocusNearStateInspector.png" alt="FocusNearStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="getting-focusnear-state-events">Getting FocusNear State Events</h4>
+<p>Event configuration type for the FocusNear State: <code>FocusEvents</code></p>
+<pre><code class="lang-c#">FocusEvents focusNearEvents = interactiveElement.GetStateEvents&lt;FocusEvents&gt;(&quot;FocusNear&quot;);
+
+focusNearEvents.OnFocusOn.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Near Interaction Focus On&quot;);
+});
+
+focusNearEvents.OnFocusOff.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Near Interaction Focus Off&quot;);
+});
+</code></pre>
+<h3 id="focus-far-state">Focus Far State</h3>
+<p>The Focus Far state is set when the primary pointer is not the Poke pointer.  For example, the default controller ray pointer and the GGV (Gaze, Gesture, Voice) pointer are considered far interaction pointers.</p>
+<table>
+<thead>
+<tr>
+<th>Focus Far State Behavior</th>
+<th>Focus Far State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/FocusFarStateEditor.gif" alt="FocusFarStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/FocusFarStateInspector.png" alt="FocusFarStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="getting-focus-far-state-events">Getting Focus Far State Events</h4>
+<p>Event configuration type for the FocusFar State: <code>FocusEvents</code></p>
+<pre><code class="lang-c#">FocusEvents focusFarEvents = interactiveElement.GetStateEvents&lt;FocusEvents&gt;(&quot;FocusFar&quot;);
+
+focusFarEvents.OnFocusOn.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Far Interaction Focus On&quot;);
+});
+
+focusFarEvents.OnFocusOff.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Far Interaction Focus Off&quot;);
+});
+</code></pre>
+<h3 id="touch-state">Touch State</h3>
+<p>The Touch state is a near interaction state that is set when an articulated hand touches the object directly.  A direct touch means that the articulated hand's index finger is very close to the world position of the object. By default, a <code>NearInteractionTouchableVolume</code> component is attached to the object if the Touch state is added to the the state list.  The presence of a  <code>NearInteractionTouchableVolume</code> or <code>NearInteractionTouchable</code> component is required for detecting Touch events.  The difference between <code>NearInteractionTouchableVolume</code> and <code>NearInteractionTouchable</code> is that <code>NearInteractionTouchableVolume</code> detects a touch based on the collider of the object and <code>NearInteractionTouchable</code>detects touch within a defined area of a plane.</p>
+<table>
+<thead>
+<tr>
+<th>Touch State Behavior</th>
+<th>Touch State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/TouchStateEditor.gif" alt="TouchStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/TouchStateInspector.png" alt="TouchStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="getting-touch-state-events">Getting Touch State Events</h4>
+<p>Event configuration type for the Touch State: <code>TouchEvents</code></p>
+<pre><code class="lang-c#">TouchEvents touchEvents = interactiveElement.GetStateEvents&lt;TouchEvents&gt;(&quot;Touch&quot;);
+
+touchEvents.OnTouchStarted.AddListener((touchData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Touch Started&quot;);
+});
+
+touchEvents.OnTouchCompleted.AddListener((touchData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Touch Completed&quot;);
+});
+
+touchEvents.OnTouchUpdated.AddListener((touchData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Touch Updated&quot;);
+});
+</code></pre>
+<h3 id="select-far-state">Select Far State</h3>
+<p>The Select Far state is the <code>IMixedRealityPointerHandler</code> surfaced.  This state is a far interaction state that detects far interaction click (air-tap) and holds through the use of far interaction pointers such as the default controller ray pointer or the GGV pointer.  The Select Far state has an option under the event configuration foldout named <code>Global</code>. If <code>Global</code> is true, then the <code>IMixedRealityPointerHandler</code> is registered as a global input handler.  Focus on an object is not required to trigger input system events if a handler is registered as global.  For example, if a user wants to know anytime the air-tap/select gesture is performed regardless of the object in focus, set <code>Global</code> to true.</p>
+<table>
+<thead>
+<tr>
+<th>Select Far State Behavior</th>
+<th>Select Far State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/SelectFarStateEditor.gif" alt="SelectFarStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/SelectFarStateInspector.png" alt="SelectFarStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="getting-select-far-state-events">Getting Select Far State Events</h4>
+<p>Event configuration type for the SelectFar State: <code>SelectFarEvents</code></p>
+<pre><code class="lang-c#">SelectFarEvents selectFarEvents = interactiveElement.GetStateEvents&lt;SelectFarEvents&gt;(&quot;SelectFar&quot;);
+
+selectFarEvents.OnSelectUp.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Far Interaction Pointer Up&quot;);
+});
+
+selectFarEvents.OnSelectDown.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Far Interaction Pointer Down&quot;);
+});
+
+selectFarEvents.OnSelectHold.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Far Interaction Pointer Hold&quot;);
+});
+
+selectFarEvents.OnSelectClicked.AddListener((pointerEventData) =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Far Interaction Pointer Clicked&quot;);
+});
+</code></pre>
+<h3 id="clicked-state">Clicked State</h3>
+<p>The Clicked state is triggered by a far interaction click (Select Far state) by default.  This state is internally switched to on, invokes the OnClicked event and then is immediately switched to off.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The visual feedback in the inspector based on state activity is not present for the Clicked state because it is switched on and then off immediately.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Clicked State Behavior</th>
+<th>Clicked State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/ClickedStateEditor.gif" alt="ClickedStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/ClickedStateInspector.png" alt="ClickedStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Near and Far Clicked State Example</strong><br>
+The clicked state can be triggered through additional entry points using the <code>interactiveElement.TriggerClickedState()</code> method.  For example, if a user wants a near interaction touch to trigger a click on an object as well, then they would add the <code>TriggerClickedState()</code> method as a listener in the touch state.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/NearFarClickedState.gif" alt="NearFarClickedState"></p>
+<h4 id="getting-clicked-state-events">Getting Clicked State Events</h4>
+<p>Event configuration type for the Clicked State: <code>ClickedEvents</code></p>
+<pre><code class="lang-c#">ClickedEvents clickedEvent = interactiveElement.GetStateEvents&lt;ClickedEvents&gt;(&quot;Clicked&quot;);
+
+clickedEvent.OnClicked.AddListener(() =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Clicked&quot;);
+});
+</code></pre>
+<h3 id="toggle-on-and-toggle-off-state">Toggle On and Toggle Off state</h3>
+<p>The Toggle On and Toggle Off states are a pair and both need to be present for toggle behavior.  By default, the Toggle On and Toggle Off states are triggered through a far interaction click (Select Far state).  By default, the Toggle Off state is active on start, meaning that the toggle will be initialized to off.  If a user wants the Toggle On state to be active on start, then in the Toggle On state set <code>IsSelectedOnStart</code> to true.</p>
+<table>
+<thead>
+<tr>
+<th>ToggleOn and Toggle Off State Behavior</th>
+<th>ToggleOn and Toggle Off State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/ToggleOnToggleOffStateEditor.gif" alt="ToggleOnToggleOffStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/ToggleOnToggleOffStateInspector.png" alt="ToggleOnToggleOffStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Near and Far Toggle States Example</strong><br>
+Similar to the Clicked state, toggle state setting can have multiple entry points using the <code>interactiveElement.SetToggleStates()</code> method. For example, if a user wants touch as an additional entry point to set the toggle states, then they add the <code>SetToggleStates()</code> method to one of the events in the Touch state.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/NearFarToggleStates.gif" alt="NearFarToggleStates"></p>
+<h4 id="getting-toggle-on-and-toggle-off-state-events">Getting Toggle On and Toggle Off State Events</h4>
+<p>Event configuration type for the ToggleOn State: <code>ToggleOnEvents</code><br>
+Event configuration type for the ToggleOff State: <code>ToggleOffEvents</code></p>
+<pre><code class="lang-c#">// Toggle On Events
+ToggleOnEvents toggleOnEvent = interactiveElement.GetStateEvents&lt;ToggleOnEvents&gt;(&quot;ToggleOn&quot;);
+
+toggleOnEvent.OnToggleOn.AddListener(() =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Toggled On&quot;);
+});
+
+// Toggle Off Events
+ToggleOffEvents toggleOffEvent = interactiveElement.GetStateEvents&lt;ToggleOffEvents&gt;(&quot;ToggleOff&quot;);
+
+toggleOffEvent.OnToggleOff.AddListener(() =&gt;
+{
+    Debug.Log($&quot;{gameObject.name} Toggled Off&quot;);
+});
+</code></pre>
+<h3 id="speech-keyword-state">Speech Keyword State</h3>
+<p>The Speech Keyword state listens for the keywords defined in the Mixed Reality Speech Profile. Any new keyword MUST be registered in the speech command profile prior to runtime (steps below).</p>
+<table>
+<thead>
+<tr>
+<th>Speech Keyword State Behavior</th>
+<th>Speech Keyword State Inspector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Images/InteractiveElement/InEditor/Gifs/SpeechKeywordStateEditor.gif" alt="SpeechKeywordStateEditor"></td>
+<td><img src="Images/InteractiveElement/InEditor/SpeechKeywordStateInspector.png" alt="SpeechKeywordStateInspector"></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The Speech Keyword state was triggered in editor by pressing the F5 key in the gif above. Setting up in editor testing for speech is outlined the steps below.</p>
+</div>
+<h4 id="how-to-register-a-speech-commandkeyword">How to Register a Speech Command/Keyword</h4>
+<ol>
+<li><p>Select the <strong>MixedRealityToolkit</strong> game object</p>
+</li>
+<li><p>Select <strong>Copy and Customize</strong> the current profile</p>
+</li>
+<li><p>Navigate to the Input section and select <strong>Clone</strong> to enable modification of the Input profile</p>
+</li>
+<li><p>Scroll down to the Speech section in the Input profile and clone the Speech Profile</p>
+<p><img src="Images/InteractiveElement/InEditor/SpeechKeywordProfileClone.png" alt="SpeechKeywordProfileClone"></p>
+</li>
+<li><p>Select Add a New Speech Command</p>
+<p><img src="Images/InteractiveElement/InEditor/SpeechKeywordProfileAddKeyword.png" alt="SpeechKeywordStateEditor"></p>
+</li>
+<li><p>Enter the new keyword. Optional: Change the KeyCode to F5 (or another KeyCode) to allow for testing in editor.</p>
+<p><img src="Images/InteractiveElement/InEditor/SpeechKeywordProfileAddKeywordName.png" alt="SpeechKeywordProfileAddKeywordName"></p>
+</li>
+<li><p>Go back to the Interactive Element Speech Keyword state inspector and select <strong>Add Keyword</strong></p>
+<p><img src="Images/InteractiveElement/InEditor/SpeechKeywordAddKeyword.png" alt="SpeechKeywordAddKeyword"></p>
+<p><img src="Images/InteractiveElement/InEditor/SpeechKeywordAddKeywordBlank.png" alt="SpeechKeywordAddKeywordBlank"></p>
+</li>
+<li><p>Enter the new keyword that was just registered in the Speech Profile</p>
+<p><img src="Images/InteractiveElement/InEditor/SpeechKeywordEnterKeyword.png" alt="SpeechKeywordAddKeyword"></p>
+</li>
+</ol>
+<p>To test the Speech Keyword state in editor, press the KeyCode that was defined in step 6 (F5) to simulate the speech keyword recognized event.</p>
+<h4 id="getting-speech-keyword-state-events">Getting Speech Keyword State Events</h4>
+<p>Event configuration type for the SpeechKeyword State: <code>SpeechKeywordEvents</code></p>
+<pre><code class="lang-c#">SpeechKeywordEvents speechKeywordEvents = interactiveElement.GetStateEvents&lt;SpeechKeywordEvents&gt;(&quot;SpeechKeyword&quot;);
+
+speechKeywordEvents.OnAnySpeechKeywordRecognized.AddListener((speechEventData) =&gt;
+{
+    Debug.Log($&quot;{speechEventData.Command.Keyword} recognized&quot;);
+});
+
+// Get the &quot;Change&quot; Keyword event specifically
+KeywordEvent keywordEvent = speechKeywordEvents.Keywords.Find((keyword) =&gt; keyword.Keyword == &quot;Change&quot;);
+
+keywordEvent.OnKeywordRecognized.AddListener(() =&gt;
+{ 
+    Debug.Log(&quot;Change Keyword Recognized&quot;); 
+});
+</code></pre>
+<h2 id="custom-states">Custom States</h2>
+<h3 id="how-to-create-a-custom-state-via-inspector">How to Create a Custom State via Inspector</h3>
+<p>The custom state created via inspector will be initialized with the default state event configuration. The default event configuration for a custom state is of type <code>StateEvents</code> and contains the OnStateOn and OnStateOff events.</p>
+<ol>
+<li><p>Navigate to <strong>Create Custom State</strong> in the inspector for Interactive Element.</p>
+<p><img src="Images/InteractiveElement/InEditor/InteractiveElementCreateCustomState.png" alt="InteractiveElementCreateCustomState"></p>
+</li>
+<li><p>Enter the name of the new state. This name must be unique and cannot be the same as the existing core states.</p>
+<p><img src="Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateName.png" alt="InteractiveElementCreateCustomStateName"></p>
+</li>
+<li><p>Select <strong>Set State Name</strong> to add to the state list.</p>
+<p><img src="Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateNameSet.png" alt="InteractiveElementCreateCustomStateNameSet"></p>
+<p>This custom state is initialized with the default <code>StateEvents</code> event configuration which contains the <code>OnStateOn</code> and <code>OnStateOff</code> events. To create a custom event configuration for a new state see: <a href="#creating-a-custom-state-with-a-custom-event-configuration">Creating a Custom State with a Custom Event Configuration</a>.</p>
+<p><img src="Images/InteractiveElement/InEditor/InteractiveElementCreateCustomStateEventConfig.png" alt="InteractiveElementCreateCustomStateNameSet"></p>
+</li>
+</ol>
+<h3 id="how-to-create-a-custom-state-via-script">How to Create a Custom State via Script</h3>
+<pre><code class="lang-c#">interactiveElement.AddNewState(&quot;MyNewState&quot;);
+
+// A new state by default is initialized with a the default StateEvents configuration which contains the 
+// OnStateOn and OnStateOff events
+
+StateEvents myNewStateEvents = interactiveElement.GetStateEvents&lt;StateEvents&gt;(&quot;MyNewState&quot;);
+
+myNewStateEvents.OnStateOn.AddListener(() =&gt;
+{
+    Debug.Log($&quot;MyNewState is On&quot;);
+});
+
+</code></pre>
+<h3 id="creating-a-custom-state-with-a-custom-event-configuration">Creating a Custom State with a Custom Event Configuration</h3>
+<p>Example files for a custom state named <strong>Keyboard</strong> are located here: MRTK\SDK\Experimental\InteractiveElement\Examples\Scripts\CustomStateExample</p>
+<p>The following steps walk through an existing example of creating a custom state event configuration and receiver files.</p>
+<ol>
+<li><p>Think of a state name.  This name must be unique and cannot be the same as the existing core states. For the purposes of this example, the state name is going to be <strong>Keyboard</strong>.</p>
+</li>
+<li><p>Create two .cs files named state name + &quot;Receiver&quot; and state name + &quot;Events&quot;. The naming of these files are taken into consideration internally and must follow the state name + Event/Receiver convention.</p>
+<p><img src="Images/InteractiveElement/InEditor/KeyboardStateFiles.png" alt="KeyboardStateFiles"></p>
+</li>
+<li><p>See the KeyboardEvents.cs and KeyboardReceiver.cs files for more details on file contents. New event configuration classes must inherit from <code>BaseInteractionEventConfiguration</code> and new event receiver classes must inherit from <code>BaseEventReceiver</code>.  Examples on state setting for the Keyboard state are located in the <code>CustomStateSettingExample.cs</code> file.</p>
+</li>
+<li><p>Add the state to Interactive Element using the state name, the state name will be recognized if event configuration and event receiver files exist.  The properties in the custom event configuration file should appear in the inspector.</p>
+<p><img src="Images/InteractiveElement/InEditor/AddKeyboardState.png" alt="KeyboardStateFiles">
+<img src="Images/InteractiveElement/InEditor/SetKeyboardStateName.png" alt="KeyboardStateFiles"></p>
+</li>
+<li><p>For more examples of event configuration and event receiver files see the files at these paths:</p>
+</li>
+</ol>
+<ul>
+<li>MRTK\SDK\Experimental\InteractiveElement\InteractiveElement\Events\EventConfigurations</li>
+<li>MRTK\SDK\Experimental\InteractiveElement\InteractiveElement\Events\EventReceivers</li>
+</ul>
+<h2 id="example-scene">Example Scene</h2>
+<p>The example scene for Interactive Element + State Visualizer is located here: MRTK\SDK\Experimental\InteractiveElement\Examples\InteractiveElementExampleScene.unity</p>
+<p><img src="Images/InteractiveElement/InEditor/ExampleScene.png" alt="ExampleScene"></p>
+<h3 id="compressable-button">Compressable Button</h3>
+<p>The example scene contains prefabs named <code>CompressableButton</code> and <code>CompressableButtonToggle</code>, these prefabs mirror the behavior of the <code>PressableButtonHoloLens2</code> buttons, that are constructed using Interactive Element and the State Visualizer.
+The <code>CompressableButton</code> component is currently a combination of <code>PressableButton</code> + <code>PressableButtonHoloLens2</code> with <code>BaseInteractiveElement</code>as a base class.</p>
+<h1 id="state-visualizer-experimental">State Visualizer [Experimental]</h1>
+<p>The State Visualizer component adds animations to an object based on the states defined in a linked Interactive Element component. This component creates animation assets, places them in the MixedRealityToolkit.Generated folder and enables simplified animation keyframe setting through adding Animatable properties to a target game object. To enable animation transitions between states, an Animator Controller asset is created and a default state machine is generated with associated parameters and any state transitions.  The state machine can be viewed in Unity's Animator window.</p>
+<h2 id="state-visualizer-and-unity-animation-system">State Visualizer and Unity Animation System</h2>
+<p>The State Visualizer currently leverages the Unity Animation System.</p>
+<p>When the <strong>Generate New Animation Clips</strong> button in the State Visualizer is pressed, new animation clip assets are generated based on the state names in Interactive Element and are placed in the MixedRealityToolkit.Generated folder. The Animation Clip property in each state container is set to the associated animation clip.</p>
+<p><img src="Images/InteractiveElement/StateVisualizer/AnimationClips.png" alt="AnimationClips"></p>
+<p>An <a href="https://docs.unity3d.com/Manual/AnimationOverview.html">Animator State Machine</a> is also generated to manage smooth transitions between animation clips.  By default, the state machine utilizes the <a href="https://docs.unity3d.com/Manual/class-State.html">Any State</a> to allow transitions between any state in Interactive Element.</p>
+<p><a href="https://docs.unity3d.com/Manual/AnimationParameters.html">Animation Parameters</a> are also generated for each state, the trigger parameters are used in the State Visualizer to trigger an animation.</p>
+<p><img src="Images/InteractiveElement/StateVisualizer/UnityStateMachine.png" alt="UnityStateMachine"></p>
+<h3 id="runtime-limitations">Runtime Limitations</h3>
+<p>The State Visualizer must be added to an object via the Inspector and cannot be added via script.  The properties that modify the AnimatorStateMachine/AnimationController are contained in an editor namespace (<code>UnityEditor.Animations</code>) which get removed when the app is built.</p>
+<h2 id="how-to-use-the-state-visualizer">How to use the State Visualizer</h2>
+<ol>
+<li><p>Create a Cube</p>
+</li>
+<li><p>Attach Interactive Element</p>
+</li>
+<li><p>Attach State Visualizer</p>
+</li>
+<li><p>Select <strong>Generate New Animation Clips</strong></p>
+<p><img src="Images/InteractiveElement/StateVisualizer/GenerateAnimationClips.png" alt="GenerateAnimationClips"></p>
+<p><img src="Images/InteractiveElement/StateVisualizer/GenerateAnimationClips2.png" alt="GenerateAnimationClips2"></p>
+</li>
+<li><p>In the Focus state container, select <strong>Add Target</strong></p>
+<p><img src="Images/InteractiveElement/StateVisualizer/AddTarget.png" alt="AddTarget"></p>
+</li>
+<li><p>Drag the current game object to the target field</p>
+<p><img src="Images/InteractiveElement/StateVisualizer/SetTarget.png" alt="SetTarget"></p>
+</li>
+<li><p>Open the Cube Animatable Properties foldout</p>
+</li>
+<li><p>Select the Animatable property drop down menu and select <strong>Color</strong></p>
+<p><img src="Images/InteractiveElement/StateVisualizer/SetColor.png" alt="SetColor"></p>
+</li>
+<li><p>Select <strong>Add the Color Animatable Property</strong></p>
+<p><img src="Images/InteractiveElement/StateVisualizer/SetColorProperty.png" alt="SetColorProperty"></p>
+</li>
+<li><p>Choose a Color</p>
+<p><img src="Images/InteractiveElement/StateVisualizer/SetBlueColor.png" alt="SetBlueColorProperty"></p>
+</li>
+<li><p>Press play and observe the transitional color change</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/FocusColorChange.gif" alt="FocusColorChange"></p>
+</li>
+</ol>
+<h2 id="animatable-properties">Animatable Properties</h2>
+<p>The primary purpose of the Animatable Properties is to simplify animation clip keyframe setting.  If a user is familiar with the Unity Animation System and would prefer to directly set keyframes on the generated animation clips, then they can simply not add Animatable properties to a target object and open the clip in Unity's Animation window (Windows &gt; Animation &gt; Animation).</p>
+<p>If using the Animatable properties for animation, the curve type is set to EaseInOut.</p>
+<p><strong>Current Animatable Properties:</strong></p>
+<ul>
+<li><a href="#scale-offset">Scale Offset</a></li>
+<li><a href="#position-offset">Position Offset</a></li>
+<li><a href="#color">Color</a></li>
+<li><a href="#shader-color">Shader Color</a></li>
+<li><a href="#shader-float">Shader Float</a></li>
+<li><a href="#shader-vector">Shader Vector</a></li>
+</ul>
+<h3 id="scale-offset">Scale Offset</h3>
+<p>The Scale Offset Animatable property takes the current scale of the object and adds the defined offset.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/ScaleOffset.gif" alt="ScaleOffset"></p>
+<h3 id="position-offset">Position Offset</h3>
+<p>The Position Offset Animatable property takes the current position of the object and adds the defined offset.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/PositionOffset.gif" alt="PositionOffset"></p>
+<h3 id="color">Color</h3>
+<p>The Color Animatable property represents the main color of a material if the material has a main color property. This property animates the <code>material._Color</code> property.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/FocusColorChange.gif" alt="FocusColorChange"></p>
+<h3 id="shader-color">Shader Color</h3>
+<p>The Shader Color Animatable property refers to a shader property of type color. A property name is required for all shader properties. The gif below demonstrates animating a shader color property named Fill_Color that is not the main material color.  Observe the changing values in the material inspector.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/ShaderColor.gif" alt="ShaderColor"></p>
+<h3 id="shader-float">Shader Float</h3>
+<p>The Shader Float Animatable property refers to a shader property of type float. A property name is required for all shader properties. In the gif below, observe the changing values in the material inspector for the Metallic property.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/ShaderFloat.gif" alt="ShaderFloat"></p>
+<h3 id="shader-vector">Shader Vector</h3>
+<p>The Shader Vector Animatable property refers to a shader property of type Vector4. A property name is required for all shader properties. In the gif below, observe the changing values in the material inspector for the Tiling (Main Tex_ST) property.</p>
+<p><img src="Images/InteractiveElement/InEditor/Gifs/ShaderVector.gif" alt="ShaderVector"></p>
+<h3 id="how-to-find-animatable-shader-property-names">How to Find Animatable Shader Property Names</h3>
+<ol>
+<li><p>Navigate to Window &gt; Animation &gt; Animation</p>
+</li>
+<li><p>Ensure that the object with the State Visualizer is selected in the hierarchy</p>
+</li>
+<li><p>Select any animation clip in the Animation window</p>
+</li>
+<li><p>Select <strong>Add Property</strong>, open the Mesh Renderer foldout</p>
+<p><img src="Images/InteractiveElement/StateVisualizer/AnimationWindow.png" alt="AnimationWindow"></p>
+</li>
+<li><p>This list contains the names of all the Animatable property names</p>
+<p><img src="Images/InteractiveElement/StateVisualizer/MeshRendererProperties.png" alt="MeshRendererProperties"></p>
+</li>
+</ol>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="README_Button.html"><strong>Buttons</strong></a></li>
+<li><a href="README_BoundsControl.html"><strong>Bounds Control</strong></a></li>
+<li><a href="README_ObjectCollection.html"><strong>Grid Object Collection</strong></a></li>
+<li><a href="README_TapToPlace.html"><strong>Tap to Place</strong></a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_InteractiveElement.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
