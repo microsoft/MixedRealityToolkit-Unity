@@ -485,7 +485,7 @@ namespace Microsoft.MixedReality.Toolkit
             if (ActiveProfile.IsCameraSystemEnabled)
             {
                 DebugUtilities.LogVerbose("Begin registration of the camera system");
-                object[] args = { ActiveProfile.CameraProfile };
+                object[] args = { ActiveProfile.CameraProfile, ActiveProfile.FloorHeight };
                 if (!RegisterService<IMixedRealityCameraSystem>(ActiveProfile.CameraSystemType, args: args) || CoreServices.CameraSystem == null)
                 {
                     Debug.LogError("Failed to start the Camera System!");
@@ -1027,6 +1027,9 @@ namespace Microsoft.MixedReality.Toolkit
         {
             // Initialize all systems
             DebugUtilities.LogVerboseFormat("Calling Initialize() on all services");
+            Debug.Log("Calling Initialize() on all services");
+            ExecuteOnAllServicesInOrder(service => Debug.Log(service));
+
             ExecuteOnAllServicesInOrder(service => service.Initialize());
         }
 

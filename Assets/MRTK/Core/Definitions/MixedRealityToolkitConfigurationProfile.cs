@@ -41,6 +41,19 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
+        [Tooltip("The height above the floor for the Mixed Reality Experience. 1 unit = 1 meter")]
+        private float floorHeight = 1.0f;
+
+        /// <summary>
+        /// The height above the floor for the Mixed Reality Experience. 1 unit = 1 meter
+        /// </summary>
+        public float FloorHeight
+        {
+            get { return floorHeight; }
+            set { floorHeight = value; }
+        }
+
+        [SerializeField]
         [FormerlySerializedAs("enableCameraProfile")]
         [Tooltip("Enable the Camera System on Startup.")]
         private bool enableCameraSystem = false;

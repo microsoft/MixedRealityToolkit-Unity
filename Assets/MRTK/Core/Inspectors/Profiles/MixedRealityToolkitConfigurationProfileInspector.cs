@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
+        private SerializedProperty floorHeight;
         // Camera properties
         private SerializedProperty enableCameraSystem;
         private SerializedProperty cameraSystemType;
@@ -89,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
+            floorHeight = serializedObject.FindProperty("floorHeight");
             // Camera configuration
             enableCameraSystem = serializedObject.FindProperty("enableCameraSystem");
             cameraSystemType = serializedObject.FindProperty("cameraSystemType");
@@ -299,7 +301,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 changed |= RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
                             }
-
                             changed |= c.changed;
                         }
                         return changed;
@@ -401,6 +402,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Experience configuration
             ExperienceScale experienceScale = (ExperienceScale)targetExperienceScale.intValue;
             EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
+
+            EditorGUILayout.PropertyField(floorHeight);
+
 
             string scaleDescription = GetExperienceDescription(experienceScale);
             if (!string.IsNullOrEmpty(scaleDescription))
