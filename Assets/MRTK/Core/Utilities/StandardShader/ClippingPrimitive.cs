@@ -195,6 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     RemoveRenderer(renderers.Count - 1);
                 }
             }
+
+            UseOnPreRender = false;
         }
 
         /// <summary>
