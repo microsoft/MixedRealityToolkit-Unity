@@ -1,5 +1,11 @@
 # Hand tracking
 
+> [!CAUTION]
+># We've moved! 
+>See this page on the ***[new docs website](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/hand-tracking)***.
+>We've moved so we can provide you with a better docs experience. We will no longer be maintaing documentation on Github.
+>Check out the new site to get started with MRTK in Unity!
+
 ## Hand tracking profile
 
 The _Hand Tracking profile_ is found under the _Input System profile_. It contains settings for customizing hand representation.
