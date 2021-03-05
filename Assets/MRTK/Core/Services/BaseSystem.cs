@@ -7,13 +7,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// The base service implements <see cref="IMixedRealityService"/> and provides default properties for all services.
+    /// This class implements <see cref="IMixedRealitySystem"/> and ensures proper state management.
     /// </summary>
-    public abstract class BaseService : IMixedRealityService, IMixedRealityServiceState
+    public abstract class BaseSystem : IMixedRealitySystem
     {
         public const uint DefaultPriority = 10;
-
-        #region IMixedRealityService Implementation
 
         /// <inheritdoc />
         public virtual string Name { get; protected set; }
@@ -24,91 +22,113 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual BaseMixedRealityProfile ConfigurationProfile { get; protected set; } = null;
 
-        /// <inheritdoc />
-        public virtual void Initialize()
-        {
-            IsInitialized = true;
-        }
+        private bool isInitialized = false;
 
-        /// <inheritdoc />
-        public virtual void Reset()
-        {
-            IsInitialized = false;
-        }
-
-        /// <inheritdoc />
-        public virtual void Enable()
-        {
-            IsEnabled = true;
-        }
-
-        /// <inheritdoc />
-        public virtual void Update() { }
-
-        /// <inheritdoc />
-        public virtual void LateUpdate() { }
-
-        /// <inheritdoc />
-        public virtual void Disable()
-        {
-            IsEnabled = false;
-        }
-
-        /// <inheritdoc />
-        public virtual void Destroy()
-        {
-            IsInitialized = false;
-            IsEnabled = false;
-            IsMarkedDestroyed = true;
-        }
-
-        #endregion IMixedRealityService Implementation
-
-        #region IMixedRealityServiceState Implementation
-
-        private bool? isInitialized = null;
+        #region State
 
         /// <inheritdoc />
         public virtual bool IsInitialized
         {
-            get
-            {
-                Debug.Assert(isInitialized.HasValue, $"{GetType()} has not set a value for IsInitialized, returning false.");
-                return isInitialized ?? false;
-            }
-
+            get => isInitialized;
             protected set => isInitialized = value;
         }
 
-        private bool? isEnabled = null;
+        private bool isEnabled = false;
 
         /// <inheritdoc />
         public virtual bool IsEnabled
         {
-            get
-            {
-                Debug.Assert(isEnabled.HasValue, $"{GetType()} has not set a value for IsEnabled, returning false.");
-                return isEnabled ?? false;
-            }
-
+            get => isEnabled;
             protected set => isEnabled = value;
         }
 
-        private bool? isMarkedDestroyed = null;
+        private bool isMarkedDestroyed = false;
 
         /// <inheritdoc />
         public virtual bool IsMarkedDestroyed
         {
-            get
-            {
-                Debug.Assert(isMarkedDestroyed.HasValue, $"{GetType()} has not set a value for IsMarkedDestroyed, returning false.");
-                return isMarkedDestroyed ?? false;
-            }
-
+            get => isMarkedDestroyed;
             protected set => isMarkedDestroyed = value;
         }
 
-        #endregion IMixedRealityServiceState Implementation
+        #endregion State
+
+        ///// <inheritdoc />
+        //public virtual void Initialize()
+        //{
+        //    IsInitialized = true;
+        //}
+
+        ///// <inheritdoc />
+        //public virtual void Destroy()
+        //{
+        //    IsInitialized = false;
+        //    IsEnabled = false;
+        //    IsMarkedDestroyed = true;
+        //}
+
+        /// <inheritdoc />
+        public void Enable()
+        {
+            if (!IsEnabled)
+            {
+                IsEnabled = TryEnable();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool TryEnable()
+        {
+            // todo
+            return true;
+        }
+
+        /// <inheritdoc />
+        public void Disable()
+        {
+            if (IsEnabled)
+            {
+                IsEnabled = !TryDisable();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool TryDisable()
+        {
+            // todo
+            return true;
+        }
+
+        /// <inheritdoc />
+        public void Reset()
+        {
+            // todo
+            // IsInitialized = false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool TryReset()
+        {
+            // todo
+            return true;
+        }
+
+        /// <inheritdoc />
+        // todo
+        public virtual void Update() { }
+
+        /// <inheritdoc />
+        // todo
+        public virtual void LateUpdate() { }
 
         #region IDisposable Implementation
 

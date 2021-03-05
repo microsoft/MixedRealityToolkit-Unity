@@ -31,17 +31,17 @@ namespace Microsoft.MixedReality.Toolkit
         #region State properties
 
         /// <summary>
-        /// Indicates whether or not the service has been initialized.
+        /// Indicates whether or not the system has been initialized.
         /// </summary>
         bool IsInitialized { get; }
 
         /// <summary>
-        /// Indicates whether or not the service is currently enabled.
+        /// Indicates whether or not the system is currently enabled.
         /// </summary>
         bool IsEnabled { get; }
 
         /// <summary>
-        /// Indicates whether or not the Destroy method been called on this service.
+        /// Indicates whether or not the Destroy method been called on this system.
         /// </summary>
         bool IsMarkedDestroyed { get; }
 
@@ -50,30 +50,9 @@ namespace Microsoft.MixedReality.Toolkit
         #region Lifecycle methods
 
         /// <summary>
-        /// The initialize function is used to setup the service once created.
-        /// This method is called once all services have been registered in the Mixed Reality Toolkit.
-        /// </summary>
-        void Initialize();
-
-        /// <summary>
-        /// Optional Reset function to perform that will Reset the service, for example, whenever there is a profile change.
-        /// </summary>
-        void Reset();
-
-        /// <summary>
         /// Optional Enable function to enable / re-enable the service.
         /// </summary>
         void Enable();
-
-        /// <summary>
-        /// Optional Update function to perform per-frame updates of the service.
-        /// </summary>
-        void Update();
-
-        /// <summary>
-        /// Optional LateUpdate function to that is called after Update has been called on all services.
-        /// </summary>
-        void LateUpdate();
 
         /// <summary>
         /// Optional Disable function to pause the service.
@@ -81,9 +60,19 @@ namespace Microsoft.MixedReality.Toolkit
         void Disable();
 
         /// <summary>
-        /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.
+        /// Optional Reset function to perform that will Reset the service, for example, whenever there is a profile change.
         /// </summary>
-        void Destroy();
+        void Reset();
+
+        /// <summary>
+        /// Optional Update function to perform per-frame updates of the service.
+        /// </summary>
+        void Update(); // todo: can we "hide" this?
+
+        /// <summary>
+        /// Optional LateUpdate function to that is called after Update has been called on all services.
+        /// </summary>
+        void LateUpdate(); // todo: can we "hide" this?
 
         #endregion Lifecycle methods
     }
