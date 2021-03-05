@@ -84,16 +84,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
                 }
 
-                if (value)
+                if(useOnPreRender != value)
                 {
-                    cameraMethods.OnCameraPreRender += OnCameraPreRender;
-                }
-                else
-                {
-                    cameraMethods.OnCameraPreRender -= OnCameraPreRender;
-                }
+                    if (value)
+                    {
+                        cameraMethods.OnCameraPreRender += OnCameraPreRender;
+                    }
+                    else if (!value)
+                    {
+                        cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+                    }
 
-                useOnPreRender = value;
+                    useOnPreRender = value;
+                }
             }
         }
 
@@ -195,8 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     RemoveRenderer(renderers.Count - 1);
                 }
             }
-
-            UseOnPreRender = false;
         }
 
         /// <summary>
@@ -242,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (cameraMethods != null)
             {
-                cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+                UseOnPreRender = false;
             }
         }
 
