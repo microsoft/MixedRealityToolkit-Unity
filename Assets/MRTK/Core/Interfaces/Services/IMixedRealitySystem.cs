@@ -6,9 +6,9 @@ using System;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Generic interface for all Mixed Reality Services
+    /// Base interface for all Mixed Reality systems
     /// </summary>
-    public interface IMixedRealityService : IDisposable
+    public interface IMixedRealitySystem : IDisposable
     {
         /// <summary>
         /// Optional Priority attribute if multiple services of the same type are required, enables targeting a service for action.
@@ -27,6 +27,27 @@ namespace Microsoft.MixedReality.Toolkit
         /// Many services may wish to provide a typed version (ex: MixedRealityInputSystemProfile) that casts this value for ease of use in calling code.
         /// </remarks>
         BaseMixedRealityProfile ConfigurationProfile { get; }
+
+        #region State properties
+
+        /// <summary>
+        /// Indicates whether or not the service has been initialized.
+        /// </summary>
+        bool IsInitialized { get; }
+
+        /// <summary>
+        /// Indicates whether or not the service is currently enabled.
+        /// </summary>
+        bool IsEnabled { get; }
+
+        /// <summary>
+        /// Indicates whether or not the Destroy method been called on this service.
+        /// </summary>
+        bool IsMarkedDestroyed { get; }
+
+        #endregion State properties
+
+        #region Lifecycle methods
 
         /// <summary>
         /// The initialize function is used to setup the service once created.
@@ -63,5 +84,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.
         /// </summary>
         void Destroy();
+
+        #endregion Lifecycle methods
     }
 }
