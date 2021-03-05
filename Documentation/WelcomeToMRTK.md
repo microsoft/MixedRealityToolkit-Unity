@@ -12,7 +12,7 @@ keywords: Unity,HoloLens, HoloLens 2, Mixed Reality, development, MRTK,
 
 > [!CAUTION]
 ># We've moved! 
->We have a ***[new docs website](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/welcome-to-mrtk)*** for Mixed Reality Toolkit Documentation.
+>We have a ***[new docs website](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/)*** for Mixed Reality Toolkit Documentation.
 >We've moved so we can provide you with a better docs experience. We will no longer be maintaing documentation on Github.
 >Check out the new site to get started with MRTK in Unity!
 
