@@ -19,12 +19,12 @@ Use Dialog.Open() to open a new dialog. Specify the dialog prefab, number of but
 public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, bool placeForNearInteraction, System.Object variable = null)
 ```
 
-### Example of opening Large dialog with single 'OK' button, placed at far interaction range (gaze, hand ray, motion controller):
+### Example of opening a Large dialog with a single 'OK' button, placed at far interaction range (gaze, hand ray, motion controller):
 ```c#
 Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Confirmation Dialog, Large, Far", "This is an example of a large dialog with only one button, placed at far interaction range", false);
 ```
 
-### Example of opening Small dialog with a choice message for the user, placed at near interaction range (direct hand interaction):
+### Example of opening a Small dialog containing a choice message for the user, placed at near interaction range (direct hand interaction):
 ```c#
 Dialog.Open(DialogPrefabSmall, DialogButtonType.Yes | DialogButtonType.No, "Confirmation Dialog, Small, Near", "This is an example of a small dialog with a choice message, placed at near interaction range", true);
 ```
