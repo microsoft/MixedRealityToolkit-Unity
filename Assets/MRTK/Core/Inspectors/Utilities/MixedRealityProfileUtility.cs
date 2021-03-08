@@ -61,11 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (!profileContentCaches.TryGetValue(profileType, out profileContent))
             {
                 ScriptableObject[] profilesOfType = GetProfilesOfType(profileType);
-                profileContent = new GUIContent[profilesOfType.Length + 1];
-                profileContent[0] = new GUIContent("(None)");
+                profileContent = new GUIContent[profilesOfType.Length];
                 for (int i = 0; i < profilesOfType.Length; i++)
                 {
-                    profileContent[i + 1] = new GUIContent(profilesOfType[i].name);
+                    profileContent[i] = new GUIContent(profilesOfType[i].name);
                 }
                 profileContentCaches.Add(profileType, profileContent);
             }

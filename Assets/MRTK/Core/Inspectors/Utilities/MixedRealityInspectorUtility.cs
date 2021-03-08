@@ -531,19 +531,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.EndVertical();
         }
 
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool showAddButton)
+        {
+            return DrawProfileDropDownList(property, profile, oldProfileObject, new Type[] { profileType }, showAddButton);
+        }
+
         /// <summary>
         /// Draws a dropdown with all available profiles of profilyType.
         /// </summary>
         /// <returns>True if property was changed.</returns>
-        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool showAddButton)
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type[] profileTypes, bool showAddButton)
         {
             bool changed = false;
 
             using (new EditorGUILayout.HorizontalScope())
             {
+                List<ScriptableObject> profileInstanceList = new List<ScriptableObject>();
+                List<GUIContent> profileContentList = new List<GUIContent>() { new GUIContent("(None)") } ;
+
                 // Pull profile instances and profile content from cache
-                ScriptableObject[] profileInstances = MixedRealityProfileUtility.GetProfilesOfType(profileType);
-                GUIContent[] profileContent = MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType);
+                for(int i = 0; i < profileTypes.Length; i++)
+                {
+                    Type profileType = profileTypes[i];
+                    profileInstanceList.AddRange(MixedRealityProfileUtility.GetProfilesOfType(profileType));
+                    profileContentList.AddRange(MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType));
+                }
+                ScriptableObject[] profileInstances = profileInstanceList.ToArray();
+                GUIContent[] profileContent = profileContentList.ToArray();
+
                 // Set our selected index to our '(None)' option by default
                 int selectedIndex = 0;
                 // Find our selected index
@@ -561,7 +576,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     selectedIndex,
                     profileContent,
                     GUILayout.ExpandWidth(true));
-
+                
                 property.objectReferenceValue = (newIndex > 0) ? profileInstances[newIndex - 1] : null;
                 changed = property.objectReferenceValue != oldProfileObject;
 
@@ -581,11 +596,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // Draw the clone button
                 if (property.objectReferenceValue == null)
                 {
-                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(profileType))
+                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(Selection.activeObject.GetType()))
                     {
                         if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
                         {
-                            ScriptableObject instance = ScriptableObject.CreateInstance(profileType);
+                            ScriptableObject instance = ScriptableObject.CreateInstance(Selection.activeObject.GetType());
                             var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
                             property.objectReferenceValue = newProfile;
                             property.serializedObject.ApplyModifiedProperties();

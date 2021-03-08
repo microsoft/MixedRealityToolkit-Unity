@@ -109,6 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
+            Type[] profileTypes = new Type[] { };
+
             if (profileType == null)
             {
                 // Find the profile type so we can limit the available object field options
@@ -121,30 +123,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // However in the case where there is just a single profile type for the service, we can improve
                     // upon the user experience by limiting the set of things that show in the picker by restricting
                     // the set of profiles listed to only that type.
-                    var availableTypes = MixedRealityProfileUtility.GetProfileTypesForService(serviceType);
-                    if (availableTypes.Count == 1)
-                    {
-                        profileType = availableTypes.First();
-                    }
-                    // If there are no profiles with a ProfileType suitable for the serviceType, we keep the profileType as null, since there are no valid ones.
-                    // This prevents the user from being able to configure the profile (which is appropriate in this case)
-                    else if (availableTypes.Count == 0)
-                    {
-                        profileType = null;
-                    }
-                    // If there are more than 1 valid availableType for the serviceType, default the profileType to BaseMixedRealityProfile since the 
-                    // EditorGUILayout.ObjectField can only restrict the set of profiles to a single type
-                    else
-                    {
-                        profileType = typeof(BaseMixedRealityProfile);
-                    }
+                    profileTypes = MixedRealityProfileUtility.GetProfileTypesForService(serviceType).ToArray<Type>();
                 }
+            }
+            else
+            {
+                profileTypes = new Type[] { profileType };
             }
 
             // Draw the profile dropdown if a valid profileType exists
-            if (profileType != null)
+            if (profileTypes.Length != 0)
             {
-                changed |= MixedRealityInspectorUtility.DrawProfileDropDownList(property, profile, oldObject, profileType, showAddButton);
+                changed |= MixedRealityInspectorUtility.DrawProfileDropDownList(property, profile, oldObject, profileTypes, showAddButton);
             }
 
             Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
