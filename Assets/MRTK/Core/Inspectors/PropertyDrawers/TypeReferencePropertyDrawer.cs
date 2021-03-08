@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             var menu = new GenericMenu();
 
-            if(types.Count == 0)
+            if (types.Count == 0)
             {
                 menu.AddItem(new GUIContent("No types available"), selectedType == null, OnSelectedTypeName, null);
             }
