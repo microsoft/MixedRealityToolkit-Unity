@@ -1478,6 +1478,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual((handTouchDelta - scrollView.HandDeltaScrollThreshold) / newScale, scrollView.ScrollContainerPosition.y, 0.005, "Scroll drag amount was not 1:1");
         }
 
+        /// <summary>
+        /// Tests that no errors are raised after the scrolling object collection is removed from the scene
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScrollViewCleanup()
+        {
+            // Setting up a vertical 1x2 scroll view with three pressable buttons items
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         2,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Object.Destroy(scrollView.gameObject);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+        }
+
         #endregion Tests
 
         #region Utilities
