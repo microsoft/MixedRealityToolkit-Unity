@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             UnityObjectExtensions.DestroyObject(gazeProvider as Component);
             gazeProvider = null;
 
-            //Ensure that the input system and it's related input sources are able to be reinitialized without issue.
+            // Ensure that the input system and it's related input sources are able to be reinitialized without issue.
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             PlayModeTestUtilities.GetInputSystem().Initialize();
 
