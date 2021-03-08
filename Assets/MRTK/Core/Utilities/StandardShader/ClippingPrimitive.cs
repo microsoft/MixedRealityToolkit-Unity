@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
                 }
 
-                if(useOnPreRender != value)
+                if (useOnPreRender != value)
                 {
                     if (value)
                     {
