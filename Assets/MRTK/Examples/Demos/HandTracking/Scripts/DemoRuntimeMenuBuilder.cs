@@ -14,7 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     public class DemoRuntimeMenuBuilder : MonoBehaviour
     {
         [SerializeField]
-        private ButtonConfigHelper buttonPrefab;
+        [Tooltip("Button prefab that will be used to fill the dynamic GridObjectCollection.")]
+        private ButtonConfigHelper buttonPrefab = null;
 
         private GridObjectCollection gridObjectCollection;
 
