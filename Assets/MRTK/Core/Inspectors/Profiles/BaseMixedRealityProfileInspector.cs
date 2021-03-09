@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Linq;
@@ -69,25 +70,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
         /// <param name="profileType">Profile type to filter available values to set on the provided property. If null, defaults to type <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/></param>
-        /// <param name="showAddButton">If true, draw the clone button, if false, don't</param>
+        /// <param name="showCloneButton">If true, draw the clone button, if false, don't</param>
         /// <param name="renderProfileInBox">if true, render box around profile content, if false, don't</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
-        protected static bool RenderProfile(SerializedProperty property, Type profileType, bool showAddButton = true, bool renderProfileInBox = false, Type serviceType = null)
+        protected static bool RenderProfile(SerializedProperty property, Type profileType, bool showCloneButton = true, bool renderProfileInBox = false, Type serviceType = null)
         {
-            return RenderProfileInternal(property, profileType, showAddButton, renderProfileInBox, serviceType);
+            return RenderProfileInternal(property, profileType, showCloneButton, renderProfileInBox, serviceType);
         }
 
         /// <summary>
         /// Renders a <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/>.
         /// </summary>
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
-        /// <param name="showAddButton">If true, draw the clone button, if false, don't</param>
+        /// <param name="showCloneButton">If true, draw the clone button, if false, don't</param>
         /// <param name="renderProfileInBox">if true, render box around profile content, if false, don't</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
         /// <returns>True, if the profile changed.</returns>
         private static bool RenderProfileInternal(SerializedProperty property, Type profileType,
-            bool showAddButton, bool renderProfileInBox, Type serviceType = null)
+            bool showCloneButton, bool renderProfileInBox, Type serviceType = null)
         {
             var profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
             bool changed = false;
@@ -111,6 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             Type[] profileTypes = new Type[] { };
 
+            bool requiresProfile = IsProfileRequired(serviceType) ;
             if (profileType == null)
             {
                 // Find the profile type so we can limit the available object field options
@@ -123,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // However in the case where there is just a single profile type for the service, we can improve
                     // upon the user experience by limiting the set of things that show in the picker by restricting
                     // the set of profiles listed to only that type.
-                    profileTypes = MixedRealityProfileUtility.GetProfileTypesForService(serviceType).ToArray<Type>();
+                    profileTypes = MixedRealityProfileUtility.GetProfileTypesForService(serviceType).ToArray();
                 }
             }
             else
@@ -134,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Draw the profile dropdown if a valid profileType exists
             if (profileTypes.Length != 0)
             {
-                changed |= MixedRealityInspectorUtility.DrawProfileDropDownList(property, profile, oldObject, profileTypes, showAddButton);
+                changed |= MixedRealityInspectorUtility.DrawProfileDropDownList(property, profile, oldObject, profileTypes, requiresProfile, showCloneButton);
             }
 
             Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
@@ -199,6 +201,30 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected static bool IsProfileLock(BaseMixedRealityProfile profile)
         {
             return MixedRealityProjectPreferences.LockProfiles && !profile.IsCustomProfile;
+        }
+
+        /// <summary>
+        /// Inspect the attributes of the provided system type to determine if a configuration profile is required.
+        /// </summary>
+        /// <param name="serviceType">The system type representing the service.</param>
+        /// <returns>
+        /// True if the service is decorated with an attribute indicating a profile is required, false otherwise.
+        /// </returns>
+        protected static bool IsProfileRequired(SystemType serviceType)
+        {
+            // Services marked with the MixedRealityExtensionServiceAttribute (or a derivative)
+            // support specifying whether or not a profile is required.
+            return IsProfileRequired(serviceType?.Type);
+        }
+
+        protected static bool IsProfileRequired(Type serviceType)
+        {
+            if(serviceType != null)
+            {
+                MixedRealityExtensionServiceAttribute attribute = (serviceType != null) ? MixedRealityExtensionServiceAttribute.Find(serviceType) : null;
+                return attribute != null && attribute.RequiresProfile;
+            }
+            return false;
         }
     }
 }

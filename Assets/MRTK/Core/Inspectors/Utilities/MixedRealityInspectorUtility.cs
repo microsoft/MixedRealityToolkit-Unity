@@ -531,23 +531,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.EndVertical();
         }
 
-        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool showAddButton)
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool requiresProfile, bool showAddButton)
         {
-            return DrawProfileDropDownList(property, profile, oldProfileObject, new Type[] { profileType }, showAddButton);
+            return DrawProfileDropDownList(property, profile, oldProfileObject, new Type[] { profileType }, requiresProfile, showAddButton);
         }
 
         /// <summary>
         /// Draws a dropdown with all available profiles of profilyType.
         /// </summary>
         /// <returns>True if property was changed.</returns>
-        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type[] profileTypes, bool showAddButton)
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type[] profileTypes, bool requiresProfile, bool showAddButton)
         {
             bool changed = false;
 
             using (new EditorGUILayout.HorizontalScope())
             {
                 List<ScriptableObject> profileInstanceList = new List<ScriptableObject>();
-                List<GUIContent> profileContentList = new List<GUIContent>() { new GUIContent("(None)") } ;
+                List<GUIContent> profileContentList = requiresProfile ? new List<GUIContent>() : new List<GUIContent>() { new GUIContent("(None)") } ;
+
+                int dropdownOffset = profileContentList.Count();
 
                 // Pull profile instances and profile content from cache
                 for(int i = 0; i < profileTypes.Length; i++)
@@ -559,14 +561,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 ScriptableObject[] profileInstances = profileInstanceList.ToArray();
                 GUIContent[] profileContent = profileContentList.ToArray();
 
-                // Set our selected index to our '(None)' option by default
                 int selectedIndex = 0;
                 // Find our selected index
                 for (int i = 0; i < profileInstances.Length; i++)
                 {
                     if (profileInstances[i] == oldProfileObject)
-                    {   // Our profile content has a '(None)' option at the start
-                        selectedIndex = i + 1;
+                    {   // If a profile is required, then the selected index is the same as the profile instance index, otherwise it is offset by the dropdownOffset
+                        // due to the pre-existing (None) option
+                        selectedIndex = i + dropdownOffset;
                         break;
                     }
                 }
@@ -576,8 +578,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     selectedIndex,
                     profileContent,
                     GUILayout.ExpandWidth(true));
-                
-                property.objectReferenceValue = (newIndex > 0) ? profileInstances[newIndex - 1] : null;
+
+                int profileInstanceIndex = newIndex - dropdownOffset;
+                property.objectReferenceValue = (profileInstanceIndex >= 0) ? profileInstances[profileInstanceIndex] : null;
                 changed = property.objectReferenceValue != oldProfileObject;
 
                 // Draw a button that finds the profile in the project window
