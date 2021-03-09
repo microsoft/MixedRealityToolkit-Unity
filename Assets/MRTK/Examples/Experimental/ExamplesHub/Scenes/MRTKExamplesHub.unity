@@ -487,16 +487,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 81741064722888242, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: autoStart
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 81741064722888242, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 495975531414608465, guid: 3b812638595c9fd48adef6d6ec90b2aa,
         type: 3}
       propertyPath: m_Mesh
@@ -577,45 +567,15 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 3965030068503849372, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4600573405503283596, guid: 3b812638595c9fd48adef6d6ec90b2aa,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4848103184736958135, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6339407652613368573, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6384852676469186209, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6684763944924965314, guid: 3b812638595c9fd48adef6d6ec90b2aa,
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6819127135747867865, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8523790947019407673, guid: 3b812638595c9fd48adef6d6ec90b2aa,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b812638595c9fd48adef6d6ec90b2aa, type: 3}
