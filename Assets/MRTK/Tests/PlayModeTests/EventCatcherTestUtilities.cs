@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public void Dispose()
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 
