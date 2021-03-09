@@ -1,5 +1,11 @@
 # Getting started with MRTK and XR SDK
 
+> [!CAUTION]
+># We've moved! 
+>See this page on the ***[new docs website](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/getting-started-with-mrtk-and-xrsdk)***.
+>We've moved so we can provide you with a better docs experience. We will no longer be maintaing documentation on Github.
+>Check out the new site to get started with MRTK in Unity!
+
 XR SDK is Unity's [new XR pipeline in Unity 2019.3 and beyond](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/). In Unity 2019, it provides an alternative to the existing XR pipeline. In Unity 2020, it will become the only XR pipeline in Unity.
 
 ## Prerequisites

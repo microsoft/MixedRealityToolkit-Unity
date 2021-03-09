@@ -144,6 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             return left.Equals(right);
@@ -163,12 +164,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }
 
+        /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
             return obj.GetHashCode();
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
