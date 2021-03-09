@@ -449,6 +449,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     for (int i = 0; i < numColliders; i++)
                     {
                         Collider collider = queryBuffer[i];
+                        MeshCollider meshCollider = collider as MeshCollider;
+                        if (meshCollider != null && meshCollider.convex == false)
+                        {
+                            // Physics.ClosestPoint is only allowed on a convex collider.
+                            continue;
+                        }
+                        
                         grabbable = collider.GetComponent<NearInteractionGrabbable>();
                         if (grabbable != null)
                         {
