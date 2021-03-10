@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License
 
 
+using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 
 #if UNITY_EDITOR
 using UnityEditor.Animations;

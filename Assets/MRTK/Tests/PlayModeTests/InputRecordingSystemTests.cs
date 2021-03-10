@@ -3,16 +3,16 @@
 
 #if !WINDOWS_UWP
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
-using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Input;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {

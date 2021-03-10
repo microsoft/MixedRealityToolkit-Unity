@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
