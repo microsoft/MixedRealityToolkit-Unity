@@ -268,6 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                         break;
                     case DeviceInputType.Select:
                     case DeviceInputType.TriggerPress:
+                    case DeviceInputType.GripPress:
                         Interactions[i].BoolData = IsPinching;
                         if (Interactions[i].Changed)
                         {

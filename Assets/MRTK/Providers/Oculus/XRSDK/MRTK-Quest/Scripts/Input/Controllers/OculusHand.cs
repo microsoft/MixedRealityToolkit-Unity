@@ -173,6 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                         }
                         break;
                     case DeviceInputType.TriggerPress:
+                    case DeviceInputType.GripPress:
                         Interactions[i].BoolData = IsPinching || IsGrabbing;
 
                         if (Interactions[i].Changed)
