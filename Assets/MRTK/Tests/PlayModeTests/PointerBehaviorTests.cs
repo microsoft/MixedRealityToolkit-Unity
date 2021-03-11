@@ -230,6 +230,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestTeleport()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
+            float floorHeight = 1.3f;
+            float originalProfileFloorHeight;
+
+            // MRTK has already been created by SetUp prior to calling this,
+            // we have to shut it down to re-init with the custom input profile which
+            // has our floorHeight value set
+            PlayModeTestUtilities.TearDown();
+            yield return null;
+
+            // Initialize a profile with the appropriate floorHeight
+            var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
+            originalProfileFloorHeight = profile.FloorHeight;
+            profile.FloorHeight = floorHeight;
+            PlayModeTestUtilities.Setup(profile);
 
             // Create a floor and make sure it's below the camera
             var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -250,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
-
+            
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
             // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -278,6 +292,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // We should have teleported in the forward direction after the teleport
             Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
+
+            // Ensure that the camera's position is floorHeight (defined by the profile) units above the ground after the teleport
+            Assert.AreEqual(Camera.main.transform.position.y - MixedRealityPlayspace.Position.y, floorHeight, 0.005f);
+
+            // Reset the profile's floor height to it's original value
+            profile.FloorHeight = originalProfileFloorHeight;
             leftHand.Hide();
         }
 
