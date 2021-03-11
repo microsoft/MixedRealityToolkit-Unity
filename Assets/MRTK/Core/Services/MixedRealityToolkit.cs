@@ -1027,9 +1027,6 @@ namespace Microsoft.MixedReality.Toolkit
         {
             // Initialize all systems
             DebugUtilities.LogVerboseFormat("Calling Initialize() on all services");
-            Debug.Log("Calling Initialize() on all services");
-            ExecuteOnAllServicesInOrder(service => Debug.Log(service));
-
             ExecuteOnAllServicesInOrder(service => service.Initialize());
         }
 
