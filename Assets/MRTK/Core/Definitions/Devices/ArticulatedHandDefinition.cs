@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInputActionMapping("Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInputActionMapping("Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
             new MixedRealityInputActionMapping("Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInputActionMapping("Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInputActionMapping("Grab", AxisType.SingleAxis, DeviceInputType.GripPress),
             new MixedRealityInputActionMapping("Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
             new MixedRealityInputActionMapping("Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick),
         };
