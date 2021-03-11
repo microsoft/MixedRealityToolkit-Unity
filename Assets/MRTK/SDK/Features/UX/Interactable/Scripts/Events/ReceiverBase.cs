@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 

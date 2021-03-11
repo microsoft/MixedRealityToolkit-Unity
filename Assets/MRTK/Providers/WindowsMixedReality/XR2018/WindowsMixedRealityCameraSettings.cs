@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;

@@ -16,12 +16,12 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Text;
-using System.IO;
 
 
 namespace Microsoft.MixedReality.Toolkit.Tests

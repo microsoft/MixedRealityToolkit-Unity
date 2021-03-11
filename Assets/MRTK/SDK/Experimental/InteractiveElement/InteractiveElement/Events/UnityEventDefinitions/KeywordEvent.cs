@@ -4,7 +4,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
