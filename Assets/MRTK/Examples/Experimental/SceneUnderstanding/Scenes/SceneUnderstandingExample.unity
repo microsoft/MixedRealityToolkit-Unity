@@ -4926,22 +4926,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 523
+      value: 333
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 73
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 73
+      value: 41
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 13
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -4961,10 +4961,8 @@ PrefabInstance:
 
         <size=24><b>Important - Required packages</b></size>
 
-        Use Mixed Reality Feature Tool to get the Scene Understanding package. The
-        Scene Understanding package may not be available at MRTK 2.6 launch time but
-        will be released soon after. Please check issue #9402 on the MRTK-Unity GitHub
-        repository for updates on its availability.'
+        Use Mixed Reality Feature Tool to get the now available Scene Understanding
+        package.'
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
