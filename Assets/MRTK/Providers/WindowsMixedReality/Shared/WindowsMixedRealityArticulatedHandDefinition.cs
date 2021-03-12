@@ -29,9 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
 
-        private static int? HandMeshModelId = null;
-        private static int? NeutralPoseVersion = null;
-
         private ushort[] handMeshTriangleIndices = null;
         private HandMeshVertex[] vertexAndNormals = null;
 
@@ -126,23 +123,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
                 if (handMeshObserver != null && handPose != null)
                 {
-                    if ((handMeshTriangleIndices == null) ||
-                        (handMeshTriangleIndices.Length != handMeshObserver.TriangleIndexCount))
+                    if (handMeshTriangleIndices == null)
                     {
                         handMeshTriangleIndices = new ushort[handMeshObserver.TriangleIndexCount];
                         handMeshTriangleIndicesUnity = new int[handMeshObserver.TriangleIndexCount];
-                    }
-
-                    if (!HandMeshModelId.HasValue || (HandMeshModelId.Value != handMeshObserver.ModelId))
-                    {
                         handMeshObserver.GetTriangleIndices(handMeshTriangleIndices);
-                        HandMeshModelId = handMeshObserver.ModelId;
 
                         Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, (int)handMeshObserver.TriangleIndexCount);
-                    }
 
-                    if (!NeutralPoseVersion.HasValue || (NeutralPoseVersion.Value != handMeshObserver.NeutralPoseVersion))
-                    {
                         // Compute neutral pose
                         Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
                         HandPose neutralPose = handMeshObserver.NeutralPose;
@@ -154,8 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                         {
                             neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
                         });
-
-                        NeutralPoseVersion = handMeshObserver.NeutralPoseVersion;
 
                         // Compute UV mapping
                         InitializeUVs(neutralPoseVertices);
@@ -189,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
                             /// Hands should follow the Playspace to accommodate teleporting, so fold in the Playspace transform.
                             Vector3 positionUnity = MixedRealityPlayspace.TransformPoint(translation.ToUnityVector3());
-                            Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion();
+                            Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion(); 
 
                             HandMeshInfo handMeshInfo = new HandMeshInfo
                             {
