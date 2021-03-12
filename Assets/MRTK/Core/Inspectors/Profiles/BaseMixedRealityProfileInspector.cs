@@ -212,19 +212,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </returns>
         protected static bool IsProfileRequired(SystemType serviceType)
         {
-            // Services marked with the MixedRealityExtensionServiceAttribute (or a derivative)
-            // support specifying whether or not a profile is required.
             return IsProfileRequired(serviceType?.Type);
         }
 
-        protected static bool IsProfileRequired(Type serviceType)
+        /// <summary>
+        /// Inspect the attributes of the provided type to determine if a configuration profile is required.
+        /// </summary>
+        /// <param name="type">The type representing the service.</param>
+        /// <returns>
+        /// True if the type is decorated with an attribute indicating a profile is required, false otherwise.
+        /// </returns>
+        protected static bool IsProfileRequired(Type type)
         {
-            if(serviceType != null)
-            {
-                MixedRealityExtensionServiceAttribute attribute = (serviceType != null) ? MixedRealityExtensionServiceAttribute.Find(serviceType) : null;
-                return attribute != null && attribute.RequiresProfile;
-            }
-            return false;
+            // Services marked with the MixedRealityExtensionServiceAttribute (or a derivative)
+            // support specifying whether or not a profile is required.
+            MixedRealityExtensionServiceAttribute attribute = (type != null) ? MixedRealityExtensionServiceAttribute.Find(type) : null;
+            return attribute != null && attribute.RequiresProfile;
         }
     }
 }

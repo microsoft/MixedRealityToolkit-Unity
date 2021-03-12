@@ -531,13 +531,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.EndVertical();
         }
 
+        /// <summary>
+        /// Draws a dropdown with all available profiles of profilyType.
+        /// </summary>
+        /// <returns>True if property was changed.</returns>
         public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool requiresProfile, bool showAddButton)
         {
             return DrawProfileDropDownList(property, profile, oldProfileObject, new Type[] { profileType }, requiresProfile, showAddButton);
         }
 
         /// <summary>
-        /// Draws a dropdown with all available profiles of profilyType.
+        /// Draws a dropdown with all available profiles of types contained in the array profilyTypes.
         /// </summary>
         /// <returns>True if property was changed.</returns>
         public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type[] profileTypes, bool requiresProfile, bool showAddButton)
