@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Asset swap utility | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Asset swap utility | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="asset-swap-utility">Asset swap utility</h1>
+
+<p>Find and replace is ubiquitous when working in text and content creation tools. When you need to swap many assets within a Unity scene this is where the <code>AssetSwapUtility</code> (xref:Microsoft.MixedReality.Toolkit.Utilities.Editor.AssetSwapUtility) <a href="https://docs.unity3d.com/Manual/class-ScriptableObject.html">ScriptableObject</a> and editor can lend a hand. The utility is included with the <code>Microsoft.MixedReality.Toolkit.Unity.Tools</code> package.</p>
+<p>The <code>AssetSwapUtility</code> saves all find and replace actions as a ScriptableObject so that it is trival to swap back and forth or save swap &quot;themes&quot; for future use.</p>
+<h2 id="swapping-assets">Swapping assets</h2>
+<p>Swapping assets is easy once you have created a <code>AssetSwapCollection</code>. Let's demonstrate use by swapping two red cubes with two blue spheres in a scene. First add two red cubes to your scene that use the default Unity cube and the <code>MRTK_Standard_Red</code> material.</p>
+<p>To create an <code>AssetSwapCollection</code>, navigate to <em>Mixed Reality Toolkit &gt; Utilities &gt; Create Asset Swap Collection</em> . With the <code>AssetSwapCollection</code> selected fill out the properties as seen in the below image:</p>
+<p><img src="../Images/AssetSwapUtility/MRTK_AssetSwapUtility_Example_AssetSwapCollection.png" alt="Asset swap utility example"></p>
+<p>Next select &quot;Blue Spheres&quot; from the &quot;Selected Theme&quot; dropdown and hit &quot;Apply.&quot; All red cubes within your scene should be replaced with blue spheres.</p>
+<p><img src="../Images/AssetSwapUtility/MRTK_AssetSwapUtility_Apply_AssetSwapCollection.png" alt="Asset swap utility apply"></p>
+<p>In this example we performed a full scene replacement but you may replace portions of your scene by changing the &quot;Selection Mode.&quot; You may also swap back to red cubes by selecting &quot;Red Cubes&quot; from the &quot;Selected Theme&quot; dropdown and hitting &quot;Apply&quot; again.</p>
+<p>Note, it's possible to swap any asset type such as audio files, fonts, prefabs, etc. The <code>AssetSwapUtility</code> will perform a few sanity checks to ensure you are swapping to similar types.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Tools/AssetSwapUtility.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

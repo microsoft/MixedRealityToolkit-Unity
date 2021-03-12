@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Elastic system (experimental) | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Elastic system (experimental) | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="elastic-system-experimental">Elastic system (experimental)</h1>
+
+<p><img src="../Images/Elastics/Elastics_Main1.gif" alt="Elastic System"></p>
+<p>MRTK comes with an elastic simulation system that includes a wide variety of extensible and flexible subclasses, offering bindings for 4-dimensional quaternion springs, 3-dimensional volume springs and simple linear spring systems.</p>
+<p>Currently the following MRTK components supporting the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.html">elastics manager</a> can leverage elastics functionality:</p>
+<ul>
+<li><a href="../README_BoundsControl.html">Bounds control</a></li>
+<li><a href="../README_ObjectManipulator.html">Object manipulator</a></li>
+</ul>
+<h2 id="elastics-manager">Elastics manager</h2>
+<p><img src="../Images/Elastics/Elastics_Main.gif" alt="Elastic System2"></p>
+<p>The elastics manager processes passed transforms and feeds them into the elastics system.</p>
+<p>Enabling elastics for custom components can be achieved by two steps:</p>
+<ol>
+<li>Calling the Initialize method on manipulation start, updating the system with the current host transform.</li>
+<li>Querying ApplyHostTransform whenever a elastics calculation should be performed on the updated target transform.</li>
+</ol>
+<p>Note that elastics will continue simulating once manipulation ends (through the elastics manager update loop). To block the behavior, elastics auto update <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.html#Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_EnableElasticsUpdate">EnableElasticsUpdate</a> can be set to false.</p>
+<p>By default, the elastics manager component, when added to a game object, won't have elastics enabled for any transforms type.
+The field <code>Manipulation types using elastic feedback</code> needs to be enabled for specific transform types to create elastics configuration and extents for the selected type.</p>
+<h3 id="elastics-configurations">Elastics configurations</h3>
+<p>Similar to <a href="../README_BoundsControl.html#configuration-objects">bounds control configurations</a>, elastic manager comes with a set of configuration objects that can be stored as scriptable objects and shared between different instances or prefabs. Configurations can be shared and linked either as individual scriptable asset files or nested scriptable assets inside of prefabs. Further configurations can also be defined directly on the instance without linking to an external or nested scriptable asset.</p>
+<p>The elastics manager inspector will indicate whether a configuration is shared or inlined as part of the current instance by showing a message in the property inspector. In addition, shared instances won't be editable directly in the elastics manager property window itself, but instead the asset it's linking to has to be directly modfied to avoid any accidental changes on shared configurations.</p>
+<p>Elastics manager offers configuration objects options for the following transform types, each of them represented by a <a href="#elastic-configuration-object">elastic configuration object</a>:</p>
+<ul>
+<li>Translation Elastic</li>
+<li>Rotation Elastic</li>
+<li>Scale Elastic</li>
+</ul>
+<h4 id="elastic-configuration-object">Elastic configuration object</h4>
+<p>A elastics configuration defines properties for a damped harmonic oscillator differential system.
+The following properties can be adjusted but already come with a set of defaults in MRTK:</p>
+<ul>
+<li><strong>Mass</strong>: mass of the simulated oscillator element.</li>
+<li><strong>HandK</strong>: hand spring constant.</li>
+<li><strong>EndK</strong>: end cap spring constant.</li>
+<li><strong>SnapK</strong>: snap point spring constant.</li>
+<li><strong>Drag</strong>: drag/damper factor, proportional to velocity.</li>
+</ul>
+<h3 id="elastics-extents">Elastics extents</h3>
+<p>Elastics extents settings vary depending on the type of manipulation. Translation and scale are represented by <a href="#volume-elastic-extent">volume elastic extents</a> and rotation is represented by a <a href="#quaternion-elastic-extent">quaternion elastic extent</a>.</p>
+<h4 id="volume-elastic-extent">Volume elastic extent</h4>
+<p>Volume extents define a three dimensional space in which the damped harmonic oscillator is free to move.</p>
+<p><img src="../Images/Elastics/Elastics_Volume_Bounds.gif" alt="Elastic Volume Stretch Bounds"></p>
+<ul>
+<li><strong>StretchBounds</strong>: represents the lower bounds of the elastic space.</li>
+<li><strong>UseBounds</strong>: whether the stretch bounds should be respected by the system. If true, when the current iteration of the target position is outside the stretch bounds, the end force will be applied.</li>
+<li><strong>SnapPoints</strong>: points inside the space to which the system will snap.</li>
+<li><strong>RepeatSnapPoints</strong>: repeats the snap points to infinity. Existing snap points will serve as a modulo where the actual snap points are mapped to the closest integer multiples of every snap point.</li>
+<li><strong>SnapRadius</strong>: distance at which snap points begin forcing the spring.</li>
+</ul>
+<p><img src="../Images/Elastics/Elastics_Volume_Snap.gif" alt="Elastic Volume Snap Grid"></p>
+<h4 id="quaternion-elastic-extent">Quaternion elastic extent</h4>
+<p>Quaternion extents define a four dimensional rotation space in which the damped harmonic oscillator is free to rotate.</p>
+<p><img src="../Images/Elastics/Elastics_Rotation.gif" alt="Elastic Rotation Example"></p>
+<ul>
+<li><strong>SnapPoints</strong>: euler angles to which the system will snap.</li>
+<li><strong>RepeatSnapPoints</strong>: repeats the snap points. Existing snap points will serve as a modulo where the actual snap points are mapped to the closest integer multiples of every snap point.</li>
+<li><strong>SnapRadius</strong>: arc-angle at which snap points begin forcing the spring in euler degrees.</li>
+</ul>
+<h2 id="elastics-example-scene">Elastics example scene</h2>
+<p>You can find examples of elastics configurations in the <code>ElasticSystemExample</code> scene.</p>
+<p><img src="../Images/Elastics/Elastics_Example_Scene.png" alt="Elastics Example Scene"></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Elastics/ElasticSystem.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

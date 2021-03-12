@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ConstraintManager
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ConstraintManager
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager" class="text-break">Class ConstraintManager
+  </h1>
+  <div class="markdown level0 summary"><p>Manages constraints for a given object and ensures that Scale/Rotation/Translation
+constraints are executed separately.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ConstraintManager</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ConstraintManager : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_AutoConstraintSelection_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.AutoConstraintSelection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_AutoConstraintSelection" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.AutoConstraintSelection">AutoConstraintSelection</h4>
+  <div class="markdown level1 summary"><p>Per default, constraint manager will apply all to this gameobject attached constraint components automatically.
+If this flag is enabled, only the selected constraint list will be applied.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AutoConstraintSelection { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_SelectedConstraints_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.SelectedConstraints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_SelectedConstraints" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.SelectedConstraints">SelectedConstraints</h4>
+  <div class="markdown level1 summary"><p>Manually selected list of transform constraints. Note that this list will only be processed by the
+manager if AutoConstraintSelection is disabled.
+Note that this is a read only property. To add new constraints to the list call RegisterConstraint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;TransformConstraint&gt; SelectedConstraints { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html">TransformConstraint</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_AddConstraintToManualSelection_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.AddConstraintToManualSelection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_AddConstraintToManualSelection_Microsoft_MixedReality_Toolkit_UI_TransformConstraint_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.AddConstraintToManualSelection(Microsoft.MixedReality.Toolkit.UI.TransformConstraint)">AddConstraintToManualSelection(TransformConstraint)</h4>
+  <div class="markdown level1 summary"><p>Adds a constraint to the manual selection list.
+Note that only unique components will be added to the list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AddConstraintToManualSelection(TransformConstraint constraint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html">TransformConstraint</a></td>
+        <td><span class="parametername">constraint</span></td>
+        <td><p>Constraint to add to the managers manual constraint list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>Returns true if insertion was successful. If the component was already in the list the insertion will fail.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_ApplyRotationConstraints_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.ApplyRotationConstraints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_ApplyRotationConstraints_MixedRealityTransform__System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.ApplyRotationConstraints(MixedRealityTransform@,System.Boolean,System.Boolean)">ApplyRotationConstraints(ref MixedRealityTransform, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyRotationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityTransform</span></td>
+        <td><span class="parametername">transform</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isOneHanded</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isNear</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_ApplyScaleConstraints_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.ApplyScaleConstraints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_ApplyScaleConstraints_MixedRealityTransform__System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.ApplyScaleConstraints(MixedRealityTransform@,System.Boolean,System.Boolean)">ApplyScaleConstraints(ref MixedRealityTransform, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyScaleConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityTransform</span></td>
+        <td><span class="parametername">transform</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isOneHanded</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isNear</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_ApplyTranslationConstraints_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.ApplyTranslationConstraints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_ApplyTranslationConstraints_MixedRealityTransform__System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.ApplyTranslationConstraints(MixedRealityTransform@,System.Boolean,System.Boolean)">ApplyTranslationConstraints(ref MixedRealityTransform, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyTranslationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityTransform</span></td>
+        <td><span class="parametername">transform</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isOneHanded</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isNear</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_Awake_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.Awake*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_Awake" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.Awake">Awake()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Awake()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.Initialize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_Initialize_MixedRealityTransform_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.Initialize(MixedRealityTransform)">Initialize(MixedRealityTransform)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Initialize(MixedRealityTransform worldPose)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityTransform</span></td>
+        <td><span class="parametername">worldPose</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_RemoveConstraintFromManualSelection_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.RemoveConstraintFromManualSelection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ConstraintManager_RemoveConstraintFromManualSelection_Microsoft_MixedReality_Toolkit_UI_TransformConstraint_" data-uid="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.RemoveConstraintFromManualSelection(Microsoft.MixedReality.Toolkit.UI.TransformConstraint)">RemoveConstraintFromManualSelection(TransformConstraint)</h4>
+  <div class="markdown level1 summary"><p>Removes the given component from the manually selected constraint list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveConstraintFromManualSelection(TransformConstraint constraint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html">TransformConstraint</a></td>
+        <td><span class="parametername">constraint</span></td>
+        <td><p>Constraint to remove.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
