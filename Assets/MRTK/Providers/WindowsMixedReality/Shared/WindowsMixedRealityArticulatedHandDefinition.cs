@@ -29,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
 
+        private static int? HandMeshModelId = null;
+        private static int? NeutralPoseVersion = null;
+
         private ushort[] handMeshTriangleIndices = null;
         private HandMeshVertex[] vertexAndNormals = null;
 
@@ -123,14 +126,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
                 if (handMeshObserver != null && handPose != null)
                 {
-                    if (handMeshTriangleIndices == null)
+                    if ((handMeshTriangleIndices == null) ||
+                        (handMeshTriangleIndices.Length != handMeshObserver.TriangleIndexCount))
                     {
                         handMeshTriangleIndices = new ushort[handMeshObserver.TriangleIndexCount];
                         handMeshTriangleIndicesUnity = new int[handMeshObserver.TriangleIndexCount];
+                    }
+
+                    if (!HandMeshModelId.HasValue || (HandMeshModelId.Value != handMeshObserver.ModelId))
+                    {
                         handMeshObserver.GetTriangleIndices(handMeshTriangleIndices);
+                        HandMeshModelId = handMeshObserver.ModelId;
 
                         Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, (int)handMeshObserver.TriangleIndexCount);
+                    }
 
+                    if (!NeutralPoseVersion.HasValue || (NeutralPoseVersion.Value != handMeshObserver.NeutralPoseVersion))
+                    {
                         // Compute neutral pose
                         Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
                         HandPose neutralPose = handMeshObserver.NeutralPose;
@@ -142,6 +154,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                         {
                             neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
                         });
+
+                        NeutralPoseVersion = handMeshObserver.NeutralPoseVersion;
 
                         // Compute UV mapping
                         InitializeUVs(neutralPoseVertices);

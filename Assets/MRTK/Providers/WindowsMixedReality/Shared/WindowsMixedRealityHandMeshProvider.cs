@@ -3,12 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using UnityEngine;
 
 #if WINDOWS_UWP
-using System;
 using System.Threading.Tasks;
 using Unity.Profiling;
-using UnityEngine;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
@@ -20,11 +20,33 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// </summary>
     public class WindowsMixedRealityHandMeshProvider
     {
-        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => this.controller = controller;
+        public static WindowsMixedRealityHandMeshProvider LeftHand { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Left);
+        public static WindowsMixedRealityHandMeshProvider RightHand { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Right);
 
-        private readonly IMixedRealityController controller;
-        private IMixedRealityInputSource InputSource => controller.InputSource;
-        private Handedness Handedness => controller.ControllerHandedness;
+        private WindowsMixedRealityHandMeshProvider(Handedness handedness)
+        {
+            Handedness = handedness;
+            Controller = null;
+        }
+
+        [Obsolete("WindowsMixedRealityHandMeshProvider(IMixedRealityController) is obsolete. Please use either the static LeftHand or RightHand members and call SetController()")]
+        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => this.Controller = controller;
+
+        private IMixedRealityController Controller = null;
+        private IMixedRealityInputSource InputSource => Controller.InputSource;
+        private Handedness Handedness;
+
+        /// <summary>
+        /// Sets the <see cref="IMixedRealityController"/> that provides data for the hand mesh.
+        /// </summary>
+        /// <param name="controller">Implementation of the hand controller.</param>
+        public void SetController(IMixedRealityController controller)
+        {
+            if (controller.ControllerHandedness != Handedness)
+            {
+                Debug.LogError($"Attempted to set controller with the wrong handedness (exected: {Handedness} actual:{controller.ControllerHandedness}");
+            }
+        }
 
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
