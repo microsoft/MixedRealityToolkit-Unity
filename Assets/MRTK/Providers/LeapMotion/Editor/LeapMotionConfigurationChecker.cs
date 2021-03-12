@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         private static bool isLeapRecognizedByMRTK = false;
 
         // The current supported Leap Core Assets version numbers.
-        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1" };
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1" };
 
         // The current Leap Core Assets version in this project
         private static string currentLeapCoreAssetsVersion = "";
@@ -214,6 +214,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             string leapCoreAsmDefPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "LeapMotion.asmdef");
 
+            // If the Leap Unity Modules version is 4.7.1, then do not add the LeapMotion.asmdef because it already exists in the package
+            FileInfo[] leapMotionAsmDefFile = FileUtilities.FindFilesInAssets("LeapMotion.asmdef");
+
+            if (leapMotionAsmDefFile.Length != 0)
+            {
+                return;
+            }
+
             // If the asmdef has already been created then do not create another one
             if (!File.Exists(leapCoreAsmDefPath))
             {
@@ -232,6 +240,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 if (currentLeapCoreAssetsVersion == "4.5.1")
                 {
                     leapAsmDef.AddReference("LeapMotion.LeapCSharp");
+
+                    // If the unity modules version is 4.6.0 or 4.7.0 then add SpatialTracking as a reference
+#if UNITY_2019_3_OR_NEWER
+                    leapAsmDef.AddReference("UnityEngine.SpatialTracking");
+#endif
                 }
 
                 leapAsmDef.Save(leapCoreAsmDefPath);
@@ -271,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         };
 
                         // Add the LeapMotion.LeapCSharp assembly definition to the leap motion tests assembly definition
-                        if (currentLeapCoreAssetsVersion == "4.5.1" && leapAsmDef.Key == "LeapMotion.Core.Tests.Editor")
+                        if (currentLeapCoreAssetsVersion == "4.5.1" && (leapAsmDef.Key == "LeapMotion.Core.Tests.Editor" || leapAsmDef.Key == "LeapMotion.Core.Editor"))
                         {
                             leapEditorAsmDef.AddReference("LeapMotion.LeapCSharp");
                         }
