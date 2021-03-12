@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
 {

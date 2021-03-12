@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
     /// the animatable properties. 
     /// </summary>
     [Serializable]
-    public class StateAnimatableProperty: IStateAnimatableProperty
+    public class StateAnimatableProperty : IStateAnimatableProperty
     {
         [SerializeField, HideInInspector]
         [Tooltip("The name of state animatable property.")]

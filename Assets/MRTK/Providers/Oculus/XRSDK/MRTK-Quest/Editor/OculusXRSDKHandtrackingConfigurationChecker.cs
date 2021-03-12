@@ -92,10 +92,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
 
             // If the user tries to separate the Oculus Integration assets without assets in the project display a message
             if (!oculusIntegrationPresent)
-            {EditorUtility.DisplayDialog(
-                    "MRTK Oculus Removal",
-                    "There are no Oculus Integration assets in the project to separate from MRTK",
-                    "OK");
+            {
+                EditorUtility.DisplayDialog(
+                       "MRTK Oculus Removal",
+                       "There are no Oculus Integration assets in the project to separate from MRTK",
+                       "OK");
 
                 return;
             }
@@ -230,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 "649"
             };
 
-            if(!File.Exists(cscFilePath))
+            if (!File.Exists(cscFilePath))
             {
                 return;
             }

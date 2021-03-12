@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -149,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {TrackedHandJoint.MiddleTip, middleFingerTipLength },
             {TrackedHandJoint.RingTip, ringFingerTipLength },
             {TrackedHandJoint.PinkyTip, pinkyFingerTipLength }
-        };       
+        };
 
         /// <summary>
         /// Rotation derived from the `modelFingerPointing` and
@@ -192,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     joints[TrackedHandJoint.ThumbProximalJoint] = ThumbRoot;
-                }                
+                }
                 joints[TrackedHandJoint.ThumbDistalJoint] = RetrieveChild(TrackedHandJoint.ThumbProximalJoint);
                 joints[TrackedHandJoint.ThumbTip] = RetrieveChild(TrackedHandJoint.ThumbDistalJoint);
             }
@@ -299,10 +297,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
         }
-        
+
         /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
-        
+
         /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {

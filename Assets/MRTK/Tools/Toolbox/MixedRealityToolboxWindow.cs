@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     List<ToolboxItem> validItems = new List<ToolboxItem>();
                     foreach (var item in bucket.Items)
                     {
-                        if (item != null && item.Prefab != null 
+                        if (item != null && item.Prefab != null
                             && (isCategoryNameSearchMatch || IsSearchMatch(item, searchString)))
                         {
                             validItems.Add(item);

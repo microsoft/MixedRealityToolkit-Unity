@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             curve.keys = keys;
         }
-        
+
         /// <summary>
         /// Serialize an animation curve with tangents as binary data. Only encodes keyframe position and time.
         /// </summary>

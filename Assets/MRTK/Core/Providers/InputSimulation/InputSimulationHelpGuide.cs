@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         void Start()
         {
             string HelpGuideShortcutString = "";
-            for(int i = 0; i < HelpGuideShortcutKeys.Count; i++)
+            for (int i = 0; i < HelpGuideShortcutKeys.Count; i++)
             {
                 string key = HelpGuideShortcutKeys[i].ToString();
                 if (i > 0)

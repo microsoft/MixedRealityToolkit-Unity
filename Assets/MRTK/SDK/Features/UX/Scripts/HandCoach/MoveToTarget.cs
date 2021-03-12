@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Net.NetworkInformation;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.HandCoach

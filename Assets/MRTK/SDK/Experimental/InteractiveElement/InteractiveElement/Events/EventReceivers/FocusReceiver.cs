@@ -2,7 +2,6 @@
 // Licensed under the MIT License
 
 using Microsoft.MixedReality.Toolkit.Input;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement

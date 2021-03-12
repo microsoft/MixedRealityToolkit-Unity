@@ -8,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor.VersionControl;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core

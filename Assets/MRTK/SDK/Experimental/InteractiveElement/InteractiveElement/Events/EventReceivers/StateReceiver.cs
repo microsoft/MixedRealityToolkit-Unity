@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using Microsoft.MixedReality.Toolkit.Input;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 

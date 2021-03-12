@@ -25,13 +25,13 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual BaseMixedRealityProfile ConfigurationProfile { get; protected set; } = null;
 
         /// <inheritdoc />
-        public virtual void Initialize() 
+        public virtual void Initialize()
         {
             IsInitialized = true;
         }
 
         /// <inheritdoc />
-        public virtual void Reset() 
+        public virtual void Reset()
         {
             IsInitialized = false;
         }

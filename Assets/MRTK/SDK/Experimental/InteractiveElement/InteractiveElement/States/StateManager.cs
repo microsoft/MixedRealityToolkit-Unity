@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
             {
                 return statesDictionary[stateName];
             }
-            catch 
+            catch
             {
                 return null;
             }
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
                     {
                         SetStateOff(defaultStateName);
                     }
-                }  
+                }
             }
             else
             {
@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
                     OnStateDeactivated.Invoke(state, activeStates.Last());
 
                     activeStates.Remove(state);
-                }  
+                }
             }
             else
             {
@@ -292,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 
                 // Add the state to the States list to ensure the inspector displays the new state
                 interactionStates.Add(newState);
-                
+
                 // Set the event configuration if one exists for the core interaction state
                 EventReceiverManager.SetEventConfiguration(newState);
 
@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         /// </summary>
         public void ResetAllStates()
         {
-            foreach(KeyValuePair<string,InteractionState> state in statesDictionary)
+            foreach (KeyValuePair<string, InteractionState> state in statesDictionary)
             {
                 // Set all the state values to 0
                 SetStateOff(state.Key);

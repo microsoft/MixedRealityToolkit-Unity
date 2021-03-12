@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         private Interactable backgroundToggle = null;
 
         #endregion Serialized Fields
-        
+
         private IMixedRealitySceneUnderstandingObserver observer;
 
         private List<GameObject> instantiatedPrefabs;

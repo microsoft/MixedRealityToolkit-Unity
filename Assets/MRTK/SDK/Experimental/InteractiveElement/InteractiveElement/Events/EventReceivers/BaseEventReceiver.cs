@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         public BaseEventReceiver(BaseInteractionEventConfiguration eventConfiguration)
         {
             EventConfiguration = eventConfiguration;
-            StateName = EventConfiguration.StateName;        
+            StateName = EventConfiguration.StateName;
         }
 
         /// <summary>
@@ -30,11 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         /// </summary>
         public string StateName { get; protected set; } = null;
 
-
         /// <summary>
         /// Update an event receiver. 
         /// </summary>
         public abstract void OnUpdate(StateManager stateManager, BaseEventData eventData);
-   
     }
 }

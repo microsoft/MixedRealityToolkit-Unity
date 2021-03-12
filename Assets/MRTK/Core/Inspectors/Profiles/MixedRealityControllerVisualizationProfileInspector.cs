@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
+using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
