@@ -8,7 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Audio
 {
+    // todo: should we be more surgical?
     #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+    // todo: check for presence of the mic stream dll package
 
     /// <summary>
     /// Allows the selection and control of a specific microphone type on Microsoft Windows platforms, including HoloLens.
