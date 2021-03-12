@@ -138,6 +138,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 changed |= MixedRealityInspectorUtility.DrawProfileDropDownList(property, profile, oldObject, profileTypes, requiresProfile, showCloneButton);
             }
+            else if (requiresProfile)
+            {
+                EditorGUILayout.HelpBox("No profiles were found with type suitable for " + serviceType.Name + ". This service requires a profile to function properly!", MessageType.Error);
+            }
 
             Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
 

@@ -551,9 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 List<ScriptableObject> profileInstanceList = new List<ScriptableObject>();
-                List<GUIContent> profileContentList = requiresProfile ? new List<GUIContent>() : new List<GUIContent>() { new GUIContent("(None)") } ;
-
-                int dropdownOffset = profileContentList.Count();
+                List<GUIContent> profileContentList = new List<GUIContent>();
 
                 // Pull profile instances and profile content from cache
                 for(int i = 0; i < profileTypes.Length; i++)
@@ -562,6 +560,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     profileInstanceList.AddRange(MixedRealityProfileUtility.GetProfilesOfType(profileType));
                     profileContentList.AddRange(MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType));
                 }
+
+                int dropdownOffset = 0;
+                if (!requiresProfile || profileInstanceList.Count == 0)
+                {
+                    profileContentList.Insert(0, new GUIContent("(None)"));
+                    dropdownOffset = 1;
+                }
+
                 ScriptableObject[] profileInstances = profileInstanceList.ToArray();
                 GUIContent[] profileContent = profileContentList.ToArray();
 
