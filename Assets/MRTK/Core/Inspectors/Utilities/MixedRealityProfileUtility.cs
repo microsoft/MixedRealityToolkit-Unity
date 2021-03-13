@@ -135,9 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     if (IsProfileForService(type, serviceType))
                     {
-                        {
-                            allTypes.Add(type);
-                        }
+                        allTypes.Add(type);
                     }
                 }
 #else
