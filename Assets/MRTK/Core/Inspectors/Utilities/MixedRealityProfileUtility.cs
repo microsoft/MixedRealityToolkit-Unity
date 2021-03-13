@@ -128,14 +128,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             Type[] types;
             if (!profileTypesForServiceCaches.TryGetValue(serviceType, out types))
             {
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 HashSet<Type> allTypes = new HashSet<Type>();
-                ScriptableObject[] allProfiles = GetProfilesOfType(typeof(BaseMixedRealityProfile));
-                for (int i = 0; i < allProfiles.Length; i++)
+                foreach (var assembly in assemblies)
                 {
-                    ScriptableObject profile = allProfiles[i];
-                    if (IsProfileForService(profile.GetType(), serviceType))
+                    foreach (var type in assembly.GetLoadableTypes())
                     {
-                        allTypes.Add(profile.GetType());
+                        bool isValid = type.IsValueType && !type.IsEnum || type.IsClass;
+                        if (!type.IsVisible || !isValid)
+                        {
+                            continue;
+                        }
+                        if (IsProfileForService(type, serviceType))
+                        {
+                            {
+                                allTypes.Add(type);
+                            }
+                        }
                     }
                 }
                 types = allTypes.ToArray();

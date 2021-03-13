@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             else if (requiresProfile)
             {
-                EditorGUILayout.HelpBox("No profiles were found with type suitable for " + serviceType.Name + ". This service requires a profile to function properly!", MessageType.Error);
+                EditorGUILayout.HelpBox("No ProfileType exists which is suitable for " + serviceType.Name + ". This service requires a profile to function properly!", MessageType.Error);
             }
 
             Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
