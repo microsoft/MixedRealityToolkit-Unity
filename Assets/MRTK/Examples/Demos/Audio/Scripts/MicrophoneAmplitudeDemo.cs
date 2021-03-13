@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     [RequireComponent(typeof(AudioSource))]
     public class MicrophoneAmplitudeDemo : MonoBehaviour
     {
+#if MICSTREAMDLL_PRESENT
+
         [SerializeField]
         [Tooltip("Gain to apply to the microphone input.")]
         [Range(0, 10)]
@@ -231,5 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
             averageAmplitude = sumOfValues / buffer.Length;
         }
+
+#endif // MICSTREAMDLL_PRESENT
     }
 }
