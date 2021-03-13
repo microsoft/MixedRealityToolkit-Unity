@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.HelpBox("MixedRealityToolkit cannot initialize unless an Active Profile is assigned!", MessageType.Error);
             }
 
-            bool changed = MixedRealityInspectorUtility.DrawProfileDropDownList(activeProfile, null, activeProfile.objectReferenceValue, typeof(MixedRealityToolkitConfigurationProfile), false);
+            bool changed = MixedRealityInspectorUtility.DrawProfileDropDownList(activeProfile, null, activeProfile.objectReferenceValue, typeof(MixedRealityToolkitConfigurationProfile), false, false);
 
             serializedObject.ApplyModifiedProperties();
 
