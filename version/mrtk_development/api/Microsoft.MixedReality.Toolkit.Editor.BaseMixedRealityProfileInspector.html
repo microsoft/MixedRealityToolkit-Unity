@@ -166,6 +166,96 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_IsProfileRequired_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.IsProfileRequired*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_IsProfileRequired_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.IsProfileRequired(System.Type)">IsProfileRequired(Type)</h4>
+  <div class="markdown level1 summary"><p>Inspect the attributes of the provided type to determine if a configuration profile is required.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static bool IsProfileRequired(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type representing the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the type is decorated with an attribute indicating a profile is required, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_IsProfileRequired_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.IsProfileRequired*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_IsProfileRequired_SystemType_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.IsProfileRequired(SystemType)">IsProfileRequired(SystemType)</h4>
+  <div class="markdown level1 summary"><p>Inspect the attributes of the provided system type to determine if a configuration profile is required.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static bool IsProfileRequired(SystemType serviceType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SystemType</span></td>
+        <td><span class="parametername">serviceType</span></td>
+        <td><p>The system type representing the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the service is decorated with an attribute indicating a profile is required, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.OnEnable*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.OnEnable">OnEnable()</h4>
   <div class="markdown level1 summary"></div>
@@ -230,7 +320,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, Type profileType, bool showAddButton = true, bool renderProfileInBox = false, Type serviceType = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected static bool RenderProfile(SerializedProperty property, Type profileType, bool showCloneButton = true, bool renderProfileInBox = false, Type serviceType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -256,7 +346,7 @@
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">showAddButton</span></td>
+        <td><span class="parametername">showCloneButton</span></td>
         <td><p>If true, draw the clone button, if false, don't</p>
 </td>
       </tr>
