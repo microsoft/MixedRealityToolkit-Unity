@@ -21,6 +21,18 @@ Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality
 >
 > Currently, it also only supports x64 and ARM64 builds.
 
+### Experimental Interactive Element + State Visualizer 
+
+Interactive Element is a simplified centralized entry point to the MRTK input system. It contains state management methods, event management and the state setting logic for Core Interaction States. For more information see [Interactive Element Documentation](README_InteractiveElement.md).
+
+![InteractiveElementAddCoreState](Images/InteractiveElement/InEditor/Gifs/InspectorHighlightEditor.gif)
+
+The State Visualizer is an animation component that depends on Interactive Element.  This component creates Animation Clips, sets keyframes and generates an Animator State Machine. For more information see [State Visualizer Documentation](README_InteractiveElement.md#state-visualizer-experimental)
+
+![FocusColorChange](Images/InteractiveElement/InEditor/Gifs/FocusColorChange.gif)
+
+Interactive Element and State Visualizer are experimental components.
+
 ### HP Motion Controllers now supported with MRTK
 
 Controllers for the HP Reverb G2 now work natively with MRTK.
@@ -33,6 +45,15 @@ see our updated [Input Simulation Service documentation](InputSimulation/InputSi
 
   ![Teleport Gesture](Images/ReleaseNotes/HandTeleport.gif)
 
+### Scene Understanding now available in MRTK as an experimental spatial awareness observer
+
+Experimental support of [Scene Understanding](https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding) is introduced in MRTK 2.6. Users can incorporate the scene understanding capabilities of HoloLens 2 as a spatial awareness observer in MRTK based projects. Please read the [Scene Understanding documentation](SpatialAwareness/SceneUnderstanding.md) for more information.
+
+> [!IMPORTANT]
+> Scene Understanding is only supported on HoloLens 2 and Unity 2019.4 and higher.
+>
+> This feature requires the Scene Understanding package, which may not be available at the launch date of MRTK 2.6 but will be available soon after via the [Mixed Reality Feature Tool](https://aka.ms/MRFeatureTool). Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9402) for updates on its availability.
+
 ### Runtime profile switching support
 
 MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the [documentation on profile switching](MixedRealityConfigurationGuide.md#changing-profiles-at-runtime) for more information and code samples.
@@ -43,10 +64,28 @@ Two new solvers are ready for use with mainline MRTK.
 
   ![Directional Indicator Solver](Images/Solver/DirectionalIndicatorExampleScene.gif)
 
+
+### Pulse Shader Graduated from Experimental 
+
+The Pulse Shader scripts have graduated from experimental. For more information see: [Pulse Shader Documentation](README_PulseShader.md)
+
+![MRTK_SpatialMesh_Pulse](https://user-images.githubusercontent.com/13754172/68261851-3489e200-fff6-11e9-9f6c-5574a7dd8db7.gif)
+
 ### Input Recording Service improvements
 
 `InputRecordingService` and `InputPlaybackService` can now record and play back eye gaze input. Recording has been optimized to ensure a consistent framerate throughout the recording period while recording file size and save time are also reduced by about 50%. Saving and loading of recording files can now be performed asynchronously. Note the file format of the recording has changed in this MRTK version, please see [here](InputSimulation/InputAnimationFileFormat.md) for more information on the new version 1.1 specifications.
 
+### Reading mode
+
+Added support for [reading mode](https://docs.microsoft.com/hololens/hololens2-display#what-improvements-are-coming-that-will-improve-hololens-2-image-quality) on HoloLens 2. Reading mode reduces the system's field of view but eliminates a scaling of Unity's output. A pixel rendered by Unity will correspond to a projected pixel on HoloLens 2. Application authors should do tests with multiple individuals to be sure this is a tradeoff they want in their app.
+
+  ![Windows Mixed Reality reading mode](Images/CameraSystem/WMRReadingMode.gif)
+
+### Support for 3D app launchers on UWP
+
+Adds the ability to set a [3D app launcher](https://docs.microsoft.com/windows/mixed-reality/distribute/3d-app-launcher-design-guidance) for UWP. This setting is exposed both in the MRTK Build Window and the MRTK Project Settings, under Build Settings. It's automatically written into the project during the build in Unity.
+
+  ![Build settings](Images/BuildDeploy/WMR/ProjectBuildSettings.png)
 
 ## Breaking changes
 
@@ -68,7 +107,6 @@ Support for MSBuild for Unity has been removed as of the 2.5.2 release, to align
 
 There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
 Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking *does* work.
-Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.
 
 ### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
 

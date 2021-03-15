@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         "Windows Mixed Reality Camera Settings",
         "WindowsMixedReality/Shared/Profiles/DefaultWindowsMixedRealityCameraSettingsProfile.asset",
         "MixedRealityToolkit.Providers")]
-    public abstract class BaseWindowsMixedRealityCameraSettings : BaseCameraSettingsProvider
+    public abstract class BaseWindowsMixedRealityCameraSettings : BaseCameraSettingsProvider, IMixedRealityCameraProjectionOverrideProvider
     {
         /// <summary>
         /// Constructor.
@@ -36,12 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             base.Enable();
             InitializeReprojectionUpdater();
+            InitializeProjectionOverride();
         }
 
         /// <inheritdoc/>
         public override void Disable()
         {
             UninitializeReprojectionUpdater();
+            UninitializeProjectionOverride();
             base.Disable();
         }
 
@@ -57,7 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #endif // WINDOWS_UWP
 
         private WindowsMixedRealityReprojectionUpdater reprojectionUpdater = null;
+        private ProjectionOverride projectionOverride = null;
 
+        /// <inheritdoc/>
         public override void ApplyConfiguration()
         {
             base.ApplyConfiguration();
@@ -76,6 +80,37 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
 #endif // WINDOWS_UWP
         }
+
+        #endregion IMixedRealityCameraSettings
+
+        #region IMixedRealityCameraProjectionOverrideProvider
+
+        /// <summary>
+        /// Override the camera's projection matrices for a smaller field of view,
+        /// but rendered content will have more detail. See <see href="https://docs.microsoft.com/en-us/hololens/hololens2-display">Reading Mode</see> documentation.
+        /// While this will work on all Windows Mixed Reality platforms, this
+        /// is primarily useful on HoloLens 2 hardware.
+        /// If holograms are not stable, change the Stereo Rendering Mode from
+        /// "Single Pass Instanced" to "Multi Pass" to work around a bug in Unity.
+        /// </summary>
+        public bool IsProjectionOverrideEnabled
+        {
+            get { return projectionOverride != null && projectionOverride.ReadingModeEnabled; }
+            set
+            {
+                if (value && projectionOverride == null)
+                {
+                    projectionOverride = CameraCache.Main.EnsureComponent<ProjectionOverride>();
+                }
+
+                if (projectionOverride != null)
+                {
+                    projectionOverride.ReadingModeEnabled = value;
+                }
+            }
+        }
+
+        #endregion IMixedRealityCameraProjectionOverrideProvider
 
         /// <summary>
         /// Adds and initializes the reprojection updater component.
@@ -101,6 +136,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-        #endregion IMixedRealityCameraSettings
+        /// <summary>
+        /// Adds and initializes the ProjectionOverride component.
+        /// </summary>
+        private void InitializeProjectionOverride()
+        {
+            if (projectionOverride == null && Profile != null && Profile.ReadingModeEnabled)
+            {
+                projectionOverride = CameraCache.Main.EnsureComponent<ProjectionOverride>();
+                projectionOverride.ReadingModeEnabled = Profile.ReadingModeEnabled;
+            }
+        }
+
+        /// <summary>
+        /// Uninitializes and removes the ProjectionOverride component.
+        /// </summary>
+        private void UninitializeProjectionOverride()
+        {
+            if (projectionOverride != null)
+            {
+                UnityObjectExtensions.DestroyObject(projectionOverride);
+                projectionOverride = null;
+            }
+        }
     }
 }

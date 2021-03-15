@@ -10,8 +10,8 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.UI.HandCoach;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI.HandCoach;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, Vector3.forward);
-            
+
             yield return new WaitForSeconds(fadeOutTime);
 
             Assert.IsFalse(handCoach.VisualsRoot.activeSelf);

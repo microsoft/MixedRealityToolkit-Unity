@@ -35,7 +35,7 @@ MonoBehaviour:
   moveLerpTime: 0
   rotateLerpTime: 0
   scaleLerpTime: 0
-  maintainScale: 1
+  maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
   referenceDirection: 1

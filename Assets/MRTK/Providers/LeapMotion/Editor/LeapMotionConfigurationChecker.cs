@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 else
                 {
                     Debug.LogError("The Leap Motion Unity Modules version imported is not currently supported by MRTK, compatible versions are listed in the Leap Motion MRTK documentation: " +
-                        "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html");
+                        "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/leap-motion-mrtk");
                 }
             }
         }
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 }
 
                 leapAsmDef.Save(leapCoreAsmDefPath);
-            }   
+            }
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// Warning 618 and 649 are logged when the Leap Motion Core Assets are imported into the project, 618 is the obsolete warning and 649 is a null on start warning.
         /// </summary>
         /// <remarks>Updating the CSC file was only required for the 4.4.0 Leap Assets and only version 4.5.0 and up is supported moving forward</remarks>        
-        [Obsolete ("Updating the CSC file was only required for the 4.4.0 Leap Assets and only version 4.5.0 and up is supported moving forward")]
+        [Obsolete("Updating the CSC file was only required for the 4.4.0 Leap Assets and only version 4.5.0 and up is supported moving forward")]
         static void UpdateCSC()
         {
             // The csc file will always be in the root of assets
@@ -403,11 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             // Check if leap unity modules are in the project
             isLeapInProject = ReconcileLeapMotionDefine();
-            
+
             if (!isLeapInProject)
             {
                 EditorUtility.DisplayDialog(
-                    "Leap Motion Unity Modules Not Found", 
+                    "Leap Motion Unity Modules Not Found",
                     "The Leap Motion Unity Modules could not be found in this project, please import the assets into this project. The assets can be found here: " +
                         "https://developer.leapmotion.com/unity",
                     "OK");
@@ -435,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 "The Leap Motion Modules are now safe to delete from the project. " +
                 "Close Unity, delete the Leap assets in the file explorer, and reopen Unity",
                 "OK");
-            
+
         }
 
         /// <summary>
@@ -447,16 +447,16 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             if (isLeapRecognizedByMRTK)
             {
                 EditorUtility.DisplayDialog(
-                    "Leap Integration Status", 
-                    "The Leap Motion Unity Modules are recognized by MRTK", 
+                    "Leap Integration Status",
+                    "The Leap Motion Unity Modules are recognized by MRTK",
                     "OK");
             }
             else
             {
                 EditorUtility.DisplayDialog(
-                    "Leap Integration Status", 
+                    "Leap Integration Status",
                     "The Leap Motion Unity Modules are currently not recognized by MRTK.  " +
-                        "Make sure the assets have been imported into the project and select the Integrate Leap Motion Unity Modules to MRTK menu item.", 
+                        "Make sure the assets have been imported into the project and select the Integrate Leap Motion Unity Modules to MRTK menu item.",
                     "OK");
             }
         }

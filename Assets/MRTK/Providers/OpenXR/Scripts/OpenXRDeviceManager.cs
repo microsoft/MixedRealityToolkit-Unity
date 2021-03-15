@@ -8,6 +8,10 @@ using System;
 using Unity.Profiling;
 using UnityEngine.XR;
 
+#if UNITY_OPENXR
+using UnityEngine.XR.OpenXR;
+#endif // UNITY_OPENXR
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     [MixedRealityDataProvider(
@@ -28,6 +32,34 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
+
+        private bool? isActiveLoader = null;
+        private bool IsActiveLoader
+        {
+            get
+            {
+#if UNITY_OPENXR
+                if (!isActiveLoader.HasValue)
+                {
+                    isActiveLoader = IsLoaderActive<OpenXRLoaderBase>();
+                }
+#endif // UNITY_OPENXR
+
+                return isActiveLoader ?? false;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
 
         #region Controller Utilities
 

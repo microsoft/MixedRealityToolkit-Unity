@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Helper component that gathers the most commonly modified button elements in one place.
     /// </summary>
     [ExecuteAlways]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button#how-to-change-the-icon-and-text")]
     public partial class ButtonConfigHelper : MonoBehaviour
     {
         /// <summary>

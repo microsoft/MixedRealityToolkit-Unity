@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -754,8 +753,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
         {
-            var hand = controller as IMixedRealityHand;
-            if (hand != null)
+            if (controller is IMixedRealityHand hand)
             {
                 if (hand.TryGetJoint(joint, out MixedRealityPose pose))
                 {

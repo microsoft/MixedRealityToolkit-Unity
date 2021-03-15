@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Hand positions
             float offset = 0.001f;
             Vector3 initialPos = Vector3.zero;
-            Vector3 scrollTouchPos = contentItems[1].transform.position + Vector3.forward * 0.015f; // Touching scroll second colum slot        
+            Vector3 scrollTouchPos = contentItems[1].transform.position + Vector3.forward * 0.015f; // Touching scroll second column slot        
             Vector3 scrollEngagedUpPos = scrollTouchPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset); // Scrolls up one row
             Vector3 scrollEngagedDownPos = scrollTouchPos - Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset); // Scrolls down one row
 
@@ -474,7 +474,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(scrollEngagedOnePageUpPos);
 
-            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered."); // both coliders disabled need to go deeper
+            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered."); // both colliders disabled need to go deeper
             Assert.IsTrue(button1TouchBegin, "Button1 touch begin was not triggered.");
             Assert.IsFalse(button3TouchBegin, "Button3 touch begin was triggered.");
             Assert.IsFalse(button4TouchBegin, "Button4 touch begin was triggered.");
@@ -1089,8 +1089,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests correct clipping logic for visible, partially visible and hidden content.
-        /// Ensures best performance of the clipping primitive component by disabling renderers that are hidden.
+        /// Tests correct clipping logic for visible, partially visible and hidden content with default performance settings (DisableClippedGameobject set to true).
+        /// Ensures best performance of the clipping primitive component by disabling gameobjects that are hidden.
         /// </summary>
         [UnityTest]
         public IEnumerator ClipOnlyVisibleContent()
@@ -1144,7 +1144,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
             Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
 
-            // Barelly visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
+            // Barely visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
             Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
             Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
@@ -1173,6 +1173,111 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Hidden objects should be inactive and have renderers clipped. Collider state not important if scroll is not drag engaged
             Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
             Assert.IsFalse(contentItems[2].activeSelf, "Sphere 2 is active");
+
+            // Removing content from scroll content should also remove its renderers from the scroll clipping box
+            scrollView.RemoveItem(contentItems[0]);
+            clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
+
+            // Object is still visible but renderer should not be clipped
+            Assert.IsFalse(clippedRenderers.Contains(renderer0), "Renderer 0 is being clipped");
+        }
+
+        /// <summary>
+        /// Tests correct clipping logic for visible, partially visible and hidden content with DisableClippedRenderer set to true.
+        /// Ensures best performance of the clipping primitive component by disabling renderers that are hidden, while not affecting the logic of other scripts attached to those objects.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ClipOnlyVisibleRenderers()
+        {
+            // Setting up a vertical 1x1 scroll view with three sphere primitive items
+            float sphereItemScale = 0.032f;
+            var contentItems = InstantiatePrimitiveItems(PrimitiveType.Sphere, 3, sphereItemScale);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                sphereItemScale,
+                                                                                sphereItemScale);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         sphereItemScale,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity,
+                                                                         ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                         ScrollingObjectCollection.VelocityType.FalloffPerFrame);
+            scrollView.DisableClippedGameObjects = false;
+            scrollView.DisableClippedRenderers = true;
+
+            scrollView.AddContent(objectCollection.gameObject);
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preTouchPos = contentItems[0].transform.position + new Vector3(0, 0, sphereItemScale / 2 - offset);
+            Vector3 pastTouchPos = preTouchPos + new Vector3(0, 0, offset);
+            Vector3 scrollEngagedHalfPageUpPos = pastTouchPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight / 2 + offset);
+
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+
+            List<Renderer> clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
+
+            var renderer0 = contentItems[0].GetComponent<Renderer>();
+            var renderer1 = contentItems[1].GetComponent<Renderer>();
+            var renderer2 = contentItems[2].GetComponent<Renderer>();
+
+            var collider0 = contentItems[0].GetComponent<Collider>();
+            var collider1 = contentItems[1].GetComponent<Collider>();
+            var collider2 = contentItems[2].GetComponent<Collider>();
+
+            // Completely visible objects should have renderers enabled and have renderers clipped. Colliders should be enabled for interaction
+            Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
+            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
+            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
+            Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
+
+            // Barely visible content should still have renderers enabled and have renderers clipped. Colliders should be disabled for interaction
+            Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
+            Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
+            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
+            Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
+
+            // Hidden content should have renderers disabled and have renderers clipped. Collider state not important if scroll is not drag engaged
+            Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
+            Assert.IsTrue(contentItems[2].activeSelf, "Sphere 2 is not active");
+            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
+            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
+
+            // Scrolling half item up
+            yield return hand.MoveTo(preTouchPos);
+            yield return hand.MoveTo(pastTouchPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+            yield return hand.MoveTo(initialPos);
+
+            clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
+
+            // Partially visible objects should have renderers enabled  and have renderers clipped. Colliders should be disabled for interaction
+            Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
+            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
+            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
+            Assert.IsFalse(collider0.enabled, "Collider 0 is enabled");
+
+            Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
+            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 1 is not active");
+            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
+            Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
+
+            // Hidden objects should have renderers disabled and have renderers clipped. Collider state not important if scroll is not drag engaged
+            Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
+            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 2 is not active");
+            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
+            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
 
             // Removing content from scroll content should also remove its renderers from the scroll clipping box
             scrollView.RemoveItem(contentItems[0]);
@@ -1371,6 +1476,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Scroll amount should roughly follow hand movement with 1:1 ratio
             Assert.AreEqual((handTouchDelta - scrollView.HandDeltaScrollThreshold) / newScale, scrollView.ScrollContainerPosition.y, 0.005, "Scroll drag amount was not 1:1");
+        }
+
+        /// <summary>
+        /// Tests that no errors are raised after the scrolling object collection is removed from the scene
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScrollViewCleanup()
+        {
+            // Setting up a vertical 1x2 scroll view with three pressable buttons items
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         2,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Object.Destroy(scrollView.gameObject);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
         }
 
         #endregion Tests

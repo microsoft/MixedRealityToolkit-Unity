@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 root.Add(newPropertyGroup);
                 root.Save(path);
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 Debug.Log("Encountered an error when applying an ARM64 compiler workaround. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7624 for more information");
             }

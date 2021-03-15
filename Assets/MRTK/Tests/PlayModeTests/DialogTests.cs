@@ -31,6 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private Dialog dialogComponent;
         private DialogButtonType dialogResult;
 
+        private const float DialogStabilizationTime = 1.5f;
+
         [UnitySetUp]
         public IEnumerator Setup()
         {
@@ -73,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // The dialog only supports displaying up to two options
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog",DialogButtonType.Yes | DialogButtonType.No, true);
+            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, true);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             // near distances determined by the Dialog.Open() function
             dialogDistance = dialogGameObject.transform.position.magnitude;
@@ -102,11 +104,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestDialogPrefabResults()
         {
             TestHand handRight = new TestHand(Handedness.Right);
-            int handsteps = 30;
+            int handsteps = 80;
 
             // Testing near interactions
             handRight.Show(Vector3.zero);
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.OK, true);
+
+            // Wait for the dialog to move to a stable position
+            yield return new WaitForSeconds(DialogStabilizationTime);
+
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(dialogComponent.State == DialogState.WaitingForInput);
             yield return handRight.Move(new Vector3(0.0f, -0.1f, 1.0f), handsteps);
@@ -121,6 +127,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // The dialog only supports displaying up to two options
             yield return handRight.MoveTo(Vector3.zero);
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, true);
+
+            // Wait for the dialog to move to a stable position
+            yield return new WaitForSeconds(DialogStabilizationTime);
+
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(dialogComponent.State == DialogState.WaitingForInput);
             yield return handRight.Move(new Vector3(0.1f, -0.1f, 1.0f), handsteps);
@@ -136,8 +146,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // The dialog only supports displaying up to two options
             yield return handRight.MoveTo(Vector3.zero);
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, false);
+
             // Wait for the dialog to move to a stable position
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(DialogStabilizationTime);
+
+
             Assert.IsTrue(dialogComponent.State == DialogState.WaitingForInput);
             // moving the hand to an appropriate position to click on the dialog
             yield return handRight.Move(new Vector3(-0.1f, -0.2f, 0.7f), handsteps);
@@ -145,7 +158,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-
 
             Assert.AreEqual(dialogResult, DialogButtonType.Yes);
             Assert.AreEqual(dialogComponent.State, DialogState.Closed);

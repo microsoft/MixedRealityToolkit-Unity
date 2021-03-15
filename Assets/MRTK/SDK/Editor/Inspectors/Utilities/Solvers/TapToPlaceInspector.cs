@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {

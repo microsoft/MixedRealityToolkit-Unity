@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class MixedRealityInputSystem : BaseDataProviderAccessCoreSystem, IMixedRealityInputSystem, IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -1185,9 +1185,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     foreach (var component in currentObject.GetComponents<Component>())
                     {
-                        if (component is IMixedRealityPointerHandler)
+                        if (component is IMixedRealityPointerHandler handler)
                         {
-                            ancestorPointerHandler = (IMixedRealityPointerHandler)component;
+                            ancestorPointerHandler = handler;
                             break;
                         }
                     }
@@ -1305,14 +1305,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var inputHandler = handler as IMixedRealityInputHandler;
-                if (inputHandler != null)
+                if (handler is IMixedRealityInputHandler inputHandler && !inputHandler.IsNull())
                 {
                     inputHandler.OnInputDown(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(inputData);
                 }
@@ -1359,14 +1357,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var inputHandler = handler as IMixedRealityInputHandler;
-                if (inputHandler != null)
+                if (handler is IMixedRealityInputHandler inputHandler && !inputHandler.IsNull())
                 {
                     inputHandler.OnInputUp(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionEnded(inputData);
                 }
@@ -1549,14 +1545,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var gestureHandler = handler as IMixedRealityGestureHandler;
-                if (gestureHandler != null)
+                if (handler is IMixedRealityGestureHandler gestureHandler && !gestureHandler.IsNull())
                 {
                     gestureHandler.OnGestureStarted(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(inputData);
                 }
@@ -1686,14 +1680,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var gestureHandler = handler as IMixedRealityGestureHandler;
-                if (gestureHandler != null)
+                if (handler is IMixedRealityGestureHandler gestureHandler && !gestureHandler.IsNull())
                 {
                     gestureHandler.OnGestureCompleted(inputData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionEnded(inputData);
                 }
@@ -1829,14 +1821,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var speechData = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
                 Debug.Assert(speechData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                var speechHandler = handler as IMixedRealitySpeechHandler;
-                if (speechHandler != null)
+                if (handler is IMixedRealitySpeechHandler speechHandler && !speechHandler.IsNull())
                 {
                     speechHandler.OnSpeechKeywordRecognized(speechData);
                 }
 
-                var actionHandler = handler as IMixedRealityInputActionHandler;
-                if (actionHandler != null)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(speechData);
                     actionHandler.OnActionEnded(speechData);

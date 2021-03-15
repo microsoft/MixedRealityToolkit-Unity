@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// Because so much of this service's functionality is editor-only, it has been split into a partial class.
     /// This part handles the runtime parts of the service.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/scene-system/scene-system-getting-started")]
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
         /// <summary>
@@ -564,7 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                         AsyncOperation sceneOp = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
                         // Set this to true unless we have an activation token
-                        sceneOp.allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
+                        sceneOp.allowSceneActivation = activationToken == null || activationToken.AllowSceneActivation;
                         loadSceneOps.Add(sceneOp);
                     }
 
@@ -580,7 +580,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                         completedAllSceneOps = true;
                         bool readyToProceed = false;
-                        bool allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
+                        bool allowSceneActivation = activationToken == null || activationToken.AllowSceneActivation;
 
                         // Go through all the load scene ops and see if we're ready to be activated
                         float sceneOpProgress = 0;

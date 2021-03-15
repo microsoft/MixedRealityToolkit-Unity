@@ -17,8 +17,8 @@ MonoBehaviour:
   defaultControllerVisualizationType:
     reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizer,
       Microsoft.MixedReality.Toolkit.SDK
-  useDefaultModels: 1
-  defaultControllerModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2,
+  usePlatformModels: 1
+  platformModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2,
     type: 2}
   globalLeftControllerModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
     type: 3}

@@ -27,10 +27,9 @@
 //------------------------------------------------------------------------------ -
 
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.﻿
+// Licensed under the MIT License.
 
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
@@ -38,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
     /// The profile for the Oculus XRSDK Device Manager. The settings for this profile can be viewed if the Leap Motion Device Manager input data provider is 
     /// added to the MRTK input configuration profile.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Oculus XRSDK Profile", fileName = "OculusXRSDKDeviceManagerProfile", order = 4)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Oculus XR SDK Profile", fileName = "OculusXRSDKDeviceManagerProfile", order = 4)]
     [MixedRealityServiceProfile(typeof(OculusXRSDKDeviceManager))]
     public class OculusXRSDKDeviceManagerProfile : BaseMixedRealityProfile
     {
@@ -179,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         public void ApplyConfiguredPerformanceSettings()
         {
 #if OCULUSINTEGRATION_PRESENT
-            XRSettings.eyeTextureResolutionScale = resolutionScale;
+            UnityEngine.XR.XRSettings.eyeTextureResolutionScale = resolutionScale;
             OVRManager.cpuLevel = CPULevel;
             OVRManager.gpuLevel = GPULevel;
 

@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.enabled = standardMaterial != null && IsUnityStandardMaterial(standardMaterial);
 
-            if (GUILayout.Button("Autopopulate from Standard Material"))
+            if (GUILayout.Button("Auto-populate from Standard Material"))
             {
                 Autopopulate();
             }

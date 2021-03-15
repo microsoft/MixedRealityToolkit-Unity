@@ -145,22 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Inspect the attributes of the provided system type to determine if a configuration profile is required.
-        /// </summary>
-        /// <param name="serviceType">The system type representing the service.</param>
-        /// <returns>
-        /// True if the service is decorated with an attribute indicating a profile is required, false otherwise.
-        /// </returns>
-        protected bool IsProfileRequired(SystemType serviceType)
-        {
-            // Services marked with the MixedRealityExtensionServiceAttribute (or a derivative)
-            // support specifying whether or not a profile is required.
-            MixedRealityExtensionServiceAttribute attribute = (serviceType?.Type != null) ? MixedRealityExtensionServiceAttribute.Find(serviceType.Type) : null;
-
-            return ((attribute != null) && attribute.RequiresProfile);
-        }
-
-        /// <summary>
         /// Helper function to render header correctly for all profiles
         /// </summary>
         /// <param name="title">Title of profile</param>

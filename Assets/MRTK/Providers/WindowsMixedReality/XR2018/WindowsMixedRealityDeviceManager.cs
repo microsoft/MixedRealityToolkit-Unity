@@ -127,8 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// The initial size of interactionmanagerStates.
         /// </summary>
         /// <remarks>
-        /// This value is arbitrary but chosen to be a number larger than the typical expected number (to avoid
-        /// having to do further allocations).
+        /// <para>This value is arbitrary but chosen to be a number larger than the typical expected number (to avoid
+        /// having to do further allocations).</para>
         /// </remarks>
         public const int MaxInteractionSourceStates = 20;
 
@@ -437,9 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 if (controller != null)
                 {
-                    var mrtkController = controller as WindowsMixedRealityController;
-
-                    if (mrtkController != null)
+                    if (controller is WindowsMixedRealityController mrtkController)
                     {
                         mrtkController.EnsureControllerModel(interactionSourceState.source);
                     }
@@ -722,9 +720,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             }
 
-            string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
-            bool isHPController = !interactionSource.supportsTouchpad;
-            string inputSourceName = isHPController ? $"HP Motion Controller {nameModifier}" : $"Mixed Reality Controller {nameModifier}";
+            bool isHPController = !interactionSource.supportsTouchpad && interactionSource.kind == InteractionSourceKind.Controller;
+
+            string kindModifier = interactionSource.kind.ToString();
+            string handednessModifier = controllingHand == Handedness.None ? string.Empty : controllingHand.ToString();
+
+            string inputSourceName = isHPController ? $"HP Motion {kindModifier} {handednessModifier}" : $"Mixed Reality {kindModifier} {handednessModifier}";
+
             var inputSource = Service?.RequestNewGenericInputSource(inputSourceName, pointers, inputSourceType);
 
             BaseWindowsMixedRealitySource detectedController;
@@ -1039,8 +1041,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Gets the latest interaction manager states and counts from InteractionManager
         /// </summary>
         /// <remarks>
-        /// Abstracts away some of the array resize handling and another underlying Unity issue
-        /// when InteractionManager.GetCurrentReading is called when there are no detected sources.
+        /// <para>Abstracts away some of the array resize handling and another underlying Unity issue
+        /// when InteractionManager.GetCurrentReading is called when there are no detected sources.</para>
         /// </remarks>
         private void UpdateInteractionManagerReading()
         {

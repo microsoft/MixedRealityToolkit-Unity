@@ -618,7 +618,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     usedAnchor = CreateAnchor("UsedAnchor", limitBar.transform);
                     GameObject bar = CreateQuad("UsedBar", usedAnchor);
                     Material material = new Material(foregroundMaterial);
-                    material.renderQueue = material.renderQueue + 1;
+                    material.renderQueue += 1;
                     InitializeRenderer(bar, material, colorID, memoryUsedColor);
                     bar.transform.localScale = Vector3.one;
                     bar.transform.localPosition = new Vector3(0.5f, 0.0f, 0.0f);

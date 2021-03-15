@@ -25,7 +25,26 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             "Windows.UI.Input.Spatial",
             "LeapMotion",
-            "LeapMotion.LeapCSharp"
+            "LeapMotion.LeapCSharp",
+            "Microsoft.MixedReality.Toolkit.PlaneFinding",
+            "Microsoft.MixedReality.SceneUnderstanding.Projections.Editor",
+            "Microsoft.MixedReality.SceneUnderstanding.Projections.WSA",
+#if UNITY_2019_3_OR_NEWER
+            "Oculus.VR",
+            "Oculus.VR.Editor",
+            "Unity.XR.Oculus",
+            "Unity.XR.WindowsMixedReality",
+#if UNITY_2020_2_OR_NEWER
+            "Microsoft.MixedReality.OpenXR",
+            "Unity.XR.OpenXR",
+            "Unity.RenderPipelines.Core.Runtime",
+            "Unity.RenderPipelines.Lightweight.Runtime",
+            "Unity.RenderPipelines.Universal.Runtime",
+            "Unity.InputSystem",
+            "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
+            "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality"
+#endif
+#endif
         };
 
         /// <summary>
@@ -38,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Editor",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+            "Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive",
+            "Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.Interactive",
             "UnityEngine.SpatialTracking"
         };
 
@@ -60,6 +81,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Gets all the parsed DLLs for this Unity project.
         /// </summary>
         public IReadOnlyCollection<PluginAssemblyInfo> Plugins { get; }
+
+        /// <summary>
+        /// Starting from Unity 2019 some plugins are shipped with Unity in its source form. These plugins need to be handled specially.
+        /// </summary>
+        public static IReadOnlyDictionary<string, string> SpecialPluginNameMappingUnity2019 { get; } = new Dictionary<string, string>
+        {
+            { "Unity.ugui" , "UnityEngine.UI" },
+            { "Unity.ugui.Editor" , "UnityEditor.UI" }
+        };
 
         public UnityProjectInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, string projectOutputPath)
         {
@@ -154,11 +184,22 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
+            // Ignore test projects when generating docs with Unity 2019
+#if UNITY_2019_3_OR_NEWER
+            projectsMap.Remove("Microsoft.MixedReality.Toolkit.Tests.EditModeTests");
+            projectsMap.Remove("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests");
+#endif
             return projectsMap;
         }
 
         private CSProjectInfo GetProjectInfo(Dictionary<string, CSProjectInfo> projectsMap, Dictionary<string, AssemblyDefinitionInfo> asmDefInfoMap, HashSet<string> builtInPackagesWithoutSource, string projectKey, string projectOutputPath)
         {
+#if UNITY_2019_3_OR_NEWER
+            if (SpecialPluginNameMappingUnity2019.TryGetValue(projectKey, out string pluginName))
+            {
+                projectKey = pluginName;
+            }
+#endif
             if (projectsMap.TryGetValue(projectKey, out CSProjectInfo value))
             {
                 return value;
@@ -210,6 +251,36 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 toReturn.AddDependency(GetProjectInfo(projectsMap, asmDefInfoMap, builtInPackagesWithoutSource, reference, projectOutputPath));
             }
 
+            // Manually add special plugin dependencies to the projects
+#if UNITY_2019_3_OR_NEWER
+#if UNITY_2020_2_OR_NEWER
+            if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit") || toReturn.Name.StartsWith("Unity.TextMeshPro"))
+#else
+            if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit"))
+#endif
+            {
+                string[] plugins = SpecialPluginNameMappingUnity2019.Values.OrderByDescending(p => p).ToArray();
+                foreach (var plugin in plugins)
+                {
+                    if (projectsMap.TryGetValue(plugin, out CSProjectInfo projectInfo))
+                    {
+                        toReturn.AddDependency(projectInfo);
+                    }
+#if UNITY_2020_2_OR_NEWER
+                    else
+                    {
+                        CSProjectInfo newProjInfo = new CSProjectInfo(this, asmDefInfoMap[plugin], projectOutputPath);
+                        if (plugin == plugins[1])
+                        {
+                            newProjInfo.AddDependency(projectsMap[plugins[0]]);
+                        }
+                        projectsMap.Add(plugin, newProjInfo);
+                        toReturn.AddDependency(newProjInfo);
+                    }
+#endif
+                }
+            }
+#endif
             return toReturn;
         }
 

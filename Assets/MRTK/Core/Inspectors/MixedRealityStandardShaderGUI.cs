@@ -7,7 +7,6 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -712,6 +711,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             materialEditor.EnableInstancingField();
+
+            GUI.enabled = true;
 
             materialEditor.ShaderProperty(stencil, Styles.stencil);
 

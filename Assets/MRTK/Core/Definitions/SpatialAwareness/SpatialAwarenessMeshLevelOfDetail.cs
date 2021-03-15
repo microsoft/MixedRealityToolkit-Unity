@@ -30,6 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The fine level of detail is well suited for using as an occlusion
         /// mesh.
         /// </summary>
-        Fine
+        Fine,
+
+        /// <summary>
+        /// The unlimited level of detail requests meshes as detailed as possible from the device.
+        /// </summary>
+        Unlimited = 255
     }
 }

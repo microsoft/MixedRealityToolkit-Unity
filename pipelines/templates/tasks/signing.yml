@@ -8,6 +8,6 @@ steps:
   inputs:
     signConfigXml: ${{ parameters.ConfigName }}
     inPathRoot: $(Build.SourcesDirectory)
-    outPathRoot: $(Build.SourcesDirectory)  
+    outPathRoot: $(Build.SourcesDirectory)
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)

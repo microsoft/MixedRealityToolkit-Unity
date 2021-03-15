@@ -27,11 +27,6 @@ jobs:
       buildUWPX86: false
       buildUWPArm: false
       buildUWPDotNet: false
-      # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
-      # the set of changed files, so that we can save some time. There's no need to
-      # check unchanged files for code style/doc style violations.
-      # Temporarily commented out due to VM issue.
-      # scopedValidation: true
       UnityVersion: $(Unity2019Version)
 
   - template: templates/end.yml

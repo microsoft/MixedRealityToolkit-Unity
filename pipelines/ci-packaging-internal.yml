@@ -4,7 +4,13 @@ variables:
 - template: config/settings.yml
 
 jobs:
-- job: CIDeveloperValidation
+- job: CodeValidation
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: templates/validation.yml
+
+- job: UnityValidation
   timeoutInMinutes: 90
   pool:
     name: Analog N-1
@@ -15,7 +21,6 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packagingEnabled: true
-      packagePublishing: true
+      packageNuGet: true # deprecated and temporary
+      publishPackagesToFeed: true
       UnityVersion: $(Unity2018VersionInternal)
-      MRTKVersion: $(MRTKVersion)

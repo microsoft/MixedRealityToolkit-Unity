@@ -74,8 +74,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         }
 
         /// <remarks>
-        /// There is a check in here that verifies whether or not we can get InputActions, if we can't we show an error help box; otherwise we get them.
-        /// This method is sealed, if you wish to override <see cref="OnInspectorGUI"/>, then override <see cref="RenderCustomInspector"/> method instead.
+        /// <para>There is a check in here that verifies whether or not we can get InputActions, if we can't we show an error help box; otherwise we get them.
+        /// This method is sealed, if you wish to override <see cref="OnInspectorGUI"/>, then override <see cref="RenderCustomInspector"/> method instead.</para>
         /// </remarks>
         public sealed override void OnInspectorGUI()
         {

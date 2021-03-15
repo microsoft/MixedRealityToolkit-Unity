@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/solvers/solver")]
     [AddComponentMenu("Scripts/MRTK/SDK/SolverHandler")]
     public class SolverHandler : MonoBehaviour
     {
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Currently tracked hand or motion controller if applicable
         /// </summary>
-        /// /// <remarks>
+        /// <remarks>
         /// Only possible values Left, Right, or None
         /// </remarks>
         public Handedness CurrentTrackedHandedness => currentTrackedHandedness;
@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Controller side to favor and pick first if TrackedHandedness is set to both
         /// </summary>
-        /// /// <remarks>
+        /// <remarks>
         /// Only possible values, Left or Right
         /// </remarks>
         public Handedness PreferredTrackedHandedness
@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private float lastUpdateTime;
 
         private IMixedRealityHandJointService HandJointService
-            => handJointService ?? CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
+            => handJointService ?? (handJointService = CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>());
 
         private IMixedRealityHandJointService handJointService = null;
 

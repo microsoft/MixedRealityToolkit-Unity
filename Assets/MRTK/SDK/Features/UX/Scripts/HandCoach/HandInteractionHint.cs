@@ -1,7 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -327,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
                         {
                             break;
                         }
-                        // If we autohid, then reappear if hands are not tracked
+                        // If we auto-hid, then reappear if hands are not tracked
                         else
                         {
                             yield return new WaitForSeconds(RepeatDelay);
