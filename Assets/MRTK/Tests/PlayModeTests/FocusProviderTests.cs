@@ -173,6 +173,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        [UnityTest]
+        public IEnumerator TestGazeProviderDestroyed()
+        {
+            PlayModeTestUtilities.Setup();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // remove the gaze provider and it's components from the scene
+            GazeProvider gazeProvider = CoreServices.InputSystem.GazeProvider.GameObjectReference.GetComponent<GazeProvider>();
+            gazeProvider.GazePointer.BaseCursor.Destroy();
+            DebugUtilities.LogVerbose("Application was playing, destroyed the gaze pointer's BaseCursor");
+            UnityObjectExtensions.DestroyObject(gazeProvider as Component);
+            gazeProvider = null;
+
+            // Ensure that the input system and it's related input sources are able to be reinitialized without issue.
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            PlayModeTestUtilities.GetInputSystem().Initialize();
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            yield return null;
+        }
+
         /// <summary>
         /// Ensure FocusProvider's FocusDetails can be overridden.
         /// </summary>
