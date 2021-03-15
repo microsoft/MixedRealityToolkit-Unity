@@ -519,21 +519,21 @@ PrefabInstance:
       value: '<size=32><b>Record Articulated Hand Pose Example</b></size>
 
 
-        This example scene demonstrates a way to record articulated hand poses usiung
+        This example scene demonstrates a way to record articulated hand poses using
         MRTK. To do that, say either "record left hand" or "record right hand" and
         then you will see the color of the sphere or cube changes respectively, bringing
         you to the ready-to-capture state. To record/capture the current hand pose,
         say "stop" and the current hand pose will be saved to the HoloLens 2 device.
 
 
-        Saved hand pose can be accessed through the device portal at User Folders/LocalAppData/[APP_NAME]/LocalState/
+        Saved hand poses can be accessed through the device portal at User Folders/LocalAppData/[APP_NAME]/LocalState/
 
         ArticulatedHandPose-yyyyMMdd-hhmmss.json.'
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 219
+      value: 218
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
