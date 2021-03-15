@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Pointers = pointers;
             }
-            else if (CoreServices.InputSystem?.GazeProvider?.GazePointer is IMixedRealityPointer gazePointer)
+            else if (!CoreServices.InputSystem.IsNull() &&!CoreServices.InputSystem.GazeProvider.IsNull() && CoreServices.InputSystem.GazeProvider.GazePointer is IMixedRealityPointer gazePointer)
             {
                 Pointers = new[] { gazePointer };
             }
