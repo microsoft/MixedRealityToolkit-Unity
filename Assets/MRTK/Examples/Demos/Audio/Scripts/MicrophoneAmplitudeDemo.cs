@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// Demonstration class using WindowsMicrophoneStream (from com.microsoft.mixedreality.toolkit.micstream) to select the 
-    // voice microphone and adjust the spatial awareness mesh based on the amplitude of the user's voice.
+    /// voice microphone and adjust the spatial awareness mesh based on the amplitude of the user's voice.
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public class MicrophoneAmplitudeDemo : MonoBehaviour
