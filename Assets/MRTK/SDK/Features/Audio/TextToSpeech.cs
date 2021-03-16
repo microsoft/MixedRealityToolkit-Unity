@@ -41,15 +41,15 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     }
 
     /// <summary>
-    /// Enables text to speech using the Windows 10 <see cref="SpeechSynthesizer"/> class.
+    /// Enables text to speech using the Windows 10 SpeechSynthesizer class.
     /// </summary>
     /// <remarks>
-    /// <see cref="SpeechSynthesizer"/> generates speech as a <see cref="SpeechSynthesisStream"/>. 
-    /// This class converts that stream into a Unity <see cref="AudioClip"/> and plays the clip using 
+    /// <para>SpeechSynthesizer generates speech as a SpeechSynthesisStream.</para>
+    /// <para>This class converts that stream into a Unity AudioClip and plays the clip using 
     /// the <see cref="AudioSource"/> you supply in the inspector. This allows you to position the voice 
     /// as desired in 3D space. One recommended approach is to place the AudioSource on an empty 
     /// GameObject that is a child of Main Camera and position it approximately 0.6 units above the 
-    /// camera. This orientation will sound similar to Cortana's speech in the OS.
+    /// camera. This orientation will sound similar to Cortana's speech in the OS.</para>
     /// </remarks>
     [RequireComponent(typeof(AudioSource))]
     [AddComponentMenu("Scripts/MRTK/SDK/AudioInfluencerController")]
