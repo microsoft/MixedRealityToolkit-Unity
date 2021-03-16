@@ -20,7 +20,7 @@
         {
             "name": "com.microsoft.mixedreality.toolkit.micstream",
             "expression": "",
-            "define": "MICSTREAMDLL_PRESENT"
+            "define": "MICSTREAM_PRESENT"
         }
     ],
     "noEngineReferences": false

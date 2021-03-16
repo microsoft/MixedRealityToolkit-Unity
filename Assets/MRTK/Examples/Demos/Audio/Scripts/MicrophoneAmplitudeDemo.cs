@@ -8,13 +8,13 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// Demonstration class using <see cref="WindowsMicrophoneStream"/> to select the voice microphone and
-    /// adjust the spatial awareness mesh based on the amplitude of the user's voice.
+    /// Demonstration class using WindowsMicrophoneStream (from com.microsoft.mixedreality.toolkit.micstream) to select the 
+    // voice microphone and adjust the spatial awareness mesh based on the amplitude of the user's voice.
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public class MicrophoneAmplitudeDemo : MonoBehaviour
     {
-#if MICSTREAMDLL_PRESENT
+#if MICSTREAM_PRESENT
 
         [SerializeField]
         [Tooltip("Gain to apply to the microphone input.")]
@@ -234,6 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             averageAmplitude = sumOfValues / buffer.Length;
         }
 
-#endif // MICSTREAMDLL_PRESENT
+#endif // MICSTREAM_PRESENT
     }
 }
