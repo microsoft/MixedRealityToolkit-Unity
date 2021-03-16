@@ -341,7 +341,6 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Handy for avoiding situations when a text is submitted, but audio clip is not yet ready because the audio source isn't playing yet.
         /// Example: yield return new WaitWhile(() => textToSpeechManager.SpeechTextInQueue() || textToSpeechManager.IsSpeaking())
         /// </summary>
-        /// <returns></returns>
         public bool SpeechTextInQueue()
         {
 #if WINDOWS_UWP
