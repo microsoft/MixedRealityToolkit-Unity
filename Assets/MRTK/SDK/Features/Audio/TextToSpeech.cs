@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     /// camera. This orientation will sound similar to Cortana's speech in the OS.</para>
     /// </remarks>
     [RequireComponent(typeof(AudioSource))]
-    [AddComponentMenu("Scripts/MRTK/SDK/AudioInfluencerController")]
+    [AddComponentMenu("Scripts/MRTK/SDK/TextToSpeech")]
     public class TextToSpeech : MonoBehaviour
     {
         [Tooltip("The audio source where speech will be played.")]
