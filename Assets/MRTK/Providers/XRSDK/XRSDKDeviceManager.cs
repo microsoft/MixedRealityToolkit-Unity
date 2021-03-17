@@ -62,14 +62,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         /// <param name="loaderName">The string name to compare against the active loader.</param>
         /// <returns>True if the active loader has the same name as the parameter.</returns>
-        protected virtual bool IsLoaderActive(string loaderName) => XRGeneralSettings.Instance.Manager.activeLoader != null && XRGeneralSettings.Instance.Manager.activeLoader.name == loaderName;
+        protected virtual bool IsLoaderActive(string loaderName) => XRGeneralSettings.Instance?.Manager?.activeLoader != null && XRGeneralSettings.Instance.Manager.activeLoader.name == loaderName;
 
         /// <summary>
         /// Checks if the active loader is of a specific type. Used in cases where the loader class is accessible, like OculusLoader.
         /// </summary>
         /// <typeparam name="T">The loader class type to check against the active loader.</typeparam>
         /// <returns>True if the active loader is of the specified type.</returns>
-        protected virtual bool IsLoaderActive<T>() where T : XRLoader => XRGeneralSettings.Instance.Manager.activeLoader is T;
+        protected virtual bool IsLoaderActive<T>() where T : XRLoader => XRGeneralSettings.Instance?.Manager?.activeLoader is T;
 #endif // XR_MANAGEMENT_ENABLED
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
