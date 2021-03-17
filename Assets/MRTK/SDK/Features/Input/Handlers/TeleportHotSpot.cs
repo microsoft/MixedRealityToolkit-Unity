@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
@@ -67,8 +68,13 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private void OnDrawGizmos()
         {
             Gizmos.color = IsActive ? Color.green : Color.red;
-            Gizmos.DrawLine(Position + (Vector3.up * 0.1f), Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f));
-            Gizmos.DrawSphere(Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f), 1f);
+            Handles.color = IsActive ? Color.green : Color.red;
+
+            Gizmos.DrawLine(Position, Position + (Vector3.up * 0.5f));
+            Gizmos.DrawLine(Position + (Vector3.up * 0.5f), Position + (Vector3.up * 0.5f) + (transform.forward * 0.5f));
+
+            Handles.DrawWireDisc(Position, Vector3.up, 0.4f);
+            Handles.DrawWireDisc(Position + (Vector3.up * 0.5f), Vector3.up, 0.4f);
         }
     }
 }
