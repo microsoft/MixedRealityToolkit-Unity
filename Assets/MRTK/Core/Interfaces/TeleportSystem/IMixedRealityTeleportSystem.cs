@@ -20,21 +20,21 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// Raise a teleportation request event.
         /// </summary>
         /// <param name="pointer">The pointer that raised the event.</param>
-        /// <param name="hotSpot">The teleport target</param>
-        void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot);
+        /// <param name="hotspot">The teleport target</param>
+        void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportHotspot hotspot);
 
         /// <summary>
         /// Raise a teleportation started event.
         /// </summary>
         /// <param name="pointer">The pointer that raised the event.</param>
-        /// <param name="hotSpot">The teleport target</param>
-        void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot);
+        /// <param name="hotspot">The teleport target</param>
+        void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportHotspot hotspot);
 
         /// <summary>
         /// Raise a teleportation canceled event.
         /// </summary>
         /// <param name="pointer">The pointer that raised the event.</param>
-        /// <param name="hotSpot">The teleport target</param>
-        void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot);
+        /// <param name="hotspot">The teleport target</param>
+        void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportHotspot hotspot);
     }
 }
