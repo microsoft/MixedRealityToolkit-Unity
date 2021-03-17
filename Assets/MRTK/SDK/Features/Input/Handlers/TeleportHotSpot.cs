@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public override void OnBeforeFocusChange(FocusEventData eventData)
         {
             base.OnBeforeFocusChange(eventData);
-
             if (!(eventData.Pointer is IMixedRealityTeleportPointer teleportPointer) || teleportPointer.IsNull())
             {
                 return;
@@ -28,21 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             if (eventData.NewFocusedObject == gameObject)
             {
                 teleportPointer.TeleportHotSpot = this;
-
-                if (teleportPointer.IsInteractionEnabled)
-                {
-                    CoreServices.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
-                    CoreServices.TeleportSystem?.RaiseTeleportRequest(eventData.Pointer, this);
-                }
             }
             else if (eventData.OldFocusedObject == gameObject)
             {
                 teleportPointer.TeleportHotSpot = null;
-
-                if (teleportPointer.IsInteractionEnabled)
-                {
-                    CoreServices.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
-                }
             }
         }
 
@@ -80,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             Gizmos.color = IsActive ? Color.green : Color.red;
             Gizmos.DrawLine(Position + (Vector3.up * 0.1f), Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f));
-            Gizmos.DrawSphere(Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f), 0.01f);
+            Gizmos.DrawSphere(Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f), 1f);
         }
     }
 }
