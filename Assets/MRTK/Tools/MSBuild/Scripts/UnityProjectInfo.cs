@@ -19,47 +19,23 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     public class UnityProjectInfo
     {
         /// <summary>
-        /// These package references aren't actual packages it appears, manually labeling them for exclusion.
+        /// These package references are excluded depending on the Unity version as certain assemblies are only supported in specific versions of Unity.
         /// </summary>
         private static readonly HashSet<string> ExcludedPackageReferences = new HashSet<string>()
         {
-            "Windows.UI.Input.Spatial",
-            "LeapMotion",
-            "LeapMotion.LeapCSharp",
-            "Microsoft.MixedReality.Toolkit.PlaneFinding",
-            "Microsoft.MixedReality.SceneUnderstanding.Projections.Editor",
-            "Microsoft.MixedReality.SceneUnderstanding.Projections.WSA",
-#if UNITY_2019_3_OR_NEWER
-            "Oculus.VR",
-            "Oculus.VR.Editor",
-            "Unity.XR.Oculus",
-            "Unity.XR.WindowsMixedReality",
-#if UNITY_2020_2_OR_NEWER
-            "Microsoft.MixedReality.OpenXR",
-            "Unity.XR.OpenXR",
-            "Unity.RenderPipelines.Core.Runtime",
-            "Unity.RenderPipelines.Lightweight.Runtime",
-            "Unity.RenderPipelines.Universal.Runtime",
-            "Unity.InputSystem",
-            "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
-            "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality"
-#endif
-#endif
-        };
-
-        /// <summary>
-        /// These package references are only for Unity 2019.3+ and shouldn't be included when using older versions
-        /// </summary>
-        private static readonly HashSet<string> PackageReferencesUnity2019 = new HashSet<string>()
-        {
+#if !UNITY_2019_3_OR_NEWER
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Editor",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
             "Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive",
-            "Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.Interactive",
-            "UnityEngine.SpatialTracking"
+            "Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.Interactive"
+#endif
+#if UNITY_2020_2_OR_NEWER
+            "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
+            "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality"
+#endif
         };
 
         /// <summary>
@@ -207,8 +183,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (!asmDefInfoMap.TryGetValue(projectKey, out AssemblyDefinitionInfo assemblyDefinitionInfo))
             {
-                Debug.LogError($"Can't find an asmdef for project: {projectKey}, this project may need to be to added to the PackageReferencesUnity2019 or ExcludedPackageReferences exclusion list");
-                throw new InvalidOperationException($"Can't find an asmdef for project: {projectKey}");
+                Debug.Log($"Can't find an asmdef for project: {projectKey}, skipping.");
+                return null;
             }
 
             CSProjectInfo toReturn = new CSProjectInfo(this, assemblyDefinitionInfo, projectOutputPath);
@@ -232,15 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     Debug.LogWarning($"Skipping processing {reference} for {toReturn.Name}, as it's marked as excluded.");
                     continue;
                 }
-
-#if !UNITY_2019_3_OR_NEWER
-                if (PackageReferencesUnity2019.Contains(reference))
-                {
-                    Debug.LogWarning($"Skipping processing {reference} for {toReturn.Name}, as it's for Unity 2019.3+.");
-                    continue;
-                }
-#endif
-
+                
                 string packageCandidate = $"com.{reference.ToLower()}";
                 if (builtInPackagesWithoutSource.Any(t => packageCandidate.StartsWith(t)))
                 {
