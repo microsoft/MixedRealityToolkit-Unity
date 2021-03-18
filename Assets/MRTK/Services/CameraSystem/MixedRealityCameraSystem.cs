@@ -35,8 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <param name="profile">The configuration profile for the service.</param>
         public MixedRealityCameraSystem(
             BaseMixedRealityProfile profile = null) : base(profile)
-        {
-        }
+        { }
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Camera System";
@@ -104,8 +103,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             base.Initialize();
 
             MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
-
-            CameraCache.Main.transform.position = Vector3.zero;
 
             if ((GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0) && (profile != null))
             {
