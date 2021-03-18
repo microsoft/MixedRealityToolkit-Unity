@@ -104,6 +104,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     newInstance.ActiveProfile = configProfile;
                 }
+
+                // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
+                MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
+
                 EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             }
         }
