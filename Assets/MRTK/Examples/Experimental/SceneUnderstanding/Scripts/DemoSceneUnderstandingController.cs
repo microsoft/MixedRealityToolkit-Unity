@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// Get all currently observed SceneObjects of a certain type.
         /// </summary>
         /// <remarks>
-        /// Before calling this function, the observer should be configured to observe the specified type by including that type in <see cref="IMixedRealitySceneUnderstandingObserver.SurfaceTypes"/>.
+        /// Before calling this function, the observer should be configured to observe the specified type by including that type in the SurfaceTypes property.
         /// </remarks>
         public IReadOnlyDictionary<int, SpatialAwarenessSceneObject> GetSceneObjectsOfType(SpatialAwarenessSurfaceTypes type)
         {
