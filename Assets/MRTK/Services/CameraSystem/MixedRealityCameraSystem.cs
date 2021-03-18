@@ -34,9 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="profile">The configuration profile for the service.</param>
         public MixedRealityCameraSystem(
-            BaseMixedRealityProfile profile = null, float floorHeight = 0.0f) : base(profile)
+            BaseMixedRealityProfile profile = null) : base(profile)
         {
-            this.FloorHeight = floorHeight;
         }
 
         /// <inheritdoc/>
@@ -89,9 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc/>
         public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
 
-        /// <inheritdoc/>
-        public float FloorHeight { get; private set; }
-
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
@@ -109,10 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
 
-            // Ensure the camera is parented to the playspace which starts, unrotated, at FloorHeight units below the origin.
-            // This is done before any data providers, which may overwrite this behavior with their own implementations
-            MixedRealityPlayspace.Rotation = Quaternion.identity;
-            MixedRealityPlayspace.Position = Vector3.down * FloorHeight;
             CameraCache.Main.transform.position = Vector3.zero;
 
             if ((GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0) && (profile != null))
@@ -159,6 +151,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     ApplySettingsForTransparentDisplay();
                 }
 
+                // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
+                MixedRealityPlayspace.Position = Vector3.zero;
+                MixedRealityPlayspace.Rotation = Quaternion.identity;
                 if (CameraCache.Main.transform.position != Vector3.zero)
                 {
                     Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");

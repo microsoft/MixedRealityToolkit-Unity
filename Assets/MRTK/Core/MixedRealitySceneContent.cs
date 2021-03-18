@@ -30,7 +30,8 @@ namespace Microsoft.MixedReality.Toolkit
         {
             AlignWithHeadHeight,
             UsePresetPositions,
-            UsePresetXAndZWithHeadHeight
+            UsePresetXAndZWithHeadHeight,
+            UsePresetFloorHeight
         }
 
 #if UNITY_2018_4_OR_NEWER
@@ -100,6 +101,15 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 contentPosition.x = containerObject.position.x;
                 contentPosition.y = containerObject.position.y + CameraCache.Main.transform.position.y;
+                contentPosition.z = containerObject.position.z;
+
+                containerObject.position = contentPosition;
+            }
+
+            if (alignmentType == AlignmentType.UsePresetFloorHeight)
+            {
+                contentPosition.x = containerObject.position.x;
+                contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.FloorHeight;
                 contentPosition.z = containerObject.position.z;
 
                 containerObject.position = contentPosition;

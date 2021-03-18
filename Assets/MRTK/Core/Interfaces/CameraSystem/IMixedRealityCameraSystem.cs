@@ -19,10 +19,5 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// Is the current camera displaying on an opaque (VR / immersive) or a transparent (AR) device
         /// </summary>
         bool IsOpaque { get; }
-
-        /// <summary>
-        /// The height above the floor for the Mixed Reality Experience. 1 unit = 1 meter
-        /// </summary>
-        float FloorHeight { get; }
     }
 }
