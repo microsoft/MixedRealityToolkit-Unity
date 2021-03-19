@@ -87,13 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         private float averageAmplitude = 0.0f;
 
-#if UNITY_EDITOR
         /// <summary>
         /// Cached material values used to restore initial settings when running the demo in the editor.
         /// </summary>
         private Color defaultMaterialColor = Color.black;
         private int defaultWireThickness = 0;
-#endif // UNITY_EDITOR
 
         private void Awake()
         {
@@ -102,11 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
             if (VisibleMaterial != null)
             {
-#if UNITY_EDITOR
                 // Cache the initial material settings.
                 defaultMaterialColor = VisibleMaterial.GetColor("_WireColor");
                 defaultWireThickness = VisibleMaterial.GetInt("_WireThickness");
-#endif // UNITY_EDITOR
 
                 VisibleMaterial.SetColor("_WireColor", Color.blue);
             }
@@ -151,14 +147,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             micStream.Uninitialize();
             micStream = null;
 
-#if UNITY_EDITOR
             // Restore the initial material settings.
             if (VisibleMaterial != null)
             {
                 VisibleMaterial.SetColor("_WireColor", defaultMaterialColor);
                 VisibleMaterial.SetInt("_WireThickness", defaultWireThickness);
             }
-#endif // UNITY_EDITOR
         }
 
         private void OnDisable()
