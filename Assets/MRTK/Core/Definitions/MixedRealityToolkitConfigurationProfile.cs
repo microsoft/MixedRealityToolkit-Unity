@@ -28,29 +28,17 @@ namespace Microsoft.MixedReality.Toolkit
         #region Mixed Reality Toolkit configurable properties
 
         [SerializeField]
-        [Tooltip("The scale of the Mixed Reality experience.")]
-        private ExperienceScale targetExperienceScale = ExperienceScale.Room;
+        [Tooltip("Experience Settings profile.")]
+        private MixedRealityExperienceSettingsProfile experienceSettingsProfile;
 
         /// <summary>
-        /// The desired the scale of the experience.
+        /// Profile for configuring the experience settings of your project.
+        /// Determines whether your project targers AR/VR, the scale of your experience, and the height of the user where applicable
         /// </summary>
-        public ExperienceScale TargetExperienceScale
+        public MixedRealityExperienceSettingsProfile ExperienceSettingsProfile
         {
-            get { return targetExperienceScale; }
-            set { targetExperienceScale = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("The height above the floor for the Mixed Reality Experience. 1 unit = 1 meter")]
-        private float floorHeight = 1.0f;
-
-        /// <summary>
-        /// The height above the floor for the Mixed Reality Experience. 1 unit = 1 meter
-        /// </summary>
-        public float FloorHeight
-        {
-            get { return floorHeight; }
-            set { floorHeight = value; }
+            get { return experienceSettingsProfile; }
+            internal set { experienceSettingsProfile = value; }
         }
 
         [SerializeField]

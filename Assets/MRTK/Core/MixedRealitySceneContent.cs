@@ -28,24 +28,14 @@ namespace Microsoft.MixedReality.Toolkit
     {
         private enum AlignmentType
         {
-            AlignWithHeadHeight,
-            UsePresetPositions,
-            UsePresetXAndZWithHeadHeight,
-            UsePresetFloorHeight
+            AlignWithExperienceScale,
+            AlignWithHeadHeight
         }
 
 #if UNITY_2018_4_OR_NEWER
         [SerializeField]
         [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
-        private AlignmentType alignmentType = AlignmentType.AlignWithHeadHeight;
-
-        [SerializeField]
-        [Tooltip("Use this to set the desired position of the container in a stationary app. This will be ignored if AlignWithHeadHeight is set.")]
-        private Vector3 seatedSpaceTypePosition = Vector3.zero;
-
-        [SerializeField]
-        [Tooltip("Use this to set the desired position of the container in a room scale app. This will be ignored if AlignWithHeadHeight is set.")]
-        private Vector3 roomScaleSpaceTypePosition = Vector3.zero;
+        private AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
 
         private Vector3 contentPosition = Vector3.zero;
 
@@ -66,13 +56,12 @@ namespace Microsoft.MixedReality.Toolkit
             // If no XR device is present, the editor will default to (0, 0, 0) and no adjustment is needed.
             // This script runs on both opaque and transparent display devices, since the floor offset is based on
             // TrackingSpaceType and not display type.
-            if (XRDevice.isPresent)
-            {
+            //if (XRDevice.isPresent)
+            //{
                 StartCoroutine(SetContentHeight());
                 return;
-            }
+            //}
 #endif
-            Destroy(this);
         }
 
 #if UNITY_2018_4_OR_NEWER
@@ -85,31 +74,28 @@ namespace Microsoft.MixedReality.Toolkit
                 yield return null;
             }
 
-            if (alignmentType == AlignmentType.UsePresetPositions || alignmentType == AlignmentType.UsePresetXAndZWithHeadHeight)
+            if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
-                if (MixedRealityToolkit.Instance.ActiveProfile.TargetExperienceScale == ExperienceScale.Room)
+                if(MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
+                    MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World)
                 {
-                    containerObject.position = roomScaleSpaceTypePosition;
+                    contentPosition.x = containerObject.position.x;
+                    contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
+                    contentPosition.z = containerObject.position.z;
+
+                    containerObject.position = contentPosition;
                 }
-                else if (MixedRealityToolkit.Instance.ActiveProfile.TargetExperienceScale == ExperienceScale.Seated)
+                else
                 {
-                    containerObject.position = seatedSpaceTypePosition;
+                    contentPosition = Vector3.zero;
+                    containerObject.position = contentPosition;
                 }
             }
 
-            if (alignmentType == AlignmentType.AlignWithHeadHeight || alignmentType == AlignmentType.UsePresetXAndZWithHeadHeight)
+            if (alignmentType == AlignmentType.AlignWithHeadHeight)
             {
                 contentPosition.x = containerObject.position.x;
                 contentPosition.y = containerObject.position.y + CameraCache.Main.transform.position.y;
-                contentPosition.z = containerObject.position.z;
-
-                containerObject.position = contentPosition;
-            }
-
-            if (alignmentType == AlignmentType.UsePresetFloorHeight)
-            {
-                contentPosition.x = containerObject.position.x;
-                contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.FloorHeight;
                 contentPosition.z = containerObject.position.z;
 
                 containerObject.position = contentPosition;

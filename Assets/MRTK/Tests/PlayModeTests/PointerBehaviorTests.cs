@@ -241,8 +241,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Initialize a profile with the appropriate floorHeight
             var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
-            originalProfileFloorHeight = profile.FloorHeight;
-            profile.FloorHeight = floorHeight;
+            originalProfileFloorHeight = profile.ExperienceSettingsProfile.FloorHeight;
+            profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
             PlayModeTestUtilities.Setup(profile);
 
             // Create a floor and make sure it's below the camera
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(Camera.main.transform.position.y - MixedRealityPlayspace.Position.y, floorHeight, 0.005f);
 
             // Reset the profile's floor height to it's original value
-            profile.FloorHeight = originalProfileFloorHeight;
+            profile.ExperienceSettingsProfile.FloorHeight = originalProfileFloorHeight;
             leftHand.Hide();
         }
 
