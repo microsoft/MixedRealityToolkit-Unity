@@ -311,6 +311,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             MixedRealityToolkit.Instance.ActiveProfile = configuration;
             Debug.Assert(MixedRealityToolkit.Instance.ActiveProfile != null);
+
+            // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
+            MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
         }
 
         public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)

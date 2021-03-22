@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public class MixedRealitySceneContent : MonoBehaviour
     {
-        private enum AlignmentType
+        public enum AlignmentType
         {
             AlignWithExperienceScale,
             AlignWithHeadHeight
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_2018_4_OR_NEWER
         [SerializeField]
         [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
-        private AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
+        public AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
 
         private Vector3 contentPosition = Vector3.zero;
 

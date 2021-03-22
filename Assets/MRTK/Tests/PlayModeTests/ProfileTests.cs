@@ -113,13 +113,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // keep the old floor height to reset it later
             float oldFloorHeight = hl1Profile.ExperienceSettingsProfile.FloorHeight;
+            hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
             hl1Profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
 
             TestUtilities.InitializeCamera();
             yield return new WaitForSeconds(0.5f);
 
-            TestUtilities.AssertAboutEqual(TestUtilities.PositionRelativeToPlayspace(Vector3.zero), Vector3.down * floorHeight, "The floor height was not set correctly");
+            MixedRealitySceneContent sceneContent = GameObject.Find("MixedRealitySceneContent").GetComponent<MixedRealitySceneContent>();
+            sceneContent.alignmentType = MixedRealitySceneContent.AlignmentType.AlignWithExperienceScale;
+
+            TestUtilities.AssertAboutEqual(TestUtilities.PositionRelativeToPlayspace(Vector3.zero), Vector3.zero, "The playspace was not set to the origin");
+            TestUtilities.AssertAboutEqual(sceneContent.transform.position, Vector3.up * floorHeight, "The floor height was not set correctly");
 
             //be sure to set the profiles FloorHeight back to it's original value afterwards
             hl1Profile.ExperienceSettingsProfile.FloorHeight = oldFloorHeight;
