@@ -26,56 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [Range(0, 50)]
         private int amplitudeBoostFactor = 10;
 
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
-        /// <summary>
-        /// Instance of the spatial awareness system.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem
-        {
-            get
-            {
-                if (spatialAwarenessSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
-                }
-                return spatialAwarenessSystem;
-            }
-        }
+        [SerializeField]
+        [Tooltip("Color to use for the wireframe mesh.\nIt is recommended to use a color with an alpha of 255.")]
+        private Color meshColor = Color.blue;
 
         private IMixedRealitySpatialAwarenessMeshObserver spatialMeshObserver = null;
-
-        /// <summary>
-        /// Instance of a spatial awareness mesh observer. Used to acquire the visible mesh material.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessMeshObserver SpatialMeshObserver
-        {
-            get
-            {
-                if (spatialMeshObserver == null)
-                {
-                    spatialMeshObserver = (SpatialAwarenessSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
-                }
-                return spatialMeshObserver;
-            }
-        }
-
         private Material visibleMaterial = null;
-
-        /// <summary>
-        /// The visible mesh material in use by the spatial mesh observer.
-        /// </summary>
-        private Material VisibleMaterial
-        {
-            get
-            {
-                if (visibleMaterial == null)
-                {
-                    visibleMaterial = SpatialMeshObserver?.VisibleMaterial;
-                }
-                return visibleMaterial;
-            }
-        }
 
         /// <summary>
         /// Class providing microphone stream management support on Microsoft Windows based devices.
@@ -98,13 +54,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             // We do not wish to play the ambient room sound from the audio source.
             gameObject.GetComponent<AudioSource>().volume = 0.0f;
 
-            if (VisibleMaterial != null)
+            spatialMeshObserver = (CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
+            visibleMaterial = spatialMeshObserver?.VisibleMaterial;
+
+            if (visibleMaterial != null)
             {
                 // Cache the initial material settings.
-                defaultMaterialColor = VisibleMaterial.GetColor("_WireColor");
-                defaultWireThickness = VisibleMaterial.GetInt("_WireThickness");
+                defaultMaterialColor = visibleMaterial.GetColor("_WireColor");
+                defaultWireThickness = visibleMaterial.GetInt("_WireThickness");
 
-                VisibleMaterial.SetColor("_WireColor", Color.blue);
+                visibleMaterial.SetColor("_WireColor", meshColor);
             }
 
             micStream = new WindowsMicrophoneStream();
@@ -148,10 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             micStream = null;
 
             // Restore the initial material settings.
-            if (VisibleMaterial != null)
+            if (visibleMaterial != null)
             {
-                VisibleMaterial.SetColor("_WireColor", defaultMaterialColor);
-                VisibleMaterial.SetInt("_WireThickness", defaultWireThickness);
+                visibleMaterial.SetColor("_WireColor", defaultMaterialColor);
+                visibleMaterial.SetInt("_WireThickness", defaultWireThickness);
             }
         }
 
@@ -191,12 +150,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 micStream.Gain = inputGain;
             }
 
-            if (VisibleMaterial != null)
+            if (visibleMaterial != null)
             {
                 // Artificially increase the amplitude to make the visible effect more pronounced.
                 int wireThickness = (int)(averageAmplitude * amplitudeBoostFactor * maxWireThickness);
                 wireThickness = Mathf.Clamp(wireThickness, 0, maxWireThickness);
-                VisibleMaterial.SetInt("_WireThickness", wireThickness);
+                visibleMaterial.SetInt("_WireThickness", wireThickness);
             }
         }
 
