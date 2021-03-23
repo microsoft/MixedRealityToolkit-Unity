@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
     [MixedRealityServiceProfile(typeof(DwellProfile))]
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Dwell Profile", fileName = "DwellProfile", order = 100)]
     [Serializable]
-    public class DwellProfile : BaseMixedRealityProfile
+    public class DwellProfile : ScriptableObject
     {
         [Tooltip("Pointer type to use for triggering a dwell interaction")]
         [SerializeField]
