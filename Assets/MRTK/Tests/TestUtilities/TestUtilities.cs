@@ -287,14 +287,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
-            InitializeCamera();
+            MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
 
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
-                MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
-                MixedRealityToolkit.ConfirmInitialized();
-            }
 
             // Todo: this condition shouldn't be here.
             // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
@@ -308,12 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(MixedRealityToolkit.IsInitialized);
             Debug.Assert(MixedRealityToolkit.Instance != null);
 
-
-            MixedRealityToolkit.Instance.ActiveProfile = configuration;
             Debug.Assert(MixedRealityToolkit.Instance.ActiveProfile != null);
-
-            // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
-            MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
         }
 
         public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
