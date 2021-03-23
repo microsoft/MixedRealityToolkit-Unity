@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
     /// Example script to demonstrate dwell visuals in sample scene

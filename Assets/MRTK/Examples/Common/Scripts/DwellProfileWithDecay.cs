@@ -4,10 +4,10 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
-    /// Custom profile for the extended dwell profile sample
+    /// Custom profile for CustomDwellHandler to show the dwell with decay behavior
     /// </summary>
     [MixedRealityServiceProfile(typeof(DwellProfileWithDecay))]
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Dwell Profile With Decay", fileName = "DwellProfileWithDecay", order = 100)]

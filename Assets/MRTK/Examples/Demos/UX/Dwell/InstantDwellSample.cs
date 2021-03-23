@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
     /// Dwell sample with no DwellIntended delay

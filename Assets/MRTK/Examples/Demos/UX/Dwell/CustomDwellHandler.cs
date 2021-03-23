@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
     /// Example to demonstrate DwellHandler override when a custom profile is used
