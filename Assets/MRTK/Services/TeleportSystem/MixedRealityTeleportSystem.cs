@@ -291,9 +291,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 {
                     targetPosition = eventData.Hotspot.Position;
 
-                    if (eventData.Hotspot.OverrideTargetOrientation)
+                    if (eventData.Hotspot.OverrideOrientation)
                     {
-                        targetRotation.y = eventData.Hotspot.TargetOrientation;
+                        targetRotation.y = eventData.Hotspot.TargetRotation;
                     }
                 }
 

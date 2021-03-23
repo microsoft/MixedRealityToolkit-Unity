@@ -247,10 +247,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             get
             {
                 if (TeleportHotspot != null &&
-                    TeleportHotspot.OverrideTargetOrientation &&
+                    TeleportHotspot.OverrideOrientation &&
                     TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
-                    return TeleportHotspot.TargetOrientation;
+                    return TeleportHotspot.TargetRotation;
                 }
 
                 return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);

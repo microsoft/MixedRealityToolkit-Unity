@@ -55,10 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private bool overrideOrientation = false;
 
         /// <inheritdoc />
-        public bool OverrideTargetOrientation => overrideOrientation;
+        public bool OverrideOrientation => overrideOrientation;
 
         /// <inheritdoc />
-        public float TargetOrientation => transform.eulerAngles.y;
+        public float TargetRotation => transform.eulerAngles.y;
 
         /// <inheritdoc />
         public GameObject GameObjectReference => gameObject;
