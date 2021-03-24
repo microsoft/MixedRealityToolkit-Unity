@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <inheritdoc/>
         public override bool IsInPointingPose => HandDefinition.IsInPointingPose;
 
-        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRArticulatedHand.UpdateController");
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] MicrosoftArticulatedHand.UpdateController");
 
         /// <summary>
         /// The OpenXR plug-in uses extensions to expose all possible data, which might be surfaced through multiple input devices.
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
         }
 
-        private static readonly ProfilerMarker UpdateSingleAxisDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRArticulatedHand.UpdateSingleAxisData");
+        private static readonly ProfilerMarker UpdateSingleAxisDataPerfMarker = new ProfilerMarker("[MRTK] MicrosoftArticulatedHand.UpdateSingleAxisData");
 
         /// <inheritdoc />
         protected override void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
         }
 
-        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRArticulatedHand.UpdateButtonData");
+        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] MicrosoftArticulatedHand.UpdateButtonData");
 
         /// <inheritdoc />
         protected override void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
         }
 
-        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRArticulatedHand.UpdatePoseData");
+        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] MicrosoftArticulatedHand.UpdatePoseData");
 
         /// <inheritdoc />
         protected override void UpdatePoseData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
         }
 
-        private static readonly ProfilerMarker UpdateHandDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRArticulatedHand.UpdateHandData");
+        private static readonly ProfilerMarker UpdateHandDataPerfMarker = new ProfilerMarker("[MRTK] MicrosoftArticulatedHand.UpdateHandData");
 
         /// <summary>
         /// Update the hand data from the device.
