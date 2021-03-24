@@ -11,7 +11,11 @@ using UnityEngine;
 using UnityEngine.XR;
 
 #if MSFT_OPENXR
-using Microsoft.MixedReality.OpenXR;
+#if MSFT_OPENXR_0_1_3_OR_NEWER
+using FrameTime = Microsoft.MixedReality.OpenXR.FrameTime;
+#else
+using FrameTime = Microsoft.MixedReality.OpenXR.Preview.FrameTime;
+#endif // MSFT_OPENXR_0_1_3_OR_NEWER
 using Preview = Microsoft.MixedReality.OpenXR.Preview;
 #endif // MSFT_OPENXR
 
@@ -24,13 +28,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Utilities.Handedness.Left, Utilities.Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right })]
     public class MicrosoftArticulatedHand : GenericXRSDKController, IMixedRealityHand
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MicrosoftArticulatedHand(TrackingState trackingState, Utilities.Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public MicrosoftArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
 #if MSFT_OPENXR
@@ -234,11 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             using (UpdateHandDataPerfMarker.Auto())
             {
 #if MSFT_OPENXR
-#if MSFT_OPENXR_PRE_013
-                if (handTracker != null && handTracker.TryLocateHandJoints(Preview.FrameTime.OnUpdate, locations))
-#else
                 if (handTracker != null && handTracker.TryLocateHandJoints(FrameTime.OnUpdate, locations))
-#endif // MSFT_OPENXR_PRE_013
                 {
                     foreach (Preview.HandJoint handJoint in HandJoints)
                     {
