@@ -65,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         #endregion IMixedRealityTeleportTarget Implementation
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Gizmos.color = IsActive ? Color.green : Color.red;
@@ -76,5 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             Handles.DrawWireDisc(Position, Vector3.up, 0.4f);
             Handles.DrawWireDisc(Position + (Vector3.up * 0.5f), Vector3.up, 0.4f);
         }
+#endif
     }
 }
