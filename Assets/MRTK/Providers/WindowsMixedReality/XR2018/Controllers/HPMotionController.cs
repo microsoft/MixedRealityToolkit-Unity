@@ -30,10 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public HPMotionController(
             TrackingState trackingState,
             Handedness controllerHandedness,
-            InteractionSource interactionSource,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, interactionSource, new HPMotionControllerDefinition(controllerHandedness), inputSource, interactions)
+            MixedRealityInteractionMapping[] interactions = null,
+            WindowsMixedRealityControllerModelProvider visualizationProvider = null)
+            : base(trackingState, controllerHandedness, new HPMotionControllerDefinition(controllerHandedness), inputSource, interactions, visualizationProvider)
         {
 #if HP_CONTROLLER_ENABLED
             InputHandler = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);

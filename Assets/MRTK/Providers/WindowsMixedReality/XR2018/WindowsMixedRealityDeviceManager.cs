@@ -744,10 +744,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
                 else if (interactionSource.kind == InteractionSourceKind.Controller)
                 {
+                    WindowsMixedRealityControllerModelProvider modelProvider = null;
+
+#if WINDOWS_UWP
+                    modelProvider = new WindowsMixedRealityControllerModelProvider(interactionSource.GetSpatialInteractionSource());
+#endif // WINDOWS_UWP
+
                     if (isHPController)
                     {
                         // Add the controller as a HP Motion Controller
-                        HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, interactionSource, inputSource);
+                        HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource, visualizationProvider: modelProvider);
 
 #if HP_CONTROLLER_ENABLED
                         lock (trackedMotionControllerStates)
@@ -763,7 +769,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                     else
                     {
-                        detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, interactionSource, inputSource);
+                        detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource, visualizationProvider: modelProvider);
                     }
                 }
                 else

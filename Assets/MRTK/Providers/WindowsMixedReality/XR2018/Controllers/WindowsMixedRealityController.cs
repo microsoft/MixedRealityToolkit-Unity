@@ -37,31 +37,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null)
-            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions)
+            MixedRealityInteractionMapping[] interactions = null,
+            WindowsMixedRealityControllerModelProvider visualizationProvider = null)
+            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions, visualizationProvider)
         { }
 
         public WindowsMixedRealityController(
             TrackingState trackingState,
             Handedness controllerHandedness,
-            InteractionSource interactionSource,
             IMixedRealityInputSourceDefinition definition,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null)
+            MixedRealityInteractionMapping[] interactions = null,
+            WindowsMixedRealityControllerModelProvider visualizationProvider = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)
         {
-#if WINDOWS_UWP
-            controllerModelProvider = new WindowsMixedRealityControllerModelProvider(this, interactionSource.GetSpatialInteractionSource());
-#endif
+            controllerModelProvider = visualizationProvider;
         }
 
 #if UNITY_WSA
         private bool controllerModelInitialized = false;
         private bool failedToObtainControllerModel = false;
 
-#if WINDOWS_UWP
         private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
-#endif
 
         #region Update data functions
 
@@ -288,7 +285,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif
 
         #endregion Controller model functions
-
 #endif // UNITY_WSA
     }
 }
