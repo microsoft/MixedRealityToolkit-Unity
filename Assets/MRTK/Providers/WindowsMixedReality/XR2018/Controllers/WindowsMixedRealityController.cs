@@ -289,12 +289,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         UnityEngine.Debug.LogError("Failed to obtain a controller visualization profile");
                     }
+
+                    UnityEngine.Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                    base.TryRenderControllerModel(GetType(), InputSource.SourceType);
                 }
 
                 // If we didn't successfully set up the model and add it to the hierarchy (which returns early), destroy it.
                 UnityEngine.Object.Destroy(controllerModel);
-                UnityEngine.Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
-                base.TryRenderControllerModel(GetType(), InputSource.SourceType);
             }
         }
 #endif

@@ -191,12 +191,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     {
                         Debug.LogError("Failed to obtain a controller visualization profile");
                     }
+
+                    Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                    base.TryRenderControllerModel(GetType(), InputSource.SourceType);
                 }
 
                 // If we didn't successfully set up the model and add it to the hierarchy (which returns early), destroy it.
                 Object.Destroy(controllerModel);
-                Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
-                base.TryRenderControllerModel(GetType(), InputSource.SourceType);
             }
         }
 #endif
