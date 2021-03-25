@@ -37,7 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
         private static readonly Dictionary<string, GameObject> ControllerModelDictionary = new Dictionary<string, GameObject>(2);
 
-        public async Task<GameObject> TryGenerateControllerModelFromPlatformSDK()
+        /// <summary>
+        /// Attempts to load the glTF controller model from the Windows SDK.
+        /// </summary>
+        /// <param name="controllerType">The type this model is being requested for. Used to obtain the correct controller visualization script from the controller visualization profile.</param>
+        /// <returns>The controller model as a GameObject or null if it was unobtainable.</returns>
+        public async Task<GameObject> TryGenerateControllerModelFromPlatformSDK(Type controllerType)
         {
             if (spatialInteractionSource == null)
             {
@@ -80,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     var visualizationProfile = CoreServices.InputSystem?.InputSystemProfile.ControllerVisualizationProfile;
                     if (visualizationProfile != null)
                     {
-                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), handedness);
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(controllerType, handedness);
                         if (visualizationType != null)
                         {
                             // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,

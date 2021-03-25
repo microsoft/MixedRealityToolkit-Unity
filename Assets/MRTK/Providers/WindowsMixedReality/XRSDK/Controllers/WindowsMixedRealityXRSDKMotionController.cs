@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 controllerModelProvider = new WindowsMixedRealityControllerModelProvider(ControllerHandedness);
             }
 
-            GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
+            GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK(GetType());
 
             if (controllerModel != null)
             {
