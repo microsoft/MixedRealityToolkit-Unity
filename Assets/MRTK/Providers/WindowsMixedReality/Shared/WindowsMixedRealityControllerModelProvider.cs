@@ -25,24 +25,26 @@ using System.Threading.Tasks;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     /// <summary>
-    /// Queries the hand mesh data that an articulated hand on HoloLens 2 can provide.
+    /// Queries the WinRT APIs for a renderable controller model.
     /// </summary>
     public class WindowsMixedRealityControllerModelProvider
     {
+        public WindowsMixedRealityControllerModelProvider(Handedness handedness)
+        {
+            this.handedness = handedness;
 
 #if WINDOWS_UWP
-        public WindowsMixedRealityControllerModelProvider(BaseController controller, SpatialInteractionSourceState spatialInteractionSourceState)
-        {
-            this.controller = controller;
-            this.spatialInteractionSourceState = spatialInteractionSourceState;
+            spatialInteractionSource = WindowsExtensions.GetSpatialInteractionSource(handedness, InputSourceType.Controller);
+#endif // WINDOWS_UWP
         }
 
         public bool UnableToGenerateSDKModel;
+        private readonly Handedness handedness;
 
         private readonly BaseController controller;
         private IMixedRealityInputSource InputSource => controller.InputSource;
-        private Handedness Handedness => controller.ControllerHandedness;
         private SpatialInteractionSourceState spatialInteractionSourceState;
+#if WINDOWS_UWP
 
         private static readonly Dictionary<string, GameObject> controllerModelDictionary = new Dictionary<string, GameObject>(0);
 
@@ -87,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     var visualizationProfile = CoreServices.InputSystem?.InputSystemProfile.ControllerVisualizationProfile;
                     if (visualizationProfile != null)
                     {
-                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), Handedness);
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), handedness);
                         if (visualizationType != null)
                         {
                             // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,

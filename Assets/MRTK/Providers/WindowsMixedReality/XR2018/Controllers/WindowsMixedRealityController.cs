@@ -37,9 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null,
-            WindowsMixedRealityControllerModelProvider visualizationProvider = null)
-            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions, visualizationProvider)
+            MixedRealityInteractionMapping[] interactions = null)
+            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions)
         { }
 
         public WindowsMixedRealityController(
@@ -47,19 +46,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             Handedness controllerHandedness,
             IMixedRealityInputSourceDefinition definition,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null,
-            WindowsMixedRealityControllerModelProvider visualizationProvider = null)
+            MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)
         {
-            controllerModelProvider = visualizationProvider;
+            controllerModelProvider = new WindowsMixedRealityControllerModelProvider(controllerHandedness);
         }
 
-#if UNITY_WSA
         private bool controllerModelInitialized = false;
         private bool failedToObtainControllerModel = false;
 
         private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
 
+#if UNITY_WSA
         #region Update data functions
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityController.UpdateController");
