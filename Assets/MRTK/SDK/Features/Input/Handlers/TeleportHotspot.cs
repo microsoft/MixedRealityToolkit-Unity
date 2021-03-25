@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
     /// this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> and triggers the teleport action.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/TeleportHotSpot")]
-    public class TeleportHotSpot : BaseFocusHandler, IMixedRealityTeleportHotSpot
+    public class TeleportHotspot : BaseFocusHandler, IMixedRealityTeleportHotspot
     {
         #region IMixedRealityFocusHandler Implementation
 
@@ -19,7 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public override void OnBeforeFocusChange(FocusEventData eventData)
         {
             base.OnBeforeFocusChange(eventData);
-
             if (!(eventData.Pointer is IMixedRealityTeleportPointer teleportPointer) || teleportPointer.IsNull())
             {
                 return;
@@ -27,22 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (eventData.NewFocusedObject == gameObject)
             {
-                teleportPointer.TeleportHotSpot = this;
-
-                if (teleportPointer.IsInteractionEnabled)
-                {
-                    CoreServices.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
-                    CoreServices.TeleportSystem?.RaiseTeleportRequest(eventData.Pointer, this);
-                }
+                teleportPointer.TeleportHotspot = this;
             }
             else if (eventData.OldFocusedObject == gameObject)
             {
-                teleportPointer.TeleportHotSpot = null;
-
-                if (teleportPointer.IsInteractionEnabled)
-                {
-                    CoreServices.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
-                }
+                teleportPointer.TeleportHotspot = null;
             }
         }
 
@@ -66,21 +55,28 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private bool overrideOrientation = false;
 
         /// <inheritdoc />
-        public bool OverrideTargetOrientation => overrideOrientation;
+        public bool OverrideOrientation => overrideOrientation;
 
         /// <inheritdoc />
-        public float TargetOrientation => transform.eulerAngles.y;
+        public float TargetRotation => transform.eulerAngles.y;
 
         /// <inheritdoc />
         public GameObject GameObjectReference => gameObject;
 
         #endregion IMixedRealityTeleportTarget Implementation
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Gizmos.color = IsActive ? Color.green : Color.red;
-            Gizmos.DrawLine(Position + (Vector3.up * 0.1f), Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f));
-            Gizmos.DrawSphere(Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f), 0.01f);
+            Handles.color = IsActive ? Color.green : Color.red;
+
+            Gizmos.DrawLine(Position, Position + (Vector3.up * 0.5f));
+            Gizmos.DrawLine(Position + (Vector3.up * 0.5f), Position + (Vector3.up * 0.5f) + (transform.forward * 0.5f));
+
+            Handles.DrawWireDisc(Position, Vector3.up, 0.4f);
+            Handles.DrawWireDisc(Position + (Vector3.up * 0.5f), Vector3.up, 0.4f);
         }
+#endif
     }
 }
