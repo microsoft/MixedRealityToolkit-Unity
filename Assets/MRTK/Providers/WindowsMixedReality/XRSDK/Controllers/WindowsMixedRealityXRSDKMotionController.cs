@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         {
                             // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
                             // and re-enabled when the same controller is re-detected.
-                            if (controllerModel.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                            if (controllerModel.EnsureComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
                             {
                                 visualizer.DestroyOnSourceLost = false;
                             }
