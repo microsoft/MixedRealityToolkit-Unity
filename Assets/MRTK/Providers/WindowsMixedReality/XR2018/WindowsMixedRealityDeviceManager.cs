@@ -437,21 +437,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 if (controller != null)
                 {
-                    //if (controller is WindowsMixedRealityController mrtkController)
-                    //{
-                    //    mrtkController.EnsureControllerModel(interactionSourceState.source);
-                    //}
-
-                    // Does the controller still exist after we loaded the controller model?
-                    if (GetOrAddController(interactionSourceState.source, false) != null)
+                    if (raiseSourceDetected)
                     {
-                        if (raiseSourceDetected)
-                        {
-                            Service?.RaiseSourceDetected(controller.InputSource, controller);
-                        }
-
-                        controller.UpdateController(interactionSourceState);
+                        Service?.RaiseSourceDetected(controller.InputSource, controller);
                     }
+
+                    controller.UpdateController(interactionSourceState);
                 }
             }
         }
