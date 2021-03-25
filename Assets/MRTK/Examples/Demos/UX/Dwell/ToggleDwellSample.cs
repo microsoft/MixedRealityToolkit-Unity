@@ -36,26 +36,35 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
 
         private float cancelStartScale = 0;
 
-        public void Update()
+        private void Update()
         {
-            if (isDwelling)
+            if (IsDwelling)
             {
-                float value = dwellHandler.DwellProgress;
+                float value = DwellHandler.DwellProgress;
                 dwellVisualImage.transform.localScale = new Vector3(value, value, value);
             }
-            else if (!isDwelling && dwellVisualImage.transform.localScale.x > 0)
+            else if (!IsDwelling && dwellVisualImage.transform.localScale.x > 0)
             {
                 float value = Mathf.Clamp(dwellVisualImage.transform.localScale.x - (cancelStartScale / dwellVisualCancelDurationInFrames), 0f, 1f);
                 dwellVisualImage.transform.localScale = new Vector3(value, value, value);
             }
         }
 
+        /// <inheritdoc/>
         public override void DwellIntended(IMixedRealityPointer pointer)
         {
             buttonBackground.color = dwellIntendedColor;
             dwellVisualImage.transform.localScale = Vector3.zero;
         }
 
+        /// <inheritdoc/>
+        public override void DwellStarted(IMixedRealityPointer pointer)
+        {
+            base.DwellStarted(pointer);
+            buttonBackground.color = dwellIntendedColor;
+        }
+
+        /// <inheritdoc/>
         public override void DwellCanceled(IMixedRealityPointer pointer)
         {
             base.DwellCanceled(pointer);
@@ -63,12 +72,14 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
             cancelStartScale = dwellVisualImage.transform.localScale.x;
         }
 
+        /// <inheritdoc/>
         public override void DwellCompleted(IMixedRealityPointer pointer)
         {
             base.DwellCompleted(pointer);
             dwellVisualImage.transform.localScale = Vector3.zero;
         }
 
+        /// <inheritdoc/>
         public override void ButtonExecute()
         {
             isDwellEnabled = !isDwellEnabled;
@@ -85,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
                 obj.enabled = isDwellEnabled;
             }
 
-            dwellHandler.enabled = true;
+            DwellHandler.enabled = true;
         }
     }
 }

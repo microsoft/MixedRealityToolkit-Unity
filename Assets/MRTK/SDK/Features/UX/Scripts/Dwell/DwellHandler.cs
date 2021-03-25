@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
                     case DwellStateType.DwellCompleted:
                         return 1;
                     case DwellStateType.DwellCanceled:
-                        if (dwellProfile.TimeToAllowDwellResume > TimeSpan.Zero)
+                        if (dwellProfile.TimeToAllowDwellResume > 0)
                         {
                             return GetCurrentDwellProgress();
                         }
@@ -139,8 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
 
         private int pointerCount = 0;
 
-        private DateTime focusEnterTime = DateTime.MaxValue;
-        private DateTime focusExitTime = DateTime.MaxValue;
+        private float focusEnterTime = float.MaxValue;
+        private float focusExitTime = float.MaxValue;
 
         private void Awake()
         {
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
 
             if (HasFocus && CurrentDwellState != DwellStateType.DwellCompleted)
             {
-                TimeSpan focusDuration = (DateTime.UtcNow - this.focusEnterTime);
+                float focusDuration = Time.time - focusEnterTime;
 
                 if (CurrentDwellState == DwellStateType.FocusGained && focusDuration >= dwellProfile.DwellIntentDelay)
                 {
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
                     CurrentDwellState = DwellStateType.DwellStarted;
                     dwellStarted.Invoke(pointer);
                 }
-                else if (CurrentDwellState == DwellStateType.DwellStarted && FillTimer >= dwellProfile.TimeToCompleteDwell.TotalSeconds)
+                else if (CurrentDwellState == DwellStateType.DwellStarted && FillTimer >= dwellProfile.TimeToCompleteDwell)
                 {
                     CurrentDwellState = DwellStateType.DwellCompleted;
                     dwellCompleted.Invoke(pointer);
@@ -181,9 +181,12 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
             }
         }
 
-        private float GetCurrentDwellProgress()
+        /// <summary>
+        /// Get the current progess of dwell. Return value ranges from 0 to 1.
+        /// </summary>
+        protected float GetCurrentDwellProgress()
         {
-            return Mathf.Clamp(FillTimer / (float)dwellProfile.TimeToCompleteDwell.TotalSeconds, 0f, 1f);
+            return Mathf.Clamp(FillTimer / dwellProfile.TimeToCompleteDwell, 0f, 1f);
         }
 
         /// <summary>
@@ -205,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
                     break;
                 case DwellStateType.DwellCanceled:
                     // this is a conditional state transition and can be overridden by the deriving class as per profile settings.
-                    if ((DateTime.UtcNow - focusExitTime) > dwellProfile.TimeToAllowDwellResume)
+                    if ((Time.time - focusExitTime) > dwellProfile.TimeToAllowDwellResume)
                     {
                         FillTimer = 0;
                         CurrentDwellState = DwellStateType.None;
@@ -220,8 +223,10 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         /// <inheritdoc/>
         public void OnFocusChanged(FocusEventData eventData)
         {
+            InputSourceType inputSourceType = eventData.Pointer is GGVPointer ? InputSourceType.Head : eventData.Pointer.InputSourceParent.SourceType;
+            
             if (eventData.NewFocusedObject == gameObject
-                && eventData.Pointer.InputSourceParent.SourceType == dwellProfile.DwellPointerType)
+                && inputSourceType == dwellProfile.DwellPointerType)
             {
                 if (!HasFocus)
                 {
@@ -229,18 +234,18 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
 
                     // check intent to resume
                     if (CurrentDwellState == DwellStateType.DwellCanceled
-                        && (DateTime.UtcNow - focusExitTime) <= dwellProfile.TimeToAllowDwellResume)
+                        && (Time.time - focusExitTime) <= dwellProfile.TimeToAllowDwellResume)
                     {
                         // Add the time duration focus was away since this is a dwell resume and we need to account for the time that focus was lost for the target.
                         // Assigning this the current time would restart computation for dwell progress.
-                        focusEnterTime = focusEnterTime.AddSeconds((DateTime.UtcNow - focusExitTime).TotalSeconds);
+                        focusEnterTime += Time.time - focusExitTime;
                         CurrentDwellState = DwellStateType.DwellStarted;
                         dwellStarted.Invoke(pointer);
                     }
                     // dwell state machine re-starts
                     else if (CurrentDwellState <= DwellStateType.DwellIntended)
                     {
-                        focusEnterTime = DateTime.UtcNow;
+                        focusEnterTime = Time.time;
                         CurrentDwellState = DwellStateType.FocusGained;
                         pointer = eventData.Pointer;
                         FillTimer = 0;
@@ -250,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
 
             }
             else if (eventData.OldFocusedObject == gameObject
-                && eventData.Pointer.InputSourceParent.SourceType == dwellProfile.DwellPointerType)
+                && inputSourceType == dwellProfile.DwellPointerType)
             {
                 pointerCount--;
                 if (pointerCount == 0)
@@ -261,12 +266,12 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
                     {
                         dwellCanceled.Invoke(eventData.Pointer);
                         CurrentDwellState = DwellStateType.DwellCanceled;
-                        focusExitTime = DateTime.UtcNow;
+                        focusExitTime = Time.time;
                     }
                     else
                     {
                         CurrentDwellState = DwellStateType.None;
-                        focusExitTime = DateTime.MaxValue;
+                        focusExitTime = float.MaxValue;
                     }
                 }
             }
@@ -278,9 +283,9 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         public virtual void CancelDwell()
         {
             dwellCanceled.Invoke(pointer);
-            focusEnterTime = DateTime.MaxValue;
+            focusEnterTime = float.MaxValue;
             CurrentDwellState = DwellStateType.None;
-            focusExitTime = DateTime.MaxValue;
+            focusExitTime = float.MaxValue;
             FillTimer = 0;
         }
 

@@ -18,30 +18,54 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         [SerializeField]
         protected Button targetButton = null;
 
-        protected DwellHandler dwellHandler;
+        /// <summary>
+        /// The dwell handler associated with the target
+        /// </summary>
+        protected DwellHandler DwellHandler { get; set; }
 
-        public bool isDwelling = false;
+        /// <summary>
+        /// Whether the targeting is being dwelled on
+        /// </summary>
+        protected bool IsDwelling { get; set; } = false;
 
+        /// <summary>
+        /// Assign the DwellHandler at Awake()
+        /// </summary>
         protected virtual void Awake()
         {
-            dwellHandler = this.GetComponent<DwellHandler>();
+            DwellHandler = this.GetComponent<DwellHandler>();
         }
 
-        public virtual void DwellStarted(IMixedRealityPointer pointer) { isDwelling = true; }
+        /// <summary>
+        /// Function called when entering dwell started state
+        /// </summary>
+        public virtual void DwellStarted(IMixedRealityPointer pointer) { IsDwelling = true; }
 
+        /// <summary>
+        /// Function called when entering dwell intended state
+        /// </summary>
         public virtual void DwellIntended(IMixedRealityPointer pointer) { }
 
-        public virtual void DwellCanceled(IMixedRealityPointer pointer) { isDwelling = false; }
+        /// <summary>
+        /// Function called when entering dwell canceled state
+        /// </summary>
+        public virtual void DwellCanceled(IMixedRealityPointer pointer) { IsDwelling = false; }
 
+        /// <summary>
+        /// Function called when entering dwell completed state
+        /// </summary>
         public virtual void DwellCompleted(IMixedRealityPointer pointer)
         {
-            isDwelling = false;
+            IsDwelling = false;
             if (targetButton != null)
             {
                 targetButton.onClick?.Invoke();
             }
         }
 
+        /// <summary>
+        /// Function called when the target button is pressed
+        /// </summary>
         public virtual void ButtonExecute() { }
     }
 }

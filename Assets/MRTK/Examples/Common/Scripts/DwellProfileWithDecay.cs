@@ -19,12 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         [Range(0, 20)]
         private float timeToAllowDwellDecay = 20;
 
+        /// <summary>
+        /// Time in seconds when gaze can fall off the target and come back.
+        /// </summary>
         public float TimeToAllowDwellDecay
         {
-            get
-            {
-                return timeToAllowDwellDecay;
-            }
+            get => timeToAllowDwellDecay;
+            set => timeToAllowDwellDecay = value;
         }
     }
 }

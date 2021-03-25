@@ -51,37 +51,37 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         /// <summary>
         /// Delay in seconds until it is determined that the user intends to interact with the target.
         /// </summary>
-        public TimeSpan DwellIntentDelay
+        public float DwellIntentDelay
         {
-            get => TimeSpan.FromSeconds(dwellIntentDelay);
-            set => dwellIntentDelay = (float)value.TotalSeconds;
+            get => dwellIntentDelay;
+            set => dwellIntentDelay = value;
         }
 
         /// <summary>
         /// Delay in seconds until DwellStarted event is invoked.
         /// </summary>
-        public TimeSpan DwellStartDelay
+        public float DwellStartDelay
         {
-            get => TimeSpan.FromSeconds(dwellStartDelay);
-            set => dwellStartDelay = (float)value.TotalSeconds;
+            get => dwellStartDelay;
+            set => dwellStartDelay = value;
         }
 
         /// <summary>
         /// Additional time in seconds (not including the dwellStartDelay) the user needs to keep looking at the UI to trigger select on it. Raises DwellCompleted event.
         /// </summary>
-        public TimeSpan TimeToCompleteDwell
+        public float TimeToCompleteDwell
         {
-            get => TimeSpan.FromSeconds(timeToCompleteDwell);
-            set => timeToCompleteDwell = (float)value.TotalSeconds;
+            get => timeToCompleteDwell;
+            set => timeToCompleteDwell = value;
         }
 
         /// <summary>
         /// Time in seconds when focus can fall off the target and come back to resume an ongoing dwell. This only comes into play after DwellStarted state but before DwellCompleted is invoked.
         /// </summary>
-        public TimeSpan TimeToAllowDwellResume
+        public float TimeToAllowDwellResume
         {
-            get => TimeSpan.FromSeconds(timeToAllowDwellResume);
-            set => timeToAllowDwellResume = (float)value.TotalSeconds;
+            get => timeToAllowDwellResume;
+            set => timeToAllowDwellResume = value;
         }
     }
 }
