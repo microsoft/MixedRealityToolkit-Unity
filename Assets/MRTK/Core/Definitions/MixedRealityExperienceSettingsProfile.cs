@@ -1,4 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Utilities;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
