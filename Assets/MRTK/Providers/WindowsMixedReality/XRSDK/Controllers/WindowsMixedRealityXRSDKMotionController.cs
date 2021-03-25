@@ -196,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     base.TryRenderControllerModel(GetType(), InputSource.SourceType);
                 }
 
-                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), destroy it.
-                Object.Destroy(controllerModel);
+                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
+                controllerModel.SetActive(false);
             }
         }
 #endif

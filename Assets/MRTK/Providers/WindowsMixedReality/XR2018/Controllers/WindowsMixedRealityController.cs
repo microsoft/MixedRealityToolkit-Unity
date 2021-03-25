@@ -294,8 +294,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     base.TryRenderControllerModel(GetType(), InputSource.SourceType);
                 }
 
-                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), destroy it.
-                UnityEngine.Object.Destroy(controllerModel);
+                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
+                controllerModel.SetActive(false);
             }
         }
 #endif
