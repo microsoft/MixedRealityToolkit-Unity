@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -32,7 +32,6 @@ namespace Microsoft.MixedReality.Toolkit
             AlignWithHeadHeight
         }
 
-#if UNITY_2018_4_OR_NEWER
         [SerializeField]
         [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
         public AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
@@ -40,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit
         private Vector3 contentPosition = Vector3.zero;
 
         private int frameWaitHack = 0;
-#endif
+
         [Tooltip("Optional container object reference. If null, this script will move the object it's attached to.")]
         private Transform containerObject = null;
 
@@ -52,19 +51,9 @@ namespace Microsoft.MixedReality.Toolkit
                 containerObject = transform;
             }
 
-#if UNITY_2018_4_OR_NEWER
-            // If no XR device is present, the editor will default to (0, 0, 0) and no adjustment is needed.
-            // This script runs on both opaque and transparent display devices, since the floor offset is based on
-            // TrackingSpaceType and not display type.
-            //if (XRDevice.isPresent)
-            //{
-                StartCoroutine(SetContentHeight());
-                return;
-            //}
-#endif
+             StartCoroutine(SetContentHeight());
         }
 
-#if UNITY_2018_4_OR_NEWER
         private IEnumerator SetContentHeight()
         {
             if (frameWaitHack < 1)
@@ -101,6 +90,5 @@ namespace Microsoft.MixedReality.Toolkit
                 containerObject.position = contentPosition;
             }
         }
-#endif
     }
 }

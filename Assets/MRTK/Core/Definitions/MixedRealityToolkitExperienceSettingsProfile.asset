@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3193d07953d1c3e44ad7ad26908fe6b2, type: 3}
   m_Name: MixedRealityToolkitExperienceSettingsProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   targetExperiencePlatform: 0
   targetExperienceScale: 3
   floorHeight: 0

@@ -243,6 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
             originalProfileFloorHeight = profile.ExperienceSettingsProfile.FloorHeight;
             profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
+            profile.ExperienceSettingsProfile.TargetExperiencePlatform = ExperiencePlatform.VR;
             PlayModeTestUtilities.Setup(profile);
 
             // Create a floor and make sure it's below the camera

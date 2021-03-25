@@ -122,8 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static MixedRealityToolkitConfigurationProfile CreateMRTKTestProfile(string spatialAwarenessSystemPath)
         {
-            var mrtkProfile = ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
-
+            var mrtkProfile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
+            
             mrtkProfile.SpatialAwarenessSystemSystemType = new SystemType(typeof(MixedRealitySpatialAwarenessSystem));
             mrtkProfile.IsSpatialAwarenessSystemEnabled = true;
             mrtkProfile.SpatialAwarenessSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealitySpatialAwarenessSystemProfile>(spatialAwarenessSystemPath);
