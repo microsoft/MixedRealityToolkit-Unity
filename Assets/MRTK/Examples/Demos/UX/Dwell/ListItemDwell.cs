@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
     /// Dwell sample to work on a list of dwell targets
@@ -19,21 +19,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         [SerializeField]
         private TextMeshProUGUI displayLabel = null;
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
-            base.Awake();
-            dwellHandler = this.GetComponentInChildren<DwellHandler>();
+            DwellHandler = this.GetComponentInChildren<DwellHandler>();
         }
 
-        public void Update()
+        private void Update()
         {
-            if (isDwelling)
+            if (IsDwelling || dwellVisualImage.fillAmount > 0)
             {
-                float value = dwellHandler.DwellProgress;
+                float value = DwellHandler.DwellProgress;
                 dwellVisualImage.fillAmount = value;
             }
         }
 
+        /// <inheritdoc/>
         public override void DwellCompleted(IMixedRealityPointer pointer)
         {
             base.DwellCompleted(pointer);
@@ -41,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
             ButtonExecute();
         }
 
+        /// <inheritdoc/>
         public override void ButtonExecute()
         {
             displayLabel.text = "Selected Item: " + itemName.text;

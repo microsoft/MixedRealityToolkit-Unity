@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
     /// Unity event for a dwell event. Contains the pointer reference.
