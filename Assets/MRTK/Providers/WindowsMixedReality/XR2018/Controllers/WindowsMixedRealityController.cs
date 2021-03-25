@@ -256,18 +256,43 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 controllerModelProvider = new WindowsMixedRealityControllerModelProvider(ControllerHandedness);
             }
 
-            UnityEngine.GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK(GetType());
+            UnityEngine.GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
 
             if (controllerModel != null)
             {
                 if (this != null)
                 {
-                    TryAddControllerModelToSceneHierarchy(controllerModel);
+                    var visualizationProfile = GetControllerVisualizationProfile();
+                    if (visualizationProfile != null)
+                    {
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+                        if (visualizationType != null)
+                        {
+                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                            // and re-enabled when the same controller is re-detected.
+                            if (controllerModel.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                            {
+                                visualizer.DestroyOnSourceLost = false;
+                            }
+
+                            if (TryAddControllerModelToSceneHierarchy(controllerModel))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            UnityEngine.Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                        }
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogError("Failed to obtain a controller visualization profile");
+                    }
                 }
-                else
-                {
-                    UnityEngine.Object.Destroy(controllerModel);
-                }
+
+                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), destroy it.
+                UnityEngine.Object.Destroy(controllerModel);
             }
         }
 #endif
