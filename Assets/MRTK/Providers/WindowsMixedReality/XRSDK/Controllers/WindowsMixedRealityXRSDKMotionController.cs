@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
@@ -135,34 +136,36 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
 #if WINDOWS_UWP
         /// <inheritdoc />
-        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
+        protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
-            // Intercept this call if we are using the default driver provided models.
-            // Note: Obtaining models from the driver will require access to the InteractionSource.
-            // It's unclear whether the interaction source will be available during setup, so we attempt to create
-            // the controller model on an input update
-            if (controllerModelProvider.UnableToGenerateSDKModel ||
-                GetControllerVisualizationProfile() == null ||
+            if (GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
-                controllerModelInitialized = true;
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
-            else
+            else if (controllerModelProvider != null)
             {
                 TryRenderControllerModelWithModelProvider();
+                return true;
             }
 
-            return !controllerModelProvider.UnableToGenerateSDKModel;
+            return false;
         }
 
         private async void TryRenderControllerModelWithModelProvider()
         {
-            GameObject controllerModel = Task.Run(controllerModelProvider.TryGenerateControllerModelFromPlatformSDK());
+            GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
 
-            if(controllerModel != null)
+            if (controllerModel != null)
             {
-                TryAddControllerModelToSceneHierarchy(controllerModel);
+                if (this != null)
+                {
+                    TryAddControllerModelToSceneHierarchy(controllerModel);
+                }
+                else
+                {
+                    Object.Destroy(controllerModel);
+                }
             }
         }
 #endif
