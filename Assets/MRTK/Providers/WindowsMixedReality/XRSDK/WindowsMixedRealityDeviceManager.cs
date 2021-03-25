@@ -308,10 +308,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
-                bool hasTouchpad = inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out _);
-                bool isHPController = !hasTouchpad;
-
-                if (isHPController)
+                // primary2DAxis represents the touchpad in Windows XR Plugin.
+                // The HP motion controller doesn't have a touchpad, so we check for its existence in the feature usages.
+                if (!inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out _))
                 {
                     return SupportedControllerType.HPMotionController;
                 }
