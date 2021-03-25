@@ -139,19 +139,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
+                            changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false);
+
                             // Experience configuration
                             if(!mrtkConfigProfile.ExperienceSettingsProfile.IsNull())
                             {
                                 ExperienceScale experienceScale = mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
-                                string scaleDescription = GetExperienceDescription(experienceScale);
-                                if (!string.IsNullOrEmpty(scaleDescription))
+                                string targetExperienceSummary = GetExperienceDescription(experienceScale);
+                                if (!string.IsNullOrEmpty(targetExperienceSummary))
                                 {
-                                    EditorGUILayout.HelpBox(scaleDescription, MessageType.None);
+                                    EditorGUILayout.HelpBox(targetExperienceSummary, MessageType.None);
                                     EditorGUILayout.Space();
                                 }
                             }
 
-                            changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false);
                             changed |= c.changed;
                         }
                         return changed;
