@@ -3,10 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
+
+#if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -37,11 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)
-        {
-            controllerModelProvider = new WindowsMixedRealityControllerModelProvider(controllerHandedness);
-        }
-
-        private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
+        { }
 
         private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityXRSDKMotionController.UpdateButtonData");
 
@@ -135,6 +134,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         }
 
 #if WINDOWS_UWP
+        private WindowsMixedRealityControllerModelProvider controllerModelProvider;
+
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
@@ -143,17 +144,20 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
-            else if (controllerModelProvider != null)
+            else
             {
                 TryRenderControllerModelWithModelProvider();
                 return true;
             }
-
-            return false;
         }
 
         private async void TryRenderControllerModelWithModelProvider()
         {
+            if (controllerModelProvider == null)
+            {
+                controllerModelProvider = new WindowsMixedRealityControllerModelProvider(ControllerHandedness);
+            }
+
             GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
 
             if (controllerModel != null)

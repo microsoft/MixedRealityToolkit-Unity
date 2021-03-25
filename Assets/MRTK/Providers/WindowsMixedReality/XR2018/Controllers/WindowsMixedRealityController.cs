@@ -38,11 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)
-        {
-            controllerModelProvider = new WindowsMixedRealityControllerModelProvider(controllerHandedness);
-        }
-
-        private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
+        { }
 
 #if UNITY_WSA
         #region Update data functions
@@ -236,6 +232,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #region Controller model functions
 
 #if WINDOWS_UWP
+        private WindowsMixedRealityControllerModelProvider controllerModelProvider;
+
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
@@ -244,17 +242,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
-            else if (controllerModelProvider != null)
+            else
             {
                 TryRenderControllerModelWithModelProvider();
                 return true;
             }
-
-            return false;
         }
 
         private async void TryRenderControllerModelWithModelProvider()
         {
+            if (controllerModelProvider == null)
+            {
+                controllerModelProvider = new WindowsMixedRealityControllerModelProvider(ControllerHandedness);
+            }
+
             UnityEngine.GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
 
             if (controllerModel != null)
