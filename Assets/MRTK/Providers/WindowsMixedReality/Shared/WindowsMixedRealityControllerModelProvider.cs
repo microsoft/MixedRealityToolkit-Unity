@@ -1,26 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
-using System;
-
-#if UNITY_WSA
-using System.Collections.Generic;
-using Unity.Profiling;
-using UnityEngine;
-using UnityEngine.XR.WSA.Input;
-using Windows.UI.Input.Spatial;
-#endif
 
 #if WINDOWS_UWP
-using Microsoft.MixedReality.Toolkit.Windows.Input;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
-using System.Threading.Tasks;
 #endif
-
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
@@ -38,24 +30,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #endif // WINDOWS_UWP
         }
 
-        public bool UnableToGenerateSDKModel;
         private readonly Handedness handedness;
 
-        private readonly BaseController controller;
-        private IMixedRealityInputSource InputSource => controller.InputSource;
-        private SpatialInteractionSourceState spatialInteractionSourceState;
 #if WINDOWS_UWP
+        private readonly SpatialInteractionSource spatialInteractionSource;
 
-        private static readonly Dictionary<string, GameObject> controllerModelDictionary = new Dictionary<string, GameObject>(0);
+        private static readonly Dictionary<string, GameObject> ControllerModelDictionary = new Dictionary<string, GameObject>(2);
 
         public async Task<GameObject> TryGenerateControllerModelFromPlatformSDK()
         {
-            // First see if we've generated this model before and if we can return it
-            GameObject controllerModel;
-
-            if (controllerModelDictionary.TryGetValue(GenerateKey(spatialInteractionSourceState), out controllerModel))
+            if (spatialInteractionSource == null)
             {
-                UnableToGenerateSDKModel = false;
+                return null;
+            }
+
+            // See if we've generated this model before and if we can return it
+            if (ControllerModelDictionary.TryGetValue(GenerateKey(spatialInteractionSource), out GameObject controllerModel))
+            {
                 controllerModel.SetActive(true);
                 return controllerModel;
             }
@@ -63,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             Debug.Log("Trying to load controller model from platform SDK");
             byte[] fileBytes = null;
 
-            var controllerModelStream = await spatialInteractionSourceState.Source.Controller.TryGetRenderableModelAsync();
+            var controllerModelStream = await spatialInteractionSource.Controller.TryGetRenderableModelAsync();
             if (controllerModelStream == null ||
                 controllerModelStream.Size == 0)
             {
@@ -82,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             GameObject gltfGameObject = null;
             if (fileBytes != null)
             {
-                var gltfObject = GltfUtility.GetGltfObjectFromGlb(fileBytes);
+                Utilities.Gltf.Schema.GltfObject gltfObject = GltfUtility.GetGltfObjectFromGlb(fileBytes);
                 gltfGameObject = await gltfObject.ConstructAsync();
                 if (gltfGameObject != null)
                 {
@@ -99,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 visualizer.DestroyOnSourceLost = false;
                             }
 
-                            controllerModelDictionary.Add(GenerateKey(spatialInteractionSourceState), gltfGameObject);
+                            ControllerModelDictionary.Add(GenerateKey(spatialInteractionSource), gltfGameObject);
                             return gltfGameObject;
                         }
                         else
@@ -116,14 +107,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 }
             }
 
-            // record whether or not we were able to succesfully generate the controller model
-            UnableToGenerateSDKModel = gltfGameObject == null;
-            return null;
+            return gltfGameObject;
         }
 
-        private string GenerateKey(SpatialInteractionSourceState spatialInteractionSourceState)
+        private string GenerateKey(SpatialInteractionSource spatialInteractionSource)
         {
-            return spatialInteractionSourceState.Source.Id + "/" + spatialInteractionSourceState.Source.Kind + "/" + spatialInteractionSourceState.Source.Handedness;
+            return spatialInteractionSource.Id + "/" + spatialInteractionSource.Kind + "/" + spatialInteractionSource.Handedness;
         }
 #endif // WINDOWS_UWP
     }
