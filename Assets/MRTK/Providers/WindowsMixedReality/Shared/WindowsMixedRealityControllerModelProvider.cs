@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
         private string GenerateKey(SpatialInteractionSource spatialInteractionSource)
         {
-            return spatialInteractionSource.Id + "/" + spatialInteractionSource.Kind + "/" + spatialInteractionSource.Handedness;
+            return spatialInteractionSource.Controller.VendorId + "/" + spatialInteractionSource.Controller.ProductId + "/" + spatialInteractionSource.Controller.Version + "/" + spatialInteractionSource.Handedness;
         }
 #endif // WINDOWS_UWP
     }
