@@ -810,7 +810,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             var visualizer = controller.Visualizer;
 
-            if (visualizer != null && !visualizer.Equals(null) &&
+            if (!visualizer.IsNull() &&
                 visualizer.GameObjectProxy != null)
             {
                 visualizer.GameObjectProxy.SetActive(false);

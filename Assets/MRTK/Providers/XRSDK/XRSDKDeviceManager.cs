@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 ActiveControllers.Add(inputDevice, detectedController);
 
-                CoreServices.InputSystem?.RaiseSourceDetected(detectedController.InputSource, detectedController);
+                Service?.RaiseSourceDetected(detectedController.InputSource, detectedController);
 
                 return detectedController;
             }
@@ -243,14 +243,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         protected void RemoveControllerFromScene(GenericXRSDKController controller)
         {
-            CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+            Service?.RaiseSourceLost(controller.InputSource, controller);
 
             RecyclePointers(controller.InputSource);
 
-            if (controller.Visualizer != null &&
-                controller.Visualizer.GameObjectProxy != null)
+            var visualizer = controller.Visualizer;
+
+            if (!visualizer.IsNull() &&
+                visualizer.GameObjectProxy != null)
             {
-                controller.Visualizer.GameObjectProxy.SetActive(false);
+                visualizer.GameObjectProxy.SetActive(false);
             }
         }
 
