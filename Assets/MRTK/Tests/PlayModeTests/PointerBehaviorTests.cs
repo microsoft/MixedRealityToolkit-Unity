@@ -227,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that the teleport pointer functions as expected
         /// </summary>
         [UnityTest]
-        public IEnumerator TestTeleport()
+        public IEnumerator TestTeleportAndFloorHeight()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             float floorHeight = 1.3f;
@@ -251,6 +251,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             PlayModeTestUtilities.Setup(profile);
 
+            // Ensure that the SceneContent object is floorHeight units above the origin
+            Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, floorHeight, 0.005f);
+            
             // Create a floor and make sure it's below the camera
             var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
             floor.transform.position = -0.5f * Vector3.up;
