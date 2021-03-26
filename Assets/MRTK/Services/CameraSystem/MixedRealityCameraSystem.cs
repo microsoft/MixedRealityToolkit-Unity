@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
         /// <inheritdoc/>
         public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
-
+        
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
@@ -151,10 +151,19 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
                 MixedRealityPlayspace.Position = Vector3.zero;
                 MixedRealityPlayspace.Rotation = Quaternion.identity;
-                if (CameraCache.Main.transform.position != Vector3.zero)
+
+
+                // Move the camera upwards by FloorHeight units if the experience settings explicitly have MRTK initialize the camera to floor height
+                MixedRealityPlayspace.Rotation = Quaternion.identity;
+                if(MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.AlignCameraToFloorHeight)
+                {
+                    CameraCache.Main.transform.position = Vector3.up * MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
+                }
+                else if (CameraCache.Main.transform.position != Vector3.zero)
                 {
                     Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
                 }
+
                 if (CameraCache.Main.transform.rotation != Quaternion.identity)
                 {
                     Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
