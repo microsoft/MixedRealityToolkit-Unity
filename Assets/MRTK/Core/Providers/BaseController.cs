@@ -234,13 +234,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>True if a model was successfully loaded or model rendering is disabled. False if a model tried to load but failed.</returns>
         protected virtual bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
-            GameObject controllerModel = null;
-
             if (GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().RenderMotionControllers)
             {
                 return true;
             }
+
+            GameObject controllerModel = null;
 
             // If a specific controller template wants to override the global model, assign that instead.
             if (IsControllerMappingEnabled() &&
