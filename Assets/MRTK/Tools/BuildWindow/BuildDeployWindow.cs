@@ -139,6 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent ViewPlayerLogLabel = new GUIContent("View Player Log", "Launch notepad with more recent player log for listed AppX on either currently selected device or from all devices.");
 
+        private readonly GUIContent NugetPathLabel = new GUIContent("Nuget Executable Path", "Only set this when restoring packages with nuget.exe (instead of msbuild) is desired.");
+
         #endregion Labels
 
         #region Properties
@@ -563,6 +565,22 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     // since there's a null texture issue when Unity reloads the assets during a build
                     MixedRealityBuildPreferences.DrawAppLauncherModelField(appxCancellationTokenSource == null);
 
+                    // Draw the section for nuget path
+                    EditorGUILayout.LabelField("Nuget Path (Optional)", EditorStyles.boldLabel);
+
+                    string nugetExecutablePath = EditorGUILayout.TextField(NugetPathLabel, UwpBuildDeployPreferences.NugetExecutablePath);
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Select Nuget Executable Path"))
+                        {
+                            nugetExecutablePath = EditorUtility.OpenFilePanel(
+                                "Select Nuget Executable Path", "", "exe");
+                        }
+                        if (GUILayout.Button("Use msbuild for Restore & Clear Path"))
+                        {
+                            nugetExecutablePath = "";
+                        }
+                    }
                     if (c.changed)
                     {
                         UwpBuildDeployPreferences.PlatformToolset = PLATFORM_TOOLSET_VALUES[newPlatformToolsetIndex];
@@ -571,6 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = researchModeEnabled;
                         UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
                         UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
+                        UwpBuildDeployPreferences.NugetExecutablePath = nugetExecutablePath;
                     }
                 }
             }
