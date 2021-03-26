@@ -287,6 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
+            InitializeCamera();
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
 
 
