@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input

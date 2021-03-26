@@ -6,8 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-
-using EditMode = Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.EditMode;
 using PaginationMode = Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.PaginationMode;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
@@ -288,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             scrollView.MaskEnabled = maskEnabled.boolValue;
                             EditorUtility.SetDirty(target);
                         }
-                    }              
+                    }
 
                     using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying))
                     {

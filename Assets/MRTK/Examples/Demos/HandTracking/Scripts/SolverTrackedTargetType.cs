@@ -3,11 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -20,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             solverHandler = gameObject.GetComponent<SolverHandler>();
 
-            if(solverHandler != null)
+            if (solverHandler != null)
             {
                 solverHandler.TrackedTargetType = TrackedObjectType.Head;
             }

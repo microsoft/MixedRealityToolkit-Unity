@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Pose to create MRTK playspace's parent transform at.
         /// </summary>
         public static Pose ArbitraryParentPose { get; set; } = new Pose(new Vector3(-2.0f, 1.0f, -3.0f), Quaternion.Euler(-30.0f, -90.0f, 0.0f));
-        
+
         /// <summary>
         /// Pose to set playspace at, when using <see cref="PlayspaceToArbitraryPose"/>. 
         /// </summary>
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(Vector3.zero);
             });
         }
-       
+
         /// <summary>
         /// Forces the playspace camera to origin facing forward along +Z.
         /// </summary>

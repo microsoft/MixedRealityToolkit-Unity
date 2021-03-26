@@ -247,6 +247,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 pointerPose.Position = ray.origin;
                 pointerPose.Rotation = Quaternion.LookRotation(ray.direction);
             }
+        
+            CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, gripPose);
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
@@ -268,6 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                         break;
                     case DeviceInputType.Select:
                     case DeviceInputType.TriggerPress:
+                    case DeviceInputType.GripPress:
                         Interactions[i].BoolData = IsPinching;
                         if (Interactions[i].Changed)
                         {

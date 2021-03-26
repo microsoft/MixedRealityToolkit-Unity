@@ -10,17 +10,17 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Assert = UnityEngine.Assertions.Assert;
-using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
-using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private BoundsControl InstantiateSceneAndDefaultBoundsControl(GameObject target = null)
         {
             GameObject boundsControlGameObject;
-            if(target != null)
+            if (target != null)
             {
                 boundsControlGameObject = new GameObject();
             }
@@ -297,13 +297,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
             yield return VerifyInitialBoundsCorrect(boundsControl);
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            
+
             boundsControl.gameObject.transform.position = new Vector3(0, 0, 1.386f);
             boundsControl.gameObject.transform.rotation = Quaternion.Euler(0, 45.0f, 0);
-            
+
             TestHand hand = new TestHand(Handedness.Left);
             yield return hand.Show(new Vector3(0, 0, 1));
-            
+
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Check for a few loops that the hand is not flickering between states
@@ -499,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // induce drift/error.
             for (int i = 0; i < 50; i++)
             {
-                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1 / 1000.0f) * i));
             }
 
             // Move the rest of the way very quickly.
@@ -688,14 +688,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // grab front right rotation point
             yield return hand.MoveTo(rightFrontRotationHandlePoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            
+
             // First, we make a series of very very tiny movements, as if the user
             // is making very precise adjustments to the rotation. If the rotation is
             // being calculated per-frame instead of per-manipulation-event, this should
             // induce drift/error.
             for (int i = 0; i < 50; i++)
             {
-                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1 / 1000.0f) * i));
             }
 
             // Move the rest of the way very quickly.
@@ -1116,7 +1116,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // move camera to look at translation sphere
             Transform transformHandle = control.gameObject.transform.Find("rigRoot/faceCenter_2");
-            CameraCache.Main.transform.LookAt(transformHandle.position); 
+            CameraCache.Main.transform.LookAt(transformHandle.position);
 
             var startHandPos = new Vector3(0.191f, -0.07f, 0.499f);
             var endPoint = new Vector3(-0.368f, -0.221f, 0.499f);
@@ -2025,7 +2025,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
 
             // get handle and make sure it's active per default
-            Transform handle = rigRoot.transform.Find(testData.handleName +"_0");
+            Transform handle = rigRoot.transform.Find(testData.handleName + "_0");
             Assert.IsNotNull(handle, "couldn't find rotation handle");
             Assert.IsTrue(handle.gameObject.activeSelf, "handle wasn't enabled by default");
 
@@ -2048,7 +2048,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         [UnityTest]
         public IEnumerator PerAxisHandlePrefabTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
-        { 
+        {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
             GameObject childBox = GameObject.CreatePrimitive(PrimitiveType.Cube);

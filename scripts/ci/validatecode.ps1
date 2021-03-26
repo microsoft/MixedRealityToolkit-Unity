@@ -432,7 +432,7 @@ function CheckAssemblyTypes {
     process {
         $hasIssue = $false
 
-        if ($FileContent[$LineNumber] -match "\.GetTypes()") {
+        if ($FileContent[$LineNumber] -match "\.GetTypes\(\)") {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $AssemblyTypesExceptions.Contains($assetFileName)) {
                 Write-Host "$FileName at line $LineNumber has a possible usage of Assembly.GetTypes()"
@@ -592,7 +592,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/MRTK.Demos.InspectorFields.asmdef",
     "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Inspectors/MRTK.Demos.InspectorFields.Inspectors.asmdef",
     "Assets/MRTK/Examples/Demos/UX/Interactables/MRTK.Demos.UX.Interactables.asmdef",
-    "Assets/MRTK/Examples/Experimental/Dwell/Editor/MRTK.Examples.Editor.Dwell.asmdef",
+    "Assets/MRTK/Examples/Demos/UX/Dwell/Editor/MRTK.Demos.Dwell.Editor.asmdef",
     "Assets/MRTK/Extensions/HandPhysicsService/MRTK.HandPhysics.asmdef",
     "Assets/MRTK/Extensions/LostTrackingService/MRTK.LostTracking.asmdef",
     "Assets/MRTK/Extensions/LostTrackingService/Editor/MRTK.LostTracking.Editor.asmdef",

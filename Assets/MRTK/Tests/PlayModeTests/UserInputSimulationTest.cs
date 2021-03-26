@@ -419,7 +419,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
             Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
             Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
-            
 
             // End right motion controller manipulation
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightControllerManipulationKey);

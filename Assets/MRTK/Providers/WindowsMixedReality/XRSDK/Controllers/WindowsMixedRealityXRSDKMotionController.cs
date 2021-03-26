@@ -7,6 +7,10 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
+#if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+#endif // WINDOWS_UWP
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
@@ -128,5 +132,74 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
         }
+
+#if WINDOWS_UWP
+        private WindowsMixedRealityControllerModelProvider controllerModelProvider;
+
+        /// <inheritdoc />
+        protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
+        {
+            if (GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+            else
+            {
+                TryRenderControllerModelWithModelProvider();
+                return true;
+            }
+        }
+
+        private async void TryRenderControllerModelWithModelProvider()
+        {
+            if (controllerModelProvider == null)
+            {
+                controllerModelProvider = new WindowsMixedRealityControllerModelProvider(ControllerHandedness);
+            }
+
+            GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
+
+            if (controllerModel != null)
+            {
+                if (this != null)
+                {
+                    var visualizationProfile = GetControllerVisualizationProfile();
+                    if (visualizationProfile != null)
+                    {
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+                        if (visualizationType != null)
+                        {
+                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                            // and re-enabled when the same controller is re-detected.
+                            if (controllerModel.EnsureComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                            {
+                                visualizer.DestroyOnSourceLost = false;
+                            }
+
+                            if (TryAddControllerModelToSceneHierarchy(controllerModel))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to obtain a controller visualization profile");
+                    }
+
+                    Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                    base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+                }
+
+                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
+                controllerModel.SetActive(false);
+            }
+        }
+#endif
     }
 }

@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             Vector3 center,
             Vector3 size,
             Quaternion rotation,
-            int layer, 
-            string name, 
+            int layer,
+            string name,
             int planeId,
             SpatialAwarenessSurfaceTypes surfaceType = SpatialAwarenessSurfaceTypes.Unknown)
         {

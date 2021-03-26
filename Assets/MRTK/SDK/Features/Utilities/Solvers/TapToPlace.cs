@@ -354,10 +354,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 // Allow switching between a specified SurfaceNormalOffset and the defaultSurfaceNormalOffset while the object is in the placing state
                 // The defaultSurfaceNormalOffset is based on the Z extents of the bounds on a collider which is subject to change while the object is in the placing state
-                float currentSurfaceNormalOffset = UseDefaultSurfaceNormalOffset ? defaultSurfaceNormalOffset : SurfaceNormalOffset; 
+                float currentSurfaceNormalOffset = UseDefaultSurfaceNormalOffset ? defaultSurfaceNormalOffset : SurfaceNormalOffset;
 
                 AddOffset(CurrentHit.normal * currentSurfaceNormalOffset);
-                
+
 #if UNITY_EDITOR
                 if (DebugEnabled)
                 {

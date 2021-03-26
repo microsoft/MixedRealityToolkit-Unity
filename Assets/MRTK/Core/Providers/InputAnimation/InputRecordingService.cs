@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 useBufferTimeLimit = value;
-                
+
                 if (useBufferTimeLimit)
                 {
                     PruneBuffer();
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 recordingBufferTimeLimit = Mathf.Max(value, 0.0f);
-                
+
                 if (useBufferTimeLimit)
                 {
                     PruneBuffer();
@@ -96,11 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return unlimitedRecordingStartTime.Value;
                     }
                 }
-                
+
                 return EndTime;
             }
         }
-        
+
         /// <summary>
         /// End time of recording.
         /// </summary>
@@ -114,12 +114,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get
             {
                 var profile = ConfigurationProfile as MixedRealityInputRecordingProfile;
-                
+
                 if (!profile)
                 {
                     Debug.LogError("Profile for Input Recording Service must be a MixedRealityInputRecordingProfile");
                 }
-                
+
                 return profile;
             }
             set => ConfigurationProfile = value;
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : this( inputSystem, name, priority, profile)
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             frameRate = InputRecordingProfile.FrameRate;
             frameInterval = 1f / frameRate;
             nextFrame = Time.time + frameInterval;
-            
+
             if (UseBufferTimeLimit)
             {
                 PruneBuffer();
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 EndTime = Time.time;
                 nextFrame += frameInterval * (Mathf.Floor((Time.time - nextFrame) * frameRate) + 1f);
-                
+
                 if (UseBufferTimeLimit)
                 {
                     PruneBuffer();
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public string SaveInputAnimation(string directory = null) => SaveInputAnimation(InputAnimationSerializationUtils.GetOutputFilename(), directory);
-        
+
         /// <inheritdoc />
         public string SaveInputAnimation(string filename, string directory)
         {
@@ -249,14 +249,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     using (Stream fileStream = File.Open(path, FileMode.Create))
                     {
                         PruneBuffer();
-                        
+
                         var animation = InputAnimation.FromRecordingBuffer(recordingBuffer, InputRecordingProfile);
-                        
+
                         Debug.Log($"Recording buffer saved to animation");
                         animation.ToStream(fileStream, 0f);
                         Debug.Log($"Recorded input animation exported to {path}");
                     }
-                    
+
                     return path;
                 }
                 catch (IOException ex)
@@ -264,10 +264,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.LogWarning(ex.Message);
                 }
             }
-            
+
             return "";
         }
-        
+
         /// <inheritdoc />
         public Task<string> SaveInputAnimationAsync(string directory = null) => SaveInputAnimationAsync(InputAnimationSerializationUtils.GetOutputFilename(), directory);
 
@@ -285,14 +285,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         PruneBuffer();
 
                         var animation = await Task.Run(() => InputAnimation.FromRecordingBuffer(recordingBuffer, InputRecordingProfile));
-                        
+
                         Debug.Log($"Recording buffer saved to animation");
 
                         await animation.ToStreamAsync(fileStream, 0f);
-                        
+
                         Debug.Log($"Recorded input animation exported to {path}");
                     }
-                    
+
                     return path;
                 }
                 catch (IOException ex)
@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.LogWarning(ex.Message);
                 }
             }
-            
+
             return "";
         }
 
@@ -333,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             MixedRealityPose cameraPose;
-            
+
             if (profile.RecordCameraPose && CameraCache.Main)
             {
                 cameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
@@ -350,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     recordingBuffer.SetGazeRay(eyeGazeProvider.LatestEyeGaze);
                 }
-                else 
+                else
                 {
                     recordingBuffer.SetGazeRay(new Ray(cameraPose.Position, cameraPose.Forward));
                 }

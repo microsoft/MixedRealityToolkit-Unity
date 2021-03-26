@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             float startTime = Time.unscaledTime;
             float openScale = 0f;
-            while (openScale < 1)
+            while (openScale < 1 && isActiveAndEnabled)
             {
                 openScale = openCurve.Evaluate(Time.unscaledTime - startTime);
                 scaleTargetObject.transform.localScale = Vector3.one * currentScale * openScale;
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             float startTime = Time.unscaledTime;
             float closeScale = 1f;
-            while (closeScale > 0)
+            while (closeScale > 0 && isActiveAndEnabled)
             {
                 closeScale = closeCurve.Evaluate(Time.unscaledTime - startTime);
                 scaleTargetObject.transform.localScale = Vector3.one * currentScale * closeScale;

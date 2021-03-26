@@ -409,7 +409,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -492,7 +492,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -1338,7 +1338,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -1421,7 +1421,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -4082,7 +4082,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -4165,7 +4165,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -4686,7 +4686,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -4768,7 +4768,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -4850,7 +4850,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -4932,7 +4932,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press

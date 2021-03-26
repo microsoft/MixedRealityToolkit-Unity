@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 {

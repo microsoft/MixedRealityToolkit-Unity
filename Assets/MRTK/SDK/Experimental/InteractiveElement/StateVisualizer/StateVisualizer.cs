@@ -2,6 +2,7 @@
 // Licensed under the MIT License
 
 
+using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 
 #if UNITY_EDITOR
 using UnityEditor.Animations;
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
         {
             // If interactive element is null, then the component has not been initialized via inspector
             if (InteractiveElement != null)
-            {                
+            {
                 stateManager = InteractiveElement.StateManager;
 
                 InitializeStateContainers();
@@ -185,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
         private AnimatorState AddAnimatorState(AnimatorStateMachine stateMachine, string animatorStateName)
         {
             bool doesStateExist = Array.Exists(stateMachine.states, (animatorState) => animatorState.state.name == animatorStateName);
-            
+
             if (!doesStateExist)
             {
                 return stateMachine.AddState(animatorStateName);
@@ -403,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
         {
             StateContainer stateContainer = GetStateContainer(stateName);
 
-            stateContainer.AnimationTargets.Add(new AnimationTarget() { Target = target});
+            stateContainer.AnimationTargets.Add(new AnimationTarget() { Target = target });
 
             return stateContainer.AnimationTargets.Last();
         }
@@ -433,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 
             AnimationTarget animationTarget = stateContainer.AnimationTargets[animationTargetIndex];
 
-            IStateAnimatableProperty animatableProperty =  animationTarget.StateAnimatableProperties.Find((animatableProp) => animatableProp is T);
+            IStateAnimatableProperty animatableProperty = animationTarget.StateAnimatableProperties.Find((animatableProp) => animatableProp is T);
 
             return animatableProperty as T;
         }

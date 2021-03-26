@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+
+#if !UNITY_2019_3_OR_NEWER
 using UnityEngine.UI;
+#endif // !UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -33,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private bool disableUGUIWorkaround = false;
 
         private MRTKUGUIInputField inputField;
-        
+
         private void OnValidate()
         {
             if (inputField == null)

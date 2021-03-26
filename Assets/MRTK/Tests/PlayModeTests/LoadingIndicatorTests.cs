@@ -93,7 +93,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private async Task TestOpenCloseProgressIndicatorAsync(GameObject progressIndicatorObject, IProgressIndicator progressIndicator, float timeOpen = 2f)
+        /// <summary>
+        /// Tests that prefab finishes closing after being disabled at runtime.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHideBeforeClosingRotatingOrbsPrefab()
+        {
+            GameObject progressIndicatorObject;
+            IProgressIndicator progressIndicator;
+            InstantiatePrefab(progressIndicatorRotatingOrbsPrefabPath, out progressIndicatorObject, out progressIndicator);
+            Task testTask = TestOpenCloseProgressIndicatorAsync(progressIndicatorObject, progressIndicator, 3f, hideAfterOpening: true);
+
+            // Wait a maximum time before considering the progress bar as stuck
+            float timeStarted = Time.time;
+            const float timeout = 5.0f; 
+            while (!testTask.IsCompleted)
+            {
+                if (Time.time < timeStarted + timeout)
+                {
+                    yield return null;
+                }
+                else
+                {
+                    Assert.Fail("The progress bar is stuck closing.");
+                }
+            }
+
+            // clean up
+            GameObject.Destroy(progressIndicatorObject);
+            yield return null;
+        }
+
+        private async Task TestOpenCloseProgressIndicatorAsync(GameObject progressIndicatorObject, IProgressIndicator progressIndicator, float timeOpen = 2f, bool hideAfterOpening = false)
         {
             // Deactivate the progress indicator
             progressIndicatorObject.SetActive(false);
@@ -110,6 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Make sure it's actually open
             Assert.True(progressIndicator.State == ProgressIndicatorState.Open, "Progress indicator was not open after open async call: " + progressIndicator.State);
+
+            // Hide the gameObject if requested
+            if (hideAfterOpening)
+            {
+                progressIndicatorObject.SetActive(false);
+            }
 
             // Make sure we can set its progress and message while open
             // Also make sure we can set progress to a value greater than 1 without blowing anything up

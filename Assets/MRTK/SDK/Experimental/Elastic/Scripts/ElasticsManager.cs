@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// <param name="targetTransform">Precalculated target transform that's influenced by elastics</param>
         /// <param name="transformsToApply">Indicates which types of transforms are going to be applied. Default is Move, Rotate and Scale.</param>
         /// <returns>Modified transform types.</returns>
-        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags transformsToApply = TransformFlags.Move|TransformFlags.Rotate|TransformFlags.Scale)
+        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags transformsToApply = TransformFlags.Move | TransformFlags.Rotate | TransformFlags.Scale)
         {
             Debug.Assert(hostTransform != null, "Can't apply target before calling Initialize with a valid transform reference.");
             if (hostTransform != null)
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
                 elasticTypesSimulating = enabledTransformTypes;
                 return elasticTypes;
             }
-            else 
+            else
             {
                 return 0;
             }
@@ -229,8 +229,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 
         private bool ShouldUpdateElastics<T>(TransformFlags elasticType, IElasticSystem<T> elasticSystem)
         {
-            return (elasticTypes.HasFlag(elasticType) && 
-                elasticTypesSimulating.HasFlag(elasticType) && 
+            return (elasticTypes.HasFlag(elasticType) &&
+                elasticTypesSimulating.HasFlag(elasticType) &&
                 elasticSystem != null);
         }
 

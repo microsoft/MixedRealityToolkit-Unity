@@ -1,3 +1,7 @@
+# 🚩 The docs have moved!
+
+**Starting from MRTK 2.6, we are publishing both conceptual docs and API references on docs.microsoft.com. For conceptual docs, please visit <a href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/">our new landing page</a>. For API references, please visit <a href="https://docs.microsoft.com/dotnet/api/microsoft.mixedreality.toolkit">the MRTK-Unity section of the dot net API explorer</a>. Existing content will remain here but will not be updated further.**
+
 ![Mixed Reality Toolkit](Documentation/Images/Logo_MRTK_Unity_Banner.png)
 
 # What is the Mixed Reality Toolkit

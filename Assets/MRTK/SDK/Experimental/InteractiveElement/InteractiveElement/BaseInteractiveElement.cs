@@ -37,10 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         public bool Active
         {
             get => active;
-            set 
+            set
             {
                 ResetAllStates();
-                active = value; 
+                active = value;
             }
         }
 
@@ -53,8 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         /// </summary>
         public List<InteractionState> States
         {
-            get => states; 
-            set => states = value; 
+            get => states;
+            set => states = value;
         }
 
         /// <summary>
@@ -476,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         internal void SetEventConfigurationInstance(string stateName)
         {
             InteractionState state = States.Find((interactionState) => interactionState.Name == stateName);
-            
+
             // Set the new Interaction Type and configuration
             state.SetEventConfiguration(stateName);
             state.SetInteractionType(stateName);

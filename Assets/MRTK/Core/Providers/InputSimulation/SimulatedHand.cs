@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UpdateHandJoints(handData);
             UpdateVelocity();
-            
+
             UpdateInteractions(handData);
         }
 

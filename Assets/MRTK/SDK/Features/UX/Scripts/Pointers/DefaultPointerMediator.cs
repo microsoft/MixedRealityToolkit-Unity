@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 {
                                     continue;
                                 }
-                                
+
                                 if (otherPointer is GGVPointer)
                                 {
                                     // Disable the GGV pointer of an input source

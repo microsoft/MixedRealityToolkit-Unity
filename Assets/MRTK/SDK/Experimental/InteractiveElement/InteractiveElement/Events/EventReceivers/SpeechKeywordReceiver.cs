@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         private SpeechKeywordEvents SpeechKeywordEventConfig => EventConfiguration as SpeechKeywordEvents;
 
         private SpeechInteractionEvent onSpeechKeywordRecognized => SpeechKeywordEventConfig.OnAnySpeechKeywordRecognized;
-        
+
         private List<KeywordEvent> keywordsAndResponses => SpeechKeywordEventConfig.Keywords;
 
         /// <inheritdoc />

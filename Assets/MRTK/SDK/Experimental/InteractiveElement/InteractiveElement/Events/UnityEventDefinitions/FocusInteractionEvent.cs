@@ -11,5 +11,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
     /// Focus state.
     /// </summary>
     [System.Serializable]
-    public class FocusInteractionEvent : UnityEvent<FocusEventData>{}
+    public class FocusInteractionEvent : UnityEvent<FocusEventData> { }
 }

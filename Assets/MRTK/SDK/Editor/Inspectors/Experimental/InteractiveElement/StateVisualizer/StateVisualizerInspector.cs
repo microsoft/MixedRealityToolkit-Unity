@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer.Editor
                                 {
                                     EditorGUILayout.PropertyField(stateContainerAnimationClip);
                                     EditorGUILayout.PropertyField(animationTransitionDuration);
-                                    
+
                                     if (check.changed)
                                     {
                                         instance.SetAnimationTransitionDuration(stateContainerName.stringValue, animationTransitionDuration.floatValue);
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer.Editor
                     SerializedProperty animatablePropertyList = animationTarget.FindPropertyRelative("stateAnimatableProperties");
 
                     EditorGUILayout.Space();
-                 
+
                     using (new EditorGUILayout.VerticalScope(GUI.skin.box))
                     {
                         EditorGUILayout.Space();
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer.Editor
                                 {
                                     SerializedProperty animatableProperty = animatablePropertyList.GetArrayElementAtIndex(k);
                                     SerializedProperty animatablePropertyName = animatableProperty.FindPropertyRelative("animatablePropertyName");
-                                    
+
                                     if (animatableProperty != null)
                                     {
                                         RemoveKeyFrames(stateContainerName.stringValue, animatablePropertyName.stringValue, j);

@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
         public bool Global
         {
             get => global;
-            set 
+            set
             {
                 global = value;
                 OnGlobalChanged.Invoke();

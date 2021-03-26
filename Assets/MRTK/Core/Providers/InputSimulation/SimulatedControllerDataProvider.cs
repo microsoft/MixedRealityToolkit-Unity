@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // Show a tracked controller
         public bool IsTracked = false;
-        
+
         // Position of the controller in viewport space
         public Vector3 ViewportPosition = Vector3.zero;
         // Rotation of the controller relative to the camera
@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (isSimulatingGaze)
                 {
                     lastSimulationGaze = time;
-                }   
+                }
             }
 
             mouseRotation.Update(profile.ControllerRotateButton, cancelRotationKey, false);

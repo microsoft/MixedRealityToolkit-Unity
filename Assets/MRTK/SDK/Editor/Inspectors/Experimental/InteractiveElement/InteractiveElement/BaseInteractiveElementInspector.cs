@@ -4,8 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -55,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
         private StateSelectionMenu stateSelectionMenu;
 
         private bool isCompressableButton;
-        
+
         protected virtual void OnEnable()
         {
             instance = (BaseInteractiveElement)target;
@@ -99,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
                     // Add a notice in the inspector to let the user know that they have disabled internal updates, i.e. state values will not update
                     InspectorUIUtility.DrawNotice("Internal updates to this Interactive Element have been disabled.");
                 }
-                
+
                 if (previousActiveStatus != active.boolValue)
                 {
                     // Only reset all states when Active is set to false
@@ -195,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
                     // Draw the state value in the inspector next to the state during play mode for debugging
                     if (inPlayMode)
                     {
-                        using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,GUILayout.Width(stateValueDisplayWidth)))
+                        using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.Width(stateValueDisplayWidth)))
                         {
                             EditorGUILayout.Space();
                             EditorGUILayout.LabelField(stateValue.intValue.ToString(), GUILayout.Width(stateValueDisplayContainerWidth));
@@ -277,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
                     else
                     {
                         // Display dialog telling the user to change the state name entered
-                        EditorUtility.DisplayDialog("Change State Name", "The state name entered is empty or this state name is already taken, please add characters to the state name or choose another name.","OK");
+                        EditorUtility.DisplayDialog("Change State Name", "The state name entered is empty or this state name is already taken, please add characters to the state name or choose another name.", "OK");
                     }
                 }
             }
@@ -369,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
 
                     previousSpeechKeywordGlobalStatus = global.boolValue;
                 }
-             }
+            }
         }
 
         // Check for special cases for state's event configuration

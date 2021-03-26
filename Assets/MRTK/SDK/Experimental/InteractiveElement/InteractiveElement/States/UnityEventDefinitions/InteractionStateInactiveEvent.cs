@@ -11,5 +11,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
     /// a state is set to off/deactivated.
     /// </summary>
     [System.Serializable]
-    public class InteractionStateInactiveEvent : UnityEvent<InteractionState,InteractionState> { }
+    public class InteractionStateInactiveEvent : UnityEvent<InteractionState, InteractionState> { }
 }
