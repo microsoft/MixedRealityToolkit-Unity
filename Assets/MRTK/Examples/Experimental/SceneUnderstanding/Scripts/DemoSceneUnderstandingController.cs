@@ -165,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// <remarks>
         /// Before calling this function, the observer should be configured to observe the specified type by including that type in the SurfaceTypes property.
         /// </remarks>
+        /// <returns>A dictionary with the scene objects of the requested type being the values and their ids being the keys.</returns>
         public IReadOnlyDictionary<int, SpatialAwarenessSceneObject> GetSceneObjectsOfType(SpatialAwarenessSurfaceTypes type)
         {
             if (!observer.SurfaceTypes.HasFlag(type))
@@ -172,9 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 Debug.LogErrorFormat("The Scene Objects of type {0} are not being observed. You should add {0} to the SurfaceTypes property of the observer in advance.", type);
             }
 
-            if (observedSceneObjects.TryGetValue(type, out Dictionary<int, SpatialAwarenessSceneObject> SceneObjects))
+            if (observedSceneObjects.TryGetValue(type, out Dictionary<int, SpatialAwarenessSceneObject> sceneObjects))
             {
-                return SceneObjects;
+                return sceneObjects;
             }
             else
             {
