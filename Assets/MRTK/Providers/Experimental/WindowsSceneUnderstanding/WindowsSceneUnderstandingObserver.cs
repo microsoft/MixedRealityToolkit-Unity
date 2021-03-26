@@ -734,12 +734,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
                         foreach (var id in removedSasoIds)
                         {
+                            SendSceneObjectRemoved(id);
                             if (CreateGameObjects)
                             {
                                 UpdateInstantiatedSceneObject(sceneObjects[id], null);
                             }
                             sceneObjects.Remove(id);
-                            SendSceneObjectRemoved(id);
                         }
 
                         if (observerState == ObserverState.Working)
