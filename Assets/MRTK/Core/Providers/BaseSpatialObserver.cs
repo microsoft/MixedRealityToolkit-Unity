@@ -30,16 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         {
-            SpatialAwarenessSystem = spatialAwarenessSystem;
-
-            SourceId = (SpatialAwarenessSystem != null) ? SpatialAwarenessSystem.GenerateNewSourceId() : 0;
+            SourceId = (Service != null) ? Service.GenerateNewSourceId() : 0;
             SourceName = name;
         }
 
         /// <summary>
         /// The spatial awareness system that is associated with this observer.
         /// </summary>
-        protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; private set; }
+        [System.Obsolete("Call Service instead.")]
+        protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => Service;
 
         /// <summary>
         /// Creates the spatial observer and handles the desired startup behavior.

@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// The parent GameObject for all observed meshes to be placed under.
         /// </summary>
-        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent(Name));
+        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent(Name));
 
         protected virtual void ReadProfile()
         {
@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             if (RuntimeSpatialMeshPrefab != null)
             {
-                GameObject spatialMeshPrefab = GameObject.Instantiate(RuntimeSpatialMeshPrefab, SpatialAwarenessSystem.SpatialAwarenessObjectParent.transform);
+                GameObject spatialMeshPrefab = Object.Instantiate(RuntimeSpatialMeshPrefab, Service.SpatialAwarenessObjectParent.transform);
 
                 if (spatialMeshPrefab.transform.position != Vector3.zero)
                 {

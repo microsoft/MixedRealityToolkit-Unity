@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc/>
         protected override void ConfigureObserverVolume()
         {
-            if (SpatialAwarenessSystem == null || XRSubsystemHelpers.MeshSubsystem == null)
+            if (Service == null || XRSubsystemHelpers.MeshSubsystem == null)
             {
                 return;
             }

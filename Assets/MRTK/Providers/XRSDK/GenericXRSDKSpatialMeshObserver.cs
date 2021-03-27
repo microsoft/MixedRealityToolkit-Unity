@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         protected override void CreateObserver()
         {
-            if (SpatialAwarenessSystem == null) { return; }
+            if (Service == null) { return; }
 
             if (XRSubsystemHelpers.MeshSubsystem != null)
             {
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         private void UpdateObserver()
         {
-            if (SpatialAwarenessSystem == null || XRSubsystemHelpers.MeshSubsystem == null) { return; }
+            if (Service == null || XRSubsystemHelpers.MeshSubsystem == null) { return; }
 
             using (UpdateObserverPerfMarker.Auto())
             {
@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
                     // Send the mesh removed event
                     meshEventData.Initialize(this, id, null);
-                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                    Service?.HandleEvent(meshEventData, OnMeshRemoved);
                 }
             }
         }
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         protected virtual void ConfigureObserverVolume()
         {
-            if (SpatialAwarenessSystem == null || XRSubsystemHelpers.MeshSubsystem == null)
+            if (Service == null || XRSubsystemHelpers.MeshSubsystem == null)
             {
                 return;
             }
@@ -501,11 +501,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         meshEventData.Initialize(this, meshObject.Id, meshObject);
                         if (isMeshUpdate)
                         {
-                            SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
+                            Service?.HandleEvent(meshEventData, OnMeshUpdated);
                         }
                         else
                         {
-                            SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
+                            Service?.HandleEvent(meshEventData, OnMeshAdded);
                         }
                         break;
                 }
@@ -518,7 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             base.Initialize();
 
-            if (SpatialAwarenessSystem == null || XRSubsystemHelpers.MeshSubsystem == null) { return; }
+            if (Service == null || XRSubsystemHelpers.MeshSubsystem == null) { return; }
 
             if (RuntimeSpatialMeshPrefab != null)
             {
