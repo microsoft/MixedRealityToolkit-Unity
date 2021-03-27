@@ -183,6 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public Quaternion ObserverRotation { get; set; } = Quaternion.identity;
 
+        /// <inheritdoc />
         public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
 
         /// <inheritdoc />
