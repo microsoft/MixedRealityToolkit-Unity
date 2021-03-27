@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
-        0, // Not sure which platforms (other than WMR) support this feature at the moment.
+        (SupportedPlatforms)(-1), // All platforms supported by Unity
         "XR SDK Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK")]
