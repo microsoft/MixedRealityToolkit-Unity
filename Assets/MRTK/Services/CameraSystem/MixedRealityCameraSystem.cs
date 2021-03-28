@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
                 // Move the camera upwards by FloorHeight units if the experience settings explicitly have MRTK initialize the camera to floor height
                 MixedRealityPlayspace.Rotation = Quaternion.identity;
-                if(MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.AlignCameraToFloorHeight)
+                if(!MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.IsNull() && MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.AlignCameraToFloorHeight)
                 {
                     CameraCache.Main.transform.position = Vector3.up * MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
                 }

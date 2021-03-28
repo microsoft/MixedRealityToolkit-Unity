@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
-                            changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false);
+                            changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false,  null, true);
 
                             // Experience configuration
                             if(!mrtkConfigProfile.ExperienceSettingsProfile.IsNull())
