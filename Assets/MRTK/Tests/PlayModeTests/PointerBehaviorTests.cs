@@ -230,8 +230,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestTeleportAndFloorHeight()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            float floorHeight = 1.3f;
+            ExperiencePlatform originalExperiencePlatform;
+            ExperienceScale originalExperienceScale;
             float originalProfileFloorHeight;
+            bool originalAlignCameraToFloorHeight;
+
+            float floorHeight = 1.3f;
+
 
             // MRTK has already been created by SetUp prior to calling this,
             // we have to shut it down to re-init with the custom input profile which
@@ -241,15 +246,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Initialize a profile with the appropriate floorHeight
             var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
-            profile.ExperienceSettingsProfile.TargetExperiencePlatform = ExperiencePlatform.VR;
-            profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
 
             originalProfileFloorHeight = profile.ExperienceSettingsProfile.FloorHeight;
+            originalExperiencePlatform = profile.ExperienceSettingsProfile.TargetExperiencePlatform;
+            originalExperienceScale = profile.ExperienceSettingsProfile.TargetExperienceScale;
+            originalAlignCameraToFloorHeight = profile.ExperienceSettingsProfile.AlignCameraToFloorHeight;
+
+            profile.ExperienceSettingsProfile.TargetExperiencePlatform = ExperiencePlatform.VR;
+            profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
             profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
 
             profile.ExperienceSettingsProfile.AlignCameraToFloorHeight = true;
 
             PlayModeTestUtilities.Setup(profile);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Ensure that the SceneContent object is floorHeight units above the origin
             Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, floorHeight, 0.005f);
@@ -305,8 +316,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Ensure that the camera's position is floorHeight (defined by the profile) units above the ground after the teleport
             Assert.AreEqual(Camera.main.transform.position.y - MixedRealityPlayspace.Position.y, floorHeight, 0.005f);
 
-            // Reset the profile's floor height to it's original value
+            // Reset the profile's settings to it's original value
+            profile.ExperienceSettingsProfile.TargetExperiencePlatform = originalExperiencePlatform;
+            profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
             profile.ExperienceSettingsProfile.FloorHeight = originalProfileFloorHeight;
+            profile.ExperienceSettingsProfile.AlignCameraToFloorHeight = originalAlignCameraToFloorHeight;
+
             leftHand.Hide();
         }
 
