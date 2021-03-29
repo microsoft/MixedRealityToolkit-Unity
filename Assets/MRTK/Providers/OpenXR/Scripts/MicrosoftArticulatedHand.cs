@@ -48,6 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
             handDefinition = Definition as ArticulatedHandDefinition;
+            handMeshProvider = controllerHandedness == Handedness.Left ? OpenXRHandMeshProvider.Left : OpenXRHandMeshProvider.Right;
+            handMeshProvider.SetInputSource(inputSource);
+
 #if MSFT_OPENXR
 #if MSFT_OPENXR_0_2_0_OR_NEWER
             handTracker = controllerHandedness == Handedness.Left ? HandTracker.Left : HandTracker.Right;
@@ -58,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         }
 
         private readonly ArticulatedHandDefinition handDefinition;
+        private readonly OpenXRHandMeshProvider handMeshProvider;
 
         protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
 
@@ -251,6 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (UpdateHandDataPerfMarker.Auto())
             {
+                handMeshProvider?.UpdateHandMesh();
+
 #if MSFT_OPENXR
                 if (handTracker != null && handTracker.TryLocateHandJoints(FrameTime.OnUpdate, locations))
                 {
