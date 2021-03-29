@@ -63,11 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             if (meshSubsystem != null)
             {
                 ConfigureObserverVolume();
-
-                if (StartupBehavior == AutoStartBehavior.AutoStart)
-                {
-                    Resume();
-                }
             }
         }
 
@@ -404,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         protected virtual void ConfigureObserverVolume()
         {
-            if (Service == null || meshSubsystem == null)
+            if (meshSubsystem == null)
             {
                 return;
             }
