@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             handDefinition = Definition as ArticulatedHandDefinition;
             handMeshProvider = controllerHandedness == Handedness.Left ? OpenXRHandMeshProvider.Left : OpenXRHandMeshProvider.Right;
-            handMeshProvider.SetInputSource(inputSource);
+            handMeshProvider?.SetInputSource(inputSource);
 
 #if MSFT_OPENXR
 #if MSFT_OPENXR_0_2_0_OR_NEWER
