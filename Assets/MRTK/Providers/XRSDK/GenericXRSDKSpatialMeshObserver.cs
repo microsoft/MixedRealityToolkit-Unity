@@ -394,12 +394,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
         private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver.ConfigureObserverVolume");
 
+        private Vector3 oldObserverOrigin = Vector3.zero;
+        private Vector3 oldObservationExtents = Vector3.zero;
+        private VolumeType oldObserverVolumeType = VolumeType.None;
+
         /// <summary>
         /// Applies the configured observation extents.
         /// </summary>
         protected virtual void ConfigureObserverVolume()
         {
-            if (meshSubsystem == null)
+            if (meshSubsystem == null
+                || (oldObserverOrigin == ObserverOrigin
+                && oldObservationExtents == ObservationExtents
+                && oldObserverVolumeType == ObserverVolumeType))
             {
                 return;
             }
@@ -417,6 +424,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         Debug.LogError($"Unsupported ObserverVolumeType value {ObserverVolumeType}");
                         break;
                 }
+
+                oldObserverOrigin = ObserverOrigin;
+                oldObservationExtents = ObservationExtents;
+                oldObserverVolumeType = ObserverVolumeType;
             }
         }
 
