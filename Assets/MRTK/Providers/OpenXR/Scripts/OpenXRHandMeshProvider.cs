@@ -69,6 +69,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         public void UpdateHandMesh()
         {
 #if MSFT_OPENXR_0_2_0_OR_NEWER
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+            MixedRealityHandTrackingProfile handTrackingProfile = inputSystemProfile != null ? inputSystemProfile.HandTrackingProfile : null;
+
+            if (handTrackingProfile == null || !handTrackingProfile.EnableHandMeshVisualization)
+            {
+                // If hand mesh visualization is disabled make sure to clean up if we've already initialized
+                if (handMeshUVs != null)
+                {
+                    // Notify that hand mesh has been updated (cleared)
+                    CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, new HandMeshInfo());
+                    handMeshUVs = null;
+                }
+                return;
+            }
+
             if (handMeshUVs == null && handMeshTracker.TryGetHandMesh(FrameTime.OnUpdate, neutralPoseMesh, HandPoseType.ReferenceOpenPalm))
             {
                 handMeshUVs = InitializeUVs(neutralPoseMesh.vertices);
