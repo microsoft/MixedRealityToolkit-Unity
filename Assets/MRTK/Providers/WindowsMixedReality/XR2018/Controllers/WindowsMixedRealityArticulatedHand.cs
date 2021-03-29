@@ -42,9 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.LeftHand : WindowsMixedRealityHandMeshProvider.RightHand;
-            handMeshProvider.SetController(this);
             handDefinition = Definition as ArticulatedHandDefinition;
+
+            handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.Left : WindowsMixedRealityHandMeshProvider.Right;
+            handMeshProvider.SetInputSource(inputSource);
 
             articulatedHandApiAvailable = WindowsApiChecker.IsMethodAvailable(
                 "Windows.UI.Input.Spatial",

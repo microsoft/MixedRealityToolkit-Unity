@@ -37,16 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.LeftHand : WindowsMixedRealityHandMeshProvider.RightHand;
-            handMeshProvider.SetController(this);
             handDefinition = Definition as ArticulatedHandDefinition;
 
+            handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.Left : WindowsMixedRealityHandMeshProvider.Right;
+            handMeshProvider.SetInputSource(inputSource);
         }
 
         private readonly ArticulatedHandDefinition handDefinition;
+        private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
-        private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
 
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
         private readonly List<Bone> fingerBones = new List<Bone>();

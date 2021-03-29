@@ -20,35 +20,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// </summary>
     public class WindowsMixedRealityHandMeshProvider
     {
-        public static WindowsMixedRealityHandMeshProvider LeftHand { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Left);
-        public static WindowsMixedRealityHandMeshProvider RightHand { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Right);
-
-        private WindowsMixedRealityHandMeshProvider(Handedness handedness)
-        {
-            this.handedness = handedness;
-            controller = null;
-        }
-
-        [Obsolete("WindowsMixedRealityHandMeshProvider(IMixedRealityController) is obsolete. Please use either the static LeftHand or RightHand members and call SetController()")]
-        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => this.controller = controller;
-
-        private IMixedRealityController controller = null;
-        private IMixedRealityInputSource InputSource => controller.InputSource;
-        private Handedness handedness;
+        /// <summary>
+        /// The user's left hand.
+        /// </summary>
+        public static WindowsMixedRealityHandMeshProvider Left { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Left);
 
         /// <summary>
-        /// Sets the <see cref="IMixedRealityController"/> that provides data for the hand mesh.
+        /// The user's right hand.
         /// </summary>
-        /// <param name="controller">Implementation of the hand controller.</param>
-        public void SetController(IMixedRealityController controller)
-        {
-            if (controller.ControllerHandedness != handedness)
-            {
-                Debug.LogError($"Attempted to set controller with the wrong handedness (exected: {handedness} actual:{controller.ControllerHandedness}");
-            }
+        public static WindowsMixedRealityHandMeshProvider Right { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Right);
 
-            this.controller = controller;
-        }
+        private WindowsMixedRealityHandMeshProvider(Handedness handedness) => this.handedness = handedness;
+
+        [Obsolete("WindowsMixedRealityHandMeshProvider(IMixedRealityController) is obsolete. Please use either the static Left or Right members and call SetInputSource()")]
+        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => inputSource = controller.InputSource;
+
+        private readonly Handedness handedness;
+        private IMixedRealityInputSource inputSource = null;
+
+        /// <summary>
+        /// Sets the <see cref="IMixedRealityInputSource"/> that represents the current hand for this mesh.
+        /// </summary>
+        /// <param name="inputSource">Implementation of the hand input source.</param>
+        public void SetInputSource(IMixedRealityInputSource inputSource) => this.inputSource = inputSource;
 
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
@@ -131,14 +125,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         // Notify that hand mesh has been updated (cleared)
                         HandMeshInfo handMeshInfo = new HandMeshInfo();
-                        CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, handedness, handMeshInfo);
+                        CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                         hasRequestedHandMeshObserver = false;
                         handMeshObserver = null;
                     }
                     return;
                 }
-
-                HandPose handPose = sourceState.TryGetHandPose();
 
                 // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                 if (handMeshObserver == null && !hasRequestedHandMeshObserver)
@@ -147,6 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     hasRequestedHandMeshObserver = true;
                 }
 
+                HandPose handPose = sourceState.TryGetHandPose();
                 uint triangleIndexCount = handMeshObserver.TriangleIndexCount;
                 if (handMeshObserver != null && handPose != null)
                 {
@@ -226,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 rotation = rotationUnity
                             };
 
-                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, handedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                         }
                     }
                 }
