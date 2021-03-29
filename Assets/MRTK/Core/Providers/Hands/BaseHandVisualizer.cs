@@ -19,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
         protected MeshFilter handMeshFilter;
 
-        // This member stores the last set of hand mesh vertices, to avoid using
+        // This member stores the last count of hand mesh vertices, to avoid using
         // handMeshFilter.mesh.vertices, which does a copy of the vertices.
-        private Vector3[] lastHandMeshVertices;
+        private int lastHandMeshVerticesCount = 0;
 
         private void OnEnable()
         {
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
             {
                 handMeshFilter = Instantiate(CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
-                lastHandMeshVertices = handMeshFilter.mesh.vertices;
+                lastHandMeshVerticesCount = handMeshFilter.mesh.vertices.Length;
             }
 
             if (handMeshFilter != null)
@@ -177,10 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // In order to update the vertices when the array sizes change, the mesh
                 // must be cleared per instructions here:
                 // https://docs.unity3d.com/ScriptReference/Mesh.html
-                if ((lastHandMeshVertices == null && eventData.InputData.vertices != null) ||
-                    (lastHandMeshVertices != null &&
-                    lastHandMeshVertices.Length != 0 &&
-                    lastHandMeshVertices.Length != eventData.InputData.vertices?.Length))
+                if (lastHandMeshVerticesCount != eventData.InputData.vertices?.Length)
                 {
                     meshChanged = true;
                     mesh.Clear();
@@ -188,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 mesh.vertices = eventData.InputData.vertices;
                 mesh.normals = eventData.InputData.normals;
-                lastHandMeshVertices = eventData.InputData.vertices;
+                lastHandMeshVerticesCount = eventData.InputData.vertices != null ? eventData.InputData.vertices.Length : 0;
 
                 if (newMesh || meshChanged)
                 {
