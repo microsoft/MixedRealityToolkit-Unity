@@ -39,10 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.LeftHand : WindowsMixedRealityHandMeshProvider.RightHand;
             handMeshProvider.SetController(this);
+            handDefinition = Definition as ArticulatedHandDefinition;
+
         }
 
-        private ArticulatedHandDefinition handDefinition;
-        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
+        private readonly ArticulatedHandDefinition handDefinition;
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
@@ -67,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         #endregion IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public override bool IsInPointingPose => HandDefinition.IsInPointingPose;
+        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
 
         #region Update data functions
 
@@ -89,10 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     switch (Interactions[i].InputType)
                     {
                         case DeviceInputType.IndexFinger:
-                            HandDefinition?.UpdateCurrentIndexPose(Interactions[i]);
+                            handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
                             break;
                         case DeviceInputType.ThumbStick:
-                            HandDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
+                            handDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
                             break;
                     }
                 }
@@ -161,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         }
                     }
 
-                    HandDefinition?.UpdateHandJoints(unityJointPoses);
+                    handDefinition?.UpdateHandJoints(unityJointPoses);
                 }
             }
         }
