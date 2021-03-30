@@ -30,6 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandMeshHandler>(this);
         }
 
+        private void Start()
+        {
+            if (Controller != null)
+            {
+                Handedness = Controller.ControllerHandedness;
+            }
+        }
+
         private void OnDisable()
         {
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
