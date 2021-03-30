@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
                             });
 
-                            /// Hands should follow the Playspace to accommodate teleporting, so fold in the Playspace transform.
+                            // Hands should follow the Playspace to accommodate teleporting, so fold in the Playspace transform.
                             Vector3 positionUnity = MixedRealityPlayspace.TransformPoint(translation.ToUnityVector3());
                             Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion();
 
