@@ -4,11 +4,11 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using UnityEngine;
 
 #if WINDOWS_UWP
 using System.Threading.Tasks;
 using Unity.Profiling;
+using UnityEngine;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
