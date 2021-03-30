@@ -41,6 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         // The Leap Unity Modules version 4.7.1 already contains a LeapMotion.asmdef file at this path
         private static string leapAsmDefPath_471 = "LeapMotion/Core/Scripts/LeapMotion.asmdef";
 
+        // This path is used to determine if the Leap Motion Unity Modules is version 4.7.0
+        private static string leapTestsPath_470 = "LeapMotion/Core/Editor/Tests";
+
+        // This path is used to determine if the Leap Motion Unity Modules is version 4.6.0 or 4.5.1
+        private static string leapXRPath_451 = "LeapMotion/Core/Scripts/XR/LeapXRPinchLocomotion.cs";
+
         // Array of paths to Leap Motion testing directories that will be removed from the project.
         // Make sure each test directory ends with '/'
         // These paths only need to be deleted if the Leap Core Assets version is 4.4.0
@@ -126,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                 if (isLeapCoreAssetsVersionSupported)
                 {
+                    Debug.Log($"Integrating the Leap Motion Unity Modules Version {currentLeapCoreAssetsVersion} with MRTK");
+
                     RemoveTestingFolders();
                     AddAndUpdateAsmDefs();
                     AddLeapEditorAsmDefs();
@@ -161,6 +169,32 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         if (line.Contains(versionNumberSupported))
                         {
                             currentLeapCoreAssetsVersion = versionNumberSupported;
+
+                            // The Leap Motion Unity modules Version.txt has remained 4.5.1 across versions 4.6.0, 4.7.0 and 4.7.1, check for the presence
+                            // of certian paths to infer the version number.
+
+                            // This path is only present in 4.7.1
+                            string leap471Path = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath_471);
+
+                            // This path is present in versions 4.7.0 and 4.7.1
+                            string testDirectoryPath = Path.Combine(Application.dataPath, pathDifference, leapTestsPath_470);
+
+                            // This path is present in 4.6.0 and not 4.5.1
+                            string xrPath = Path.Combine(Application.dataPath, pathDifference, leapXRPath_451);
+
+                            if (File.Exists(leap471Path))
+                            {
+                                currentLeapCoreAssetsVersion = "4.7.1";
+                            }
+                            else if (!File.Exists(leap471Path) && Directory.Exists(testDirectoryPath))
+                            {
+                                currentLeapCoreAssetsVersion = "4.7.0";
+                            }
+                            else if (!File.Exists(leap471Path) && !Directory.Exists(testDirectoryPath) && File.Exists(xrPath))
+                            {
+                                currentLeapCoreAssetsVersion = "4.6.0";
+                            }
+
                             return true;
                         }
                     }
@@ -217,14 +251,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             string leapCoreAsmDefPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "LeapMotion.asmdef");
 
-            // The Leap Unity Modules version is 4.7.1 already contains a LeapMotion.asmdef 
-            string leap471Path = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath_471);
-
-            // If the LeapMotion.asmdef is present, then the Leap Unity Modules version is 4.7.1 and the other
-            // LeapMotion.asmdef file does not need to be created. 
-            if (File.Exists(leap471Path))
+            // If the Leap Unity Modules version is 4.7.1, the LeapMotion.asmdef file does not need to be created
+            if (currentLeapCoreAssetsVersion == "4.7.1")
             {
-                currentLeapCoreAssetsVersion = "4.7.1";
                 return;
             }
 
@@ -243,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                 // An assembly definition was added to the Leap Core Assets in version 4.5.1
                 // The LeapMotion.LeapCSharp assembly definition is added as a reference at the root of the Core Assets
-                if (currentLeapCoreAssetsVersion == "4.5.1")
+                if (currentLeapCoreAssetsVersion == "4.5.1" || currentLeapCoreAssetsVersion == "4.6.0" || currentLeapCoreAssetsVersion == "4.7.0")
                 {
                     leapAsmDef.AddReference("LeapMotion.LeapCSharp");
 
@@ -290,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         };
 
                         // Add the LeapMotion.LeapCSharp assembly definition to the leap motion tests assembly definition
-                        if ((currentLeapCoreAssetsVersion == "4.5.1" || currentLeapCoreAssetsVersion == "4.7.1") && (leapAsmDef.Key == "LeapMotion.Core.Tests.Editor" || leapAsmDef.Key == "LeapMotion.Core.Editor"))
+                        if ((currentLeapCoreAssetsVersion == "4.5.1" || currentLeapCoreAssetsVersion == "4.6.0" || currentLeapCoreAssetsVersion == "4.7.0" || currentLeapCoreAssetsVersion == "4.7.1") && (leapAsmDef.Key == "LeapMotion.Core.Tests.Editor" || leapAsmDef.Key == "LeapMotion.Core.Editor"))
                         {
                             leapEditorAsmDef.AddReference("LeapMotion.LeapCSharp");
                         }
