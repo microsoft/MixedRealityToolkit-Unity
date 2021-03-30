@@ -140,11 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 }
 
                 HandPose handPose = sourceState.TryGetHandPose();
-                uint triangleIndexCount = handMeshObserver.TriangleIndexCount;
                 if (handMeshObserver != null && handPose != null)
                 {
-                    if ((handMeshTriangleIndices == null) ||
-                        (handMeshTriangleIndices.Length != triangleIndexCount))
+                    uint triangleIndexCount = handMeshObserver.TriangleIndexCount;
+                    if (handMeshTriangleIndices == null ||
+                        handMeshTriangleIndices.Length != triangleIndexCount)
                     {
                         handMeshTriangleIndices = new ushort[triangleIndexCount];
                         handMeshTriangleIndicesUnity = new int[triangleIndexCount];
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         handMeshObserver.GetTriangleIndices(handMeshTriangleIndices);
                         handMeshModelId = modelId;
-                        Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, (int)handMeshObserver.TriangleIndexCount);
+                        Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, triangleIndexCount);
                     }
 
                     int poseVersion = handMeshObserver.NeutralPoseVersion;
