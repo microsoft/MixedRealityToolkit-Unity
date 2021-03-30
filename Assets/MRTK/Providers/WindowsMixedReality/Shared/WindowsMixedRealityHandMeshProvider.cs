@@ -42,10 +42,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Sets the <see cref="IMixedRealityInputSource"/> that represents the current hand for this mesh.
         /// </summary>
         /// <param name="inputSource">Implementation of the hand input source.</param>
-        public void SetInputSource(IMixedRealityInputSource inputSource) => this.inputSource = inputSource;
+        public void SetInputSource(IMixedRealityInputSource inputSource)
+        {
+            this.inputSource = inputSource;
+#if WINDOWS_UWP
+            hasRequestedHandMeshObserver = false;
+            handMeshObserver = null;
+#endif // WINDOWS_UWP
+        }
 
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
+        private bool hasRequestedHandMeshObserver = false;
 
         private int handMeshModelId = -1;
         private int neutralPoseVersion = -1;
@@ -57,8 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private Vector3[] handMeshNormalsUnity = null;
         private int[] handMeshTriangleIndicesUnity = null;
         private Vector2[] handMeshUVsUnity = null;
-
-        private bool hasRequestedHandMeshObserver = false;
 
         private async void SetHandMeshObserver(SpatialInteractionSourceState sourceState)
         {
