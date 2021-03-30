@@ -47,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
 
-        private static int handMeshModelId = -1;
-        private static int neutralPoseVersion = -1;
+        private int handMeshModelId = -1;
+        private int neutralPoseVersion = -1;
 
         private ushort[] handMeshTriangleIndices = null;
         private HandMeshVertex[] vertexAndNormals = null;
