@@ -278,6 +278,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                 // Re-enable gravity if we're looking at a hotspot
                 GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+
+                // Set the have the teleport pointer control which layer masks it raycasts against
+                PrioritizedLayerMasksOverride = PrioritizedLayerMasksOverride ?? new LayerMask[] { ValidLayers | InvalidLayers };
             }
         }
 
