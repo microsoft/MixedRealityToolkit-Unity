@@ -565,7 +565,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     // since there's a null texture issue when Unity reloads the assets during a build
                     MixedRealityBuildPreferences.DrawAppLauncherModelField(appxCancellationTokenSource == null);
 
-                    // Draw the section for nuget path
+                    // Draw the section for nuget executable path
                     EditorGUILayout.LabelField("Nuget Path (Optional)", EditorStyles.boldLabel);
 
                     string nugetExecutablePath = EditorGUILayout.TextField(NugetPathLabel, UwpBuildDeployPreferences.NugetExecutablePath);
