@@ -3,6 +3,14 @@
 variables:
 - template: config/settings.yml
 
+parameters:
+- name: IsFinal
+  type: boolean
+  default: false
+- name: BuildNumber
+  type: string
+  default: 0
+
 jobs:
 - job: UPMPublicRelease
   timeoutInMinutes: 30
@@ -11,4 +19,5 @@ jobs:
   steps:
   - template: templates/tasks/pack-upm.yml
     parameters:
-      excludeBuildNumber: 1
+      excludeBuildNumber: ${{ parameters.IsFinal }}
+      buildNumber: ${{ parameters.BuildNumber }}
