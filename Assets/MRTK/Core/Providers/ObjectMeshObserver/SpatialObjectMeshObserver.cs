@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                         meshes.Add(currentMeshId, meshObject);
 
                         meshEventData.Initialize(this, currentMeshId, meshObject);
-                        SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
+                        Service?.HandleEvent(meshEventData, OnMeshAdded);
 
                         currentMeshId++;
                     }
@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
                     // Send the mesh removed event
                     meshEventData.Initialize(this, meshId, null);
-                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                    Service?.HandleEvent(meshEventData, OnMeshRemoved);
                 }
             }
         }
