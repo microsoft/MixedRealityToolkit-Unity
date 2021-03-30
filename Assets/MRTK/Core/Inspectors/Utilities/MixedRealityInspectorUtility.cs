@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         #endregion Colors
 
         public const float DottedLineScreenSpace = 4.65f;
-        public const string DefaultConfigProfileName = "DefaultMixedRealityToolkitConfigurationProfile";
+        public const string DefaultConfigProfileName = "DefaultMRTKConfigProfile";
 
         // StandardAssets/Textures/MRTK_Logo_Black.png
         private const string LogoLightThemeGuid = "c2c00ef21cc44bcfa09695879e0ebecd";
