@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19f279aded72cb741b4de89a54359dd4, type: 3}
-  m_Name: DemoSceneUnderstandingSystemProfile
+  m_Name: DemoSUProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   observerConfigurations:
@@ -20,4 +20,4 @@ MonoBehaviour:
     componentName: Windows Scene Understanding Observer
     priority: 0
     runtimePlatform: 8
-    observerProfile: {fileID: 11400000, guid: c16ec84a27c8162459bd27e1758712bd, type: 2}
+    observerProfile: {fileID: 0}
