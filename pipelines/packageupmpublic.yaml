@@ -8,7 +8,7 @@ parameters:
   type: boolean
   default: false
 - name: BuildNumber
-  type: int
+  type: string
   default: 0
 
 jobs:
