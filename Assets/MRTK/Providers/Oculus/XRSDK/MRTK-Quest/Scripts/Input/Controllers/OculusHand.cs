@@ -283,12 +283,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 if (IsPinching)
                 {
                     // If we are already pinching, we make the pinch a bit sticky
-                    IsPinching = pinchStrength > 0.85f;
+                    IsPinching = pinchStrength > 0.5f;
                 }
                 else
                 {
                     // If not yet pinching, only consider pinching if finger confidence is high
-                    IsPinching = pinchStrength > 0.5f && ovrHand.GetFingerConfidence(OVRHand.HandFinger.Index) == OVRHand.TrackingConfidence.High;
+                    IsPinching = pinchStrength > 0.85f && ovrHand.GetFingerConfidence(OVRHand.HandFinger.Index) == OVRHand.TrackingConfidence.High;
                 }
             }
 
