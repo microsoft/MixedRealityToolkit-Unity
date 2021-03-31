@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Provides some predefined parameters for eye gaze smoothing and saccade detection.
+    /// </summary>
     public abstract class BaseEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
     {
         /// <summary>
@@ -106,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // apart, we check for clusters of gaze points instead.
                 // 1. If the user's gaze points are far enough apart, this may be a saccade, but also could be an outlier.
                 //    So, let's mark it as a potential saccade.
-                if ((IsSaccading(oldGaze.Value, newGaze.Value) && (confidenceOfSaccade == 0)))
+                if (IsSaccading(oldGaze.Value, newGaze.Value) && confidenceOfSaccade == 0)
                 {
                     confidenceOfSaccade++;
                     saccade_initialGazePoint = oldGaze.Value;
@@ -115,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 // 2. If we have a potential saccade marked, let's check if the new points are within the proximity of 
                 //    the initial saccade point.
-                else if ((confidenceOfSaccade > 0) && (confidenceOfSaccade < confidenceOfSaccadeThreshold))
+                else if (confidenceOfSaccade > 0 && confidenceOfSaccade < confidenceOfSaccadeThreshold)
                 {
                     confidenceOfSaccade++;
 

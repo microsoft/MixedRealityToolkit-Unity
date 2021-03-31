@@ -78,21 +78,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
                 Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
 
-                if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeTracked, out bool gazeTracked) && gazeTracked)
+                if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeTracked, out bool gazeTracked) && gazeTracked
+                    && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazePosition, out Vector3 eyeGazePosition)
+                    && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeRotation, out Quaternion eyeGazeRotation))
                 {
-                    Vector3 eyeGazePosition;
-                    Quaternion eyeGazeRotation;
-                    if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazePosition, out eyeGazePosition) && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeRotation, out eyeGazeRotation))
+                    Ray newGaze = new Ray(eyeGazePosition, eyeGazeRotation * Vector3.forward);
+
+                    if (SmoothEyeTracking)
                     {
-                        Ray newGaze = new Ray(eyeGazePosition, eyeGazeRotation * Vector3.forward);
-
-                        if (SmoothEyeTracking)
-                        {
-                            newGaze = SmoothGaze(newGaze);
-                        }
-
-                        Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, DateTime.UtcNow);
+                        newGaze = SmoothGaze(newGaze);
                     }
+
+                    Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, DateTime.UtcNow);
                 }
             }
         }

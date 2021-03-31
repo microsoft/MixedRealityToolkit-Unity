@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
-        public bool CheckCapability(MixedRealityCapability capability) => eyesApiAvailable ? capability == MixedRealityCapability.EyeTracking : false;
+        public bool CheckCapability(MixedRealityCapability capability) => eyesApiAvailable && capability == MixedRealityCapability.EyeTracking;
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
