@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// <summary>
         /// Determines whether or not this controller uses MRTK for controller visualization or not
         /// </summary>
-        public bool UseMRTKControllerVisualization = false;
+        internal bool UseMRTKControllerVisualization { get; set; } = false;
 
         /// <inheritdoc/>
         /// <remarks>
