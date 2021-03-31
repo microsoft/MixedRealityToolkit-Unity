@@ -70,19 +70,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     }
                 }
 
-                bool gazeAvailable = false;
-                if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeAvailable, out gazeAvailable) && gazeAvailable)
+                if (!centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeAvailable, out bool gazeAvailable) || !gazeAvailable)
                 {
-                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, gazeAvailable);
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
+                    return;
+                }
 
+                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+
+                if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeTracked, out bool gazeTracked) && gazeTracked)
+                {
                     Vector3 eyeGazePosition;
                     Quaternion eyeGazeRotation;
                     if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazePosition, out eyeGazePosition) && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeRotation, out eyeGazeRotation))
                     {
-                        Vector3 worldPosition = CameraCache.Main.transform.TransformPoint(eyeGazePosition);
-                        Vector3 worldRotation = CameraCache.Main.transform.TransformDirection(eyeGazeRotation * Vector3.forward);
-
-                        Ray newGaze = new Ray(worldPosition, worldRotation);
+                        Ray newGaze = new Ray(eyeGazePosition, eyeGazeRotation * Vector3.forward);
 
                         if (SmoothEyeTracking)
                         {
