@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+#if MSFT_OPENXR_0_2_0_OR_NEWER
 using Microsoft.MixedReality.OpenXR;
+#endif // MSFT_OPENXR_0_2_0_OR_NEWER
+
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
