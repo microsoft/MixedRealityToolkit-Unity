@@ -68,21 +68,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (ConfigurationProfile == null)
             {
-                Debug.LogError("Windows Mixed Reality Eye Tracking Provider requires a configuration profile to run properly.");
+                Debug.LogError($"{GetType()} requires a configuration profile to run properly.");
                 return;
             }
 
             MixedRealityEyeTrackingProfile profile = ConfigurationProfile as MixedRealityEyeTrackingProfile;
             if (profile == null)
             {
-                Debug.LogError("Windows Mixed Reality Eye Tracking Provider's configuration profile must be a MixedRealityEyeTrackingProfile.");
+                Debug.LogError($"{GetType()}'s configuration profile must be a MixedRealityEyeTrackingProfile.");
                 return;
             }
 
             SmoothEyeTracking = profile.SmoothEyeTracking;
         }
 
-        private static readonly ProfilerMarker SmoothGazePerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealityEyeGazeDataProvider.SmoothGaze");
+        private static readonly ProfilerMarker SmoothGazePerfMarker = new ProfilerMarker("[MRTK] BaseEyeGazeDataProvider.SmoothGaze");
 
         /// <summary>
         /// Smooths eye gaze by detecting saccades and tracking gaze clusters.
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker IsSaccadingPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealityEyeGazeDataProvider.IsSaccading");
+        private static readonly ProfilerMarker IsSaccadingPerfMarker = new ProfilerMarker("[MRTK] BaseEyeGazeDataProvider.IsSaccading");
 
         private bool IsSaccading(Ray rayOld, Ray rayNew)
         {
