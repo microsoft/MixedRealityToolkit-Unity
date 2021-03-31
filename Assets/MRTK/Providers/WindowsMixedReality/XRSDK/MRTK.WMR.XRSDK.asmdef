@@ -27,6 +27,11 @@
             "define": "WMR_ENABLED"
         },
         {
+            "name": "com.unity.xr.windowsmr",
+            "expression": "2.7",
+            "define": "WMR_2_7_OR_NEWER_ENABLED"
+        },
+        {
             "name": "com.microsoft.mixedreality.input",
             "expression": "",
             "define": "HP_CONTROLLER_ENABLED"

@@ -5,12 +5,12 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine.XR;
 
-#if WMR_ENABLED
+#if WMR_2_7_OR_NEWER_ENABLED
 using System;
 using Unity.Profiling;
 using Unity.XR.WindowsMR;
 using UnityEngine;
-#endif // WMR_ENABLED
+#endif // WMR_2_7_OR_NEWER_ENABLED
 
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
@@ -41,11 +41,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
-        public bool CheckCapability(MixedRealityCapability capability) => centerEye.isValid && capability == MixedRealityCapability.EyeTracking;
+        public bool CheckCapability(MixedRealityCapability capability) =>
+#if WMR_2_7_OR_NEWER_ENABLED
+                                                                          capability == MixedRealityCapability.EyeTracking
+                                                                          && centerEye.isValid
+                                                                          && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeAvailable, out bool gazeAvailable)
+                                                                          && gazeAvailable;
+#else
+                                                                          false;
+#endif // WMR_2_7_OR_NEWER_ENABLED
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
-#if WMR_ENABLED
+#if WMR_2_7_OR_NEWER_ENABLED
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityEyeGazeDataProvider.Update");
 
         /// <inheritdoc />
@@ -86,6 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
         }
-#endif // WMR_ENABLED
+#endif // WMR_2_7_OR_NEWER_ENABLED
     }
 }
