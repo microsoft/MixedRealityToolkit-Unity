@@ -34,11 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 calibrationStatus = CoreServices.InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
             }
 
-            if (calibrationStatus != null)
+            if (calibrationStatus.HasValue)
             {
                 if (prevCalibrationStatus != calibrationStatus)
                 {
-                    if (calibrationStatus == false)
+                    if (!calibrationStatus.Value)
                     {
                         OnNoEyeCalibrationDetected.Invoke();
                     }
