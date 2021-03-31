@@ -34,7 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal,
-        "XR SDK Windows Mixed Reality Device Manager")]
+        "XR SDK Windows Mixed Reality Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityDeviceManager : XRSDKDeviceManager
     {
         /// <summary>

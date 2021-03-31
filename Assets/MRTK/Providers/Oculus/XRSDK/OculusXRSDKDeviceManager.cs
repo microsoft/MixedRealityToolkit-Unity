@@ -27,7 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         "XR SDK Oculus Device Manager",
         "Oculus/XRSDK/Profiles/DefaultOculusXRSDKDeviceManagerProfile.asset",
         "MixedRealityToolkit.Providers",
-        requiresProfile: true)]
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
     public class OculusXRSDKDeviceManager : XRSDKDeviceManager
     {
         /// <summary>

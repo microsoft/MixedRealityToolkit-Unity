@@ -23,4 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         Web = 1 << 9,
         Lumin = 1 << 10
     }
+
+    [Flags]
+    public enum SupportedUnityXRPipelines
+    {
+        LegacyXR = 1 << 0,
+        XRSDK = 1 << 1,
+    }
 }
