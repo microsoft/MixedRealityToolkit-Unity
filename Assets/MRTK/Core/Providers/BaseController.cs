@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerModel = controllerVisualizationProfile.GlobalLeftHandModel;
                     }
                     else if (ControllerHandedness == Handedness.Right &&
-                        GetControllerVisualizationProfile().GlobalRightHandModel != null)
+                        controllerVisualizationProfile.GlobalRightHandModel != null)
                     {
                         controllerModel = controllerVisualizationProfile.GlobalRightHandModel;
                     }
