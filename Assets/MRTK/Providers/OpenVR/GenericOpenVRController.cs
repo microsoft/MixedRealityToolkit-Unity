@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
             // Intercept this call if we are using the default driver provided models.
             if (visualizationProfile == null ||
-                !visualizationProfile.GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                !visualizationProfile.GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }

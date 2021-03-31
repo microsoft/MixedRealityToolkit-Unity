@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     if (usePlatformControllerModels.boolValue && (leftHandModelPrefab != null || rightHandModelPrefab != null))
                     {
-                        EditorGUILayout.HelpBox("When default models are used, an attempt is made to obtain controller models from the platform SDK. The global left and right models are only shown if no model can be obtained.", MessageType.Warning);
+                        EditorGUILayout.HelpBox("When platform models are used, an attempt is made to obtain controller models from the platform SDK. The global left and right models are only shown if no model can be obtained.", MessageType.Warning);
                     }
 
                     EditorGUI.BeginChangeCheck();
@@ -208,6 +208,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.HelpBox("A controller type must be defined!", MessageType.Error);
                 }
 
+                bool isOculusType = thisProfile.ControllerVisualizationSettings[i].ControllerType.Type.FullName.Contains("OculusXRSDKTouchController");
+                if (isOculusType)
+                {
+                    EditorGUILayout.HelpBox("Oculus Touch controller model visualization is not managed by MRTK, refer to the Oculus XRSDK Device Manager to configure controller visualization settings", MessageType.Error);
+                }
+
                 var handednessValue = mixedRealityControllerHandedness.intValue - 1;
 
                 // Reset in case it was set to something other than left or right.
@@ -233,11 +239,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 if (controllerUsePlatformModelOverride.boolValue && overrideModelPrefab != null)
                 {
-                    EditorGUILayout.HelpBox("When default model is used, the override model will only be used if the default model cannot be loaded from the driver.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("When platform model is used, the override model will only be used if the default model cannot be loaded from the driver.", MessageType.Warning);
                 }
 
                 EditorGUI.BeginChangeCheck();
                 overrideModelPrefab = EditorGUILayout.ObjectField(new GUIContent(overrideModel.displayName, "If no override model is set, the global model is used."), overrideModelPrefab, typeof(GameObject), false) as GameObject;
+                if(overrideModelPrefab == null && !controllerUsePlatformModelOverride.boolValue)
+                {
+                    EditorGUILayout.HelpBox("No override model was assigned and this controller will not attempt to use the platform's model, the global model will be used instead", MessageType.Warning);
+                }
 
                 if (EditorGUI.EndChangeCheck() && CheckVisualizer(overrideModelPrefab))
                 {

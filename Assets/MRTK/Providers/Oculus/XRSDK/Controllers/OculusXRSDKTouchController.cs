@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
+using System;
 
 #if OCULUS_ENABLED
 using Unity.XR.Oculus;
@@ -87,6 +88,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                     }
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Oculus Touch controller model visualization is not managed by MRTK, refer to the Oculus XRSDK Device Manager to configure controller visualization settings
+        /// </remarks>
+        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
+        {
+            return false;
         }
     }
 }
