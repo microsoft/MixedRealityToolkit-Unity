@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
         /// <inheritdoc/>
         /// <remarks>
-        /// If UseMRTKControllerVisualization is fals, Oculus Touch controller model visualization will not be managed by MRTK
+        /// If UseMRTKControllerVisualization is false, Oculus Touch controller model visualization will not be managed by MRTK
         /// Ensure that the Oculus Integration Package is installed and the Ovr Camera Rig is set correctly in the Oculus XRSDK Device Manager
         /// </remarks>
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
