@@ -41,6 +41,9 @@ namespace Microsoft.MixedReality.Toolkit
             internal set { experienceSettingsProfile = value; }
         }
 
+        [Obsolete("Please use the ExperienceSettingsProfile.TargetExperienceScale")]
+        public ExperienceScale TargetExperienceScale => ExperienceSettingsProfile.IsNull() ? ExperienceScale.Room : ExperienceSettingsProfile.TargetExperienceScale;
+
         [SerializeField]
         [FormerlySerializedAs("enableCameraProfile")]
         [Tooltip("Enable the Camera System on Startup.")]
