@@ -197,12 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         }
 
         /// <inheritdoc/>
-        protected override SerializedProperty GetXRSDKDataProviderConfigurationList()
-        {
-            return serializedObject.FindProperty("xrsdkDataProviderConfigurations");
-        }
-
-        /// <inheritdoc/>
         protected override ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry)
         {
             return new ServiceConfigurationProperties()

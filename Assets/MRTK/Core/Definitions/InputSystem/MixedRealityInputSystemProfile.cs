@@ -23,24 +23,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = System.Array.Empty<MixedRealityInputDataProviderConfiguration>();
 
         /// <summary>
-        /// List of legacy XR input data provider configurations to initialize and manage by the Input System registrar
+        /// List of input data provider configurations to initialize and manage by the Input System registrar
         /// </summary>
         public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations
         {
             get { return dataProviderConfigurations; }
             internal set { dataProviderConfigurations = value; }
-        }
-
-        [SerializeField]
-        private MixedRealityInputDataProviderConfiguration[] xrsdkDataProviderConfigurations = System.Array.Empty<MixedRealityInputDataProviderConfiguration>();
-
-        /// <summary>
-        /// List of XR SDK input data provider configurations to initialize and manage by the Input System registrar
-        /// </summary>
-        public MixedRealityInputDataProviderConfiguration[] XRSDKDataProviderConfigurations
-        {
-            get { return xrsdkDataProviderConfigurations; }
-            internal set { xrsdkDataProviderConfigurations = value; }
         }
 
         [SerializeField]

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Abstract class providing base functionality for data provider management in inspector. Useful for core systems that follow dataprovider access model.
+    /// Abstract class providing base functionality for data provider management in inspector. Useful for core systems that follow data provider access model.
     /// Designed to target ScriptableObject profile classes that configure services who support data providers. 
     /// These profile ScriptableObject classes should contain an array of IMixedRealityServiceConfigurations that configure a list of data providers for this service configuration
     /// </summary>
@@ -28,24 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Allows implementations of a IMixedRealityDataProviderAccess system's inspector to provide custom data provider representations for non-XR-specific data providers.
+        /// Allows implementations of a IMixedRealityDataProviderAccess system's inspector to provide custom data provider representations for data providers.
         /// </summary>
         /// <returns>SerializedProperty object that wraps references to array of <see cref="IMixedRealityServiceConfiguration"/> stored on the inspected target object.</returns>
         protected abstract SerializedProperty GetDataProviderConfigurationList();
-
-        /// <summary>
-        /// Allows implementations of a IMixedRealityDataProviderAccess system's inspector to provide custom data provider representations for XR SDK.
-        /// </summary>
-        /// <remarks>Implemented as virtual to prevent a breaking change.</remarks>
-        /// <returns>SerializedProperty object that wraps references to array of <see cref="IMixedRealityServiceConfiguration"/> stored on the inspected target object.</returns>
-        protected virtual SerializedProperty GetXRSDKDataProviderConfigurationList() => null;
-
-        /// <summary>
-        /// Allows implementations of a IMixedRealityDataProviderAccess system's inspector to provide custom data provider representations for legacy XR.
-        /// </summary>
-        /// <remarks>Implemented as virtual to prevent a breaking change.</remarks>
-        /// <returns>SerializedProperty object that wraps references to array of <see cref="IMixedRealityServiceConfiguration"/> stored on the inspected target object.</returns>
-        protected virtual SerializedProperty GetLegacyXRDataProviderConfigurationList() => null;
 
         /// <summary>
         /// Builds <see cref="ServiceConfigurationProperties"/> container object with SerializedProperty references to associated properties on the supplied <see cref="IMixedRealityServiceConfiguration"/> reference
@@ -95,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             serializedObject.ApplyModifiedProperties();
 
-            Utilities.SystemType providerType = GetDataProviderConfiguration(providerConfigurations.arraySize - 1).ComponentType;
+            SystemType providerType = GetDataProviderConfiguration(providerConfigurations.arraySize - 1).ComponentType;
             providerType.Type = null;
 
             providerFoldouts.Add(false);
@@ -139,6 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
 #if UNITY_2019_3_OR_NEWER
         private int tab = 0;
+        private SupportedUnityXRPipelines selectedPipeline = SupportedUnityXRPipelines.LegacyXR;
         private static readonly string[] Tabs = new string[] { LegacyXRLabel, XRSDKLabel };
         private const string LegacyXRLabel = "Legacy XR";
         private const string XRSDKLabel = "XR SDK";
@@ -157,24 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (tab != newTab)
             {
-                if (Tabs[newTab] == XRSDKLabel)
-                {
-                    var newProviderConfigurations = GetXRSDKDataProviderConfigurationList();
-                    if (newProviderConfigurations != null)
-                    {
-                        providerConfigurations = newProviderConfigurations;
-                    }
-                }
-                else
-                {
-                    providerConfigurations = GetDataProviderConfigurationList();
-                }
-
-                if (providerFoldouts == null || providerFoldouts.Count != providerConfigurations.arraySize)
-                {
-                    providerFoldouts = new List<bool>(new bool[providerConfigurations.arraySize]);
-                }
-
+                selectedPipeline = Tabs[newTab] == XRSDKLabel ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
                 tab = newTab;
             }
 #endif // UNITY_2019_3_OR_NEWER
@@ -194,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 for (int i = 0; i < providerConfigurations.arraySize; i++)
                 {
-                    changed |= RenderDataProviderEntry(i, removeContentLabel, dataProviderProfileType);
+                    changed |= RenderDataProviderEntry(i, removeContentLabel, selectedPipeline, dataProviderProfileType);
                 }
 
                 return changed;
@@ -205,13 +176,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Renders properties of <see cref="IMixedRealityServiceConfiguration"/> instance at provided index in inspector.
         /// Also renders inspector view of data provider's profile object and its contents if applicable and foldout is expanded.
         /// </summary>
-        protected bool RenderDataProviderEntry(int index, GUIContent removeContent, Type dataProviderProfileType = null)
+        protected bool RenderDataProviderEntry(int index, GUIContent removeContent, SupportedUnityXRPipelines pipeline, Type dataProviderProfileType = null)
         {
             bool changed = false;
             SerializedProperty provider = providerConfigurations.GetArrayElementAtIndex(index);
             ServiceConfigurationProperties providerProperties = GetDataProviderConfigurationProperties(provider);
 
-            var serviceType = GetDataProviderConfiguration(index).ComponentType;
+            SystemType serviceType = GetDataProviderConfiguration(index).ComponentType;
+
+            if (serviceType.Type != null && MixedRealityExtensionServiceAttribute.Find(serviceType.Type) is MixedRealityDataProviderAttribute providerAttribute)
+            {
+                if (!providerAttribute.SupportedUnityXRPipelines.HasFlag(pipeline))
+                {
+                    return false;
+                }
+            }
 
             // Don't hide new data providers added via the UI, otherwise there's no easy way to change their type
             if (serviceType?.Type == null && !MixedRealityProjectPreferences.ShowNullDataProviders && !providerProperties.componentName.stringValue.StartsWith(NewDataProvider))
