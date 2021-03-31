@@ -90,7 +90,13 @@ MonoBehaviour:
     priority: 0
     runtimePlatform: 208
     deviceManagerProfile: {fileID: 0}
-  xrsdkDataProviderConfigurations: []
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    componentName: XR SDK Windows Mixed Reality Device Manager
+    priority: 0
+    runtimePlatform: 9
+    deviceManagerProfile: {fileID: 0}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:
