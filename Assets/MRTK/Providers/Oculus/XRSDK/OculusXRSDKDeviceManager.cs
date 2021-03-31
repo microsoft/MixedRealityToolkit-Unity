@@ -89,6 +89,20 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         #region Controller Utilities
 
         /// <inheritdoc />
+        protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
+        {
+            GenericXRSDKController controller = base.GetOrAddController(inputDevice);
+            OculusXRSDKTouchController oculusTouchController = controller as OculusXRSDKTouchController;
+
+            if(!oculusTouchController.IsNull())
+            {
+                oculusTouchController.UseMRTKControllerVisualization = cameraRig.IsNull();
+            }
+
+            return oculusTouchController;
+        }
+
+        /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
             switch (supportedControllerType)
