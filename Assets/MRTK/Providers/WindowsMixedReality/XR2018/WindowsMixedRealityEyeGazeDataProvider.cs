@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             using (UpdatePerfMarker.Auto())
             {
-                if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null || !eyesApiAvailable)
+                if (!eyesApiAvailable || WindowsMixedRealityUtilities.SpatialCoordinateSystem == null)
                 {
                     return;
                 }
