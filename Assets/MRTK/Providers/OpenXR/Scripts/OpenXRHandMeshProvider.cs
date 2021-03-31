@@ -3,11 +3,11 @@
 
 #if MSFT_OPENXR_0_2_0_OR_NEWER
 using Microsoft.MixedReality.OpenXR;
+using System.Collections.Generic;
+using UnityEngine;
 #endif // MSFT_OPENXR_0_2_0_OR_NEWER
 
 using Microsoft.MixedReality.Toolkit.Input;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
