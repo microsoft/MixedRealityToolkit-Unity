@@ -88,6 +88,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
         #region Controller Utilities
 
+#if OCULUSINTEGRATION_PRESENT
         /// <inheritdoc />
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
@@ -101,6 +102,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
             return oculusTouchController;
         }
+#endif
 
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
