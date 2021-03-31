@@ -166,11 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return null;
         }
 
-        public bool ControllerVisualizationDefinitionExists(Type controllerType, Handedness hand)
-        {
-            return GetControllerVisualizationDefinition(controllerType, hand).HasValue;
-        }
-
         /// <summary>
         /// Gets the override model for a specific controller type and hand
         /// </summary>

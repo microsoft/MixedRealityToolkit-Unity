@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
             MixedRealityControllerVisualizationProfile controllerVisualizationProfile = GetControllerVisualizationProfile();
-            bool controllerVisualizationProfilePresent = GetControllerVisualizationProfile() != null;
+            bool controllerVisualizationProfilePresent = controllerVisualizationProfile != null;
            
             if (!controllerVisualizationProfilePresent || !controllerVisualizationProfile.RenderMotionControllers)
             {
