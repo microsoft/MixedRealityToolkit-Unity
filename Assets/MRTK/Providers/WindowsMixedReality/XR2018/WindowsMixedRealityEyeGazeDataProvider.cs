@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         "Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK",
         true)]
-    public class WindowsMixedRealityEyeGazeDataProvider : BaseEyeGazeDataProvider, IMixedRealityCapabilityCheck
+    public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -71,7 +71,36 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 eyesApiAvailable &= EyesPose.IsSupported();
             }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+
+            gazeSmoother = new EyeGazeSmoother();
+
+            // Register for these events to forward along, in case code is still registering for the obsolete actions
+            gazeSmoother.OnSaccade += GazeSmoother_OnSaccade;
+            gazeSmoother.OnSaccadeX += GazeSmoother_OnSaccadeX;
+            gazeSmoother.OnSaccadeY += GazeSmoother_OnSaccadeY;
         }
+
+        /// <inheritdoc />
+        public bool SmoothEyeTracking { get; set; } = false;
+
+        /// <inheritdoc />
+        public IMixedRealityEyeSaccadeProvider SaccadeProvider => gazeSmoother;
+        private readonly EyeGazeSmoother gazeSmoother;
+
+        /// <inheritdoc />
+        [Obsolete("Register for this provider's SaccadeProvider's actions instead")]
+        public event Action OnSaccade;
+        private void GazeSmoother_OnSaccade() => OnSaccade?.Invoke();
+
+        /// <inheritdoc />
+        [Obsolete("Register for this provider's SaccadeProvider's actions instead")]
+        public event Action OnSaccadeX;
+        private void GazeSmoother_OnSaccadeX() => OnSaccadeX?.Invoke();
+
+        /// <inheritdoc />
+        [Obsolete("Register for this provider's SaccadeProvider's actions instead")]
+        public event Action OnSaccadeY;
+        private void GazeSmoother_OnSaccadeY() => OnSaccadeY?.Invoke();
 
         private readonly bool eyesApiAvailable = false;
 
@@ -89,6 +118,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <inheritdoc />
         public override void Initialize()
         {
+#if UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+            Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.GazeInput,
+                    GetType());
+#endif // UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+
             if (Application.isPlaying && eyesApiAvailable)
             {
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -96,7 +131,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
             }
 
+            ReadProfile();
+
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
             base.Initialize();
+        }
+
+        private void ReadProfile()
+        {
+            if (ConfigurationProfile == null)
+            {
+                Debug.LogError($"{Name} requires a configuration profile to run properly.");
+                return;
+            }
+
+            MixedRealityEyeTrackingProfile profile = ConfigurationProfile as MixedRealityEyeTrackingProfile;
+            if (profile == null)
+            {
+                Debug.LogError($"{Name}'s configuration profile must be a MixedRealityEyeTrackingProfile.");
+                return;
+            }
+
+            SmoothEyeTracking = profile.SmoothEyeTracking;
         }
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -131,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                             if (SmoothEyeTracking)
                             {
-                                newGaze = SmoothGaze(newGaze);
+                                newGaze = gazeSmoother.SmoothGaze(newGaze);
                             }
 
                             Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);

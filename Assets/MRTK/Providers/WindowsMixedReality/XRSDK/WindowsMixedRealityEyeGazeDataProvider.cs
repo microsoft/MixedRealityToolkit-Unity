@@ -3,15 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine.XR;
 
 #if WMR_2_7_OR_NEWER_ENABLED
-using System;
 using Unity.Profiling;
 using Unity.XR.WindowsMR;
 using UnityEngine;
 #endif // WMR_2_7_OR_NEWER_ENABLED
-
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -21,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         "XRSDK Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK",
         true)]
-    public class WindowsMixedRealityEyeGazeDataProvider : BaseEyeGazeDataProvider, IMixedRealityCapabilityCheck
+    public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -34,9 +33,37 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
+        {
+            gazeSmoother = new EyeGazeSmoother();
 
-        private InputDevice centerEye = default(InputDevice);
+            // Register for these events to forward along, in case code is still registering for the obsolete actions
+            gazeSmoother.OnSaccade += GazeSmoother_OnSaccade;
+            gazeSmoother.OnSaccadeX += GazeSmoother_OnSaccadeX;
+            gazeSmoother.OnSaccadeY += GazeSmoother_OnSaccadeY;
+        }
+
+        /// <inheritdoc />
+        public bool SmoothEyeTracking { get; set; } = false;
+
+        /// <inheritdoc />
+        public IMixedRealityEyeSaccadeProvider SaccadeProvider => gazeSmoother;
+        private readonly EyeGazeSmoother gazeSmoother;
+
+        /// <inheritdoc />
+        [Obsolete("Register for this provider's SaccadeProvider's actions instead")]
+        public event Action OnSaccade;
+        private void GazeSmoother_OnSaccade() => OnSaccade?.Invoke();
+
+        /// <inheritdoc />
+        [Obsolete("Register for this provider's SaccadeProvider's actions instead")]
+        public event Action OnSaccadeX;
+        private void GazeSmoother_OnSaccadeX() => OnSaccadeX?.Invoke();
+
+        /// <inheritdoc />
+        [Obsolete("Register for this provider's SaccadeProvider's actions instead")]
+        public event Action OnSaccadeY;
+        private void GazeSmoother_OnSaccadeY() => OnSaccadeY?.Invoke();
 
         #region IMixedRealityCapabilityCheck Implementation
 
@@ -54,6 +81,42 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         #endregion IMixedRealityCapabilityCheck Implementation
 
 #if WMR_2_7_OR_NEWER_ENABLED
+        private InputDevice centerEye = default(InputDevice);
+
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+#if UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+            Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.GazeInput,
+                    GetType());
+#endif // UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+
+            ReadProfile();
+
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
+            base.Initialize();
+        }
+
+        private void ReadProfile()
+        {
+            if (ConfigurationProfile == null)
+            {
+                Debug.LogError($"{Name} requires a configuration profile to run properly.");
+                return;
+            }
+
+            MixedRealityEyeTrackingProfile profile = ConfigurationProfile as MixedRealityEyeTrackingProfile;
+            if (profile == null)
+            {
+                Debug.LogError($"{Name}'s configuration profile must be a MixedRealityEyeTrackingProfile.");
+                return;
+            }
+
+            SmoothEyeTracking = profile.SmoothEyeTracking;
+        }
+
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityEyeGazeDataProvider.Update");
 
         /// <inheritdoc />
@@ -86,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
                     if (SmoothEyeTracking)
                     {
-                        newGaze = SmoothGaze(newGaze);
+                        newGaze = gazeSmoother.SmoothGaze(newGaze);
                     }
 
                     Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, DateTime.UtcNow);

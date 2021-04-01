@@ -1,37 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Provides some predefined parameters for eye gaze smoothing and saccade detection.
     /// </summary>
-    public abstract class BaseEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
+    public class EyeGazeSmoother : IMixedRealityEyeSaccadeProvider
     {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="name">Friendly name of the service.</param>
-        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
-        /// <param name="profile">The service's configuration profile.</param>
-        public BaseEyeGazeDataProvider(
-            IMixedRealityInputSystem inputSystem,
-            string name,
-            uint priority,
-            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
-
-        /// <inheritdoc />
-        public bool SmoothEyeTracking { get; set; } = false;
-
-        /// <inheritdoc />
-        public IMixedRealityEyeSaccadeProvider SaccadeProvider => this;
-
         /// <inheritdoc />
         public event Action OnSaccade;
 
@@ -50,56 +32,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Ray saccade_initialGazePoint;
         private readonly List<Ray> saccade_newGazeCluster = new List<Ray>();
 
-        /// <inheritdoc />
-        public override void Initialize()
-        {
-#if UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
-            Utilities.Editor.UWPCapabilityUtility.RequireCapability(
-                UnityEditor.PlayerSettings.WSACapability.GazeInput,
-                GetType());
-#endif // UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
-
-            if (Application.isPlaying)
-            {
-                ReadProfile();
-            }
-
-            base.Initialize();
-        }
-
-        private void ReadProfile()
-        {
-            if (ConfigurationProfile == null)
-            {
-                Debug.LogError($"{GetType()} requires a configuration profile to run properly.");
-                return;
-            }
-
-            MixedRealityEyeTrackingProfile profile = ConfigurationProfile as MixedRealityEyeTrackingProfile;
-            if (profile == null)
-            {
-                Debug.LogError($"{GetType()}'s configuration profile must be a MixedRealityEyeTrackingProfile.");
-                return;
-            }
-
-            SmoothEyeTracking = profile.SmoothEyeTracking;
-        }
-
-        private static readonly ProfilerMarker SmoothGazePerfMarker = new ProfilerMarker("[MRTK] BaseEyeGazeDataProvider.SmoothGaze");
+        private static readonly ProfilerMarker SmoothGazePerfMarker = new ProfilerMarker("[MRTK] EyeGazeSmoother.SmoothGaze");
 
         /// <summary>
         /// Smooths eye gaze by detecting saccades and tracking gaze clusters.
         /// </summary>
         /// <param name="newGaze">The ray to smooth.</param>
         /// <returns>The smoothed ray.</returns>
-        protected Ray SmoothGaze(Ray? newGaze)
+        public Ray SmoothGaze(Ray newGaze)
         {
             using (SmoothGazePerfMarker.Auto())
             {
                 if (!oldGaze.HasValue)
                 {
                     oldGaze = newGaze;
-                    return newGaze.Value;
+                    return newGaze;
                 }
 
                 Ray smoothedGaze = new Ray();
@@ -109,12 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // apart, we check for clusters of gaze points instead.
                 // 1. If the user's gaze points are far enough apart, this may be a saccade, but also could be an outlier.
                 //    So, let's mark it as a potential saccade.
-                if (IsSaccading(oldGaze.Value, newGaze.Value) && confidenceOfSaccade == 0)
+                if (IsSaccading(oldGaze.Value, newGaze) && confidenceOfSaccade == 0)
                 {
                     confidenceOfSaccade++;
                     saccade_initialGazePoint = oldGaze.Value;
                     saccade_newGazeCluster.Clear();
-                    saccade_newGazeCluster.Add(newGaze.Value);
+                    saccade_newGazeCluster.Add(newGaze);
                 }
                 // 2. If we have a potential saccade marked, let's check if the new points are within the proximity of 
                 //    the initial saccade point.
@@ -127,19 +74,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // amount of time resulting in a cluster of gaze points.
                     for (int i = 0; i < saccade_newGazeCluster.Count; i++)
                     {
-                        if (IsSaccading(saccade_newGazeCluster[i], newGaze.Value))
+                        if (IsSaccading(saccade_newGazeCluster[i], newGaze))
                         {
                             confidenceOfSaccade = 0;
                         }
 
                         // Meanwhile we want to make sure that we are still looking sufficiently far away from our 
                         // original gaze point before saccading.
-                        if (!IsSaccading(saccade_initialGazePoint, newGaze.Value))
+                        if (!IsSaccading(saccade_initialGazePoint, newGaze))
                         {
                             confidenceOfSaccade = 0;
                         }
                     }
-                    saccade_newGazeCluster.Add(newGaze.Value);
+                    saccade_newGazeCluster.Add(newGaze);
                 }
                 else if (confidenceOfSaccade == confidenceOfSaccadeThreshold)
                 {
@@ -149,14 +96,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Saccade-dependent local smoothing
                 if (isSaccading)
                 {
-                    smoothedGaze.direction = newGaze.Value.direction;
-                    smoothedGaze.origin = newGaze.Value.origin;
+                    smoothedGaze.direction = newGaze.direction;
+                    smoothedGaze.origin = newGaze.origin;
                     confidenceOfSaccade = 0;
                 }
                 else
                 {
-                    smoothedGaze.direction = oldGaze.Value.direction * smoothFactorNormalized + newGaze.Value.direction * (1 - smoothFactorNormalized);
-                    smoothedGaze.origin = oldGaze.Value.origin * smoothFactorNormalized + newGaze.Value.origin * (1 - smoothFactorNormalized);
+                    smoothedGaze.direction = oldGaze.Value.direction * smoothFactorNormalized + newGaze.direction * (1 - smoothFactorNormalized);
+                    smoothedGaze.origin = oldGaze.Value.origin * smoothFactorNormalized + newGaze.origin * (1 - smoothFactorNormalized);
                 }
 
                 oldGaze = smoothedGaze;
@@ -164,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker IsSaccadingPerfMarker = new ProfilerMarker("[MRTK] BaseEyeGazeDataProvider.IsSaccading");
+        private static readonly ProfilerMarker IsSaccadingPerfMarker = new ProfilerMarker("[MRTK] EyeGazeSmoother.IsSaccading");
 
         private bool IsSaccading(Ray rayOld, Ray rayNew)
         {
