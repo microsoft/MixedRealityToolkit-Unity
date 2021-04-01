@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityToolkitExperienceSettingsProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  targetExperiencePlatform: 0
   targetExperienceScale: 3
   floorHeight: 0
   alignCameraToFloorHeight: 0

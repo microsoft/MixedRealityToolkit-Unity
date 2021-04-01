@@ -38,8 +38,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private Vector3 contentPosition = Vector3.zero;
 
-        private int frameWaitHack = 0;
-
         [Tooltip("Optional container object reference. If null, this script will move the object it's attached to.")]
         private Transform containerObject = null;
 
@@ -51,16 +49,44 @@ namespace Microsoft.MixedReality.Toolkit
                 containerObject = transform;
             }
 
-             StartCoroutine(SetContentHeight());
+            // Init the content height for Legacy XR
+
+            // Init the content height for XRSDK
+            if (XRSubsystemHelpers.InputSubsystem != null)
+            {
+                XRSubsystemHelpers.InputSubsystem.trackingOriginUpdated += (inputSubsystem) => InitializeSceneContent();
+            }
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+            else if (XRDevice.isPresent)
+            {
+                UnityEngine.XR.WSA.WorldManager.OnPositionalLocatorStateChanged += (oldState, newState) => InitializeSceneContent();
+            }
+#endif
+            else
+            {
+                // Init the content height on non-XR platforms
+                StartCoroutine(InitializeSceneContentWithDelay());
+            }
         }
 
-        private IEnumerator SetContentHeight()
+        // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
+        private IEnumerator InitializeSceneContentWithDelay()
         {
-            if (frameWaitHack < 1)
+            yield return new WaitForEndOfFrame();
+            InitializeSceneContent();
+        }
+
+
+        /// <summary>
+        /// bool used to track whether this content has been initialized yet.
+        /// </summary>
+        private bool contentInitialized = false;
+
+        private void InitializeSceneContent()
+        {
+            if(contentInitialized)
             {
-                // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
-                frameWaitHack++;
-                yield return null;
+                return;
             }
 
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
@@ -89,6 +115,8 @@ namespace Microsoft.MixedReality.Toolkit
 
                 containerObject.position = contentPosition;
             }
+
+            contentInitialized = true;
         }
     }
 }
