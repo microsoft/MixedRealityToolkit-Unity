@@ -288,7 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
+#if UNITY_EDITOR
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
+#endif
 
 
             // Todo: this condition shouldn't be here.
