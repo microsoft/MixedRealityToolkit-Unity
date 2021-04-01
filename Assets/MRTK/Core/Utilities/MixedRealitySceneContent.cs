@@ -43,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void Awake()
         {
-
             if (containerObject == null)
             {
                 containerObject = transform;
