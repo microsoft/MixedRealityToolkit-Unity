@@ -4,13 +4,15 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using UnityEngine.XR;
 
-#if WMR_2_7_OR_NEWER_ENABLED
+// These versions represent the first version eye tracking became usable across Unity 2019/2020/2021
+// WMR_2_7_0_OR_NEWER stops being defined at 3.0 and WMR_4_4_2_OR_NEWER stops being defined at 5.0, exclusive
+#if WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 using Unity.Profiling;
 using Unity.XR.WindowsMR;
 using UnityEngine;
-#endif // WMR_2_7_OR_NEWER_ENABLED
+using UnityEngine.XR;
+#endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -69,18 +71,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability) =>
-#if WMR_2_7_OR_NEWER_ENABLED
+#if WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
                                                                           capability == MixedRealityCapability.EyeTracking
                                                                           && centerEye.isValid
                                                                           && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeAvailable, out bool gazeAvailable)
                                                                           && gazeAvailable;
 #else
                                                                           false;
-#endif // WMR_2_7_OR_NEWER_ENABLED
+#endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
-#if WMR_2_7_OR_NEWER_ENABLED
+#if WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
         private InputDevice centerEye = default(InputDevice);
 
         /// <inheritdoc />
@@ -161,6 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
         }
-#endif // WMR_2_7_OR_NEWER_ENABLED
+#endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
     }
 }
