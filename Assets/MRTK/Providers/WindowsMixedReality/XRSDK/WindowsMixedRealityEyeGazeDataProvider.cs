@@ -129,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     centerEye = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
                     if (!centerEye.isValid)
                     {
+                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
                         return;
                     }
                 }
@@ -141,11 +142,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
                 Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
 
-                if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeTracked, out bool gazeTracked) && gazeTracked
+                if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeTracked, out bool gazeTracked)
+                    && gazeTracked
                     && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazePosition, out Vector3 eyeGazePosition)
                     && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeRotation, out Quaternion eyeGazeRotation))
                 {
-                    Ray newGaze = new Ray(eyeGazePosition, eyeGazeRotation * Vector3.forward);
+                    Vector3 worldPosition = MixedRealityPlayspace.TransformPoint(eyeGazePosition);
+                    Vector3 worldRotation = MixedRealityPlayspace.TransformDirection(eyeGazeRotation * Vector3.forward);
+
+                    Ray newGaze = new Ray(worldPosition, worldRotation);
 
                     if (SmoothEyeTracking)
                     {
