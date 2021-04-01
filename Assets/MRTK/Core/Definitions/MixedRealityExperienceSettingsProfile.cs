@@ -20,20 +20,6 @@ namespace Microsoft.MixedReality.Toolkit
     {
         [SerializeField]
         [Tooltip("The scale of the Mixed Reality experience.")]
-        private ExperiencePlatform targetExperiencePlatform = ExperiencePlatform.AR;
-
-        /// <summary>
-        /// The target platform of the experience (AR/VR).
-        /// </summary>
-        public ExperiencePlatform TargetExperiencePlatform
-        {
-            get { return targetExperiencePlatform; }
-            set { targetExperiencePlatform = value; }
-        }
-
-
-        [SerializeField]
-        [Tooltip("The scale of the Mixed Reality experience.")]
         private ExperienceScale targetExperienceScale = ExperienceScale.Room;
 
         /// <summary>
