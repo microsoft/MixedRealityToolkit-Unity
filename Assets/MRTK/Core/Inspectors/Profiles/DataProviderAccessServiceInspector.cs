@@ -58,6 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
+#if UNITY_2019_3_OR_NEWER
+            tab = XRSettingsUtilities.IsLegacyXRActive ? 0 : 1;
+#endif // UNITY_2019_3_OR_NEWER
+
             providerConfigurations = GetDataProviderConfigurationList();
 
             if (providerFoldouts == null || providerFoldouts.Count != providerConfigurations.arraySize)
@@ -141,13 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool changed = false;
 
 #if UNITY_2019_3_OR_NEWER
-            int newTab = GUILayout.Toolbar(tab, Tabs);
-
-            if (tab != newTab)
-            {
-                selectedPipeline = Tabs[newTab] == XRSDKLabel ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
-                tab = newTab;
-            }
+            tab = GUILayout.Toolbar(tab, Tabs);
+            selectedPipeline = Tabs[tab] == XRSDKLabel ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
 #endif // UNITY_2019_3_OR_NEWER
 
             using (new EditorGUILayout.VerticalScope())
