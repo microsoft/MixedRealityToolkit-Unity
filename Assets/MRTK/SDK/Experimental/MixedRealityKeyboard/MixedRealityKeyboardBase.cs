@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.Events;
-using Microsoft.MixedReality.Toolkit.Input;
 #if WINDOWS_UWP
 using Windows.Globalization;
 using Windows.UI.ViewManagement;
@@ -366,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         CaretIndex = Mathf.Clamp(CaretIndex + 1, 0, Text.Length);
                     }
                 }
-                
+
                 // Handle commit via the return key.
                 if (!multiLine)
                 {

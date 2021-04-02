@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             for (int i = 0; i < allFilePathsCount; i++)
             {
-                EditorUtility.DisplayProgressBar("GUID Remapping", "Parsing assets...", (1 + (i / halfPathsCount))  / 4f);
+                EditorUtility.DisplayProgressBar("GUID Remapping", "Parsing assets...", (1 + (i / halfPathsCount)) / 4f);
 
                 string filePath = allFilePaths[i];
 
@@ -376,8 +376,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         // The OculusProfileGUID bypasses throwing the exception. The reason for this is that there is currently an asset (DefaultOculusXRSDKDeviceManagerProfile.asset) that is reliant
                         // on Unity 2019+ specific code (OculusXRSDKDeviceManagerProfile.cs), which causes CI to fail since it's running on Unity 2018.
 
-                        // Also bypass this exception for scripts in an InteractiveElement directory as those files are only supported in Unity 2019.
-                        if (id != OculusProfileGUID && !filePath.Contains("InteractiveElement"))
+                        // Also bypass this exception for scripts in the InteractiveElement and SceneUnderstanding directories as those files are only supported in Unity 2019.
+                        if (id != OculusProfileGUID && !filePath.Contains("InteractiveElement") && !filePath.Contains("SceneUnderstanding"))
                         {
                             throw new InvalidDataException($"A script without a class ({NonClassDictionary[id]}) is being processed on {Path.GetFileName(filePath)}.");
                         }

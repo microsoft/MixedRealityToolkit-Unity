@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
-using UnityEngine;
 using Unity.Profiling;
+using UnityEngine;
 using UnityEngine.XR;
 
 #if OCULUS_ENABLED

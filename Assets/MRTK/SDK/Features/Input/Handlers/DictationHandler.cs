@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return dictationSystem.AudioClip; }
         }
-        
+
         #region InputSystemGlobalHandlerListener Implementation
 
         /// <inheritdoc />

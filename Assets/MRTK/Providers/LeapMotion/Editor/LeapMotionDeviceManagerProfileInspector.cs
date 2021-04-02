@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                             // Display the properties for editing the head offset 
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetY);
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetZ);
-                            EditorGUILayout.PropertyField(leapVRDeviceOffsetTiltX);   
+                            EditorGUILayout.PropertyField(leapVRDeviceOffsetTiltX);
                         }
                         else if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.Transform)
                         {

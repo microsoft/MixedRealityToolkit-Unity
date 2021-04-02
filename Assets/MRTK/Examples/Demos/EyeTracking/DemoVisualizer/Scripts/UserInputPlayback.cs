@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 txt_LoadingUpdate.text = "Error: File does not exist! " + uwpFileName;
                 return false;
             }
-            
+
             return true;
         }
 
@@ -80,10 +80,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             {
                 uwpLogSessionFolder = await uwpRootFolder.GetFolderAsync(dir);
                 uwpLogFile = await uwpLogSessionFolder.GetFileAsync(filename);
-                
+
                 return true;
             }
-            catch 
+            catch
             {
                 txt_LoadingUpdate.text = "Error: File could not be found.";
             }

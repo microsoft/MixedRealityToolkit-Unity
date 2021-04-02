@@ -5,14 +5,14 @@ parameters:
   outputDirectory: $(Build.ArtifactStagingDirectory)\build\upm\output
   version: $(MRTKVersion)
   buildNumber: $(Build.BuildNumber)
-  excludeBuildNumber: 0
+  excludeBuildNumber: false
 
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '12.18.0'
 
-- ${{ if eq(parameters.excludeBuildNumber, 0) }}:
+- ${{ if eq(parameters.excludeBuildNumber, false) }}:
   - task: PowerShell@2
     displayName: 'Build PREVIEW UPM packages'
     inputs:
@@ -24,7 +24,7 @@ steps:
         -Version ${{ parameters.version }}
         -BuildNumber ${{ parameters.buildNumber }}
 
-- ${{ if eq(parameters.excludeBuildNumber, 1) }}:
+- ${{ if eq(parameters.excludeBuildNumber, true) }}:
   - task: PowerShell@2
     displayName: 'Build OFFICIAL UPM packages'
     inputs:

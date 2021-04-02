@@ -10,15 +10,15 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -169,6 +169,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // make sure gaze is back at 3d object
             Assert.AreEqual(CoreServices.InputSystem.GazeProvider.GazeTarget, cube, "GazeProvider target is not set to 3d object (cube)");
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestGazeProviderDestroyed()
+        {
+            PlayModeTestUtilities.Setup();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // remove the gaze provider and it's components from the scene
+            GazeProvider gazeProvider = CoreServices.InputSystem.GazeProvider.GameObjectReference.GetComponent<GazeProvider>();
+            gazeProvider.GazePointer.BaseCursor.Destroy();
+            DebugUtilities.LogVerbose("Application was playing, destroyed the gaze pointer's BaseCursor");
+            UnityObjectExtensions.DestroyObject(gazeProvider as Component);
+            gazeProvider = null;
+
+            // Ensure that the input system and it's related input sources are able to be reinitialized without issue.
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            PlayModeTestUtilities.GetInputSystem().Initialize();
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             yield return null;
         }

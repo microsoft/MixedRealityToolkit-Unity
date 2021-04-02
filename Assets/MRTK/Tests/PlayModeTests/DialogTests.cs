@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // The dialog only supports displaying up to two options
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog",DialogButtonType.Yes | DialogButtonType.No, true);
+            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, true);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             // near distances determined by the Dialog.Open() function
             dialogDistance = dialogGameObject.transform.position.magnitude;
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // The dialog only supports displaying up to two options
             yield return handRight.MoveTo(Vector3.zero);
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, false);
-            
+
             // Wait for the dialog to move to a stable position
             yield return new WaitForSeconds(DialogStabilizationTime);
 

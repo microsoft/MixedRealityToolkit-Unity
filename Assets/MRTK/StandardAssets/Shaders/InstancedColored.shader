@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// NOTE: MRTK Shaders are versioned via the MRTK.Shaders.sentinel file.
+// When making changes to any shader's source file, the value in the sentinel _must_ be incremented.
+
 Shader "Hidden/Instanced-Colored"
 {
     Properties

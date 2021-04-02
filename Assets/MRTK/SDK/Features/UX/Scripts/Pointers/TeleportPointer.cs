@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public TeleportSurfaceResult TeleportSurfaceResult { get; private set; } = TeleportSurfaceResult.None;
 
         /// <inheritdoc />
-        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
+        public IMixedRealityTeleportHotspot TeleportHotspot { get; set; }
 
         [SerializeField]
         [Tooltip("Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction")]
@@ -246,11 +246,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             get
             {
-                if (TeleportHotSpot != null &&
-                    TeleportHotSpot.OverrideTargetOrientation &&
+                if (TeleportHotspot != null &&
+                    TeleportHotspot.OverrideOrientation &&
                     TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
-                    return TeleportHotSpot.TargetOrientation;
+                    return TeleportHotspot.TargetRotation;
                 }
 
                 return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
@@ -278,6 +278,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                 // Re-enable gravity if we're looking at a hotspot
                 GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+
+                // Set the have the teleport pointer control which layer masks it raycasts against
+                PrioritizedLayerMasksOverride = PrioritizedLayerMasksOverride ?? new LayerMask[] { ValidLayers | InvalidLayers };
             }
         }
 
@@ -314,11 +317,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
                         {
                             // See if it's a hot spot
-                            if (TeleportHotSpot != null && TeleportHotSpot.IsActive)
+                            if (TeleportHotspot != null && TeleportHotspot.IsActive)
                             {
                                 TeleportSurfaceResult = TeleportSurfaceResult.HotSpot;
                                 // Turn on gravity, point it at hotspot
-                                GravityDistorter.WorldCenterOfGravity = TeleportHotSpot.Position;
+                                GravityDistorter.WorldCenterOfGravity = TeleportHotspot.Position;
                                 GravityDistorter.enabled = true;
                             }
                             else
@@ -376,10 +379,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             base.Reset();
             if (gameObject == null) return;
 
-            if (TeleportHotSpot != null)
+            if (TeleportHotspot != null)
             {
-                CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
-                TeleportHotSpot = null;
+                CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotspot);
+                TeleportHotspot = null;
             }
         }
 
@@ -424,7 +427,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         {
                             TeleportRequestRaised = true;
 
-                            CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                            CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotspot);
                             if (pointerAudioSource != null && teleportRequestedClip != null)
                             {
                                 pointerAudioSource.PlayOneShot(teleportRequestedClip);
@@ -494,7 +497,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                             TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                         {
-                            CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                            CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotspot);
                             if (pointerAudioSource != null && teleportCompletedClip != null)
                             {
                                 pointerAudioSource.PlayOneShot(teleportCompletedClip);
@@ -505,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     if (TeleportRequestRaised)
                     {
                         TeleportRequestRaised = false;
-                        CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                        CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotspot);
                     }
                 }
             }
