@@ -4670,7 +4670,7 @@ PrefabInstance:
     - target: {fileID: 2689110609528677567, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadProfile
+      value: LoadConfigProfile
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}

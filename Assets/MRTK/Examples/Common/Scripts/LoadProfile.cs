@@ -6,16 +6,19 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     /// <summary>
-    /// Automatically loads a given Mixed Reality Toolkit configuration profile when loading up the scene. 
+    /// Loads a given Mixed Reality Toolkit configuration profile. 
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/Examples/LoadProfiles")]
-    public class LoadProfiles : MonoBehaviour
+    [AddComponentMenu("Scripts/MRTK/Examples/LoadProfile")]
+    public class LoadProfile : MonoBehaviour
     {
         [Tooltip("Mixed Reality Toolkit profile to load.")]
         [SerializeField]
         private MixedRealityToolkitConfigurationProfile configProfile = null;
 
-        public void LoadProfile()
+        /// <summary>
+        /// Loads a given Mixed Reality Toolkit configuration profile. 
+        /// </summary>
+        public void LoadConfigProfile()
         {
             if ((configProfile != null) && (MixedRealityToolkit.Instance != null))
             {
