@@ -232,7 +232,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             ExperienceScale originalExperienceScale;
             float originalProfileFloorHeight;
-            bool originalAlignCameraToFloorHeight;
 
             float floorHeight = 1.3f;
 
