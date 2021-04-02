@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TeleportMixedRealityToolkitConfigurationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
+  experienceSettingsProfile: {fileID: 0}
   targetExperienceScale: 3
   enableCameraSystem: 1
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}

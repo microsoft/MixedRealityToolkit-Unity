@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: EyeTrackingDemoConfigurationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
-  experienceSettingsProfile: {fileID: 11400000, guid: 1ccbb3b1d759d6a49b4161a958329d9d,
+  experienceSettingsProfile: {fileID: 11400000, guid: d67dc8667c2253644891c8627f5f31f1,
     type: 2}
+  targetExperienceScale: 3
   enableCameraSystem: 1
   cameraProfile: {fileID: 11400000, guid: 0447581e7bd59f64fbb28151c65a3dc4, type: 2}
   cameraSystemType:
