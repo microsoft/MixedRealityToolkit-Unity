@@ -1,27 +1,28 @@
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Generic;
+
+// These versions represent the first version eye tracking became usable across Unity 2019/2020/2021
+// WMR_2_7_0_OR_NEWER stops being defined at 3.0 and WMR_4_4_2_OR_NEWER stops being defined at 5.0, exclusive
+#if WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 using Unity.Profiling;
+using Unity.XR.WindowsMR;
 using UnityEngine;
 using UnityEngine.XR;
+#endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 
-#if UNITY_OPENXR
-using UnityEngine.XR.OpenXR.Features.Interactions;
-#endif // UNITY_OPENXR
-
-namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
+namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
-        (SupportedPlatforms)(-1),
-        "OpenXR XRSDK Eye Gaze Provider",
+        SupportedPlatforms.WindowsUniversal,
+        "XRSDK Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK",
         true)]
-    public class OpenXREyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider, IMixedRealityCapabilityCheck
+    public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
@@ -30,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public OpenXREyeGazeDataProvider(
+        public WindowsMixedRealityEyeGazeDataProvider(
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
@@ -66,24 +67,37 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         public event Action OnSaccadeY;
         private void GazeSmoother_OnSaccadeY() => OnSaccadeY?.Invoke();
 
-        private static readonly List<InputDevice> InputDeviceList = new List<InputDevice>();
-        private InputDevice eyeTrackingDevice = default(InputDevice);
-
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
-        public bool CheckCapability(MixedRealityCapability capability) => eyeTrackingDevice.isValid && capability == MixedRealityCapability.EyeTracking;
+        public bool CheckCapability(MixedRealityCapability capability) =>
+#if WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
+                                                                          capability == MixedRealityCapability.EyeTracking
+                                                                          && centerEye.isValid
+                                                                          && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeAvailable, out bool gazeAvailable)
+                                                                          && gazeAvailable;
+#else
+                                                                          false;
+#endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 
         #endregion IMixedRealityCapabilityCheck Implementation
+
+#if WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
+        private InputDevice centerEye = default(InputDevice);
 
         /// <inheritdoc />
         public override void Initialize()
         {
-            if (Application.isPlaying)
-            {
-                ReadProfile();
-            }
+#if UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+            Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.GazeInput,
+                    GetType());
+#endif // UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
 
+            ReadProfile();
+
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
             base.Initialize();
         }
 
@@ -103,41 +117,37 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             SmoothEyeTracking = profile.SmoothEyeTracking;
-
-#if !UNITY_OPENXR
-            Debug.LogWarning("OpenXR Eye Tracking Provider requires Unity's OpenXR Plugin to be installed.");
-#endif // !UNITY_OPENXR
         }
 
-        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] OpenXREyeGazeDataProvider.Update");
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityEyeGazeDataProvider.Update");
 
         /// <inheritdoc />
         public override void Update()
         {
             using (UpdatePerfMarker.Auto())
             {
-                if (!eyeTrackingDevice.isValid)
+                if (!centerEye.isValid)
                 {
-                    InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.EyeTracking, InputDeviceList);
-                    if (InputDeviceList.Count > 0)
-                    {
-                        eyeTrackingDevice = InputDeviceList[0];
-                    }
-
-                    if (!eyeTrackingDevice.isValid)
+                    centerEye = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
+                    if (!centerEye.isValid)
                     {
                         Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
                         return;
                     }
                 }
 
+                if (!centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeAvailable, out bool gazeAvailable) || !gazeAvailable)
+                {
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
+                    return;
+                }
+
                 Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
 
-#if UNITY_OPENXR
-                if (eyeTrackingDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool gazeTracked)
+                if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeTracked, out bool gazeTracked)
                     && gazeTracked
-                    && eyeTrackingDevice.TryGetFeatureValue(EyeTrackingUsages.gazePosition, out Vector3 eyeGazePosition)
-                    && eyeTrackingDevice.TryGetFeatureValue(EyeTrackingUsages.gazeRotation, out Quaternion eyeGazeRotation))
+                    && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazePosition, out Vector3 eyeGazePosition)
+                    && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeRotation, out Quaternion eyeGazeRotation))
                 {
                     Vector3 worldPosition = MixedRealityPlayspace.TransformPoint(eyeGazePosition);
                     Vector3 worldRotation = MixedRealityPlayspace.TransformDirection(eyeGazeRotation * Vector3.forward);
@@ -151,8 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
                     Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, DateTime.UtcNow);
                 }
-#endif // UNITY_OPENXR
             }
         }
+#endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
     }
 }

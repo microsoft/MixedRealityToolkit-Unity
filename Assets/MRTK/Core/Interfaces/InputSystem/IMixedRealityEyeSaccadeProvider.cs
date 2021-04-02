@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Provides eye tracking saccade events.
     /// </summary>
-    public interface IMixedRealityEyeSaccadeProvider : IMixedRealityDataProvider
+    public interface IMixedRealityEyeSaccadeProvider
     {
         /// <summary>
         /// Triggered when user is saccading across the view (jumping quickly with their eye gaze above a certain threshold in visual angles).
