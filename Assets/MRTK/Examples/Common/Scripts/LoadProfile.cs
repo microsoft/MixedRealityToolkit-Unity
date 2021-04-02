@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Loads a given Mixed Reality Toolkit configuration profile. 
