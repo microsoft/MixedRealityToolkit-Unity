@@ -173,7 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public GameObject GetControllerModelOverride(Type controllerType, Handedness hand)
         {
-            return GetControllerVisualizationDefinition(controllerType, hand).HasValue ? GetControllerVisualizationDefinition(controllerType, hand).Value.OverrideControllerModel : null;
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.OverrideControllerModel : null;
         }
 
         /// <summary>
@@ -184,7 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public SystemType GetControllerVisualizationTypeOverride(Type controllerType, Handedness hand)
         {
-            return GetControllerVisualizationDefinition(controllerType, hand).HasValue ? GetControllerVisualizationDefinition(controllerType, hand).Value.ControllerVisualizationType : defaultControllerVisualizationType;
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.ControllerVisualizationType : null;
         }
 
         /// <summary>
@@ -210,7 +212,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public bool GetUsePlatformModelsOverride(Type controllerType, Handedness hand)
         {
-            return GetControllerVisualizationDefinition(controllerType, hand).HasValue ? GetControllerVisualizationDefinition(controllerType, hand).Value.UsePlatformModels : usePlatformModels;
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.UsePlatformModels : usePlatformModels;
         }
 
         /// <summary>
@@ -236,7 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public Material GetPlatformModelMaterialOverride(Type controllerType, Handedness hand)
         {
-            return GetControllerVisualizationDefinition(controllerType, hand).HasValue ? GetControllerVisualizationDefinition(controllerType, hand).Value.PlatformModelMaterial : platformModelMaterial;
+
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.PlatformModelMaterial : platformModelMaterial;
         }
 
         private bool SettingContainsParameters(MixedRealityControllerVisualizationSetting setting, Type controllerType, Handedness hand)
