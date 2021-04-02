@@ -43,18 +43,5 @@ namespace Microsoft.MixedReality.Toolkit
             get { return floorHeight; }
             set { floorHeight = value; }
         }
-
-        [SerializeField]
-        [Tooltip("If this setting is enabled, MRTK will position the camera Floor Height Units above the world origin to facilitate navigation. Set this to true only if the platform does not provide it's own floor height (WMR, Oculus etc.)")]
-        private bool alignCameraToFloorHeight = false;
-
-        /// <summary>
-        /// If this setting is enabled, MRTK will position the camera Floor Height Units above the world origin to facilitate navigation. Set this to true only if the platform does not provide it's own floor height (WMR, Oculus etc.)
-        /// </summary>
-        public bool AlignCameraToFloorHeight
-        {
-            get { return alignCameraToFloorHeight; }
-            set { alignCameraToFloorHeight = value; }
-        }
     }
 }

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
@@ -53,9 +54,23 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             if(Application.isPlaying)
             {
                 // Move the camera upwards by FloorHeight units if the experience settings explicitly have MRTK initialize the camera to floor height
-                if (!MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.IsNull() && MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.AlignCameraToFloorHeight)
+                if (!MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.IsNull())
                 {
-                    CameraCache.Main.transform.position = Vector3.up * MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
+                    float floorHeight = MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
+                    bool cameraAdjustedByXRDevice = XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown) ||
+                        XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
+
+                    if (cameraAdjustedByXRDevice)
+                    {
+                        CameraCache.Main.transform.position = Vector3.up * floorHeight;
+                    }
+                    else
+                    {
+                        // Ensure the camera is parented to the playspace which starts, unrotated, at FloorHeight units below the origin if there is no tracking mode
+                        MixedRealityPlayspace.Rotation = Quaternion.identity;
+                        MixedRealityPlayspace.Position = Vector3.down * floorHeight;
+                        CameraCache.Main.transform.position = Vector3.zero;
+                    }
                 }
             }
         }

@@ -48,24 +48,8 @@ namespace Microsoft.MixedReality.Toolkit
                 containerObject = transform;
             }
 
-            // Init the content height for Legacy XR
-
-            // Init the content height for XRSDK
-            if (XRSubsystemHelpers.InputSubsystem != null)
-            {
-                XRSubsystemHelpers.InputSubsystem.trackingOriginUpdated += (inputSubsystem) => InitializeSceneContent();
-            }
-#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
-            else if (XRDevice.isPresent)
-            {
-                UnityEngine.XR.WSA.WorldManager.OnPositionalLocatorStateChanged += (oldState, newState) => InitializeSceneContent();
-            }
-#endif
-            else
-            {
-                // Init the content height on non-XR platforms
-                StartCoroutine(InitializeSceneContentWithDelay());
-            }
+            // Init the content height on non-XR platforms
+            StartCoroutine(InitializeSceneContentWithDelay());
         }
 
         // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
@@ -88,10 +72,18 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
+            bool cameraAdjustedByXRDevice = XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown) ||
+    XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
+
+
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
-                if(MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
-                    MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World)
+                bool experienceAdjustedByXRDevice = XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown) ||
+                    XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
+
+                if (MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
+                    MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World ||
+                    experienceAdjustedByXRDevice)
                 {
                     contentPosition.x = containerObject.position.x;
                     contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
