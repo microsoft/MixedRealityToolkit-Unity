@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(TestUtilities.PositionRelativeToPlayspace(Vector3.zero), Vector3.zero, "The playspace was not set to the origin");
             TestUtilities.AssertAboutEqual(sceneContent.transform.position, Vector3.up * floorHeight, "The floor height was not set correctly");
 
-            //be sure to set the profiles FloorHeight back to it's original value afterwards
+            // be sure to set the profiles FloorHeight back to it's original value afterwards
             hl1Profile.ExperienceSettingsProfile.FloorHeight = oldFloorHeight;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
         }
