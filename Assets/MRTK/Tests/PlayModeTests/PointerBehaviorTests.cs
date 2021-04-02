@@ -248,11 +248,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             originalProfileFloorHeight = profile.ExperienceSettingsProfile.FloorHeight;
             originalExperienceScale = profile.ExperienceSettingsProfile.TargetExperienceScale;
-            originalAlignCameraToFloorHeight = profile.ExperienceSettingsProfile.AlignCameraToFloorHeight;
 
             profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
             profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
-            profile.ExperienceSettingsProfile.AlignCameraToFloorHeight = true;
 
             PlayModeTestUtilities.Setup(profile);
 
@@ -315,7 +313,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Reset the profile's settings to it's original value
             profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
             profile.ExperienceSettingsProfile.FloorHeight = originalProfileFloorHeight;
-            profile.ExperienceSettingsProfile.AlignCameraToFloorHeight = originalAlignCameraToFloorHeight;
 
             leftHand.Hide();
         }
