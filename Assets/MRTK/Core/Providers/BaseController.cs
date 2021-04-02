@@ -234,50 +234,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>True if a model was successfully loaded or model rendering is disabled. False if a model tried to load but failed.</returns>
         protected virtual bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
-            if (GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().RenderMotionControllers)
+            MixedRealityControllerVisualizationProfile controllerVisualizationProfile = GetControllerVisualizationProfile();
+            bool controllerVisualizationProfilePresent = controllerVisualizationProfile != null;
+           
+            if (!controllerVisualizationProfilePresent || !controllerVisualizationProfile.RenderMotionControllers)
             {
                 return true;
             }
 
             GameObject controllerModel = null;
+            bool usePlatformModels = controllerVisualizationProfile.GetUsePlatformModelsOverride(controllerType, ControllerHandedness);
 
-            // If a specific controller template wants to override the global model, assign that instead.
-            if (IsControllerMappingEnabled() &&
-                GetControllerVisualizationProfile() != null &&
-                !(GetControllerVisualizationProfile().GetUseDefaultModelsOverride(controllerType, ControllerHandedness)))
+            // If a specific controller template wants to override the global model, assign it
+            if (!usePlatformModels)
             {
-                controllerModel = GetControllerVisualizationProfile().GetControllerModelOverride(controllerType, ControllerHandedness);
+                controllerModel = controllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
             }
 
-            // Get the global controller model for each hand.
-            if (controllerModel == null &&
-                GetControllerVisualizationProfile() != null)
+            // If the Controller model is still null in the end, use the global defaults.
+            if (controllerModel == null)
             {
                 if (inputSourceType == InputSourceType.Controller)
                 {
                     if (ControllerHandedness == Handedness.Left &&
-                        GetControllerVisualizationProfile().GlobalLeftHandModel != null)
+                        controllerVisualizationProfile.GlobalLeftHandModel != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalLeftHandModel;
+                        controllerModel = controllerVisualizationProfile.GlobalLeftHandModel;
                     }
                     else if (ControllerHandedness == Handedness.Right &&
-                        GetControllerVisualizationProfile().GlobalRightHandModel != null)
+                        controllerVisualizationProfile.GlobalRightHandModel != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
+                        controllerModel = controllerVisualizationProfile.GlobalRightHandModel;
                     }
                 }
                 else if (inputSourceType == InputSourceType.Hand)
                 {
                     if (ControllerHandedness == Handedness.Left &&
-                        GetControllerVisualizationProfile().GlobalLeftHandVisualizer != null)
+                        controllerVisualizationProfile.GlobalLeftHandVisualizer != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalLeftHandVisualizer;
+                        controllerModel = controllerVisualizationProfile.GlobalLeftHandVisualizer;
                     }
                     else if (ControllerHandedness == Handedness.Right &&
-                        GetControllerVisualizationProfile().GlobalRightHandVisualizer != null)
+                        controllerVisualizationProfile.GlobalRightHandVisualizer != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalRightHandVisualizer;
+                        controllerModel = controllerVisualizationProfile.GlobalRightHandVisualizer;
                     }
                 }
             }

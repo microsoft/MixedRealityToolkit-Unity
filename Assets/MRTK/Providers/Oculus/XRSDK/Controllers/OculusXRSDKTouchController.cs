@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
+using System;
 
 #if OCULUS_ENABLED
 using Unity.XR.Oculus;
@@ -86,6 +87,28 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether or not this controller uses MRTK for controller visualization or not
+        /// </summary>
+        internal bool UseMRTKControllerVisualization { get; set; } = false;
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// If UseMRTKControllerVisualization is false, Oculus Touch controller model visualization will not be managed by MRTK
+        /// Ensure that the Oculus Integration Package is installed and the Ovr Camera Rig is set correctly in the Oculus XRSDK Device Manager
+        /// </remarks>
+        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
+        {
+            if (UseMRTKControllerVisualization)
+            {
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+            else
+            {
+                return false;
             }
         }
     }

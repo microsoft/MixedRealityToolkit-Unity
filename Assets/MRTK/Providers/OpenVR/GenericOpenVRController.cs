@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
             // Intercept this call if we are using the default driver provided models.
             if (visualizationProfile == null ||
-                !visualizationProfile.GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                !visualizationProfile.GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
@@ -282,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 }
 
                 OpenVRRenderModel openVRRenderModel = controllerModelGameObject.AddComponent<OpenVRRenderModel>();
-                Material overrideMaterial = visualizationProfile.GetDefaultControllerModelMaterialOverride(GetType(), ControllerHandedness);
+                Material overrideMaterial = visualizationProfile.GetPlatformModelMaterialOverride(GetType(), ControllerHandedness);
                 if (overrideMaterial != null)
                 {
                     openVRRenderModel.shader = overrideMaterial.shader;
