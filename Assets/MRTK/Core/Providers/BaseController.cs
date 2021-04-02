@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             GameObject controllerModel = null;
-            bool usePlatformModels = !controllerVisualizationProfile.GetUsePlatformModelsOverride(controllerType, ControllerHandedness);
+            bool usePlatformModels = controllerVisualizationProfile.GetUsePlatformModelsOverride(controllerType, ControllerHandedness);
 
             // If a specific controller template wants to override the global model, assign it
             if (!usePlatformModels)
