@@ -50,29 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneTransparentDisplay;
                 QualitySettings.SetQualityLevel(cameraProfile.TransparentQualityLevel, false);
             }
-
-            if(Application.isPlaying)
-            {
-                // Move the camera upwards by FloorHeight units if the experience settings explicitly have MRTK initialize the camera to floor height
-                if (!MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.IsNull())
-                {
-                    float floorHeight = MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
-                    bool cameraAdjustedByXRDevice = XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown) ||
-                        XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
-
-                    if (cameraAdjustedByXRDevice)
-                    {
-                        CameraCache.Main.transform.position = Vector3.up * floorHeight;
-                    }
-                    else
-                    {
-                        // Ensure the camera is parented to the playspace which starts, unrotated, at FloorHeight units below the origin if there is no tracking mode
-                        MixedRealityPlayspace.Rotation = Quaternion.identity;
-                        MixedRealityPlayspace.Position = Vector3.down * floorHeight;
-                        CameraCache.Main.transform.position = Vector3.zero;
-                    }
-                }
-            }
         }
     }
 }

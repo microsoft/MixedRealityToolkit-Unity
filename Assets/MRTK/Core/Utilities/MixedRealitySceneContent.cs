@@ -81,8 +81,8 @@ namespace Microsoft.MixedReality.Toolkit
                 bool experienceAdjustedByXRDevice = XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown) ||
                     XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
 
-                if (MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
-                    MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World ||
+                if ((MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
+                    MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World) &&
                     experienceAdjustedByXRDevice)
                 {
                     contentPosition.x = containerObject.position.x;
