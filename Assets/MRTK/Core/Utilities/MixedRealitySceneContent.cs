@@ -82,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit
 #endif // UNITY_2019_3_OR_NEWER
 
 
-                Debug.Log("expAdjBool" + experienceAdjustedByXRDevice);
-                Debug.Log("Device Utility" + DeviceUtility.IsPresent);
+                Debug.LogWarning("expAdjBool" + experienceAdjustedByXRDevice);
+                Debug.LogWarning("Device Utility" + DeviceUtility.IsPresent);
 
                 // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
                 // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                     containerObject.position = contentPosition;
 
-                    Debug.Log("offsetting scene content");
+                    Debug.LogWarning("offsetting scene content");
                 }
                 else
                 {
