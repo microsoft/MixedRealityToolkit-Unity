@@ -292,7 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
 #endif
 
-
             // Todo: this condition shouldn't be here.
             // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
             // event handler registration to live over tests and cause next tests to fail.

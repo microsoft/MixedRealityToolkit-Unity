@@ -111,8 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var hl1Profile = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>()
             .FirstOrDefault(x => x.name.Equals(HoloLens1ProfileName));
 
-            // keep the old floor height to reset it later
+            // keep the old floor height and experience scale to reset it later
+            ExperienceScale originalExperienceScale = hl1Profile.ExperienceSettingsProfile.TargetExperienceScale;
             float oldFloorHeight = hl1Profile.ExperienceSettingsProfile.FloorHeight;
+            
             hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
             hl1Profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
@@ -127,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(sceneContent.transform.position, Vector3.up * floorHeight, "The floor height was not set correctly");
 
             // be sure to set the profiles FloorHeight back to it's original value afterwards
+            hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
             hl1Profile.ExperienceSettingsProfile.FloorHeight = oldFloorHeight;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
         }
