@@ -80,8 +80,6 @@ namespace Microsoft.MixedReality.Toolkit
 #endif // UNITY_2019_3_OR_NEWER
                     ;
 
-                bool 
-
                 // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
                 // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
                 if ((MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
