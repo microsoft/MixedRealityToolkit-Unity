@@ -117,6 +117,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                     // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
                     MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
+
+                    // Hack for testing
+                    if (Application.isPlaying)
+                    {
+                        contentAdjuster.InitializeSceneContent();
+                    }
+                    Debug.LogWarning("Creating content adjuster2");
                 }
 
                 if (!inPlayMode)

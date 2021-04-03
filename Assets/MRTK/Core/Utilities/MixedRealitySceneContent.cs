@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void Awake()
         {
+            Debug.LogWarning("Content adjuster start");
             if (containerObject == null)
             {
                 containerObject = transform;
@@ -65,7 +66,11 @@ namespace Microsoft.MixedReality.Toolkit
         // </summary>
         private bool contentInitialized = false;
 
-        private void InitializeSceneContent()
+        /// <summary>
+        /// Initializes the scene content based on the experience settings
+        /// Should only be called once.
+        /// </summary>
+        public void InitializeSceneContent()
         {
             Debug.LogWarning("Content adjuster called");
             if (contentInitialized)
