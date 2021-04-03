@@ -297,7 +297,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
                 MixedRealityToolkit.SetActiveInstance(newInstance);
-                Selection.activeObject = newInstance;
 
                 MixedRealityToolkit.ConfirmInitialized();
 
