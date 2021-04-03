@@ -15,4 +15,3 @@ MonoBehaviour:
   isCustomProfile: 0
   targetExperienceScale: 3
   floorHeight: 0
-  alignCameraToFloorHeight: 0
