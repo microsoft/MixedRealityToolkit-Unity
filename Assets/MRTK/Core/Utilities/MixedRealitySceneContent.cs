@@ -60,10 +60,10 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
 
-        /// <summary>
-        /// bool used to track whether this content has been initialized yet.
-        /// </summary>
-        private bool contentInitialized = false;
+        // <summary>
+        // bool used to track whether this content has been initialized yet.
+        // </summary>
+        // private bool contentInitialized = false;
 
         private void InitializeSceneContent()
         {
