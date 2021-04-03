@@ -52,15 +52,21 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
 
 #if UNITY_EDITOR
+            Debug.Log("Just In Case 1");
+
             // Ensure the camera is parented to the playspace which starts, unrotated, at FloorHeight units below the origin if there is no tracking mode
             // Only for use in editor 
             if (Application.isPlaying)
             {
+                Debug.Log("Just In Case 2");
                 if (!MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.IsNull())
                 {
+                    Debug.Log("Just In Case 3");
                     float floorHeight = MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
 
                     CameraCache.Main.transform.position = Vector3.up * floorHeight;
+
+                    Debug.Log("Camera being adjusted");
                 }
             }
 #endif
