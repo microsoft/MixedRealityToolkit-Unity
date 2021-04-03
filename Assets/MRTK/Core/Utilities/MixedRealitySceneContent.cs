@@ -78,12 +78,16 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
-                bool experienceAdjustedByXRDevice = XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown) ||
-                    XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
+                bool XRDevicePresent = XRSubsystemHelpers.InputSubsystem != null || XRDevice.isPresent;
 
+                bool experienceAdjustedByXRDevice = (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown)) ||
+                    (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
+
+                // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
+                // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
                 if ((MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
                     MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World) &&
-                    experienceAdjustedByXRDevice)
+                    (!XRDevicePresent || experienceAdjustedByXRDevice))
                 {
                     contentPosition.x = containerObject.position.x;
                     contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
