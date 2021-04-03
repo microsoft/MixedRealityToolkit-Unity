@@ -72,14 +72,15 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            bool cameraAdjustedByXRDevice = XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown) ||
-    XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
-
-
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
-                bool experienceAdjustedByXRDevice = (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown)) ||
-                    (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
+                bool experienceAdjustedByXRDevice = (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale)
+#if UNITY_2019_3_OR_NEWER
+                    || (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown))
+#endif // UNITY_2019_3_OR_NEWER
+                    ;
+
+                bool 
 
                 // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
                 // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
