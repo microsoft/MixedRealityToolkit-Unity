@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float floorHeight = 3.0f;
 
             var hl1Profile = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>()
-            .FirstOrDefault(x => x.name.Equals(HoloLens1ProfileName));
+                .FirstOrDefault(x => x.name.Equals(HoloLens1ProfileName));
 
             // keep the old floor height and experience scale to reset it later
             ExperienceScale originalExperienceScale = hl1Profile.ExperienceSettingsProfile.TargetExperienceScale;
@@ -123,7 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(0.5f);
 
             MixedRealitySceneContent sceneContent = GameObject.Find("MixedRealitySceneContent").GetComponent<MixedRealitySceneContent>();
-            sceneContent.alignmentType = MixedRealitySceneContent.AlignmentType.AlignWithExperienceScale;
 
             TestUtilities.AssertAboutEqual(TestUtilities.PositionRelativeToPlayspace(Vector3.zero), Vector3.zero, "The playspace was not set to the origin");
             TestUtilities.AssertAboutEqual(sceneContent.transform.position, Vector3.up * floorHeight, "The floor height was not set correctly");

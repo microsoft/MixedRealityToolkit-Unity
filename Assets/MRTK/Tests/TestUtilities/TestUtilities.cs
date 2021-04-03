@@ -290,6 +290,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeCamera();
 #if UNITY_EDITOR
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
+#else
+            // Because of how our automated testing works, the UNITY_EDITOR flag is not flipped on, meaning we can't directly test the Inspector functions here
+            // The code block below is a duplicate of the code run as a result of MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                MixedRealityToolkit.SetActiveInstance(newInstance);
+                Selection.activeObject = newInstance;
+
+                MixedRealityToolkit.ConfirmInitialized();
+
+                newInstance.ActiveProfile = configuration;
+
+                if(!newInstance.ActiveProfile.ExperienceSettingsProfile.IsNull())
+                {
+                    // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
+                    MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
+                }
+            }
 #endif
 
             // Todo: this condition shouldn't be here.

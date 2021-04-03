@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit
         // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
         private IEnumerator InitializeSceneContentWithDelay()
         {
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForEndOfFrame();
             InitializeSceneContent();
         }
 
@@ -63,19 +63,10 @@ namespace Microsoft.MixedReality.Toolkit
         // <summary>
         // bool used to track whether this content has been initialized yet.
         // </summary>
-        // private bool contentInitialized = false;
+        private bool contentInitialized = false;
 
         private void InitializeSceneContent()
         {
-            contentPosition.x = containerObject.position.x;
-            contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
-            contentPosition.z = containerObject.position.z;
-
-            containerObject.position = contentPosition;
-
-            Debug.LogWarning("offsetting scene content");
-
-            /*
             if (contentInitialized)
             {
                 return;
@@ -83,8 +74,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
-                Debug.LogWarning("Device Utility" + DeviceUtility.IsPresent);
-
                 // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
                 // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
                 if (MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
@@ -95,8 +84,6 @@ namespace Microsoft.MixedReality.Toolkit
                     contentPosition.z = containerObject.position.z;
 
                     containerObject.position = contentPosition;
-
-                    Debug.LogWarning("offsetting scene content");
                 }
                 else
                 {
@@ -115,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             contentInitialized = true;
-            */
         }
     }
 }
