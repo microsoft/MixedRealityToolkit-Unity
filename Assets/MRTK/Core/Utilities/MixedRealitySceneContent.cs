@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void InitializeSceneContent()
         {
+            Debug.LogWarning("Content adjuster called");
             if (contentInitialized)
             {
                 return;
@@ -74,6 +75,8 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
+                Debug.LogWarning("Trying to align");
+
                 bool experienceAdjustedByXRDevice =
 #if UNITY_2019_3_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown);

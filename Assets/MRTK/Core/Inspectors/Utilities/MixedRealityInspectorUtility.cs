@@ -89,8 +89,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null, bool inPlayMode = false)
         {
+            Debug.LogWarning("Adding via inspector code");
+
             if (!MixedRealityToolkit.IsInitialized)
             {
+                Debug.LogWarning("Added successfully");
+
                 MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
                 MixedRealityToolkit.SetActiveInstance(newInstance);
                 Selection.activeObject = newInstance;
@@ -109,6 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if(!newInstance.ActiveProfile.ExperienceSettingsProfile.IsNull())
                 {
+                    Debug.LogWarning("Creating content adjuster");
+
                     // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
                     MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
                 }
