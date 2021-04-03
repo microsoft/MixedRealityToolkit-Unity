@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
 #else
             // Because of how our automated testing works, the UNITY_EDITOR flag is not flipped on, meaning we can't directly test the Inspector functions here
