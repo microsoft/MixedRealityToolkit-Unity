@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
 
             // Ensure that the camera's position is floorHeight (defined by the profile) units above the ground after the teleport
-            Assert.AreEqual(Camera.main.transform.position.y - MixedRealityPlayspace.Position.y, floorHeight, 0.005f);
+            Assert.AreEqual(CameraCache.Main.transform.position.y - MixedRealityPlayspace.Position.y, floorHeight, 0.005f);
 
             // Reset the profile's settings to it's original value
             profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;

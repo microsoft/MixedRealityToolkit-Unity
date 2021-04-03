@@ -78,8 +78,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
-                bool XRDevicePresent = XRSubsystemHelpers.InputSubsystem != null || XRDevice.isPresent;
-
                 bool experienceAdjustedByXRDevice = (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown)) ||
                     (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
 
@@ -87,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit
                 // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
                 if ((MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
                     MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World) &&
-                    (!XRDevicePresent || experienceAdjustedByXRDevice))
+                    (!DeviceUtility.IsPresent || experienceAdjustedByXRDevice))
                 {
                     contentPosition.x = containerObject.position.x;
                     contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
