@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   targetExperienceScale: 4
-  floorHeight: 1
-  alignCameraToFloorHeight: 1
+  floorHeight: 0
