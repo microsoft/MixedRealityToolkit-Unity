@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit
         // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
         private IEnumerator InitializeSceneContentWithDelay()
         {
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(1.0f);
             InitializeSceneContent();
         }
 
@@ -67,7 +67,16 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void InitializeSceneContent()
         {
-            if(contentInitialized)
+            contentPosition.x = containerObject.position.x;
+            contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
+            contentPosition.z = containerObject.position.z;
+
+            containerObject.position = contentPosition;
+
+            Debug.LogWarning("offsetting scene content");
+
+            /*
+            if (contentInitialized)
             {
                 return;
             }
@@ -106,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             contentInitialized = true;
+            */
         }
     }
 }
