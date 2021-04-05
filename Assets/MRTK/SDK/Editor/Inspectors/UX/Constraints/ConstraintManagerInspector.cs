@@ -3,13 +3,13 @@
 // Licensed under the MIT License.
 //
 
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {

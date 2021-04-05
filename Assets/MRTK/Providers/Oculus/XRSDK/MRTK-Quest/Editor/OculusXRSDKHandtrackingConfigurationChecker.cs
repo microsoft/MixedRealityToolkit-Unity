@@ -125,6 +125,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 defaultOculusProjectConfig.handTrackingSupport = OVRProjectConfig.HandTrackingSupport.ControllersAndHands;
                 defaultOculusProjectConfig.requiresSystemKeyboard = true;
 
+                OVRProjectConfig.CommitProjectConfig(defaultOculusProjectConfig);
+
                 Debug.Log("Enabled Oculus Quest Keyboard and Handtracking in the Oculus Project Config");
             }
 #endif

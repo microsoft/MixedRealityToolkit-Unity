@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+#if !UNITY_2019_3_OR_NEWER
+using UnityEngine.EventSystems;
+#endif // !UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -40,6 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => caretSelectPositionInternal = value;
         }
         public override void OnUpdateSelected(BaseEventData eventData) { }
-#endif
+#endif // UNITY_2019_3_OR_NEWER
     }
 }

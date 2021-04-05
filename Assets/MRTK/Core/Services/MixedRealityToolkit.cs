@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Rendering;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -13,9 +16,6 @@ using System.Linq;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Microsoft.MixedReality.Toolkit.SceneSystem;
-using Microsoft.MixedReality.Toolkit.CameraSystem;
-using Microsoft.MixedReality.Toolkit.Rendering;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;

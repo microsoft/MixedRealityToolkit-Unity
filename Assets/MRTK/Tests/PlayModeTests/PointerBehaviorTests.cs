@@ -10,15 +10,16 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using System.Collections;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Teleport;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -279,6 +280,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // We should have teleported in the forward direction after the teleport
             Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
             leftHand.Hide();
+        }
+
+
+        /// <summary>
+        /// Tests that the teleport pointer functions as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTeleportLayers()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+
+            // Create a floor and make sure it's below the camera
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            floor.transform.position = -0.5f * Vector3.up;
+
+            // Bring out the right hand and set it to the teleport gesture
+            TestUtilities.PlayspaceToOriginLookingForward();
+            float initialForwardPosition = MixedRealityPlayspace.Position.z;
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Make sure the hand is in front of the camera
+            yield return rightHand.Show(Vector3.forward * 0.6f);
+            rightHand.SetRotation(Quaternion.identity);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+
+            TeleportPointer teleportPointer = rightHand.GetPointer<TeleportPointer>();
+
+            floor.layer = LayerMask.NameToLayer("Default");
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(teleportPointer.TeleportSurfaceResult, Physics.TeleportSurfaceResult.Valid);
+
+            floor.layer = LayerMask.NameToLayer("Ignore Raycast");
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.Invalid);
+
+            floor.layer = LayerMask.NameToLayer("UI");
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.None);
+
         }
 
         /// <summary>
