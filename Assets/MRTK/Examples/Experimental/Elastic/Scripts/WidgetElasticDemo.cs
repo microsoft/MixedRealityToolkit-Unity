@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

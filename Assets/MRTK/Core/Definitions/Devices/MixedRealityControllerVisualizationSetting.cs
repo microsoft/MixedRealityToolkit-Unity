@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllerType">Controller Type to instantiate at runtime.</param>
         /// <param name="handedness">The designated hand that the device is managing.</param>
         /// <param name="overrideModel">The controller model prefab to be rendered.</param>
+        [Obsolete("This constructor doesn't need to be called directly.")]
         public MixedRealityControllerVisualizationSetting(string description, Type controllerType, Handedness handedness = Handedness.None, GameObject overrideModel = null) : this()
         {
             this.description = description;

@@ -3,12 +3,12 @@
 // Licensed under the MIT License.
 //
 
+using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {

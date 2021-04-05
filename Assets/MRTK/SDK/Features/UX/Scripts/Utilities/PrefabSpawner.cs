@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {

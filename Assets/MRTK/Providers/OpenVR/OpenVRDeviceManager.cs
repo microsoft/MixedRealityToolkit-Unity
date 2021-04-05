@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Runtime.InteropServices;
 using Unity.Profiling;
 using UnityEngine;
 

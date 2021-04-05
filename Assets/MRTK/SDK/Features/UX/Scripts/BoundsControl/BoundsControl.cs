@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityPhysics = UnityEngine.Physics;
-using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 {

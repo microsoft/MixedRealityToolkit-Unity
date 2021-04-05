@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Boundary
 {

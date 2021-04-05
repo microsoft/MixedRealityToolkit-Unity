@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
+
+#if !UNITY_2019_1_OR_NEWER
+using System.Collections.Generic;
+using System.Linq;
+#endif // !UNITY_2019_1_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
