@@ -5,25 +5,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class SceneSystemUnloadingCheck : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public DemoSceneUnderstandingController SUController;
-    private bool isCleared = false;
-
-    // Start is called before the first frame update
-    void Start()
+    public class SceneSystemUnloadingCheck : MonoBehaviour
     {
-        IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
-        sceneSystem.OnWillUnloadContent += HandleSceneOperation;
-    }
+        public DemoSceneUnderstandingController SUController;
+        private bool isCleared = false;
 
-    private void HandleSceneOperation(IEnumerable<string> obj)
-    {
-        if(isCleared == false)
+        void Start()
         {
-            SUController.ClearScene();
-            isCleared = true;
+            IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
+            sceneSystem.OnWillUnloadContent += HandleSceneOperation;
+        }
+
+        private void HandleSceneOperation(IEnumerable<string> obj)
+        {
+            if (isCleared == false)
+            {
+                SUController.ClearScene();
+                isCleared = true;
+            }
         }
     }
 }
