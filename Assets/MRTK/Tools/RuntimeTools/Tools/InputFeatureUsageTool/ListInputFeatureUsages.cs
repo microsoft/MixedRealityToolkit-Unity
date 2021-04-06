@@ -77,49 +77,49 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
 
                         if (inputFeatureUsage.type.Equals(typeof(bool)))
                         {
-                            if (inputDevice.TryGetFeatureValue(new InputFeatureUsage<bool>(inputFeatureUsage.name), out bool data))
+                            if (inputDevice.TryGetFeatureValue(inputFeatureUsage.As<bool>(), out bool data))
                             {
                                 textMesh.text += $": {data}\n";
                             }
                         }
                         else if (inputFeatureUsage.type.Equals(typeof(uint)))
                         {
-                            if (inputDevice.TryGetFeatureValue(new InputFeatureUsage<uint>(inputFeatureUsage.name), out uint data))
+                            if (inputDevice.TryGetFeatureValue(inputFeatureUsage.As<uint>(), out uint data))
                             {
                                 textMesh.text += $": {data}\n";
                             }
                         }
                         else if (inputFeatureUsage.type.Equals(typeof(float)))
                         {
-                            if (inputDevice.TryGetFeatureValue(new InputFeatureUsage<float>(inputFeatureUsage.name), out float data))
+                            if (inputDevice.TryGetFeatureValue(inputFeatureUsage.As<float>(), out float data))
                             {
                                 textMesh.text += $": {data}\n";
                             }
                         }
                         else if (inputFeatureUsage.type.Equals(typeof(Vector2)))
                         {
-                            if (inputDevice.TryGetFeatureValue(new InputFeatureUsage<Vector2>(inputFeatureUsage.name), out Vector2 data))
-                            {
-                                textMesh.text += $": {data}\n";
-                            }
-                        }
-                        else if (inputFeatureUsage.type.Equals(typeof(InputTrackingState)))
-                        {
-                            if (inputDevice.TryGetFeatureValue(new InputFeatureUsage<InputTrackingState>(inputFeatureUsage.name), out InputTrackingState data))
+                            if (inputDevice.TryGetFeatureValue(inputFeatureUsage.As<Vector2>(), out Vector2 data))
                             {
                                 textMesh.text += $": {data}\n";
                             }
                         }
                         else if (inputFeatureUsage.type.Equals(typeof(Vector3)))
                         {
-                            if (inputDevice.TryGetFeatureValue(new InputFeatureUsage<Vector3>(inputFeatureUsage.name), out Vector3 data))
+                            if (inputDevice.TryGetFeatureValue(inputFeatureUsage.As<Vector3>(), out Vector3 data))
                             {
                                 textMesh.text += $": {data}\n";
                             }
                         }
                         else if (inputFeatureUsage.type.Equals(typeof(Quaternion)))
                         {
-                            if (inputDevice.TryGetFeatureValue(new InputFeatureUsage<Quaternion>(inputFeatureUsage.name), out Quaternion data))
+                            if (inputDevice.TryGetFeatureValue(inputFeatureUsage.As<Quaternion>(), out Quaternion data))
+                            {
+                                textMesh.text += $": {data}\n";
+                            }
+                        }
+                        else if (inputFeatureUsage.type.Equals(typeof(InputTrackingState)))
+                        {
+                            if (inputDevice.TryGetFeatureValue(inputFeatureUsage.As<InputTrackingState>(), out InputTrackingState data))
                             {
                                 textMesh.text += $": {data}\n";
                             }
