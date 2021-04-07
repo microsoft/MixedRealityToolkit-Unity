@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private IMixedRealityInputSource inputSource = null;
 
         /// <summary>
-        /// Sets the <see cref="IMixedRealityInputSource"/> that represents the current hand for this mesh.
+        /// Sets the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource"/> that represents the current hand for this mesh.
         /// </summary>
         /// <param name="inputSource">Implementation of the hand input source.</param>
         public void SetInputSource(IMixedRealityInputSource inputSource)
