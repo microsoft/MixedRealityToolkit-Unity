@@ -10,7 +10,7 @@ using MRConfig = Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityPro
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    public class MixedRealityProjectConfiguratorWindow : EditorWindow
+    public class MixedRealityProjectConfiguratorWindow
     {
         private readonly Dictionary<MRConfig, bool> trackToggles = new Dictionary<MRConfig, bool>()
         {
@@ -56,25 +56,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > Mixed Reality Toolkit");
 
-        private bool showConfigurations = true;
+        //private bool showConfigurations = true;
 
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Configure Unity Project", false, 499)]
-        public static void ShowWindow()
+        public static MixedRealityProjectConfiguratorWindow GetObj()
         {
             // There should be only one configurator window open as a "pop-up". If already open, then just force focus on our instance
             if (IsOpen)
             {
-                Instance.Focus();
+                return Instance;
             }
             else
             {
-                var window = CreateInstance<MixedRealityProjectConfiguratorWindow>();
-                window.titleContent = new GUIContent("MRTK Project Configurator", EditorGUIUtility.IconContent("_Popup").image);
-                window.position = new Rect(Screen.width / 2.0f, Screen.height / 2.0f, Default_Window_Height, Default_Window_Width);
-                window.ShowUtility();
+                Instance = new MixedRealityProjectConfiguratorWindow();
+                return Instance;
             }
         }
 
@@ -95,77 +92,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // There should be only one pop-up window which is generally tracked by IsOpen
             // However, when recompiling, Unity will call OnDestroy for this window but not actually destroy the editor window
             // This ensure we have a clean close on recompiles when this EditorWindow was open beforehand
-            Close();
+            //Close();
         }
-
-        private void OnGUI()
-        {
-            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
-
-            string foldoutHeader;
-
-            if (!MixedRealityProjectConfigurator.IsProjectConfigured())
-            {
-                foldoutHeader = "Modify Configurations";
-                RenderChoiceDialog();
-            }
-            else
-            {
-                foldoutHeader = "Configurations";
-                RenderConfiguredConfirmation();
-            }
-
-            EditorGUILayout.Space();
-
-            showConfigurations = EditorGUILayout.Foldout(showConfigurations, foldoutHeader, true);
-            if (showConfigurations)
-            {
-                RenderConfigurations();
-            }
-        }
-
-        private void RenderConfiguredConfirmation()
-        {
-            const string dialogTitle = "Project Configuration Complete";
-            const string dialogContent = "This Unity project is properly configured for the Mixed Reality Toolkit.";
-            EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
-            EditorGUILayout.LabelField(dialogContent);
-        }
-
-        private void RenderChoiceDialog()
-        {
-            const string dialogTitle = "Apply Default Settings?";
-            const string dialogContent = "The Mixed Reality Toolkit would like to auto-apply useful settings to this Unity project";
-            EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
-            EditorGUILayout.LabelField(dialogContent);
-
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (GUILayout.Button(ApplyButtonContent))
-                {
-                    ApplyConfigurations();
-                    Close();
-                }
-
-                if (GUILayout.Button(LaterButtonContent))
-                {
-                    MixedRealityEditorSettings.IgnoreProjectConfigForSession = true;
-                    Close();
-                }
-
-                if (GUILayout.Button(IgnoreButtonContent))
-                {
-                    MixedRealityProjectPreferences.IgnoreSettingsPrompt = true;
-                    Close();
-                }
-            }
-        }
-
+        
         private Vector2 scrollPosition = Vector2.zero;
 
-        private void RenderConfigurations()
+        public void RenderConfigurations()
         {
-            EditorGUILayout.LabelField("Enabled options will be applied to the project. Disabled items are already properly configured.");
+            EditorGUILayout.LabelField("Enabled options below will be applied to the project. Disabled items are already properly configured.");
             EditorGUILayout.Space();
 
             using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition))
@@ -174,14 +108,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.LabelField("Project Settings", EditorStyles.boldLabel);
                 RenderToggle(MRConfig.ForceTextSerialization, "Force text asset serialization");
                 RenderToggle(MRConfig.VisibleMetaFiles, "Enable visible meta files");
-                if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS() && XRSettingsUtilities.IsLegacyXRActive)
+                if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS() && XRSettingsUtilities.XREnabled)
                 {
 #if !UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR supported");
 #endif // !UNITY_2019_3_OR_NEWER
                 }
 #if UNITY_2019_3_OR_NEWER
-                RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path (legacy XR API)");
+                if (XRSettingsUtilities.LegacyXREnabled)
+                {
+                    RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path (legacy XR API)");
+                }
 #else
 #if UNITY_ANDROID
                 RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Stereo rendering path");
@@ -237,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        private void ApplyConfigurations()
+        public void ApplyConfigurations()
         {
             var configurationFilter = new HashSet<MRConfig>();
             foreach (var item in trackToggles)

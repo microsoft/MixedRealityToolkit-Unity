@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 && !MixedRealityProjectPreferences.IgnoreSettingsPrompt
                 && !MixedRealityProjectConfigurator.IsProjectConfigured())
             {
-                MixedRealityProjectConfiguratorWindow.ShowWindow();
+                //MixedRealityProjectConfiguratorWindow.ShowWindow();
             }
         }
 
