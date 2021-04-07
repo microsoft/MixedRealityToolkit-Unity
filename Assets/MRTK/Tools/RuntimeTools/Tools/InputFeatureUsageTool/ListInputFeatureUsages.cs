@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 #if UNITY_2019_3_OR_NEWER
@@ -23,31 +24,50 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
         private TextMesh listInputDevicesTextMesh = null;
 
         [SerializeField]
+        [Tooltip("Used for displaying all detected input source names.")]
+        private GridObjectCollection gridObjectCollection = null;
+
+        [SerializeField]
         [Tooltip("Used for displaying data from input.")]
-        private TextMesh[] displayFeatureUsagesTextMeshes = null;
+        private GameObject displayFeatureUsagesPrefab = null;
 
 #if UNITY_2019_3_OR_NEWER
-        private readonly List<InputDevice> controllerInputDevices = new List<InputDevice>();
-        private readonly List<InputDevice> handInputDevices = new List<InputDevice>();
+        private readonly List<InputDevice> leftInputDevices = new List<InputDevice>();
+        private readonly List<InputDevice> rightInputDevices = new List<InputDevice>();
         private readonly List<InputFeatureUsage> featureUsages = new List<InputFeatureUsage>();
+        private readonly List<TextMesh> displayFeatureUsagesTextMeshes = new List<TextMesh>();
+
+        private const float BackingPanelMargin = 0.005f;
+        private const float BackingPanelEntryHeight = 0.003f;
 #endif // UNITY_2019_3_OR_NEWER
 
         private void Update()
         {
-            if (listInputDevicesTextMesh == null || displayFeatureUsagesTextMeshes.Length == 0)
+            if (listInputDevicesTextMesh == null || gridObjectCollection == null || displayFeatureUsagesPrefab == null)
             {
                 return;
             }
 
 #if UNITY_2019_3_OR_NEWER
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllerInputDevices);
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HandTracking, handInputDevices);
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Left, leftInputDevices);
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right, rightInputDevices);
 
-            List<InputDevice> inputDevices = controllerInputDevices.Union(handInputDevices).ToList();
+            List<InputDevice> inputDevices = leftInputDevices.Union(rightInputDevices).ToList();
+            int sourceCount = inputDevices.Count;
 
-            listInputDevicesTextMesh.text = $"Detected {inputDevices.Count} input source{(inputDevices.Count > 1 ? "s:" : inputDevices.Count != 0 ? ":" : "s")}\n";
+            listInputDevicesTextMesh.text = $"Detected {sourceCount} input source{(sourceCount > 1 ? "s:" : sourceCount != 0 ? ":" : "s")}\n";
 
-            for (int i = 0; i < displayFeatureUsagesTextMeshes.Length; i++)
+            for (int i = displayFeatureUsagesTextMeshes.Count; i < sourceCount; i++)
+            {
+                displayFeatureUsagesTextMeshes.Add(Instantiate(displayFeatureUsagesPrefab, gameObject.transform).GetComponentInChildren<TextMesh>());
+                // For optimal performance, only update the collection when adding the final text panel
+                if (i == sourceCount - 1)
+                {
+                    gridObjectCollection.UpdateCollection();
+                }
+            }
+
+            for (int i = 0; i < displayFeatureUsagesTextMeshes.Count; i++)
             {
                 TextMesh textMesh = displayFeatureUsagesTextMeshes[i];
                 if (textMesh == null)
@@ -55,24 +75,42 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                     continue;
                 }
 
-                if (i >= inputDevices.Count)
+                if (i >= sourceCount)
                 {
-                    if (textMesh.text != string.Empty)
+                    if (textMesh.transform.parent.gameObject.activeSelf)
                     {
-                        textMesh.text = string.Empty;
+                        textMesh.transform.parent.gameObject.SetActive(false);
+                        gridObjectCollection.UpdateCollection();
                     }
                     continue;
                 }
 
+                if (!textMesh.transform.parent.gameObject.activeSelf)
+                {
+                    textMesh.transform.parent.gameObject.SetActive(true);
+                    gridObjectCollection.UpdateCollection();
+                }
+
                 InputDevice inputDevice = inputDevices[i];
 
-                listInputDevicesTextMesh.text += $"{inputDevice.name} | {inputDevice.manufacturer} | {inputDevice.serialNumber}\n";
-                textMesh.text = $"{inputDevice.name}\n";
+                bool displayNeedsResizing = !textMesh.text.StartsWith(inputDevice.name);
+
+                listInputDevicesTextMesh.text += $"{inputDevice.name} | {inputDevice.manufacturer}\n";
+                textMesh.text = $"{inputDevice.name}\n\n";
 
                 if (inputDevice.TryGetFeatureUsages(featureUsages))
                 {
                     foreach (InputFeatureUsage inputFeatureUsage in featureUsages)
                     {
+                        if (displayNeedsResizing)
+                        {
+                            // The first child in the text panel GameObject must be the backing panel
+                            Transform backingPanel = textMesh.gameObject.transform.parent.GetChild(0);
+                            // The additional 2 added to featureUsages.Count represents the source name and empty new line before the usages are listed
+                            float backingPanelHeight = BackingPanelMargin + (BackingPanelEntryHeight * (featureUsages.Count + 2)) + BackingPanelMargin;
+                            backingPanel.localScale = new Vector3(backingPanel.localScale.x, backingPanel.localScale.y, backingPanelHeight);
+                        }
+
                         textMesh.text += $"{inputFeatureUsage.name}";
 
                         if (inputFeatureUsage.type.Equals(typeof(bool)))
@@ -130,11 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                         }
                     }
                 }
-            }
-
-            for (int i = displayFeatureUsagesTextMeshes.Length; i < inputDevices.Count; i++)
-            {
-                listInputDevicesTextMesh.text += $"{inputDevices[i].name}\n";
             }
 #else
             listInputDevicesTextMesh.text = $"This feature is only supported on Unity 2019.3 or newer.";
