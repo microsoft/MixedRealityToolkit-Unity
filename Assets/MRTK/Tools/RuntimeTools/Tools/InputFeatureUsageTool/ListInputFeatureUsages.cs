@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
         private readonly List<InputFeatureUsage> featureUsages = new List<InputFeatureUsage>();
         private readonly List<TextMesh> displayFeatureUsagesTextMeshes = new List<TextMesh>();
 
-        private const float BackingPanelMargin = 0.005f;
-        private const float BackingPanelEntryHeight = 0.003f;
+        private const float BackingPanelMargin = 0.05f;
+        private const float BackingPanelEntryHeight = 0.03f;
 #endif // UNITY_2019_3_OR_NEWER
 
         private void Update()
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                             Transform backingPanel = textMesh.gameObject.transform.parent.GetChild(0);
                             // The additional 2 added to featureUsages.Count represents the source name and empty new line before the usages are listed
                             float backingPanelHeight = BackingPanelMargin + (BackingPanelEntryHeight * (featureUsages.Count + 2)) + BackingPanelMargin;
-                            backingPanel.localScale = new Vector3(backingPanel.localScale.x, backingPanel.localScale.y, backingPanelHeight);
+                            backingPanel.localScale = new Vector3(backingPanel.localScale.x, backingPanelHeight, backingPanel.localScale.z);
                         }
 
                         textMesh.text += $"{inputFeatureUsage.name}";
