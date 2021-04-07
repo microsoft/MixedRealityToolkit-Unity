@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2acb9155180fecf4087cca3961edb28f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3cce4c9cab2b82b47b11e5a2fb0e642f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -97,6 +97,7 @@ Material:
     - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
     - _EnableProximityLightColorOverride: 0
+    - _EnableSSAA: 0
     - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
@@ -119,6 +120,7 @@ Material:
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
+    - _MipmapBias: -2
     - _Mode: 0
     - _NearLightFade: 0
     - _NearPlaneFade: 0

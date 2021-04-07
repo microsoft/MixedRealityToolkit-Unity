@@ -4140,6 +4140,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ToggleFeaturesPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 4943773361295851263, guid: c0931c4da6d91ea429abedb10290dd16,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5057653355905261972, guid: c0931c4da6d91ea429abedb10290dd16,
         type: 3}
       propertyPath: m_havePropertiesChanged
