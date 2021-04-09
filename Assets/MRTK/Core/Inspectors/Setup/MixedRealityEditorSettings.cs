@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 && !MixedRealityProjectPreferences.IgnoreSettingsPrompt
                 && !MixedRealityProjectConfigurator.IsProjectConfigured())
             {
-                //MixedRealityProjectConfiguratorWindow.ShowWindow();
+                MixedRealityProjectConfiguratorWindow.ShowWindowOnInit();
             }
         }
 
@@ -98,11 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         private static void LogConfigurationWarnings()
         {
-            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-            // with legacy requirements.
-            if (!XRSettingsUtilities.LegacyXREnabled)
+            if (!XRSettingsUtilities.XREnabled)
             {
-                Debug.LogWarning("<b>Virtual reality supported</b> not enabled. Check <i>XR Settings</i> under <i>Player Settings</i>");
+                Debug.LogWarning("XR supported is not enabled in the project!");
             }
 
             if (!MixedRealityOptimizeUtils.IsOptimalRenderingPath())

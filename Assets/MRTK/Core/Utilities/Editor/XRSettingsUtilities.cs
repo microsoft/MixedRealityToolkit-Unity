@@ -45,9 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
 
         /// <summary>
-        /// Gets or sets the legacy virtual reality supported property in the player settings.
+        /// Checks whether the XRSDK pipeline is properly set up to enable XR.
         /// </summary>
-        /// <remarks>Returns true if legacy XR is disabled due to XR SDK in Unity 2019.3+.</remarks>
+        /// <remarks>
+        /// <para>Returns true if using the Unity OpenXR plugin along with the Microsoft plugin or using the built-in plugins.
+        /// Returns false if the only enabled plugin is Unity OpenXR and the Microsoft one is not present, or there is no enabled plugin.</para>
+        /// </remarks>
         public static bool XRSDKEnabled
         {
             get
@@ -73,9 +76,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
 
         /// <summary>
-        /// Gets or sets the legacy virtual reality supported property in the player settings.
+        /// Checks whether the Microsoft OpenXR plugin is present in the project.
         /// </summary>
-        /// <remarks>Returns true if legacy XR is disabled due to XR SDK in Unity 2019.3+.</remarks>
         public static bool MicrosoftOpenXRPresent
         {
             get
@@ -90,9 +92,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
 
         /// <summary>
-        /// Gets or sets the legacy virtual reality supported property in the player settings.
+        /// Checks whether the Microsoft OpenXR plugin is enabled.
         /// </summary>
-        /// <remarks>Returns true if legacy XR is disabled due to XR SDK in Unity 2019.3+.</remarks>
+        /// <remarks>Returns true if the Microsoft OpenXR plugin is present and the OpenXR plugin is enabled.</remarks>
         public static bool MicrosoftOpenXREnabled
         {
             get
@@ -134,9 +136,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Checks if an XR SDK plug-in is installed that disables legacy VR. Returns false if so.
+        /// Checks if an XR SDK plugin is installed that disables legacy XR. Returns false if so.
+        /// Also returns false in Unity 2020 and above where Legacy XR has been removed.
         /// </summary>
-        public static bool IsLegacyXRAvailable
+        public static bool LegacyXRAvailable
         {
             get
             {
@@ -151,9 +154,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Gets or sets the legacy virtual reality supported property in the player settings.
+        /// Checks whether the Unity XR Management plugin is present in the project.
         /// </summary>
-        /// <remarks>Returns true if legacy XR is disabled due to XR SDK in Unity 2019.3+.</remarks>
         public static bool XRManagementPresent
         {
             get
@@ -174,7 +176,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Called when packages are installed or uninstalled
             EditorApplication.projectChanged += EditorApplication_projectChanged;
         }
-        
+
+        /// <summary>
+        /// Checks whether any imported XRSDK plugin is incompatible with Legacy XR so that Legacy XR must remain disabled.
+        /// </summary>
         private static bool IsXRSDKSuppressingLegacyXR
         {
             get
@@ -206,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static void EditorApplication_projectChanged() => isXRSDKSuppressingLegacyXR = null;
 #if XR_MANAGEMENT_ENABLED
         /// <summary>
-        /// Is either LegacyXR pipeline or XRSDK pipeline enabled?
+        /// Retrieves the enabled XRSDK XR loaders (plugins) for the current build target
         /// </summary>
         private static IReadOnlyList<XRLoader> XRSDKLoadersOfCurrentBuildTarget
         {
@@ -222,7 +227,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // XR_MANAGEMENT_ENABLED
 #endif // UNITY_2019_3_OR_NEWER
 
-        [System.Obsolete("Call IsLegacyXRAvailable instead.")]
-        public static bool IsLegacyXRActive => IsLegacyXRAvailable;
+        /// <summary>
+        /// Checks if an XR SDK plugin is installed that disables legacy XR. Returns false if so.
+        /// Also returns false in Unity 2020 and above where Legacy XR has been removed.
+        /// </summary>
+        [System.Obsolete("Call LegacyXRAvailable instead.")]
+        public static bool IsLegacyXRActive => LegacyXRAvailable;
     }
 }
