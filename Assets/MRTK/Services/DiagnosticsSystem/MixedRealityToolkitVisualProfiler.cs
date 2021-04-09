@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private bool ShouldShowProfiler =>
 #if WINDOWS_UWP
-            (appCapture == null || !appCapture.IsCapturingVideo || showProfilerDuringMRC) &&
+            (!appCaptureIsCapturingVideo || showProfilerDuringMRC) &&
 #endif // WINDOWS_UWP
             isVisible;
 
@@ -217,6 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private Mesh quadMesh;
 
 #if WINDOWS_UWP
+        private bool appCaptureIsCapturingVideo = false;
         private AppCapture appCapture;
 #endif // WINDOWS_UWP
 
@@ -289,11 +290,22 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
 #if WINDOWS_UWP
             appCapture = AppCapture.GetForCurrentView();
+            if (appCapture != null)
+            {
+                appCapture.CapturingChanged += AppCapture_CapturingChanged;
+            }
 #endif // WINDOWS_UWP
         }
 
         private void OnDestroy()
         {
+#if WINDOWS_UWP
+            if (appCapture != null)
+            {
+                appCapture.CapturingChanged -= AppCapture_CapturingChanged;
+            }
+#endif // WINDOWS_UWP
+
             if (window != null)
             {
                 Destroy(window.gameObject);
@@ -441,6 +453,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 memoryStats.gameObject.SetActive(memoryStatsVisible);
             }
         }
+
+#if WINDOWS_UWP
+        private void AppCapture_CapturingChanged(AppCapture sender, object args) => appCaptureIsCapturingVideo = sender.IsCapturingVideo;
+#endif // WINDOWS_UWP
 
         private static readonly ProfilerMarker CalculateWindowPositionPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkitVisualProfiler.CalculateWindowPosition");
 
