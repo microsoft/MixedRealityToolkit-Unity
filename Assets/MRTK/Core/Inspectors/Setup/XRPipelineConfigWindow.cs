@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Compilation;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
@@ -33,6 +34,17 @@ public class XRPipelineConfigWindow : EditorWindow
     private void OnEnable()
     {
         Instance = this;
+
+        CompilationPipeline.compilationStarted += CompilationPipeline_compilationStarted;
+        MixedRealityProjectConfigurator.SelectedSpatializer = SpatializerUtilities.CurrentSpatializer;
+    }
+
+    private void CompilationPipeline_compilationStarted(object obj)
+    {
+        // There should be only one pop-up window which is generally tracked by IsOpen
+        // However, when recompiling, Unity will call OnDestroy for this window but not actually destroy the editor window
+        // This ensure we have a clean close on recompiles when this EditorWindow was open beforehand
+        //Close();
     }
 
     [MenuItem("Ut/Configure Demo", false, 499)]
@@ -55,10 +67,14 @@ public class XRPipelineConfigWindow : EditorWindow
     private void OnGUI()
     {
         MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
-        EditorGUILayout.LabelField("Welcome to MRTK!", MixedRealityStylesUtility.BoldLargeTitleStyle);
-        EditorGUILayout.Space(5);
-        EditorGUILayout.LabelField("This configurator will go through some settings to make sure the project is ready for MRTK.");
-        EditorGUILayout.Space(20);
+        if (currentStage != ConfigurationStage.Done)
+        {
+            EditorGUILayout.LabelField("Welcome to MRTK!", MixedRealityStylesUtility.BoldLargeTitleStyle);
+            EditorGUILayout.Space(5);
+            EditorGUILayout.LabelField("This configurator will go through some settings to make sure the project is ready for MRTK.");
+            EditorGUILayout.Space(20);
+        }
+        
 
         switch (currentStage)
         {
@@ -78,19 +94,9 @@ public class XRPipelineConfigWindow : EditorWindow
                 RenderProjectConfigurations();
                 break;
             case ConfigurationStage.ImportTMP:
-                if (TMPEssentialsImported())
-                {
-                    currentStage = ConfigurationStage.ShowExamples;
-                    Repaint();
-                }
                 RenderImportTMP();
                 break;
             case ConfigurationStage.ShowExamples:
-                if (!MRTKExamplesPackageImportedViaUPM())
-                {
-                    currentStage = ConfigurationStage.Done;
-                    Repaint();
-                }
                 RenderShowUPMExamples();
                 break;
             case ConfigurationStage.Done:
@@ -143,7 +149,11 @@ public class XRPipelineConfigWindow : EditorWindow
 #if UNITY_2019_3_OR_NEWER
             if (GUILayout.Button("XR SDK/XR Management (Recommended)"))
             {
+#if UNITY_2020_2_OR_NEWER
                 currentStage = ConfigurationStage.SelectXRSDKPlugin;
+#else
+                currentStage = ConfigurationStage.InstallBuiltinPlugin;
+#endif
                 Repaint();
             }
 #endif
@@ -227,6 +237,11 @@ public class XRPipelineConfigWindow : EditorWindow
 
     private void RenderSelectXRSDKPlugin()
     {
+        if (XRSettingsUtilities.XRSDKEnabled)
+        {
+            currentStage = ConfigurationStage.Init;
+            Repaint();
+        }
         EditorGUILayout.LabelField("Enabling the XR SDK Pipeline", EditorStyles.boldLabel);
         //EditorGUILayout.Space();
         EditorGUILayout.LabelField("There are several provider plugins for the XR SDK pipeline available in this Unity version. "
@@ -278,8 +293,15 @@ public class XRPipelineConfigWindow : EditorWindow
         {
             if (GUILayout.Button("Show Settings"))
             {
-                //SettingsService.OpenProjectSettings("Project/XR Plug-in Management");
-                SettingsService.OpenProjectSettings("Project/XR Plugin Management");
+
+                if (XRSettingsUtilities.XRManagementPresent)
+                {
+                    SettingsService.OpenProjectSettings("Project/XR Plug-in Management");
+                }
+                else
+                {
+                    SettingsService.OpenProjectSettings("Project/XR Plugin Management");
+                }
             }
             if (GUILayout.Button("Learn more"))
             {
@@ -294,6 +316,11 @@ public class XRPipelineConfigWindow : EditorWindow
 
     private void RenderEnableMicrosoftOpenXRPlugin()
     {
+        if (XRSettingsUtilities.MicrosoftOpenXREnabled)
+        {
+            currentStage = ConfigurationStage.Init;
+            Repaint();
+        }
         EditorGUILayout.LabelField("Enabling the XR SDK Pipeline with OpenXR", EditorStyles.boldLabel);
         //EditorGUILayout.Space();
         EditorGUILayout.LabelField("To use OpenXR with the XR SDK pipeline, first press the Download Tool button. "
@@ -368,6 +395,11 @@ public class XRPipelineConfigWindow : EditorWindow
 
     private void RenderImportTMP()
     {
+        if (TMPEssentialsImported())
+        {
+            currentStage = ConfigurationStage.ShowExamples;
+            Repaint();
+        }
         EditorGUILayout.LabelField("Importing TMP Essentials", EditorStyles.boldLabel);
         //EditorGUILayout.Space();
         EditorGUILayout.LabelField("MRTK contains components that depend on TextMeshPro. It is recommended that you import TMP by clicking the Import TMP Essentials button below. "
@@ -387,6 +419,11 @@ public class XRPipelineConfigWindow : EditorWindow
 
     private void RenderShowUPMExamples()
     {
+        if (!MRTKExamplesPackageImportedViaUPM())
+        {
+            currentStage = ConfigurationStage.Done;
+            Repaint();
+        }
         EditorGUILayout.LabelField("Locating MRTK Examples", EditorStyles.boldLabel);
         //EditorGUILayout.Space();
         EditorGUILayout.LabelField("The MRTK Examples package includes samples to help you familiarize yourself with many core features. "
@@ -413,6 +450,15 @@ public class XRPipelineConfigWindow : EditorWindow
 
     private void RenderConfigurationCompleted()
     {
+        EditorGUILayout.LabelField("MRTK Setup Completed!", MixedRealityStylesUtility.BoldLargeTitleStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.LabelField("You have finished setting up the project for Mixed Reality Toolkit. You may go through this process again by clicking Mixed Reality Toolkit on the editor menu bar -> Ultilities -> Config."
+            + $"\nIf there are certain settings not set according to the recommendation you may see this configurator popping up again. You may use the Ignore or Later button to suppress the behavior. "
+            + "We hope you enjoy using MRTK. Please find the links to our documentation and API references below. If you encountered something looking like a bug please report by opening an issue in our repository. "
+            + "\nThese links are accessible through Mixed Reality Toolkit on the editor menu bar -> Help "
+            + $"After finishing the process in the feature tool come back here to verify whether the installation is successful. A new page should be shown if you succeeded."
+            + $"\n\nMore information can be found at {MRFTDocsUrl}.", EditorStyles.wordWrappedLabel);
+        EditorGUILayout.Space(20);
         EditorGUILayout.LabelField("Enabling the XR SDK Pipeline with OpenXR", EditorStyles.boldLabel);
         //EditorGUILayout.Space();
         EditorGUILayout.LabelField("To use OpenXR with the XR SDK pipeline, first press the Download Tool button. "

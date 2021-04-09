@@ -7,6 +7,11 @@ using UnityEditor;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using System.Linq;
+#if XR_MANAGEMENT_ENABLED
+using UnityEngine.XR.Management;
+using UnityEditor.XR.Management;
+#endif // XR_MANAGEMENT_ENABLED
 #endif // UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -47,8 +52,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-#if UNITY_2019_3_OR_NEWER
-                return IsXRSDKSuppressingLegacyXR;
+#if UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
+                if (MicrosoftOpenXREnabled)
+                {
+                    return true;
+                }
+                else if (XRSDKLoadersOfCurrentBuildTarget.Count == 1 && XRSDKLoadersOfCurrentBuildTarget[0].name.Contains("Open XR"))
+                {
+                    return false;
+                }
+                else
+                {
+                    return XRSDKLoadersOfCurrentBuildTarget.Count > 0;
+                }
+#else
+                return false;
+#endif // UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the legacy virtual reality supported property in the player settings.
+        /// </summary>
+        /// <remarks>Returns true if legacy XR is disabled due to XR SDK in Unity 2019.3+.</remarks>
+        public static bool MicrosoftOpenXRPresent
+        {
+            get
+            {
+#if UNITY_2020_2_OR_NEWER && MSFT_OPENXR
+                return true;
 #else
                 return false;
 #endif // UNITY_2019_3_OR_NEWER
@@ -64,8 +97,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-#if UNITY_2019_3_OR_NEWER
-                return IsXRSDKSuppressingLegacyXR;
+#if UNITY_2020_2_OR_NEWER && MSFT_OPENXR
+                return XRSDKLoadersOfCurrentBuildTarget.Any(p => p.name.Contains("Open XR"));
 #else
                 return false;
 #endif // UNITY_2019_3_OR_NEWER
@@ -88,18 +121,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // UNITY_2020_2_OR_NEWER
             }
 
-#if !UNITY_2020_2_OR_NEWER
             set
             {
-                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-                // with legacy requirements.
+#if UNITY_2020_2_OR_NEWER
+                Debug.LogWarning("This set operation has not effect as Legacy XR has been removed in Unity 2020!");
+#else
 #pragma warning disable 0618
                 PlayerSettings.virtualRealitySupported = value;
 #pragma warning restore 0618
-            }
 #endif // !UNITY_2020_2_OR_NEWER
+            }
         }
-        
+
         /// <summary>
         /// Checks if an XR SDK plug-in is installed that disables legacy VR. Returns false if so.
         /// </summary>
@@ -114,6 +147,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #else
                 return true;
 #endif // UNITY_2019_3_OR_NEWER
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the legacy virtual reality supported property in the player settings.
+        /// </summary>
+        /// <remarks>Returns true if legacy XR is disabled due to XR SDK in Unity 2019.3+.</remarks>
+        public static bool XRManagementPresent
+        {
+            get
+            {
+#if XR_MANAGEMENT_ENABLED
+                return true;
+#else
+                return false;
+#endif // XR_MANAGEMENT_ENABLED
             }
         }
 
@@ -155,9 +204,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Called when packages are installed or uninstalled, to toggle a new check on XR SDK package installation status.
         /// </summary>
         private static void EditorApplication_projectChanged() => isXRSDKSuppressingLegacyXR = null;
+#if XR_MANAGEMENT_ENABLED
+        /// <summary>
+        /// Is either LegacyXR pipeline or XRSDK pipeline enabled?
+        /// </summary>
+        private static IReadOnlyList<XRLoader> XRSDKLoadersOfCurrentBuildTarget
+        {
+            get
+            {
+                BuildTargetGroup currentBuildTarget = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+                XRGeneralSettings settingsOfCurrentTarget = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(currentBuildTarget);
+#pragma warning disable CS0618 // Suppressing the warning to support xr management plugin 3.x and 4.x
+                return settingsOfCurrentTarget.AssignedSettings.loaders;
+#pragma warning restore CS0618
+            }
+        }
+#endif // XR_MANAGEMENT_ENABLED
 #endif // UNITY_2019_3_OR_NEWER
-        
-        [System.Obsolete("Call GetDefaultMappings(Handedness) instead.")]
+
+        [System.Obsolete("Call IsLegacyXRAvailable instead.")]
         public static bool IsLegacyXRActive => IsLegacyXRAvailable;
     }
 }
