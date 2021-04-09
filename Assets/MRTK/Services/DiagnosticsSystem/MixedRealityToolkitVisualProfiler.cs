@@ -473,9 +473,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             {
                 float windowDistance =
 #if WINDOWS_UWP
-                    Mathf.Max(16.0f / (appCaptureIsCapturingVideo ? previousFieldOfView : previousFieldOfView = CameraCache.Main.fieldOfView), CameraCache.Main.nearClipPlane + 0.25f);
+                    Mathf.Max(16.0f / (appCaptureIsCapturingVideo ? previousFieldOfView : previousFieldOfView = CameraCache.Main.fieldOfView), Mathf.Max(CameraCache.Main.nearClipPlane, 0.5f));
 #else
-                    Mathf.Max(16.0f / CameraCache.Main.fieldOfView, CameraCache.Main.nearClipPlane + 0.25f);
+                    Mathf.Max(16.0f / CameraCache.Main.fieldOfView, Mathf.Max(CameraCache.Main.nearClipPlane, 0.5f));
 #endif // WINDOWS_UWP
 
                 Vector3 position = cameraTransform.position + (cameraTransform.forward * windowDistance);
