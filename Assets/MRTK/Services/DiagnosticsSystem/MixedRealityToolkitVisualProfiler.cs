@@ -462,6 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
 #if WINDOWS_UWP
         private void AppCapture_CapturingChanged(AppCapture sender, object args) => appCaptureIsCapturingVideo = sender.IsCapturingVideo;
+        private float previousFieldOfView = -1.0f;
 #endif // WINDOWS_UWP
 
         private static readonly ProfilerMarker CalculateWindowPositionPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkitVisualProfiler.CalculateWindowPosition");
@@ -470,7 +471,13 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             using (CalculateWindowPositionPerfMarker.Auto())
             {
-                float windowDistance = Mathf.Max(16.0f / CameraCache.Main.fieldOfView, CameraCache.Main.nearClipPlane + 0.25f);
+                float windowDistance =
+#if WINDOWS_UWP
+                    Mathf.Max(16.0f / (appCaptureIsCapturingVideo ? previousFieldOfView : previousFieldOfView = CameraCache.Main.fieldOfView), CameraCache.Main.nearClipPlane + 0.25f);
+#else
+                    Mathf.Max(16.0f / CameraCache.Main.fieldOfView, CameraCache.Main.nearClipPlane + 0.25f);
+#endif // WINDOWS_UWP
+
                 Vector3 position = cameraTransform.position + (cameraTransform.forward * windowDistance);
                 Vector3 horizontalOffset = cameraTransform.right * windowOffset.x;
                 Vector3 verticalOffset = cameraTransform.up * windowOffset.y;
