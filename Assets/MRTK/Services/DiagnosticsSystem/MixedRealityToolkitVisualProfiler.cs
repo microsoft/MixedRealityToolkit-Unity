@@ -449,8 +449,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
 
                 // Update visibility state.
-                window.gameObject.SetActive(ShouldShowProfiler);
-                memoryStats.gameObject.SetActive(memoryStatsVisible);
+                if (window.gameObject.activeSelf != ShouldShowProfiler)
+                {
+                    window.gameObject.SetActive(ShouldShowProfiler);
+                }
+
+                if (memoryStats.gameObject.activeSelf != memoryStatsVisible)
+                {
+                    memoryStats.gameObject.SetActive(memoryStatsVisible);
+                }
             }
         }
 
@@ -648,8 +655,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
             }
 
-            window.gameObject.SetActive(ShouldShowProfiler);
-            memoryStats.gameObject.SetActive(memoryStatsVisible);
+            if (window.gameObject.activeSelf != ShouldShowProfiler)
+            {
+                window.gameObject.SetActive(ShouldShowProfiler);
+            }
+
+            if (memoryStats.gameObject.activeSelf != memoryStatsVisible)
+            {
+                memoryStats.gameObject.SetActive(memoryStatsVisible);
+            }
         }
 
         private void BuildFrameRateStrings()
