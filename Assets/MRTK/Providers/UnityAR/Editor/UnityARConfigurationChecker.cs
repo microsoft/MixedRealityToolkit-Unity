@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// Ensures that the appropriate symbolic constant is defined based on the presence of the AR Foundation package.
         /// </summary>
         /// <returns>True if the define was added, false otherwise.</returns>
-        [MenuItem("Mixed Reality/Utilities/UnityAR/Update Scripting Defines")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/UnityAR/Update Scripting Defines")]
         private static bool ReconcileArFoundationDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInPackageCache(FileName);

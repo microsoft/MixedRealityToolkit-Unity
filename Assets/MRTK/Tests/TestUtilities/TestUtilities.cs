@@ -415,7 +415,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 #if UNITY_EDITOR
-        [MenuItem("Mixed Reality/Utilities/Update/Icons/Tests")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
         {
             Texture2D icon = null;

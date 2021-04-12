@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality/Profiles/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide")]
     public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile
     {

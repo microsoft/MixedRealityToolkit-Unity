@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
     /// Custom profile for CustomDwellHandler to show the dwell with decay behavior
     /// </summary>
     [MixedRealityServiceProfile(typeof(DwellProfileWithDecay))]
-    [CreateAssetMenu(menuName = "Mixed Reality/Profiles/Dwell Profile With Decay", fileName = "DwellProfileWithDecay", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Dwell Profile With Decay", fileName = "DwellProfileWithDecay", order = 100)]
     [Serializable]
     public class DwellProfileWithDecay : DwellProfile
     {
