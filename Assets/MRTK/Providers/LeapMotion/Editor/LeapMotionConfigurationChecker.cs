@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// <summary>
         /// Integrate MRTK and the Leap Motion Unity Modules if the Leap Motion Unity Modules are in the project. If they are not in the project, display a pop up window.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Integrate Leap Motion Unity Modules")]
+        [MenuItem("Mixed Reality/Utilities/Leap Motion/Integrate Leap Motion Unity Modules")]
         public static void IntegrateLeapMotionWithMRTK()
         {
             // Check if leap unity modules are in the project
@@ -419,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// <summary>
         /// Separate MRTK and the Leap Motion Unity Modules and display a prompt for the user to close unity and delete the assets.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Separate Leap Motion Unity Modules")]
+        [MenuItem("Mixed Reality/Utilities/Leap Motion/Separate Leap Motion Unity Modules")]
         public static void SeparateLeapMotion()
         {
 
@@ -441,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// <summary>
         /// Check the integration status of the Leap Motion Assets and display a message to the user.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Check Integration Status")]
+        [MenuItem("Mixed Reality/Utilities/Leap Motion/Check Integration Status")]
         public static void CheckIntegrationStatus()
         {
             if (isLeapRecognizedByMRTK)

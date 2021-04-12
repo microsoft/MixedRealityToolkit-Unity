@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappings;
 
 #if UNITY_EDITOR
-        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Controller Mapping Profiles")]
+        [MenuItem("Mixed Reality/Utilities/Update/Controller Mapping Profiles")]
         private static void UpdateAllControllerMappingProfiles()
         {
             string[] guids = AssetDatabase.FindAssets("t:MixedRealityControllerMappingProfile");
