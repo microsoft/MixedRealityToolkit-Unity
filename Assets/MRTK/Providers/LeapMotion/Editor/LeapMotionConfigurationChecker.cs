@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         private static string leapTestsPath_470 = "LeapMotion/Core/Editor/Tests";
 
         // This path is used to determine if the Leap Motion Unity Modules is version 4.6.0 or 4.5.1
-        private static string leapXRPath_451 = "LeapMotion/Core/Scripts/XR/LeapXRPinchLocomotion.cs";
+        private static string leapXRPath_460 = "LeapMotion/Core/Scripts/XR/LeapXRPinchLocomotion.cs";
 
         // Array of paths to Leap Motion testing directories that will be removed from the project.
         // Make sure each test directory ends with '/'
@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                             currentLeapCoreAssetsVersion = versionNumberSupported;
 
                             // The Leap Motion Unity modules Version.txt has remained 4.5.1 across versions 4.6.0, 4.7.0 and 4.7.1, check for the presence
-                            // of certian paths to infer the version number.
+                            // of certain paths to infer the version number.
 
                             // This path is only present in 4.7.1
                             string leap471Path = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath_471);
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                             string testDirectoryPath = Path.Combine(Application.dataPath, pathDifference, leapTestsPath_470);
 
                             // This path is present in 4.6.0 and not 4.5.1
-                            string xrPath = Path.Combine(Application.dataPath, pathDifference, leapXRPath_451);
+                            string xrPath = Path.Combine(Application.dataPath, pathDifference, leapXRPath_460);
 
                             if (File.Exists(leap471Path))
                             {
