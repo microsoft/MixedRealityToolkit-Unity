@@ -1513,11 +1513,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus) && CanInteract())
             {
+                bool hadFocus = HasFocus;
                 StartGlobalVisual(true);
                 HasVoiceCommand = true;
                 SendVoiceCommands(VoiceCommand, 0, 1);
                 TriggerOnClick();
                 eventData.Use();
+                HasFocus = hadFocus;
             }
         }
 
