@@ -43,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void Awake()
         {
-            Debug.LogWarning("Content adjuster start");
             if (containerObject == null)
             {
                 containerObject = transform;
@@ -56,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit
         // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
         private IEnumerator InitializeSceneContentWithDelay()
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
             InitializeSceneContent();
         }
 
@@ -72,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public void InitializeSceneContent()
         {
-            Debug.LogWarning("Content adjuster called");
             if (contentInitialized)
             {
                 return;
@@ -80,8 +78,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
-                Debug.LogWarning("Trying to align");
-
                 bool experienceAdjustedByXRDevice =
 #if UNITY_2019_3_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown);
@@ -100,8 +96,6 @@ namespace Microsoft.MixedReality.Toolkit
                     contentPosition.z = containerObject.position.z;
 
                     containerObject.position = contentPosition;
-
-                    Debug.LogWarning("Adjusting to floor height" + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight);
                 }
                 else
                 {

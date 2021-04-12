@@ -50,23 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneTransparentDisplay;
                 QualitySettings.SetQualityLevel(cameraProfile.TransparentQualityLevel, false);
             }
-
-            Debug.LogWarning("Trying to apply camera settings 1");
-
-#if UNITY_EDITOR
-            Debug.LogWarning("Trying to apply camera settings 2");
-            // Ensure the camera is parented to the playspace which starts, unrotated, at FloorHeight units below the origin if there is no tracking mode
-            // Only for use in editor 
-            if (Application.isPlaying)
-            {
-                Debug.LogWarning("Camera settings applied");
-                if (!MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.IsNull())
-                {
-                    float floorHeight = MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.FloorHeight;
-                    CameraCache.Main.transform.position = Vector3.up * floorHeight;
-                }
-            }
-#endif
         }
     }
 }

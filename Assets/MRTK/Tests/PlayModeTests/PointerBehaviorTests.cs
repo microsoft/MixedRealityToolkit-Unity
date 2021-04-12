@@ -235,7 +235,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             float floorHeight = 1.3f;
 
-
             // MRTK has already been created by SetUp prior to calling this,
             // we have to shut it down to re-init with the custom input profile which
             // has our floorHeight value set
@@ -307,12 +306,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // We should have teleported in the forward direction after the teleport
             Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
-
-#if UNITY_EDITOR
-            // Ensure that the camera's position is floorHeight (defined by the profile) units above the ground after the teleport
-            // The y-position offset only occurs in-editor at the moment.
-            Assert.AreEqual(CameraCache.Main.transform.position.y - MixedRealityPlayspace.Position.y, floorHeight, 0.005f);
-#endif
 
             // Reset the profile's settings to it's original value
             profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
