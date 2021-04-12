@@ -20,8 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         Init = 0,
         SelectXRSDKPlugin = 100,
-        InstallMSOpenXR = 101,
-        InstallBuiltinPlugin = 102,
+        InstallOpenXR = 101,
+        InstallMSOpenXR = 102,
+        InstallBuiltinPlugin = 150,
         ProjectConfiguration = 200,
         ImportTMP = 300,
         ShowExamples = 400,
@@ -56,18 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             get
             {
 #if UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
-                if (MicrosoftOpenXREnabled)
-                {
-                    return true;
-                }
-                else if (XRSDKLoadersOfCurrentBuildTarget.Count == 1 && XRSDKLoadersOfCurrentBuildTarget[0].name.Contains("Open XR"))
-                {
-                    return false;
-                }
-                else
-                {
-                    return XRSDKLoadersOfCurrentBuildTarget.Count > 0;
-                }
+                return XRSDKLoadersOfCurrentBuildTarget.Count > 0;
 #else
                 return false;
 #endif // UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
@@ -100,6 +90,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             get
             {
 #if UNITY_2020_2_OR_NEWER && MSFT_OPENXR
+                return XRSDKLoadersOfCurrentBuildTarget.Any(p => p.name.Contains("Open XR"));
+#else
+                return false;
+#endif // UNITY_2019_3_OR_NEWER
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the Unity OpenXR plugin is enabled.
+        /// </summary>
+        public static bool OpenXREnabled
+        {
+            get
+            {
+#if UNITY_2020_2_OR_NEWER && XR_MANAGEMENT_ENABLED
                 return XRSDKLoadersOfCurrentBuildTarget.Any(p => p.name.Contains("Open XR"));
 #else
                 return false;
