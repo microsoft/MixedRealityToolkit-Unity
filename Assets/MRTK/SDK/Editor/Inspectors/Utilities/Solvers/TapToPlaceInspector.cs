@@ -29,6 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         // Advanced properties
         private SerializedProperty magneticSurfaces;
+        private SerializedProperty updateLinkedTransformProperty;
+        private SerializedProperty moveLerpTimeProperty;
+        private SerializedProperty rotateLerpTimeProperty;
+        private SerializedProperty scaleLerpTimeProperty;
+        private SerializedProperty maintainScaleOnInitializationProperty;
+        private SerializedProperty smoothingProperty;
+        private SerializedProperty lifetimeProperty;
 
         private const string AdvancedPropertiesFoldoutKey = "TapToPlaceAdvancedProperties";
 
@@ -49,6 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             onPlacingStarted = serializedObject.FindProperty("onPlacingStarted");
 
             // Advanced Properties
+            updateLinkedTransformProperty = serializedObject.FindProperty("updateLinkedTransform");
+            moveLerpTimeProperty = serializedObject.FindProperty("moveLerpTime");
+            rotateLerpTimeProperty = serializedObject.FindProperty("rotateLerpTime");
+            scaleLerpTimeProperty = serializedObject.FindProperty("scaleLerpTime");
+            maintainScaleOnInitializationProperty = serializedObject.FindProperty("maintainScaleOnInitialization");
+            smoothingProperty = serializedObject.FindProperty("smoothing");
+            lifetimeProperty = serializedObject.FindProperty("lifetime");
             magneticSurfaces = serializedObject.FindProperty("magneticSurfaces");
         }
 
@@ -96,6 +110,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(updateLinkedTransformProperty);
+                    EditorGUILayout.PropertyField(moveLerpTimeProperty);
+                    EditorGUILayout.PropertyField(rotateLerpTimeProperty);
+                    EditorGUILayout.PropertyField(scaleLerpTimeProperty);
+                    EditorGUILayout.PropertyField(maintainScaleOnInitializationProperty);
+                    EditorGUILayout.PropertyField(smoothingProperty);
+                    EditorGUILayout.PropertyField(lifetimeProperty);
                     EditorGUILayout.PropertyField(magneticSurfaces, true);
                 }
             }
