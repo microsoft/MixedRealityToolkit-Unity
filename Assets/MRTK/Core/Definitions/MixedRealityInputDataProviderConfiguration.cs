@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Device manager specific configuration profile.
         /// </summary>
+        [Obsolete("Use the Profile property instead.")]
         public BaseMixedRealityProfile DeviceManagerProfile => deviceManagerProfile;
 
         /// <summary>
