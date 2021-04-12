@@ -58,9 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019
             tab = XRSettingsUtilities.IsLegacyXRActive ? 0 : 1;
-#endif // UNITY_2019_3_OR_NEWER
+#endif // UNITY_2019
 
             providerConfigurations = GetDataProviderConfigurationList();
 
@@ -128,13 +128,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019
         private int tab = 0;
-        private SupportedUnityXRPipelines selectedPipeline = SupportedUnityXRPipelines.LegacyXR;
         private static readonly string[] Tabs = new string[] { LegacyXRLabel, XRSDKLabel };
         private const string LegacyXRLabel = "Legacy XR";
         private const string XRSDKLabel = "XR SDK";
+#endif // UNITY_2019
+
+        private SupportedUnityXRPipelines selectedPipeline =
+#if UNITY_2019_3_OR_NEWER
+            SupportedUnityXRPipelines.XRSDK;
+#else
+            SupportedUnityXRPipelines.LegacyXR;
 #endif // UNITY_2019_3_OR_NEWER
+
 
         /// <summary>
         /// Render list of data provider configuration profiles in inspector. Use provided add and remove content labels for the insert/remove buttons
@@ -144,10 +151,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             bool changed = false;
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019
             tab = GUILayout.Toolbar(tab, Tabs);
             selectedPipeline = Tabs[tab] == XRSDKLabel ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
-#endif // UNITY_2019_3_OR_NEWER
+#endif // UNITY_2019
 
             using (new EditorGUILayout.VerticalScope())
             {
