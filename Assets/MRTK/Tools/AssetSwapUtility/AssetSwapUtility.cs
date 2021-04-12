@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// <summary>
     /// A scriptable object which contains data and UI functionality to swap object (asset) references within a scene.
     /// </summary>
-    [CreateAssetMenu(fileName = "AssetSwapCollection", menuName = "Mixed Reality Toolkit/AssetSwapCollection")]
+    [CreateAssetMenu(fileName = "AssetSwapCollection", menuName = "Mixed Reality/AssetSwapCollection")]
     public class AssetSwapUtility : ScriptableObject
     {
         [System.Serializable]

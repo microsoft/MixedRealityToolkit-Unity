@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
     /// Profile used by dwell handler to configure the various thresholds.
     /// </summary>
     [MixedRealityServiceProfile(typeof(DwellProfile))]
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Dwell Profile", fileName = "DwellProfile", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Profiles/Dwell Profile", fileName = "DwellProfile", order = 100)]
     [Serializable]
     public class DwellProfile : ScriptableObject
     {
