@@ -50,7 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static readonly GUIContent ComponentTypeLabel = new GUIContent("Type");
         private static readonly GUIContent SupportedPlatformsLabel = new GUIContent("Supported Platform(s)");
-        private static readonly XRPipelineUtility XrPipelineUtility = new XRPipelineUtility();
+
+        private readonly XRPipelineUtility xrPipelineUtility = new XRPipelineUtility();
 
         private const string NewDataProvider = "New data provider";
 
@@ -60,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             base.OnEnable();
 
 #if UNITY_2019
-            XrPipelineUtility.Enable();
+            xrPipelineUtility.Enable();
 #endif // UNITY_2019
 
             providerConfigurations = GetDataProviderConfigurationList();
@@ -145,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
 #if UNITY_2019
-                XrPipelineUtility.RenderXRPipelineTabs();
+                xrPipelineUtility.RenderXRPipelineTabs();
 #endif // UNITY_2019
 
                 if (InspectorUIUtility.RenderIndentedButton(addContentLabel, EditorStyles.miniButton))
@@ -156,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 for (int i = 0; i < providerConfigurations.arraySize; i++)
                 {
-                    changed |= RenderDataProviderEntry(i, removeContentLabel, XrPipelineUtility.SelectedPipeline, dataProviderProfileType);
+                    changed |= RenderDataProviderEntry(i, removeContentLabel, dataProviderProfileType);
                 }
 
                 return changed;
@@ -167,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Renders properties of <see cref="IMixedRealityServiceConfiguration"/> instance at provided index in inspector.
         /// Also renders inspector view of data provider's profile object and its contents if applicable and foldout is expanded.
         /// </summary>
-        protected bool RenderDataProviderEntry(int index, GUIContent removeContent, SupportedUnityXRPipelines pipeline, Type dataProviderProfileType = null)
+        protected bool RenderDataProviderEntry(int index, GUIContent removeContent, Type dataProviderProfileType = null)
         {
             bool changed = false;
             SerializedProperty provider = providerConfigurations.GetArrayElementAtIndex(index);
@@ -177,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (serviceType.Type != null && MixedRealityExtensionServiceAttribute.Find(serviceType.Type) is MixedRealityDataProviderAttribute providerAttribute)
             {
-                if (!providerAttribute.SupportedUnityXRPipelines.HasFlag(pipeline))
+                if (!providerAttribute.SupportedUnityXRPipelines.HasFlag(xrPipelineUtility.SelectedPipeline))
                 {
                     return false;
                 }
