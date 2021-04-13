@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting - Enabling the XR SDK Pipeline with OpenXR", EditorStyles.boldLabel);
-            //createSpace();
+            
             EditorGUILayout.LabelField("To enable the XR SDK pipeline with OpenXR, first press the Show Settings button. "
                 + $"\n\nIn the XR management plug-in window that shows up, please switch to the correct build target (e.g. UWP, Windows standalone) tab first by clicking on the icon(s) right below the XR Plug-in Management title. "
                 + "Then please check the OpenXR plugin. A new page confirming the detection of OpenXR will be shown in place of this page once you finish the steps.", EditorStyles.wordWrappedLabel);
@@ -449,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting - Configurating OpenXR for HoloLens 2 and HP Reverb G2", EditorStyles.boldLabel);
-            //createSpace();
+            
             EditorGUILayout.LabelField("To target HoloLens 2 or HP Reverb G2 headset you need to follow the instructions below."
                 + $"\n\nFirst click on the Show XR Plug-in Management Settings button. In the window popping up/getting focus, switch to switch to the correct build target (i.e. UWP or Windows standalone) tab "
                 + "by clicking on the icon(s) right below the XR Plug-in Management title. Then you should hover on the question mark to the right of the \"Enable HoloLens 2 feature set\" chekcbox and follow the instructions there."
@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Repaint();
             }
             EditorGUILayout.LabelField("Locating MRTK Examples", EditorStyles.boldLabel);
-            //createSpace();
+            
             EditorGUILayout.LabelField("The MRTK Examples package includes samples to help you familiarize yourself with many core features. "
                 + "\nSince you imported MRTK via MRFT/UPM the examples no longer show up in the Assets folder automatically. They are now located at Window (menu bar) -> Package Manager "
                 + "-> Select In Project in the \"Packages:\" dropdown -> Mixed Reality Toolkit Examples", EditorStyles.wordWrappedLabel);
@@ -603,7 +603,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             EditorGUILayout.LabelField("Not ready to setup the project now?", EditorStyles.boldLabel);
-            //createSpace();
+            
             EditorGUILayout.LabelField(showSkipButton ? "You may choose to skip this step, delay the setup until next session or ignore the setup unless reenabled." :
                 "You may choose to delay the setup until next session or ignore the setup unless reenabled."
                 , EditorStyles.wordWrappedLabel);

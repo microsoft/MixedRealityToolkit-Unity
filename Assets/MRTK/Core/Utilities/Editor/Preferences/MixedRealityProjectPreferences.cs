@@ -69,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Ignore startup settings prompt
 
-        //private static readonly GUIContent IgnoreContent = new GUIContent("Ignore MRTK project configurator", "Prevents settings dialog popup from showing.");
         private const string CONFIG_KEY = "_MixedRealityToolkit_Editor_ConfiguratorState";
         private static bool configuratorStateLoaded;
         private static int configuratorSate;
