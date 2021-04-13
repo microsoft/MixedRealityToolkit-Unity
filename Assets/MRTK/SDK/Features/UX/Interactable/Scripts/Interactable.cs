@@ -1302,7 +1302,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             yield return new WaitForSeconds(time);
 
             HasVoiceCommand = false;
-            if (!HasFocus)
+            if (HasFocus && focusingPointers.Count == 0)
             {
                 HasFocus = false;
             }
@@ -1513,13 +1513,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus) && CanInteract())
             {
-                bool hadFocus = HasFocus;
                 StartGlobalVisual(true);
                 HasVoiceCommand = true;
                 SendVoiceCommands(VoiceCommand, 0, 1);
                 TriggerOnClick();
                 eventData.Use();
-                HasFocus = hadFocus;
             }
         }
 
