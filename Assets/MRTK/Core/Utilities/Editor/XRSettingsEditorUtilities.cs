@@ -15,10 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// Utilities that abstract XR settings functionality so that the MRTK need not know which
     /// implementation is being used.
     /// </summary>
-    public static class XRSettingsUtilities
+    public static class XRSettingsEditorUtilities
     {
 #if UNITY_2019_3_OR_NEWER
-        static XRSettingsUtilities()
+        static XRSettingsEditorUtilities()
         {
             // Called when packages are installed or uninstalled
             EditorApplication.projectChanged += EditorApplication_projectChanged;

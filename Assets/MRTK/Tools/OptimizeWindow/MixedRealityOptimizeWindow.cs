@@ -146,12 +146,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.HelpBox(PerformanceTargetDescriptions[(int)PerfTarget], MessageType.Info);
             EditorGUILayout.Space();
 
-            if (!XRSettingsUtilities.LegacyXREnabled)
+            if (!XRSettingsEditorUtilities.LegacyXREnabled)
             {
                 EditorGUILayout.HelpBox("Virtual reality support is not enabled in player settings", MessageType.Error);
                 if (GUILayout.Button("Enable Virtual Reality Support"))
                 {
-                    XRSettingsUtilities.LegacyXREnabled = true;
+                    XRSettingsEditorUtilities.LegacyXREnabled = true;
                 }
             }
             else

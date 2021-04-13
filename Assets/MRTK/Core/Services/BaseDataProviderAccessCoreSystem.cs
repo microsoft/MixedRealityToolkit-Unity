@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using Unity.Profiling;
@@ -191,6 +192,17 @@ namespace Microsoft.MixedReality.Toolkit
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
+            SupportedUnityXRPipelines selectedPipeline = !XRSettingsUtilities.IsLegacyXRActive ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
+
+            if (MixedRealityExtensionServiceAttribute.Find(concreteType) is MixedRealityDataProviderAttribute providerAttribute)
+            {
+                if (!providerAttribute.SupportedUnityXRPipelines.HasFlag(selectedPipeline))
+                {
+                    DebugUtilities.LogVerboseFormat("Service not suitable for the current XR pipeline", concreteType);
+                    return false;
+                }
+            }
+
             if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
             {
                 DebugUtilities.LogVerboseFormat(

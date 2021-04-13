@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit
             RequiresProfile = requiresProfile;
         }
 
-#if UNITY_EDITOR
         /// <summary>
         /// Convenience function for retrieving the attribute given a certain class type.
         /// </summary>
@@ -113,6 +112,5 @@ namespace Microsoft.MixedReality.Toolkit
         {
             return type.GetCustomAttributes(typeof(MixedRealityExtensionServiceAttribute), true).FirstOrDefault() as MixedRealityExtensionServiceAttribute;
         }
-#endif // UNITY_EDITOR
     }
 }
