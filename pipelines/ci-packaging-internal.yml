@@ -21,6 +21,5 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packageNuGet: true # deprecated and temporary
       publishPackagesToFeed: true
       UnityVersion: $(Unity2018VersionInternal)

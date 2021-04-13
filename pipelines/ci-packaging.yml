@@ -15,5 +15,4 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-        packageNuGet: true # deprecated and temporary
         UnityVersion: $(Unity2018Version)
