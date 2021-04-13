@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             providerConfigurations.InsertArrayElementAtIndex(providerConfigurations.arraySize);
             SerializedProperty provider = providerConfigurations.GetArrayElementAtIndex(providerConfigurations.arraySize - 1);
 
-            var providerProperties = GetDataProviderConfigurationProperties(provider);
+            ServiceConfigurationProperties providerProperties = GetDataProviderConfigurationProperties(provider);
             providerProperties.componentName.stringValue = $"New data provider {providerConfigurations.arraySize - 1}";
             providerProperties.runtimePlatform.intValue = -1;
             providerProperties.providerProfile.objectReferenceValue = null;
