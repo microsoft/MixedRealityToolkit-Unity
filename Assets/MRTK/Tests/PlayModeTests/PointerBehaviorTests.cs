@@ -250,8 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
             profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
 
-            Debug.LogWarning("Settings profile floor height is: " + profile.ExperienceSettingsProfile.FloorHeight);
-
             PlayModeTestUtilities.Setup(profile);
 
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
