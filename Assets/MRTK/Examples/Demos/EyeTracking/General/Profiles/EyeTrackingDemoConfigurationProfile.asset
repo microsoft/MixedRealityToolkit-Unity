@@ -26,6 +26,8 @@ MonoBehaviour:
   enableBoundarySystem: 0
   boundarySystemType:
     reference: 
+  xrsdkBoundarySystemType:
+    reference: 
   boundaryVisualizationProfile: {fileID: 0}
   enableTeleportSystem: 0
   teleportSystemType:

@@ -136,25 +136,26 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("Boundary System class to instantiate at runtime.")]
+        [Tooltip("Boundary system class to instantiate at runtime for legacy XR.")]
         [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType boundarySystemType;
 
+        [SerializeField]
+        [Tooltip("Boundary system class to instantiate at runtime for XR SDK.")]
+        [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType xrsdkBoundarySystemType;
+
         /// <summary>
-        /// Boundary System class to instantiate at runtime.
+        /// Boundary system class to instantiate at runtime.
         /// </summary>
-        public SystemType BoundarySystemSystemType
-        {
-            get { return boundarySystemType; }
-            internal set { boundarySystemType = value; }
-        }
+        public SystemType BoundarySystemSystemType => (!XRSettingsUtilities.IsLegacyXRActive && xrsdkBoundarySystemType?.Type != null) ? xrsdkBoundarySystemType : boundarySystemType;
 
         [SerializeField]
         [Tooltip("Profile for wiring up boundary visualization assets.")]
         private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile;
 
         /// <summary>
-        /// Active profile for boundary visualization
+        /// Active profile for boundary visualization.
         /// </summary>
         public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
         {
