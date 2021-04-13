@@ -28,20 +28,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private SerializedProperty onPlacingStopped;
 
         // Advanced properties
+        private SerializedProperty magneticSurfaces;
         private SerializedProperty updateLinkedTransformProperty;
         private SerializedProperty moveLerpTimeProperty;
         private SerializedProperty rotateLerpTimeProperty;
         private SerializedProperty scaleLerpTimeProperty;
-        private SerializedProperty maintainScaleProperty;
+        private SerializedProperty maintainScaleOnInitializationProperty;
         private SerializedProperty smoothingProperty;
         private SerializedProperty lifetimeProperty;
-        private SerializedProperty magneticSurfaces;
 
         private const string AdvancedPropertiesFoldoutKey = "TapToPlaceAdvancedProperties";
 
         protected virtual void OnEnable()
         {
-            instance = (TapToPlace)target;
+            instance = (TapToPlace) target;
 
             // Main Tap to Place Properties
             autoStart = serializedObject.FindProperty("autoStart");
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             moveLerpTimeProperty = serializedObject.FindProperty("moveLerpTime");
             rotateLerpTimeProperty = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTimeProperty = serializedObject.FindProperty("scaleLerpTime");
-            maintainScaleProperty = serializedObject.FindProperty("maintainScale");
+            maintainScaleOnInitializationProperty = serializedObject.FindProperty("maintainScaleOnInitialization");
             smoothingProperty = serializedObject.FindProperty("smoothing");
             lifetimeProperty = serializedObject.FindProperty("lifetime");
             magneticSurfaces = serializedObject.FindProperty("magneticSurfaces");
@@ -104,17 +104,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private void RenderAdvancedProperties()
         {
             // Render Advanced Settings
-            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Advanced Properties", AdvancedPropertiesFoldoutKey, MixedRealityStylesUtility.TitleFoldoutStyle, false))
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Advanced Properties", AdvancedPropertiesFoldoutKey,
+                MixedRealityStylesUtility.TitleFoldoutStyle, false))
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.Space();
-
                     EditorGUILayout.PropertyField(updateLinkedTransformProperty);
                     EditorGUILayout.PropertyField(moveLerpTimeProperty);
                     EditorGUILayout.PropertyField(rotateLerpTimeProperty);
                     EditorGUILayout.PropertyField(scaleLerpTimeProperty);
-                    EditorGUILayout.PropertyField(maintainScaleProperty);
+                    EditorGUILayout.PropertyField(maintainScaleOnInitializationProperty);
                     EditorGUILayout.PropertyField(smoothingProperty);
                     EditorGUILayout.PropertyField(lifetimeProperty);
                     EditorGUILayout.PropertyField(magneticSurfaces, true);

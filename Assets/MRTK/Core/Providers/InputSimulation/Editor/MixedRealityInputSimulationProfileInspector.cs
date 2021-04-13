@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return MixedRealityToolkit.IsInitialized && profile != null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.DeviceManagerProfile);
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.Profile);
         }
     }
 }

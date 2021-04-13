@@ -158,7 +158,7 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.16862746, g: 0.21176471, b: 0, a: 1}
+    - _BaseColor: {r: 0, g: 0.21588826, b: 0.3490566, a: 1}
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.58, g: 0.58, b: 0.58, a: 1}
@@ -173,4 +173,4 @@ Material:
     - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
-    - _WireColor: {r: 0.827451, g: 0.21176471, b: 0.50980395, a: 1}
+    - _WireColor: {r: 0, g: 0.36314964, b: 1, a: 1}

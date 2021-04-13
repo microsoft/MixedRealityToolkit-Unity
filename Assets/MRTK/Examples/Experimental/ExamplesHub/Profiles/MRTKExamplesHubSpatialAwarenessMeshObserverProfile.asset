@@ -19,11 +19,12 @@ MonoBehaviour:
   observerVolumeType: 1
   updateInterval: 3.5
   meshPhysicsLayer: 31
-  levelOfDetail: 0
+  levelOfDetail: 2
   trianglesPerCubicMeter: 0
   recalculateNormals: 1
-  displayOption: 0
-  visibleMaterial: {fileID: 2100000, guid: 3a3a03a9e0a1eb24eb192533df212c4c, type: 2}
+  displayOption: 1
+  visibleMaterial: {fileID: 2100000, guid: b24e702ba4a7dd14bb78e04ea42311ff, type: 2}
   occlusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435, type: 2}
   physicsMaterial: {fileID: 0}
-  runtimeSpatialMeshPrefab: {fileID: 0}
+  runtimeSpatialMeshPrefab: {fileID: 2102354297904290179, guid: 3427db81a3fa4b14599639949efd675b,
+    type: 3}
