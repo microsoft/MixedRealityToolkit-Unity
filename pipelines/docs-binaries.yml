@@ -30,7 +30,6 @@ jobs:
 
   - task: PublishPipelineArtifact@1
     displayName: Publish docs binaries
-    condition: always()
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
       artifactName: DocsBinariesForUnity2020
@@ -59,7 +58,6 @@ jobs:
 
   - task: PublishPipelineArtifact@1
     displayName: Publish docs binaries
-    condition: always()
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
       artifactName: DocsBinariesForUnity2019
