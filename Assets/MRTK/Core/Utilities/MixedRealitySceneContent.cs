@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// 
     /// This script runs once, on GameObject creation.
     /// 
-    /// See https://developer.microsoft.com/en-us/windows/mixed-reality/coordinate_systems_in_unity for more information.
+    /// See https://docs.microsoft.com/windows/mixed-reality/coordinate_systems_in_unity for more information.
     /// <see cref="BoundaryManager"/> for TrackingSpaceType settings.
     /// </summary>
     public class MixedRealitySceneContent : MonoBehaviour
