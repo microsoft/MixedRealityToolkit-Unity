@@ -20,9 +20,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// You can also specify specific locations to place the object based on space type.
     /// 
     /// This script runs once, on GameObject creation.
-    /// 
-    /// See https://docs.microsoft.com/windows/mixed-reality/coordinate_systems_in_unity for more information.
-    /// <see cref="BoundaryManager"/> for TrackingSpaceType settings.
     /// </summary>
     public class MixedRealitySceneContent : MonoBehaviour
     {
