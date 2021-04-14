@@ -162,6 +162,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             var serviceType = GetDataProviderConfiguration(index).ComponentType;
 
+
+            SerializedProperty typeProperty = providerProperties.componentType.FindPropertyRelative("reference");
+            if (!string.IsNullOrEmpty(typeProperty.stringValue) && Type.GetType(typeProperty.stringValue) == null && !MixedRealityProjectPreferences.ShowNullDataProviders)
+            {
+                return false;
+            }
+
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 using (new EditorGUILayout.HorizontalScope())
