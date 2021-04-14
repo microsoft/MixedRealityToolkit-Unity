@@ -50,9 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
 #if UNITY_2019
         private static readonly GUIContent GeneralProvidersLabel = new GUIContent("General Providers");
+#endif // UNITY_2019
+
         private readonly XRPipelineUtility xrPipelineUtility = new XRPipelineUtility();
         private readonly List<SystemType> delayedDisplayProviders = new List<SystemType>();
-#endif // UNITY_2019
 
         private static readonly GUIContent ComponentTypeLabel = new GUIContent("Type");
         private static readonly GUIContent SupportedPlatformsLabel = new GUIContent("Supported Platform(s)");
@@ -156,15 +157,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
 #if UNITY_2019
-                delayedDisplayProviders.Clear();
                 xrPipelineUtility.RenderXRPipelineTabs();
 #endif // UNITY_2019
+
+                delayedDisplayProviders.Clear();
 
                 for (int i = 0; i < providerConfigurations.arraySize; i++)
                 {
                     SystemType serviceType = GetDataProviderConfiguration(i).ComponentType;
 
-#if UNITY_2019
                     if (serviceType.Type != null && MixedRealityExtensionServiceAttribute.Find(serviceType.Type) is MixedRealityDataProviderAttribute providerAttribute)
                     {
                         // Using == here to compare flags because we want to know if this is the only supported pipeline
@@ -189,13 +190,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         delayedDisplayProviders.Add(serviceType);
                     }
-#else
-                    changed |= RenderDataProviderEntry(i, removeContentLabel, serviceType, dataProviderProfileType);
-#endif // UNITY_2019
                 }
 
 #if UNITY_2019
                 EditorGUILayout.LabelField(GeneralProvidersLabel, EditorStyles.boldLabel);
+#endif // UNITY_2019
 
                 for (int i = 0; i < delayedDisplayProviders.Count; i++)
                 {
@@ -205,7 +204,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         changed |= RenderDataProviderEntry(i, removeContentLabel, service, dataProviderProfileType);
                     }
                 }
-#endif // UNITY_2019
 
                 return changed;
             }
