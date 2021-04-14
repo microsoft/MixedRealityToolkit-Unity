@@ -20,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         (SupportedPlatforms)(-1),
         "OpenXR XRSDK Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK",
-        true)]
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
     public class OpenXREyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider, IMixedRealityCapabilityCheck
     {
         /// <summary>

@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),
-        "OpenXR XRSDK Device Manager")]
+        "OpenXR XRSDK Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class OpenXRDeviceManager : XRSDKDeviceManager
     {
         /// <summary>
