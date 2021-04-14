@@ -149,16 +149,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.HelpBox(errorMsg, MessageType.Info);
                 }
 
-#if UNITY_2019
-                delayedDisplayProviders.Clear();
-                xrPipelineUtility.RenderXRPipelineTabs();
-#endif // UNITY_2019
-
                 if (InspectorUIUtility.RenderIndentedButton(addContentLabel, EditorStyles.miniButton))
                 {
                     AddDataProvider();
                     return true;
                 }
+
+#if UNITY_2019
+                delayedDisplayProviders.Clear();
+                xrPipelineUtility.RenderXRPipelineTabs();
+#endif // UNITY_2019
 
                 for (int i = 0; i < providerConfigurations.arraySize; i++)
                 {
@@ -186,10 +186,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                     }
                     else
-#endif // UNITY_2019
                     {
-                        changed |= RenderDataProviderEntry(i, removeContentLabel, serviceType, dataProviderProfileType);
+                        delayedDisplayProviders.Add(serviceType);
                     }
+#else
+                    changed |= RenderDataProviderEntry(i, removeContentLabel, serviceType, dataProviderProfileType);
+#endif // UNITY_2019
                 }
 
 #if UNITY_2019
