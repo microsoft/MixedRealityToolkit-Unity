@@ -71,6 +71,7 @@ $product = "toolkit"
 #
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
+    "core" = "Assets/MRTK/Core";
     "foundation" = "Assets/MRTK";
     "standardassets" = "Assets/MRTK/StandardAssets";
     # extensions
