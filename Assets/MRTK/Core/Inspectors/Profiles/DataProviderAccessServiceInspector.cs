@@ -49,6 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent ComponentTypeLabel = new GUIContent("Type");
         private static readonly GUIContent SupportedPlatformsLabel = new GUIContent("Supported Platform(s)");
 
+        private const string NewDataProvider = "New data provider";
+
         /// <inheritdoc/>
         protected override void OnEnable()
         {
@@ -72,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             SerializedProperty provider = providerConfigurations.GetArrayElementAtIndex(providerConfigurations.arraySize - 1);
 
             ServiceConfigurationProperties providerProperties = GetDataProviderConfigurationProperties(provider);
-            providerProperties.componentName.stringValue = $"New data provider {providerConfigurations.arraySize - 1}";
+            providerProperties.componentName.stringValue = $"{NewDataProvider} {providerConfigurations.arraySize - 1}";
             providerProperties.runtimePlatform.intValue = -1;
             providerProperties.providerProfile.objectReferenceValue = null;
 
@@ -162,7 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             var serviceType = GetDataProviderConfiguration(index).ComponentType;
 
-            if (serviceType?.Type == null && !MixedRealityProjectPreferences.ShowNullDataProviders)
+            // Don't hide new data providers added via the UI, otherwise there's no easy way to change their type
+            if (serviceType?.Type == null && !MixedRealityProjectPreferences.ShowNullDataProviders && !providerProperties.componentName.stringValue.StartsWith(NewDataProvider))
             {
                 return false;
             }
