@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// Shareable configuration for the <see cref="BoxDisplay" /> of <see cref="BoundsControl"/>
     /// This class provides all data members needed to create a solid box display for bounds control
     /// </summary>
-    [CreateAssetMenu(fileName = "BoxDisplayConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Box Display Configuration")]
+    [CreateAssetMenu(fileName = "BoxDisplayConfiguration", menuName = "Mixed Reality/Toolkit/Bounds Control/Box Display Configuration")]
     public class BoxDisplayConfiguration : ScriptableObject
     {
         [SerializeField]

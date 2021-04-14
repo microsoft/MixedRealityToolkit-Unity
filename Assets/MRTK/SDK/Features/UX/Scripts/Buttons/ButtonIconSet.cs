@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// An asset for storing textures, sprites and character icons for use with MRTK buttons. Used by ButtonConfigHelper script.
     /// </summary>
-    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality Toolkit/IconSet")]
+    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality/Toolkit/IconSet")]
     public class ButtonIconSet : ScriptableObject
     {
         // Struct used to pair a font icon with a searchable name.

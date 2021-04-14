@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/Add to Scene and Configure...")]
+        [MenuItem("Mixed Reality/Toolkit/Add to Scene and Configure...")]
         public static void CreateMixedRealityToolkitGameObject()
         {
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene();

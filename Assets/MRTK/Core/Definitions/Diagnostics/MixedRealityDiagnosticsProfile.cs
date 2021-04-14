@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// <summary>
     /// Configuration profile settings for setting up diagnostics.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Diagnostics Profile", fileName = "MixedRealityDiagnosticsProfile", order = (int)CreateProfileMenuItemIndices.Diagnostics)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Diagnostics Profile", fileName = "MixedRealityDiagnosticsProfile", order = (int)CreateProfileMenuItemIndices.Diagnostics)]
     [MixedRealityServiceProfile(typeof(IMixedRealityDiagnosticsSystem))]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/diagnostics/diagnostics-system-getting-started")]
     public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile

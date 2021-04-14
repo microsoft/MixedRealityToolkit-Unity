@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private const string DependencyWindow_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/dependency-window";
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
         {
             var window = GetWindow<DependencyWindow>(typeof(SceneView));
