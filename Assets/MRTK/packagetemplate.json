@@ -4,7 +4,7 @@
     "msftFeatureCategory": "Mixed Reality Toolkit",
     "version": "%version%",
     "unity": "2019.4",
-    "description": "The Mixed Reality Toolkit Foundation is a set of components and features to accelerate mixed reality app development in Unity.",
+    "description": "Mixed Reality Toolkit Foundation is a set of components and features to accelerate mixed reality app development in Unity.",
     "keywords": [
         "mrtk",
         "microsoft",
