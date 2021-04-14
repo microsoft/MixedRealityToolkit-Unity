@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
