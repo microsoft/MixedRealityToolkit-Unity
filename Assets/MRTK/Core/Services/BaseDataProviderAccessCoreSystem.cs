@@ -192,17 +192,6 @@ namespace Microsoft.MixedReality.Toolkit
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
-            SupportedUnityXRPipelines selectedPipeline = !XRSettingsUtilities.IsLegacyXRActive ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
-
-            if (MixedRealityExtensionServiceAttribute.Find(concreteType) is MixedRealityDataProviderAttribute providerAttribute)
-            {
-                if (!providerAttribute.SupportedUnityXRPipelines.HasFlag(selectedPipeline))
-                {
-                    DebugUtilities.LogVerboseFormat("Service not suitable for the current XR pipeline", concreteType);
-                    return false;
-                }
-            }
-
             if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
             {
                 DebugUtilities.LogVerboseFormat(
@@ -219,6 +208,17 @@ namespace Microsoft.MixedReality.Toolkit
                     "This may be caused by code being stripped during linking. The link.xml file in the MixedRealityToolkit.Generated folder is used to control code preservation.\n" +
                     "More information can be found at https://docs.unity3d.com/Manual/ManagedCodeStripping.html.");
                 return false;
+            }
+
+            SupportedUnityXRPipelines selectedPipeline = !XRSettingsUtilities.IsLegacyXRActive ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
+
+            if (MixedRealityExtensionServiceAttribute.Find(concreteType) is MixedRealityDataProviderAttribute providerAttribute)
+            {
+                if (!providerAttribute.SupportedUnityXRPipelines.HasFlag(selectedPipeline))
+                {
+                    DebugUtilities.LogVerboseFormat("{0} not suitable for the current XR pipeline ({1})", concreteType.Name, selectedPipeline);
+                    return false;
+                }
             }
 
             if (!typeof(IMixedRealityDataProvider).IsAssignableFrom(concreteType))
