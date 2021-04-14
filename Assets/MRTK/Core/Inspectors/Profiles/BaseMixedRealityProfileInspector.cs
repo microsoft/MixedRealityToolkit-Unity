@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             Type[] profileTypes = new Type[] { };
 
-            bool requiresProfile = IsProfileRequired(serviceType) ;
+            bool requiresProfile = IsProfileRequired(serviceType);
             if (profileType == null)
             {
                 // Find the profile type so we can limit the available object field options

@@ -30,23 +30,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public void RenderXRPipelineTabs()
         {
-            tab = GUILayout.Toolbar(tab, Tabs);
-            SelectedPipeline = Tabs[tab] == XRSDKLabel ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
-
-            switch (SelectedPipeline)
+            // The tabs should always be enabled. They're only used for visualization, not settings.
+            using (new GUIEnabledWrapper())
             {
-                case SupportedUnityXRPipelines.LegacyXR:
-                    if (!XRSettingsUtilities.IsLegacyXRActive)
-                    {
-                        EditorGUILayout.HelpBox("Legacy XR is not active, these data providers will not be loaded at runtime", MessageType.Info);
-                    }
-                    break;
-                case SupportedUnityXRPipelines.XRSDK:
-                    if (XRSettingsUtilities.IsLegacyXRActive)
-                    {
-                        EditorGUILayout.HelpBox("XR SDK is not active, these data providers will not be loaded at runtime", MessageType.Info);
-                    }
-                    break;
+                tab = GUILayout.Toolbar(tab, Tabs);
+                SelectedPipeline = Tabs[tab] == XRSDKLabel ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
+
+                switch (SelectedPipeline)
+                {
+                    case SupportedUnityXRPipelines.LegacyXR:
+                        if (!XRSettingsUtilities.IsLegacyXRActive)
+                        {
+                            EditorGUILayout.HelpBox("Legacy XR is not active, these data providers will not be loaded at runtime", MessageType.Info);
+                        }
+                        break;
+                    case SupportedUnityXRPipelines.XRSDK:
+                        if (XRSettingsUtilities.IsLegacyXRActive)
+                        {
+                            EditorGUILayout.HelpBox("XR SDK is not active, these data providers will not be loaded at runtime", MessageType.Info);
+                        }
+                        break;
+                }
             }
         }
 #endif // UNITY_2019
