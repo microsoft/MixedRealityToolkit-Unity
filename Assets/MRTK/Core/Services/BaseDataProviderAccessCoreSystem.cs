@@ -210,7 +210,14 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-            SupportedUnityXRPipelines selectedPipeline = !XRSettingsUtilities.IsLegacyXRActive ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
+            SupportedUnityXRPipelines selectedPipeline =
+#if UNITY_2020_1_OR_NEWER
+                SupportedUnityXRPipelines.XRSDK;
+#elif UNITY_2019
+                !XRSettingsUtilities.IsLegacyXRActive ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
+#else
+                SupportedUnityXRPipelines.LegacyXR;
+#endif
 
             if (MixedRealityExtensionServiceAttribute.Find(concreteType) is MixedRealityDataProviderAttribute providerAttribute)
             {
