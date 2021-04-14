@@ -288,7 +288,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
-            Debug.LogWarning("Initializing mrtk for real");
 #if UNITY_EDITOR
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
 #endif
