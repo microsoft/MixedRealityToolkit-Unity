@@ -28,7 +28,6 @@
         "com.microsoft.mixedreality.toolkit.standardassets": "%version%"
     },
     "files": [
-        "Core*",
         "Providers*",
         "SDK*",
         "Services*",
