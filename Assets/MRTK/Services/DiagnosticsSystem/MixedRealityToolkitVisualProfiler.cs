@@ -22,9 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// as current, peak and max usage in a bar graph. 
     /// </summary>
     /// <remarks>
-    /// To use this profiler simply add this script as a component of any GameObject in 
+    /// <para>To use this profiler simply add this script as a component of any GameObject in 
     /// your Unity scene. The profiler is initially enabled (toggle-able via the initiallyActive 
-    /// property), but can be toggled via the enabled/disable voice commands keywords.
+    /// property), but can be toggled via the enabled/disable voice commands keywords.</para>
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/Services/MixedRealityToolkitVisualProfiler")]
     public class MixedRealityToolkitVisualProfiler : MonoBehaviour
