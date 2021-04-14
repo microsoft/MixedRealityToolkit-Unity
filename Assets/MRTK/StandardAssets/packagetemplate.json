@@ -4,7 +4,7 @@
     "msftFeatureCategory": "Mixed Reality Toolkit",
     "version": "%version%",
     "unity": "2019.4",
-    "description": "Mixed Reality Toolkit standard assets, including; shaders, common materials and fonts.",
+    "description": "The Mixed Reality Toolkit Standard Assets is a set of shaders, textures, materials, fonts and other assets used by the Microsoft Mixed Reality Toolkit.",
     "keywords": [
         "mrtk",
         "microsoft",
