@@ -231,13 +231,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorAssemblyReloadManager.LockReloadAssemblies = scriptLock;
                 }
 
-                EditorGUI.BeginChangeCheck();
-                runOptimalConfig = EditorGUILayout.Toggle(RunOptimalConfigContent, RunOptimalConfiguration);
-
-                // Save the preference
-                if (EditorGUI.EndChangeCheck())
+                bool optimalConfig = EditorGUILayout.Toggle(RunOptimalConfigContent, RunOptimalConfiguration);
+                if (RunOptimalConfiguration != optimalConfig)
                 {
-                    RunOptimalConfiguration = runOptimalConfig;
+                    RunOptimalConfiguration = optimalConfig;
                 }
 
                 bool nullProviders = EditorGUILayout.Toggle(NullDataProviderContent, ShowNullDataProviders);
