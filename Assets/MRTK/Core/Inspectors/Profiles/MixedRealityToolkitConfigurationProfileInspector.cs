@@ -23,6 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Experience properties
         private SerializedProperty experienceSettingsType;
         private SerializedProperty experienceSettingsProfile;
+
+        // Tracking the old experience scale property for compatibility
+        private SerializedProperty experienceScaleMigration;
+
         // Camera properties
         private SerializedProperty enableCameraSystem;
         private SerializedProperty cameraSystemType;
@@ -92,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Experience configuration
             experienceSettingsType = serializedObject.FindProperty("experienceSettingsType");
             experienceSettingsProfile = serializedObject.FindProperty("experienceSettingsProfile");
+            experienceScaleMigration = serializedObject.FindProperty("targetExperienceScale");
 
             // Camera configuration
             enableCameraSystem = serializedObject.FindProperty("enableCameraSystem");
@@ -139,11 +144,39 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
+                            // Reconciling old Experience Scale property with the Experience Settings Profile
+                            var oldExperienceSettigsScale = (experienceSettingsProfile.objectReferenceValue as MixedRealityExperienceSettingsProfile)?.TargetExperienceScale;
+
                             changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false,  null, true);
 
                             // Experience configuration
                             if(!mrtkConfigProfile.ExperienceSettingsProfile.IsNull())
-                            {
+                            {                            
+                                // If the Experience Scale property changed, make sure we also alter the configuration profile's target experience scale property for compatibility
+                                var newExperienceSettigs = (experienceSettingsProfile.objectReferenceValue as MixedRealityExperienceSettingsProfile)?.TargetExperienceScale;
+                                if(oldExperienceSettigsScale.HasValue && newExperienceSettigs.HasValue && oldExperienceSettigsScale != newExperienceSettigs)
+                                {
+                                    experienceScaleMigration.intValue = (int)mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
+                                    serializedObject.ApplyModifiedProperties();
+                                }
+                                // If we have not changed the Experience Settings profile and it's value is out of sync with the top level configuration profile, display a migration prompt
+                                else if ((ExperienceScale)experienceScaleMigration.intValue != mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale)
+                                {
+                                    Color errorColor = Color.Lerp(Color.white, Color.red, 0.5f);
+                                    Color defaultColor = GUI.color;
+
+                                    GUI.color = errorColor;
+                                    EditorGUILayout.HelpBox("A previous version of this profile has a different Experience Scale, please select the desired Experience Scale", MessageType.Warning);
+                                    var oldValue = experienceScaleMigration.intValue;
+                                    EditorGUILayout.PropertyField(experienceScaleMigration);
+                                    if (oldValue != experienceScaleMigration.intValue)
+                                    {
+                                        mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale = (ExperienceScale)experienceScaleMigration.intValue;
+                                    }
+                                    GUI.color = defaultColor;
+                                }
+
+
                                 ExperienceScale experienceScale = mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
                                 string targetExperienceSummary = GetExperienceDescription(experienceScale);
                                 if (!string.IsNullOrEmpty(targetExperienceSummary))
