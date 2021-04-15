@@ -49,20 +49,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 SelectedPipeline = Tabs[tab] == XRSDKLabel ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
             }
 
-            EditorGUILayout.LabelField($"{Tabs[tab]} Providers", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField($"{Tabs[tab]}", EditorStyles.boldLabel);
 
             switch (SelectedPipeline)
             {
                 case SupportedUnityXRPipelines.LegacyXR:
                     if (!XRSettingsUtilities.IsLegacyXRActive)
                     {
-                        EditorGUILayout.HelpBox("Legacy XR is not active, so these data providers will not be loaded at runtime.", MessageType.Info);
+                        EditorGUILayout.HelpBox("Legacy XR is not active, so this list will not be loaded at runtime.", MessageType.Info);
                     }
                     break;
                 case SupportedUnityXRPipelines.XRSDK:
                     if (XRSettingsUtilities.IsLegacyXRActive)
                     {
-                        EditorGUILayout.HelpBox("XR SDK is not active, so these data providers will not be loaded at runtime.", MessageType.Info);
+                        EditorGUILayout.HelpBox("XR SDK is not active, so this list will not be loaded at runtime.", MessageType.Info);
                     }
                     break;
             }
