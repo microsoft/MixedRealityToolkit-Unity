@@ -19,7 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
+        "Textures/MotionController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityXRSDKMotionController : BaseWindowsMixedRealityXRSDKSource
     {
         /// <summary>

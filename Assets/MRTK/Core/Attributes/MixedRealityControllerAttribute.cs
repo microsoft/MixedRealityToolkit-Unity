@@ -39,18 +39,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityControllerConfigurationFlags Flags { get; }
 
         /// <summary>
+        /// Additional flags for configuring controller capabilities.
+        /// </summary>
+        public SupportedUnityXRPipelines SupportedUnityXRPipelines { get; }
+
+        /// <summary>
         /// 
         /// </summary>
         public MixedRealityControllerAttribute(
             SupportedControllerType supportedControllerType,
             Handedness[] supportedHandedness,
             string texturePath = "",
-            MixedRealityControllerConfigurationFlags flags = 0)
+            MixedRealityControllerConfigurationFlags flags = 0,
+            SupportedUnityXRPipelines supportedUnityXRPipelines = (SupportedUnityXRPipelines)(-1))
         {
             SupportedControllerType = supportedControllerType;
             SupportedHandedness = supportedHandedness;
             TexturePath = texturePath;
             Flags = flags;
+            SupportedUnityXRPipelines = supportedUnityXRPipelines;
         }
 
         /// <summary>

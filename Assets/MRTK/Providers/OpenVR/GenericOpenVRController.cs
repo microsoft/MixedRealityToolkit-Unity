@@ -15,7 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     [MixedRealityController(
         SupportedControllerType.GenericOpenVR,
         new[] { Handedness.Left, Handedness.Right },
-        flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
+        flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings,
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class GenericOpenVRController : GenericJoystickController
     {
         public GenericOpenVRController(
