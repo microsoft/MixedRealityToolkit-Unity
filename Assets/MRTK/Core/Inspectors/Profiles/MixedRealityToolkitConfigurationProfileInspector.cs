@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     Color defaultColor = GUI.color;
 
                                     GUI.color = errorColor;
-                                    EditorGUILayout.HelpBox("A previous version of this profile has a different Experience Scale, please select the desired Experience Scale", MessageType.Warning);
+                                    EditorGUILayout.HelpBox("A previous version of this profile has a different Experience Scale, displayed below. Please modify the Experience Setting Profile's Target Experience Scale or select your desired scale below", MessageType.Warning);
                                     var oldValue = experienceScaleMigration.intValue;
                                     EditorGUILayout.PropertyField(experienceScaleMigration);
                                     if (oldValue != experienceScaleMigration.intValue)
