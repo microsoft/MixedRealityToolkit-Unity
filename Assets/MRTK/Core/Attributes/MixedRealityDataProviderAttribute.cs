@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit
         public Type ServiceInterfaceType { get; }
 
         /// <summary>
-        /// 
+        /// The supported Unity XR pipelines for this data provider.
         /// </summary>
         public SupportedUnityXRPipelines SupportedUnityXRPipelines { get; }
 

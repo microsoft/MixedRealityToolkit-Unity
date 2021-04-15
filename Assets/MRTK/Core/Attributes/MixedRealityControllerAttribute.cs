@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityControllerConfigurationFlags Flags { get; }
 
         /// <summary>
-        /// Additional flags for configuring controller capabilities.
+        /// The supported Unity XR pipelines for this controller.
         /// </summary>
         public SupportedUnityXRPipelines SupportedUnityXRPipelines { get; }
 

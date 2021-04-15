@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// The supported platforms for Mixed Reality Toolkit Components and Features.
+    /// The supported platforms for Mixed Reality Toolkit components and features.
     /// </summary>
     [Flags]
     public enum SupportedPlatforms
@@ -24,6 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         Lumin = 1 << 10
     }
 
+    /// <summary>
+    /// The supported Unity XR pipelines for Mixed Reality Toolkit components and features.
+    /// </summary>
     [Flags]
     public enum SupportedUnityXRPipelines
     {
