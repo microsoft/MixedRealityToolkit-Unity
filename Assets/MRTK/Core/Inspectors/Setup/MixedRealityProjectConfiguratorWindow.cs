@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const float Default_Window_Width = 300.0f;
         private const string XRPipelineDocsUrl = "TO DO";
         private const string XRSDKUnityDocsUrl = "https://docs.unity3d.com/Manual/configuring-project-for-xr.html";
+        private const string MSOpenXRPluginUrl = "https://aka.ms/openxr-unity-install";
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
         private readonly GUIContent SkipButtonContent = new GUIContent("Skip", "Skip to next step");
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
@@ -187,19 +188,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("To build applications targeting AR/VR headsets you need to specify an XR pipeline. "
+            EditorGUILayout.LabelField("To build applications for AR/VR headsets you need to specify an XR pipeline. "
 #if UNITY_2019_3_OR_NEWER
-                + $"Unity currently provides the following pipelines in this version ({Application.unityVersion}). Please choose the one you would like to use. "
+                + $"Unity currently provides the following pipelines in this version ({Application.unityVersion}). Please choose the one you would like to use:"
+                + $"\n\nLegacy XR (Recommended) - Choose this if you want maximum stability and are willing to spend more effort when upgrading the project to Unity 2020. Supports HoloLens, Windows Mixed Reality/OpenVR/Oculus headset."
+                + $"\n\nXR SDK/XR Management - Choose this if you want to have a smoother upgrade path to Unity 2020. Supports HoloLens, Windows Mixed Reality/Oculus/Magic Leap headset. Note: do NOT choose this if you anticipate using Azure Spatial Anchors as there is a known compatibility issue."
 #else
-                +$"Unity currently provides the Legacy XR pipeline in this version ({Application.unityVersion}). Please click on the Enable Legacy XR button if you are targeting AR/VR headsets. "
+                +$"Unity currently provides the Legacy XR pipeline in this version ({Application.unityVersion}). Please click on the Enable Legacy XR button if you are targeting AR/VR headsets (e.g. HoloLens, Windows Mixed Reality headset, OpenVR headset etc.). "
 #endif // UNITY_2019_3_OR_NEWER
-                + "You may also skip this step and configure manually later. "
-                + $"More information can be found at {XRPipelineDocsUrl}", EditorStyles.wordWrappedLabel);
+                + "\n\n\nYou may also skip this step and configure manually later.", EditorStyles.wordWrappedLabel);
             CreateSpace(15);
             using (new EditorGUILayout.HorizontalScope())
             {
 #if UNITY_2019_3_OR_NEWER
-                if (GUILayout.Button("Legacy XR"))
+                if (GUILayout.Button("Legacy XR (Recommended)"))
 #else
                 if (GUILayout.Button("Enable Legacy XR"))
 #endif // UNITY_2019_3_OR_NEWER
@@ -207,14 +209,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     XRSettingsUtilities.LegacyXREnabled = true;
                 }
-
 #if UNITY_2019_3_OR_NEWER
-                if (GUILayout.Button("XR SDK/XR Management (Recommended)"))
+                if (GUILayout.Button("XR SDK/XR Management"))
                 {
+                    if (!XRSettingsUtilities.XRManagementPresent)
+                    {
+                        AddUPMPackage("com.unity.xr.management");
+                    }
                     currentStage = ConfigurationStage.InstallBuiltinPlugin;
                     Repaint();
                 }
-#endif
+#endif // UNITY_2019_3_OR_NEWER
                 if (GUILayout.Button("Learn more"))
                 {
                     Application.OpenURL(XRPipelineDocsUrl);
@@ -229,9 +234,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private void RenderLegacyXRPipelineDetected()
         {
             EditorGUILayout.LabelField("XR Pipeline Setting - LegacyXR in use", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("To build applications targeting AR/VR headsets you need to specify an XR pipeline. "
+            EditorGUILayout.LabelField("To build applications for AR/VR headsets you need to specify an XR pipeline. "
                 + $"\n\nThe LegacyXR pipeline is detected in the project. Please be aware that the LegacyXR pipeline is deprecated in Unity 2019 and is removed in Unity 2020."
-                + $"\n\nFor more information on alternative pipelines, please visit {XRPipelineDocsUrl}", EditorStyles.wordWrappedLabel);
+                + $"\n\nFor more information on alternative pipelines, please click on the Learn more button.", EditorStyles.wordWrappedLabel);
             CreateSpace(15);
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -251,9 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private void RenderMicrosoftOpenXRPipelineDetected()
         {
             EditorGUILayout.LabelField("XR Pipeline Setting - XR SDK with Unity + Microsoft OpenXR plugins in use", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("To build applications targeting AR/VR headsets you need to specify an XR pipeline. "
+            EditorGUILayout.LabelField("To build applications for AR/VR headsets you need to specify an XR pipeline. "
                 + $"\n\nThe XR SDK pipeline with Unity and Microsoft OpenXR plugins are detected in the project. You are good to go."
-                + $"\n\nFor more information on alternative pipelines, please visit {XRPipelineDocsUrl}", EditorStyles.wordWrappedLabel);
+                + $"\n\nFor more information on alternative pipelines, please click on the Learn more button.", EditorStyles.wordWrappedLabel);
             CreateSpace(15);
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -274,10 +279,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private void RenderOpenXRPipelineDetected()
         {
             EditorGUILayout.LabelField("XR Pipeline Setting - XR SDK with Unity OpenXR plugin in use", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("To build applications targeting AR/VR headsets you need to specify an XR pipeline. "
+            EditorGUILayout.LabelField("To build applications for AR/VR headsets you need to specify an XR pipeline. "
                 + $"\n\nThe XR SDK pipeline with Unity OpenXR plugin is detected in the project. You are good to go."
-                + $"\n\nNote: If you are targeting HoloLens 2 or HP Reverb G2 headset you need to click on the more info button and follow the instructions there."
-                + $"\n\nFor more information on alternative pipelines, please visit {XRPipelineDocsUrl}", EditorStyles.wordWrappedLabel);
+                + $"\n\nNote: If you are targeting HoloLens 2 or HP Reverb G2 headset you need to install the Microsoft OpenXR plugin."
+                + $"\n\nFor more information on alternative pipelines, please click on the Learn more button.", EditorStyles.wordWrappedLabel);
             CreateSpace(15);
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -286,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     currentStage = ConfigurationStage.ProjectConfiguration;
                     Repaint();
                 }
-                if (GUILayout.Button("More info on HoloLens 2 and Reverb G2"))
+                if (GUILayout.Button("Install Microsoft OpenXR plugin..."))
                 {
                     currentStage = ConfigurationStage.InstallMSOpenXR;
                     Repaint();
@@ -302,10 +307,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void RenderXRSDKBuiltinPluginPipelineDetected()
         {
-            EditorGUILayout.LabelField("XR Pipeline Setting - XR SDK with builtin plugin in use", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("To build applications targeting AR/VR headsets you need to specify an XR pipeline. "
-                + $"\n\nThe XR SDK pipeline with builtin plugin is detected in the project. You are good to go."
-                + $"\n\nFor more information on alternative pipelines, please visit {XRPipelineDocsUrl}", EditorStyles.wordWrappedLabel);
+            EditorGUILayout.LabelField("XR Pipeline Setting - XR SDK with builtin plugin (non-OpenXR) in use", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("To build applications for AR/VR headsets you need to specify an XR pipeline. "
+                + $"\n\nThe XR SDK pipeline with builtin plugin (non-OpenXR) is detected in the project. You are good to go."
+                + $"\n\nFor more information on alternative pipelines, please click on the Learn more button.", EditorStyles.wordWrappedLabel);
             CreateSpace(15);
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -330,26 +335,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting - Enabling the XR SDK Pipeline", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("To build applications targeting AR/VR headsets you need to enable an XR pipeline. "
-                + "With this pipeline there are two categories of provider plugins for the XR SDK pipeline:"
-                + $"\n\nThe Unity OpenXR plugin (possibly along with vender-specific extension plugins) is recommended if you are targeting HoloLens 2 and/or Windows Mixed Reality (WMR) headsets."
-                + "\nThe built-in plugins provided by Unity offers a wide range of supported devices, including HoloLens 2 and WMR headsets. "
-                + $"\n\nMore information can be found at {XRPipelineDocsUrl}.", EditorStyles.wordWrappedLabel);
+            EditorGUILayout.LabelField("To build applications for AR/VR headsets you need to enable an XR pipeline. "
+                + "With the XR SDK pipeline there are two categories of provider plugins:"
+                + $"\n\nUnity OpenXR plugin (recommended) - Choose this if you want to embrace the new industry standard and easily support a wide range of AR/VR devices in the future! Currently officially supports HoloLens 2 and Windows Mixed Reality headsets with other devices coming soon."
+                + "\nBuilt-in Unity plugin (non-OpenXR) - Choose this if your application needs to support platforms beyond just HoloLens 2 and Windows Mixed Reality headsets (e.g. needs to support Oculus/Magic Leap headsets) today."
+                + $"\n\nFor more information, please click on the Learn more button.", EditorStyles.wordWrappedLabel);
             CreateSpace(15);
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Use the Unity OpenXR plugin"))
+                if (GUILayout.Button("Use the Unity OpenXR plugin (recommended)"))
                 {
 
 #if UNITY_2020_2_OR_NEWER
-                    var request = UnityEditor.PackageManager.Client.Add("com.unity.xr.openxr");
-                    while (!request.IsCompleted) { }
+                    AddUPMPackage("com.unity.xr.openxr");
                     currentStage = ConfigurationStage.InstallOpenXR;
 #endif // UNITY_2020_2_OR_NEWER
                     Repaint();
                 }
-                if (GUILayout.Button("Use built-in Unity plugins"))
+                if (GUILayout.Button("Use built-in Unity plugins (non-OpenXR)"))
                 {
+#if UNITY_2019_3_OR_NEWER
+                    if (!XRSettingsUtilities.XRManagementPresent)
+                    {
+                        AddUPMPackage("com.unity.xr.management");
+                    }
+#endif // UNITY_2019_3_OR_NEWER
                     currentStage = ConfigurationStage.InstallBuiltinPlugin;
                     Repaint();
                 }
@@ -371,40 +381,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 currentStage = ConfigurationStage.Init;
                 Repaint();
             }
-            EditorGUILayout.LabelField("XR Pipeline Setting - Enabling the XR SDK Pipeline with built-in Plugins", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("XR Pipeline Setting - Enabling the XR SDK Pipeline with built-in Plugins (non-OpenXR)", EditorStyles.boldLabel);
 
-            if (XRSettingsUtilities.XRManagementPresent)
-            {
-                EditorGUILayout.LabelField("To enable the XR SDK pipeline with built-in Plugins, first press the Show Settings button. "
-                + $"\n\nIn the XR management plug-in window that shows up, check the plugin(s) you want to use based on your target device. "
-                + "\n\nBe sure to switch to the correct build target (e.g. UWP, Windows standalone) tab first by clicking on the icon(s) right below the XR Plug-in Management title. "
-                + $"After checking the desired plugin(s) click on the Next button to continue."
-                + $"\n\nMore information can be found at {XRSDKUnityDocsUrl} (Only the first three steps are needed if following instructions on the page)", EditorStyles.wordWrappedLabel);
-            }
-            else
-            {
-                EditorGUILayout.LabelField("To enable the XR SDK pipeline with built-in Plugins, first press the Show Settings button. "
-                + $"\n\nIn the XR management plug-in window that shows up, click on the install XR Plugin Management button. "
-                + "After clicking on that button, please check the plugin(s) you want to use based on your target device. "
-                + "\n\nBe sure to switch to the correct build target (e.g. UWP, Windows standalone) tab first by clicking on the icon(s) right below the XR Plug-in Management title. "
-                + $"After checking the desired plugin(s) click on the Next button to continue."
-                + $"\n\nMore information can be found at {XRSDKUnityDocsUrl} (Only the first three steps are needed if following instructions on the page)", EditorStyles.wordWrappedLabel);
-            }
+            EditorGUILayout.LabelField("To enable the XR SDK pipeline with built-in Plugins (non-OpenXR), follow the steps below:"
+            + "\n\n1. Press the Show Settings button."
+            + "\n2. In the XR management plug-in window that shows up, switch to the current build target (e.g. UWP, Windows standalone) tab by clicking on the corresponding icon right below the XR Plug-in Management title. "
+            + "\n3. Check the plugin(s) you want to use based on your target device. "
+            + "\n\nA new page confirming the setup is successful will be shown in place of this page once you finish the steps."
+            + $"\n\nFor more information, please click on the Learn more button. (Only the first three steps are needed if following instructions on the page)", EditorStyles.wordWrappedLabel);
             
             CreateSpace(15);
             using (new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Show Settings"))
                 {
-
-                    if (XRSettingsUtilities.XRManagementPresent)
-                    {
-                        SettingsService.OpenProjectSettings("Project/XR Plug-in Management");
-                    }
-                    else
-                    {
-                        SettingsService.OpenProjectSettings("Project/XR Plugin Management");
-                    }
+                    SettingsService.OpenProjectSettings("Project/XR Plug-in Management");
                 }
                 if (GUILayout.Button("Learn more"))
                 {
@@ -448,17 +439,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 currentStage = ConfigurationStage.Init;
                 Repaint();
             }
-            EditorGUILayout.LabelField("XR Pipeline Setting - Configurating OpenXR for HoloLens 2 and HP Reverb G2", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("XR Pipeline Setting - Installing the Microsoft OpenXR plugin", EditorStyles.boldLabel);
             
-            EditorGUILayout.LabelField("To target HoloLens 2 or HP Reverb G2 headset you need to follow the instructions below."
-                + $"\n\nFirst click on the Show XR Plug-in Management Settings button. In the window popping up/getting focus, switch to switch to the correct build target (i.e. UWP or Windows standalone) tab "
-                + "by clicking on the icon(s) right below the XR Plug-in Management title. Then you should hover on the question mark to the right of the \"Enable HoloLens 2 feature set\" chekcbox and follow the instructions there."
-                + "\n\nNote: Follow the \"Manual setup without MRTK\" section of the instructions on the web page as MRTK is already in the project. Also you do not need to manually select MRTK in the feature tool no matter it is shown as installed or not."
-                + "\n\nKeep this window and the Unity project open during the process. A new page confirming the setup is successful will be shown in place of this page once you finish the steps.", EditorStyles.wordWrappedLabel);
+            EditorGUILayout.LabelField("To target HoloLens 2 or HP Reverb G2 headset you need to install the Microsoft OpenXR plugin by following the instructions below."
+                + "\n\n1. Press the Show instructions button."
+                + "\n2. Follow the instructions in the Manual setup without MRTK section as MRTK is already in the project. Also you do not need to manually select MRTK in the feature tool no matter it is shown as installed or not."
+                + "\n3. Keep this window and the Unity project open during the process. A new page confirming the setup is successful will be shown in place of this page once you finish the steps."
+                , EditorStyles.wordWrappedLabel);
             CreateSpace(15);
-            if (GUILayout.Button("Show XR Plug-in Management Settings"))
+            if (GUILayout.Button("Show instructions"))
             {
-                SettingsService.OpenProjectSettings("Project/XR Plug-in Management");
+                Application.OpenURL(MSOpenXRPluginUrl);
             }
             RenderSetupLaterSection(true, () => {
                 currentStage = ConfigurationStage.ProjectConfiguration;
@@ -869,5 +860,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 #endif // UNITY_2019_3_OR_NEWER
         }
+#if UNITY_2019_3_OR_NEWER
+        private void AddUPMPackage(string packageName)
+        {
+            var request = UnityEditor.PackageManager.Client.Add(packageName);
+            while (!request.IsCompleted) { }
+        }
+#endif
     }
 }
