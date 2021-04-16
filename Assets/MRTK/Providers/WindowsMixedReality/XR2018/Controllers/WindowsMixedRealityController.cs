@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
             if (GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
