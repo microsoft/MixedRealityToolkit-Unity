@@ -138,12 +138,12 @@ namespace Microsoft.MixedReality.Toolkit
         [SerializeField]
         [Tooltip("Boundary system class to instantiate at runtime for legacy XR.")]
         [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
-        private SystemType boundarySystemType;
+        private SystemType boundarySystemType = null;
 
         [SerializeField]
         [Tooltip("Boundary system class to instantiate at runtime for XR SDK.")]
         [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
-        private SystemType xrsdkBoundarySystemType;
+        private SystemType xrsdkBoundarySystemType = null;
 
         /// <summary>
         /// Boundary system class to instantiate at runtime.

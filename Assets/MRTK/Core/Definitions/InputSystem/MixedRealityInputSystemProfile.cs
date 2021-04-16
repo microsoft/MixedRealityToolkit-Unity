@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The list of cultures where speech recognition is supported
         /// </summary>
-        private static readonly List<CultureInfo> SupportedVoiceCultures = new List<CultureInfo>
+        private List<CultureInfo> supportedVoiceCultures = new List<CultureInfo>
         {
             new CultureInfo("en-US"),
             new CultureInfo("en-CA"),
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Returns whether speech is supported for the current language or not
         /// </summary>
-        public bool IsSpeechSupported => SupportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
+        public bool IsSpeechSupported => supportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
