@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization, new ConfigGetter(IsForceTextSerialization) },
             { Configurations.VisibleMetaFiles, new ConfigGetter(IsVisibleMetaFiles) },
 #if !UNITY_2019_3_OR_NEWER
-            { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsUtilities.LegacyXREnabled) },
+            { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsEditorUtilities.LegacyXREnabled) },
 #endif // !UNITY_2019_3_OR_NEWER
             { Configurations.OptimalRenderingPath, new ConfigGetter(MixedRealityOptimizeUtils.IsOptimalRenderingPath) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(HasSpatialAwarenessLayer) },
