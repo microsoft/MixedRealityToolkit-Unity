@@ -19,7 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "XR SDK Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
-        "MixedRealityToolkit.SDK")]
+        "MixedRealityToolkit.SDK",
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class GenericXRSDKSpatialMeshObserver :
         BaseSpatialMeshObserver,

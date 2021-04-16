@@ -21,7 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.LinuxStandalone | SupportedPlatforms.WindowsUniversal,
-        "XR SDK Device Manager")]
+        "XR SDK Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class XRSDKDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
     {
         /// <summary>
