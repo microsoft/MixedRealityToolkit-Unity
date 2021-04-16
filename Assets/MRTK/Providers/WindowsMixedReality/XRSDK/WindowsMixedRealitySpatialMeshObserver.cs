@@ -39,6 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
+        protected override bool IsActiveLoader =>
+#if WMR_ENABLED
+            LoaderHelpers.IsLoaderActive("Windows MR Loader");
+#else
+            false;
+#endif // WMR_ENABLED
+
         private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.ConfigureObserverVolume");
 
         private Vector3 oldObserverOrigin = Vector3.zero;
