@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization, SetForceTextSerialization },
             { Configurations.VisibleMetaFiles, SetVisibleMetaFiles },
 #if !UNITY_2019_3_OR_NEWER
-            { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
+            { Configurations.VirtualRealitySupported, () => XRSettingsEditorUtilities.LegacyXREnabled = true },
 #endif // !UNITY_2019_3_OR_NEWER
             { Configurations.OptimalRenderingPath, MixedRealityOptimizeUtils.SetOptimalRenderingPath },
             { Configurations.SpatialAwarenessLayer,  SetSpatialAwarenessLayer },
