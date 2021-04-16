@@ -50,21 +50,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-        private bool? isActiveLoader = null;
-        private bool IsActiveLoader
-        {
-            get
-            {
+        private bool IsActiveLoader =>
 #if WMR_ENABLED
-                if (!isActiveLoader.HasValue)
-                {
-                    isActiveLoader = IsLoaderActive("Windows MR Loader");
-                }
+            LoaderHelpers.IsLoaderActive("Windows MR Loader");
+#else
+            false;
 #endif // WMR_ENABLED
-
-                return isActiveLoader ?? false;
-            }
-        }
 
         #region IMixedRealityDeviceManager Interface
 

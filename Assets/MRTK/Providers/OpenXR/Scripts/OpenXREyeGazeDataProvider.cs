@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.XR;
 
 #if UNITY_OPENXR
+using UnityEngine.XR.OpenXR;
 using UnityEngine.XR.OpenXR.Features.Interactions;
 #endif // UNITY_OPENXR
 
@@ -43,6 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             gazeSmoother.OnSaccadeX += GazeSmoother_OnSaccadeX;
             gazeSmoother.OnSaccadeY += GazeSmoother_OnSaccadeY;
         }
+
+        private bool IsActiveLoader =>
+#if UNITY_OPENXR
+            LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
+#else
+            false;
+#endif // UNITY_OPENXR
 
         /// <inheritdoc />
         public bool SmoothEyeTracking { get; set; } = false;
@@ -87,6 +95,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             base.Initialize();
         }
 
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
+
         private void ReadProfile()
         {
             if (ConfigurationProfile == null)
@@ -116,6 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (UpdatePerfMarker.Auto())
             {
+                if (!IsEnabled)
+                {
+                    return;
+                }
+
                 if (!eyeTrackingDevice.isValid)
                 {
                     InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.EyeTracking, InputDeviceList);

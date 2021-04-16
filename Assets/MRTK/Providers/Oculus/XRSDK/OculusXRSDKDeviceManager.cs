@@ -153,21 +153,12 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
 
         #endregion Controller Utilities
 
-        private bool? isActiveLoader = null;
-        private bool IsActiveLoader
-        {
-            get
-            {
+        private bool IsActiveLoader =>
 #if OCULUS_ENABLED
-                if (!isActiveLoader.HasValue)
-                {
-                    isActiveLoader = IsLoaderActive<OculusLoader>();
-                }
+            LoaderHelpers.IsLoaderActive<OculusLoader>();
+#else
+            false;
 #endif // OCULUS_ENABLED
-
-                return isActiveLoader ?? false;
-            }
-        }
 
         /// <inheritdoc/>
         public override void Enable()

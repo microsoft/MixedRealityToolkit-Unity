@@ -45,6 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             gazeSmoother.OnSaccadeY += GazeSmoother_OnSaccadeY;
         }
 
+        private bool IsActiveLoader =>
+#if WMR_ENABLED
+            LoaderHelpers.IsLoaderActive("Windows MR Loader");
+#else
+            false;
+#endif // WMR_ENABLED
+
         /// <inheritdoc />
         public bool SmoothEyeTracking { get; set; } = false;
 
@@ -66,6 +73,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         [Obsolete("Register for this provider's SaccadeProvider's actions instead")]
         public event Action OnSaccadeY;
         private void GazeSmoother_OnSaccadeY() => OnSaccadeY?.Invoke();
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
 
         #region IMixedRealityCapabilityCheck Implementation
 
@@ -126,6 +145,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             using (UpdatePerfMarker.Auto())
             {
+                if (!IsEnabled)
+                {
+                    return;
+                }
+
                 if (!centerEye.isValid)
                 {
                     centerEye = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);

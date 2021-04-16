@@ -39,6 +39,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
+        // Don't run this one on Windows MR, since that has its own observer
+        // There's probably a better way to manage these two...
+        protected virtual bool IsActiveLoader => !LoaderHelpers.IsLoaderActive("Windows MR Loader");
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
+
         #region BaseSpatialObserver Implementation
 
         private XRMeshSubsystem meshSubsystem;
@@ -131,6 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             using (UpdatePerfMarker.Auto())
             {
+                if (!IsEnabled)
+                {
+                    return;
+                }
+
                 base.Update();
                 UpdateObserver();
             }
