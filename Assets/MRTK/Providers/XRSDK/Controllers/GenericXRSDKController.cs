@@ -12,7 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
     [MixedRealityController(
         SupportedControllerType.GenericUnity,
         new[] { Handedness.Left, Handedness.Right },
-        flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
+        flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings,
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class GenericXRSDKController : BaseController
     {
         public GenericXRSDKController(

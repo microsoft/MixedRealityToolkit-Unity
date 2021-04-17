@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="symbols">Array of symbols to define.</param>
         public static void AppendScriptingDefinitions(
             BuildTargetGroup targetGroup,
-            string[] symbols)
+            params string[] symbols)
         {
             if (symbols == null || symbols.Length == 0) { return; }
 
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="symbols">Array of symbols to remove.</param>
         public static void RemoveScriptingDefinitions(
             BuildTargetGroup targetGroup,
-            string[] symbols)
+            params string[] symbols)
         {
             if (symbols == null || symbols.Length == 0) { return; }
 

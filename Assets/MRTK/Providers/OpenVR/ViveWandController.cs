@@ -10,7 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     [MixedRealityController(
         SupportedControllerType.ViveWand,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/ViveWandController")]
+        "Textures/ViveWandController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class ViveWandController : GenericOpenVRController
     {
         /// <summary>

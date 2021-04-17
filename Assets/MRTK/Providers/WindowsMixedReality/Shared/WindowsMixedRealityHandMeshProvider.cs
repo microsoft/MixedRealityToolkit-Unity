@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityArticulatedHandDefinition.UpdateHandMesh");
+        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker($"[MRTK] {nameof(WindowsMixedRealityHandMeshProvider)}.UpdateHandMesh");
 
         /// <summary>
         /// Updates the current hand mesh based on the passed in state of the hand.

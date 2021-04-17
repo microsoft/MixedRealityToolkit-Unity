@@ -1302,7 +1302,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             yield return new WaitForSeconds(time);
 
             HasVoiceCommand = false;
-            if (!HasFocus)
+            if (HasFocus && focusingPointers.Count == 0)
             {
                 HasFocus = false;
             }

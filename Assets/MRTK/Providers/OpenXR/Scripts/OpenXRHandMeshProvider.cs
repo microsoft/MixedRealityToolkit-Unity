@@ -8,6 +8,7 @@ using UnityEngine;
 #endif // MSFT_OPENXR_0_2_0_OR_NEWER
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Unity.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -66,49 +67,54 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <param name="inputSource">Implementation of the hand input source.</param>
         public void SetInputSource(IMixedRealityInputSource inputSource) => this.inputSource = inputSource;
 
+        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker($"[MRTK] {nameof(OpenXRHandMeshProvider)}.UpdateHandMesh");
+
         /// <summary>
         /// Updates the hand mesh based on the current state of the hand.
         /// </summary>
         public void UpdateHandMesh()
         {
 #if MSFT_OPENXR_0_2_0_OR_NEWER
-            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
-            MixedRealityHandTrackingProfile handTrackingProfile = inputSystemProfile != null ? inputSystemProfile.HandTrackingProfile : null;
-
-            if (handTrackingProfile == null || !handTrackingProfile.EnableHandMeshVisualization)
+            using (UpdateHandMeshPerfMarker.Auto())
             {
-                // If hand mesh visualization is disabled make sure to clean up if we've already initialized
-                if (handMeshUVs != null)
+                MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystemProfile != null ? inputSystemProfile.HandTrackingProfile : null;
+
+                if (handTrackingProfile == null || !handTrackingProfile.EnableHandMeshVisualization)
                 {
-                    // Notify that hand mesh has been updated (cleared)
-                    CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, new HandMeshInfo());
-                    handMeshUVs = null;
+                    // If hand mesh visualization is disabled make sure to clean up if we've already initialized
+                    if (handMeshUVs != null)
+                    {
+                        // Notify that hand mesh has been updated (cleared)
+                        CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, new HandMeshInfo());
+                        handMeshUVs = null;
+                    }
+                    return;
                 }
-                return;
-            }
 
-            if (handMeshUVs == null && handMeshTracker.TryGetHandMesh(FrameTime.OnUpdate, neutralPoseMesh, HandPoseType.ReferenceOpenPalm))
-            {
-                handMeshUVs = InitializeUVs(neutralPoseMesh.vertices);
-            }
-
-            if (handMeshTracker.TryGetHandMesh(FrameTime.OnUpdate, mesh) && handMeshTracker.TryLocateHandMesh(FrameTime.OnUpdate, out Pose pose))
-            {
-                mesh.GetVertices(vertices);
-                mesh.GetNormals(normals);
-                mesh.GetTriangles(triangles, 0);
-
-                HandMeshInfo handMeshInfo = new HandMeshInfo
+                if (handMeshUVs == null && handMeshTracker.TryGetHandMesh(FrameTime.OnUpdate, neutralPoseMesh, HandPoseType.ReferenceOpenPalm))
                 {
-                    vertices = vertices.ToArray(),
-                    normals = normals.ToArray(),
-                    triangles = triangles.ToArray(),
-                    uvs = handMeshUVs,
-                    position = pose.position,
-                    rotation = pose.rotation
-                };
+                    handMeshUVs = InitializeUVs(neutralPoseMesh.vertices);
+                }
 
-                CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                if (handMeshTracker.TryGetHandMesh(FrameTime.OnUpdate, mesh) && handMeshTracker.TryLocateHandMesh(FrameTime.OnUpdate, out Pose pose))
+                {
+                    mesh.GetVertices(vertices);
+                    mesh.GetNormals(normals);
+                    mesh.GetTriangles(triangles, 0);
+
+                    HandMeshInfo handMeshInfo = new HandMeshInfo
+                    {
+                        vertices = vertices.ToArray(),
+                        normals = normals.ToArray(),
+                        triangles = triangles.ToArray(),
+                        uvs = handMeshUVs,
+                        position = pose.position,
+                        rotation = pose.rotation
+                    };
+
+                    CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                }
             }
         }
 

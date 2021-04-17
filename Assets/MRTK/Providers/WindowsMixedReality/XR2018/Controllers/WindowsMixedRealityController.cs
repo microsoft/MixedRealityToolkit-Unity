@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
+        "Textures/MotionController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class WindowsMixedRealityController : BaseWindowsMixedRealitySource
     {
         /// <summary>
@@ -238,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
             if (GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }

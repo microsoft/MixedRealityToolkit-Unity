@@ -9,7 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     [MixedRealityController(
         SupportedControllerType.ViveKnuckles,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class ViveKnucklesController : GenericOpenVRController
     {
         /// <summary>

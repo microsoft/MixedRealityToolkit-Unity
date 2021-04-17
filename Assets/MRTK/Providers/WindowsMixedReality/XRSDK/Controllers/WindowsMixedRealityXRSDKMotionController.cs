@@ -19,7 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
+        "Textures/MotionController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityXRSDKMotionController : BaseWindowsMixedRealityXRSDKSource
     {
         /// <summary>
@@ -140,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
             if (GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }

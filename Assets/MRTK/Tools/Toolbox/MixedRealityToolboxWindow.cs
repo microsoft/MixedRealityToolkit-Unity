@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private GUIStyle centeredStyle;
 
-        [MenuItem("Mixed Reality Toolkit/Toolbox", false, 3)]
+        [MenuItem("Mixed Reality/Toolkit/Toolbox", false, 3)]
         internal static void ShowWindow()
         {
             var window = GetWindow<MixedRealityToolboxWindow>(typeof(SceneView));
