@@ -36,10 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Checks whether the XRSDK pipeline is properly set up to enable XR.
         /// </summary>
-        /// <remarks>
-        /// <para>Returns true if using the Unity OpenXR plugin along with the Microsoft plugin or using the built-in plugins.
-        /// Returns false if the only enabled plugin is Unity OpenXR and the Microsoft one is not present, or there is no enabled plugin.</para>
-        /// </remarks>
+        /// <remarks>Returns true if one or more XR SDK plugins are enabled.</remarks>
         public static bool XRSDKEnabled
         {
             get

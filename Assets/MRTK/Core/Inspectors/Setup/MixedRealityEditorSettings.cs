@@ -86,10 +86,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!EditorApplication.isPlayingOrWillChangePlaymode
                 && !IgnoreProjectConfigForSession
-                && !MixedRealityProjectPreferences.IgnoreSettingsPrompt
-                && !MixedRealityProjectConfigurator.IsProjectConfigured())
+                && !MixedRealityProjectPreferences.IgnoreSettingsPrompt)
             {
-                MixedRealityProjectConfiguratorWindow.ShowWindowOnInit();
+                if (!XRSettingsUtilities.XREnabled)
+                {
+                    MixedRealityProjectConfiguratorWindow.ShowWindowOnInit(false);
+                }
+                else if (!MixedRealityProjectConfigurator.IsProjectConfigured())
+                {
+                    MixedRealityProjectConfiguratorWindow.ShowWindowOnInit(true);
+                }
             }
         }
 
@@ -100,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!XRSettingsUtilities.XREnabled)
             {
-                Debug.LogWarning("XR supported is not enabled in the project!");
+                Debug.LogWarning("There is no prperly configured XR pipeline in the project! Please run the configurator by clicking on Mixed Reality (menu bar) -> Toolkit -> Utilities -> Configure Project for MRTK if the current settings are not desired.");
             }
 
             if (!MixedRealityOptimizeUtils.IsOptimalRenderingPath())

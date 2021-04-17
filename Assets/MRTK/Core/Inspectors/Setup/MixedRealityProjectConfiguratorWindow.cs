@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         private const float Default_Window_Height = 500.0f;
         private const float Default_Window_Width = 300.0f;
-        private const string XRPipelineDocsUrl = "TO DO";
+        private const string XRPipelineDocsUrl = "Pipeline docs not yet available";
         private const string XRSDKUnityDocsUrl = "https://docs.unity3d.com/Manual/configuring-project-for-xr.html";
         private const string MSOpenXRPluginUrl = "https://aka.ms/openxr-unity-install";
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
@@ -68,18 +68,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             isTMPEssentialsImported = null;
         }
 
-        [MenuItem("Mixed Reality/Toolkit/Utilities/Run Configurator...", false, 499)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Configure Project for MRTK", false, 499)]
         public static void ShowWindowFromMenu()
         {
             currentStage = ConfigurationStage.Init;
             ShowWindow();
         }
 
-        public static void ShowWindowOnInit()
+        public static void ShowWindowOnInit(bool switchToConfigurationStage)
         {
             if (!IsOpen && currentStage == ConfigurationStage.Done)
             {
-                currentStage = ConfigurationStage.ProjectConfiguration;
+                if (switchToConfigurationStage)
+                {
+                    currentStage = ConfigurationStage.ProjectConfiguration;
+                }
+                else
+                {
+                    currentStage = ConfigurationStage.Init;
+                }
             }
 
             ShowWindow();
@@ -567,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             EditorGUILayout.LabelField("MRTK Setup Completed!", MixedRealityStylesUtility.BoldLargeTitleStyle);
             CreateSpace(5);
-            EditorGUILayout.LabelField("You have finished setting up the project for Mixed Reality Toolkit. You may go through this process again by clicking on Mixed Reality (menu bar) -> Toolkit -> Utilities -> Run Configurator..."
+            EditorGUILayout.LabelField("You have finished setting up the project for Mixed Reality Toolkit. You may go through this process again by clicking on Mixed Reality (menu bar) -> Toolkit -> Utilities -> Configure Project for MRTK"
                 + $"\n\nIf there are certain settings not set according to the recommendation you may see this configurator popping up again. You may use the Ignore or Later button to suppress the behavior. "
                 + "\n\nWe hope you enjoy using MRTK. Please find the links to our documentation and API references below. If you encountered something looking like a bug please report by opening an issue in our repository. "
                 + "\n\nThese links are accessible through Mixed Reality (menu bar) -> Toolkit -> Help.", EditorStyles.wordWrappedLabel);
