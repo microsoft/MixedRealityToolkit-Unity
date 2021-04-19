@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit
                     (!DeviceUtility.IsPresent || experienceAdjustedByXRDevice))
                 {
                     contentPosition.x = containerObject.position.x;
-                    contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.UserHeight;
+                    contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.ContentOffset;
                     contentPosition.z = containerObject.position.z;
 
                     containerObject.position = contentPosition;

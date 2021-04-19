@@ -32,16 +32,16 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [SerializeField]
-        [Tooltip("The anticipated user height for the Mixed Reality Experience. 1 unit = 1 meter")]
-        private float userHeight = 0.0f;
+        [Tooltip("The amount to offset the MixedRealitySceneContent for the target experience. 1 unit = 1 meter")]
+        private float contentOffset = 0.0f;
 
         /// <summary>
         /// The height above the floor for the Mixed Reality Experience. 1 unit = 1 meter
         /// </summary>
-        public float UserHeight
+        public float ContentOffset
         {
-            get { return userHeight; }
-            set { userHeight = value; }
+            get { return contentOffset; }
+            set { contentOffset = value; }
         }
     }
 }

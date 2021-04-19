@@ -104,19 +104,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns>enumerator for Unity</returns>
         [UnityTest]
-        public IEnumerator TestProfileUserHeight()
+        public IEnumerator TestProfileContentOffset()
         {
-            float floorHeight = 3.0f;
+            float contentOffset = 3.0f;
 
             var hl1Profile = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>()
                 .FirstOrDefault(x => x.name.Equals(HoloLens1ProfileName));
 
             // keep the old floor height and experience scale to reset it later
             ExperienceScale originalExperienceScale = hl1Profile.ExperienceSettingsProfile.TargetExperienceScale;
-            float oldUserHeight = hl1Profile.ExperienceSettingsProfile.UserHeight;
+            float oldContentOffset = hl1Profile.ExperienceSettingsProfile.ContentOffset;
             
             hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
-            hl1Profile.ExperienceSettingsProfile.UserHeight = floorHeight;
+            hl1Profile.ExperienceSettingsProfile.ContentOffset = contentOffset;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
 
             TestUtilities.InitializeCamera();
@@ -125,11 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealitySceneContent sceneContent = GameObject.Find("MixedRealitySceneContent").GetComponent<MixedRealitySceneContent>();
 
             TestUtilities.AssertAboutEqual(TestUtilities.PositionRelativeToPlayspace(Vector3.zero), Vector3.zero, "The playspace was not set to the origin");
-            TestUtilities.AssertAboutEqual(sceneContent.transform.position, Vector3.up * floorHeight, "The floor height was not set correctly");
+            TestUtilities.AssertAboutEqual(sceneContent.transform.position, Vector3.up * contentOffset, "The floor height was not set correctly");
 
-            // be sure to set the profiles FloorHeight back to it's original value afterwards
+            // be sure to set the profile's ContentOffset back to it's original value afterwards
             hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
-            hl1Profile.ExperienceSettingsProfile.UserHeight = oldUserHeight;
+            hl1Profile.ExperienceSettingsProfile.ContentOffset = oldContentOffset;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
         }
     }
