@@ -101,7 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             if (!IsActiveLoader)
             {
-                Debug.LogWarning($"{Name} requires Unity's OpenXR Plugin to be installed.");
                 IsEnabled = false;
                 return;
             }
