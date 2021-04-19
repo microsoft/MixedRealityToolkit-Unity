@@ -101,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             if (!IsActiveLoader)
             {
+                Debug.LogWarning($"{Name} requires Unity's OpenXR Plugin to be installed.");
                 IsEnabled = false;
                 return;
             }
@@ -124,10 +125,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             SmoothEyeTracking = profile.SmoothEyeTracking;
-
-#if !UNITY_OPENXR
-            Debug.LogWarning("OpenXR Eye Tracking Provider requires Unity's OpenXR Plugin to be installed.");
-#endif // !UNITY_OPENXR
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] OpenXREyeGazeDataProvider.Update");
