@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public void InitializeSceneContent()
         {
-            if (contentInitialized)
+            if (contentInitialized || containerObject == null)
             {
                 return;
             }
