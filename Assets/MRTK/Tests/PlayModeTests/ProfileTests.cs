@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns>enumerator for Unity</returns>
         [UnityTest]
-        public IEnumerator TestProfileFloorHeight()
+        public IEnumerator TestProfileUserHeight()
         {
             float floorHeight = 3.0f;
 
@@ -113,10 +113,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // keep the old floor height and experience scale to reset it later
             ExperienceScale originalExperienceScale = hl1Profile.ExperienceSettingsProfile.TargetExperienceScale;
-            float oldFloorHeight = hl1Profile.ExperienceSettingsProfile.FloorHeight;
+            float oldUserHeight = hl1Profile.ExperienceSettingsProfile.UserHeight;
             
             hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
-            hl1Profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
+            hl1Profile.ExperienceSettingsProfile.UserHeight = floorHeight;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
 
             TestUtilities.InitializeCamera();
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // be sure to set the profiles FloorHeight back to it's original value afterwards
             hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
-            hl1Profile.ExperienceSettingsProfile.FloorHeight = oldFloorHeight;
+            hl1Profile.ExperienceSettingsProfile.UserHeight = oldUserHeight;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
         }
     }

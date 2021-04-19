@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   targetExperienceScale: 3
-  floorHeight: 0
+  userHeight: 0

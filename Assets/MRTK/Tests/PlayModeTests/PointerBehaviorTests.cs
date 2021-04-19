@@ -227,13 +227,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that the teleport pointer functions as expected
         /// </summary>
         [UnityTest]
-        public IEnumerator TestTeleportAndFloorHeight()
+        public IEnumerator TestTeleportAndUserHeight()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             ExperienceScale originalExperienceScale;
-            float originalProfileFloorHeight;
+            float originalProfileUserHeight;
 
-            float floorHeight = 1.3f;
+            float userHeight = 1.3f;
 
             // MRTK has already been created by SetUp prior to calling this,
             // we have to shut it down to re-init with the custom input profile which
@@ -244,10 +244,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Initialize a profile with the appropriate floorHeight
             var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
 
-            originalProfileFloorHeight = profile.ExperienceSettingsProfile.FloorHeight;
+            originalProfileUserHeight = profile.ExperienceSettingsProfile.UserHeight;
             originalExperienceScale = profile.ExperienceSettingsProfile.TargetExperienceScale;
 
-            profile.ExperienceSettingsProfile.FloorHeight = floorHeight;
+            profile.ExperienceSettingsProfile.UserHeight = userHeight;
             profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
 
             PlayModeTestUtilities.Setup(profile);
@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Ensure that the SceneContent object is floorHeight units above the origin
-            Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, floorHeight, 0.005f);
+            Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, userHeight, 0.005f);
             
             // Create a floor and make sure it's below the camera
             var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Reset the profile's settings to it's original value
             profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
-            profile.ExperienceSettingsProfile.FloorHeight = originalProfileFloorHeight;
+            profile.ExperienceSettingsProfile.UserHeight = originalProfileUserHeight;
 
             leftHand.Hide();
         }
