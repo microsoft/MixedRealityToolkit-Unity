@@ -33,7 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private WindowsMixedRealityHandMeshProvider(Handedness handedness) => this.handedness = handedness;
 
         [Obsolete("WindowsMixedRealityHandMeshProvider(IMixedRealityController) is obsolete. Please use either the static Left or Right members and call SetInputSource()")]
-        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => inputSource = controller.InputSource;
+        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) : this(controller.ControllerHandedness)
+        {
+            SetInputSource(controller.InputSource);
+        }
 
         private readonly Handedness handedness;
         private IMixedRealityInputSource inputSource = null;
