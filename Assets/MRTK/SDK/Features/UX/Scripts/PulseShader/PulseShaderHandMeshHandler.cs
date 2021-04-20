@@ -188,20 +188,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
         // Check if the palm is facing the camera
         private bool IsAPalmFacingCamera()
         {
-            foreach (IMixedRealityController c in CoreServices.InputSystem.DetectedControllers)
+            foreach (IMixedRealityController controller in CoreServices.InputSystem.DetectedControllers)
             {
-                if (c.ControllerHandedness.IsMatch(Handedness.Both))
+                if (controller.ControllerHandedness.IsMatch(Handedness.Both)
+                    && controller is IMixedRealityHand jointedHand
+                    && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palmPose)
+                    && Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward) > 0.0f)
                 {
-                    MixedRealityPose palmPose;
-                    var jointedHand = c as IMixedRealityHand;
-
-                    if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
-                    {
-                        if (Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward) > 0.0f)
-                        {
-                            return true;
-                        }
-                    }
+                    return true;
                 }
             }
 
