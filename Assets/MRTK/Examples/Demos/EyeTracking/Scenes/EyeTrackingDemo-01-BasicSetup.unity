@@ -1061,7 +1061,7 @@ GameObject:
   - component: {fileID: 895827387}
   - component: {fileID: 895827388}
   m_Layer: 0
-  m_Name: MixedRealtiySceneContent
+  m_Name: MixedRealitySceneContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
