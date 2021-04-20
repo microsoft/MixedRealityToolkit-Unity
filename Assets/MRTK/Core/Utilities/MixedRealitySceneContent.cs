@@ -74,11 +74,10 @@ namespace Microsoft.MixedReality.Toolkit
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
                 bool experienceAdjustedByXRDevice =
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2019_3_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown);
 #else
-                    (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown)) || 
-                    (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
+                    XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
 #endif // UNITY_2019_3_OR_NEWER
 
                 // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
