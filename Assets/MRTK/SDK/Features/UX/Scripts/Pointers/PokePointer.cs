@@ -484,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Gizmos.color = Color.green;
             }
 
-            if(closestProximityTouchable != null)
+            if (closestProximityTouchable != null)
             {
                 Gizmos.DrawLine(transform.position, closestProximityTouchable.transform.position);
             }
