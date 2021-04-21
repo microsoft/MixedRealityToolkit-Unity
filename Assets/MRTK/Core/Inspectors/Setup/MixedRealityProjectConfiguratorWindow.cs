@@ -566,6 +566,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 currentStage = ConfigurationStage.Done;
                 Repaint();
+                GUIUtility.ExitGUI();
             }
             EditorGUILayout.LabelField("Locating MRTK Examples", EditorStyles.boldLabel);
             
