@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         internal const string MRTKDocsUrl = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/";
         internal const string MRTKAPIRefUrl = "https://docs.microsoft.com/dotnet/api/microsoft.mixedreality.toolkit";
 
-
         [MenuItem("Mixed Reality/Toolkit/Help/Show Documentation", false)]
         public static void ShowDocumentation()
         {

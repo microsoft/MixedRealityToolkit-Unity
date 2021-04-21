@@ -1,9 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Editor.Inspectors")]
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    public enum ConfigurationStage
+    /// <summary>
+    /// List of the stages of the project configurator
+    /// </summary>
+    internal enum ConfigurationStage
     {
         Init = 0,
         SelectXRSDKPlugin = 100,

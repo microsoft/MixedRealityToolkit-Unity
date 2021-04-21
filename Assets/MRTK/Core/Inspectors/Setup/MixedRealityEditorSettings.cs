@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!XRSettingsUtilities.XREnabled)
             {
-                Debug.LogWarning("There is no prperly configured XR pipeline in the project! Please run the configurator by clicking on Mixed Reality (menu bar) -> Toolkit -> Utilities -> Configure Project for MRTK if the current settings are not desired.");
+                Debug.LogWarning("There is no properly configured XR pipeline in the project! Please run the configurator by clicking on Mixed Reality (menu bar) -> Toolkit -> Utilities -> Configure Project for MRTK if the current settings are not desired.");
             }
 
             if (!MixedRealityOptimizeUtils.IsOptimalRenderingPath())

@@ -7,9 +7,7 @@
         "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Unity.TextMeshPro.Editor",
-        "Unity.TextMeshPro",
-        "Unity.XR.Management",
-        "Unity.XR.Management.Editor"
+        "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
@@ -21,12 +19,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "com.microsoft.mixedreality.openxr",
-            "expression": "",
-            "define": "MSFT_OPENXR"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }
