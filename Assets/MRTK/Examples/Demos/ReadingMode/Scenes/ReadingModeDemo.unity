@@ -1550,8 +1550,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1282769095}
   - component: {fileID: 1282769096}
+  - component: {fileID: 1282769097}
   m_Layer: 0
-  m_Name: SceneContent
+  m_Name: MixedRealitySceneContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1587,6 +1588,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderViewportScaleSlider: {fileID: 136758751}
+--- !u!114 &1282769097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282769094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65c9dd2f312b8d41b8849d58e1053fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alignmentType: 0
 --- !u!1 &1322787929
 GameObject:
   m_ObjectHideFlags: 0
