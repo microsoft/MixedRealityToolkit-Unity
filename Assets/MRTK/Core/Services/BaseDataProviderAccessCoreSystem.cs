@@ -105,9 +105,9 @@ namespace Microsoft.MixedReality.Toolkit
 
             foreach (var provider in dataProviders)
             {
-                if (provider is T)
+                if (provider is T providerT)
                 {
-                    selected.Add((T)provider);
+                    selected.Add(providerT);
                 }
             }
 
@@ -133,11 +133,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             foreach (var provider in dataProviders)
             {
-                if (provider is T)
+                if (provider is T providerT)
                 {
                     if (name == null || provider.Name == name)
                     {
-                        return (T)provider;
+                        return providerT;
                     }
                 }
             }

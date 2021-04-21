@@ -3,20 +3,21 @@
 variables:
 - template: config/settings.yml
 
+parameters:
+- name: IsFinal
+  type: boolean
+  default: false
+- name: BuildNumber
+  type: string
+  default: 0
+
 jobs:
 - job: UPMPublicRelease
   timeoutInMinutes: 30
   pool:
-    name: On-Prem Unity
+    vmImage: windows-2019
   steps:
-  - template: templates/tasks/upmpackages.yml
+  - template: templates/tasks/pack-upm.yml
     parameters:
-      excludeBuildNumber: 1
-  - task: PowerShell@2
-    displayName: 'UPM packages to registry'
-    inputs:
-      targetType: filePath
-      filePath: ./scripts/packaging/publishupmpackages.ps1
-      arguments: >
-        -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
-        -RegistryPath $(UpmRegistry)
+      excludeBuildNumber: ${{ parameters.IsFinal }}
+      buildNumber: ${{ parameters.BuildNumber }}

@@ -19,6 +19,6 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
     componentName: HandPhysicsService
     priority: 10
-    runtimePlatform: 8
+    runtimePlatform: -1
     configurationProfile: {fileID: 11400000, guid: 236baf35803f73342b69c842fe4afb1c,
       type: 2}

@@ -185,10 +185,12 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -297,6 +299,7 @@ MonoBehaviour:
   - {fileID: 1775007137}
   clippingSide: 1
   useOnPreRender: 0
+  applyToSharedMaterial: 0
 --- !u!135 &135874847
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -925,6 +928,7 @@ MonoBehaviour:
   - {fileID: 1775007137}
   clippingSide: -1
   useOnPreRender: 0
+  applyToSharedMaterial: 0
 --- !u!114 &402531439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -946,10 +950,12 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -1542,10 +1548,12 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -1970,8 +1978,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1229001242}
+  - component: {fileID: 1229001243}
   m_Layer: 0
-  m_Name: SceneContent
+  m_Name: MixedRealitySceneContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1996,6 +2005,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1229001243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229001241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65c9dd2f312b8d41b8849d58e1053fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alignmentType: 0
 --- !u!1 &1233641385
 GameObject:
   m_ObjectHideFlags: 0
@@ -2199,7 +2221,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!21 &1235533044
+--- !u!21 &1256322436
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -2298,6 +2320,7 @@ Material:
     - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
     - _EnableProximityLightColorOverride: 1
+    - _EnableSSAA: 0
     - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
@@ -2320,6 +2343,7 @@ Material:
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
+    - _MipmapBias: -2
     - _Mode: 0
     - _NearLightFade: 0
     - _NearPlaneFade: 0
@@ -3136,10 +3160,12 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -3350,6 +3376,7 @@ MonoBehaviour:
   - {fileID: 1775007137}
   clippingSide: 1
   useOnPreRender: 0
+  applyToSharedMaterial: 0
 --- !u!65 &1723500074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3443,10 +3470,12 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:

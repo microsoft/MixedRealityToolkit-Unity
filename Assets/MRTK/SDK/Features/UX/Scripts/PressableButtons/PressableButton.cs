@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// A button that can be pushed via direct touch.
     /// You can use <see cref="Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter"/> to route these events to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/>.
     ///</summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button")]
     [AddComponentMenu("Scripts/MRTK/SDK/PressableButton")]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
@@ -375,7 +375,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 foreach (var pointer in currentInputSources[currentInputSources.Count - 1].Pointers)
                 {
-                    ProximityLight[] proximityLights = pointer.BaseCursor?.GameObjectReference?.GetComponentsInChildren<ProximityLight>();
+                    if (!pointer.BaseCursor.TryGetMonoBehaviour(out MonoBehaviour baseCursor))
+                    {
+                        return;
+                    }
+
+                    GameObject cursorGameObject = baseCursor.gameObject;
+                    if (cursorGameObject == null)
+                    {
+                        return;
+                    }
+
+                    ProximityLight[] proximityLights = cursorGameObject.GetComponentsInChildren<ProximityLight>();
 
                     if (proximityLights != null)
                     {

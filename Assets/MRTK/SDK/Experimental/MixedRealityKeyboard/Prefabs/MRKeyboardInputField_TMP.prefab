@@ -216,10 +216,10 @@ GameObject:
   - component: {fileID: 2093565322073310842}
   - component: {fileID: 2093565322073310846}
   - component: {fileID: 2093565322073310847}
-  - component: {fileID: 2093565322073310844}
+  - component: {fileID: 5693768067435113710}
   - component: {fileID: 2093565322073310845}
   m_Layer: 5
-  m_Name: MRKeyboardInputField (TMP)
+  m_Name: MRKeyboardInputField_TMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,7 +280,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &2093565322073310844
+--- !u!114 &5693768067435113710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2093565322073310843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 080160d1b3df57747bcd9840759f18d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -385,6 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cac44176376ab544f9ca44f05c9b9091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableUIInteractionWhenTyping: 0
   onShowKeyboard:
     m_PersistentCalls:
       m_Calls: []

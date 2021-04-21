@@ -1,0 +1,30 @@
+parameters:
+  # If true, validation scripts will only be run on the set of changed files
+  # associated with a given pull request. Note that this is only valid to use
+  # for pull request validation, since this functionality requires a pull request
+  # ID in order to determine the two commits to diff.
+  scopedValidation: false
+  # The file containing the list of changes, used if scopedValidation is true.  
+  changesFile: ''
+
+steps:
+# todo: uncomment when #8944 is implemented
+# - ${{ if eq(parameters.scopedValidation, false) }}:
+- task: PowerShell@2
+  displayName: 'Global asset dependency validation'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/ci/validateassets.ps1
+    arguments: >
+      -Directory: '$(Build.SourcesDirectory)\Assets'
+# todo: uncomment when #8944 is implemented
+# - ${{ if eq(parameters.scopedValidation, true) }}:
+#   - task: PowerShell@2
+#     displayName: 'Scoped asset dependency validation'
+#     inputs:
+#       targetType: filePath
+#       filePath: ./scripts/ci/validateassets.ps1
+#       arguments: >
+#         -Directory: '$(Build.SourcesDirectory)\Assets'
+#         -ChangesFile: '${{ parameters.changesFile }}'
+#         -RepoRoot: '$(Build.SourcesDirectory)'

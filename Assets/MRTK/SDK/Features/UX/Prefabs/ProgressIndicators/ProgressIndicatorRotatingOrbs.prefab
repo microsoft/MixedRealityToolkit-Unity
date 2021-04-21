@@ -52,7 +52,6 @@ MonoBehaviour:
   - {fileID: 5455315739319293649}
   - {fileID: 6729277882352215929}
   messageText: {fileID: 5132018694597036767}
-  state: 0
   rotationSpeedRawDegrees: -200
   spacingDegrees: 22
   acceleration: 1.4

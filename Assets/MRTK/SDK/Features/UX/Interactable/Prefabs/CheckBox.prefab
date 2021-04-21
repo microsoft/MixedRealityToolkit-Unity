@@ -702,6 +702,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       Options: []
+  resetOnDestroy: 0
   enabledOnStart: 1
 --- !u!114 &8868109116265699985
 MonoBehaviour:

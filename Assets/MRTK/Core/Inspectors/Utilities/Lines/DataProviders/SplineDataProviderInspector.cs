@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             for (int i = 0; i < 3; i++)
             {
-                controlPoints.arraySize = controlPoints.arraySize + 1;
+                controlPoints.arraySize += 1;
                 var newControlPointProperty = controlPoints.GetArrayElementAtIndex(controlPoints.arraySize - 1);
                 newControlPointProperty.FindPropertyRelative("position").vector3Value = newControlPoints[i].Position;
                 newControlPointProperty.FindPropertyRelative("rotation").quaternionValue = Quaternion.identity;

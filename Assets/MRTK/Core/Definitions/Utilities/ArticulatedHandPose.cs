@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -199,6 +199,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// Relaxed hand pose, grab point does not move
             /// </summary>
             OpenSteadyGrabPoint,
+            /// <summary>
+            /// Hand facing upwards, Index and Thumb stretched out to start a teleport
+            /// </summary>
+            TeleportStart,
+            /// <summary>
+            /// Hand facing upwards, Index curled in to finish a teleport
+            /// </summary>
+            TeleportEnd,
         }
 
         [Obsolete("Use SimulatedArticulatedHandPoses class or other custom class")]

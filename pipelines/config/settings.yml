@@ -4,14 +4,15 @@ variables:
   Unity2019Version: Unity2019.4.8f1
   # Unity version on internal build agents (release builds)
   Unity2018VersionInternal: Unity2018.4.23f1
-  Unity2019VersionInternal: Unity2019.4.6f1
+  Unity2019VersionInternal: Unity2019.4.17f1
+  Unity2020VersionInternal: Unity2020.2.2f1
 
   # Note that when updating this value also ensure that you update the
   # following locations to match. There will be a CI failure if they don't
   # match (see scripts/packaging/versionmetadata.ps1)
   # ProjectSettings/ProjectSettings.asset:  bundleVersion: x.x.x
   # ProjectSettings/ProjectSettings.asset:  metroPackageVersion: x.x.x.0
-  MRTKVersion: 2.6.0
+  MRTKVersion: 2.7.0
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
   ToolsRepoName: mixedrealitytoolkit.build
   ToolsDir: $(Build.SourcesDirectory)\$(ToolsRepoName)

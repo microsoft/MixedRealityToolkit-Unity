@@ -11,7 +11,6 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using NUnit.Framework;
 using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine;

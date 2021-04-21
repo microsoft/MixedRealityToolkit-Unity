@@ -10,15 +10,15 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Editor;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -97,6 +97,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 allPointers.AddRange(i.Pointers);
             }
             return allPointers;
+        }
+
+        /// <summary>
+        /// Tests that the camera system initializes with the floor height specified in the profile.
+        /// </summary>
+        /// <returns>enumerator for Unity</returns>
+        [UnityTest]
+        public IEnumerator TestProfileContentOffset()
+        {
+            float contentOffset = 3.0f;
+
+            var hl1Profile = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>()
+                .FirstOrDefault(x => x.name.Equals(HoloLens1ProfileName));
+
+            // keep the old floor height and experience scale to reset it later
+            ExperienceScale originalExperienceScale = hl1Profile.ExperienceSettingsProfile.TargetExperienceScale;
+            float oldContentOffset = hl1Profile.ExperienceSettingsProfile.ContentOffset;
+            
+            hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
+            hl1Profile.ExperienceSettingsProfile.ContentOffset = contentOffset;
+            TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
+
+            TestUtilities.InitializeCamera();
+            yield return new WaitForSeconds(0.5f);
+
+            MixedRealitySceneContent sceneContent = GameObject.Find("MixedRealitySceneContent").GetComponent<MixedRealitySceneContent>();
+
+            TestUtilities.AssertAboutEqual(TestUtilities.PositionRelativeToPlayspace(Vector3.zero), Vector3.zero, "The playspace was not set to the origin");
+            TestUtilities.AssertAboutEqual(sceneContent.transform.position, Vector3.up * contentOffset, "The floor height was not set correctly");
+
+            // be sure to set the profile's ContentOffset back to it's original value afterwards
+            hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
+            hl1Profile.ExperienceSettingsProfile.ContentOffset = oldContentOffset;
+            TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Pose to create MRTK playspace's parent transform at.
         /// </summary>
         public static Pose ArbitraryParentPose { get; set; } = new Pose(new Vector3(-2.0f, 1.0f, -3.0f), Quaternion.Euler(-30.0f, -90.0f, 0.0f));
-        
+
         /// <summary>
         /// Pose to set playspace at, when using <see cref="PlayspaceToArbitraryPose"/>. 
         /// </summary>
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(Vector3.zero);
             });
         }
-       
+
         /// <summary>
         /// Forces the playspace camera to origin facing forward along +Z.
         /// </summary>
@@ -143,9 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="position">World space position for the playspace.</param>
         /// <param name="rotation">World space orientation for the playspace.</param>
         /// <remarks>
-        /// Note that this has no effect on the camera's local space transform, but
+        /// <para>Note that this has no effect on the camera's local space transform, but
         /// will change the camera's world space position. If and only if the camera's
-        /// local transform is identity with the camera's world transform equal the playspace's.
+        /// local transform is identity with the camera's world transform equal the playspace's.</para>
         /// </remarks>
         public static void PlayspaceToPositionAndRotation(Vector3 position, Quaternion rotation)
         {
@@ -161,12 +161,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Set the playspace to an arbitrary (but known) non-identity pose.
         /// </summary>
         /// <remarks>
-        /// When using this arbitrary pose imposed on the playspace to better validate compliance with
+        /// <para>When using this arbitrary pose imposed on the playspace to better validate compliance with
         /// real world scenarios, it can be convenient to use the *RelativeToPlayspace() helpers below.
         /// For example, to place an object directly 8 meters in front of the camera, set its position
         /// to TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f).
         /// See also <see cref="PlaceRelativeToPlayspace(Transform)"/> to convert an object's local
-        /// transform into a transform relative to the playspace.
+        /// transform into a transform relative to the playspace.</para>
         /// </remarks>
         public static void PlayspaceToArbitraryPose()
         {
@@ -221,8 +221,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="localRotation">Orientation relative to playspace.</param>
         /// <returns>Equivalent pose.</returns>
         /// <remarks>
-        /// This computes the world pose an object with the input local pose would have if it were
-        /// a child of the playspace. 
+        /// <para>This computes the world pose an object with the input local pose would have if it were
+        /// a child of the playspace. </para>
         /// </remarks>
         public static Pose PlaceRelativeToPlayspace(Vector3 localPosition, Quaternion localRotation)
         {
@@ -254,11 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <param name="transform">The transform to place.</param>
         /// <remarks>
-        /// If the transform has no parent, then this is equivalent to the following sequence:
-        /// 1) transform.SetParent(MixedRealityPlayspace.Transform, false);
-        /// 2) transform.SetParent(null, true);
-        /// However, if the transform has a parent, then the transform's world transform, not just its local transform,
-        /// will determine its final pose relative to the playspace.
+        /// <para>If the transform has no parent, then this is equivalent to the following sequence:</para>
+        /// <para>1) transform.SetParent(MixedRealityPlayspace.Transform, false);</para>
+        /// <para>2) transform.SetParent(null, true);</para>
+        /// <para>However, if the transform has a parent, then the transform's world transform, not just its local transform,
+        /// will determine its final pose relative to the playspace.</para>
         /// </remarks>
         public static void PlaceRelativeToPlayspace(Transform transform)
         {
@@ -288,13 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
-
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
-                MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
-                MixedRealityToolkit.ConfirmInitialized();
-            }
+#if UNITY_EDITOR
+            MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
+#endif
 
             // Todo: this condition shouldn't be here.
             // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
@@ -308,8 +304,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(MixedRealityToolkit.IsInitialized);
             Debug.Assert(MixedRealityToolkit.Instance != null);
 
-
-            MixedRealityToolkit.Instance.ActiveProfile = configuration;
             Debug.Assert(MixedRealityToolkit.Instance.ActiveProfile != null);
         }
 
@@ -368,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.LessOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -380,7 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.LessOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -392,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -403,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert((Mathf.Abs(observed - expected) <= tolerance) || (observed > expected));
         }
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -415,12 +409,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 #if UNITY_EDITOR
-        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
         {
             Texture2D icon = null;
 
-            foreach (string iconPath in MixedRealityToolkitFiles.GetFiles("StandardAssets/Icons"))
+            foreach (string iconPath in MixedRealityToolkitFiles.GetFiles(MixedRealityToolkitModuleType.StandardAssets, "Icons"))
             {
                 if (iconPath.EndsWith("test_icon.png"))
                 {

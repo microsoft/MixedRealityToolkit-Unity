@@ -3,13 +3,12 @@
 // Licensed under the MIT License.
 //
 
+using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -23,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
+        private SerializedProperty uniformScaleOnFlattenedAxis;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty translateStartedEvent;
         private SerializedProperty translateStoppedEvent;
 
+        private SerializedProperty enableConstraints;
+        private SerializedProperty constraintManager;
+
         private SerializedProperty elasticsManager;
 
         private BoundsControl boundsControl;
@@ -68,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             boundsOverride = serializedObject.FindProperty("boundsOverride");
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
+            uniformScaleOnFlattenedAxis = serializedObject.FindProperty("uniformScaleOnFlattenedAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
@@ -89,6 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
             translateStartedEvent = serializedObject.FindProperty("translateStarted");
             translateStoppedEvent = serializedObject.FindProperty("translateStopped");
+
+            // constraints
+            enableConstraints = serializedObject.FindProperty("enableConstraints");
+            constraintManager = serializedObject.FindProperty("constraintsManager");
 
             // Elastics
             elasticsManager = serializedObject.FindProperty("elasticsManager");
@@ -117,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);
+                    EditorGUILayout.PropertyField(uniformScaleOnFlattenedAxis);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Smoothing"), EditorStyles.boldLabel);
@@ -128,8 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     using (new EditorGUI.IndentLevelScope())
                     {
-                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
-                                                                                                                 "Box Configuration", 
+                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration,
+                                                                                                                 "Box Configuration",
                                                                                                                  showBoxConfiguration);
 
                         showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
@@ -144,17 +153,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                                                                                                                         "Translation Handles Configuration",
                                                                                                                                         showTranslationHandlesConfiguration);
 
-                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
-                                                                                                              "Links Configuration", 
+                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration,
+                                                                                                              "Links Configuration",
                                                                                                               showLinksConfiguration);
 
-                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
-                                                                                                                            "Proximity Configuration", 
+                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration,
+                                                                                                                            "Proximity Configuration",
                                                                                                                             showProximityConfiguration);
                     }
 
                     EditorGUILayout.Space();
-                    constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(boundsControl.gameObject, constraintsFoldout, "Constraint");
+
+                    constraintsFoldout = ConstraintManagerInspector.DrawConstraintManagerFoldout(boundsControl.gameObject,
+                                                                                                enableConstraints,
+                                                                                                constraintManager,
+                                                                                                constraintsFoldout);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Events", "Bounds Control Events"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));

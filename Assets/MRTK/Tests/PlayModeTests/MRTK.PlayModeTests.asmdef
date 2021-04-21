@@ -1,0 +1,31 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Tests.PlayModeTests",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
+        "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
+        "Unity.TextMeshPro",
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
+        "Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver",
+        "Microsoft.MixedReality.Toolkit.Tests.Utilities",
+        "Microsoft.MixedReality.Toolkit.Gltf",
+        "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
+        "Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

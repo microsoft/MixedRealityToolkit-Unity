@@ -65,7 +65,7 @@ Adjust the size of the `Quad` under `Backplate` object. The width and height of 
 ## See also
 
 - [**Buttons**](README_Button.md)
-- [**Bounding Box**](README_BoundingBox.md)
+- [**Bounds Control**](README_BoundsControl.md)
 - [**Slider**](README_Sliders.md)
 - [**Grid Object Collection**](README_ObjectCollection.md)
 - [**Manipulation Handler**](README_ManipulationHandler.md)

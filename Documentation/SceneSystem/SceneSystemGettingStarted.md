@@ -10,6 +10,46 @@ If your project consists of a single scene, the Scene System probably isn't nece
 - You want a simple way to keep track of load operations in progress or a simple way to control scene activation for multiple scenes being loaded at once.
 - You want to keep lighting consistent and predictable across all your scenes.
 
+## Scene System Resources
+
+By default, the Scene System utilizes a pair of scene objects (DefaultManagerScene and DefaultLighting scene). If either of these scenes cannot be located,
+a message will appear in the Scene System profile inspector.
+
+![Default resources message](../Images/SceneSystem/DefaultResourcesMessage.png)
+
+>![Note]
+> If the project is using custom manager and lighting scenes, this message can be safely ignored.
+
+The following sections describe now to resolve this message, based on which method was used to import the Mixed Reality Toolkit.
+
+### Unity Package Manager (UPM)
+
+In the Mixed Reality Toolkit UPM packages, the scene system resources are packaged as a sample. Due to UPM packages being immutable, Unity
+is unable to open the necessary scene file unless they are explicitly imported into the project.
+
+To import use the following steps:
+
+- Select **Window** > **Package Manager**
+- Select **Mixed Reality Toolkit Foundation**
+- Locate **Scene System Resources** in the **Samples** section
+
+  ![Import scene system resources](../Images/SceneSystem/UpmImportSceneSystemResources.png)
+
+- Select **Import**
+
+
+### Asset (.unitypackage) files
+
+If the SceneSystemResources folder has been deleted, or was deselected during import, it can be recovered using the following steps:
+
+- Select **Assets** > **Import Package** > **Custom Package**
+- Open the **Microsoft.MixedReality.Toolkit.Foundation** package
+- Ensure that **Services/SceneSystem/SceneSystemResources** and all child options are selected
+
+  ![Reimport scene system resources](../Images/SceneSystem/ReimportSceneSystemResources.png)
+
+- Select **Import** 
+
 ## How to use the scene system
 
 - [Scene Types](SceneSystemSceneTypes.md)

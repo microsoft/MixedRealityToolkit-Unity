@@ -51,8 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (var detectedController in CoreServices.InputSystem.DetectedControllers)
             {
-                var hand = detectedController as T;
-                if (hand != null)
+                if (detectedController is T hand)
                 {
                     if (detectedController.ControllerHandedness.IsMatch(handedness))
                     {

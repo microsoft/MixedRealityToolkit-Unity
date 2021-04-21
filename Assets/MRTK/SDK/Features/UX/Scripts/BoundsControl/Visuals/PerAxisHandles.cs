@@ -3,8 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 {
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             IsActive = areHandlesActive;
             ResetHandles();
-            if (IsActive)
+            if (IsActive && handleAxes.Length == handles.Count)
             {
                 List<int> flattenedHandles = VisualUtils.GetFlattenedIndices(flattenAxis, handleAxes);
                 if (flattenedHandles != null)
@@ -256,10 +256,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             else
             {
                 midpointVisual = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                if (config.HandlePrefabColliderType != HandlePrefabCollider.Sphere)
-                {
-                    Object.Destroy(midpointVisual.GetComponent<SphereCollider>());
-                }
+                // deactivate collider on visuals and register for deletion - actual collider
+                // of handle is attached to the handle gameobject, not the visual
+                var collider = midpointVisual.GetComponent<SphereCollider>();
+                collider.enabled = false;
+                Object.Destroy(collider);
             }
 
             Quaternion realignment = GetRotationRealignment(handleIndex);

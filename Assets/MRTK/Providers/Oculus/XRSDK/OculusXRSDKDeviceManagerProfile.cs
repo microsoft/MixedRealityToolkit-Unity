@@ -27,18 +27,17 @@
 //------------------------------------------------------------------------------ -
 
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.﻿
+// Licensed under the MIT License.
 
 using UnityEngine;
-using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
     /// <summary>
     /// The profile for the Oculus XRSDK Device Manager. The settings for this profile can be viewed if the Leap Motion Device Manager input data provider is 
     /// added to the MRTK input configuration profile.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Oculus XRSDK Profile", fileName = "OculusXRSDKDeviceManagerProfile", order = 4)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Oculus XR SDK Profile", fileName = "OculusXRSDKDeviceManagerProfile", order = 4)]
     [MixedRealityServiceProfile(typeof(OculusXRSDKDeviceManager))]
     public class OculusXRSDKDeviceManagerProfile : BaseMixedRealityProfile
     {
@@ -53,7 +52,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// Prefab reference for OVRCameraRig to load, if none are found in scene.
         /// This prefab is required for MRTK on Oculus Quest to support handtracking
         /// </summary>
-        public GameObject OVRCameraRigPrefab => ovrCameraRigPrefab;
+        public GameObject OVRCameraRigPrefab
+        {
+            get { return ovrCameraRigPrefab; }
+            set { ovrCameraRigPrefab = value; }
+        }
+
 
         [SerializeField]
         [Tooltip("Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed. \n\n" +
@@ -73,58 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <summary>
         /// Prefab reference for LocalAvatar to load, if none are found in scene.
         /// </summary>
-        public GameObject LocalAvatarPrefab => localAvatarPrefab;
-
-        [Header("Hand Mesh Visualization")]
-        [SerializeField]
-        [Tooltip("If true, hand mesh material will be replaced with custom material.")]
-        private bool useCustomHandMaterial = true;
-
-        /// <summary>
-        /// If true, hand mesh material will be replaced with custom material.
-        /// </summary>
-        public bool UseCustomHandMaterial => useCustomHandMaterial;
-
-        [SerializeField]
-        [Tooltip("Custom hand material to use for hand tracking hand mesh. Use Custom Hand Material must be set to true for this material to be applied")]
-        private Material customHandMaterial = null;
-
-        /// <summary>
-        /// Event triggered when the custom material for hand mesh is updated.
-        /// </summary>
-        public System.Action OnCustomHandMaterialUpdate;
-
-        /// <summary>
-        /// Custom hand material to use for hand tracking hand mesh.
-        /// </summary>
-        public Material CustomHandMaterial
+        public GameObject LocalAvatarPrefab
         {
-            get => customHandMaterial;
-
-            set
-            {
-                customHandMaterial = value;
-                OnCustomHandMaterialUpdate?.Invoke();
-            }
+            get { return localAvatarPrefab; }
+            set { localAvatarPrefab = value; }
         }
-
-        [SerializeField]
-        [Tooltip("If true, will update material pinch strength using OVR Values.")]
-        private bool updateMaterialPinchStrengthValue = true;
-
-        /// <summary>
-        /// If true, will update material pinch strength using OVR Values.
-        /// </summary>
-        public bool UpdateMaterialPinchStrengthValue => UseCustomHandMaterial && updateMaterialPinchStrengthValue;
-
-        [SerializeField]
-        [Tooltip("Property in custom material used to visualize pinch strength.")]
-        private string pinchStrengthMaterialProperty = "_PressIntensity";
-
-        /// <summary>
-        /// Property in custom material used to visualize pinch strength.
-        /// </summary>
-        public string PinchStrengthMaterialProperty => pinchStrengthMaterialProperty;
 
 #if OCULUSINTEGRATION_PRESENT
         [Header("Hand Tracking Configuration")]
@@ -221,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         public void ApplyConfiguredPerformanceSettings()
         {
 #if OCULUSINTEGRATION_PRESENT
-            XRSettings.eyeTextureResolutionScale = resolutionScale;
+            UnityEngine.XR.XRSettings.eyeTextureResolutionScale = resolutionScale;
             OVRManager.cpuLevel = CPULevel;
             OVRManager.gpuLevel = GPULevel;
 

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
@@ -75,7 +78,7 @@ $packages = [ordered]@{
     # tools
     "tools" = "Assets/MRTK/Tools";
     # tests
-    "testutilties" = "Assets/MRTK/Tests/TestUtilities";
+    "testutilities" = "Assets/MRTK/Tests/TestUtilities";
     # examples
     "examples" = "Assets/MRTK/Examples";
 }
@@ -83,10 +86,11 @@ $packages = [ordered]@{
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
-# 1) Replace the %version% token in the package.json file with the value of Version
-# 2) Overwrite the package.json file
-# 3) Create and the packages and copy to the OutputFolder
-# 4) Cleanup files created and/or modified
+# * Ensure necessary documentation files (license, changelog, etc.) are copied to the appropriate location
+# * Replace the %version% token in the package.json file with the value of Version
+# * Overwrite the package.json file
+# * Create and the packages and copy to the OutputFolder
+# * Cleanup files created and/or modified
 
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
@@ -110,9 +114,33 @@ foreach ($entry in $packages.GetEnumerator()) {
     # Create and publish the package
     $packageName = $entry.Name
 
+    $docFolder = "$packagePath/Documentation~"
+
+    # Copy files used by UPM to display license, change log, etc.
+    Copy-Item -Path "$projectRoot/LICENSE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/LICENSE.md.meta.$packageName" "$packagePath/LICENSE.md.meta"
+    Copy-Item -Path "$projectRoot/NOTICE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/NOTICE.md.meta.$packageName" "$packagePath/NOTICE.md.meta"
+    Copy-Item -Path "$projectRoot/CHANGELOG.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/CHANGELOG.md.meta.$packageName" "$packagePath/CHANGELOG.md.meta"
+    Copy-Item -Path "$projectRoot/UPM/Documentation~" $docFolder -Recurse
+ 
     $samplesFolder = "$packagePath/Samples~"
 
-    if ($packageName -eq "examples") {
+    if ($packageName -eq "foundation") {
+        # The foundation package contains files that are requried to be copied into the Assets folder to be used.
+        # In order to perform the necessary preparaton, without overly complicating this script, we will use a
+        # helper script to prepare the folder.
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/foundationpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+    }
+    elseif ($packageName -eq "standardassets") {
+        # The standard assets package contains shaders that need to be imported into the Assets folder so that they
+        # can be modified if the render pipeline is changed. To avoid duplicate resources (in library and assets)
+        # we rename the Shaders folder to Shaders~, which makes it hidden to the Unity Editor.
+        Rename-Item -Path "$packagePath/Shaders" -NewName "$packagePath/Shaders~"
+        Remove-Item -Path "$packagePath/Shaders.meta"
+    }
+    elseif ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
         # preparaton, without overly complicating this script, we will use a helper script to prepare
         # the folder.
@@ -127,7 +155,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
         $exampleFolder = "$packagePath/Examples"
-        if (($PackageName -ne "foundation") -and ($PackageName -ne "foundation.xr2018") -and (Test-Path -Path $exampleFolder)) {
+        if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
             if (-not (Test-Path -Path $samplesFolder)) {
                 New-Item $samplesFolder -ItemType Directory | Out-Null
@@ -157,11 +185,30 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path $samplesFolder -Recurse -Force
     }
     
+    if ($packageName -eq "foundation") {
+        # The foundation package MOVES some content around. This restores the moved files.
+        Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
+    }
+    elseif ($packageName -eq "standardassets") {
+        # The standard assets package RENAMES and DELETES some content. This restores the original files.
+        Rename-Item -Path "$packagePath/Shaders~" -NewName "$packagePath/Shaders"
+        Start-Process -FilePath "git" -ArgumentList "checkout Shaders.meta" -NoNewWindow -Wait
+    }
+
+    # Delete the files copied in previously
+    Remove-Item -Path "$packagePath/LICENSE.md*"
+    Remove-Item -Path "$packagePath/NOTICE.md*"
+    Remove-Item -Path "$packagePath/CHANGELOG.md*"
+    if (Test-Path -Path $docFolder) {
+        # A documentation folder was created. Remove it.
+        Remove-Item -Path $docFolder -Recurse -Force
+    }
+
     # Delete the renamed package.json.* files
     Remove-Item -Path "$packagePath/package.json"
     Remove-Item -Path "$packagePath/package.json.meta"
 
-    # Restore the original template files
+    # Restore original files
     Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
 }
 

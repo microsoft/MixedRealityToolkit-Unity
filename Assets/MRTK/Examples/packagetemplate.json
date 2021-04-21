@@ -1,6 +1,7 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.examples",
     "displayName": "Mixed Reality Toolkit Examples",
+    "msftFeatureCategory": "Mixed Reality Toolkit",
     "version": "%version%",
     "unity": "2019.4",
     "description": "Example scenes and assets for the Microsoft Mixed Reality Toolkit.",
@@ -29,12 +30,15 @@
     },
     "files": [
         "Common*",
-        "Samples~*",
         "StandardAssets*",
-        "License*",
         "Microsoft.MixedReality.Toolkit.Examples*",
         "MRTK.Examples*",
-        "package.json.meta"
+        "package.json.meta",
+        "LICENSE*",
+        "NOTICE*",
+        "CHANGELOG*",
+        "Documentation~*",
+        "Samples~*"
     ],
     %samples%
 }

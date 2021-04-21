@@ -10,15 +10,15 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
-using System;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -1594,7 +1594,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 MixedRealityPlayspace.Transform.Rotate(Vector3.up, 360 / numRotations);
                 correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
                 yield return hand.Move(correction, numHandSteps);
-                yield return null;
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
                 // Ensure that the gaze cursor stays fixed on its initial position
                 TestUtilities.AssertAboutEqual(originalPosition, gazeCursor.Position, "gaze cursor has shifted from its locked on position", 0.05f);

@@ -2233,6 +2233,9 @@ MonoBehaviour:
   orientType: 0
   layout: 0
   anchor: 0
+  anchorAlongAxis: 0
+  columnAlignment: 0
+  rowAlignment: 0
   radius: 2
   radialRange: 180
   distance: 0
@@ -4146,6 +4149,7 @@ MonoBehaviour:
   renderers: []
   clippingSide: -1
   useOnPreRender: 1
+  applyToSharedMaterial: 0
 --- !u!65 &702484766695044275
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4711,6 +4715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
+  IsBoundsHandles: 0
 --- !u!114 &8253665853486484236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13525,7 +13530,6 @@ MonoBehaviour:
   maskEditMode: 0
   colliderEditMode: 0
   maskEnabled: 0
-  wasMaskEnabled: 1
   handDeltaScrollThreshold: 0.02
   releaseThresholdFront: 0.03
   releaseThresholdBack: 0.2
@@ -13587,6 +13591,8 @@ MonoBehaviour:
   scrollContainer: {fileID: 702484767150051257}
   clippingObject: {fileID: 702484766695044273}
   clipBox: {fileID: 702484766695044239}
+  disableClippedGameObjects: 1
+  disableClippedRenderers: 0
 --- !u!82 &6478456967883747177
 AudioSource:
   m_ObjectHideFlags: 0

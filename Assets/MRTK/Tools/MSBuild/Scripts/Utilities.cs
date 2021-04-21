@@ -30,9 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         Package,
 
         /// <summary>
-        /// Inside the Packages folder shipped with the Unity version.
+        /// Inside the Packages folder shipped with the Unity version (without source).
         /// </summary>
-        BuiltInPackage
+        BuiltInPackage,
+
+        /// <summary>
+        /// Inside the Packages folder shipped with the Unity version (with source).
+        /// </summary>
+        BuiltInPackageWithSource
     }
 
     /// <summary>
@@ -51,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         public static string MSBuildOutputFolder { get; } = GetNormalizedPath(ProjectPath + MSBuildFolderName, true);
         public static string PackagesCopyPath { get; } = Path.Combine(MSBuildOutputFolder, PackagesCopyFolderName);
         public const string MetaFileGuidRegex = @"guid:\s*([0-9a-fA-F]{32})";
+        public const string MetaFileIdRegex = @"fileID:\s*(-?[0-9]+)";
 
         private static readonly string packagesPath;
 
@@ -113,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
-                    Match match = Regex.Match(line, Utilities.MetaFileGuidRegex);
+                    Match match = Regex.Match(line, MetaFileGuidRegex);
 
                     if (match.Success)
                     {
@@ -145,6 +151,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 return AssetLocation.Project;
             }
+#if UNITY_2019_3_OR_NEWER
+            else if (UnityProjectInfo.SpecialPluginNameMappingUnity2019.Keys.Any(s => absolutePath.ToLower().Contains(s.ToLower())))
+            {
+                return AssetLocation.BuiltInPackageWithSource;
+            }
+#endif
             else if (absolutePath.Contains(packagesPath) || absolutePath.Contains(PackagesCopyPath))
             {
                 return AssetLocation.Package;
@@ -220,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (!thisAbsolute.EndsWith(Path.DirectorySeparatorChar.ToString()))
             {
-                thisAbsolute = thisAbsolute + Path.DirectorySeparatorChar;
+                thisAbsolute += Path.DirectorySeparatorChar;
             }
 
             return GetNormalizedPath(new Uri(thisAbsolute).MakeRelativeUri(new Uri(thatAbsolute)).OriginalString);

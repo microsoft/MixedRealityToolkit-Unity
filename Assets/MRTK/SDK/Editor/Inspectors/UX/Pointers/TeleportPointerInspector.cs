@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
     [CustomEditor(typeof(TeleportPointer))]
     public class TeleportPointerInspector : LinePointerInspector
     {
+        private SerializedProperty hotSpotCursorVisibility;
         private SerializedProperty teleportAction;
         private SerializedProperty inputThreshold;
         private SerializedProperty angleOffset;
@@ -32,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             DrawBasePointerActions = false;
             base.OnEnable();
 
+            hotSpotCursorVisibility = serializedObject.FindProperty("hotSpotCursorVisibility");
             teleportAction = serializedObject.FindProperty("teleportAction");
             inputThreshold = serializedObject.FindProperty("inputThreshold");
             angleOffset = serializedObject.FindProperty("angleOffset");
@@ -60,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             if (teleportPointerFoldout)
             {
                 EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(hotSpotCursorVisibility);
                 EditorGUILayout.PropertyField(teleportAction);
                 EditorGUILayout.PropertyField(inputThreshold);
                 EditorGUILayout.PropertyField(angleOffset);

@@ -378,14 +378,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     Matrix4x4 parentLocalToWorldMatrix = window.localToWorldMatrix;
 
-                    if (defaultInstancedMaterial != null)
+                    if (defaultInstancedMaterial != null && SystemInfo.supportsInstancing)
                     {
                         frameInfoPropertyBlock.SetMatrix(parentMatrixID, parentLocalToWorldMatrix);
                         Graphics.DrawMeshInstanced(quadMesh, 0, defaultInstancedMaterial, frameInfoMatrices, frameInfoMatrices.Length, frameInfoPropertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false);
                     }
                     else
                     {
-                        // If a instanced material is not available, fall back to non-instanced rendering.
+                        // If a instanced material is not available or instancing isn't supported, fall back to non-instanced rendering.
                         for (int i = 0; i < frameInfoMatrices.Length; ++i)
                         {
                             frameInfoPropertyBlock.SetColor(colorID, frameInfoColors[i]);
@@ -618,7 +618,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     usedAnchor = CreateAnchor("UsedAnchor", limitBar.transform);
                     GameObject bar = CreateQuad("UsedBar", usedAnchor);
                     Material material = new Material(foregroundMaterial);
-                    material.renderQueue = material.renderQueue + 1;
+                    material.renderQueue += 1;
                     InitializeRenderer(bar, material, colorID, memoryUsedColor);
                     bar.transform.localScale = Vector3.one;
                     bar.transform.localPosition = new Vector3(0.5f, 0.0f, 0.0f);
