@@ -324,13 +324,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -23.064568, w: -21.263912}
   m_textInfo:
     textComponent: {fileID: 91249384}
-    characterCount: 0
+    characterCount: 124
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 27
+    wordCount: 25
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 5
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
