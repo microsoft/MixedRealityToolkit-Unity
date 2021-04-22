@@ -77,8 +77,10 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_2020_1_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor);
 #elif UNITY_2019_1_OR_NEWER
+#pragma warning disable 0618
                     (XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor)) ||
                     (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
+#pragma warning restore 0618
 #else
                     XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
 #endif // UNITY_2020_1_OR_NEWER
