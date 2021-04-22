@@ -462,14 +462,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         uvs[i] = new Vector2(xLimited ? uvs[i].x : uvs[i].x + uvDeltas[i].x, yLimited ? uvs[i].y : uvs[i].y + uvDeltas[i].y);
                     }
                 }
-                else
+                else if (!xLimited && !yLimited)
                 {
-                    if (!xLimited && !yLimited)
+                    for (int i = 0; i < uvs.Count; ++i)
                     {
-                        for (int i = 0; i < uvs.Count; ++i)
-                        {
-                            uvs[i] += uvDeltas[i];
-                        }
+                        uvs[i] += uvDeltas[i];
                     }
                 }
             }
