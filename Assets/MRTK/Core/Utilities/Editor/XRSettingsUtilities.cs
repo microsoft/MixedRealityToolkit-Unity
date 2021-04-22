@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             set
             {
 #if UNITY_2020_2_OR_NEWER
-                Debug.LogWarning("This set operation has not effect as Legacy XR has been removed in Unity 2020!");
+                Debug.LogWarning("This set operation doesn't have any effect as Legacy XR has been removed in Unity 2020!");
 #else
 #pragma warning disable 0618
                 PlayerSettings.virtualRealitySupported = value;
