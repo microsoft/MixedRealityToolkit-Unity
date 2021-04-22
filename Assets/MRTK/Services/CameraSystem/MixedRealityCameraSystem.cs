@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
         /// <inheritdoc/>
         public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
-
+        
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
@@ -103,8 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             base.Initialize();
 
             MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
+            var cameraSettingProviders = GetDataProviders<IMixedRealityCameraSettingsProvider>();
 
-            if ((GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0) && (profile != null))
+            if ((cameraSettingProviders.Count == 0) && (profile != null))
             {
                 // Register the settings providers.
                 for (int i = 0; i < profile.SettingsConfigurations.Length; i++)
@@ -128,12 +129,12 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                         // Apply the display settings
                         IMixedRealityCameraSettingsProvider provider = GetDataProvider<IMixedRealityCameraSettingsProvider>(configuration.ComponentName);
                         provider?.ApplyConfiguration();
+
+                        // if a camera settings provider was applied, then we will not use the fallback behavior
+                        useFallbackBehavior = false;
                     }
                 }
             }
-
-            // Check to see if any providers were loaded.
-            useFallbackBehavior = (GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0);
 
             if (useFallbackBehavior)
             {
@@ -155,6 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 {
                     Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
                 }
+
                 if (CameraCache.Main.transform.rotation != Quaternion.identity)
                 {
                     Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");

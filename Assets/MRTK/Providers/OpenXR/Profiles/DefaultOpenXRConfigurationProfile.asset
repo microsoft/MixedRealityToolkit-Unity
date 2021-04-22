@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DefaultOpenXRConfigurationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  experienceSettingsProfile: {fileID: 11400000, guid: 1ccbb3b1d759d6a49b4161a958329d9d,
+    type: 2}
   targetExperienceScale: 3
   enableCameraSystem: 1
   cameraProfile: {fileID: 11400000, guid: 6d8face473a227c43b8c2b4bba9c9204, type: 2}
