@@ -5,10 +5,12 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Runtime.CompilerServices;
 using Unity.Profiling;
 using UnityEngine;
 using UnityPhysics = UnityEngine.Physics;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
@@ -85,20 +87,20 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         [SerializeField]
         [Tooltip("The distance to move the camera when the strafe is activated")]
-        private float strafeAmount = 0.25f;
+        internal float strafeAmount = 0.25f;
         
         [SerializeField]
         [Tooltip("Whether or not a strafe checks that there is a floor beneath the user's origin on strafe")]
-        private bool checkForFloorOnStrafe = default;
+        internal bool checkForFloorOnStrafe = default;
 
         [SerializeField]
         [Tooltip("Whether or not the user's y-position can move during a strafe")]
-        private bool adjustHeightOnStrafe = default;
+        internal bool adjustHeightOnStrafe = default;
 
 
         [SerializeField]
         [Tooltip("The detection range for a floor on strafe, as well as the max amount that a user's y-position can change on strafe")]
-        private float maxHeightChangeOnStrafe = 0.5f;
+        internal float maxHeightChangeOnStrafe = 0.5f;
 
         [SerializeField]
         [Range(0f, 1f)]
@@ -243,21 +245,24 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     throw new ArgumentOutOfRangeException(nameof(targetResult), targetResult, null);
             }
         }
-        
+
         /// check if a backstrafe is possible on a valid platform regarding the possible strafe height given
         /// </summary>
         /// <param name="newPosition">the new position relative to backstrafe position</param>
         /// <param name="hitStrafePosition">actual position the strafe raycast hits</param>
         /// <returns>if there is a valid layer one can backstrafe on</returns>
-        private bool CheckPossibleBackStep(Vector3 newPosition, out Vector3 hitStrafePosition)
+        internal bool CheckPossibleBackStep(Vector3 newPosition, out Vector3 hitStrafePosition)
         {
             var raycastProvider = CoreServices.InputSystem.RaycastProvider;
             Vector3 strafeOrigin = new Vector3(newPosition.x, MixedRealityPlayspace.Position.y + maxHeightChangeOnStrafe, newPosition.z);
             Vector3 strafeTerminus = strafeOrigin + (Vector3.down * maxHeightChangeOnStrafe * 2f);
+            Debug.Log("origin" + strafeOrigin);
+            Debug.Log("terminus" + strafeTerminus);
+
             RayStep rayStep = new RayStep(strafeOrigin, strafeTerminus);
             LayerMask[] layerMasks =  new LayerMask[] { ValidLayers };
 
-            //check are we hiting a floor plane or step above the current MixedRealityPlayspace.Position
+            // check are we hiting a floor plane or step above the current MixedRealityPlayspace.Position
             if (raycastProvider.Raycast(rayStep, layerMasks, false, out var hitInfo))
             {
                 hitStrafePosition = hitInfo.point;
@@ -271,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <summary>
         /// Performs a strafe in the opposite direction of the camera's forward direction
         /// </summary>
-        private void PerformStrafe()
+        internal void PerformStrafe()
         {
             canMove = false;
             var height = MixedRealityPlayspace.Position.y;
