@@ -77,8 +77,8 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_2020_1_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor);
 #else
-                (XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor)) ||
-                (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
+                    (XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor)) ||
+                    (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
 #endif // UNITY_2020_1_OR_NEWER
 
                 // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
