@@ -282,7 +282,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (IsActiveHand(eventData.InputSource.SourceName))
+            if ((currEngagedHand == Handedness.Right && eventData.Controller.ControllerHandedness == Handedness.Right) ||
+                (currEngagedHand == Handedness.Left && eventData.Controller.ControllerHandedness == Handedness.Left))
             {
                 HandDrag_Stop();
             }
@@ -290,7 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (IsActiveHand(eventData.InputSource.SourceName))
+            if ((currEngagedHand == Handedness.Right && eventData.Handedness == Handedness.Right) ||
+                (currEngagedHand == Handedness.Left && eventData.Handedness == Handedness.Left))
             {
                 HandDrag_Stop();
             }
@@ -298,7 +300,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (SetActiveHand(eventData.InputSource.SourceName))
+
+            if (currEngagedHand == Handedness.None)
+            {
+                currEngagedHand = eventData.Handedness;
+            }
+
+            if (currEngagedHand != Handedness.None)
             {
                 HandDrag_Start();
             }
@@ -306,38 +314,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
         #endregion
-
-        private bool SetActiveHand(string sourcename)
-        {
-            if (currEngagedHand == Handedness.None)
-            {
-                if ((sourcename == "Right Hand") || (sourcename == "Mixed Reality Controller Right"))
-                {
-                    currEngagedHand = Handedness.Right;
-                }
-                else if ((sourcename == "Left Hand") || (sourcename == "Mixed Reality Controller Left"))
-                {
-                    currEngagedHand = Handedness.Left;
-                }
-
-                if (currEngagedHand != Handedness.None)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool IsActiveHand(string sourcename)
-        {
-
-            if (((currEngagedHand == Handedness.Right) && ((sourcename == "Right Hand") || (sourcename == "Mixed Reality Controller Right"))) ||
-                ((currEngagedHand == Handedness.Left) && ((sourcename == "Left Hand") || (sourcename == "Mixed Reality Controller Left"))))
-            {
-                return true;
-            }
-            return false;
-        }
 
         /// <summary>
         /// Start moving the target using your hands.
@@ -668,7 +644,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                     {
-                        hitp.y = hitp.y + gameObject.transform.localScale.y / 2;
+                        hitp.y += gameObject.transform.localScale.y / 2;
                     }
 
                     Vector3 objp = gameObject.transform.position;
@@ -750,7 +726,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     // Discrete cursor-based target movement
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                     {
-                        destination.y = destination.y + gameObject.transform.localScale.y / 2;
+                        destination.y += gameObject.transform.localScale.y / 2;
                     }
 
                     Vector3 objp = gameObject.transform.position;

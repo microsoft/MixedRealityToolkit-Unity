@@ -160,6 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private void AddDependency<T>(List<CSProjectDependency<T>> items, T referenceInfo) where T : ReferenceItemInfo
         {
+            if (referenceInfo == null)
+            {
+                return;
+            }
+            
             items.Add(new CSProjectDependency<T>(referenceInfo,
                 new HashSet<BuildTarget>(InEditorPlatforms.Keys.Intersect(referenceInfo.InEditorPlatforms.Keys)),
                 new HashSet<BuildTarget>(PlayerPlatforms.Keys.Intersect(referenceInfo.PlayerPlatforms.Keys))));
@@ -243,13 +248,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             switch (sourceFile.AssetLocation)
             {
                 case AssetLocation.BuiltInPackage:
-                    relativeSourcePath = sourceFile.File.FullName;
                     return;
                 case AssetLocation.Project:
                     relativeSourcePath = $"..\\..\\{Utilities.GetAssetsRelativePathFrom(sourceFile.File.FullName)}";
                     break;
                 case AssetLocation.Package:
                     relativeSourcePath = $"..\\{Utilities.GetPackagesRelativePathFrom(sourceFile.File.FullName)}";
+                    break;
+                case AssetLocation.BuiltInPackageWithSource:
+                    relativeSourcePath = Path.GetFullPath(sourceFile.File.FullName);
                     break;
                 default: throw new InvalidDataException("Unknown asset location.");
             }

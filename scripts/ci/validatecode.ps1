@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Validates the code and assets to check for common patterns and usage that shouldn't be
@@ -83,7 +86,7 @@ function CheckEmptyDoccomment {
             # ///\s*<returns[\sa-zA-Z"=]*>\s*</returns>
             # which basically looks for an empty tag (allowing for alphanumeric param names
             # and values in the tag itself)
-            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=]*>\s*</$tag>"
+            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=_]*>\s*</$tag>"
             if ($FileContent[$LineNumber] -match $matcher) {
                 Write-Host "An empty doccomment was found in $FileName at line $LineNumber "
                 Write-Host "Delete the line or add a description "
@@ -429,7 +432,7 @@ function CheckAssemblyTypes {
     process {
         $hasIssue = $false
 
-        if ($FileContent[$LineNumber] -match "\.GetTypes()") {
+        if ($FileContent[$LineNumber] -match "\.GetTypes\(\)") {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $AssemblyTypesExceptions.Contains($assetFileName)) {
                 Write-Host "$FileName at line $LineNumber has a possible usage of Assembly.GetTypes()"
@@ -589,7 +592,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/MRTK.Demos.InspectorFields.asmdef",
     "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Inspectors/MRTK.Demos.InspectorFields.Inspectors.asmdef",
     "Assets/MRTK/Examples/Demos/UX/Interactables/MRTK.Demos.UX.Interactables.asmdef",
-    "Assets/MRTK/Examples/Experimental/Dwell/Editor/MRTK.Examples.Editor.Dwell.asmdef",
+    "Assets/MRTK/Examples/Demos/UX/Dwell/Editor/MRTK.Demos.Dwell.Editor.asmdef",
     "Assets/MRTK/Extensions/HandPhysicsService/MRTK.HandPhysics.asmdef",
     "Assets/MRTK/Extensions/LostTrackingService/MRTK.LostTracking.asmdef",
     "Assets/MRTK/Extensions/LostTrackingService/Editor/MRTK.LostTracking.Editor.asmdef",
@@ -599,6 +602,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.Oculus.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
+    "Assets/MRTK/Providers/OpenXR/MRTK.OpenXR.asmdef",
     "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/MRTK.UnityAR.Editor.asmdef",
     "Assets/MRTK/Providers/Windows/MRTK.WindowsVoice.asmdef",
@@ -610,6 +614,8 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/SDK/MRTK.SDK.asmdef",
     "Assets/MRTK/SDK/Editor/MRTK.SDK.Editor.asmdef",
     "Assets/MRTK/SDK/Experimental/Editor/MRTK.SDK.Experimental.Editor.asmdef",
+    "Assets/MRTK/SDK/Editor/Inspectors/Exp/InteractiveEl/MRTK.SDK.Editor.Experimental.Interactive.asmdef",
+    "Assets/MRTK/SDK/Experimental/InteractiveElement/MRTK.SDK.Experimental.Interactive.asmdef",
     "Assets/MRTK/Services/BoundarySystem/XR2018/MRTK.BoundarySystem.asmdef",
     "Assets/MRTK/Services/CameraSystem/MRTK.CameraSystem.asmdef",
     "Assets/MRTK/Services/DiagnosticsSystem/MRTK.DiagnosticsSystem.asmdef",
@@ -624,7 +630,9 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",
     "Assets/MRTK/Tools/MRTK.Tools.asmdef",
     "Assets/MRTK/Tools/MSBuild/MRTK.Tools.MSBuild.asmdef",
-    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef"
+    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/MRTK.WSU.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/Editor/MRTK.WSU.Editor.asmdef"
 )
 
 function CheckAsmDef {

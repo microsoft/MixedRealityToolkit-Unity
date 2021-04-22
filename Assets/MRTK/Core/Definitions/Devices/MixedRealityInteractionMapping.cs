@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Maps the capabilities of controllers, linking the Physical inputs of a controller to a Logical construct in a runtime project<para/>
+    /// Maps the capabilities of controllers, linking the physical inputs of a controller to a logical construct in a runtime project.
     /// </summary>
     /// <remarks>
     /// One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.
@@ -79,15 +79,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public MixedRealityInteractionMapping(MixedRealityInteractionMapping mixedRealityInteractionMapping)
             : this(mixedRealityInteractionMapping.id,
-                   mixedRealityInteractionMapping.Description,
-                   mixedRealityInteractionMapping.AxisType,
-                   mixedRealityInteractionMapping.InputType,
-                   mixedRealityInteractionMapping.MixedRealityInputAction,
+                   mixedRealityInteractionMapping.description,
+                   mixedRealityInteractionMapping.axisType,
+                   mixedRealityInteractionMapping.inputType,
+                   mixedRealityInteractionMapping.inputAction,
                    mixedRealityInteractionMapping.keyCode,
                    mixedRealityInteractionMapping.axisCodeX,
                    mixedRealityInteractionMapping.axisCodeY,
                    mixedRealityInteractionMapping.invertXAxis,
                    mixedRealityInteractionMapping.invertYAxis) { }
+
+        public MixedRealityInteractionMapping(MixedRealityInteractionMapping mixedRealityInteractionMapping, MixedRealityInteractionMappingLegacyInput legacyInput)
+            : this(mixedRealityInteractionMapping.id,
+                   mixedRealityInteractionMapping.description,
+                   mixedRealityInteractionMapping.axisType,
+                   mixedRealityInteractionMapping.inputType,
+                   mixedRealityInteractionMapping.inputAction,
+                   legacyInput.KeyCode,
+                   legacyInput.AxisCodeX,
+                   legacyInput.AxisCodeY,
+                   legacyInput.InvertXAxis,
+                   legacyInput.InvertYAxis) { }
+
+        public MixedRealityInteractionMapping(uint id, MixedRealityInputActionMapping mixedRealityInputActionMapping)
+            : this(id,
+                   mixedRealityInputActionMapping.Description,
+                   mixedRealityInputActionMapping.AxisType,
+                   mixedRealityInputActionMapping.InputType,
+                   mixedRealityInputActionMapping.InputAction) { }
+
+        public MixedRealityInteractionMapping(uint id, MixedRealityInputActionMapping mixedRealityInputActionMapping, MixedRealityInteractionMappingLegacyInput legacyInput)
+            : this(id,
+                   mixedRealityInputActionMapping.Description,
+                   mixedRealityInputActionMapping.AxisType,
+                   mixedRealityInputActionMapping.InputType,
+                   mixedRealityInputActionMapping.InputAction,
+                   legacyInput.KeyCode,
+                   legacyInput.AxisCodeX ?? string.Empty, // defaults to null in the struct, but Unity serializes as empty string
+                   legacyInput.AxisCodeY ?? string.Empty, // defaults to null in the struct, but Unity serializes as empty string
+                   legacyInput.InvertXAxis,
+                   legacyInput.InvertYAxis) { }
 
         #region Interaction Properties
 
@@ -365,9 +396,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// The ThreeDof Vector3 Position data value.
+        /// The ThreeDoF Vector3 Position data value.
         /// </summary>
-        /// <remarks>Only supported for a ThreeDof mapping axis type</remarks>
+        /// <remarks>Only supported for a ThreeDoF mapping axis type</remarks>
         public Vector3 PositionData
         {
             get
@@ -390,9 +421,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// The ThreeDof Quaternion Rotation data value.
+        /// The ThreeDoF Quaternion Rotation data value.
         /// </summary>
-        /// <remarks>Only supported for a ThreeDof mapping axis type</remarks>
+        /// <remarks>Only supported for a ThreeDoF mapping axis type</remarks>
         public Quaternion RotationData
         {
             get
@@ -415,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The Pose data value.
         /// </summary>
-        /// <remarks>Only supported for a SixDof mapping axis type</remarks>
+        /// <remarks>Only supported for a SixDoF mapping axis type</remarks>
         public MixedRealityPose PoseData
         {
             get

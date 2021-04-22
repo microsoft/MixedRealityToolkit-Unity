@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class MixedRealitySpatialAwarenessSystem :
         BaseDataProviderAccessCoreSystem,
         IMixedRealitySpatialAwarenessSystem,
@@ -49,11 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                IMixedRealityCapabilityCheck capabilityChecker = observer as IMixedRealityCapabilityCheck;
-
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
-                if ((capabilityChecker != null) &&
+                if (observer is IMixedRealityCapabilityCheck capabilityChecker &&
                     capabilityChecker.CheckCapability(capability))
                 {
                     return true;

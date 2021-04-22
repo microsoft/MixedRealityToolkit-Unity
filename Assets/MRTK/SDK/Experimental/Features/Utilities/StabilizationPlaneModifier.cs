@@ -6,7 +6,6 @@ using System;
 using UnityEngine;
 
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 

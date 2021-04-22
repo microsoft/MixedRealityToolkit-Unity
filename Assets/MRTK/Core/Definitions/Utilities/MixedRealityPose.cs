@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// The default value for a Six Dof Transform.
+        /// The default value for a Six DoF Transform.
         /// </summary>
         /// <returns>
         /// <see href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</see> and <see href="https://docs.unity3d.com/ScriptReference/Quaternion-identity.html">Quaternion.identity</see>.
@@ -108,6 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #region IEqualityComparer Implementation
 
+        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             if (ReferenceEquals(null, left) || ReferenceEquals(null, right)) { return false; }
@@ -124,15 +125,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
-            return obj is MixedRealityPose && Equals((MixedRealityPose)obj);
-        }
-
-        int IEqualityComparer.GetHashCode(object obj)
-        {
-            return obj is MixedRealityPose ? ((MixedRealityPose)obj).GetHashCode() : 0;
+            return obj is MixedRealityPose pose && Equals(pose);
         }
 
         /// <inheritdoc />
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return obj is MixedRealityPose pose ? pose.GetHashCode() : 0;
+        }
+
         public override int GetHashCode()
         {
             return base.GetHashCode();

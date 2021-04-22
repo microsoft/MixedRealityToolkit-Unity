@@ -3,8 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 {
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             IsActive = areHandlesActive;
             ResetHandles();
-            if (IsActive)
+            if (IsActive && handleAxes.Length == handles.Count)
             {
                 List<int> flattenedHandles = VisualUtils.GetFlattenedIndices(flattenAxis, handleAxes);
                 if (flattenedHandles != null)

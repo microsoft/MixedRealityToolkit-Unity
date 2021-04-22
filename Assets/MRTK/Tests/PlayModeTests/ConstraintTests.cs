@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private IEnumerator ConstraintManagerFilterTest(bool reuseDefaultManager)
-        { 
+        {
             float initialScale = 0.2f;
             float minScale = 0.5f;
             float maxScale = 2f;
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * initialScale;
             testObject.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0f, 0f, 1f));
-            
+
             testObject.AddComponent<NearInteractionGrabbable>();
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
@@ -350,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rotationConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
             rotationConstraint.UseLocalSpaceForConstraint = true;
             var scaleConstraint = testObject.EnsureComponent<MinMaxScaleConstraint>();
-            
+
             scaleConstraint.RelativeToInitialState = true;
             scaleConstraint.ScaleMinimum = minScale;
             scaleConstraint.ScaleMaximum = maxScale;
@@ -697,7 +697,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             moveConstraint.UseLocalSpaceForConstraint = true;
             moveConstraint.ConstraintOnMovement = AxisFlags.XAxis | AxisFlags.YAxis;
 
-            var constraint = manipHandler.EnsureComponent<MaintainApparentSizeConstraint>();
+            manipHandler.EnsureComponent<MaintainApparentSizeConstraint>();
 
             Vector3 topLeft = testObject.transform.TransformPoint(new Vector3(-0.5f, 0.5f, -0.5f));
             Vector3 bottomRight = testObject.transform.TransformPoint(new Vector3(0.5f, -0.5f, -0.5f));
@@ -742,7 +742,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.001f);
             testObject.transform.position = new Vector3(0f, 0f, 1f);
             TestUtilities.PlaceRelativeToPlayspace(testObject.transform);
-            Vector3 initialObjectPosition = testObject.transform.position;
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
@@ -750,7 +749,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-            var constraint = manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
+            manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();

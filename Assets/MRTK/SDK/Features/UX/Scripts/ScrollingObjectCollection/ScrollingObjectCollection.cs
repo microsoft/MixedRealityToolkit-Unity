@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool MaskEnabled
         {
             get { return maskEnabled; }
-            set 
+            set
             {
                 if (!value && value != wasMaskEnabled)
                 {
@@ -699,7 +699,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return clipBox;
             }
         }
-       
+
         // This collider will be used for checking intersection of the scroll visible area with any content collider or renderer bounds.
         private Collider clippingBoundsCollider;
         private Collider ClippingBoundsCollider
@@ -845,6 +845,38 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ToCellIndex // To selected cell
         }
 
+        #region performance variables
+        [SerializeField]
+        [Tooltip("Disables Gameobjects with Renderer components which are clipped by the clipping box.")]
+        private bool disableClippedGameObjects = true;
+
+        /// <summary>
+        /// Disables GameObjects with Renderer components which are clipped by the clipping box.
+        /// Improves performance significantly by reducing the number of GameObjects that need to be managed in engine.
+        /// </summary>
+        public bool DisableClippedGameObjects
+        {
+            get { return disableClippedGameObjects; }
+            set { disableClippedGameObjects = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Disables the Renderer components of Gameobjects which are clipped by the clipping box.")]
+        private bool disableClippedRenderers = false;
+
+        /// <summary>
+        /// Disables the Renderer components of Gameobjects which are clipped by the clipping box.
+        /// Improves performance by reducing the number of renderers that need to be tracked, while still allowing the
+        /// GameObjects associated with those renders to continue updating. Less performant compared to using DisableClippedGameObjects
+        /// </summary>
+        public bool DisableClippedRenderers
+        {
+            get { return disableClippedRenderers; }
+            set { disableClippedRenderers = value; }
+        }
+
+        #endregion performance variables
+
         #region Setup methods
 
         /// <summary>
@@ -876,7 +908,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     contentBounds.Encapsulate(renderer.bounds);
                 }
-               
+
                 Vector3 localSize;
 
                 localSize.y = SafeDivisionFloat(contentBounds.size.y, transform.lossyScale.y);
@@ -909,7 +941,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             Vector3 colliderPosition;
             colliderPosition.x = ScrollingCollider.size.x / 2;
-            colliderPosition.y = - ScrollingCollider.size.y / 2;
+            colliderPosition.y = -ScrollingCollider.size.y / 2;
             colliderPosition.z = cellDepth / 2 + ScrollingColliderDepth;
             ScrollingCollider.center = colliderPosition;
 
@@ -918,7 +950,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Math.Abs(Vector3.Dot(ScrollingCollider.size, ScrollingTouchable.LocalUp)));
 
             Vector3 touchablePosition = colliderPosition;
-            touchablePosition.z = - cellDepth / 2;
+            touchablePosition.z = -cellDepth / 2;
 
             ScrollingTouchable.SetBounds(size);
             ScrollingTouchable.SetLocalCenter(touchablePosition);
@@ -1079,7 +1111,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, OverDampLerpInterval);
                         }
-                        else 
+                        else
                         {
                             workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, DragLerpInterval);
                         }
@@ -1111,8 +1143,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     lastPointerPos = currentPointerPos;
                 }
             }
-            else if ((CurrentVelocityState != VelocityState.None 
-                      || previousVelocityState != VelocityState.None) 
+            else if ((CurrentVelocityState != VelocityState.None
+                      || previousVelocityState != VelocityState.None)
                       && CurrentVelocityState != VelocityState.Animating) // Prevent the Animation coroutine from being overridden
             {
                 // We're not engaged, so handle any not touching behavior
@@ -1122,7 +1154,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ApplyPosition(workingScrollerPos);
             }
 
-            // Setting HasMomentum to true if scroll velocity state has changed or any movement happend during this update
+            // Setting HasMomentum to true if scroll velocity state has changed or any movement happened during this update
             if (CurrentVelocityState != VelocityState.None || previousVelocityState != VelocityState.None)
             {
                 HasMomentum = true;
@@ -1651,9 +1683,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (clippedRenderer != null && !clippedRenderer.transform.IsChildOf(ScrollContainer.transform))
                 {
-                    if (!clippedRenderer.gameObject.activeSelf)
+                    if (disableClippedGameObjects)
                     {
-                        clippedRenderer.gameObject.SetActive(true);
+                        if (!clippedRenderer.gameObject.activeSelf)
+                        {
+                            clippedRenderer.gameObject.SetActive(true);
+                        }
+                    }
+                    if (disableClippedRenderers)
+                    {
+                        if (!clippedRenderer.enabled)
+                        {
+                            clippedRenderer.enabled = true;
+                        }
                     }
 
                     renderersToUnclip.Add(clippedRenderer);
@@ -1669,23 +1711,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     renderersToClip.Add(renderer);
                 }
 
-                // Complete or partialy visible renders should be clipped and its game object should be active
+                // Complete or partially visible renders should be clipped and its game object should be active
                 if (isRestoringVisibility
-                    || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
-                    || clippingThresholdBounds.Intersects(renderer.bounds)) 
+                    || clippingThresholdBounds.ContainsBounds(renderer.bounds)
+                    || clippingThresholdBounds.Intersects(renderer.bounds))
                 {
-                    if (!renderer.gameObject.activeSelf)
+                    if (disableClippedGameObjects)
                     {
-                        renderer.gameObject.SetActive(true);
+                        if (!renderer.gameObject.activeSelf)
+                        {
+                            renderer.gameObject.SetActive(true);
+                        }
+                    }
+                    if (disableClippedRenderers)
+                    {
+                        if (!renderer.enabled)
+                        {
+                            renderer.enabled = true;
+                        }
                     }
                 }
 
                 // Hidden renderer game objects should be inactive
                 else
                 {
-                    if (renderer.gameObject.activeSelf)
+                    if (disableClippedGameObjects)
                     {
-                        renderer.gameObject.SetActive(false);
+                        if (renderer.gameObject.activeSelf)
+                        {
+                            renderer.gameObject.SetActive(false);
+                        }
+                    }
+                    if (disableClippedRenderers)
+                    {
+                        if (renderer.enabled)
+                        {
+                            renderer.enabled = false;
+                        }
                     }
                 }
             }

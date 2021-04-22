@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),  // All platforms supported by Unity
-        "Unity Joystick Manager")]
+        "Unity Joystick Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class UnityJoystickManager : BaseInputDeviceManager
     {
         /// <summary>

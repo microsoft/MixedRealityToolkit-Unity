@@ -136,6 +136,9 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 > [!NOTE]
 > The *Pinch* gesture is the only gesture that performs the "Select" action at this point.
 
+> [!NOTE]
+> In order to perform the "Teleport" action, you need to transition from the *Teleport Start* gesture into the *Teleport End* gesture. To do this, we recommended setting the *Default Hand Gesture* to *Teleport Start*, and the *Left/Middle/Right Mouse Hand Gesture* to *Teleport End*.
+
 ### One-hand manipulation
 
 1. Press and hold **Left/Right Controller Manipulation Key** (*Left Shift* or *Space*)

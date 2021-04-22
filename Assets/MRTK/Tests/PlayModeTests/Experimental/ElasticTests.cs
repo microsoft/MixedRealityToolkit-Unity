@@ -10,11 +10,11 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Assert = UnityEngine.Assertions.Assert;
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {
@@ -89,8 +89,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Let the elastic system come to an equilibrium.
             // No need for yielding for new frames because the elastic system
-            // simlulates independently from Unity's frame system.
-            for (int i = 0; i < 50; i++){
+            // simulates independently from Unity's frame system.
+            for (int i = 0; i < 50; i++)
+            {
                 les.ComputeIteration(goalValue, 0.1f);
             }
 
@@ -195,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Let the elastic system come to an equilibrium.
             // No need for yielding for new frames because the elastic system
-            // simlulates independently from Unity's frame system.
+            // simulates independently from Unity's frame system.
             for (int i = 0; i < 1000; i++)
             {
                 les.ComputeIteration(goalValue, 0.05f);
@@ -278,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Let the elastic system come to an equilibrium.
             // No need for yielding for new frames because the elastic system
-            // simlulates independently from Unity's frame system.
+            // simulates independently from Unity's frame system.
             for (int i = 0; i < 1000; i++)
             {
                 les.ComputeIteration(goalValue, 0.05f);
@@ -325,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Let the elastic system come to an equilibrium.
             // No need for yielding for new frames because the elastic system
-            // simlulates independently from Unity's frame system.
+            // simulates independently from Unity's frame system.
             for (int i = 0; i < 50; i++)
             {
                 ves.ComputeIteration(goalValue, 0.1f);
@@ -446,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Let the elastic system come to an equilibrium.
             // No need for yielding for new frames because the elastic system
-            // simlulates independently from Unity's frame system.
+            // simulates independently from Unity's frame system.
             for (int i = 0; i < 1000; i++)
             {
                 les.ComputeIteration(goalValue, 0.05f);
@@ -526,7 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
                 // Let the elastic system come to an equilibrium.
                 // No need for yielding for new frames because the elastic system
-                // simlulates independently from Unity's frame system.
+                // simulates independently from Unity's frame system.
                 for (int i = 0; i < 1000; i++)
                 {
                     les.ComputeIteration(goalValue, 0.05f);
@@ -573,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Let the elastic system come to an equilibrium.
             // No need for yielding for new frames because the elastic system
-            // simlulates independently from Unity's frame system.
+            // simulates independently from Unity's frame system.
             for (int i = 0; i < 1000; i++)
             {
                 les.ComputeIteration(goalValue, 0.05f);
@@ -649,7 +650,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
                 // Let the elastic system come to an equilibrium.
                 // No need for yielding for new frames because the elastic system
-                // simlulates independently from Unity's frame system.
+                // simulates independently from Unity's frame system.
                 for (int i = 0; i < 1000; i++)
                 {
                     les.ComputeIteration(goalValue, 0.05f);

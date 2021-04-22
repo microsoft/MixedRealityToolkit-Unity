@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("Scripts/MRTK/Services/GazeProvider")]
     public class GazeProvider :
         InputSystemGlobalHandlerListener,
-        IMixedRealityGazeProvider,
         IMixedRealityGazeProviderHeadOverride,
         IMixedRealityEyeGazeProvider,
         IMixedRealityInputHandler
@@ -610,6 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
         {
             LatestEyeGaze = eyeRay;
+
             latestEyeTrackingUpdate = DateTime.UtcNow;
             Timestamp = timestamp;
         }

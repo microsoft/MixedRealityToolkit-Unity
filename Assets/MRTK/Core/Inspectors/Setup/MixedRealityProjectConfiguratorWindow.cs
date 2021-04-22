@@ -29,6 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.EyeTrackingCapability, true },
 #endif // UNITY_2019_3_OR_NEWER
 
+#if UNITY_2019_3_OR_NEWER
+            { MRConfig.NewInputSystem, true },
+#endif // UNITY_2019_3_OR_NEWER
+
             // Android Settings
             { MRConfig.AndroidMultiThreadedRendering, true },
             { MRConfig.AndroidMinSdkVersion, true },
@@ -57,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Configure Unity Project", false, 499)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Configure Unity Project", false, 499)]
         public static void ShowWindow()
         {
             // There should be only one configurator window open as a "pop-up". If already open, then just force focus on our instance
@@ -186,6 +190,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif
 #endif // UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
+
+#if UNITY_2019_3_OR_NEWER
+                RenderToggle(MRConfig.NewInputSystem, "Enable old input system for input simulation (won't disable new input system)");
+#endif // UNITY_2019_3_OR_NEWER
+
                 PromptForAudioSpatializer();
                 EditorGUILayout.Space();
 

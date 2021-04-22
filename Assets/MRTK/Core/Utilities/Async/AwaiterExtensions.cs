@@ -292,8 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     // We could just yield return nested IEnumerator's here but we choose to do
                     // our own handling here so that we can catch exceptions in nested coroutines
                     // instead of just top level coroutine
-                    var item = topWorker.Current as IEnumerator;
-                    if (item != null)
+                    if (topWorker.Current is IEnumerator item)
                     {
                         processStack.Push(item);
                     }

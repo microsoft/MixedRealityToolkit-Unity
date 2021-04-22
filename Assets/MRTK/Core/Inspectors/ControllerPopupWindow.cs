@@ -2,8 +2,8 @@
 // Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -187,6 +187,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             #endregion  Interaction Constraint Setup
         }
 
+        /// <summary>
+        /// Displays the controller mapping window for the specified controller mapping
+        /// </summary>
+        /// <param name="controllerMapping"> The controller mapping being modified</param>
+        /// <param name="interactionsList"> The underlying serialized property being modified</param>
+        /// <param name="handedness"> The handedness of the controller </param>
+        /// <param name="mappedControllers"> The list of controller types affected by this mapping</param>
         public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None, List<string> mappedControllers = null)
         {
             if (window != null)
@@ -252,6 +259,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
+        }
+
+        /// <summary>
+        /// Use this to repaint the popup window
+        /// </summary>
+        public static void RepaintWindow()
+        {
+            if (window != null && window.thisWindow != null)
+            {
+                window.thisWindow.Repaint();
+            }
         }
 
         private void Update()
@@ -327,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 for (int i = 0; i < controllerList.Count; i++)
                 {
-                    var rectPosition = Vector2.up * (max_y + (i+5) * EditorGUIUtility.singleLineHeight);
+                    var rectPosition = Vector2.up * (max_y + (i + 5) * EditorGUIUtility.singleLineHeight);
                     var rectSize = new Vector2(1000, EditorGUIUtility.singleLineHeight);
 
                     var labelRect = new Rect(rectPosition, rectSize);

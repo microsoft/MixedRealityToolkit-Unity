@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SinglePassInstancing = 5,
             OptimalRenderingPath = 5, // using the same value of SinglePassInstancing as a replacement
             SpatialAwarenessLayer,
-            [Obsolete("EnableMSBuildForUnity is obsolete and may no longer be used", true)]
+            [Obsolete("EnableMSBuildForUnity is obsolete and is no longer honored.", true)]
             EnableMSBuildForUnity,
             AudioSpatializer = 8,
 
@@ -53,6 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             InternetClientCapability,
 #if UNITY_2019_3_OR_NEWER
             EyeTrackingCapability,
+
+            NewInputSystem,
 #endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
@@ -131,13 +133,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.GazeInput), BuildTarget.WSAPlayer) },
 #endif // UNITY_2019_3_OR_NEWER
+ 
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.NewInputSystem, new ConfigGetter(() => {
+                SerializedObject settings = new SerializedObject(Unsupported.GetSerializedAssetInterfaceSingleton(nameof(PlayerSettings)));
+                SerializedProperty newInputEnabledProp = settings?.FindProperty("activeInputHandler");
+                return newInputEnabledProp?.intValue != 1; })
+            },
+#endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
             { Configurations.AndroidMultiThreadedRendering, new ConfigGetter(() => !PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android), BuildTarget.Android) },
             { Configurations.AndroidMinSdkVersion, new ConfigGetter(() =>  PlayerSettings.Android.minSdkVersion >= MinAndroidSdk, BuildTarget.Android) },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, out float version) ? version >= iOSMinOsVersion : false, BuildTarget.iOS) },
+            { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, out float version) && version >= iOSMinOsVersion, BuildTarget.iOS) },
             { Configurations.IOSArchitecture, new ConfigGetter(() => PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
             { Configurations.IOSCameraUsageDescription, new ConfigGetter(() => !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription), BuildTarget.iOS) },
 
@@ -166,6 +176,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.InternetClientCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true) },
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true) },
+#endif // UNITY_2019_3_OR_NEWER
+
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.NewInputSystem,  () => {
+                if (EditorUtility.DisplayDialog("Unity editor restart required", "The Unity editor must be restarted for the input system change to take effect. Cancel or apply.", "Apply", "Cancel"))
+                {
+                    SerializedObject settings = new SerializedObject(Unsupported.GetSerializedAssetInterfaceSingleton(nameof(PlayerSettings)));
+
+                    if (settings != null)
+                    {
+                        settings.Update();
+                        SerializedProperty activeInputHandlerProperty = settings.FindProperty("activeInputHandler");
+                        if (activeInputHandlerProperty != null)
+                        {
+                            activeInputHandlerProperty.intValue = 2;
+                            settings.ApplyModifiedProperties();
+                            typeof(EditorApplication).GetMethod("RestartEditorAndRecompileScripts", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)?.Invoke(null, null);
+                        }
+                    }
+                }}
+            },
 #endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
@@ -304,11 +335,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool IsVisibleMetaFiles()
         {
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             return VersionControlSettings.mode.Equals("Visible Meta Files");
 #else
             return EditorSettings.externalVersionControl.Equals("Visible Meta Files");
-#endif // UNITY_2020_2_OR_NEWER
+#endif // UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>
@@ -316,11 +347,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void SetVisibleMetaFiles()
         {
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             VersionControlSettings.mode = "Visible Meta Files";
 #else
             EditorSettings.externalVersionControl = "Visible Meta Files";
-#endif // UNITY_2020_2_OR_NEWER
+#endif // UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>

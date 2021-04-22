@@ -45,6 +45,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -56,6 +57,7 @@ LineRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -170,13 +172,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d612b39739f7ed41a73c6dbafebd2ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 1
   destroyOnSourceLost: 0
   useSourcePoseData: 0
   poseAction:
     id: 13
     description: Index Finger Pose
     axisConstraint: 7
+  handedness: 1
   cursorPrefab: {fileID: 3455979907861255611, guid: 27155818b2006c74497a3f244aacc92a,
     type: 3}
   disableCursorOnStart: 0
@@ -190,6 +192,10 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 0
   overrideGlobalPointerExtent: 0
@@ -200,6 +206,7 @@ MonoBehaviour:
   visuals: {fileID: 1733798232924774}
   touchableDistance: 0.2
   sceneQueryBufferSize: 64
+  ignoreCollidersNotInFOV: 1
   pokeLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967291

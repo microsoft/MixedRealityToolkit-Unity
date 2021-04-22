@@ -16,7 +16,7 @@ You can find examples of bounds control configurations in the `BoundsControlExam
 
 ### Target object
 
-This property specifies which object will get transformed by the bounds control manipulation. If no object is setit defaults to the owner object.
+This property specifies which object will get transformed by the bounds control manipulation. If no object is set, it defaults to the owner object.
 
 ### Activation behavior
 
@@ -40,6 +40,11 @@ Adds a padding to the collider bounds used to calculate the extents of the contr
 Indicates whether the control is flattened in one of the axes, making it 2 dimensional and disallowing manipulation along that axis. This feature can be used for thin objects like slates.
 If flatten axis is set to *Flatten Auto* the script will automatically pick the axis with the smallest extent as flatten axis.
 
+### Uniform Scale On Flattened Axis
+Only applies when uniform scale is used. The default behavior (set to true) leads to the flattened axis being scaled along with other axes. If set to false, uniform scaling will not happen along the flattened axis.
+
+Note when using non-uniform scaling, the flattened axis is never scaled along.
+
 ### Smoothing
 The smoothing section allows to configure smoothing behavior for scale and rotate of the control.
 
@@ -50,7 +55,7 @@ Visual configurations are either linked or inlined scriptable objects and are de
 ## Configuration Objects
 The control comes with a set of configuration objects that can be stored as scriptable objects and shared between different instances or prefabs. Configurations can be shared and linked either as individual scriptable asset files or nested scriptable assets inside of prefabs. Further configurations can also be defined directly on the instance without linking to an external or nested scriptable asset. 
 
-The bounds control inspector will indicate whether a configuration is shared or inlined as part of the current instance by showing a message in the property inspector. In addition shared instances won't be editable directly in the bounds control property window itself, but instead the asset it's linking to has to be directly modfied to avoid any accidental changes on shared configurations.
+The bounds control inspector will indicate whether a configuration is shared or inlined as part of the current instance by showing a message in the property inspector. In addition shared instances won't be editable directly in the bounds control property window itself, but instead the asset it's linking to has to be directly modified to avoid any accidental changes on shared configurations.
 
 Currently bounds control offers configuration objects options for the following features:
 - Handles
@@ -121,7 +126,7 @@ The links configuration enables the wireframe feature of bounds control. The fol
 - **Show wireframe**: controls visibility of the wireframe.
 
 ### Proximity effect configuration
-Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to Hololens 2 style behavior.
+Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to HoloLens 2 style behavior.
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Proximity.png">
 
@@ -139,7 +144,7 @@ Show and hide the handles with animation based on the distance to the hands. It 
 ## Constraint System
 Bounds control supports using the [constraint manager](README_ConstraintManager.md) to limit or modify translation, rotation or scaling behavior while using bounds control handles.
 
-The property inspector will show all available constraint managers attached to the same game object in a dropwdown with an option to scroll and highlight the selected constraint manager.
+The property inspector will show all available constraint managers attached to the same game object in a dropdown with an option to scroll and highlight the selected constraint manager.
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Constraints.png" width="450">
 
@@ -257,7 +262,7 @@ rotationHandleConfiguration.ColliderPadding = 0.016f;
 
 ### Example: Set minimum, maximum bounds control scale using MinMaxScaleConstraint
 
-To set the minimum and maximum scale, attach a [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) to your constrol. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured. 
+To set the minimum and maximum scale, attach a [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) to your control. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured. 
 
 You can also use MinMaxScaleConstraint to set minimum and maximum scale for [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.UI.ObjectManipulator).
 

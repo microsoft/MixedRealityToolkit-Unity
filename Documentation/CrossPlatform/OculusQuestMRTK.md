@@ -1,4 +1,4 @@
-# How to configure Oculus Quest in MRTK using the XRSDK pipeline
+# How to configure Oculus Quest in MRTK using the XR SDK pipeline
 
 A [Oculus Quest](https://www.oculus.com/quest/) is required.
 
@@ -9,7 +9,7 @@ The [Unity's XR Pipeline](https://docs.unity3d.com/Manual/XR.html) enables the u
 This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond. To use this pipeline, make sure that you using **Unity 2019.3 or newer**.
 
 The [Oculus Integration Unity package](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) allows for the use of **hand tracking** with the Oculus Quest. 
-This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipeline**, but because controllers and headtracking are handeled by the Unity's XR Pipeline, the steps in
+This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipeline**, but because controllers and headtracking are handled by the Unity's XR Pipeline, the steps in
 **Setting up project for the Oculus Quest** must be followed to ensure that you are using the **XR Pipeline** and not the to-be-deprecated **Legacy XR Pipeline**.
 
 
@@ -33,23 +33,24 @@ This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipel
 work is 20.0.0. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
 
 1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it. Doing this will update the asmdefs with definitions and references needed for the
-relevant Oculus Quest code to function. Additionally, it should populate the **Prefab reference** fields of the **OculusXRSDKDeviceManagerProfile**.
+relevant Oculus Quest code to function. Additionally, it should populate the **Prefab reference** fields of the **DefaultOculusXRSDKDeviceManagerProfile** if they are unfilled.
 It will also update the csc file to filter out the obsolete warnings produced by the Oculus Integration assets. The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-Quest configuration process.
 
     ![OculusIntegrationAsmdef](../Images/CrossPlatform/OculusQuest/OculusIntegrationAsmdef.png)
 
-1. In the imported Oculus folder (It should be found at Assets/Oculus), there is a scriptable object called OculusProjectConfig. In that config file, you need to set HandTrackingSupport 
-to "Controllers and Hands".
+1. After the modules have been integrated, navigate to Mixed Reality Toolkit > Utilities > Oculus > Initialize Oculus Project Config and run it. This will modify a scriptable object called OculusProjectConfig (It should be found at Assets/Oculus).
+In that config file, you should see the HandTrackingSupport field set to "Controllers and Hands" and the Requires System Keyboard field checked off. This will enable handtracking and keyboard input on the Quest.
 
-    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationControllerAndHands.png)
+    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationConfig.png)
+    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationConfigSettings.png)
    
 ## Setting up the scene
 1. Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
 1. Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
 
-## Using the Oculus XRSDK Data Provider
+## Using the Oculus XR SDK Data Provider
 
-1. Configure your profile to use the **Oculus XRSDK Data Provider**
+1. Configure your profile to use the **Oculus XR SDK Data Provider**
     - If not intending to modify the configuration profiles
         - Change your profile to DefaultXRSDKInputSystemProfile and go to [Build and deploy your project to Oculus Quest](OculusQuestMRTK.md#build-and-deploy-your-project-to-oculus-quest)
 
@@ -70,7 +71,7 @@ to "Controllers and Hands".
 
         ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png)
 
-    - You can verify that the Oculus Controllers are detected by 
+1. The Oculus XR SDK Data Provider includes an OVR Camera Rig Prefab which automatically configures the project with an OVR Camera Rig and OVR Hands to properly route input. Manually adding an OVR Camera Rig to the scene will require manual configuration of settings and input.
 
 ## Build and deploy your project to Oculus Quest
 1. Plug in your Oculus Quest via a USB 3.0 -> USB C cable

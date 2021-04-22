@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// Because so much of this service's functionality is editor-only, it has been split into a partial class.
     /// This part handles the runtime parts of the service.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/scene-system/scene-system-getting-started")]
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
         /// <summary>
@@ -177,11 +177,16 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {   // Set our lighting scene immediately, with no transition
                 SetLightingScene(Profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
             }
+
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
+            base.Initialize();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
 #if UNITY_EDITOR
             EditorOnDisable();
 #endif
@@ -193,6 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
             EditorOnDisable();
 #endif
+            base.Disable();
         }
 
         /// <inheritdoc />
@@ -201,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
             EditorOnDestroy();
 #endif
+            base.Destroy();
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] MixedRealitySceneSystem.Update");
@@ -557,7 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                         AsyncOperation sceneOp = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
                         // Set this to true unless we have an activation token
-                        sceneOp.allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
+                        sceneOp.allowSceneActivation = activationToken == null || activationToken.AllowSceneActivation;
                         loadSceneOps.Add(sceneOp);
                     }
 
@@ -573,7 +580,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                         completedAllSceneOps = true;
                         bool readyToProceed = false;
-                        bool allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
+                        bool allowSceneActivation = activationToken == null || activationToken.AllowSceneActivation;
 
                         // Go through all the load scene ops and see if we're ready to be activated
                         float sceneOpProgress = 0;

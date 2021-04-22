@@ -11,27 +11,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// Adds menu items to automate reserializing specific files in Unity.
     /// </summary>
     /// <remarks>
-    /// Reserialization can be needed between Unity versions or when the
-    /// underlying script or asset definitions are changed.
+    /// <para>Reserialization can be needed between Unity versions or when the
+    /// underlying script or asset definitions are changed.</para>
     /// </remarks>
     public class ReserializeUtility
     {
-        [MenuItem("Mixed Reality Toolkit/Utilities/Reserialize/Prefabs, Scenes, and ScriptableObjects")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Reserialize/Prefabs, Scenes, and ScriptableObjects")]
         private static void ReserializePrefabsAndScenes()
         {
             var array = GetAssets("t:Prefab t:Scene t:ScriptableObject");
             AssetDatabase.ForceReserializeAssets(array);
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Reserialize/Materials and Textures")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Reserialize/Materials and Textures")]
         private static void ReserializeMaterials()
         {
             var array = GetAssets("t:Material t:Texture");
             AssetDatabase.ForceReserializeAssets(array);
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Reserialize/Reserialize Selection")]
-        [MenuItem("Assets/Mixed Reality Toolkit/Reserialize Selection")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Reserialize/Reserialize Selection")]
+        [MenuItem("Assets/Mixed Reality/Reserialize Selection")]
         public static void ReserializeSelection()
         {
             Object[] selectedAssets = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);

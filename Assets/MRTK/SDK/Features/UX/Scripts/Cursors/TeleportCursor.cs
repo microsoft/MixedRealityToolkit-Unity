@@ -116,7 +116,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         public override void SetVisibility(bool visible)
         {
-            this.PrimaryCursorVisual.gameObject.SetChildrenActive(visible);
+            if (this.PrimaryCursorVisual != null)
+            {
+                this.PrimaryCursorVisual.gameObject.SetChildrenActive(visible);
+            }
         }
 
         #endregion IMixedRealityCursor Implementation

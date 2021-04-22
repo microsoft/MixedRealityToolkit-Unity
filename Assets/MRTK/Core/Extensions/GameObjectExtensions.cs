@@ -184,8 +184,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                 foreach (var attribute in attributes)
                 {
-                    var requireComponentAttribute = attribute as RequireComponent;
-                    if (requireComponentAttribute != null)
+                    if (attribute is RequireComponent requireComponentAttribute)
                     {
                         if (requireComponentAttribute.m_Type0 == genericType ||
                             requireComponentAttribute.m_Type1 == genericType ||

@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Speech Input")]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/speech")]
     public class WindowsSpeechInputProvider : BaseInputDeviceManager, IMixedRealitySpeechSystem, IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -134,6 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 InitializeKeywordRecognizer();
                 StartRecognition();
             }
+
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         private void InitializeKeywordRecognizer()
@@ -165,7 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
             catch (Exception ex)
             {
-                Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                // Don't log if the application is currently running in batch mode (for example, when running tests). This failure is expected in this case.
+                if (!Application.isBatchMode)
+                {
+                    Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                }
                 keywordRecognizer = null;
                 return;
             }
@@ -180,6 +188,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
+
                 if (keywordRecognizer != null && keywordRecognizer.IsRunning)
                 {
                     for (int i = 0; i < Commands.Length; i++)
@@ -205,6 +215,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
 
             keywordRecognizer = null;
+
+            base.Disable();
         }
 
         /// <inheritdoc />

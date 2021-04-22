@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         "SceneTransitionService/Profiles/DefaultSceneTransitionServiceProfile.asset",
         "MixedRealityToolkit.Extensions",
         true)]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/extensions/scene-transition-service")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
         /// <summary>
@@ -93,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
             UseFadeColor = sceneTransitionServiceProfile.UseFadeColor;
             FadeColor = sceneTransitionServiceProfile.FadeColor;
             FadeInTime = sceneTransitionServiceProfile.FadeInTime;
@@ -107,6 +108,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 Debug.LogError("This extension requires an active IMixedRealitySceneService.");
             }
+
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         /// <inheritdoc />
@@ -114,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         {
             CleanUpDefaultProgressIndicator();
             CleanUpCameraFader();
+            base.Destroy();
         }
 
         #endregion

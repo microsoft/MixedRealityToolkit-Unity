@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
         }
 
-        private static void RenderList(SerializedProperty list)
+        private void RenderList(SerializedProperty list)
         {
             using (new EditorGUILayout.VerticalScope())
             {
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUIUtility.labelWidth = labelWidth;
                 }
 
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(100f));
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, RenderAsSubProfile ? GUILayout.Height(100f) : GUILayout.ExpandHeight(true));
 
                 for (int i = 0; i < list.arraySize; i++)
                 {

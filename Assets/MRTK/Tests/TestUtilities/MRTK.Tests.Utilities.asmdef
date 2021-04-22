@@ -8,14 +8,16 @@
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
-        "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem"
+        "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

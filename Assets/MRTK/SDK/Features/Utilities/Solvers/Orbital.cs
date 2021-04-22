@@ -98,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             Quaternion targetRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.Euler(0, 1, 0);
             Quaternion yawOnlyRot = Quaternion.Euler(0, targetRot.eulerAngles.y, 0);
-            desiredPos = desiredPos + (SnapToTetherAngleSteps(targetRot) * LocalOffset);
-            desiredPos = desiredPos + (SnapToTetherAngleSteps(yawOnlyRot) * WorldOffset);
+            desiredPos += (SnapToTetherAngleSteps(targetRot) * LocalOffset);
+            desiredPos += (SnapToTetherAngleSteps(yawOnlyRot) * WorldOffset);
 
             Quaternion desiredRot = CalculateDesiredRotation(desiredPos);
 

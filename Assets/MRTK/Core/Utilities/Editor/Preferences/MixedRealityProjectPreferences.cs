@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -122,6 +122,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Run optimal configuration analysis on Play
 
+        #region Display null data providers
+
+        private static readonly GUIContent NullDataProviderContent = new GUIContent("Show null data providers in the input profile", "Mainly used for debugging unexpected behavior. Will render null data providers in red in the inspector.");
+        private const string NULL_DATA_PROVIDER_KEY = "MixedRealityToolkit_Editor_NullDataProviders";
+        private static bool nullDataProviderPrefLoaded;
+        private static bool nullDataProvider;
+
+        /// <summary>
+        /// Whether to show null data providers in the profile UI.
+        /// </summary>
+        /// <remarks>Mainly used for debugging unexpected behavior. Data providers may be null due to a namespace change or while using an incompatible Unity version.</remarks>
+        public static bool ShowNullDataProviders
+        {
+            get
+            {
+                if (!nullDataProviderPrefLoaded)
+                {
+                    nullDataProvider = ProjectPreferences.Get(NULL_DATA_PROVIDER_KEY, false);
+                    nullDataProviderPrefLoaded = true;
+                }
+
+                return nullDataProvider;
+            }
+            set => ProjectPreferences.Set(NULL_DATA_PROVIDER_KEY, nullDataProvider = value);
+        }
+
+        #endregion Display null data providers
+
         #region Project configuration cache
 
         // This section contains data that gets cached for future reference to help detect configuration
@@ -210,6 +238,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (EditorGUI.EndChangeCheck())
                 {
                     RunOptimalConfiguration = runOptimalConfig;
+                }
+
+                bool nullProviders = EditorGUILayout.Toggle(NullDataProviderContent, ShowNullDataProviders);
+                if (ShowNullDataProviders != nullProviders)
+                {
+                    ShowNullDataProviders = nullProviders;
                 }
 
                 EditorGUIUtility.labelWidth = prevLabelWidth;
