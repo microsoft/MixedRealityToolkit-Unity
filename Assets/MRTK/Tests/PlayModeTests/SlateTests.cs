@@ -333,7 +333,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(maxPanHorizontal * material.mainTextureScale.x, uvs[1].x, 0.05, "mesh uv is not correct");
             Assert.AreEqual(maxPanVertical * material.mainTextureScale.y, uvs[1].y, 0.05, "mesh uv is not correct");
 #endif
-            Assert.AreEqual(maxPanVertical * material.mainTextureScale.y, uvs[1].y, 0.05, "mesh uv is not correct");
 
             yield return handRight.Hide();
             yield return handLeft.Hide();
