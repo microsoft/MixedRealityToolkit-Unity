@@ -224,13 +224,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         buildInfo.AutoIncrement = true;
                         break;
                     case "-sceneList":
-                        buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(arguments[++i]));
+                        buildInfo.Scenes = SplitSceneList(arguments[++i]);
                         break;
                     case "-sceneListFile":
                         string path = arguments[++i];
                         if (File.Exists(path))
                         {
-                            buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(File.ReadAllText(path)));
+                            buildInfo.Scenes = SplitSceneList(File.ReadAllText(path));
                         }
                         else
                         {
