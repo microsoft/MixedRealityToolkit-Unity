@@ -16,17 +16,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         internal const string MRTKAPIRefUrl = "https://docs.microsoft.com/dotnet/api/microsoft.mixedreality.toolkit";
 
         [MenuItem("Mixed Reality/Toolkit/Help/Show Documentation", false)]
-        public static void ShowDocumentation()
+        private static void ShowDocumentation()
         {
             Application.OpenURL(MRTKDocsUrl);
         }
         [MenuItem("Mixed Reality/Toolkit/Help/Show API Reference", false)]
-        public static void ShowAPIReference()
+        private static void ShowAPIReference()
         {
             Application.OpenURL(MRTKAPIRefUrl);
         }
         [MenuItem("Mixed Reality/Toolkit/Help/File a bug report", false)]
-        public static void FileBugReport()
+        private static void FileBugReport()
         {
             Application.OpenURL(MRTKIssuePageUrl);
         }

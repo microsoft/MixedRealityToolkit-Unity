@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Always Skip Setup", "This configurator will not show up again unless manually launched by clicking Mixed Reality (menu bar) -> Toolkit -> Utilities -> Configure Project for MRTK\nor this preference modified under Edit -> Project Settings -> Mixed Reality Toolkit");
         private GUIStyle multiLineButtonStyle;
 
-        private static ConfigurationStage currentStage
+        private static ConfigurationStage CurrentStage
         {
             get => MixedRealityProjectPreferences.ConfiguratorState;
             set => MixedRealityProjectPreferences.ConfiguratorState = value;
@@ -71,30 +71,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         [MenuItem("Mixed Reality/Toolkit/Utilities/Configure Project for MRTK", false, 499)]
-        public static void ShowWindowFromMenu()
+        private static void ShowWindowFromMenu()
         {
-            currentStage = ConfigurationStage.Init;
+            CurrentStage = ConfigurationStage.Init;
             ShowWindow();
         }
 
-        public static void ShowWindowOnInit(bool switchToConfigurationStage)
+        internal static void ShowWindowOnInit(bool switchToConfigurationStage)
         {
-            if (!IsOpen && currentStage == ConfigurationStage.Done)
+            if (!IsOpen && CurrentStage == ConfigurationStage.Done)
             {
                 if (switchToConfigurationStage)
                 {
-                    currentStage = ConfigurationStage.ProjectConfiguration;
+                    CurrentStage = ConfigurationStage.ProjectConfiguration;
                 }
                 else
                 {
-                    currentStage = ConfigurationStage.Init;
+                    CurrentStage = ConfigurationStage.Init;
                 }
             }
 
             ShowWindow();
         }
 
-        public static void ShowWindow()
+        private static void ShowWindow()
         {
             // There should be only one configurator window open as a "pop-up". If already open, then just force focus on our instance
             if (IsOpen)
@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private void OnGUI()
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
-            if (currentStage != ConfigurationStage.Done)
+            if (CurrentStage != ConfigurationStage.Done)
             {
                 GUILayout.Label("Welcome to MRTK!", MixedRealityStylesUtility.BoldLargeTitleStyle);
                 CreateSpace(5);
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             };
 
 
-            switch (currentStage)
+            switch (CurrentStage)
             {
                 case ConfigurationStage.Init:
                     RenderXRPipelineSelection();
@@ -195,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (!XRSettingsUtilities.LegacyXRAvailable)
             {
 #if UNITY_2020_2_OR_NEWER
-                currentStage = ConfigurationStage.SelectXRSDKPlugin;
+                CurrentStage = ConfigurationStage.SelectXRSDKPlugin;
 #else
                 currentStage = ConfigurationStage.InstallBuiltinPlugin;
 #endif // UNITY_2020_2_OR_NEWER
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     AddUPMPackage("com.unity.xr.management");
                 }
-                currentStage = ConfigurationStage.InstallBuiltinPlugin;
+                CurrentStage = ConfigurationStage.InstallBuiltinPlugin;
                 Repaint();
             }
             CreateSpace(15);
@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // !UNITY_2019_3_OR_NEWER
 
             RenderSetupLaterSection(true, () => {
-                currentStage = ConfigurationStage.ProjectConfiguration;
+                CurrentStage = ConfigurationStage.ProjectConfiguration;
                 Repaint();
             });
         }
@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (GUILayout.Button("Next"))
                 {
-                    currentStage = ConfigurationStage.ProjectConfiguration;
+                    CurrentStage = ConfigurationStage.ProjectConfiguration;
                     Repaint();
                 }
                 if (GUILayout.Button("Learn More"))
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (GUILayout.Button("Next"))
                 {
-                    currentStage = ConfigurationStage.ProjectConfiguration;
+                    CurrentStage = ConfigurationStage.ProjectConfiguration;
                     Repaint();
                 }
                 if (GUILayout.Button("Learn More"))
@@ -312,12 +312,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (GUILayout.Button("Next"))
                 {
-                    currentStage = ConfigurationStage.ProjectConfiguration;
+                    CurrentStage = ConfigurationStage.ProjectConfiguration;
                     Repaint();
                 }
                 if (GUILayout.Button("Install Microsoft OpenXR plugin..."))
                 {
-                    currentStage = ConfigurationStage.InstallMSOpenXR;
+                    CurrentStage = ConfigurationStage.InstallMSOpenXR;
                     Repaint();
                 }
                 if (GUILayout.Button("Learn More"))
@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (GUILayout.Button("Next"))
                 {
-                    currentStage = ConfigurationStage.ProjectConfiguration;
+                    CurrentStage = ConfigurationStage.ProjectConfiguration;
                     Repaint();
                 }
                 if (GUILayout.Button("Learn More"))
@@ -355,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (XRSettingsUtilities.XRSDKEnabled)
             {
-                currentStage = ConfigurationStage.Init;
+                CurrentStage = ConfigurationStage.Init;
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting - Enabling the XR SDK Pipeline", EditorStyles.boldLabel);
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
 #if UNITY_2020_2_OR_NEWER
                 AddUPMPackage("com.unity.xr.openxr");
-                currentStage = ConfigurationStage.InstallOpenXR;
+                CurrentStage = ConfigurationStage.InstallOpenXR;
 #endif // UNITY_2020_2_OR_NEWER
                 Repaint();
             }
@@ -383,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     AddUPMPackage("com.unity.xr.management");
                 }
 #endif // UNITY_2019_3_OR_NEWER
-                currentStage = ConfigurationStage.InstallBuiltinPlugin;
+                CurrentStage = ConfigurationStage.InstallBuiltinPlugin;
                 Repaint();
             }
             CreateSpace(25);
@@ -395,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             
             RenderSetupLaterSection(true, () => {
-                currentStage = ConfigurationStage.ProjectConfiguration;
+                CurrentStage = ConfigurationStage.ProjectConfiguration;
                 Repaint();
             });
         }
@@ -404,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (XRSettingsUtilities.XRSDKEnabled)
             {
-                currentStage = ConfigurationStage.Init;
+                CurrentStage = ConfigurationStage.Init;
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting - Enabling the XR SDK Pipeline with built-in Plugins (non-OpenXR)", EditorStyles.boldLabel);
@@ -429,7 +429,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
             RenderSetupLaterSection(true, () => {
-                currentStage = ConfigurationStage.ProjectConfiguration;
+                CurrentStage = ConfigurationStage.ProjectConfiguration;
                 Repaint();
             });
         }
@@ -438,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (XRSettingsUtilities.OpenXREnabled)
             {
-                currentStage = ConfigurationStage.Init;
+                CurrentStage = ConfigurationStage.Init;
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting - Enabling the XR SDK Pipeline with OpenXR", EditorStyles.boldLabel);
@@ -455,7 +455,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             
             RenderSetupLaterSection(true, () => {
-                currentStage = ConfigurationStage.ProjectConfiguration;
+                CurrentStage = ConfigurationStage.ProjectConfiguration;
                 Repaint();
             });
         }
@@ -464,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (XRSettingsUtilities.MicrosoftOpenXREnabled)
             {
-                currentStage = ConfigurationStage.Init;
+                CurrentStage = ConfigurationStage.Init;
                 Repaint();
             }
             EditorGUILayout.LabelField("XR Pipeline Setting - Installing the Microsoft OpenXR plugin", EditorStyles.boldLabel);
@@ -480,7 +480,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Application.OpenURL(MSOpenXRPluginUrl);
             }
             RenderSetupLaterSection(true, () => {
-                currentStage = ConfigurationStage.ProjectConfiguration;
+                CurrentStage = ConfigurationStage.ProjectConfiguration;
                 Repaint();
             });
         }
@@ -512,7 +512,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(10);
             if (GUILayout.Button("Next"))
             {
-                currentStage = ConfigurationStage.ImportTMP;
+                CurrentStage = ConfigurationStage.ImportTMP;
                 Repaint();
             }
             RenderSetupLaterSection();
@@ -535,7 +535,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             RenderSetupLaterSection(true, () => {
-                currentStage = ConfigurationStage.ImportTMP;
+                CurrentStage = ConfigurationStage.ImportTMP;
                 Repaint();
             });
         }
@@ -544,7 +544,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (TMPEssentialsImported())
             {
-                currentStage = ConfigurationStage.ShowExamples;
+                CurrentStage = ConfigurationStage.ShowExamples;
                 Repaint();
             }
             EditorGUILayout.LabelField("Importing TMP Essentials", EditorStyles.boldLabel);
@@ -555,7 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             m_ResourceImporter.OnGUI();
             CreateSpace(15);
             RenderSetupLaterSection(true, () => {
-                currentStage = ConfigurationStage.ShowExamples;
+                CurrentStage = ConfigurationStage.ShowExamples;
                 Repaint();
             });
         }
@@ -564,7 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!MRTKExamplesPackageImportedViaUPM())
             {
-                currentStage = ConfigurationStage.Done;
+                CurrentStage = ConfigurationStage.Done;
                 Repaint();
                 GUIUtility.ExitGUI();
             }
@@ -584,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
                 if (GUILayout.Button("Got it, next"))
                 {
-                    currentStage = ConfigurationStage.Done;
+                    CurrentStage = ConfigurationStage.Done;
                     Repaint();
                 }
             }
