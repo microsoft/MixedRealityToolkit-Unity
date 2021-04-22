@@ -401,8 +401,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     var scaleAndScrollUVDeltas = new List<Vector2>();
                     for (int i = 0; i < uvs.Count; i++)
                     {
-                        Vector2 adjustedScleUVDelta = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid - uvs[i];
-                        scaleAndScrollUVDeltas.Add(adjustedScleUVDelta + offsetUVDelta);
+                        Vector2 adjustedScaleUVDelta = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid - uvs[i];
+                        scaleAndScrollUVDeltas.Add(adjustedScaleUVDelta + offsetUVDelta);
                     }
                     UpdateUV(uvs, scaleAndScrollUVDeltas);
 
