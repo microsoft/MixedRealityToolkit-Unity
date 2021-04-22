@@ -383,6 +383,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uvsOrig.Clear();
             uvsOrig.AddRange(uvs);
 
+            Vector2 offsetUVDelta = new Vector2(-totalUVOffset.x, totalUVOffset.y);
+
             // Scale
             if (ScaleActive)
             {
@@ -396,13 +398,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Test for scale limits
                 if (currentScale > minScale && currentScale < maxScale)
                 {
-                    var scaleUVDeltas = new List<Vector2>();
+                    var scaleAndScrollUVDeltas = new List<Vector2>();
                     for (int i = 0; i < uvs.Count; i++)
                     {
-                        Vector2 delta = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid - uvs[i];
-                        scaleUVDeltas.Add(delta);
+                        Vector2 adjustedScleUVDelta = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid - uvs[i];
+                        scaleAndScrollUVDeltas.Add(adjustedScleUVDelta + offsetUVDelta);
                     }
-                    UpdateUV(uvs, scaleUVDeltas);
+                    UpdateUV(uvs, scaleAndScrollUVDeltas);
 
                     Vector2 upperLeft = uvs[UpperLeftQuadIndex];
                     Vector2 upperRight = uvs[UpperRightQuadIndex];
@@ -411,10 +413,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     totalUVScale.y = upperLeft.y - lowerLeft.y;
                 }
             }
-
-            // Scroll
-            Vector2 uvDelta = new Vector2(-totalUVOffset.x, totalUVOffset.y);
-            UpdateUVWithScroll(uvs, uvDelta);
+            else
+            {
+                // Scroll
+                UpdateUVWithScroll(uvs, offsetUVDelta);
+            }
 
             mesh.SetUVs(0, uvs);
         }
