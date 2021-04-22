@@ -88,12 +88,17 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private float strafeAmount = 0.25f;
         
         [SerializeField]
-        [Tooltip("The condition if a back strafe height is needed")]
-        private bool requiresBackStrafeHeight = default;
-        
+        [Tooltip("Whether or not a strafe checks that there is a floor beneath the user's origin on strafe")]
+        private bool checkForFloorOnStrafe = default;
+
         [SerializeField]
-        [Tooltip("The height of required for back strafe")]
-        private float backStrafeHeight = 0.5f;
+        [Tooltip("Whether or not the user's y-position can move during a strafe")]
+        private bool adjustHeightOnStrafe = default;
+
+
+        [SerializeField]
+        [Tooltip("The detection range for a floor on strafe, as well as the max amount that a user's y-position can change on strafe")]
+        private float maxHeightChangeOnStrafe = 0.5f;
 
         [SerializeField]
         [Range(0f, 1f)]
@@ -247,8 +252,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private bool CheckPossibleBackStep(Vector3 newPosition, out Vector3 hitStrafePosition)
         {
             var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-            Vector3 strafeOrigin = new Vector3(newPosition.x, MixedRealityPlayspace.Position.y + backStrafeHeight, newPosition.z);
-            Vector3 strafeTerminus = strafeOrigin + (Vector3.down * backStrafeHeight * 2f);
+            Vector3 strafeOrigin = new Vector3(newPosition.x, MixedRealityPlayspace.Position.y + maxHeightChangeOnStrafe, newPosition.z);
+            Vector3 strafeTerminus = strafeOrigin + (Vector3.down * maxHeightChangeOnStrafe * 2f);
             RayStep rayStep = new RayStep(strafeOrigin, strafeTerminus);
             LayerMask[] layerMasks =  new LayerMask[] { ValidLayers };
 
@@ -261,6 +266,32 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             hitStrafePosition = Vector3.zero;
             return false;
+        }
+
+        /// <summary>
+        /// Performs a strafe in the opposite direction of the camera's forward direction
+        /// </summary>
+        private void PerformStrafe()
+        {
+            canMove = false;
+            var height = MixedRealityPlayspace.Position.y;
+            var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityPlayspace.Position;
+
+            newPosition.y = height;
+            bool isValidStrafe = true;
+            if (checkForFloorOnStrafe)
+            {
+                isValidStrafe = CheckPossibleBackStep(newPosition, out var strafeHitPosition);
+                if (adjustHeightOnStrafe)
+                {
+                    newPosition = strafeHitPosition;
+                }
+            }
+
+            if (isValidStrafe)
+            {
+                MixedRealityPlayspace.Position = newPosition;
+            }
         }
 
         #region IMixedRealityPointer Implementation
@@ -501,23 +532,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                     // Check to make sure we're still under our activation threshold.
                                     if (offsetStrafeAngle > 0 && offsetStrafeAngle <= backStrafeActivationAngle)
                                     {
-                                        canMove = false;
-                                        var height = MixedRealityPlayspace.Position.y;
-                                        var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityPlayspace.Position;
-                                        
-                                        bool isValidStrafe = true;
-                                        if (requiresBackStrafeHeight)
-                                        {
-                                            isValidStrafe = CheckPossibleBackStep(newPosition, out var strafeHitPosition);
-                                            newPosition = strafeHitPosition;
-                                        }
-                                        else
-                                        {
-                                            newPosition.y = height;
-                                        }
-
-                                        if (isValidStrafe)
-                                            MixedRealityPlayspace.Position = newPosition;
+                                        PerformStrafe();
                                     }
                                 }
                             }
