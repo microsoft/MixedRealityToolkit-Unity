@@ -291,7 +291,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
+#if UNITY_2019_1_OR_NEWER
+            Assert.AreEqual(maxPan * material.mainTextureScale.x, uvs[3].x, 0.05, "mesh uv is not correct");
+#else
             Assert.AreEqual(maxPan * material.mainTextureScale.x, uvs[1].x, 0.05, "mesh uv is not correct");
+#endif
         }
 
         /// <summary>
