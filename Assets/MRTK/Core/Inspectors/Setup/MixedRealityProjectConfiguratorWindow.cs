@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2020_2_OR_NEWER
                 CurrentStage = ConfigurationStage.SelectXRSDKPlugin;
 #else
-                currentStage = ConfigurationStage.InstallBuiltinPlugin;
+                CurrentStage = ConfigurationStage.InstallBuiltinPlugin;
 #endif // UNITY_2020_2_OR_NEWER
 
                 Repaint();
