@@ -1,4 +1,7 @@
-﻿#if !WINDOWS_UWP
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+#if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // The assembly that this file is part of is still built for the player,
 // even though the assembly itself is marked as a test assembly (this is not
@@ -16,7 +19,8 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
-    class EyeTrackingTargetTest
+    // tests for eyetracking
+    public class EyeTrackingTargetTest
     {
         // Assets/MRTK/Examples/Demos/EyeTracking/General/Profiles/EyeTrackingDemoConfigurationProfile.asset
         private const string eyeTrackingConfigurationProfileGuid = "6615cacb3eaaa044f99b917186093aeb";
@@ -47,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         /// Skeleton for a new MRTK play mode test.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestEyeTrackingTargetColliderOnParent()
+        public IEnumerator TestEyeTrackingTarget()
         {
             // Eye tracking configuration profile should set eye based gaze
             var profile = AssetDatabase.LoadAssetAtPath(eyeTrackingConfigurationProfilePath, typeof(MixedRealityToolkitConfigurationProfile)) as MixedRealityToolkitConfigurationProfile;
@@ -60,19 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
                 p.LookAt(Vector3.forward);
             });
 
-            // Build a target to collide against
-            var parentOfTargetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            parentOfTargetObject.name = "ParentOfTargetObject";
-            parentOfTargetObject.AddComponent<BoxCollider>();
-            parentOfTargetObject.transform.localScale = new Vector3(25.0f, 25.0f, 0.2f);
-            parentOfTargetObject.transform.Rotate(Vector3.up, 180.0f); // Rotate parentOfTargetObject so forward faces camera
-            parentOfTargetObject.transform.position = Vector3.forward * 10.0f;
-
-            var childOfTargetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            childOfTargetObject.name = "childOfTargetObject";
-            var eyeTrackingTargetComponent = childOfTargetObject.AddComponent<EyeTrackingTarget>();
-            childOfTargetObject.transform.localScale = new Vector3(20.0f, 20.0f, 0.1f);
-            childOfTargetObject.transform.SetParent(parentOfTargetObject.transform);
+            var eyetrackingTargetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            eyetrackingTargetObject.name = "eyetrackingTargetObject";
+            var eyeTrackingTargetComponent = eyetrackingTargetObject.AddComponent<EyeTrackingTarget>();
+            eyetrackingTargetObject.transform.localScale = new Vector3(20.0f, 20.0f, 0.1f);
 
             //We need to simulate an eye in the direction of the parent object
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
