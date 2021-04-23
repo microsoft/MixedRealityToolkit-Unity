@@ -64,10 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
                 p.LookAt(Vector3.forward);
             });
 
+            string targetName = "eyetrackingTargetObject";
+
             var eyetrackingTargetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            eyetrackingTargetObject.name = "eyetrackingTargetObject";
+            eyetrackingTargetObject.name = targetName;
             var eyeTrackingTargetComponent = eyetrackingTargetObject.AddComponent<EyeTrackingTarget>();
-            eyetrackingTargetObject.transform.localScale = new Vector3(20.0f, 20.0f, 0.1f);
+            eyetrackingTargetObject.transform.position = Vector3.forward;
 
             //We need to simulate an eye in the direction of the parent object
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
@@ -81,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.True(isEyeGazeActive);
             yield return null;
             Assert.True(EyeTrackingTarget.LookedAtTarget != null);
-            Assert.True(EyeTrackingTarget.LookedAtEyeTarget.name == "childOfTargetObject");
+            Assert.True(EyeTrackingTarget.LookedAtEyeTarget.name == targetName);
         }
         #endregion
     }
