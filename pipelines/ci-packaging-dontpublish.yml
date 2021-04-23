@@ -4,18 +4,21 @@ variables:
 - template: config/settings.yml
 
 jobs:
-- job: CIDeveloperValidation
+- job: CodeValidation
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: templates/validation.yml
+
+- job: UnityValidation
   timeoutInMinutes: 90
   pool:
     name: On-Prem Unity
     demands:
-    - Unity2018.4.26f1
+    - ${{ variables.Unity2018Version }}
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packagingEnabled: true
-      packagePublishing: false
       UnityVersion: $(Unity2018Version)
-      MRTKVersion: $(MRTKVersion)

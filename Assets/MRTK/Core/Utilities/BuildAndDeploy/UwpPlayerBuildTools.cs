@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         // Note: the min sdk target cannot be changed.
                         EditorUserBuildSettings.wsaUWPSDK = arguments[++i];
                         break;
+                    case "-nugetPath":
+                        buildInfo.NugetExecutablePath = arguments[++i];
+                        break;
                 }
             }
         }
@@ -102,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Build the Uwp Player.
+        /// Build the UWP Player.
         /// </summary>
         public static async Task<bool> BuildPlayer(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {

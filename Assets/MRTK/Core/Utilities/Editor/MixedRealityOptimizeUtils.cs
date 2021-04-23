@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     return true;
                 }
 #endif // UNITY_2019_1_OR_NEWER
-        }
+            }
 #endif // !UNITY_2020_1_OR_NEWER
 
             return true;

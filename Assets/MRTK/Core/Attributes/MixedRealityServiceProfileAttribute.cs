@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit
         public MixedRealityServiceProfileAttribute(Type[] requiredTypes, Type[] excludedTypes = null)
         {
             RequiredTypes = requiredTypes;
-            ExcludedTypes = excludedTypes != null ? excludedTypes : new Type[0];
+            ExcludedTypes = excludedTypes ?? (new Type[0]);
         }
 
         public Type[] RequiredTypes { get; private set; }

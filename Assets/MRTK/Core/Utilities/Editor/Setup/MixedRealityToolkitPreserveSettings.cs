@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Maanages the Mixed Reality Toolkit code preservation settings. Please see
+    /// Manages the Mixed Reality Toolkit code preservation settings. Please see
     /// https://docs.unity3d.com/Manual/ManagedCodeStripping.html for more information.
     /// </summary>
     internal static class MixedRealityToolkitPreserveSettings
@@ -41,12 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             "  <!-- Data providers --> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.LeapMotion\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.OpenVR\" preserve=\"all\"/> \n" +
+            "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.OpenXR\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.UnityAR\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.XRSDK\" preserve=\"all\"/> \n" +
+            "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsSceneUnderstanding\" preserve=\"all\"/> \n" +
             "  <!-- Extension services --> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Extensions.HandPhysics\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Extensions.Tracking\" preserve=\"all\"/> \n" +

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
  # Recursively finds a .json files in the current working directory
  # and pretty-formats them.

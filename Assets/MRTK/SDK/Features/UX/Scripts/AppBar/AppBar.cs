@@ -373,8 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected virtual void OnClickRemove()
         {
             // Set the app bar and bounding box to inactive
-            var boundsProvider = Target as IBoundsTargetProvider;
-            if (boundsProvider != null)
+            if (Target is IBoundsTargetProvider boundsProvider && !boundsProvider.IsNull())
             {
                 boundsProvider.Target.SetActive(false);
             }
@@ -423,15 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 AppBarButton button = buttons[i];
 
-                switch (button.ButtonType)
-                {
-                    case ButtonTypeEnum.Custom:
-                        break;
-
-                    default:
-                        button.SetVisible(GetButtonVisible(button.ButtonType));
-                        break;
-                }
+                button.SetVisible(GetButtonVisible(button.ButtonType));
 
                 if (!buttons[i].Visible)
                 {
@@ -469,8 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateTargetObject()
         {
-            var boundsProvider = Target as IBoundsTargetProvider;
-            if (boundsProvider == null || boundsProvider.Target == null)
+            if (!(Target is IBoundsTargetProvider boundsProvider) || boundsProvider.IsNull() || boundsProvider.Target == null)
             {
                 if (DisplayType == AppBarDisplayTypeEnum.Manipulation)
                 {
@@ -505,9 +495,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void FollowTargetObject(bool smooth)
         {
-            var boundsProvider = Target as IBoundsTargetProvider;
-            if (boundsProvider == null)
+            if (!(Target is IBoundsTargetProvider boundsProvider) || boundsProvider.IsNull())
+            {
                 return;
+            }
 
             // Calculate the best follow position
             Vector3 finalPosition = Vector3.zero;
@@ -584,7 +575,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 case AppBarStateEnum.Hidden:
                     switch (buttonType)
                     {
-                        // Show show button
+                        // Show the show button
                         // The rest are hidden
                         case ButtonTypeEnum.Show:
                             return true;

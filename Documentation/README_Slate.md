@@ -16,9 +16,9 @@ A slate control is composed of the following elements:
 
 <img src="../Documentation/Images/Slate/MRTK_SlateStructure.jpg" width="650">
 
-## Bounding box
+## Bounds control
 
-A slate control contains a bounding box script for scaling and rotating. For more information on bounding box, please see the [Bounding box](README_BoundingBox.md) page.
+A slate control contains a bounds control script for scaling and rotating. For more information on bounds control, please see the [bounds control](README_BoundsControl.md) page.
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_BB.jpg" width="650">
 

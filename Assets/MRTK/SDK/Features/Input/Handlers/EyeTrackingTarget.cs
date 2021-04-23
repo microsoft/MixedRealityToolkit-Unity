@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// GameObject eye gaze is currently targeting, updated once per frame.
-        /// null if no object with colllider is currently being looked at.
+        /// null if no object with collider is currently being looked at.
         /// </summary>
         public static GameObject LookedAtTarget { get; private set; }
 

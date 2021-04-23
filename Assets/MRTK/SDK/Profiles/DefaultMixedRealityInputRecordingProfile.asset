@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityInputRecordingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  frameRate: 60
+  recordHandData: 1
   jointPositionThreshold: 0.001
   jointRotationThreshold: 0.02
+  recordCameraPose: 1
   cameraPositionThreshold: 0.002
   cameraRotationThreshold: 0.02
+  recordEyeGaze: 1
+  eyeGazeOriginThreshold: 0.002
+  eyeGazeDirectionThreshold: 0.2
+  partitionSize: 32

@@ -3,9 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 
 #if WINDOWS_UWP
-using System;
 using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
@@ -20,14 +20,43 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// </summary>
     public class WindowsMixedRealityHandMeshProvider
     {
-        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => this.controller = controller;
+        /// <summary>
+        /// The user's left hand.
+        /// </summary>
+        public static WindowsMixedRealityHandMeshProvider Left { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Left);
 
-        private readonly IMixedRealityController controller;
-        private IMixedRealityInputSource InputSource => controller.InputSource;
-        private Handedness Handedness => controller.ControllerHandedness;
+        /// <summary>
+        /// The user's right hand.
+        /// </summary>
+        public static WindowsMixedRealityHandMeshProvider Right { get; } = new WindowsMixedRealityHandMeshProvider(Handedness.Right);
+
+        private WindowsMixedRealityHandMeshProvider(Handedness handedness) => this.handedness = handedness;
+
+        [Obsolete("WindowsMixedRealityHandMeshProvider(IMixedRealityController) is obsolete. Please use either the static Left or Right members and call SetInputSource()")]
+        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => inputSource = controller.InputSource;
+
+        private readonly Handedness handedness;
+        private IMixedRealityInputSource inputSource = null;
+
+        /// <summary>
+        /// Sets the <see cref="IMixedRealityInputSource"/> that represents the current hand for this mesh.
+        /// </summary>
+        /// <param name="inputSource">Implementation of the hand input source.</param>
+        public void SetInputSource(IMixedRealityInputSource inputSource)
+        {
+            this.inputSource = inputSource;
+#if WINDOWS_UWP
+            hasRequestedHandMeshObserver = false;
+            handMeshObserver = null;
+#endif // WINDOWS_UWP
+        }
 
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
+        private bool hasRequestedHandMeshObserver = false;
+
+        private int handMeshModelId = -1;
+        private int neutralPoseVersion = -1;
 
         private ushort[] handMeshTriangleIndices = null;
         private HandMeshVertex[] vertexAndNormals = null;
@@ -36,8 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private Vector3[] handMeshNormalsUnity = null;
         private int[] handMeshTriangleIndicesUnity = null;
         private Vector2[] handMeshUVsUnity = null;
-
-        private bool hasRequestedHandMeshObserver = false;
 
         private async void SetHandMeshObserver(SpatialInteractionSourceState sourceState)
         {
@@ -80,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityArticulatedHandDefinition.UpdateHandMesh");
+        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker($"[MRTK] {nameof(WindowsMixedRealityHandMeshProvider)}.UpdateHandMesh");
 
         /// <summary>
         /// Updates the current hand mesh based on the passed in state of the hand.
@@ -90,12 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             using (UpdateHandMeshPerfMarker.Auto())
             {
-                MixedRealityHandTrackingProfile handTrackingProfile = null;
                 MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
-                if (inputSystemProfile != null)
-                {
-                    handTrackingProfile = inputSystemProfile.HandTrackingProfile;
-                }
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystemProfile != null ? inputSystemProfile.HandTrackingProfile : null;
 
                 if (handTrackingProfile == null || !handTrackingProfile.EnableHandMeshVisualization)
                 {
@@ -104,14 +127,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         // Notify that hand mesh has been updated (cleared)
                         HandMeshInfo handMeshInfo = new HandMeshInfo();
-                        CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
+                        CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                         hasRequestedHandMeshObserver = false;
                         handMeshObserver = null;
                     }
                     return;
                 }
-
-                HandPose handPose = sourceState.TryGetHandPose();
 
                 // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                 if (handMeshObserver == null && !hasRequestedHandMeshObserver)
@@ -120,16 +141,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     hasRequestedHandMeshObserver = true;
                 }
 
+                HandPose handPose = sourceState.TryGetHandPose();
                 if (handMeshObserver != null && handPose != null)
                 {
-                    if (handMeshTriangleIndices == null)
+                    uint triangleIndexCount = handMeshObserver.TriangleIndexCount;
+                    if (handMeshTriangleIndices == null ||
+                        handMeshTriangleIndices.Length != triangleIndexCount)
                     {
-                        handMeshTriangleIndices = new ushort[handMeshObserver.TriangleIndexCount];
-                        handMeshTriangleIndicesUnity = new int[handMeshObserver.TriangleIndexCount];
+                        handMeshTriangleIndices = new ushort[triangleIndexCount];
+                        handMeshTriangleIndicesUnity = new int[triangleIndexCount];
+                    }
+
+                    int modelId = handMeshObserver.ModelId;
+                    if (handMeshModelId != modelId)
+                    {
                         handMeshObserver.GetTriangleIndices(handMeshTriangleIndices);
+                        handMeshModelId = modelId;
+                        Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, triangleIndexCount);
+                    }
 
-                        Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, (int)handMeshObserver.TriangleIndexCount);
-
+                    int poseVersion = handMeshObserver.NeutralPoseVersion;
+                    if (neutralPoseVersion != poseVersion)
+                    {
                         // Compute neutral pose
                         Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
                         HandPose neutralPose = handMeshObserver.NeutralPose;
@@ -141,6 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                         {
                             neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
                         });
+
+                        neutralPoseVersion = poseVersion;
 
                         // Compute UV mapping
                         InitializeUVs(neutralPoseVertices);
@@ -172,9 +207,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
                             });
 
-                            /// Hands should follow the Playspace to accommodate teleporting, so fold in the Playspace transform.
+                            // Hands should follow the Playspace to accommodate teleporting, so fold in the Playspace transform.
                             Vector3 positionUnity = MixedRealityPlayspace.TransformPoint(translation.ToUnityVector3());
-                            Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion(); 
+                            Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion();
 
                             HandMeshInfo handMeshInfo = new HandMeshInfo
                             {
@@ -186,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 rotation = rotationUnity
                             };
 
-                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                         }
                     }
                 }

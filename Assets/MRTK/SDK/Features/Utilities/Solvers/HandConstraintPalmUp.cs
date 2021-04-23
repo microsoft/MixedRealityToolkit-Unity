@@ -147,6 +147,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 return false;
             }
+            
+            if (!controller.IsPositionAvailable)
+            {
+                // A fully populated hand controller will have position 
+                // information available.
+                return false;
+            }
 
             bool palmFacingThresholdMet = false;
 
@@ -392,8 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             while (!SolverHandler.UpdateSolvers && useGazeActivation)
             {
                 MixedRealityPose palmPose;
-                var jointedHand = GetController(SolverHandler.CurrentTrackedHandedness) as IMixedRealityHand;
-                if (jointedHand != null)
+                if (GetController(SolverHandler.CurrentTrackedHandedness) is IMixedRealityHand jointedHand)
                 {
                     if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
                     {

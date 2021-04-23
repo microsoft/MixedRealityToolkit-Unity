@@ -2,7 +2,6 @@
 // Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
 
@@ -22,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty mouseLookButton;
         private SerializedProperty mouseLookToggle;
         private SerializedProperty isControllerLookInverted;
+        private SerializedProperty cameraOriginOffset;
         private SerializedProperty currentControlMode;
         private SerializedProperty fastControlKey;
         private SerializedProperty controlSlowSpeed;
@@ -82,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             mouseLookButton = serializedObject.FindProperty("mouseLookButton");
             mouseLookToggle = serializedObject.FindProperty("mouseLookToggle");
             isControllerLookInverted = serializedObject.FindProperty("isControllerLookInverted");
+            cameraOriginOffset = serializedObject.FindProperty("cameraOriginOffset");
             currentControlMode = serializedObject.FindProperty("currentControlMode");
             fastControlKey = serializedObject.FindProperty("fastControlKey");
             controlSlowSpeed = serializedObject.FindProperty("controlSlowSpeed");
@@ -156,6 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EditorGUILayout.PropertyField(mouseLookButton);
                         EditorGUILayout.PropertyField(mouseLookToggle);
                         EditorGUILayout.PropertyField(isControllerLookInverted);
+                        EditorGUILayout.PropertyField(cameraOriginOffset);
                         EditorGUILayout.PropertyField(currentControlMode);
                         EditorGUILayout.PropertyField(fastControlKey);
                         EditorGUILayout.PropertyField(controlSlowSpeed);
@@ -221,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return MixedRealityToolkit.IsInitialized && profile != null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.DeviceManagerProfile);
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.Profile);
         }
     }
 }

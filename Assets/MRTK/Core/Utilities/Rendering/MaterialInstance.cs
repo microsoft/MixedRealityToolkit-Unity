@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
     /// automatically instantiates new materials. It is the caller's responsibility to destroy the materials when a material is no longer needed or the game object is 
     /// destroyed. The MaterialInstance behavior helps avoid material leaks and keeps material allocation paths consistent during edit and run time.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/MaterialInstance.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/material-instance")]
     [ExecuteAlways, RequireComponent(typeof(Renderer))]
     [AddComponentMenu("Scripts/MRTK/Core/MaterialInstance")]
     public class MaterialInstance : MonoBehaviour
@@ -87,6 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             if (autoDestroy && materialOwners.Count == 0)
             {
                 DestorySafe(this);
+
+                // OnDestroy not called on inactive objects
+                if (!gameObject.activeInHierarchy)
+                {
+                    RestoreRenderer();
+                }
             }
         }
 
@@ -177,6 +183,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         }
 
         private void OnDestroy()
+        {
+            RestoreRenderer();
+        }
+
+        private void RestoreRenderer()
         {
             if (CachedRenderer != null && defaultMaterials != null)
             {
@@ -322,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 {
 #if UNITY_EDITOR
                     // Let Unity handle unload of unused assets if lifecycle is transitioning from editor to play mode
-                    // Defering the call during this transition would destroy reference only after play mode Awake, leading to possible broken material references on TMPro objects
+                    // Deferring the call during this transition would destroy reference only after play mode Awake, leading to possible broken material references on TMPro objects
                     if (!EditorApplication.isPlayingOrWillChangePlaymode)
                     {
                         EditorApplication.delayCall += () =>

@@ -49,6 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent ComponentTypeLabel = new GUIContent("Type");
         private static readonly GUIContent SupportedPlatformsLabel = new GUIContent("Supported Platform(s)");
 
+        private const string NewDataProvider = "New data provider";
+
         /// <inheritdoc/>
         protected override void OnEnable()
         {
@@ -71,8 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             providerConfigurations.InsertArrayElementAtIndex(providerConfigurations.arraySize);
             SerializedProperty provider = providerConfigurations.GetArrayElementAtIndex(providerConfigurations.arraySize - 1);
 
-            var providerProperties = GetDataProviderConfigurationProperties(provider);
-            providerProperties.componentName.stringValue = $"New data provider {providerConfigurations.arraySize - 1}";
+            ServiceConfigurationProperties providerProperties = GetDataProviderConfigurationProperties(provider);
+            providerProperties.componentName.stringValue = $"{NewDataProvider} {providerConfigurations.arraySize - 1}";
             providerProperties.runtimePlatform.intValue = -1;
             providerProperties.providerProfile.objectReferenceValue = null;
 
@@ -105,8 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (dataProviderType != null)
             {
-                MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(dataProviderType) as MixedRealityDataProviderAttribute;
-                if (providerAttribute != null)
+                if (MixedRealityDataProviderAttribute.Find(dataProviderType) is MixedRealityDataProviderAttribute providerAttribute)
                 {
                     providerProperties.componentName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : dataProviderType.Name;
                     providerProperties.providerProfile.objectReferenceValue = providerAttribute.DefaultProfile;
@@ -163,10 +164,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             var serviceType = GetDataProviderConfiguration(index).ComponentType;
 
+            // Don't hide new data providers added via the UI, otherwise there's no easy way to change their type
+            if (serviceType?.Type == null && !MixedRealityProjectPreferences.ShowNullDataProviders && !providerProperties.componentName.stringValue.StartsWith(NewDataProvider))
+            {
+                return false;
+            }
+
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    if (index < 0 || index >= providerFoldouts.Count) index = 0;
                     providerFoldouts[index] = EditorGUILayout.Foldout(providerFoldouts[index], providerProperties.componentName.stringValue, true);
 
                     if (GUILayout.Button(removeContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))

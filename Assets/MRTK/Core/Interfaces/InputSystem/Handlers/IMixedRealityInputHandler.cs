@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -27,9 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Interface to implement for more complex generic input.
     /// </summary>
     /// <typeparam name="T">The type of input to listen for.</typeparam>
-    /// <remarks>
-    /// Valid input types:
-    /// </remarks>
     public interface IMixedRealityInputHandler<T> : IEventSystemHandler
     {
         /// <summary>

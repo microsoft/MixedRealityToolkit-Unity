@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using UnityEngine.UI;
-using System;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -797,10 +797,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (SubmitOnEnter)
             {
                 // Send text entered event and close the keyboard
-                if (OnTextSubmitted != null)
-                {
-                    OnTextSubmitted(this, EventArgs.Empty);
-                }
+                OnTextSubmitted?.Invoke(this, EventArgs.Empty);
 
                 Close();
             }

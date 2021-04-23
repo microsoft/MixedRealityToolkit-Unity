@@ -29,16 +29,29 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public TeleportSurfaceResult TeleportSurfaceResult { get; private set; } = TeleportSurfaceResult.None;
 
         /// <inheritdoc />
-        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
+        public IMixedRealityTeleportHotspot TeleportHotspot { get; set; }
 
         [SerializeField]
         [Tooltip("Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction")]
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
         /// <summary>
-        /// Teleport pointer will only respond to input events for teleportation that match this MixedRealityInputAction.
+        /// Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction
         /// </summary>
         public MixedRealityInputAction TeleportInputAction => teleportAction;
+
+        [SerializeField]
+        [Tooltip("Teleport Pointer Cursor visibility when a hotspot is in focus")]
+        private bool hotSpotCursorVisibility = true;
+
+        /// <summary>
+        /// Teleport pointer cursor visibility if pointer is focused on hotspot
+        /// </summary>
+        public bool TeleportHotSpotCursorVisibility
+        {
+            get => hotSpotCursorVisibility;
+            set => hotSpotCursorVisibility = value;
+        }
 
         [SerializeField]
         [Range(0f, 1f)]
@@ -118,9 +131,32 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+
+        #region Audio Management
+        [Header("Audio management")]
+        [SerializeField]
+        private AudioSource pointerAudioSource = null;
+
+        [SerializeField]
+        private AudioClip teleportRequestedClip = null;
+
+        [SerializeField]
+        private AudioClip teleportCompletedClip = null;
+        #endregion
+
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            // Disable renderers so that they don't display before having been processed (which manifests as a flash at the origin).
+            var renderers = GetComponents<Renderer>();
+            if (renderers != null)
+            {
+                foreach (var renderer in renderers)
+                {
+                    renderer.enabled = false;
+                }
+            }
 
             if (gravityDistorter == null)
             {
@@ -210,11 +246,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             get
             {
-                if (TeleportHotSpot != null &&
-                    TeleportHotSpot.OverrideTargetOrientation &&
+                if (TeleportHotspot != null &&
+                    TeleportHotspot.OverrideOrientation &&
                     TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
-                    return TeleportHotSpot.TargetOrientation;
+                    return TeleportHotspot.TargetRotation;
                 }
 
                 return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
@@ -242,6 +278,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                 // Re-enable gravity if we're looking at a hotspot
                 GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+
+                // Set the have the teleport pointer control which layer masks it raycasts against
+                PrioritizedLayerMasksOverride = PrioritizedLayerMasksOverride ?? new LayerMask[] { ValidLayers | InvalidLayers };
             }
         }
 
@@ -255,6 +294,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 if (IsSelectPressed)
                 {
                     CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                }
+
+                if (currentInputPosition != Vector2.zero && Controller != null)
+                {
+                    CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
                 }
 
                 // Use the results from the last update to set our NavigationResult
@@ -273,11 +317,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
                         {
                             // See if it's a hot spot
-                            if (TeleportHotSpot != null && TeleportHotSpot.IsActive)
+                            if (TeleportHotspot != null && TeleportHotspot.IsActive)
                             {
                                 TeleportSurfaceResult = TeleportSurfaceResult.HotSpot;
                                 // Turn on gravity, point it at hotspot
-                                GravityDistorter.WorldCenterOfGravity = TeleportHotSpot.Position;
+                                GravityDistorter.WorldCenterOfGravity = TeleportHotspot.Position;
                                 GravityDistorter.enabled = true;
                             }
                             else
@@ -302,7 +346,14 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                         // Clamp the end of the parabola to the result hit's point
                         LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
-                        BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+                        if (hotSpotCursorVisibility)
+                        {
+                            BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+                        }
+                        else
+                        {
+                            BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid);
+                        }
                     }
                     else
                     {
@@ -320,6 +371,18 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 {
                     LineBase.enabled = false;
                 }
+            }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            if (gameObject == null) return;
+
+            if (TeleportHotspot != null)
+            {
+                CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotspot);
+                TeleportHotspot = null;
             }
         }
 
@@ -364,7 +427,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         {
                             TeleportRequestRaised = true;
 
-                            CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                            CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotspot);
+                            if (pointerAudioSource != null && teleportRequestedClip != null)
+                            {
+                                pointerAudioSource.PlayOneShot(teleportRequestedClip);
+                            }
                         }
                         else if (canMove)
                         {
@@ -415,6 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
                 else
                 {
+                    canTeleport = TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot;
                     if (!canTeleport && !TeleportRequestRaised)
                     {
                         // Reset the move flag when the user stops moving the joystick
@@ -424,29 +492,24 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                     if (canTeleport)
                     {
-                        canTeleport = false;
                         TeleportRequestRaised = false;
 
                         if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                             TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                         {
-                            CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                            CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotspot);
+                            if (pointerAudioSource != null && teleportCompletedClip != null)
+                            {
+                                pointerAudioSource.PlayOneShot(teleportCompletedClip);
+                            }
                         }
                     }
 
                     if (TeleportRequestRaised)
                     {
-                        canTeleport = false;
                         TeleportRequestRaised = false;
-                        CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                        CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotspot);
                     }
-                }
-
-                if (TeleportRequestRaised &&
-                    TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
-                    TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
-                {
-                    canTeleport = true;
                 }
             }
         }
@@ -508,6 +571,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             using (OnTeleportCanceledPerfMarker.Auto())
             {
+                TeleportRequestRaised = false;
                 isTeleportRequestActive = false;
                 BaseCursor?.SetVisibility(false);
             }

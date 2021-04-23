@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CanEditMultipleObjects]
     public class ObjectManipulatorInspector : UnityEditor.Editor
     {
+        private ObjectManipulator instance;
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
         private SerializedProperty allowFarManipulation;
@@ -40,17 +41,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty onHoverEntered;
         private SerializedProperty onHoverExited;
 
+        private SerializedProperty enableConstraints;
+        private SerializedProperty constraintManager;
+
         private SerializedProperty elasticsManager;
 
         bool oneHandedFoldout = true;
         bool twoHandedFoldout = true;
         bool constraintsFoldout = true;
+        bool nearInteractionFoldout = true;
         bool physicsFoldout = true;
         bool smoothingFoldout = true;
         bool eventsFoldout = true;
 
         public void OnEnable()
         {
+            instance = target as ObjectManipulator;
+
             // General properties
             hostTransform = serializedObject.FindProperty("hostTransform");
             manipulationType = serializedObject.FindProperty("manipulationType");
@@ -74,6 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
 
+            // Constraints
+            enableConstraints = serializedObject.FindProperty("enableConstraints");
+            constraintManager = serializedObject.FindProperty("constraintsManager");
+
             // Elastics
             elasticsManager = serializedObject.FindProperty("elasticsManager");
 
@@ -89,6 +100,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(hostTransform);
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
+
+            // Near Interaction Support foldout
+            nearInteractionFoldout = EditorGUILayout.Foldout(nearInteractionFoldout, "Near Interaction Support", true);
+
+            if (nearInteractionFoldout)
+            {
+                if (instance.GetComponent<NearInteractionGrabbable>() == null)
+                {
+                    EditorGUILayout.HelpBox($"By default, {nameof(ObjectManipulator)} only responds to far interaction input.  Add a {nameof(NearInteractionGrabbable)} component to enable near interaction support.", MessageType.Warning);
+
+                    if (GUILayout.Button("Add Near Interaction Grabbable"))
+                    {
+                        instance.gameObject.AddComponent<NearInteractionGrabbable>();
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox($"A {nameof(NearInteractionGrabbable)} is attached to this object, near interaction support is enabled.", MessageType.Info);
+                }
+            }
 
             var handedness = (ManipulationHandFlags)manipulationType.intValue;
 
@@ -130,7 +161,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var rb = mh.HostTransform.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();
-            constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(mh.gameObject, constraintsFoldout, "Constraint");
+
+            constraintsFoldout = ConstraintManagerInspector.DrawConstraintManagerFoldout(mh.gameObject,
+                                                                                        enableConstraints,
+                                                                                        constraintManager,
+                                                                                        constraintsFoldout);
 
             EditorGUILayout.Space();
             physicsFoldout = EditorGUILayout.Foldout(physicsFoldout, "Physics", true);

@@ -13,7 +13,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
-using NUnit.Framework;
 using System.Collections;
 using System.IO;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
@@ -66,9 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </code>
         /// </example>
         /// <remarks>
-        /// Note that this value is reset to false after each play mode test that uses
+        /// <para>Note that this value is reset to false after each play mode test that uses
         /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
-        /// UseSlowTestController = true ends up slowing all subsequent tests.
+        /// UseSlowTestController = true ends up slowing all subsequent tests.</para>
         /// </remarks>
         public static bool UseSlowTestController = false;
 
@@ -83,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// steps should be used or not.
         /// </summary>
         /// <remarks>
-        /// This is primarily something that exists to get around the limitation of default parameter
-        /// values requiring compile-time constants.
+        /// <para>This is primarily something that exists to get around the limitation of default parameter
+        /// values requiring compile-time constants.</para>
         /// </remarks>
         internal const int ControllerMoveStepsSentinelValue = -1;
 
@@ -96,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void Setup(MixedRealityToolkitConfigurationProfile profile = null)
         {
-            Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+            Debug.Assert(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
 
             // See comments for UseSlowTestController for why this is reset to false on each test case.
             UseSlowTestController = false;
@@ -191,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static IMixedRealityInputSystem GetInputSystem()
         {
-            Assert.IsNotNull(CoreServices.InputSystem, "MixedRealityInputSystem is null!");
+            Debug.Assert((CoreServices.InputSystem != null), "MixedRealityInputSystem is null!");
             return CoreServices.InputSystem;
         }
 
@@ -202,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static InputSimulationService GetInputSimulationService()
         {
             InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
-            Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
+            Debug.Assert((inputSimulationService != null), "InputSimulationService is null!");
             return inputSimulationService;
         }
 
@@ -255,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield break;
             }
 
-            Assert.IsNotNull(CoreServices.InputSystem, "Input system must be initialized");
+            Debug.Assert((CoreServices.InputSystem != null), "Input system must be initialized");
 
             // Let input system to register all cursors and managers.
             yield return null;
@@ -292,8 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Check that input system is clean
-            CollectionAssert.IsEmpty(((BaseEventSystem)CoreServices.InputSystem).EventListeners, "Input event system handler registry is not empty in the beginning of the test.");
-            CollectionAssert.IsEmpty(((BaseEventSystem)CoreServices.InputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
+            Debug.Assert(((BaseEventSystem)CoreServices.InputSystem).EventListeners.Count == 0, "Input event system handler registry is not empty in the beginning of the test.");
+            Debug.Assert(((BaseEventSystem)CoreServices.InputSystem).EventHandlersByType.Count == 0, "Input event system handler registry is not empty in the beginning of the test.");
 
             yield return null;
         }
@@ -347,9 +346,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Moves the hand from startPos to endPos.
         /// </summary>
         /// <remarks>
-        /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
         /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.
+        /// time constant, which is a requirement for default parameter values.</para>
         /// </remarks>
         public static IEnumerator MoveHand(
             Vector3 startPos, Vector3 endPos,
@@ -379,9 +378,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Moves the motion controller from startPos to endPos.
         /// </summary>
         /// <remarks>
-        /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
         /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.
+        /// time constant, which is a requirement for default parameter values.</para>
         /// </remarks>
         public static IEnumerator MoveMotionController(
             Vector3 startPos, Vector3 endPos, SimulatedMotionControllerButtonState buttonState,
@@ -399,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         handedness,
                         motionControllerPos,
                         Quaternion.identity);
-                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
+                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
                 motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
                 yield return null;
             }
@@ -439,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         handedness,
                         motionControllerPos,
                         motionControllerRotation);
-                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
+                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
                 motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
                 yield return null;
             }
@@ -460,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
 
-            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
+            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
             SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
             motionControllerData.Update(false, defaultButtonState, UpdateMotionControllerPose(handedness, Vector3.zero, Quaternion.identity));
 
@@ -480,8 +479,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
 
-            Assert.That(inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures || 
-                inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand, "The current ControllerSimulationMode must be HandGestures or ArticulatedHand!");
+            Debug.Assert(
+                ((inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures) ||
+                (inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand)),
+                "The current ControllerSimulationMode must be HandGestures or ArticulatedHand!");
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation, Quaternion.identity));
 
@@ -498,13 +499,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return ShowMontionController(handedness, inputSimulationService, defaultButtonState, Vector3.zero);
         }
 
-        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, SimulatedMotionControllerButtonState buttonState, Vector3 handLocation)
+        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, SimulatedMotionControllerButtonState buttonState, Vector3 motionControllerLocation)
         {
             yield return null;
 
-            Assert.AreEqual(inputSimulationService.ControllerSimulationMode, ControllerSimulationMode.MotionController, "The current ControllerSimulationMode must be MotionController!");
-            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
-            motionControllerData.Update(true, buttonState, UpdateMotionControllerPose(handedness, handLocation, Quaternion.identity));
+            Debug.Assert((ControllerSimulationMode.MotionController == inputSimulationService.ControllerSimulationMode), "The current ControllerSimulationMode must be MotionController!");
+            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
+            motionControllerData.Update(true, buttonState, UpdateMotionControllerPose(handedness, motionControllerLocation, Quaternion.identity));
 
             // Wait one frame for the hand to actually appear
             yield return null;
@@ -587,9 +588,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </code>
         /// </example>
         /// <remarks>
-        /// Note that this value is reset to false after each play mode test that uses
+        /// <para>Note that this value is reset to false after each play mode test that uses
         /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
-        /// UseSlowTestController = true ends up slowing all subsequent tests.
+        /// UseSlowTestController = true ends up slowing all subsequent tests.</para>
         /// </remarks>
         [Obsolete("Use UseSlowTestController instead.")]
         public static bool UseSlowTestHand
@@ -610,8 +611,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// steps should be used or not.
         /// </summary>
         /// <remarks>
-        /// This is primarily something that exists to get around the limitation of default parameter
-        /// values requiring compile-time constants.
+        /// <para>This is primarily something that exists to get around the limitation of default parameter
+        /// values requiring compile-time constants.</para>
         /// </remarks>
         [Obsolete("Use ControllerMoveStepsSentinelValue instead.")]
         internal const int HandMoveStepsSentinelValue = ControllerMoveStepsSentinelValue;

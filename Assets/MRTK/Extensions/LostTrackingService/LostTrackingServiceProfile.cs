@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     /// The profile definition for an <see cref="ILostTrackingService"/>.
     /// </summary>
     [MixedRealityServiceProfile(typeof(ILostTrackingService))]
-    [CreateAssetMenu(fileName = "LostTrackingServiceProfile", menuName = "Mixed Reality Toolkit/Extensions/Lost Tracking Service/Mixed Reality Lost Tracking Service Profile")]
+    [CreateAssetMenu(fileName = "LostTrackingServiceProfile", menuName = "Mixed Reality/Toolkit/Extensions/Lost Tracking Service/Mixed Reality Lost Tracking Service Profile")]
     public class LostTrackingServiceProfile : BaseMixedRealityProfile
     {
         /// <summary>

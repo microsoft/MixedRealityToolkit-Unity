@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 
             // Euler representation of the current elastic quaternion state.
             Vector3 eulers = currentValue.eulerAngles;
-            
+
             foreach (var snapPoint in extent.SnapPoints)
             {
                 // If we are set to repeat the snap points (i.e., tiling them across the sphere),
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             currentVelocity = Add(currentVelocity, Scale(accel, deltaTime));
 
             // x' = x + v' * deltaT
-            currentValue = currentValue * Scale(currentVelocity, deltaTime).normalized;
+            currentValue *= Scale(currentVelocity, deltaTime).normalized;
 
             // As the current value is a quaternion, we must renormalize the quaternion
             // before using it as a representation of a rotation.

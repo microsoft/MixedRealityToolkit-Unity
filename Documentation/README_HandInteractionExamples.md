@@ -18,9 +18,9 @@ If you see large text after the TextMesh Pro import, open another Unity scene an
 See [button](README_Button.md) page for the details.
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
-## Bounding box
+## Bounds Control
 
-See [bounding box](README_BoundingBox.md) page for the details.
+See [bounds control](README_BoundsControl.md) page for the details.
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 
 ## Manipulation handler

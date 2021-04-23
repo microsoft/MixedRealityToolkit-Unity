@@ -10,15 +10,16 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using System.Collections;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Teleport;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -221,6 +222,139 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             EnsurePointerStates(Handedness.Right, grabOff);
             EnsurePointerStates(Handedness.Left, grabOff);
+        }
+
+        /// <summary>
+        /// Tests that the teleport pointer functions as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTeleportAndContentOffset()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            ExperienceScale originalExperienceScale;
+            float originalProfileContentOffset;
+
+            float contentOffset = 1.3f;
+
+            // MRTK has already been created by SetUp prior to calling this,
+            // we have to shut it down to re-init with the custom input profile which
+            // has our contentOffset value set
+            PlayModeTestUtilities.TearDown();
+            yield return null;
+
+            // Initialize a profile with the appropriate contentOffset
+            var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
+
+            originalProfileContentOffset = profile.ExperienceSettingsProfile.ContentOffset;
+            originalExperienceScale = profile.ExperienceSettingsProfile.TargetExperienceScale;
+
+            profile.ExperienceSettingsProfile.ContentOffset = contentOffset;
+            profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
+
+            PlayModeTestUtilities.Setup(profile);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Ensure that the SceneContent object is contentOffset units above the origin
+            Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, contentOffset, 0.005f);
+            
+            // Create a floor and make sure it's below the camera
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            floor.transform.position = -0.5f * Vector3.up;
+
+            // Test Right Hand Teleport
+            TestUtilities.PlayspaceToOriginLookingForward();
+            float initialForwardPosition = MixedRealityPlayspace.Position.z;
+
+            TestHand leftHand = new TestHand(Handedness.Left);
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Make sure the hand is in front of the camera
+            yield return rightHand.Show(Vector3.forward * 0.6f);
+            rightHand.SetRotation(Quaternion.identity);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+            
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+
+            // We should have teleported in the forward direction after the teleport
+            Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
+            rightHand.Hide();
+
+            // Test Left Hand Teleport
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Make sure the hand is in front of the camera
+            yield return leftHand.Show(Vector3.forward * 0.6f);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+
+            // We should have teleported in the forward direction after the teleport
+            Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
+
+            // Reset the profile's settings to it's original value
+            profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
+            profile.ExperienceSettingsProfile.ContentOffset = originalProfileContentOffset;
+
+            leftHand.Hide();
+        }
+
+
+        /// <summary>
+        /// Tests that the teleport pointer functions as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTeleportLayers()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+
+            // Create a floor and make sure it's below the camera
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            floor.transform.position = -0.5f * Vector3.up;
+
+            // Bring out the right hand and set it to the teleport gesture
+            TestUtilities.PlayspaceToOriginLookingForward();
+            float initialForwardPosition = MixedRealityPlayspace.Position.z;
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Make sure the hand is in front of the camera
+            yield return rightHand.Show(Vector3.forward * 0.6f);
+            rightHand.SetRotation(Quaternion.identity);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+
+            TeleportPointer teleportPointer = rightHand.GetPointer<TeleportPointer>();
+
+            floor.layer = LayerMask.NameToLayer("Default");
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(teleportPointer.TeleportSurfaceResult, Physics.TeleportSurfaceResult.Valid);
+
+            floor.layer = LayerMask.NameToLayer("Ignore Raycast");
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.Invalid);
+
+            floor.layer = LayerMask.NameToLayer("UI");
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.None);
+
         }
 
         /// <summary>

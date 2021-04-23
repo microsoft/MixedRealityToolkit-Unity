@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
     public class MixedRealityBoundarySystem : BaseBoundarySystem
     {
         /// <summary>
@@ -24,20 +24,13 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             MixedRealityBoundaryVisualizationProfile profile,
             ExperienceScale scale) : base(profile, scale) { }
 
+        /// <inheritdoc/>
+        protected override bool IsXRDevicePresent => XRDevice.isPresent;
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Boundary System";
-
-        /// <inheritdoc/>
-        public override void Initialize()
-        {
-            // The base class initialization should be run every time. This ensures
-            // that profile settings are read at the correct time.
-            base.Initialize();
-
-            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
-        }
 
         #endregion IMixedRealityService Implementation
 

@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
@@ -24,14 +23,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 if (newPointer != null)
                 {
-                    GameObject gameObjectReference = newPointer.BaseCursor?.GameObjectReference;
-                    Transform parentTransform = (gameObjectReference != null) ? gameObjectReference.transform : null;
+                    Transform parentTransform = null;
+
+                    // For this example scene, use special logic if a GGVPointer becomes the primary pointer. 
+                    // In particular, the GGV pointer defers its cursor management to the GazeProvider, which has its own internal pointer definition as well
+                    // In the future, the pointer/cursor relationship will be reworked and standardized to remove this awkward set of co-dependencies
+                    if (newPointer is GGVPointer)
+                    {
+                        parentTransform = CoreServices.InputSystem.GazeProvider.GazePointer.BaseCursor.TryGetMonoBehaviour(out MonoBehaviour baseCursor) ? baseCursor.transform : null;
+                    }
+                    else
+                    {
+                        parentTransform = newPointer.BaseCursor.TryGetMonoBehaviour(out MonoBehaviour baseCursor) ? baseCursor.transform : null;
+                    }
 
                     // If there's no cursor try using the controller pointer transform instead
                     if (parentTransform == null)
                     {
-                        var controllerPointer = newPointer as BaseControllerPointer;
-                        parentTransform = controllerPointer?.transform;
+                        if (newPointer.TryGetMonoBehaviour(out MonoBehaviour controllerPointer))
+                        {
+                            parentTransform = controllerPointer.transform;
+                        }
                     }
 
                     if (parentTransform != null)

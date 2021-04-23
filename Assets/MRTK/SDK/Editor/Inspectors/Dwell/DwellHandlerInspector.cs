@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
+namespace Microsoft.MixedReality.Toolkit.Dwell.Editor
 {
     [CustomEditor(typeof(DwellHandler), true)]
     public class DwellHandlerInspector : UnityEditor.Editor
@@ -24,10 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
             }
             EditorGUI.indentLevel--;
 
-            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellIntended"), true);
-            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellStarted"), true);
-            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellCompleted"), true);
-            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellCanceled"), true);
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("dwellIntended"), true);
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("dwellStarted"), true);
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("dwellCompleted"), true);
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("dwellCanceled"), true);
 
             this.serializedObject.ApplyModifiedProperties();
         }

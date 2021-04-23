@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -31,17 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="position">Out parameter filled with the grasp position if available, otherwise <see href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</see>.</param>
         /// <returns>True if a grasp point was retrieved, false if not.</returns>
         bool TryGetNearGraspPoint(out Vector3 position);
-
-        /// <summary>
-        /// Because pointers shouldn't be able to interact with objects that are "behind" it, it is necessary to determine the forward axis of the pointer when making interaction checks.
-        /// 
-        /// For example, a grab pointer's axis should is the result of Vector3.Lerp(palm forward axis, palm to index finger axis).
-        ///
-        /// This method provides a mechanism to get this forward axis. It should be normalized.
-        /// </summary>
-        /// <param name="axis">Out parameter filled with the grasp's forward axis if available, otherwise returns the forward axis of the transform.</param>
-        /// <returns>True if a grasp's forward axis was retrieved, false if not.</returns>
-        bool TryGetNearGraspAxis(out Vector3 axis);
 
 
         /// <summary>

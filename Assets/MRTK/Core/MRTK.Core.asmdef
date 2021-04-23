@@ -1,0 +1,22 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.windows.mixedreality.dotnetwinrt",
+            "expression": "",
+            "define": "DOTNETWINRT_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
+}

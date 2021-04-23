@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Build.Editor;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Build.Editor
 {
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Build.Editor
                      xmlns:mobile='http://schemas.microsoft.com/appx/manifest/mobile/windows10'
                      IgnorableNamespaces='uap uap2 uap3 uap4 mp mobile iot'
                      xmlns='http://schemas.microsoft.com/appx/manifest/foundation/windows10'>
-              <Identity Name='Microsoft.MixedReality.Toolkit' Publisher='CN=Microsoft' Version='2.5.0.0' />
+              <Identity Name='Microsoft.MixedReality.Toolkit' Publisher='CN=Microsoft' Version='2.7.0.0' />
               <mp:PhoneIdentity PhoneProductId='85c8bcd4-fbac-44ed-adf6-bfc01242a27f' PhonePublisherId='00000000-0000-0000-0000-000000000000' />
               <Properties>
                 <DisplayName>MixedRealityToolkit</DisplayName>

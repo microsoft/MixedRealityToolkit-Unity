@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -20,8 +21,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         private enum VanishType
         {
+            /// <summary>
+            /// Causes the tooltip to vanish immediately after disappearing. Ignores vanishDelay.
+            /// </summary>
             VanishOnFocusExit = 0,
             VanishOnTap,
+
+            /// <summary>
+            /// Equivalent to VanishOnFocusExit. but honors vanishDelay and will only disappear
+            /// after that many seconds elapses after focus loss.
+            /// </summary>
+            VanishOnFocusExitWithDelay,
         }
 
         private enum AppearType
@@ -57,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float appearDelay = 0.0f;
         [SerializeField]
         [Range(0f, 5f)]
+        [Tooltip("The number of seconds that must elapse before the tooltip will disappear. Only used when vanishType is VanishOnFocusExitWithDelay.")]
         private float vanishDelay = 2.0f;
         [SerializeField]
         [Range(0.5f, 10.0f)]
@@ -78,18 +89,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private async Task UpdateSpawnable(float focusEnterTimeOnStart, float tappedTimeOnStart)
         {
+            if (spawnable == null)
+            {
+                spawnable = Instantiate(prefab);
+                spawnable.transform.parent = transform;
+                spawnable.transform.localPosition = Vector3.zero;
+                if (!keepWorldRotation)
+                {
+                    spawnable.transform.localRotation = Quaternion.identity;
+                }
+                spawnable.gameObject.SetActive(false);
+            }
             if (appearType == AppearType.AppearOnFocusEnter)
             {
-                if (spawnable == null)
-                {
-                    spawnable = Instantiate(prefab, transform, false);
-                    spawnable.transform.localPosition = Vector3.zero;
-                    if (!keepWorldRotation)
-                    {
-                        spawnable.transform.localRotation = Quaternion.identity;
-                    }
-                    spawnable.gameObject.SetActive(false);
-                }
                 // Wait for the appear delay
                 await new WaitForSeconds(appearDelay);
                 // If we don't have focus any more, get out of here
@@ -148,13 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                         break;
 
+                    case VanishType.VanishOnFocusExitWithDelay:
                     default:
-                        if (!HasFocus)
+                        if (!HasFocus && HasVanishDelayElapsed())
                         {
-                            if (Time.time - focusExitTime > vanishDelay)
-                            {
-                                spawnable.gameObject.SetActive(false);
-                            }
+                            spawnable.gameObject.SetActive(false);
                         }
                         break;
                 }
@@ -244,6 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleFocusExit()
         {
             focusExitTime = Time.unscaledTime;
+        }
+
+        private Boolean HasVanishDelayElapsed()
+        {
+            return Time.unscaledTime - focusExitTime > vanishDelay;
         }
     }
 }

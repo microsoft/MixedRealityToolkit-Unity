@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             moveLerpTimeProperty = serializedObject.FindProperty("moveLerpTime");
             rotateLerpTimeProperty = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTimeProperty = serializedObject.FindProperty("scaleLerpTime");
-            maintainScaleProperty = serializedObject.FindProperty("maintainScale");
+            maintainScaleProperty = serializedObject.FindProperty("maintainScaleOnInitialization");
             smoothingProperty = serializedObject.FindProperty("smoothing");
             lifetimeProperty = serializedObject.FindProperty("lifetime");
         }

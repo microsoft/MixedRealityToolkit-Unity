@@ -1,0 +1,24 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.Interactive",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.SDK.Editor",
+        "Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive",
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
+        "Microsoft.MixedReality.Toolkit.SDK"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2019_3_OR_NEWER"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

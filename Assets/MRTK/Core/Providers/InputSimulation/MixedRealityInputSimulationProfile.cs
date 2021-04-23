@@ -8,9 +8,9 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
     [MixedRealityServiceProfile(typeof(IInputSimulationService))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input-simulation/input-simulation-service")]
     public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
     {
         [SerializeField]
@@ -111,6 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Invert the vertical rotation
         /// </summary>
         public bool IsControllerLookInverted => isControllerLookInverted;
+
+        [SerializeField]
+        [Tooltip("Amount to offset the starting position of the camera from the origin")]
+        private Vector3 cameraOriginOffset = Vector3.zero;
+        /// <summary>
+        /// Amount to offset the starting position of the camera from the origin
+        /// </summary>
+        public Vector3 CameraOriginOffset => cameraOriginOffset;
 
         [SerializeField]
         [Tooltip("Camera movement mode")]

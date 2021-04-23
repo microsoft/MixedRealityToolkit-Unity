@@ -52,7 +52,8 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
     - [Service inspectors](#service-inspectors)
     - [Depth buffer renderer](#depth-buffer-renderer)
   - [Changing profiles at runtime](#changing-profiles-at-runtime)
-  - [Swapping profiles prior to MRTK initialization](#swapping-profiles-prior-to-mrtk-initialization)
+    - [Pre MRTK initialization profile switch](#pre-mrtk-initialization-profile-switch)
+    - [Active profile switch](#active-profile-switch)
   - [See also](#see-also)
 
 These configuration profiles are detailed below in their relevant sections:
@@ -331,22 +332,15 @@ To ensure a scene renders all necessary data to the depth buffer, developers can
 It is possible to update profiles at runtime, and there are generally two different
 scenarios and times in which in this is helpful:
 
-1. At startup, before the MRTK is initialized, swapping the profile to enable/disable
-   different features based on the device capabilities. For example, if the experience is running
-   in VR that doesn't have spatial mapping hardware it probably doesn't make sense to have spatial
-   mapping component enabled.
-1. After startup, after the MRTK is initialized, swapping the profile to change the way certain features
-   behave. For example, there may be a specific sub-experience in the application that wants far hand
-   pointers completely removed. **Note** that this type of swapping currently doesn't work due to
-   this issue: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289.
+1. **Pre MRTK initialization profile switch**: At startup, before the MRTK is initialized and profile becomes active, replacing the not-yet-in-use profile to enable/disable different features based on the device capabilities. For example, if the experience is running in VR that doesn't have spatial mapping hardware it probably doesn't make sense to have spatial mapping component enabled.
+1. **Active profile switch**: After startup, after the MRTK is initialized and a profile has become active, swapping the profile currently in use to change the way certain features behave. For example, there may be a specific sub-experience in the application that wants far hand pointers completely removed.
 
-## Swapping profiles prior to MRTK initialization
+### Pre MRTK initialization profile switch
 
-This can be accomplished by attaching a MonoBehaviour (example below) which runs before MRTK initialization:
+This can be accomplished by attaching a MonoBehaviour (example below) which runs before MRTK initialization (i.e. Awake()). Note the script (i.e. call to `SetProfileBeforeInitialization`) have to be executed earlier than the `MixedRealityToolkit` script, which can be achieved by setting [Script Execution Order settings](https://docs.unity3d.com/Manual/class-MonoManager.html).
 
 ```csharp
 using Microsoft.MixedReality.Toolkit;
-using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -359,22 +353,39 @@ using UnityEngine;
 /// to that of MixedRealityToolkit.cs. See https://docs.unity3d.com/Manual/class-MonoManager.html
 /// for more information on script execution order.
 /// </remarks>
-public class ProfileSwapper : MonoBehaviour
+public class PreInitProfileSwapper : MonoBehaviour
 {
-    void Start()
+
+    [SerializeField]
+    private MixedRealityToolkitConfigurationProfile profileToUse = null;
+
+    private void Awake()
     {
         // Here you could choose any arbitrary MixedRealityToolkitConfigurationProfile (for example, you could
         // add some platform checking code here to determine which profile to load).
-        var profile = AssetDatabase.LoadAssetAtPath<MixedRealityToolkitConfigurationProfile>("Assets/MixedRealityToolkit.Generated/CustomProfiles/RuntimeSwapparoo.asset");
-        MixedRealityToolkit.Instance.ActiveProfile = profile;
+        MixedRealityToolkit.SetProfileBeforeInitialization(profileToUse);
     }
 }
 ```
 
-Instead of "RuntimeSwapparoo.asset", it's possible to have some arbitrary set of profiles which apply to
+Instead of "profileToUse", it's possible to have some arbitrary set of profiles which apply to
 specific platforms (for example, one for HoloLens 1, one for VR, one for HoloLens 2, etc). It's possible
-to use various other indicators (i.e. https://docs.unity3d.com/ScriptReference/SystemInfo.html, or
+to use various other indicators (e.g. https://docs.unity3d.com/ScriptReference/SystemInfo.html, or
 whether or not the camera is opaque/transparent), to figure out which profile to load.
+
+### Active profile switch
+
+This can be accomplished by setting the `MixedRealityToolkit.Instance.ActiveProfile` property to a new profile replacing the active profile.
+
+```csharp
+MixedRealityToolkit.Instance.ActiveProfile = profileToUse;
+```
+
+Note when setting `ActiveProfile` during runtime, the destroy of the currently running services will happen after the last LateUpdate() of all services, and the instantiation and initialization of the services associated with the new profile will happen before the first Update() of all services.
+
+A noticeable application hesitation may occur during this process. Also any script with higher priority than the `MixedRealityToolkit` script can enter its Update before the new profile is properly setup. See [Script Execution Order settings](https://docs.unity3d.com/Manual/class-MonoManager.html) for more information on script priority.
+
+In the profile switching process the existing UI camera will remain unchanged, ensuring Unity UI components that require canvas still work after the switch.
 
 ## See also
 

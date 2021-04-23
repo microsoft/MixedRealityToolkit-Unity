@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// NOTE: MRTK Shaders are versioned via the MRTK.Shaders.sentinel file.
+// When making changes to any shader's source file, the value in the sentinel _must_ be incremented.
+
 // Simplified SDF shader:
 // - No Shading Option (bevel / bump / env map)
 // - No Glow Option
@@ -197,12 +200,11 @@ SubShader {
 
 #if defined(_CLIPPING_SPHERE)
         fixed _ClipSphereSide;
-        float4 _ClipSphere;
+        float4x4 _ClipSphereInverseTransform;
 #endif
 
 #if defined(_CLIPPING_BOX)
         fixed _ClipBoxSide;
-        float4 _ClipBoxSize;
         float4x4 _ClipBoxInverseTransform;
 #endif
 
@@ -352,10 +354,10 @@ SubShader {
             primitiveDistance = min(primitiveDistance, PointVsPlane(input.worldPosition, _ClipPlane) * _ClipPlaneSide);
 #endif
 #if defined(_CLIPPING_SPHERE)
-            primitiveDistance = min(primitiveDistance, PointVsSphere(input.worldPosition, _ClipSphere) * _ClipSphereSide);
+            primitiveDistance = min(primitiveDistance, PointVsSphere(input.worldPosition, _ClipSphereInverseTransform) * _ClipSphereSide);
 #endif
 #if defined(_CLIPPING_BOX)
-            primitiveDistance = min(primitiveDistance, PointVsBox(input.worldPosition, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+            primitiveDistance = min(primitiveDistance, PointVsBox(input.worldPosition, _ClipBoxInverseTransform) * _ClipBoxSide);
 #endif
             c *= step(0.0, primitiveDistance);
 #endif
