@@ -91,11 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         
         [SerializeField]
         [Tooltip("Whether or not a strafe checks that there is a floor beneath the user's origin on strafe")]
-        internal bool checkForFloorOnStrafe = default;
+        internal bool checkForFloorOnStrafe = false;
 
         [SerializeField]
         [Tooltip("Whether or not the user's y-position can move during a strafe")]
-        internal bool adjustHeightOnStrafe = default;
+        internal bool adjustHeightOnStrafe = false;
 
 
         [SerializeField]
@@ -246,6 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+        /// <summary>
         /// check if a backstrafe is possible on a valid platform regarding the possible strafe height given
         /// </summary>
         /// <param name="newPosition">the new position relative to backstrafe position</param>
