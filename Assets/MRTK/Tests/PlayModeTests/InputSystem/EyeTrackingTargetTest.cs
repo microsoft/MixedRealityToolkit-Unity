@@ -71,9 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             var eyeTrackingTargetComponent = eyetrackingTargetObject.AddComponent<EyeTrackingTarget>();
             eyetrackingTargetObject.transform.position = Vector3.forward;
 
-            //We need to simulate an eye in the direction of the parent object
+            // We need to simulate an eye in the direction of the parent object
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            //We don't need any other input just eye gaze
+            // We don't need any other input just eye gaze
             inputSimulationService.UserInputEnabled = false;
             inputSimulationService.EyeGazeSimulationMode = EyeGazeSimulationMode.CameraForwardAxis;
 
