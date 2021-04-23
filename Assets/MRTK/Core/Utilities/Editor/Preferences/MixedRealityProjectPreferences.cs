@@ -67,6 +67,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Ignore startup settings prompt
 
+        #region Configurator state
+
+        private const string CONFIG_KEY = "_MixedRealityToolkit_Editor_ConfiguratorState";
+        private static bool configuratorStateLoaded;
+        private static int configuratorSate;
+
+        /// <summary>
+        /// Should the project configurator show when the project isn't configured according to MRTK's recommendations?
+        /// </summary>
+        internal static ConfigurationStage ConfiguratorState
+        {
+            get
+            {
+                if (!configuratorStateLoaded)
+                {
+                    configuratorSate = ProjectPreferences.Get(CONFIG_KEY, 0);
+                    configuratorStateLoaded = true;
+                }
+
+                return (ConfigurationStage)configuratorSate;
+            }
+            set => ProjectPreferences.Set(CONFIG_KEY, configuratorSate = (int)value);
+        }
+
+        #endregion Configurator state
+
         #region Auto-Enable UWP Capabilities
 
         private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-enable UWP capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
