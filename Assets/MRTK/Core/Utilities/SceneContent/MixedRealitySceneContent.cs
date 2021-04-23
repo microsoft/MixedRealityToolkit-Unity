@@ -4,12 +4,8 @@
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-#if UNITY_2017_2_OR_NEWER
 using System.Collections;
 using UnityEngine.XR;
-#else
-using UnityEngine.VR;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -73,23 +69,30 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
+            MixedRealityExperienceSettingsProfile experienceSettingsProfile = MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile;
+
             if (alignmentType == AlignmentType.AlignWithExperienceScale)
             {
                 bool experienceAdjustedByXRDevice =
-#if UNITY_2019_3_OR_NEWER
-                    XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Unknown);
+#if UNITY_2020_1_OR_NEWER
+                    XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor);
+#elif UNITY_2019_1_OR_NEWER
+#pragma warning disable 0618
+                    (XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor)) ||
+                    (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
+#pragma warning restore 0618
 #else
                     XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
-#endif // UNITY_2019_3_OR_NEWER
+#endif // UNITY_2020_1_OR_NEWER
 
                 // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
                 // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
-                if ((MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
-                    MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale == ExperienceScale.World) &&
+                if ((experienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
+                    experienceSettingsProfile.TargetExperienceScale == ExperienceScale.World) &&
                     (!DeviceUtility.IsPresent || experienceAdjustedByXRDevice))
                 {
                     contentPosition.x = containerObject.position.x;
-                    contentPosition.y = containerObject.position.y + MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile.ContentOffset;
+                    contentPosition.y = containerObject.position.y + experienceSettingsProfile.ContentOffset;
                     contentPosition.z = containerObject.position.z;
 
                     containerObject.position = contentPosition;
