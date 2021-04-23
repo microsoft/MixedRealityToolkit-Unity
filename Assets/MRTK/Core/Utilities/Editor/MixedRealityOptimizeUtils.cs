@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public static bool IsWMRDepthBufferFormat16bit()
         {
 #if !UNITY_2020_1_OR_NEWER
-            if (XRSettingsUtilities.IsLegacyXRActive)
+            if (XRSettingsUtilities.XREnabled)
             {
 #if UNITY_2019_1_OR_NEWER
                 // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
