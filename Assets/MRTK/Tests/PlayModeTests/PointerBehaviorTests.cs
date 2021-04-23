@@ -358,6 +358,57 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests strafing with the teleport pointer
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTeleportStrafe()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+
+            // Create a floor and make sure it's below the camera
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor.transform.position = -0.5f * Vector3.up;
+
+            // Bring out the right hand and set it to the teleport gesture
+            TestUtilities.PlayspaceToOriginLookingForward();
+            Vector3 initialPosition = MixedRealityPlayspace.Position;
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Make sure the hand is in front of the camera
+            yield return rightHand.Show(Vector3.forward * 0.6f);
+            rightHand.SetRotation(Quaternion.identity);
+
+            TeleportPointer teleportPointer = rightHand.GetPointer<TeleportPointer>();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition - Vector3.forward * teleportPointer.strafeAmount, "Did not strafe to the expected position");
+
+            teleportPointer.checkForFloorOnStrafe = true;
+            teleportPointer.adjustHeightOnStrafe = true;
+            teleportPointer.strafeAmount = 1.0f;
+            teleportPointer.maxHeightChangeOnStrafe = 0.5f;
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition, "Performed an invalid strafe");
+
+            var floor2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor2.transform.position = new Vector3(0,-0.25f,-1.0f);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            
+            TestUtilities.PlayspaceToOriginLookingForward();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition + new Vector3(0, 0.25f, -teleportPointer.strafeAmount), "Height did not change on strafe");
+
+            floor2.transform.position = new Vector3(0, -0.75f, -1.0f);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition + new Vector3(0, -0.25f, -teleportPointer.strafeAmount), "Height did not change on strafe");
+        }
+
+        /// <summary>
         /// Tests that rays can be turned on and off
         /// </summary>
         [UnityTest]
