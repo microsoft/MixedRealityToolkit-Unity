@@ -37,17 +37,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string CurvePointerGuid = "c4fd3c6fc7ff484eb434775066e7f327";
         private static readonly string CurvePointerPrefab = AssetDatabase.GUIDToAssetPath(CurvePointerGuid);
 
-        [SetUp]
-        public void Setup()
+        /// <summary>
+        /// Set initial state before each test.
+        /// </summary>
+        /// <returns>enumerator</returns>
+        /// <remarks>
+        /// Note that, in order to catch incorrect reliances on identity camera transforms early on,
+        /// this Setup() sets the playspace transform to an arbitrary pose. This can be overridden where
+        /// appropriate for an individual test by starting off with, e.g., <see cref="TestUtilities.PlayspaceToOriginLookingForward"/>.
+        /// However, it is preferable to retain the arbitrary pose, and use the helpers within TestUtilities
+        /// to align test objects with the camera.
+        /// For example, to place an object 8 meters in front of the camera, set its global position to:
+        /// TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f);
+        /// See usage of these helpers throughout the tests within this file, e.g. <see cref="TestSpherePointerInsideGrabbable"/>.
+        /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
+        /// </remarks>
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
-            TestUtilities.PlayspaceToOriginLookingForward();
+            TestUtilities.PlayspaceToArbitraryPose();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         #region Tests
@@ -89,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             hitObject.transform.position = new Vector3(0.0f, -0.8f, 2.0f);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
-            // Confirm the teleport poitner is collding with the cube which is in front but down
+            // Confirm the teleport pointer is colliding with the cube which is in front but down
             Assert.IsTrue(hitObject == curvePointer.Result.CurrentPointerTarget);
             Assert.IsNull(linePointer.Result.CurrentPointerTarget);
 
@@ -119,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
             cube.AddComponent<NearInteractionTouchableVolume>();
-            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.zero));
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             var spherePointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
@@ -145,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
             cube.AddComponent<NearInteractionTouchableVolume>();
-            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.zero));
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             var spherePointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
@@ -165,9 +182,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSpherePointerInsideGrabbable()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            TestUtilities.PlaceRelativeToPlayspace(cube.transform);
             cube.AddComponent<NearInteractionGrabbable>();
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.zero));
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             var spherePointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
@@ -177,11 +195,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests that right after being instantiated, the pointer's direction 
+        /// Tests that right after hand being instantiated, the pointer's direction 
         /// is in the same general direction as the forward direction of the camera
         /// </summary>
         [UnityTest]
-        public IEnumerator TestPointerDirectionToCameraDirection()
+        public IEnumerator TestHandPointerDirectionToCameraDirection()
         {
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
@@ -189,11 +207,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightHand = new TestHand(Handedness.Right);
 
             // Set initial position and show hand
-            Vector3 initialPos = new Vector3(0.01f, 0.1f, 0.5f);
+            Vector3 initialPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.01f, 0.1f, 0.5f));
             yield return rightHand.Show(initialPos);
 
             // Return first hand controller that is right and source type hand
-            var handController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Utilities.Handedness.Right && x.InputSource.SourceType == InputSourceType.Hand);
+            var handController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Handedness.Right && x.InputSource.SourceType == InputSourceType.Hand);
             Assert.IsNotNull(handController);
 
             // Get the line pointer from the hand controller
@@ -209,6 +227,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Check that the angle between the line pointer ray and camera forward does not exceed 40 degrees
             float angle = Vector3.Angle(linePointer.Rays[0].Direction, CameraCache.Main.transform.forward);
             Assert.LessOrEqual(angle, 40.0f);
+        }
+
+        /// <summary>
+        /// Tests that right after motion controller being instantiated, the pointer's direction 
+        /// is in the same general direction as the forward direction of the camera
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestMotionControllerPointerDirectionToCameraDirection()
+        {
+            var inputSystem = PlayModeTestUtilities.GetInputSystem();
+
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            // Raise the motion controller
+            var rightMotionController = new TestMotionController(Handedness.Right);
+
+            // Set initial position and show motion controller
+            Vector3 initialPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.01f, 0.1f, 0.5f));
+            yield return rightMotionController.Show(initialPos);
+
+            // Return first motion controller that is right and source type controller
+            var motionController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Handedness.Right && x.InputSource.SourceType == InputSourceType.Controller);
+            Assert.IsNotNull(motionController);
+
+            // Get the line pointer from the motion controller
+            var linePointer = motionController.InputSource.Pointers.OfType<ShellHandRayPointer>().First();
+            Assert.IsNotNull(linePointer);
+
+            Vector3 linePointerOrigin = linePointer.Position;
+
+            // Check that the line pointer origin is within half a centimeter of the initial position of the motion controller
+            var distance = Vector3.Distance(initialPos, linePointerOrigin);
+            Assert.LessOrEqual(distance, 0.005f);
+
+            // Check that the angle between the line pointer ray and camera forward does not exceed 40 degrees
+            float angle = Vector3.Angle(linePointer.Rays[0].Direction, CameraCache.Main.transform.forward);
+            Assert.LessOrEqual(angle, 40.0f);
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
         }
 
 
@@ -232,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(Vector3.right);
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.right));
 
             var rightPokePointer = PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right);
             Assert.IsNotNull(rightPokePointer);
@@ -246,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             wasClicked = false;
 
-            yield return rightHand.Show(Vector3.right);
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.right));
 
             // Confirm that we are re-using the same pointer gameobject that was stored in the cache
             Assert.AreEqual(rightPokePointer, PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
@@ -275,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(Vector3.right);
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.right));
 
             var rightPokePointer = PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right);
             rightPokePointer.DestroyOnSourceLost = true;
@@ -283,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
 
             Assert.IsTrue(wasClicked);
-            Assert.IsTrue(UnityObjectExtensions.IsNull(rightPokePointer));
+            Assert.IsTrue(rightPokePointer == null);
             Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
 
             wasClicked = false;
@@ -311,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.GetInputSimulationService().EnablePointerCache = false;
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(Vector3.right);
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.right));
 
             var rightPokePointer = PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right);
             Assert.IsNotNull(rightPokePointer);
@@ -320,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
 
             Assert.IsTrue(wasClicked);
-            Assert.IsTrue(UnityObjectExtensions.IsNull(rightPokePointer));
+            Assert.IsTrue(rightPokePointer == null);
             Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
 
             wasClicked = false;
@@ -335,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static T CreatePointerPrefab<T>(string prefabPath,
                                                 out IMixedRealityInputSource inputSource,
                                                 out IMixedRealityController controller)
-            where T : IMixedRealityPointer
+            where T : MonoBehaviour, IMixedRealityPointer
         {
             var pointerPrefab = AssetDatabase.LoadAssetAtPath<Object>(prefabPath);
             var result = PrefabUtility.InstantiatePrefab(pointerPrefab) as GameObject;
@@ -366,13 +428,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Cube in front of camera
             cube.transform.SetPositionAndRotation(Vector3.forward * 1f, Quaternion.identity);
+            TestUtilities.PlaceRelativeToPlayspace(cube.transform);
             cube.transform.localScale = Vector3.one * 0.1f;
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled, cube in front camera. Cube size {cube.transform.localScale} location {cube.transform.position}.");
 
+            Vector3 playspaceUp = TestUtilities.DirectionRelativeToPlayspace(Vector3.up);
+
             // Cube above camera
-            cube.transform.Translate(Vector3.up * 10);
+            cube.transform.Translate(playspaceUp * 10);
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsFalse(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should NOT be enabled, cube behind camera. Cube size {cube.transform.localScale} location {cube.transform.position}.");
@@ -394,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Move it back to be visible again
-            cube.transform.Translate(Vector3.up * -10f);
+            cube.transform.Translate(playspaceUp * -10f);
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled because it is near object inside of FOV. Cube size {cube.transform.localScale} location {cube.transform.position}.");
@@ -402,6 +467,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator TestPointerFOVLargeColliderHelper(IMixedRealityPointer myPointer, GameObject cube, TestHand testHand)
         {
+            Pose cubePose = new Pose(cube.transform.position, cube.transform.rotation);
+            Pose worldPose = TestUtilities.PlaceRelativeToPlayspace(cubePose.position, cubePose.rotation);
+            cube.transform.SetPositionAndRotation(worldPose.position, worldPose.rotation);
             cube.transform.localScale = new Vector3(3, 3, 0.05f);
             float[] yOffsets = new float[] { -1f, 0f, 1f };
             float[] xOffsets = new float[] { -1f, 0f, 1f };
@@ -413,17 +481,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 {
                     foreach (var xOffset in xOffsets)
                     {
+                        Vector3 worldOffset = TestUtilities.DirectionRelativeToPlayspace(new Vector3(xOffset, yOffset, zOffset));
                         var cameraPos = CameraCache.Main.transform.position;
-                        var pos = new Vector3(cameraPos.x + xOffset, cameraPos.y + yOffset, cameraPos.z + zOffset);
+                        var pos = cameraPos + worldOffset;
                         cube.transform.position = pos;
                         yield return testHand.MoveTo(cube.transform.position);
                         yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                         bool isInFov = CameraCache.Main.IsInFOVCached(collider);
                         Assert.IsTrue(zOffset == 1f ? myPointer.IsInteractionEnabled : !myPointer.IsInteractionEnabled,
-                            $"Pointer {myPointer.PointerName} in incorrect state. IsInFOV {isInFov} Cube size {cube.transform.localScale} location {cube.transform.position}.");
+                            $"Pointer {myPointer.PointerName} in incorrect state. IsInFOV {isInFov} Cube size {cube.transform.localScale} offset {new Vector3(xOffset, yOffset, zOffset)} location {cube.transform.position}.");
                     }
                 }
             }
+            cube.transform.SetPositionAndRotation(cubePose.position, cubePose.rotation);
         }
         #endregion
     }

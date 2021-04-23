@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// <summary>
     /// Configuration profile for the XR camera settings provider.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Providers/Unity AR/Unity AR Foundation Camera Settings Profile", fileName = "DefaultUnityARCameraSettingsProfile", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Providers/Unity AR/Unity AR Foundation Camera Settings Profile", fileName = "DefaultUnityARCameraSettingsProfile", order = 100)]
     [MixedRealityServiceProfile(typeof(UnityARCameraSettings))]
     public class UnityARCameraSettingsProfile : BaseCameraSettingsProfile
     {

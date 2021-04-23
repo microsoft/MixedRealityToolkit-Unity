@@ -1,0 +1,91 @@
+variables:
+- template: config/settings.yml
+
+trigger:
+- releases/*
+pr: none
+
+jobs:
+- job: BuildUnity2020
+  pool:
+    name: Analog On-Prem
+    demands:
+    - ${{ variables.Unity2020VersionInternal }}
+    - COG-UnityCache-WUS2-01
+
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 1
+
+  - task: PowerShell@2
+    displayName: 'Create binaries for docs generation'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/packaging/createbinariesfordocs.ps1
+      arguments: >
+        -Version $(MRTKVersion)
+        -UnityDirectory ${Env:$(Unity2020VersionInternal)}/Editor
+        -OutputDirectory $(Build.ArtifactStagingDirectory)
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish docs binaries
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      artifactName: DocsBinariesForUnity2020
+
+- job: BuildUnity2019
+  pool:
+    name: Analog On-Prem
+    demands:
+    - ${{ variables.Unity2019VersionInternal }}
+    - COG-UnityCache-WUS2-01
+
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 1
+
+  - task: PowerShell@2
+    displayName: 'Create binaries for docs generation'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/packaging/createbinariesfordocs.ps1
+      arguments: >
+        -Version $(MRTKVersion)
+        -UnityDirectory ${Env:$(Unity2019VersionInternal)}/Editor
+        -OutputDirectory $(Build.ArtifactStagingDirectory)
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish docs binaries
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      artifactName: DocsBinariesForUnity2019
+
+- job: BuildUnity2018
+  pool:
+    name: Analog N-1
+    demands:
+    - ${{ variables.Unity2018VersionInternal }}
+    - COG-UnityCache-WUS2-01
+
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 1
+
+  - task: PowerShell@2
+    displayName: 'Create binaries for docs generation'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/packaging/createbinariesfordocs.ps1
+      arguments: >
+        -Version $(MRTKVersion)
+        -UnityDirectory ${Env:$(Unity2018VersionInternal)}/Editor
+        -OutputDirectory $(Build.ArtifactStagingDirectory)
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish docs binaries
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      artifactName: DocsBinariesForUnity2018

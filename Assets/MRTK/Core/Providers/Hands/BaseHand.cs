@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -26,16 +26,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected BaseHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-        }
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
+        protected BaseHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
+        { }
 
         #region Protected InputSource Helpers
 

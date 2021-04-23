@@ -1,15 +1,15 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -86,14 +86,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Suggest performance optimizations for mobile VR devices with mobile class specifications",
             "Suggest performance optimizations for VR devices tethered to a PC" };
 
-        private const string OptimizeWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/OptimizeWindow.html";
+        private const string OptimizeWindow_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/migration-window";
 #if UNITY_ANDROID
         private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html";
 #else
         private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
 #endif
-        private const string DepthBufferSharing_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-sharing";
-        private const string DepthBufferFormat_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-format";
+        private const string DepthBufferSharing_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/performance/hologram-stabilization#depth-buffer-sharing";
+        private const string DepthBufferFormat_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/performance/hologram-stabilization#depth-buffer-format";
         private const string GlobalIllumination_URL = "https://docs.unity3d.com/Manual/GlobalIllumination.html";
 
 #if UNITY_ANDROID
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private PerformanceTarget PerfTarget = PerformanceTarget.AR_Headsets;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Optimize Window", false, 0)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Optimize Window", false, 0)]
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Render Title
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
                 InspectorUIUtility.RenderDocumentationButton(OptimizeWindow_URL);
             }
 
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option. "
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment.", EditorStyles.wordWrappedLabel);
@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     RenderOptimalRenderingSection();

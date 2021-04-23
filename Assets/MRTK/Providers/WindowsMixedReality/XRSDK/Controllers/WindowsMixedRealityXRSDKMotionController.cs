@@ -3,6 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
+using UnityEngine;
+using UnityEngine.XR;
+
+#if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -12,30 +19,188 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "StandardAssets/Textures/MotionController")]
+        "Textures/MotionController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityXRSDKMotionController : BaseWindowsMixedRealityXRSDKSource
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityXRSDKMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions) { }
+        public WindowsMixedRealityXRSDKMotionController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions)
+        { }
+
+        public WindowsMixedRealityXRSDKMotionController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSourceDefinition definition,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
+        { }
+
+        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityXRSDKMotionController.UpdateButtonData");
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        protected override void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(3, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
-            new MixedRealityInteractionMapping(4, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
-            new MixedRealityInteractionMapping(5, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(6, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad),
-            new MixedRealityInteractionMapping(7, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch),
-            new MixedRealityInteractionMapping(8, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress),
-            new MixedRealityInteractionMapping(9, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
-            new MixedRealityInteractionMapping(10, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(11, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
-        };
+            using (UpdateButtonDataPerfMarker.Auto())
+            {
+                Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
+
+                InputFeatureUsage<bool> buttonUsage;
+
+                // These mappings are flipped from the base class,
+                // where thumbstick is primary and touchpad is secondary.
+                switch (interactionMapping.InputType)
+                {
+                    case DeviceInputType.TouchpadTouch:
+                        buttonUsage = CommonUsages.primary2DAxisTouch;
+                        break;
+                    case DeviceInputType.TouchpadPress:
+                        buttonUsage = CommonUsages.primary2DAxisClick;
+                        break;
+                    case DeviceInputType.ThumbStickPress:
+                        buttonUsage = CommonUsages.secondary2DAxisClick;
+                        break;
+                    default:
+                        base.UpdateButtonData(interactionMapping, inputDevice);
+                        return;
+                }
+
+                if (inputDevice.TryGetFeatureValue(buttonUsage, out bool buttonPressed))
+                {
+                    interactionMapping.BoolData = buttonPressed;
+                }
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    if (interactionMapping.BoolData)
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    }
+                    else
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    }
+                }
+            }
+        }
+
+        private static readonly ProfilerMarker UpdateDualAxisDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityXRSDKMotionController.UpdateDualAxisData");
+
+        /// <inheritdoc />
+        protected override void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
+        {
+            using (UpdateDualAxisDataPerfMarker.Auto())
+            {
+                Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
+
+                InputFeatureUsage<Vector2> axisUsage;
+
+                // These mappings are flipped from the base class,
+                // where thumbstick is primary and touchpad is secondary.
+                switch (interactionMapping.InputType)
+                {
+                    case DeviceInputType.ThumbStick:
+                        axisUsage = CommonUsages.secondary2DAxis;
+                        break;
+                    case DeviceInputType.Touchpad:
+                        axisUsage = CommonUsages.primary2DAxis;
+                        break;
+                    default:
+                        base.UpdateDualAxisData(interactionMapping, inputDevice);
+                        return;
+                }
+
+                if (inputDevice.TryGetFeatureValue(axisUsage, out Vector2 axisData))
+                {
+                    // Update the interaction data source
+                    interactionMapping.Vector2Data = axisData;
+                }
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
+                }
+            }
+        }
+
+#if WINDOWS_UWP
+        private WindowsMixedRealityControllerModelProvider controllerModelProvider;
+
+        /// <inheritdoc />
+        protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
+        {
+            if (GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
+            {
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+            else
+            {
+                TryRenderControllerModelWithModelProvider();
+                return true;
+            }
+        }
+
+        private async void TryRenderControllerModelWithModelProvider()
+        {
+            if (controllerModelProvider == null)
+            {
+                controllerModelProvider = new WindowsMixedRealityControllerModelProvider(ControllerHandedness);
+            }
+
+            GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
+
+            if (controllerModel != null)
+            {
+                if (this != null)
+                {
+                    var visualizationProfile = GetControllerVisualizationProfile();
+                    if (visualizationProfile != null)
+                    {
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+                        if (visualizationType != null)
+                        {
+                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                            // and re-enabled when the same controller is re-detected.
+                            if (controllerModel.EnsureComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                            {
+                                visualizer.DestroyOnSourceLost = false;
+                            }
+
+                            if (TryAddControllerModelToSceneHierarchy(controllerModel))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to obtain a controller visualization profile");
+                    }
+
+                    Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                    base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+                }
+
+                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
+                controllerModel.SetActive(false);
+            }
+        }
+#endif
     }
 }

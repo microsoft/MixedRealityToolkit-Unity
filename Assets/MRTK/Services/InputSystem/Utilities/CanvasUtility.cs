@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     public class CanvasUtility : MonoBehaviour, IMixedRealityPointerHandler
     {
         private bool oldIsTargetPositionLockedOnFocusLock = false;
-        public void OnPointerClicked(MixedRealityPointerEventData eventData) {}
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
@@ -34,6 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
         }
 
         private void Start()
+        {
+            VerifyCanvasConfiguration();
+        }
+
+        /// <summary>
+        /// Verifies and updates MRTK related canvas configuration.
+        /// </summary>
+        public void VerifyCanvasConfiguration()
         {
             Canvas canvas = GetComponent<Canvas>();
             Debug.Assert(canvas != null);

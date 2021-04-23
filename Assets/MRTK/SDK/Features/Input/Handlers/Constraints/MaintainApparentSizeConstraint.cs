@@ -1,21 +1,19 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Component for setting the min/max scale values for ManipulationHandler
-    /// or BoundingBox
+    /// Component for setting the min/max scale values for ObjectManipulator
+    /// or BoundsControl
     /// </summary>
     public class MaintainApparentSizeConstraint : TransformConstraint
     {
         #region Properties
 
         private float initialDist;
-        private Vector3 initialScale;
 
         public override TransformFlags ConstraintType => TransformFlags.Scale;
 
@@ -24,12 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Public Methods
 
         /// <inheritdoc />
-        public override void Initialize(MixedRealityPose worldPose)
+        public override void Initialize(MixedRealityTransform worldPose)
         {
             base.Initialize(worldPose);
 
             initialDist = (worldPose.Position - CameraCache.Main.transform.position).magnitude;
-            initialScale = TargetTransform.localScale;
         }
 
         /// <summary>
@@ -40,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
             float dist = (transform.Position - CameraCache.Main.transform.position).magnitude;
-            transform.Scale = (dist / initialDist) * initialScale;
+            transform.Scale = (dist / initialDist) * worldPoseOnManipulationStart.Scale;
         }
 
         #endregion Public Methods

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             HashSet<string> inEditorDefines = new HashSet<string>(builder.defaultDefines);
             platformCommonDefines.IntersectWith(inEditorDefines);
 
-            HashSet<string> inEditorReferences = new HashSet<string>(FilterOutProjectReferences(builder.defaultReferences));
+            HashSet<string> inEditorReferences = new HashSet<string>(FilterOutProjectReferences(GetEditorReferences(builder)));
             platformCommonReferences.IntersectWith(inEditorReferences);
 
             // Remove the common
@@ -80,12 +80,29 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                 return new CompilationPlatformInfo("Editor", BuildTarget.NoTarget,
                     new HashSet<string>(), null, new HashSet<string>(builder.defaultDefines),
-                    new List<string>(), null, new List<string>(FilterOutProjectReferences(builder.defaultReferences)));
+                    new List<string>(), null, new List<string>(FilterOutProjectReferences(GetEditorReferences(builder))));
             }
             finally
             {
                 PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Unknown, cached);
             }
+        }
+
+        private static string[] GetEditorReferences(AssemblyBuilder builder)
+        {
+#if UNITY_2020_2_OR_NEWER
+            // Starting from Unity 2020.2 there are two versions of UnityEditor.dll in the Editor\Data\Managed folder.
+            // Here we want to reference the "full version" (i.e. version with submodules)
+            string[] editorReferences = builder.defaultReferences.ToArray();
+            if (editorReferences[1].EndsWith("/UnityEngine/UnityEditor.dll"))
+            {
+                editorReferences[1] = editorReferences[1].Substring(0, editorReferences[1].LastIndexOf("/UnityEngine/UnityEditor.dll")) + "\\UnityEditor.dll";
+            }
+
+            return editorReferences;
+#else
+            return builder.defaultReferences;
+#endif
         }
 
         private static IEnumerable<string> FilterOutProjectReferences(string[] references)

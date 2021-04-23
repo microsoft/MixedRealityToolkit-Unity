@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.CSharp;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -432,9 +432,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     AssetDatabase.CreateFolder("Assets", DefaultGeneratedFolderName);
                 }
-                
+
                 AssetDatabase.CreateFolder(generatedFolder, DefaultExtensionsFolderName);
                 AssetDatabase.Refresh();
+
+                // Setting the default folders is necessary after the asset database refresh
+                // to ensure that the extension service creator's consumers will not need
+                // to manually set the location in a separate step.
+                SetAllFolders(ExtensionsFolder);
             }
 
             return errors.Count == 0;
@@ -458,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 errors.Add("Name must end with 'Service' suffix.");
             }
-            
+
             if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(ServiceName))
             {
                 errors.Add("Name must not contain illegal characters.");
@@ -468,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Returns true if the asset supplied, via Folder object representing path and file name string (assumming .cs files only), does not exist. False otherwise
+        /// Returns true if the asset supplied, via Folder object representing path and file name string (assuming .cs files only), does not exist. False otherwise
         /// </summary>
         public bool CanBuildAsset(UnityEngine.Object folder, string fileName)
         {
@@ -537,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Start the creation process for all revelant extension service files based on current creator property settings
+        /// Start the creation process for all relevant extension service files based on current creator property settings
         /// </summary>
         public async Task BeginAssetCreationProcess()
         {

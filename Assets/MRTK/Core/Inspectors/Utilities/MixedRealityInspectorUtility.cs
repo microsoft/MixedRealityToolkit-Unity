@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -48,9 +49,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public const float DottedLineScreenSpace = 4.65f;
         public const string DefaultConfigProfileName = "DefaultMixedRealityToolkitConfigurationProfile";
 
-        public static readonly Texture2D LogoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_Black.png"), typeof(Texture2D));
+        // StandardAssets/Textures/MRTK_Logo_Black.png
+        private const string LogoLightThemeGuid = "c2c00ef21cc44bcfa09695879e0ebecd";
+        // StandardAssets/Textures/MRTK_Logo_White.png
+        private const string LogoDarkThemeGuid = "84643a20fa6b4fa7969ef84ad2e40992";
 
-        public static readonly Texture2D LogoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_White.png"), typeof(Texture2D));
+        public static readonly Texture2D LogoLightTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoLightThemeGuid));
+
+        public static readonly Texture2D LogoDarkTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoDarkThemeGuid));
 
         private const string CloneProfileHelpLabel = "Currently viewing a MRTK default profile. It is recommended to clone defaults and modify a custom profile.";
         private const string CloneProfileHelpLockedLabel = "Clone this default profile to edit properties below";
@@ -81,13 +87,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// If MRTK is not initialized in scene, adds and initializes instance to current scene
         /// </summary>
-        public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null)
+        public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null, bool inPlayMode = false)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
                 MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
                 MixedRealityToolkit.SetActiveInstance(newInstance);
                 Selection.activeObject = newInstance;
+
+                MixedRealityToolkit.ConfirmInitialized();
 
                 if (configProfile == null)
                 {
@@ -97,6 +105,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 else
                 {
                     newInstance.ActiveProfile = configProfile;
+                }
+
+                if(!newInstance.ActiveProfile.ExperienceSettingsProfile.IsNull())
+                {
+                    // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
+                    MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
+                }
+
+                if (!inPlayMode)
+                {
+                    EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
                 }
             }
         }
@@ -528,34 +547,62 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Draws a dropdown with all available profiles of profilyType.
         /// </summary>
         /// <returns>True if property was changed.</returns>
-        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool showAddButton)
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool requiresProfile, bool showAddButton)
+        {
+            return DrawProfileDropDownList(property, profile, oldProfileObject, new Type[] { profileType }, requiresProfile, showAddButton);
+        }
+
+        /// <summary>
+        /// Draws a dropdown with all available profiles of types contained in the array profilyTypes.
+        /// </summary>
+        /// <returns>True if property was changed.</returns>
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type[] profileTypes, bool requiresProfile, bool showAddButton)
         {
             bool changed = false;
 
             using (new EditorGUILayout.HorizontalScope())
             {
+                List<ScriptableObject> profileInstanceList = new List<ScriptableObject>();
+                List<GUIContent> profileContentList = new List<GUIContent>();
+
                 // Pull profile instances and profile content from cache
-                ScriptableObject[] profileInstances = MixedRealityProfileUtility.GetProfilesOfType(profileType);
-                GUIContent[] profileContent = MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType);
-                // Set our selected index to our '(None)' option by default
+                for(int i = 0; i < profileTypes.Length; i++)
+                {
+                    Type profileType = profileTypes[i];
+                    profileInstanceList.AddRange(MixedRealityProfileUtility.GetProfilesOfType(profileType));
+                    profileContentList.AddRange(MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType));
+                }
+
+                int dropdownOffset = 0;
+                if (!requiresProfile || profileInstanceList.Count == 0)
+                {
+                    profileContentList.Insert(0, new GUIContent("(None)"));
+                    dropdownOffset = 1;
+                }
+
+                ScriptableObject[] profileInstances = profileInstanceList.ToArray();
+                GUIContent[] profileContent = profileContentList.ToArray();
+
                 int selectedIndex = 0;
                 // Find our selected index
                 for (int i = 0; i < profileInstances.Length; i++)
                 {
                     if (profileInstances[i] == oldProfileObject)
-                    {   // Our profile content has a '(None)' option at the start
-                        selectedIndex = i + 1;
+                    {   // If a profile is required, then the selected index is the same as the profile instance index, otherwise it is offset by the dropdownOffset
+                        // due to the pre-existing (None) option
+                        selectedIndex = i + dropdownOffset;
                         break;
                     }
                 }
 
                 int newIndex = EditorGUILayout.Popup(
                     new GUIContent(oldProfileObject != null ? "" : property.displayName),
-                    selectedIndex, 
+                    selectedIndex,
                     profileContent,
                     GUILayout.ExpandWidth(true));
 
-                property.objectReferenceValue = (newIndex > 0) ? profileInstances[newIndex - 1] : null;
+                int profileInstanceIndex = newIndex - dropdownOffset;
+                property.objectReferenceValue = (profileInstanceIndex >= 0) ? profileInstances[profileInstanceIndex] : null;
                 changed = property.objectReferenceValue != oldProfileObject;
 
                 // Draw a button that finds the profile in the project window
@@ -563,7 +610,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     // The view asset button should always be enabled.
                     using (new GUIEnabledWrapper())
-                    { 
+                    {
                         if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
                         {
                             EditorGUIUtility.PingObject(property.objectReferenceValue);
@@ -574,11 +621,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // Draw the clone button
                 if (property.objectReferenceValue == null)
                 {
-                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(profileType))
+                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(Selection.activeObject.GetType()))
                     {
                         if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
                         {
-                            ScriptableObject instance = ScriptableObject.CreateInstance(profileType);
+                            ScriptableObject instance = ScriptableObject.CreateInstance(Selection.activeObject.GetType());
                             var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
                             property.objectReferenceValue = newProfile;
                             property.serializedObject.ApplyModifiedProperties();

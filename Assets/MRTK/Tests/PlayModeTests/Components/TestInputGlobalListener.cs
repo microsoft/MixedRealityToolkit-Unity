@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     // For InputSystemGlobalListener
 #pragma warning disable 0618
     [AddComponentMenu("Scripts/MRTK/Tests/TestInputGlobalListener")]
-    internal class TestInputGlobalListener: InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
+    internal class TestInputGlobalListener : InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         // Parameters, which are set by child classes
         protected bool useObjectBasedRegistration = false;
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public int pointerDraggedCount = 0;
         public int pointerUpCount = 0;
         public int pointerClickedCount = 0;
-        public int speechCount = 0;
+        public List<string> speechCommandsReceived = new List<string>();
 
         protected override void OnEnable()
         {
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             pointerDraggedCount = 0;
             pointerUpCount = 0;
             pointerClickedCount = 0;
-            speechCount = 0;
+            speechCommandsReceived = new List<string>();
 
             if (useObjectBasedRegistration)
             {
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 base.OnDisable();
             }
-            else if(CoreServices.InputSystem != null)
+            else if (CoreServices.InputSystem != null)
             {
                 if (registerSpeechOnly)
                 {
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            speechCount++;
+            speechCommandsReceived.Add(eventData.Command.Keyword);
         }
     }
 

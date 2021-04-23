@@ -1,20 +1,32 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
+using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityControllerMappingProfile))]
     public class MixedRealityControllerMappingProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private readonly struct ControllerMappingSignature
+        {
+            public SupportedControllerType SupportedControllerType { get; }
+            public Handedness Handedness { get; }
+
+            public ControllerMappingSignature(SupportedControllerType supportedControllerType, Handedness handedness)
+            {
+                SupportedControllerType = supportedControllerType;
+                Handedness = handedness;
+            }
+        }
+
         private struct ControllerRenderProfile
         {
             public SupportedControllerType SupportedControllerType;
@@ -91,6 +103,25 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
 
             controllerRenderList.Clear();
+
+            // Generating the set of controllers that belong to each Controller Mapping Signature
+            Dictionary<ControllerMappingSignature, List<string>> controllersAffectedByMappingSignatures = new Dictionary<ControllerMappingSignature, List<string>>();
+            for (int i = 0; i < thisProfile.MixedRealityControllerMappings.Length; i++)
+            {
+                MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappings[i];
+                Type controllerType = controllerMapping.ControllerType;
+                if (controllerType == null) { continue; }
+
+                Handedness handedness = controllerMapping.Handedness;
+                SupportedControllerType supportedControllerType = controllerMapping.SupportedControllerType;
+
+                ControllerMappingSignature currentSignature = new ControllerMappingSignature(supportedControllerType, handedness);
+                if (!controllersAffectedByMappingSignatures.ContainsKey(currentSignature))
+                {
+                    controllersAffectedByMappingSignatures.Add(currentSignature, new List<string>());
+                }
+                controllersAffectedByMappingSignatures[currentSignature].Add(controllerType.ToString());
+            }
 
             showControllerDefinitions = EditorGUILayout.Foldout(showControllerDefinitions, "Controller Definitions", true);
             if (showControllerDefinitions)
@@ -279,39 +310,54 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                                 if (InspectorUIUtility.RenderIndentedButton("Reset Input Actions"))
                                 {
-                                    interactionsProperty.ClearArray();
-                                    serializedObject.ApplyModifiedProperties();
-                                    thisProfile.MixedRealityControllerMappings[i].SetDefaultInteractionMapping(true);
-                                    serializedObject.ApplyModifiedProperties();
+                                    ResetInputActions(ref thisProfile.MixedRealityControllerMappings[i]);
                                 }
                             }
                         }
                         else
                         {
-                            if (supportedControllerType == SupportedControllerType.GGVHand &&
-                                handedness == Handedness.None)
-                            {
-                                controllerTitle = "HoloLens Voice and Clicker";
-                            }
-
                             if (handedness != Handedness.Right)
                             {
                                 if (horizontalScope != null) { horizontalScope.Dispose(); horizontalScope = null; }
                                 horizontalScope = new GUILayout.HorizontalScope();
                             }
 
-                            var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(controllerType, handedness));
 
-                            if (GUILayout.Button(buttonContent, MixedRealityStylesUtility.ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
+                            EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+                            var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(controllerType, handedness));
+                            if (GUILayout.Button(buttonContent, MixedRealityStylesUtility.ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32), GUILayout.ExpandWidth(true)))
                             {
-                                ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness);
+                                ControllerMappingSignature buttonSignature = new ControllerMappingSignature(supportedControllerType, handedness);
+                                ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness, controllersAffectedByMappingSignatures[buttonSignature]);
                             }
+                            if (GUILayout.Button(EditorGUIUtility.IconContent("_Menu"), new GUIStyle("iconButton")))
+                            {
+                                // create the menu and add items to it
+                                GenericMenu menu = new GenericMenu();
+
+                                // Caching the index of this controller mapping for the anonymous function
+                                int index = i;
+                                menu.AddItem(new GUIContent("Reset to default input actions"), false, () => ResetInputActions(ref thisProfile.MixedRealityControllerMappings[index]));
+                                menu.ShowAsContext();
+                            }
+                            EditorGUILayout.EndHorizontal();
                         }
                     }
 
                     if (horizontalScope != null) { horizontalScope.Dispose(); horizontalScope = null; }
                 }
             }
+        }
+
+        /// <summary>
+        /// Resets the input actions of the controller mapping according to the mapping's GetDefaultInteractionMappings() function
+        /// </summary>
+        /// <param name="controllerMapping">A reference to the controller mapping struct getting reset</param>
+        private void ResetInputActions(ref MixedRealityControllerMapping controllerMapping)
+        {
+            controllerMapping.SetDefaultInteractionMapping(true);
+            serializedObject.ApplyModifiedProperties();
+            ControllerPopupWindow.RepaintWindow();
         }
 
         private void AddController(SerializedProperty controllerList, Type controllerType)

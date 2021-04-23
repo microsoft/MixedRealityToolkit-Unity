@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +8,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
     /// <summary>
     /// On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local 
-    /// transform the Graphic component lives on, but that of it's parent Canvas. Many MRTK/Standard shader 
+    /// transform the Graphic component lives on, but that of its parent Canvas. Many MRTK/Standard shader 
     /// effects require object scale to be known. To solve this issue the ScaleMeshEffect will store scaling 
     /// information into UV channel attributes during UI mesh construction. Ideally we would store the scale 
     /// in one attribute but UGUI only supports two scalers per attribute (even in the tangent attribute).
     /// </summary>
     [RequireComponent(typeof(RectTransform), typeof(Graphic))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html#ugui-support")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/mrtk-standard-shader#ugui-support")]
     [AddComponentMenu("Scripts/MRTK/Services/ScaleMeshEffect")]
     public class ScaleMeshEffect : BaseMeshEffect
     {
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             var canvas = GetComponentInParent<Canvas>();
 
             // Pack the z scale into x and a flag indicating this value comes from a ScaleMeshEffect into y into UV channel 3.
-            var depth = new Vector2((canvas ? (1.0f / canvas.transform.lossyScale.z) : 1.0f) * rectTransform.localScale.z, 
+            var depth = new Vector2((canvas ? (1.0f / canvas.transform.lossyScale.z) : 1.0f) * rectTransform.localScale.z,
                                     -1.0f);
 
             var vertex = new UIVertex();

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             foreach (string asset in importedAssets)
             {
+                // Ignore the StreamingAssets folder, as this appears to not be required and generates console warnings.
+                if (asset.Contains("Assets/StreamingAssets"))
+                {
+                    continue;
+                }
+
                 string extension = Path.GetExtension(asset);
                 if (extension == ".room" || extension == ".glb" || extension == ".gltf")
                 {
@@ -37,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         if (numAttempts <= 3)
                         {
-                            Debug.LogWarning($"Asset '{asset}' appears to have failed importing, will attempt to re-import. Attempt: {numAttempts}");
                             AssetDatabase.ImportAsset(asset);
                         }
                         else

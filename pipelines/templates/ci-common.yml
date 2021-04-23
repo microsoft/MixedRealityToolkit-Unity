@@ -1,7 +1,9 @@
-# CI build for developer builds.
+# [Template] CI build for developer builds.
+
 parameters:
   packagingEnabled: true
-  packagePublishing: true
+  packageNuGet: false # deprecated and temporary
+  publishPackagesToFeed : false
   UnityVersion: ""
 
 steps:
@@ -9,14 +11,18 @@ steps:
   parameters:
     buildUWPDotNet: false
     UnityVersion: ${{ parameters.UnityVersion }}
-- template: compilemsbuild.yml
-  parameters:
-    UnityVersion: ${{ parameters.UnityVersion }}
+- template: tasks/versionmetadata.yml
 - ${{ if eq(parameters.packagingEnabled, true) }}:
-  - template: tasks/unitypackages.yml
+  - ${{ if eq(parameters.packageNuGet, true) }}:
+    - template: compilemsbuild.yml # Note: apparently this has to happen before the .unitypackages are packed, or else it'll fail
+      parameters:
+        UnityVersion: ${{ parameters.UnityVersion }}
+    - template: tasks/pack-nuget.yml
+    - template: tasks/publish-nuget.yml
+  - template: tasks/pack-unitypackages.yml
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
-  - template: package.yml
-  - ${{ if eq(parameters.packagePublishing, true) }}:
-    - template: publishpackages.yml
+  - template: tasks/pack-upm.yml
+  - ${{ if eq(parameters.publishPackagesToFeed, true) }}:
+    - template: tasks/publish-upm.yml
 - template: end.yml

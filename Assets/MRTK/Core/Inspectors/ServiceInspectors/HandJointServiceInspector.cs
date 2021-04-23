@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
-using System.Collections.Generic;
-using System;
-using UnityEditor;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Dictionary<TrackedHandJoint, bool> showHandJointSettings;
         private static Dictionary<TrackedHandJoint, string> showHandJointSettingKeys;
 
-        //We want hand preview to always be visible
+        // We want hand preview to always be visible
         public override bool AlwaysDrawSceneGUI { get { return true; } }
 
         public override void DrawInspectorGUI(object target)

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -34,6 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private int proximityDistanceID;
         private readonly Quaternion fingerPadRotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
 
+        private const float MinVisibleRingDistance = 0.1f;
+
         protected virtual void Awake()
         {
             materialPropertyBlock = new MaterialPropertyBlock();
@@ -43,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Override base behavior to align the cursor with the finger, else perform normal cursor transformations.
         /// </summary>
-        protected override void UpdateCursorTransform() 
+        protected override void UpdateCursorTransform()
         {
             IMixedRealityNearPointer nearPointer = (IMixedRealityNearPointer)Pointer;
 
@@ -68,60 +70,57 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     indexKnucklePosition = transform.position;
                 }
-                
-                if (!nearPointer.IsInteractionEnabled)
-                {
-                    // If the pointer is disabled, make sure to turn the ring cursor off
-                    // but still want show the proximity effect on bounding content
-                    if (indexFingerRingRenderer != null)
-                    {
-                        UpdateVisuals(indexFingerRingRenderer, 1, false);
-                    }
-                }
-                else if (nearPointer.IsNearObject)
+
+                float distance = float.MaxValue;
+                Vector3 surfaceNormal = Vector3.zero;
+
+                bool surfaceNormalFound = false;
+                bool showVisual = true;
+                bool nearPokeable = nearPointer.IsNearObject;
+
+
+                // Show the cursor if we are deemed to be near an object or if it is near a grabbable object
+                if (nearPokeable)
                 {
                     // If the pointer is near an object translate the primary ring to the index finger tip and rotate to surface normal if close.
                     // The secondary ring should be hidden.
 
-                    float distance;
                     if (!nearPointer.TryGetDistanceToNearestSurface(out distance))
                     {
                         distance = float.MaxValue;
                     }
-
-                    if (indexFingerRingRenderer != null)
-                    {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
-
-                        Vector3 surfaceNormal;
-                        if ((distance < alignWithSurfaceDistance) &&
-                            nearPointer.TryGetNormalToNearestSurface(out surfaceNormal))
-                        {
-                            RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance);
-                            TranslateFromTipToPad(indexFingerRingRenderer.transform, indexFingerPosition, indexKnucklePosition, surfaceNormal, distance);
-                        }
-                        else
-                        {
-                            RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
-                        }
-
-                        UpdateVisuals(indexFingerRingRenderer, distance, true);
-                    }
+                    surfaceNormalFound = nearPointer.TryGetNormalToNearestSurface(out surfaceNormal);
                 }
                 else
                 {
                     // If the pointer is near a grabbable object position and rotate the ring to the default, 
                     // else hide it.
 
-                    float distance = 0;
-                    bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject(out distance);
+                    bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject();
 
-                    if (indexFingerRingRenderer != null)
+                    // There is no good way to get the distance of the nearest grabbable object at the moment, so we either return the MinVisibleRingDistance or 1 (invisible).
+                    distance = nearGrabbable ? MinVisibleRingDistance : 1.0f;
+
+                    // Only show the visual if we are near a grabbable
+                    showVisual = nearGrabbable;
+                    surfaceNormalFound = false;
+                }
+
+                if (indexFingerRingRenderer != null)
+                {
+                    TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
+
+                    if ((distance < alignWithSurfaceDistance) && surfaceNormalFound)
                     {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
-                        RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
-                        UpdateVisuals(indexFingerRingRenderer, distance, nearGrabbable);
+                        RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance);
+                        TranslateFromTipToPad(indexFingerRingRenderer.transform, indexFingerPosition, indexKnucklePosition, surfaceNormal, distance);
                     }
+                    else
+                    {
+                        RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
+                    }
+
+                    UpdateVisuals(indexFingerRingRenderer, distance, showVisual);
                 }
             }
             else
@@ -148,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <returns>True if associated sphere pointer is near any grabbable objects, else false.</returns>
         /// <param name="dist">Out parameter gets the distance to the grabbable.</param>
-        protected virtual bool IsNearGrabbableObject(out float dist)
+        protected virtual bool IsNearGrabbableObject()
         {
             var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
@@ -158,16 +157,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (spherePointer.Controller == Pointer.Controller)
                     {
-                        var focusObject = focusProvider.GetFocusedObject(spherePointer);
-                        if (focusObject != null)
-                        {
-                            return spherePointer.TryGetDistanceToNearestSurface(out dist);
-                        }
+                        return spherePointer.IsNearObject;
                     }
                 }
             }
 
-            dist = -1;
             return false;
         }
 
@@ -183,8 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (Pointer != null)
             {
-                var hand = Pointer.Controller as IMixedRealityHand;
-                if (hand != null)
+                if (Pointer.Controller is IMixedRealityHand hand)
                 {
                     if (hand.TryGetJoint(joint, out MixedRealityPose handJoint))
                     {
@@ -228,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 tipPosition = fingerPosition + tipNormal * skinSurfaceOffset;
             Vector3 tipOffset = tipPosition - fingerPosition;
 
-            // Check how perpindicular the finger normal is to the surface, so that the cursor will
+            // Check how perpendicular the finger normal is to the surface, so that the cursor will
             // not translate to the finger pad if the user is poking with a horizontal finger
             float fingerSurfaceDot = Vector3.Dot(tipNormal, -surfaceNormal);
 

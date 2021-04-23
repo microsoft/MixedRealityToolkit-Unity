@@ -30,9 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public void Update()
         {
             Ray myRay;
-            if(InputRayUtils.TryGetRay(sourceType, handedness, out myRay))
+            if (InputRayUtils.TryGetRay(sourceType, handedness, out myRay))
             {
-                transform.localPosition= myRay.origin;
+                transform.localPosition = myRay.origin;
                 transform.localRotation = Quaternion.LookRotation(myRay.direction, Vector3.up);
                 SetIsDataAvailable(true);
             }

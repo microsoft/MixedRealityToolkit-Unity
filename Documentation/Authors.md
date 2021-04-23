@@ -3,77 +3,131 @@
 The Microsoft Mixed Reality Toolkit is a collaborative project containing contributions from individuals around the world. Our sincere thanks to all who have, and continue to contribute.
 
 - achaperon
-- AdamMitchell-ms
-- alandergrouse
-- Alex Cooper
-- Alexees
-- andreiborodin
+- Adam Mitchell (AdamMitchell-ms)
+- Addison Linville (radicalad)
+- ADP-JoNeff
+- afarchy
+- Against Lightning XR (againstlightning)
+- alandergrouse (alandergrouse)
+- Alex Floyd (elbuhofantasma)
+- Alexander Seeck (Alexees)
+- Andrew Hall (ryzngard)
+- Anton Zachesov (googlan)
+- Anuraag Puri (anuraag016)
 - artsouflMS
-- Austin Ha
-- Bertrand Oustrière
-- Bertrand75014
-- Cameron-Micka
+- Ben Godard (genbod)
+- Bernadette Thalhammer (thalbern)
+- Bertrand Oustrière (BertrandOustriere)
+- Blake Gross (blgrossMS)
+- Brandon Furtwangler (brandf)
+- Bryan Truong (bhtruong93)
+- C. M. Barth (chrisfromwork)
+- Cameron (Cameron-Micka)
+- cartwrightluke
+- Casey Crabb (ptc-ccrabb)
 - CDiaz-MS
-- chbecker-ms
-- chrisfromwork
+- cefoot
+- cellarmation
 - CoPrez
-- cre8ivepark
-- danielhofmann-ms
-- davidkline-ms
-- derekfreed
-- dfields-msft
-- Ecnassianer
-- ericob
-- gejohnst
-- gilbdev
-- googlan
-- graycelee
-- Jarodshow
-- jbienzms
-- Jerome Humbert
-- jganser
-- johnppella
-- JonathanPalmerGD
-- julenka
- -julianloehr-kg
-- jwittner
-- Kent1LG
-- keveleigh
-- killerantz
+- Cristiano Carvalheiro (ccarvalheiro)
+- Daniel Hofmann (danielhofmann-ms)
+- David Evans (phosphoer)
+- David Johnson (djohnsomsft)
+- David Kline (davidkline-ms)
+- deibich
+- deibu
+- Derek (derekfreed)
+- Dino Fejzagić (FejZa)
+- Dirk Songür (DirkSonguer)
+- DominicAglialoro
+- Eric Carter (Ecnassianer)
+- Eric Fiscus (MRW-Eric)
+- Eric O'Brien (ericob)
+- Eric Provencher (provencher)
+- etiennemargraff (meulta)
+- Eusebiu Marcu (eusebiu)
+- Evan Tice (in2dair)
+- Finn Sinclair (Zee2)
+- Florian Jasche (FlorianJa)
+- Forrest Trepte (ForrestTrepte)
+- Francesco Clasadonte (klasaf)
+- gauravb4
+- George Johnston (gejohnst)
+- gilbdev (gilbdev)
+- Grace Lee (grayclee)
+- Graham Bury (grbury)
+- Harrison Ferrone (hferrone)
+- Harrison Yu (harrisonyu)
+- hybridherbst
+- Hyung-il Kim (hyungilkim)
+- Jared Bienz [MSFT] (jbienzms)
+- Jarod (Jarodshow)
+- Jerome Humbert (djee-ms)
+- Jesse Vander Does (FreakTheMighty)
+- John (johnppella)
+- Jon Palmer (JonathanPalmerGD)
+- Jonathan Dana (Nakda)
+- Jonathan Palmer (JPalmerDev)
+- Joost van Schaik (LocalJoost)
+- Josh Wittner (jwittner)
+- julesra
+- Julia Schwarz (julenka)
+- julianloehr-kg
+- Ken Jakubzak (KenJakubzak)
+- Kent1 (Kent1LG)
+- Kevin Kennedy (KevinKennedy)
+- Kevin Semple (polar-kev)
+- kircher1
+- kiyasu (holohiko)
+- Kjakubzak (Kjakubzak)
+- Kurtis (keveleigh)
 - LaneMax
-- LocalJoost
-- luis-valverde-ms
-- lukastonneMS
-- macborow
-- MenelvagorMilsom
-- michael-house
-- mpkoz
+- Lars Simkins (Railboy)
+- Luis Valverde (luval-microsoft)
+- Luis Valverde (luis-valverde-ms)
+- Lukas Tönne (lukastoenneMS)
+- Maciej Borowik (macborow)
+- Malcolm Tyrrell (MalcolmTyrrell)
+- Marek Stój (marek-stoj)
+- Mark Finch (fast-slow-still)
+- Matteo Valoriani (mvaloriani)
+- Matthew Johnson (matthejo)
+- MaxWang-MS
+- michael (insominx)
+- Michael House (michael-house)
+- Michael Kozlowski (mpkoz)
 - ms738
-- myrandaGoesToSpace
-- Nakda
-- Nick K.
-- Norbert Nemec
-- paco-ms
-- phosphoer
-- provencher
-- Quentin LG
-- radicalad
-- Railboy
+- Myranda (myrandaGoesToSpace)
+- Nathan Ostrander (naostranMS)
+- Niall Milsom (MenelvagorMilsom)
+- omanuke
+- Oscar Salandin (ossala)
+- PatientEz
 - ritijain
-- ryzngard
-- sgwin
-- SimonDarksideJ
-- sloh-ms
+- Robert Onulak (Ziugy)
+- Roberto Sonnino (robertos)
+- RogPodge
+- Roland Smeenk (rolandsmeenk)
+- Rosthouse (Rosthouse)
+- rwinj
+- Sarah (SarahSexton)
+- SGHolospace
+- Shawn Gwin (sgwin)
+- Shinya Tachihara (decoc)
+- Simon (Darkside) Jackson (SimonDarksideJ)
 - sostel
-- stefan.wasserbauer
-- StephenHodgson
-- TakahiroMiyaura
-- tarukosu
-- thalbern
-- Troy-Ferrell
-- vaoliva
-- wassx
-- Weasy666
-- witian
-- wiwei
-- Yoyozilla
+- Srinjoy Majumdar (srinjoym)
+- Stefan Wasserbauer (wassx)
+- Stephen Hodgson (StephenHodgson)
+- Steve Leigh (xwipeoutx)
+- Sue Loh [MS] (sloh-ms)
+- tarukosu (tarukosu)
+- Tim Gerken (timGerken)
+- Todd Williams (killerantz)
+- Troy Ferrell (Troy-Ferrell)
+- Vanessa Oliva (vaoliva)
+- Weasy (Weasy666)
+- Will (wiwei)
+- William Tian (witian)
+- Yoon Park (cre8ivepark)
+- yoyo (Yoyozilla)

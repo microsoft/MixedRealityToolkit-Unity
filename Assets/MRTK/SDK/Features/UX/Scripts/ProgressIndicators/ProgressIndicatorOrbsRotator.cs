@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Threading.Tasks;
 using TMPro;
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             StopOrbs();
 
-            while (!hasAnimationFinished)
+            while (!hasAnimationFinished && isActiveAndEnabled)
             {
                 await Task.Yield();
             }
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     Color orbColor = propertyBlocks[index].GetColor("_Color");
 
-                    //fade in
+                    // Fade in
                     if (!stopRequested && orbColor.a < 1.0f)
                     {
                         orbColor.a += (1.0f * timeSlice);
@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         propertyBlocks[index].SetColor("_Color", orbColor);
                         dots[index].SetPropertyBlock(propertyBlocks[index]);
                     }
-                    //fade out
+                    // Fade out
                     else if (stopRequested && angles[index] > rotationWhenStopped)
                     {
                         orbColor.a -= (1.0f * timeSlice);

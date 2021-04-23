@@ -1,10 +1,11 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -52,6 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 autoFollowAtDistance = value;
 
+                if (!enabled || !gameObject.activeInHierarchy)
+                {
+                    return;
+                }
+
                 if (autoFollowAtDistance)
                 {
                     if (autoFollowDistanceCheck == null)
@@ -65,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         StopCoroutine(autoFollowDistanceCheck);
                         autoFollowDistanceCheck = null;
+                        SetFollowMeBehavior(false);
                     }
                 }
             }
@@ -111,6 +118,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private RadialView radialView = null;
         private Coroutine autoFollowDistanceCheck = null;
 
+        [SerializeField]
+        [Tooltip("Event that gets fired when auto follow is triggered.")]
+        private UnityEvent autoFollowTriggered = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when auto follow is triggered.
+        /// </summary>
+        public UnityEvent AutoFollowTriggered
+        {
+            get => autoFollowTriggered;
+            set => autoFollowTriggered = value;
+        }
+
+
         #region MonoBehaviour Implementation
 
         private void Awake()
@@ -133,6 +153,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 AutoFollowAtDistance = autoFollowAtDistance;
             }
+        }
+
+        private void OnEnable()
+        {
+            // Begin the follow coroutine when enabled.
+            AutoFollowAtDistance = autoFollowAtDistance;
         }
 
         #endregion MonoBehaviour Implementation
@@ -191,6 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         if ((mainCamera.transform.position - autoFollowTransformTarget.position).sqrMagnitude >= autoFollowDistanceSq)
                         {
                             SetFollowMeBehavior(true);
+                            AutoFollowTriggered?.Invoke();
                         }
                     }
                 }

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -88,8 +88,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// by the platform.
         /// </summary>
         /// <remarks>
-        /// BoundaryGeometry should be treated as the outline of the player's space, placed
-        /// on the floor.
+        /// <para>BoundaryGeometry should be treated as the outline of the player's space, placed
+        /// on the floor.</para>
         /// </remarks>
         Edge[] Bounds { get; }
 
@@ -108,9 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <param name="boundaryType">The type of boundary space being checked.</param>
         /// <returns>True if the location is within the specified area of the boundary space.</returns>
         /// <remarks>
-        /// Use:
-        /// BoundaryType.PlayArea for the inscribed volume
-        /// BoundaryType.TrackedArea for the area defined by the boundary edges.
+        /// <para>Use BoundaryType.PlayArea for the inscribed volume
+        /// and BoundaryType.TrackedArea for the area defined by the boundary edges.</para>
         /// </remarks>
         bool Contains(Vector3 location, BoundaryType boundaryType = BoundaryType.TrackedArea);
 

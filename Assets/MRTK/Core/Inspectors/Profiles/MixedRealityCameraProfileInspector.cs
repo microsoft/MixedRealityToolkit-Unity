@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information. 
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License. 
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using UnityEditor;
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty transparentQualityLevel;
 
         private const string DataProviderErrorMsg = "The Mixed Reality Camera System will use default settings.\nAdd a settings provider to customize the camera.";
-        private static readonly GUIContent AddProviderTitle  = new GUIContent("+ Add Camera Settings Provider", "Add Camera Settings Provider");
+        private static readonly GUIContent AddProviderTitle = new GUIContent("+ Add Camera Settings Provider", "Add Camera Settings Provider");
         private static readonly GUIContent RemoveProviderTitle = new GUIContent("-", "Remove Camera Settings Provider");
 
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
@@ -154,7 +154,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
-            var configurations = (target as MixedRealityCameraProfile)?.SettingsConfigurations;
+            var profile = target as MixedRealityCameraProfile;
+            var configurations = (profile != null) ? profile.SettingsConfigurations : null;
             if (configurations != null && index >= 0 && index < configurations.Length)
             {
                 return configurations[index];

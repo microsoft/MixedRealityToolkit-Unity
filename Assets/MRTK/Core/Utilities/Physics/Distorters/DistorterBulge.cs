@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -10,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// bulge point.
     /// </summary>
     /// <remarks>
-    /// The characteristics of the distortion are also heavily controlled by the BulgeFalloff
-    /// property, which should contain key frames that cover the [0, 1] time range.
+    /// <para>The characteristics of the distortion are also heavily controlled by the BulgeFalloff
+    /// property, which should contain key frames that cover the [0, 1] time range.</para>
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/Core/DistorterBulge")]
     public class DistorterBulge : Distorter
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             {
                 float distortion = (1f - (bulgeFalloff.Evaluate(distanceToCenter / bulgeRadius))) * bulgeStrength;
                 Vector3 direction = (point - BulgeWorldCenter).normalized;
-                point = point + (direction * distortion * bulgeStrength);
+                point += (direction * distortion * bulgeStrength);
             }
 
             return point;

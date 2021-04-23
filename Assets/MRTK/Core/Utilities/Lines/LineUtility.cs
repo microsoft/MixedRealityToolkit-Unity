@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -66,8 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <returns>The calculated point.</returns>
         public static Vector3 GetPointAlongPhysicalParabola(Vector3 origin, Vector3 direction, float velocity, Vector3 gravity, float time)
         {
-            //return (origin + ((direction.normalized * velocity) * time)) + (0.5f * gravity * (time * time));
-
             direction = Vector3.Normalize(direction);
 
             origin.x += ((direction.x * velocity * time) + (0.5f * gravity.x * (time * time)));

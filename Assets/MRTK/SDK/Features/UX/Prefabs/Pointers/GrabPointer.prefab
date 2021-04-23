@@ -46,13 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dfa7178ac1c18947adff71ef2792a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 1
   destroyOnSourceLost: 0
   useSourcePoseData: 0
   poseAction:
     id: 3
     description: Grip Pose
     axisConstraint: 7
+  handedness: 1
   cursorPrefab: {fileID: 0}
   disableCursorOnStart: 0
   setCursorVisibilityOnSourceDetected: 0
@@ -65,18 +65,27 @@ MonoBehaviour:
     id: 7
     description: Grip Press
     axisConstraint: 3
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 0
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
   defaultPointerExtent: 10
   sphereCastRadius: 0.05
+  pullbackDistance: 0
+  nearObjectSectorAngle: 360
   nearObjectMargin: 0.2
+  nearObjectAxisLerp: 0.9
+  nearObjectSmoothingFactor: 0.4
   grabLayerMasks:
   - serializedVersion: 2
     m_Bits: 563
   triggerInteraction: 0
   sceneQueryBufferSize: 64
+  ignoreCollidersNotInFOV: 1
 --- !u!114 &7376459786343609486
 MonoBehaviour:
   m_ObjectHideFlags: 0

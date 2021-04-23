@@ -1,7 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
@@ -61,31 +62,46 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         #region IMixedRealityPointer Implementation
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] ParabolicTeleportPointer.OnPreSceneQuery");
+
+
+        private StabilizedRay stabilizedRay = new StabilizedRay(0.5f);
+        private Ray stabilizationRay = new Ray();
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            parabolicLineData.LineTransform.rotation = Quaternion.identity;
-            parabolicLineData.Direction = transform.forward;
-
-            // when pointing straight up, upDot should be close to 1.
-            // when pointing straight down, upDot should be close to -1.
-            // when pointing straight forward in any direction, upDot should be 0.
-            var upDot = Vector3.Dot(transform.forward, Vector3.up);
-
-            var velocity = minParabolaVelocity;
-            var distance = minDistanceModifier;
-
-            // If we're pointing below the horizon, always use the minimum modifiers.
-            if (upDot > 0f)
+            using (OnPreSceneQueryPerfMarker.Auto())
             {
-                // Increase the modifier multipliers the higher we point.
-                velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, upDot);
-                distance = Mathf.Lerp(minDistanceModifier, maxDistanceModifier, upDot);
-            }
+                stabilizationRay.origin = transform.position;
+                stabilizationRay.direction = transform.forward;
+                stabilizedRay.AddSample(stabilizationRay);
 
-            parabolicLineData.Velocity = velocity;
-            parabolicLineData.DistanceMultiplier = distance;
-            base.OnPreSceneQuery();
+
+                parabolicLineData.LineTransform.rotation = Quaternion.identity;
+                parabolicLineData.Direction = stabilizedRay.StabilizedDirection;
+
+                // when pointing straight up, angle should be close to 1.
+                // when pointing straight down, angle should be close to -1.	
+                // when pointing straight forward in any direction, upDot should be 0.
+                var angle = (Vector3.Angle(stabilizedRay.StabilizedDirection, Vector3.down) - 90.0f) / 90.0f;
+                var sqr_angle = angle * angle;
+
+                var velocity = minParabolaVelocity;
+                var distance = minDistanceModifier;
+
+                // If we're pointing below the horizon, always use the minimum modifiers.
+                // We use square angle so that the velocity change is less noticeable the closer the teleport point
+                // is to the user            
+                if (sqr_angle > 0)
+                {
+                    velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, sqr_angle);
+                    distance = Mathf.Lerp(minDistanceModifier, maxDistanceModifier, sqr_angle);
+                }
+
+                parabolicLineData.Velocity = velocity;
+                parabolicLineData.DistanceMultiplier = distance;
+                base.OnPreSceneQuery();
+            }
         }
 
         #endregion IMixedRealityPointer Implementation

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -14,15 +14,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Gaze,
         Voice,
         /// <summary>
-        /// 6 Dof Pointer with position and rotation.
+        /// 6-DoF pointer with position and rotation.
         /// </summary>
         SpatialPointer,
         /// <summary>
-        /// 3 Dof Pointer with only position.
+        /// 3-DoF pointer with only position.
         /// </summary>
         PointerPosition,
         /// <summary>
-        /// 3 Dof Pointer with only rotation.
+        /// 3-DoF pointer with only rotation.
         /// </summary>
         PointerRotation,
         PointerClick,
@@ -32,17 +32,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Trigger,
         TriggerTouch,
         TriggerNearTouch,
+        // TriggerPress, in some cases, maps to the grab/grasp gesture.
         TriggerPress,
         /// <summary>
-        /// 6 DoF Grip with position and rotation.
+        /// 6-DoF grip with position and rotation.
         /// </summary>
         SpatialGrip,
         /// <summary>
-        /// 3 DoF Grip with only position.
+        /// 3-DoF grip with only position.
         /// </summary>
         GripPosition,
         /// <summary>
-        /// 3 Dof Grip with only rotation.
+        /// 3-DoF grip with only rotation.
         /// </summary>
         GripRotation,
         ThumbStick,
@@ -53,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         TouchpadTouch,
         TouchpadNearTouch,
         TouchpadPress,
+        /// <summary>
+        /// Select, in some cases, maps to the pinch/airtap gesture.
+        /// </summary>
         Select,
         Start,
         Menu,
@@ -79,5 +83,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         PinkyFingerPress,
         DirectionalPad,
         Scroll,
+        PrimaryButtonPress,
+        PrimaryButtonTouch,
+        PrimaryButtonNearTouch,
+        SecondaryButtonPress,
+        SecondaryButtonTouch,
+        SecondaryButtonNearTouch,
+        Grip,
+        GripTouch,
+        GripNearTouch,
+        // GripPress, in some cases, maps to the grab/grasp gesture.
+        GripPress,
     }
 }

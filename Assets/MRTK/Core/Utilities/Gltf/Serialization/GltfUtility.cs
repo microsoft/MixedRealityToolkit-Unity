@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using System;
@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <param name="uri">the path to the file to load</param>
         /// <returns>New <see cref="Schema.GltfObject"/> imported from uri.</returns>
         /// <remarks>
-        /// Must be called from the main thread.
-        /// If the <see href="https://docs.unity3d.com/ScriptReference/Application-isPlaying.html">Application.isPlaying</see> is false, then this method will run synchronously.
+        /// <para>Must be called from the main thread.
+        /// If the <see href="https://docs.unity3d.com/ScriptReference/Application-isPlaying.html">Application.isPlaying</see> is false, then this method will run synchronously.</para>
         /// </remarks>
         public static async Task<GltfObject> ImportGltfObjectFromPathAsync(string uri)
         {
@@ -415,7 +415,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <summary>
         /// Takes a json object string with key value pairs, and returns a json string
         /// in the format of `{"items": [{"key": $key_name, "value": $value}]}`.
-        /// This format can be handled by JsonUtility and support an aribtrary number
+        /// This format can be handled by JsonUtility and support an arbitrary number
         /// of key/value pairs
         /// </summary>
         /// <param name="json">JSON string in the format `{"key": $value}`</param>

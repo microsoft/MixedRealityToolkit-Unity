@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/solvers/solver")]
     [AddComponentMenu("Scripts/MRTK/SDK/SolverHandler")]
     public class SolverHandler : MonoBehaviour
     {
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Currently tracked hand or motion controller if applicable
         /// </summary>
-        /// /// <remarks>
+        /// <remarks>
         /// Only possible values Left, Right, or None
         /// </remarks>
         public Handedness CurrentTrackedHandedness => currentTrackedHandedness;
@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Controller side to favor and pick first if TrackedHandedness is set to both
         /// </summary>
-        /// /// <remarks>
+        /// <remarks>
         /// Only possible values, Left or Right
         /// </remarks>
         public Handedness PreferredTrackedHandedness
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             get => preferredTrackedHandedness;
             set
             {
-                if ((value.IsLeft() || value.IsRight()) 
+                if ((value.IsLeft() || value.IsRight())
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
@@ -254,8 +254,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private float lastUpdateTime;
 
-        private IMixedRealityHandJointService HandJointService 
-            => handJointService ?? CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
+        private IMixedRealityHandJointService HandJointService
+            => handJointService ?? (handJointService = CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>());
 
         private IMixedRealityHandJointService handJointService = null;
 
@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (UpdateSolvers)
             {
-                //Before calling solvers, update goal to be the transform so that working and transform will match
+                // Before calling solvers, update goal to be the transform so that working and transform will match
                 GoalPosition = transform.position;
                 GoalRotation = transform.rotation;
                 GoalScale = transform.localScale;
@@ -390,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                     if (controllerRay == null)
                     {
-                        // If no pointer found, try again on the the opposite hand
+                        // If no pointer found, try again on the opposite hand
                         currentTrackedHandedness = currentTrackedHandedness.GetOppositeHandedness();
                         controllerRay = PointerUtils.GetPointer<LinePointer>(currentTrackedHandedness);
                     }
@@ -470,7 +470,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 return true;
             }
-            
+
             // If we are attached to a pointer (i.e controller ray), 
             // check if pointer's controller is still be tracked
             if (TrackedTargetType == TrackedObjectType.ControllerRay &&
@@ -478,9 +478,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 return true;
             }
-            
+
             // If we were tracking a particular hand, check that our transform is still valid
-            // The HandJointService does not destroy it's own hand joint tracked GameObjects even when a hand is no longer tracked
+            // The HandJointService does not destroy its own hand joint tracked GameObjects even when a hand is no longer tracked
             // Those HandJointService's GameObjects though are the parents of our tracked transform and thus will not be null/destroyed
             if (TrackedTargetType == TrackedObjectType.HandJoint && !currentTrackedHandedness.IsNone())
             {

@@ -43,13 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d3baa0a5986c24cbf0a6f6dcef2ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 0
   destroyOnSourceLost: 0
   useSourcePoseData: 1
   poseAction:
     id: 12
     description: Mouse Delta
     axisConstraint: 4
+  handedness: 0
   cursorPrefab: {fileID: 1151083198953756, guid: 667821d88830305449757690d22f71e0,
     type: 3}
   disableCursorOnStart: 0
@@ -63,6 +63,10 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 1
   overrideGlobalPointerExtent: 0

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the ray> representing the position and direction of the user's eyes.
+        /// Gets the ray representing the position and direction of the user's eyes.
         /// </summary>
         /// <param name="ray">The ray being returned</param>
         /// <returns>
@@ -34,12 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityEyeGazeProvider eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
             if ((eyeGazeProvider == null) ||
                 !eyeGazeProvider.IsEyeTrackingDataValid)
-            { 
-                return false; 
+            {
+                return false;
             }
-          
+
             ray = eyeGazeProvider.LatestEyeGaze;
-            
+
             return true;
         }
 

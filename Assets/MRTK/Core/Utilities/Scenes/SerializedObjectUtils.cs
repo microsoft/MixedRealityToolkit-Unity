@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return madeChanges;
         }
-        
+
         /// <summary>
         /// Iterates through a serialized object's fields and sets any accompanying fields in the supplied struct.
         /// </summary>
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return (T)targetObject;
         }
-        
+
         /// <summary>
         /// Sets the target field to the value from property based on property type.
         /// </summary>

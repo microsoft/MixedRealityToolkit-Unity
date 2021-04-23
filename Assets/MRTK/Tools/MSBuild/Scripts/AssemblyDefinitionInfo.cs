@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Gets whether this is marked as a TestAssembly.
         /// </summary>
         public bool TestAssembly { get; private set; }
-        
+
         /// <summary>
         /// Gets whether this is a default assembly definition like Assembly-CSharp
         /// </summary>

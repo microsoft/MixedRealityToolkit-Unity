@@ -28,6 +28,6 @@
     <file src="..\..\..\MRTK\Core\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.Utilities.targets" />
 
     <file src="..\..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.Utilities*" target="Plugins\" />
-    <!-- <file src="..\..\..\..\Assets\MRTK\Tests\TestUtilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Tests\TestUtilities" /> -->
+    <file src="..\..\..\..\..\Assets\MRTK\Tests\TestUtilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Tests\TestUtilities" />
   </files>
 </package>

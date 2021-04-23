@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     }
 
     /// <summary>
-    /// A class representing a CSProject to be outputed.
+    /// A class representing a CSProject to be outputted.
     /// </summary>
     public class CSProjectInfo : ReferenceItemInfo
     {
@@ -160,6 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private void AddDependency<T>(List<CSProjectDependency<T>> items, T referenceInfo) where T : ReferenceItemInfo
         {
+            if (referenceInfo == null)
+            {
+                return;
+            }
+            
             items.Add(new CSProjectDependency<T>(referenceInfo,
                 new HashSet<BuildTarget>(InEditorPlatforms.Keys.Intersect(referenceInfo.InEditorPlatforms.Keys)),
                 new HashSet<BuildTarget>(PlayerPlatforms.Keys.Intersect(referenceInfo.PlayerPlatforms.Keys))));
@@ -243,13 +248,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             switch (sourceFile.AssetLocation)
             {
                 case AssetLocation.BuiltInPackage:
-                    relativeSourcePath = sourceFile.File.FullName;
                     return;
                 case AssetLocation.Project:
                     relativeSourcePath = $"..\\..\\{Utilities.GetAssetsRelativePathFrom(sourceFile.File.FullName)}";
                     break;
                 case AssetLocation.Package:
                     relativeSourcePath = $"..\\{Utilities.GetPackagesRelativePathFrom(sourceFile.File.FullName)}";
+                    break;
+                case AssetLocation.BuiltInPackageWithSource:
+                    relativeSourcePath = Path.GetFullPath(sourceFile.File.FullName);
                     break;
                 default: throw new InvalidDataException("Unknown asset location.");
             }

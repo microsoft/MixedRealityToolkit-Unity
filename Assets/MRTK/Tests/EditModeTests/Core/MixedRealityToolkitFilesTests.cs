@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
@@ -109,6 +109,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets("MixedRealityToolkitFilesTests.cs");
             Assert.IsTrue(files.Length == 1);
+        }
+
+        /// <summary>
+        /// Validates that MixedRealityToolkit.GetAssetDatabasePath produces the correct asset path.
+        /// </summary>
+        [Test]
+        public void VerifyGetAssetDatabasePath()
+        {
+            // File in the Assets folder structure
+            string inputPath = @"c:\projects\MyUnityProject\Assets\materials\test.mat";
+            string expectedPath = "Assets/materials/test.mat";
+            string actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Assert.AreEqual(expectedPath, actualPath);
+
+            // File in the Packages folder structure
+            inputPath = "d:/source/projects/Packages/CoolFeature/textures/background.png";
+            expectedPath = "Packages/CoolFeature/textures/background.png";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Assert.AreEqual(expectedPath, actualPath);
+
+            // File in the Library/PackageCache folder structure
+            inputPath = @"c:\development\projects\space\Library\PackageCache\com.contoso.custompackage@17.43.0-preview.13\scriptable.asset";
+            expectedPath = "Packages/com.contoso.custompackage/scriptable.asset";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Assert.AreEqual(expectedPath, actualPath);
+
+            // Edge cases
+            inputPath = @"c:\projects\AssetsViewer\Assets\materials\test.mat";
+            expectedPath = "Assets/materials/test.mat";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Assert.AreEqual(expectedPath, actualPath);
+
+            inputPath = "d:/source/projects/Packages/CoolFeature/MyAssets/textures/background.png";
+            expectedPath = "Packages/CoolFeature/MyAssets/textures/background.png";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Assert.AreEqual(expectedPath, actualPath);
+
+            inputPath = @"c:\development\projects\space\Library\PackageCache\com.microsoft.mixedreality.toolkit.foundation@17.43.0-preview.13\Core\StandardAssets\Textures\MRTK_Logo_Black.png";
+            expectedPath = "Packages/com.microsoft.mixedreality.toolkit.foundation/Core/StandardAssets/Textures/MRTK_Logo_Black.png";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Assert.AreEqual(expectedPath, actualPath);
+
+            inputPath = @"c:\projects\AssetsViewer\Assets\StandardAssets\materials\test.mat";
+            expectedPath = "Assets/StandardAssets/materials/test.mat";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Assert.AreEqual(expectedPath, actualPath);
         }
 
         [TearDown]

@@ -1,7 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -35,11 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 calibrationStatus = CoreServices.InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
             }
 
-            if (calibrationStatus != null)
+            if (calibrationStatus.HasValue)
             {
                 if (prevCalibrationStatus != calibrationStatus)
                 {
-                    if (calibrationStatus == false)
+                    if (!calibrationStatus.Value)
                     {
                         OnNoEyeCalibrationDetected.Invoke();
                     }

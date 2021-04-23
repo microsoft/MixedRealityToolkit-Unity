@@ -1,0 +1,49 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.foundation",
+    "displayName": "Mixed Reality Toolkit Foundation",
+    "msftFeatureCategory": "Mixed Reality Toolkit",
+    "version": "%version%",
+    "unity": "2019.4",
+    "description": "The Mixed Reality Toolkit a set of foundational components and features to accelerate mixed reality app development in Unity.",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "hololens"
+    ],
+    "author": "Microsoft",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+     },
+    "dependencies": { 
+        "com.microsoft.mixedreality.toolkit.standardassets": "%version%"
+    },
+    "files": [
+        "Core*",
+        "Providers*",
+        "SDK*",
+        "Services*",
+        "package.json.meta",
+        "LICENSE*",
+        "NOTICE*",
+        "CHANGELOG*",
+        "Documentation~*",
+        "Samples~"
+    ],
+    "samples": [
+        {
+          "displayName": "Scene System Resources",
+          "description": "Resources used by the MRTK Scene System",
+          "path": "Samples~/SceneSystemResources"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -51,8 +51,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// T must be an interface type, not a class type, derived from IEventSystemHandler.
         /// </summary>
         /// <remarks>
-        /// If you want to register a single C# object as global handler for several event handling interfaces,
-        /// you must call this function for each interface type.
+        /// <para>If you want to register a single C# object as global handler for several event handling interfaces,
+        /// you must call this function for each interface type.</para>
         /// </remarks>
         /// <param name="handler">Handler to receive global input events of specified handler type.</param>
         void RegisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;
@@ -62,8 +62,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// T must be an interface type, not a class type, derived from IEventSystemHandler.
         /// </summary>
         /// <remarks>
-        /// If a single C# object listens to global input events for several event handling interfaces,
-        /// you must call this function for each interface type.
+        /// <para>If a single C# object listens to global input events for several event handling interfaces,
+        /// you must call this function for each interface type.</para>
         /// </remarks>
         /// <param name="handler">Handler to stop receiving global input events of specified handler type.</param>
         void UnregisterHandler<T>(IEventSystemHandler handler) where T : IEventSystemHandler;

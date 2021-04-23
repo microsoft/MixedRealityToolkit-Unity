@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         var resourceLoader = global::Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
                         localizedKeyword = resourceLoader.GetString(localizationKey);
                     }
-                    catch(System.Exception e)
+                    catch (System.Exception e)
                     {
                         // Ignore the exception and just use the fallback
                         Debug.LogError("GetLocalizedKeywordException: " + e.Message);

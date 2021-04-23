@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -10,30 +10,32 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 using System.Collections;
 using UnityEditor;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that the ray utilities methods are functioning correctly
     public class InputRayUtilsTests
     {
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         [UnityTest]
@@ -59,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestContext.Out.WriteLine($"origin: {ray.origin}");
             Assert.True(ray.origin == Vector3.zero);
             TestContext.Out.WriteLine($"direction: {ray.direction}");
-            Assert.True(ray.direction == new Vector3(0.0f, 0.0f, -1.0f)); 
+            Assert.True(ray.direction == new Vector3(0.0f, 0.0f, -1.0f));
         }
 
         [UnityTest]

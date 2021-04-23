@@ -3,7 +3,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -17,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public TextMesh inputUtilsText;
         public TextMesh rawDataText;
 
-        private Tuple<InputSourceType, Handedness> [] inputSources = new Tuple<InputSourceType, Handedness>[]
+        private Tuple<InputSourceType, Handedness>[] inputSources = new Tuple<InputSourceType, Handedness>[]
         {
             new Tuple<InputSourceType, Handedness>(InputSourceType.Controller, Handedness.Right) ,
             new Tuple<InputSourceType, Handedness>(InputSourceType.Controller, Handedness.Left) ,
@@ -57,12 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             // Iterate through all controllers output position, rotation, and other data from input 
             // mappings on a controller.
             sb.Clear();
-            foreach(var controller in CoreServices.InputSystem.DetectedControllers)
+            foreach (var controller in CoreServices.InputSystem.DetectedControllers)
             {
                 sb.AppendLine("Inputs for " + controller.InputSource.SourceName);
                 sb.AppendLine();
                 // Interactions for a controller is the list of inputs that this controller exposes
-                foreach(MixedRealityInteractionMapping inputMapping in controller.Interactions)
+                foreach (MixedRealityInteractionMapping inputMapping in controller.Interactions)
                 {
                     sb.AppendLine("\tDescription: " + inputMapping.Description);
                     sb.Append("\tAxisType: " + inputMapping.AxisType);
@@ -87,5 +86,5 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
         }
 
-    } 
+    }
 }

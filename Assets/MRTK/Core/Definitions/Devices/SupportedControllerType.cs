@@ -1,12 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     // todo: remove this.... it requires customization to add new device types
-    
+
     /// <summary>
     /// The SDKType lists the XR SDKs that are supported by the Mixed Reality Toolkit.
     /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         TouchScreen = 1 << 8,
         Mouse = 1 << 9,
         ArticulatedHand = 1 << 10,
-        GGVHand = 1 << 11
+        GGVHand = 1 << 11,
+        HPMotionController = 1 << 12
     }
 }

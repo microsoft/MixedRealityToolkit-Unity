@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         public Vector3 Origin { get; private set; }
         public Vector3 Terminus { get; private set; }
         public Vector3 Direction { get; private set; }
-        
+
         public float Length { get; private set; }
 
         private readonly float epsilon;

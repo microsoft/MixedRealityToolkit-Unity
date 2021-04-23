@@ -1,9 +1,9 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
 using System;
 using System.Collections.Generic;
 using UnityEngine.XR.WSA;
@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// Wrapper around Unity's WorldAnchorStore to simplify usage of persistence operations.
     /// </summary>
     /// <remarks>
-    /// This class only functions when built for the WSA platform. It uses APIs that are only present
-    /// on that platform.
+    /// <para>This class only functions when built for the WSA platform using legacy XR.
+    /// It uses APIs that are only present on that platform.</para>
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/SDK/WorldAnchorManager")]
     public class WorldAnchorManager : MonoBehaviour
@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// If non-null, verbose logging messages will be displayed on this TextMesh.
         /// </summary>
         /// <remarks>
-        /// Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
-        /// to be displayed.
+        /// <para>Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+        /// to be displayed.</para>
         /// </remarks>
         public TextMesh AnchorDebugText => anchorDebugText;
 
@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// If true, more verbose logging messages will be written to the console window.
         /// </summary>
         /// <remarks>
-        /// Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
-        /// to be displayed.
+        /// <para>Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+        /// to be displayed.</para>
         /// </remarks>
         public bool ShowDetailedLogs => showDetailedLogs;
 
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public bool PersistentAnchors => persistentAnchors;
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
         /// <summary>
         /// The WorldAnchorStore for the current application.
         /// Can be null when the application starts.
@@ -105,12 +105,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <summary>
         /// The queue for local device anchor operations.
         /// </summary>
-        private Queue<AnchorAttachmentInfo> LocalAnchorOperations = new Queue<AnchorAttachmentInfo>();
+        private readonly Queue<AnchorAttachmentInfo> localAnchorOperations = new Queue<AnchorAttachmentInfo>();
 
         /// <summary>
         /// Internal list of anchors and their GameObject references.
         /// </summary>
-        private Dictionary<string, GameObject> AnchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
+        private readonly Dictionary<string, GameObject> anchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
 
         #region Unity Methods
 
@@ -135,9 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return;
             }
 
-            if (LocalAnchorOperations.Count > 0)
+            if (localAnchorOperations.Count > 0)
             {
-                DoAnchorOperation(LocalAnchorOperations.Dequeue());
+                DoAnchorOperation(localAnchorOperations.Dequeue());
             }
         }
 
@@ -197,8 +197,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
 
                 GameObject anchoredObject;
-                AnchorGameObjectReferenceList.TryGetValue(anchor.name, out anchoredObject);
-                AnchorGameObjectReferenceList.Remove(anchor.name);
+                anchorGameObjectReferenceList.TryGetValue(anchor.name, out anchoredObject);
+                anchorGameObjectReferenceList.Remove(anchor.name);
                 AttachAnchor(anchoredObject, anchor.name);
             }
 
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         #endregion // Event Callbacks
-#endif
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 
         /// <summary>
         /// Attaches an anchor to the GameObject.
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <returns>The name of the newly attached anchor.</returns>
         public string AttachAnchor(GameObject gameObjectToAnchor, string anchorName = null)
         {
-#if !UNITY_WSA || UNITY_EDITOR
+#if !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
             Debug.LogWarning("World Anchor Manager does not work for this build. AttachAnchor will not be called.");
             return null;
 #else
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             anchorName = GenerateAnchorName(gameObjectToAnchor, anchorName);
 
-            LocalAnchorOperations.Enqueue(
+            localAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
                     AnchoredGameObject = gameObjectToAnchor,
@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             );
 
             return anchorName;
-#endif
+#endif // !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return;
             }
 
-#if !UNITY_WSA || UNITY_EDITOR
+#if !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
             Debug.LogWarning("World Anchor Manager does not work for this build. RemoveAnchor will not be called.");
 #else
             // This case is unexpected, but just in case.
@@ -312,14 +312,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 Debug.LogWarning("[WorldAnchorManager] RemoveAnchor called before anchor store is ready.");
             }
 
-            LocalAnchorOperations.Enqueue(
+            localAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
                     AnchoredGameObject = gameObjectToUnanchor,
                     AnchorName = anchorName,
                     Operation = AnchorOperation.Delete
                 });
-#endif
+#endif // !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public void RemoveAllAnchors()
         {
-#if !UNITY_WSA || UNITY_EDITOR
+#if !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
             Debug.LogWarning("World Anchor Manager does not work for this build. RemoveAnchor will not be called.");
 #else
             // This case is unexpected, but just in case.
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 // Let's check to see if there are anchors we weren't accounting for.
                 // Maybe they were created without using the WorldAnchorManager.
-                if (!AnchorGameObjectReferenceList.ContainsKey(anchors[i].name))
+                if (!anchorGameObjectReferenceList.ContainsKey(anchors[i].name))
                 {
                     Debug.LogWarning("[WorldAnchorManager] Removing an anchor that was created outside of the WorldAnchorManager.  Please use the WorldAnchorManager to create or delete anchors.");
                     if (anchorDebugText != null)
@@ -356,17 +356,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     }
                 }
 
-                LocalAnchorOperations.Enqueue(new AnchorAttachmentInfo
+                localAnchorOperations.Enqueue(new AnchorAttachmentInfo
                 {
                     AnchorName = anchors[i].name,
                     AnchoredGameObject = anchors[i].gameObject,
                     Operation = AnchorOperation.Delete
                 });
             }
-#endif
+#endif // !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
         }
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
         /// <summary>
         /// Called before creating anchor.  Used to check if import required.
         /// </summary>
@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
             }
 
-            AnchorGameObjectReferenceList.Add(anchorId, anchoredGameObject);
+            anchorGameObjectReferenceList.Add(anchorId, anchoredGameObject);
         }
 
         /// <summary>
@@ -484,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             // If we don't have a GameObject reference, let's try to get the GameObject reference from our dictionary.
             if (!string.IsNullOrEmpty(anchorId) && anchoredGameObject == null)
             {
-                AnchorGameObjectReferenceList.TryGetValue(anchorId, out anchoredGameObject);
+                anchorGameObjectReferenceList.TryGetValue(anchorId, out anchoredGameObject);
             }
 
             if (anchoredGameObject != null)
@@ -516,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (!string.IsNullOrEmpty(anchorId))
             {
-                AnchorGameObjectReferenceList.Remove(anchorId);
+                anchorGameObjectReferenceList.Remove(anchorId);
                 DeleteAnchor(anchorId);
             }
             else
@@ -632,6 +632,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             return string.IsNullOrEmpty(proposedAnchorName) ? gameObjectToAnchor.name : proposedAnchorName;
         }
-#endif
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
     }
 }

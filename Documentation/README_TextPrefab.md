@@ -53,12 +53,12 @@ When adding a UI or canvas based Text element to a scene, the size disparity is 
 
 ![Font size with scaling factors](../Documentation/Images/TextPrefab/TextPrefabInstructions07.png)
 
-### [Text3DSelawik.mat](/Assets/MixedRealityToolkit/StandardAssets/Materials/)
+### [Text3DSelawik.mat](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Core/StandardAssets/Materials)
 
 Material for 3DTextPrefab with occlusion support. Requires 3DTextShader.shader
 
 ![Default Font material vs 3DTextSegoeUI material](../Documentation/Images/TextPrefab/TextPrefabInstructions06.png)
 
-### [Text3DShader.shader](/Assets/MixedRealityToolkit/StandardAssets/Shaders/)
+### [Text3DShader.shader](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Core/StandardAssets/Shaders)
 
 Shader for 3DTextPrefab with occlusion support.

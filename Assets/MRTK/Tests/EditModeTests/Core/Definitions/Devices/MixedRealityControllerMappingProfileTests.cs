@@ -2,71 +2,76 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.OpenVR.Input;
 using NUnit.Framework;
 using UnityEditor;
 
-public class MixedRealityControllerMappingProfileTests
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
-    /// <summary>
-    /// Verifies that the TestMixedRealityControllerMappingProfile was successfully updated.
-    /// </summary>
-    [Test]
-    public void TestControllerMappingProfileUpdate()
+    public class MixedRealityControllerMappingProfileTests
     {
-        MixedRealityControllerMapping[] testMappingsChanged = new MixedRealityControllerMapping[]
+        /// <summary>
+        /// Verifies that the TestMixedRealityControllerMappingProfile was successfully updated.
+        /// </summary>
+        [Test]
+        public void TestControllerMappingProfileUpdate()
         {
-            new MixedRealityControllerMapping(typeof(ViveWandController),
-                Microsoft.MixedReality.Toolkit.Utilities.Handedness.Left),
-            new MixedRealityControllerMapping(typeof(ViveWandController),
-                Microsoft.MixedReality.Toolkit.Utilities.Handedness.Right)
-        };
-
-        testMappingsChanged[0].SetDefaultInteractionMapping();
-        testMappingsChanged[1].SetDefaultInteractionMapping();
-
-        testMappingsChanged[0].Interactions[1] = new MixedRealityInteractionMapping(1, "Fake mapping",
-            Microsoft.MixedReality.Toolkit.Utilities.AxisType.Digital, DeviceInputType.ButtonNearTouch);
-
-        bool wereMappingsUpdated = false;
-
-        foreach (MixedRealityControllerMapping mapping in testMappingsChanged)
-        {
-            if (mapping.UpdateInteractionSettingsFromDefault())
+            MixedRealityControllerMapping[] testMappingsChanged = new MixedRealityControllerMapping[]
             {
-                wereMappingsUpdated = true;
-            }
-        }
+#if UNITY_2020_1_OR_NEWER
+                new MixedRealityControllerMapping(typeof(XRSDK.OpenXR.HPReverbG2Controller), Utilities.Handedness.Left),
+                new MixedRealityControllerMapping(typeof(XRSDK.OpenXR.HPReverbG2Controller), Utilities.Handedness.Right)
+#else
+                new MixedRealityControllerMapping(typeof(OpenVR.Input.ViveWandController), Utilities.Handedness.Left),
+                new MixedRealityControllerMapping(typeof(OpenVR.Input.ViveWandController), Utilities.Handedness.Right)
+#endif
+            };
 
-        Assert.IsTrue(wereMappingsUpdated, "No mappings were updated. This test should always need an update.");
-    }
+            testMappingsChanged[0].SetDefaultInteractionMapping();
+            testMappingsChanged[1].SetDefaultInteractionMapping();
 
-    /// <summary>
-    /// Verifies that the DefaultMixedRealityControllerMappingProfile didn't need updating.
-    /// </summary>
-    [Test]
-    public void TestNoControllerMappingProfileUpdate()
-    {
-        foreach (string guid in AssetDatabase.FindAssets("t:MixedRealityControllerMappingProfile DefaultMixedRealityControllerMappingProfile"))
-        {
-            MixedRealityControllerMappingProfile asset = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(MixedRealityControllerMappingProfile)) as MixedRealityControllerMappingProfile;
+            testMappingsChanged[0].Interactions[1] = new MixedRealityInteractionMapping(1, "Fake mapping",
+                Utilities.AxisType.Digital, DeviceInputType.ButtonNearTouch);
 
             bool wereMappingsUpdated = false;
 
-            foreach (MixedRealityControllerMapping mapping in asset.MixedRealityControllerMappings)
+            foreach (MixedRealityControllerMapping mapping in testMappingsChanged)
             {
-                if (mapping.ControllerType.Type == null)
-                {
-                    continue;
-                }
-
                 if (mapping.UpdateInteractionSettingsFromDefault())
                 {
                     wereMappingsUpdated = true;
                 }
             }
 
-            Assert.IsFalse(wereMappingsUpdated, "DefaultMixedRealityControllerMappingProfile needed an update. This should never be checked in needing an update.");
+            Assert.IsTrue(wereMappingsUpdated, "No mappings were updated. This test should always need an update.");
+        }
+
+        /// <summary>
+        /// Verifies that the DefaultMixedRealityControllerMappingProfile didn't need updating.
+        /// </summary>
+        [Test]
+        public void TestNoControllerMappingProfileUpdate()
+        {
+            foreach (string guid in AssetDatabase.FindAssets("t:MixedRealityControllerMappingProfile DefaultMixedRealityControllerMappingProfile"))
+            {
+                MixedRealityControllerMappingProfile asset = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(MixedRealityControllerMappingProfile)) as MixedRealityControllerMappingProfile;
+
+                bool wereMappingsUpdated = false;
+
+                foreach (MixedRealityControllerMapping mapping in asset.MixedRealityControllerMappings)
+                {
+                    if (mapping.ControllerType.Type == null)
+                    {
+                        continue;
+                    }
+
+                    if (mapping.UpdateInteractionSettingsFromDefault())
+                    {
+                        wereMappingsUpdated = true;
+                    }
+                }
+
+                Assert.IsFalse(wereMappingsUpdated, "DefaultMixedRealityControllerMappingProfile needed an update. This should never be checked in needing an update.");
+            }
         }
     }
 }

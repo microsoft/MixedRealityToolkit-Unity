@@ -1,9 +1,9 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string StandardRoughnessShaderName = "Standard (Roughness setup)";
         private const string StandardSpecularShaderName = "Standard (Specular setup)";
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Texture Combiner")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Texture Combiner")]
         private static void ShowWindow()
         {
             TextureCombinerWindow window = GetWindow<TextureCombinerWindow>();
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             GUI.enabled = standardMaterial != null && IsUnityStandardMaterial(standardMaterial);
 
-            if (GUILayout.Button("Autopopulate from Standard Material"))
+            if (GUILayout.Button("Auto-populate from Standard Material"))
             {
                 Autopopulate();
             }
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             else
             {
-                smoothnessMap = ((int)standardMaterial.GetFloat("_SmoothnessTextureChannel") == 0) ? (Texture2D)standardMaterial.GetTexture("_SpecGlossMap") : 
+                smoothnessMap = ((int)standardMaterial.GetFloat("_SmoothnessTextureChannel") == 0) ? (Texture2D)standardMaterial.GetTexture("_SpecGlossMap") :
                                                                                                      (Texture2D)standardMaterial.GetTexture("_MainTex");
                 smoothnessMapChannel = smoothnessMap != null ? Channel.Alpha : smoothnessMapChannel;
             }
@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
         }
-        
+
         private bool CanSave()
         {
             return metallicMap != null || occlusionMap != null || emissionMap != null || smoothnessMap != null ||
@@ -222,8 +222,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (material != null)
             {
-                if (material.shader.name == StandardShaderName || 
-                    material.shader.name == StandardRoughnessShaderName || 
+                if (material.shader.name == StandardShaderName ||
+                    material.shader.name == StandardRoughnessShaderName ||
                     material.shader.name == StandardSpecularShaderName)
                 {
                     return true;

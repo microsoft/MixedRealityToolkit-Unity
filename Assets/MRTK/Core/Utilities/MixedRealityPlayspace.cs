@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit
         public static Quaternion Rotation
         {
             get { return Transform.rotation; }
-            set { Transform.rotation = value;  }
+            set { Transform.rotation = value; }
         }
 
         /// <summary>
@@ -131,6 +131,18 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Transforms a direction from world to local space.
+        /// </summary>
+        /// <param name="worldDirection">The direction to be transformed.</param>
+        /// <returns>
+        /// The direction, in local space.
+        /// </returns>
+        public static Vector3 InverseTransformDirection(Vector3 worldDirection)
+        {
+            return Transform.InverseTransformDirection(worldDirection);
+        }
+
+        /// <summary>
         /// Rotates the playspace around the specified axis.
         /// </summary>
         /// <param name="point">The point to pass through during rotation.</param>
@@ -146,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="transformation">The transformation to be applied to the playspace.</param>
         /// <remarks>
-        /// This method takes a lambda function and may contribute to garbage collector pressure.
-        /// For best performance, avoid calling this method from an inner loop function.
+        /// <para>This method takes a lambda function and may contribute to garbage collector pressure.
+        /// For best performance, avoid calling this method from an inner loop function.</para>
         /// </remarks>
         public static void PerformTransformation(Action<Transform> transformation)
         {

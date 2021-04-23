@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// New controller types can be registered by adding the MixedRealityControllerAttribute to
     /// the controller class.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
     public class MixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
         [SerializeField]
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappings;
 
 #if UNITY_EDITOR
-        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Controller Mapping Profiles")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Update/Controller Mapping Profiles")]
         private static void UpdateAllControllerMappingProfiles()
         {
             string[] guids = AssetDatabase.FindAssets("t:MixedRealityControllerMappingProfile");
@@ -214,12 +214,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             });
         }
 
-#endif // UNITY_EDITOR
-
         private static bool UsesCustomInteractionMapping(Type controllerType)
         {
             var attribute = MixedRealityControllerAttribute.Find(controllerType);
-            return attribute != null ? attribute.Flags.HasFlag(MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings) : false;
+            return attribute != null && attribute.Flags.HasFlag(MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings);
         }
 
         private static Handedness[] GetSupportedHandedness(Type controllerType)
@@ -227,5 +225,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var attribute = MixedRealityControllerAttribute.Find(controllerType);
             return attribute != null ? attribute.SupportedHandedness : Array.Empty<Handedness>();
         }
+#endif // UNITY_EDITOR
     }
 }

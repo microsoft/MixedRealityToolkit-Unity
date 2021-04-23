@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,26 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("Scripts/MRTK/Services/NearInteractionTouchableVolume")]
     public class NearInteractionTouchableVolume : BaseNearInteractionTouchable
     {
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(NearInteractionTouchableVolume))]
-        public class Editor : UnityEditor.Editor
-        {
-            /// <inheritdoc />
-            public override void OnInspectorGUI()
-            {
-                base.OnInspectorGUI();
-
-                NearInteractionTouchableVolume t = (NearInteractionTouchableVolume)target;
-                Collider c = t.GetComponent<Collider>();
-                if (c == null)
-                {
-                    UnityEditor.EditorGUILayout.HelpBox("A collider is required in order to compute the touchable volume.", UnityEditor.MessageType.Warning);
-                }
-            }
-        }
-#endif
-
-        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
+        /// <summary>
+        /// Is the touchable collider enabled and active in the scene.
+        /// </summary>
+        public bool ColliderEnabled => touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy;
 
         /// <summary>
         /// The collider used by this touchable.
@@ -47,6 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnValidate();
 
             touchableCollider = GetComponent<Collider>();
+        }
+
+        private void Awake()
+        {
+            if (touchableCollider == null)
+            {
+                touchableCollider = GetComponent<Collider>();
+            }
         }
 
         /// <inheritdoc />

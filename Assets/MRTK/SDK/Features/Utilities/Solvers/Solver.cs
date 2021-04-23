@@ -1,8 +1,9 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -12,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// as long as updateLinkedTransform is false.
     /// </summary>
     [RequireComponent(typeof(SolverHandler))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/solvers/solver")]
     public abstract class Solver : MonoBehaviour
     {
         [SerializeField]
@@ -68,8 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("If true, the Solver will respect the object's original scale values")]
-        private bool maintainScale = true;
+        [Tooltip("If true, the Solver will respect the object's original scale values on initialization")]
+        [FormerlySerializedAs("maintainScale")]
+        private bool maintainScaleOnInitialization = true;
 
         [SerializeField]
         [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
@@ -206,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 updateLinkedTransform = false;
             }
 
-            GoalScale = maintainScale ? transform.localScale : Vector3.one;
+            GoalScale = maintainScaleOnInitialization ? transform.localScale : Vector3.one;
         }
 
         /// <summary>

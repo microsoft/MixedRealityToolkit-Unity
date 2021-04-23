@@ -14,7 +14,7 @@
     <releaseNotes>$releaseNotes$</releaseNotes>
     <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
     <dependencies>
-      <dependency id="Microsoft.Windows.MixedReality.DotNetWinRT" version="0.5.1045" />
+      <dependency id="Microsoft.Windows.MixedReality.DotNetWinRT" version="0.5.1049" />
     </dependencies>
     <contentFiles>
       <files include="any\any\.PkgSrc\**" buildAction="None" copyToOutput="false" />
@@ -25,6 +25,7 @@
     <file src="MRTK\Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\Providers\License.txt*;MRTK\Providers\Version.txt*;MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter*;MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter\**\*.*;MRTK\Providers\UnityAR*;MRTK\Providers\UnityAR\**\*.*" target="MRTK\" />
     <file src="MRTK\SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\SDK\License.txt*;MRTK\SDK\Version.txt*;MRTK\SDK\toc.yml*;MRTK\SDK\StandardAssets.meta;MRTK\SDK\StandardAssets\Fonts.meta;MRTK\SDK\StandardAssets\Materials.meta;MRTK\SDK\StandardAssets\Shaders.meta;MRTK\SDK\StandardAssets\Textures.meta" target="MRTK\" />
     <file src="MRTK\Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\Services\License.txt*;MRTK\Services\Version.txt*" target="MRTK\" />
+    <file src="MRTK\StandardAssets\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
 
     <file src="MRTK\Core\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Foundation.targets" />
 
@@ -34,30 +35,19 @@
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.pdb*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Core" /> -->
+    <file src="..\..\Assets\MRTK\Core\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Core" />
 
     <!-- Assemblies and Sources that are built from the Providers folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" exclude="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR*;..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR\**\*.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MRTK\Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Providers" /> -->
+    <file src="..\..\Assets\MRTK\Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Providers" />
 
     <!-- Assemblies and Sources that are built from the SDK folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MRTK\SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\SDK" /> -->
+    <file src="..\..\Assets\MRTK\SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\SDK" />
 
     <!-- Assemblies and Sources that are built from the Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MRTK\Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Services" /> -->
-    
-    <!-- 
-      link.xml is copied to the root location, so that it can catch IL2CPP
-      bytecode stripping issues for all scripts included in this package.
-    -->
-    <file src="link.xml" target="" />
-    <file src="link.xml.meta" target="" />
+    <file src="..\..\Assets\MRTK\Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Services" />
   </files>
 </package>

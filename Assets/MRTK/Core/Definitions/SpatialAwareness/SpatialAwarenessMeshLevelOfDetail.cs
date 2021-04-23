@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
@@ -30,6 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The fine level of detail is well suited for using as an occlusion
         /// mesh.
         /// </summary>
-        Fine
+        Fine,
+
+        /// <summary>
+        /// The unlimited level of detail requests meshes as detailed as possible from the device.
+        /// </summary>
+        Unlimited = 255
     }
 }

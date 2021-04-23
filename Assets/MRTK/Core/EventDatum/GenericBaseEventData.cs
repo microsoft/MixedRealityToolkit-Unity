@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -29,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// the event instead of fields on BaseEventData.
         /// </summary>
         /// <remarks>
-        /// BaseEventData is only used because it's part of Unity's EventSystem dispatching,
-        /// so this code must subclass it in order to leverage EventSystem.ExecuteEvents
+        /// <para>BaseEventData is only used because it's part of Unity's EventSystem dispatching,
+        /// so this code must subclass it in order to leverage EventSystem.ExecuteEvents</para>
         /// </remarks>
         public new GameObject selectedObject { get; protected set; }
 
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Constructor.
         /// </summary>
         /// <param name="eventSystem">Usually <see href="https://docs.unity3d.com/ScriptReference/EventSystems.EventSystem-current.html">EventSystems.EventSystem.current</see></param>
-        public GenericBaseEventData(EventSystem eventSystem) : base(eventSystem) {}
+        public GenericBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.

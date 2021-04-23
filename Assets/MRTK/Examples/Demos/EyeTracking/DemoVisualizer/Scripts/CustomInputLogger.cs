@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         public void StopLoggingAndSave()
         {
-            Debug.Log(">> STOP LOGGING and save! ");       
+            Debug.Log(">> STOP LOGGING and save! ");
             SaveLogs();
             isLogging = false;
         }

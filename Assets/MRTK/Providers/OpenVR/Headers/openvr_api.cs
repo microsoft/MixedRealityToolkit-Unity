@@ -1894,18 +1894,18 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool PollNextEvent(ref VREvent_t pEvent, uint uncbVREvent)
         {
 #if !UNITY_METRO
-		if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-				(System.Environment.OSVersion.Platform == System.PlatformID.Unix))
-		{
-			PollNextEventUnion u;
-			VREvent_t_Packed event_packed = new VREvent_t_Packed();
-			u.pPollNextEventPacked = null;
-			u.pPollNextEvent = FnTable.PollNextEvent;
-			bool packed_result = u.pPollNextEventPacked(ref event_packed,(uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VREvent_t_Packed)));
+            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
+                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            {
+                PollNextEventUnion u;
+                VREvent_t_Packed event_packed = new VREvent_t_Packed();
+                u.pPollNextEventPacked = null;
+                u.pPollNextEvent = FnTable.PollNextEvent;
+                bool packed_result = u.pPollNextEventPacked(ref event_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VREvent_t_Packed)));
 
-			event_packed.Unpack(ref pEvent);
-			return packed_result;
-		}
+                event_packed.Unpack(ref pEvent);
+                return packed_result;
+            }
 #endif
             bool result = FnTable.PollNextEvent(ref pEvent, uncbVREvent);
             return result;
@@ -1940,18 +1940,18 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool GetControllerState(uint unControllerDeviceIndex, ref VRControllerState_t pControllerState, uint unControllerStateSize)
         {
 #if !UNITY_METRO
-		if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-				(System.Environment.OSVersion.Platform == System.PlatformID.Unix))
-		{
-			GetControllerStateUnion u;
-			VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
-			u.pGetControllerStatePacked = null;
-			u.pGetControllerState = FnTable.GetControllerState;
-			bool packed_result = u.pGetControllerStatePacked(unControllerDeviceIndex,ref state_packed,(uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VRControllerState_t_Packed)));
+            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
+                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            {
+                GetControllerStateUnion u;
+                VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
+                u.pGetControllerStatePacked = null;
+                u.pGetControllerState = FnTable.GetControllerState;
+                bool packed_result = u.pGetControllerStatePacked(unControllerDeviceIndex, ref state_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VRControllerState_t_Packed)));
 
-			state_packed.Unpack(ref pControllerState);
-			return packed_result;
-		}
+                state_packed.Unpack(ref pControllerState);
+                return packed_result;
+            }
 #endif
             bool result = FnTable.GetControllerState(unControllerDeviceIndex, ref pControllerState, unControllerStateSize);
             return result;
@@ -1971,18 +1971,18 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool GetControllerStateWithPose(ETrackingUniverseOrigin eOrigin, uint unControllerDeviceIndex, ref VRControllerState_t pControllerState, uint unControllerStateSize, ref TrackedDevicePose_t pTrackedDevicePose)
         {
 #if !UNITY_METRO
-		if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-				(System.Environment.OSVersion.Platform == System.PlatformID.Unix))
-		{
-			GetControllerStateWithPoseUnion u;
-			VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
-			u.pGetControllerStateWithPosePacked = null;
-			u.pGetControllerStateWithPose = FnTable.GetControllerStateWithPose;
-			bool packed_result = u.pGetControllerStateWithPosePacked(eOrigin,unControllerDeviceIndex,ref state_packed,(uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VRControllerState_t_Packed)),ref pTrackedDevicePose);
+            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
+                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            {
+                GetControllerStateWithPoseUnion u;
+                VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
+                u.pGetControllerStateWithPosePacked = null;
+                u.pGetControllerStateWithPose = FnTable.GetControllerStateWithPose;
+                bool packed_result = u.pGetControllerStateWithPosePacked(eOrigin, unControllerDeviceIndex, ref state_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VRControllerState_t_Packed)), ref pTrackedDevicePose);
 
-			state_packed.Unpack(ref pControllerState);
-			return packed_result;
-		}
+                state_packed.Unpack(ref pControllerState);
+                return packed_result;
+            }
 #endif
             bool result = FnTable.GetControllerStateWithPose(eOrigin, unControllerDeviceIndex, ref pControllerState, unControllerStateSize, ref pTrackedDevicePose);
             return result;
@@ -2945,18 +2945,18 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool PollNextOverlayEvent(ulong ulOverlayHandle, ref VREvent_t pEvent, uint uncbVREvent)
         {
 #if !UNITY_METRO
-		if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-				(System.Environment.OSVersion.Platform == System.PlatformID.Unix))
-		{
-			PollNextOverlayEventUnion u;
-			VREvent_t_Packed event_packed = new VREvent_t_Packed();
-			u.pPollNextOverlayEventPacked = null;
-			u.pPollNextOverlayEvent = FnTable.PollNextOverlayEvent;
-			bool packed_result = u.pPollNextOverlayEventPacked(ulOverlayHandle,ref event_packed,(uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VREvent_t_Packed)));
+            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
+                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            {
+                PollNextOverlayEventUnion u;
+                VREvent_t_Packed event_packed = new VREvent_t_Packed();
+                u.pPollNextOverlayEventPacked = null;
+                u.pPollNextOverlayEvent = FnTable.PollNextOverlayEvent;
+                bool packed_result = u.pPollNextOverlayEventPacked(ulOverlayHandle, ref event_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VREvent_t_Packed)));
 
-			event_packed.Unpack(ref pEvent);
-			return packed_result;
-		}
+                event_packed.Unpack(ref pEvent);
+                return packed_result;
+            }
 #endif
             bool result = FnTable.PollNextOverlayEvent(ulOverlayHandle, ref pEvent, uncbVREvent);
             return result;
@@ -3238,18 +3238,18 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool GetComponentState(string pchRenderModelName, string pchComponentName, ref VRControllerState_t pControllerState, ref RenderModel_ControllerMode_State_t pState, ref RenderModel_ComponentState_t pComponentState)
         {
 #if !UNITY_METRO
-		if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-				(System.Environment.OSVersion.Platform == System.PlatformID.Unix))
-		{
-			GetComponentStateUnion u;
-			VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
-			u.pGetComponentStatePacked = null;
-			u.pGetComponentState = FnTable.GetComponentState;
-			bool packed_result = u.pGetComponentStatePacked(pchRenderModelName,pchComponentName,ref state_packed,ref pState,ref pComponentState);
+            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
+                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            {
+                GetComponentStateUnion u;
+                VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
+                u.pGetComponentStatePacked = null;
+                u.pGetComponentState = FnTable.GetComponentState;
+                bool packed_result = u.pGetComponentStatePacked(pchRenderModelName, pchComponentName, ref state_packed, ref pState, ref pComponentState);
 
-			state_packed.Unpack(ref pControllerState);
-			return packed_result;
-		}
+                state_packed.Unpack(ref pControllerState);
+                return packed_result;
+            }
 #endif
             bool result = FnTable.GetComponentState(pchRenderModelName, pchComponentName, ref pControllerState, ref pState, ref pComponentState);
             return result;
@@ -4766,7 +4766,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdMatrix34_t
     {
-        public float m0; //float[3][4]
+        public float m0; // float[3][4]
         public float m1;
         public float m2;
         public float m3;
@@ -4782,7 +4782,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdMatrix33_t
     {
-        public float m0; //float[3][3]
+        public float m0; // float[3][3]
         public float m1;
         public float m2;
         public float m3;
@@ -4795,7 +4795,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdMatrix44_t
     {
-        public float m0; //float[4][4]
+        public float m0; // float[4][4]
         public float m1;
         public float m2;
         public float m3;
@@ -4815,14 +4815,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector3_t
     {
-        public float v0; //float[3]
+        public float v0; // float[3]
         public float v1;
         public float v2;
     }
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector4_t
     {
-        public float v0; //float[4]
+        public float v0; // float[4]
         public float v1;
         public float v2;
         public float v3;
@@ -4830,14 +4830,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector3d_t
     {
-        public double v0; //double[3]
+        public double v0; // double[3]
         public double v1;
         public double v2;
     }
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector2_t
     {
-        public float v0; //float[2]
+        public float v0; // float[2]
         public float v1;
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -4867,7 +4867,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdQuad_t
     {
-        public HmdVector3_t vCorners0; //HmdVector3_t[4]
+        public HmdVector3_t vCorners0; // HmdVector3_t[4]
         public HmdVector3_t vCorners1;
         public HmdVector3_t vCorners2;
         public HmdVector3_t vCorners3;
@@ -4881,11 +4881,11 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct DistortionCoordinates_t
     {
-        public float rfRed0; //float[2]
+        public float rfRed0; // float[2]
         public float rfRed1;
-        public float rfGreen0; //float[2]
+        public float rfGreen0; // float[2]
         public float rfGreen1;
-        public float rfBlue0; //float[2]
+        public float rfBlue0; // float[2]
         public float rfBlue1;
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -5209,7 +5209,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public uint unPacketNum;
         public ulong ulButtonPressed;
         public ulong ulButtonTouched;
-        public VRControllerAxis_t rAxis0; //VRControllerAxis_t[5]
+        public VRControllerAxis_t rAxis0; // VRControllerAxis_t[5]
         public VRControllerAxis_t rAxis1;
         public VRControllerAxis_t rAxis2;
         public VRControllerAxis_t rAxis3;
@@ -5222,7 +5222,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public uint unPacketNum;
         public ulong ulButtonPressed;
         public ulong ulButtonTouched;
-        public VRControllerAxis_t rAxis0; //VRControllerAxis_t[5]
+        public VRControllerAxis_t rAxis0; // VRControllerAxis_t[5]
         public VRControllerAxis_t rAxis1;
         public VRControllerAxis_t rAxis2;
         public VRControllerAxis_t rAxis3;
@@ -5407,7 +5407,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     {
         public HmdVector3_t vPosition;
         public HmdVector3_t vNormal;
-        public float rfTextureCoord0; //float[2]
+        public float rfTextureCoord0; // float[2]
         public float rfTextureCoord1;
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -5687,12 +5687,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct VRSkeletalSummaryData_t
     {
-        public float flFingerCurl0; //float[5]
+        public float flFingerCurl0; // float[5]
         public float flFingerCurl1;
         public float flFingerCurl2;
         public float flFingerCurl3;
         public float flFingerCurl4;
-        public float flFingerSplay0; //float[4]
+        public float flFingerSplay0; // float[4]
         public float flFingerSplay1;
         public float flFingerSplay2;
         public float flFingerSplay3;

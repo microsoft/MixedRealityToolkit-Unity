@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
@@ -284,8 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void Fire_OnAllTargetsSelected()
         {
             // Make sure someone is listening to event
-            if (OnAllTargetsSelected != null)
-                OnAllTargetsSelected();
+            OnAllTargetsSelected?.Invoke();
         }
 
         /// <summary>
@@ -294,8 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void Fire_OnTargetSelected()
         {
             // Make sure someone is listening to event
-            if (OnTargetSelected != null)
-                OnTargetSelected();
+            OnTargetSelected?.Invoke();
         }
 
         #region IMixedRealityPointerHandler

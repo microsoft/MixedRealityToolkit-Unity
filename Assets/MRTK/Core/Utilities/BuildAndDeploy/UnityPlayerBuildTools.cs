@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Debug.Log($"Exiting build...");
             EditorApplication.Exit(success ? 0 : 1);
         }
-        
+
         public static async Task<bool> BuildUnityPlayerSimplified()
         {
             // We don't need stack traces on all our logs. Makes things a lot easier to read.
@@ -215,6 +215,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         public static void ParseBuildCommandLine(ref IBuildInfo buildInfo)
         {
             string[] arguments = Environment.GetCommandLineArgs();
+            
+            // Boolean used to track whether builfInfo contains scenes that are not specified by command line arguments.
+            // These non command line arugment scenes should be overwritten by those specified in the command line.
+            bool buildInfoContainsNonCommandLineScene = buildInfo.Scenes.Count() > 0;
 
             for (int i = 0; i < arguments.Length; ++i)
             {
@@ -224,13 +228,29 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         buildInfo.AutoIncrement = true;
                         break;
                     case "-sceneList":
-                        buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(arguments[++i]));
+                        if (buildInfoContainsNonCommandLineScene)
+                        {
+                            buildInfo.Scenes = SplitSceneList(arguments[++i]);
+                            buildInfoContainsNonCommandLineScene = false;
+                        }
+                        else
+                        {
+                            buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(arguments[++i]));
+                        }
                         break;
                     case "-sceneListFile":
                         string path = arguments[++i];
                         if (File.Exists(path))
                         {
-                            buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(File.ReadAllText(path)));
+                            if (buildInfoContainsNonCommandLineScene)
+                            {
+                                buildInfo.Scenes = SplitSceneList(File.ReadAllText(path));
+                                buildInfoContainsNonCommandLineScene = false;
+                            }
+                            else
+                            {
+                                buildInfo.Scenes = buildInfo.Scenes.Union(SplitSceneList(File.ReadAllText(path)));
+                            }
                         }
                         else
                         {

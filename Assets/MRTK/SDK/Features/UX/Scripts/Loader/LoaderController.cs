@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AnimateDotTransforms()
         {
-            //Set dot groups' scale
+            // Set dot groups' scale
             float sinScaleCalc = dotSetScale + Mathf.Sin(Cycles * tau / 2) * dotScaleMultipler;
             float cosScaleCalc = dotSetScale + Mathf.Cos(Cycles * tau / 2) * dotScaleMultipler;
 

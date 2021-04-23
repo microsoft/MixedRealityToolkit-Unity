@@ -1,16 +1,38 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using System.IO;
 using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
+
+#if UNITY_2020_2_OR_NEWER
+using UnityEditor.AssetImporters;
+#else
+using UnityEditor.Experimental.AssetImporters;
+#endif // UNITY_2020_2_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
 {
     public static class GltfEditorImporter
     {
+#if MRTK_GLTF_IMPORTER_OFF
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Enable MRTK glTF asset importer")]
+#else
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Disable MRTK glTF asset importer")]
+#endif
+        private static void ReconcileGltfImporterDefine()
+        {
+            BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+
+#if MRTK_GLTF_IMPORTER_OFF
+            ScriptUtilities.RemoveScriptingDefinitions(group, "MRTK_GLTF_IMPORTER_OFF");
+#else
+            ScriptUtilities.AppendScriptingDefinitions(group, "MRTK_GLTF_IMPORTER_OFF");
+#endif
+        }
+
         public static async void OnImportGltfAsset(AssetImportContext context)
         {
             var importedObject = await GltfUtility.ImportGltfObjectFromPathAsync(context.assetPath);
@@ -90,17 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
             {
                 foreach (GltfMaterial gltfMaterial in gltfAsset.GltfObject.materials)
                 {
-                    if (context.assetPath.EndsWith(".glb"))
-                    {
-                        context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
-                    }
-                    else
-                    {
-                        var relativePath = Path.GetFullPath(Path.GetDirectoryName(context.assetPath)).Replace(Path.GetFullPath(Application.dataPath), "Assets");
-                        relativePath = Path.Combine(relativePath, $"{gltfMaterial.name}.mat");
-                        AssetDatabase.CreateAsset(gltfMaterial.Material, relativePath);
-                        gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(relativePath);
-                    }
+                    context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
                 }
             }
         }

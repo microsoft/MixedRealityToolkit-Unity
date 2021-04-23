@@ -1,6 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Copyright(c) 2019 Takahiro Miyaura
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -136,9 +136,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// Initialize AR Foundation components.
         /// </summary>
         /// <remarks>
-        /// This method ensures AR Foundation required components (ex: AR Session, Tracked Pose Driver, etc) are
+        /// <para>This method ensures AR Foundation required components (ex: AR Session, Tracked Pose Driver, etc) are
         /// exist or are added to the appropriate scene objects. These components are used by AR Foundation to
-        /// communicate with the underlying AR platform (ex: AR Core), track the device and perform other necessary tasks.
+        /// communicate with the underlying AR platform (ex: AR Core), track the device and perform other necessary tasks.</para>
         /// </remarks>
         private void InitializeARFoundation()
         {

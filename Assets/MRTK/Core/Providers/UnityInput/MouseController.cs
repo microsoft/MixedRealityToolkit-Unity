@@ -1,7 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
@@ -24,123 +25,143 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null) : base(trackingState, controllerHandedness, inputSource, interactions)
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new MouseControllerDefinition())
         { }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
+        public override MixedRealityInteractionMapping[] DefaultInteractions
         {
-            new MixedRealityInteractionMapping(0, "Spatial Mouse Position", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition),
-            new MixedRealityInteractionMapping(2, "Mouse Scroll Position", AxisType.DualAxis, DeviceInputType.Scroll, ControllerMappingLibrary.AXIS_3),
-            new MixedRealityInteractionMapping(3, "Left Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse0),
-            new MixedRealityInteractionMapping(4, "Right Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse1),
-            new MixedRealityInteractionMapping(5, "Mouse Button 2", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse2),
-            new MixedRealityInteractionMapping(6, "Mouse Button 3", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse3),
-            new MixedRealityInteractionMapping(7, "Mouse Button 4", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse4),
-            new MixedRealityInteractionMapping(8, "Mouse Button 5", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse5),
-            new MixedRealityInteractionMapping(9, "Mouse Button 6", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse6),
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(ControllerHandedness);
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i], LegacyInputSupport[i]);
+                }
+                return defaultInteractions;
+            }
+        }
+
+        private static readonly MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport = new[]
+        {
+            new MixedRealityInteractionMappingLegacyInput(), // Spatial Mouse Position
+            new MixedRealityInteractionMappingLegacyInput(), // Mouse Delta Position
+            new MixedRealityInteractionMappingLegacyInput(axisCodeX: ControllerMappingLibrary.AXIS_3), // Mouse Scroll Position
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse0), // Left Mouse Button
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse1), // Right Mouse Button
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse2), // Mouse Button 2
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse3), // Mouse Button 3
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse4), // Mouse Button 4
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse5), // Mouse Button 5
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse6), // Mouse Button 6
         };
 
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
 
         private IMixedRealityMouseDeviceManager mouseDeviceManager = null;
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] MouseController.Update");
+
         /// <summary>
         /// Update controller.
         /// </summary>
         public void Update()
         {
-            if (!UInput.mousePresent) { return; }
-
-            if (mouseDeviceManager == null)
+            using (UpdatePerfMarker.Auto())
             {
-                mouseDeviceManager = CoreServices.GetInputSystemDataProvider<IMixedRealityMouseDeviceManager>();
-            }
+                if (!UInput.mousePresent) { return; }
 
-            // Bail early if our mouse isn't in our game window.
-            if (UInput.mousePosition.x < 0 ||
-                UInput.mousePosition.y < 0 ||
-                UInput.mousePosition.x > Screen.width ||
-                UInput.mousePosition.y > Screen.height)
-            {
-                return;
-            }
-
-            for (int i = 0; i < Interactions.Length; i++)
-            {
-                if ((Interactions[i].InputType == DeviceInputType.SpatialPointer) ||
-                    (Interactions[i].InputType == DeviceInputType.PointerPosition))
+                if (mouseDeviceManager == null)
                 {
-                    Vector3 mouseDelta = Vector3.zero;
-                    mouseDelta.x = -UInput.GetAxis("Mouse Y");
-                    mouseDelta.y = UInput.GetAxis("Mouse X");
-                    if (mouseDeviceManager != null)
-                    {
-                        // Apply cursor speed.
-                        mouseDelta *= mouseDeviceManager.CursorSpeed;
-                    }
+                    mouseDeviceManager = CoreServices.GetInputSystemDataProvider<IMixedRealityMouseDeviceManager>();
+                }
 
-                    if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
-                    {
-                        // Spatial pointer raises Pose events
-                        controllerPose = MixedRealityPose.ZeroIdentity;
-                        controllerPose.Rotation = Quaternion.Euler(mouseDelta);
-                        Interactions[i].PoseData = controllerPose;
+                // Bail early if our mouse isn't in our game window.
+                if (UInput.mousePosition.x < 0 ||
+                    UInput.mousePosition.y < 0 ||
+                    UInput.mousePosition.x > Screen.width ||
+                    UInput.mousePosition.y > Screen.height)
+                {
+                    return;
+                }
 
-                        if (Interactions[i].Changed)
+                for (int i = 0; i < Interactions.Length; i++)
+                {
+                    if ((Interactions[i].InputType == DeviceInputType.SpatialPointer) ||
+                        (Interactions[i].InputType == DeviceInputType.PointerPosition))
+                    {
+                        Vector3 mouseDelta = Vector3.zero;
+                        mouseDelta.x = -UInput.GetAxis("Mouse Y");
+                        mouseDelta.y = UInput.GetAxis("Mouse X");
+                        if (mouseDeviceManager != null)
                         {
-                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
+                            // Apply cursor speed.
+                            mouseDelta *= mouseDeviceManager.CursorSpeed;
+                        }
+
+                        if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
+                        {
+                            // Spatial pointer raises Pose events
+                            controllerPose = MixedRealityPose.ZeroIdentity;
+                            controllerPose.Rotation = Quaternion.Euler(mouseDelta);
+                            Interactions[i].PoseData = controllerPose;
+
+                            if (Interactions[i].Changed)
+                            {
+                                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
+                            }
+                        }
+                        else
+                        {
+                            // Pointer position raises position events
+                            Interactions[i].Vector2Data = mouseDelta;
+
+                            if (Interactions[i].Changed)
+                            {
+                                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
+                            }
                         }
                     }
-                    else
+
+                    if (Interactions[i].AxisType == AxisType.Digital)
                     {
-                        // Pointer position raises position events
-                        Interactions[i].Vector2Data = mouseDelta;
+                        var keyButton = UInput.GetKey(Interactions[i].KeyCode);
+
+                        // Update the interaction data source
+                        Interactions[i].BoolData = keyButton;
+
+                        // If our value changed raise it.
+                        if (Interactions[i].Changed)
+                        {
+                            // Raise input system event if it's enabled
+                            if (Interactions[i].BoolData)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                            }
+                        }
+                    }
+
+                    if (Interactions[i].InputType == DeviceInputType.Scroll)
+                    {
+                        Vector2 wheelDelta = UInput.mouseScrollDelta;
+                        if (mouseDeviceManager != null)
+                        {
+                            // Apply wheel speed.
+                            wheelDelta *= mouseDeviceManager.WheelSpeed;
+                        }
+
+                        Interactions[i].Vector2Data = wheelDelta;
 
                         if (Interactions[i].Changed)
                         {
                             CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                         }
-                    }
-                }
-
-                if (Interactions[i].AxisType == AxisType.Digital)
-                {
-                    var keyButton = UInput.GetKey(Interactions[i].KeyCode);
-
-                    // Update the interaction data source
-                    Interactions[i].BoolData = keyButton;
-
-                    // If our value changed raise it.
-                    if (Interactions[i].Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (Interactions[i].BoolData)
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-                        }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-                        }
-                    }
-                }
-
-                if (Interactions[i].InputType == DeviceInputType.Scroll)
-                {
-                    Vector2 wheelDelta = UInput.mouseScrollDelta;
-                    if (mouseDeviceManager != null)
-                    {
-                        // Apply wheel speed.
-                        wheelDelta *= mouseDeviceManager.WheelSpeed;
-                    }
-
-                    Interactions[i].Vector2Data = wheelDelta;
-
-                    if (Interactions[i].Changed)
-                    {
-                        CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
                     }
                 }
             }

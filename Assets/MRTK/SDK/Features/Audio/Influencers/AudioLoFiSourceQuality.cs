@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace Microsoft.MixedReality.Toolkit.Audio
 {
@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// FM radio.
         /// </summary>
         /// <remarks>
-        /// The FM radio frequency is quite wide as it relates to human hearing. While it is
-        /// a lower fidelity than FullRange, some users may not hear a difference.
+        /// <para>The FM radio frequency is quite wide as it relates to human hearing. While it is
+        /// a lower fidelity than FullRange, some users may not hear a difference.</para>
         /// </remarks>
         FmRadio,
 
@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Full range of human hearing.
         /// </summary>
         /// <remarks>
-        /// The frequency range used is a bit wider than that of human
-        /// hearing. It closely resembles the range used for audio CDs.
+        /// <para>The frequency range used is a bit wider than that of human
+        /// hearing. It closely resembles the range used for audio CDs.</para>
         /// </remarks>
         FullRange
     }

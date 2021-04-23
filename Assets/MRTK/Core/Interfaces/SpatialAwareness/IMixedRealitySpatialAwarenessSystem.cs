@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which spatial awareness objects will be parented.
         /// </returns>
         /// <remarks>
-        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, not by application code. It
-        /// is used to enable observations to be grouped by observer.
+        /// <para>This method is to be called by implementations of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface, not by application code. It
+        /// is used to enable observations to be grouped by observer.</para>
         /// </remarks>
         GameObject CreateSpatialAwarenessObservationParent(string name);
 

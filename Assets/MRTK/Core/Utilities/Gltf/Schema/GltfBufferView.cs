@@ -1,7 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
@@ -10,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/bufferView.schema.json
     /// </summary>
     [Serializable]
-    public class GltfBufferView : GltfChildOfRootProperty
+    public class GltfBufferView : GltfChildOfRootProperty, ISerializationCallbackReceiver
     {
         /// <summary>
         /// The index of the buffer.
@@ -42,11 +43,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// All valid values correspond to WebGL enums.
         /// When this is not provided, the bufferView contains animation or skin data.
         /// </summary>
-        public GltfBufferViewTarget target = GltfBufferViewTarget.None;
+        public GltfBufferViewTarget Target { get; set; }
+
+        [SerializeField]
+        private string target = null;
 
         /// <summary>
         /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/buffer.schema.json
         /// </summary>
         public GltfBuffer Buffer { get; internal set; }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            if (Enum.TryParse(target, out GltfBufferViewTarget result))
+            {
+                Target = result;
+            }
+            else
+            {
+                Target = GltfBufferViewTarget.None;
+            }
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            target = Target.ToString();
+        }
     }
 }

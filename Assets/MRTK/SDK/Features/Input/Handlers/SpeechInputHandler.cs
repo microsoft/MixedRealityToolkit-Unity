@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RemoveResponse(string keyword, UnityAction action)
         {
             string lowerKeyword = keyword.ToLower();
-            if(responses.ContainsKey(lowerKeyword))
+            if (responses.ContainsKey(lowerKeyword))
             {
                 responses[lowerKeyword].RemoveListener(action);
             }

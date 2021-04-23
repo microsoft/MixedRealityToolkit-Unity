@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -78,12 +78,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
-            return obj is MixedRealityInputAction && Equals((MixedRealityInputAction)obj);
+            return obj is MixedRealityInputAction action && Equals(action);
         }
 
         int IEqualityComparer.GetHashCode(object obj)
         {
-            return obj is MixedRealityInputAction ? ((MixedRealityInputAction)obj).GetHashCode() : 0;
+            return obj is MixedRealityInputAction action ? action.GetHashCode() : 0;
         }
 
         public override int GetHashCode()

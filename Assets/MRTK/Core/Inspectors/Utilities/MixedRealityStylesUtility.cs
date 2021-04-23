@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using UnityEditor;
 using UnityEngine;
@@ -33,27 +33,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly GUIStyle TitleFoldoutStyle =
           new GUIStyle(EditorStyles.foldout)
           {
-              //fontStyle = FontStyle.,
               fontSize = InspectorUIUtility.TitleFontSize,
           };
 
         /// <summary>
-        /// Default style for large button
+        /// Default style for controller mapping buttons
         /// </summary>
-        public static readonly GUIStyle ControllerButtonStyle = new GUIStyle("LargeButton")
+        public static readonly GUIStyle ControllerButtonStyle = new GUIStyle("iconButton")
         {
             imagePosition = ImagePosition.ImageAbove,
-                    fontStyle = FontStyle.Bold,
-                    stretchHeight = true,
-                    stretchWidth = true,
-                    wordWrap = true,
-                    fontSize = 10,
+            fixedHeight = 128,
+            fontStyle = FontStyle.Bold,
+            stretchHeight = true,
+            stretchWidth = true,
+            wordWrap = true,
+            fontSize = 10,
+            alignment = TextAnchor.UpperCenter,
+            fixedWidth = 0,
+            margin = new RectOffset(0, 0, 0, 0)
         };
 
         /// <summary>
         /// Default style for bold large font size title
         /// </summary>
-        public static readonly GUIStyle BoldLargeTitleStyle = new GUIStyle()
+        public static readonly GUIStyle BoldLargeTitleStyle = new GUIStyle(EditorStyles.largeLabel)
         {
             fontSize = InspectorUIUtility.TitleFontSize,
             fontStyle = FontStyle.Bold,

@@ -1,11 +1,9 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -15,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class CameraFOVChecker
     {
-        
+
         // Help to clear caches when new frame runs
         static private int inFOVLastCalculatedFrame = -1;
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame

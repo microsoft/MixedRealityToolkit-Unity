@@ -1,10 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Profiling;
 using UnityEngine;
 using UInput = UnityEngine.Input;
 
@@ -16,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),  // All platforms supported by Unity
-        "Unity Joystick Manager")]
+        "Unity Joystick Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class UnityJoystickManager : BaseInputDeviceManager
     {
         /// <summary>
@@ -33,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }
@@ -58,22 +60,27 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         private float deviceRefreshTimer;
         private string[] lastDeviceList;
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] UnityJoystickManager.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            base.Update();
-
-            deviceRefreshTimer += Time.unscaledDeltaTime;
-
-            if (deviceRefreshTimer >= DeviceRefreshInterval)
+            using (UpdatePerfMarker.Auto())
             {
-                deviceRefreshTimer = 0.0f;
-                RefreshDevices();
-            }
+                base.Update();
 
-            foreach (var controller in ActiveControllers)
-            {
-                controller.Value?.UpdateController();
+                deviceRefreshTimer += Time.unscaledDeltaTime;
+
+                if (deviceRefreshTimer >= DeviceRefreshInterval)
+                {
+                    deviceRefreshTimer = 0.0f;
+                    RefreshDevices();
+                }
+
+                foreach (var controller in ActiveControllers)
+                {
+                    controller.Value?.UpdateController();
+                }
             }
         }
 
@@ -82,73 +89,85 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             base.Disable();
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
             foreach (var genericJoystick in ActiveControllers)
             {
                 if (genericJoystick.Value != null)
                 {
-                    inputSystem?.RaiseSourceLost(genericJoystick.Value.InputSource, genericJoystick.Value);
+                    Service?.RaiseSourceLost(genericJoystick.Value.InputSource, genericJoystick.Value);
                 }
             }
 
             ActiveControllers.Clear();
         }
 
+        private static readonly ProfilerMarker GetActiveControllersPerfMarker = new ProfilerMarker("[MRTK] UnityJoystickManager.GetActiveControllers");
+
         /// <inheritdoc/>
         public override IMixedRealityController[] GetActiveControllers()
         {
-            return ActiveControllers.Values.ToArray<IMixedRealityController>();
+            using (GetActiveControllersPerfMarker.Auto())
+            {
+                IMixedRealityController[] controllers = ActiveControllers.Values.ToArray<IMixedRealityController>();
+                return controllers;
+            }
         }
+
+        private static readonly ProfilerMarker RefreshDevicesPerfMarker = new ProfilerMarker("[MRTK] UnityJoystickManager.RefreshDevices");
 
         private void RefreshDevices()
         {
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
-            var joystickNames = UInput.GetJoystickNames();
-
-            if (joystickNames.Length <= 0) { return; }
-
-            if (lastDeviceList != null && joystickNames.Length == lastDeviceList.Length)
+            using (RefreshDevicesPerfMarker.Auto())
             {
-                for (int i = 0; i < lastDeviceList.Length; i++)
-                {
-                    if (joystickNames[i].Equals(lastDeviceList[i])) { continue; }
+                var joystickNames = UInput.GetJoystickNames();
 
-                    if (ActiveControllers.ContainsKey(lastDeviceList[i]))
+                if (joystickNames.Length <= 0)
+                {
+                    return;
+                }
+
+                if (lastDeviceList != null && joystickNames.Length == lastDeviceList.Length)
+                {
+                    for (int i = 0; i < lastDeviceList.Length; i++)
                     {
-                        var controller = GetOrAddController(lastDeviceList[i]);
+                        if (joystickNames[i].Equals(lastDeviceList[i])) { continue; }
+
+                        if (ActiveControllers.ContainsKey(lastDeviceList[i]))
+                        {
+                            var controller = GetOrAddController(lastDeviceList[i]);
+
+                            if (controller != null)
+                            {
+                                Service?.RaiseSourceLost(controller.InputSource, controller);
+                            }
+
+                            RemoveController(lastDeviceList[i]);
+                        }
+                    }
+                }
+
+                for (var i = 0; i < joystickNames.Length; i++)
+                {
+                    if (string.IsNullOrEmpty(joystickNames[i]))
+                    {
+                        continue;
+                    }
+
+                    if (!ActiveControllers.ContainsKey(joystickNames[i]))
+                    {
+                        var controller = GetOrAddController(joystickNames[i]);
 
                         if (controller != null)
                         {
-                            inputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                            Service?.RaiseSourceDetected(controller.InputSource, controller);
                         }
-
-                        RemoveController(lastDeviceList[i]);
                     }
                 }
+
+                lastDeviceList = joystickNames;
             }
-
-            for (var i = 0; i < joystickNames.Length; i++)
-            {
-                if (string.IsNullOrEmpty(joystickNames[i]))
-                {
-                    continue;
-                }
-
-                if (!ActiveControllers.ContainsKey(joystickNames[i]))
-                {
-                    var controller = GetOrAddController(joystickNames[i]);
-
-                    if (controller != null)
-                    {
-                        inputSystem?.RaiseSourceDetected(controller.InputSource, controller);
-                    }
-                }
-            }
-
-            lastDeviceList = joystickNames;
         }
+
+        private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] UnityJoystickManager.GetOrAddController");
 
         /// <summary>
         /// Gets or adds a controller using the joystick name provided.
@@ -157,42 +176,45 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <returns>A new controller reference.</returns>
         protected virtual GenericJoystickController GetOrAddController(string joystickName)
         {
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
-            if (ActiveControllers.ContainsKey(joystickName))
+            using (GetOrAddControllerPerfMarker.Auto())
             {
-                var controller = ActiveControllers[joystickName];
-                Debug.Assert(controller != null);
-                return controller;
-            }
+                if (ActiveControllers.ContainsKey(joystickName))
+                {
+                    var controller = ActiveControllers[joystickName];
+                    Debug.Assert(controller != null);
+                    return controller;
+                }
 
-            Type controllerType;
+                Type controllerType;
 
-            switch (GetCurrentControllerType(joystickName))
-            {
-                default:
+                switch (GetCurrentControllerType(joystickName))
+                {
+                    default:
+                        return null;
+                    case SupportedControllerType.GenericUnity:
+                        controllerType = typeof(GenericJoystickController);
+                        break;
+                    case SupportedControllerType.Xbox:
+                        controllerType = typeof(XboxController);
+                        break;
+                }
+
+                IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
+                GenericJoystickController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
+
+                if (detectedController == null || !detectedController.Enabled)
+                {
+                    // Controller failed to be setup correctly.
+                    Debug.LogError($"Failed to create {controllerType.Name} controller");
+
+                    // Return null so we don't raise the source detected.
                     return null;
-                case SupportedControllerType.GenericUnity:
-                    controllerType = typeof(GenericJoystickController);
-                    break;
-                case SupportedControllerType.Xbox:
-                    controllerType = typeof(XboxController);
-                    break;
+                }
+
+                ActiveControllers.Add(joystickName, detectedController);
+
+                return detectedController;
             }
-
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
-
-            if (detectedController == null || !detectedController.Enabled)
-            {
-                // Controller failed to be setup correctly.
-                Debug.LogError($"Failed to create {controllerType.Name} controller");
-                // Return null so we don't raise the source detected.
-                return null;
-            }
-
-            ActiveControllers.Add(joystickName, detectedController);
-            return detectedController;
         }
 
         /// <summary>

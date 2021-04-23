@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -86,8 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Notifies this gaze provider of its new hit details.
         /// </summary>
         /// <remarks>
-        /// For components that care where the user's looking, we need
-        /// to separately update the gaze info even if gaze isn't used for focus.
+        /// <para>For components that care where the user's looking, we need
+        /// to separately update the gaze info even if gaze isn't used for focus.</para>
         /// </remarks>
         void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit);
     }

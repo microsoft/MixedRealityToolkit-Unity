@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
@@ -10,7 +10,7 @@ using UnityEngine.Assertions;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// Add a Dockable component to any object that has a <see cref="Dockable"/> and an <see cref="ObjectManipulator"/>
+    /// Add a Dockable component to any object that has a <see cref="Dockable"/> and an <see cref="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator"/>
     /// or <see cref="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"/> to make it dockable in Docks. That allows this object to be used
     /// as part of a palette, shelf or navigation bar together with other objects.
     /// </summary>
@@ -43,9 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public bool CanUndock => dockingState == DockingState.Docked;
 
         // Constants
-        private static readonly float distanceTolerance = 0.01f; // in meters
-        private static readonly float angleTolerance = 3.0f; // in degrees
-        private static readonly float scaleTolerance = 0.01f; // in percentage
+        private const float DistanceTolerance = 0.01f; // in meters
+        private const float AngleTolerance = 3.0f; // in degrees
+        private const float ScaleTolerance = 0.01f; // in percentage
 
         private DockPosition dockedPosition = null;
         private Vector3 dockedPositionScale = Vector3.one;
@@ -111,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             overlappingPositions.Clear();
+            dockingState = DockingState.Undocked;
         }
 
         /// <summary>
@@ -144,8 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 transform.localScale = Solver.SmoothTo(transform.localScale, dockedPositionScale, Time.deltaTime, lerpTime);
 
-                if (VectorExtensions.CloseEnough(dockedPosition.transform.position, transform.position, distanceTolerance) &&
-                    QuaternionExtensions.AlignedEnough(dockedPosition.transform.rotation, transform.rotation, angleTolerance) &&
+                if (VectorExtensions.CloseEnough(dockedPosition.transform.position, transform.position, DistanceTolerance) &&
+                    QuaternionExtensions.AlignedEnough(dockedPosition.transform.rotation, transform.rotation, AngleTolerance) &&
                     AboutTheSameSize(dockedPositionScale.x, transform.localScale.x))
                 {
                     // Finished docking
@@ -302,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private static bool AboutTheSameSize(float scale1, float scale2)
         {
             Assert.AreNotEqual(0.0f, scale2, "Cannot compare scales with an object that has scale zero.");
-            return Mathf.Abs(scale1 / scale2 - 1.0f) < scaleTolerance;
+            return Mathf.Abs(scale1 / scale2 - 1.0f) < ScaleTolerance;
         }
 
         #endregion

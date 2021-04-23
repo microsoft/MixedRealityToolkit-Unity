@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Threading.Tasks;
 using TMPro;
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Whether to display the percentage as text in addition to the loading bar.")]
         [SerializeField]
         private bool displayPercentage = true;
-        
+
         private float smoothProgress = 0f;
         private float lastSmoothProgress = -1;
         private ProgressIndicatorState state = ProgressIndicatorState.Closed;

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using System;
@@ -72,9 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ".pdf",
         };
 
-        private const string DependencyWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/DependencyWindow.html";
+        private const string DependencyWindow_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/dependency-window";
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
         {
             var window = GetWindow<DependencyWindow>(typeof(SceneView));
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 excludeUnityScenes = EditorGUILayout.Toggle("Exclude Unity Scenes", excludeUnityScenes);
 
                 string tooltip = "Although certain asset types may not be directly referenced by other assets as tracked via Unity meta files, these assets may be utilized and/or necessary to a project in other ways.\n\nThus, this list of asset extensions are ignored and always excluded in the list below.\n\n";
-                foreach(string extension in assetsWhichCanBeUnreferenced)
+                foreach (string extension in assetsWhichCanBeUnreferenced)
                 {
                     tooltip += extension + "\n";
                 }
@@ -312,12 +312,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             dependencyGraph.Clear();
 
-            var metaExtension = ".meta";
-            string[] metaFiles = Directory.GetFiles(Application.dataPath, "*" + metaExtension, SearchOption.AllDirectories);
+            // Get all meta files from the assets and package cache directories. 
+            const string metaExtension = ".meta";
+            var metaFiles = new List<string>();
+            metaFiles.AddRange(Directory.GetFiles(Application.dataPath, "*" + metaExtension, SearchOption.AllDirectories));
+            metaFiles.AddRange(Directory.GetFiles(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library\\PackageCache"), "*" + metaExtension, SearchOption.AllDirectories));
 
-            for (int i = 0; i < metaFiles.Length; ++i)
+            for (int i = 0; i < metaFiles.Count; ++i)
             {
-                var progress = (float)i / metaFiles.Length;
+                var progress = (float)i / metaFiles.Count;
 
                 if (EditorUtility.DisplayCancelableProgressBar(windowTitle, "Building dependency graph...", progress))
                 {
@@ -354,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     dependencies.AddRange(GetDependenciesInFile(metaFile));
                 }
 
-                // Add linkage between this node and it's dependencies and the dependency and this node.
+                // Add linkage between this node and its dependencies and the dependency and this node.
                 foreach (var dependency in dependencies)
                 {
                     node.assetsThisDependsOn.Add(EnsureNode(dependency));

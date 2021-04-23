@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -15,6 +15,8 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -27,33 +29,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string slatePrefabAssetGuid = "937ce507dd7ee334ba569554e24adbdd";
         private static readonly string slatePrefabAssetPath = AssetDatabase.GUIDToAssetPath(slatePrefabAssetGuid);
 
-        GameObject panObject;
-        HandInteractionPanZoom panZoom;
+        private GameObject panObject;
+        private HandInteractionPanZoom panZoom;
+        private MeshFilter meshFilter;
+        private Material material;
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
-            PlayModeTestUtilities.PushHandSimulationProfile();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             GameObject.Destroy(panObject);
             GameObject.Destroy(panZoom);
-            PlayModeTestUtilities.PopHandSimulationProfile();
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
         /// Tests touch scrolling instantiated from prefab
         /// </summary>
         [UnityTest]
-        public IEnumerator Prefab_TouchScroll()
+        public IEnumerator PrefabTouchScroll()
         {
-            InstantiateFromPrefab(Vector3.forward);
+            InstantiateFromPrefab();
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
@@ -70,9 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test hand ray scroll instantiated from prefab
         /// </summary>
         [UnityTest]
-        public IEnumerator Prefab_RayScroll()
+        public IEnumerator PrefabRayScroll()
         {
-            InstantiateFromPrefab(Vector3.forward);
+            InstantiateFromPrefab();
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
@@ -99,9 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test touch zooming instantiated from prefab
         /// </summary>
         [UnityTest]
-        public IEnumerator Prefab_TouchZoom()
+        public IEnumerator PrefabTouchZoom()
         {
-            InstantiateFromPrefab(Vector3.forward);
+            InstantiateFromPrefab();
 
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(Vector3.zero);
@@ -121,14 +125,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test ggv zooming instantiated from prefab
+        /// Test ggv (gaze, gesture, and voice) zooming instantiated from prefab
         /// </summary>
         [UnityTest]
-        public IEnumerator Prefab_GGVZoom()
+        public IEnumerator PrefabGGVZoom()
         {
-            InstantiateFromPrefab(Vector3.forward);
+            InstantiateFromPrefab();
 
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(new Vector3(0.0f, 0.0f, 0.6f));
@@ -146,14 +152,67 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return handRight.Hide();
             yield return handLeft.Hide();
+
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
         }
+
+        /// <summary>
+        /// Test zooming in using far and near interaction on a slate that is rotated 90 degrees around up vector.
+        /// This test guarantees that the z component of the hand or controller position is being considered on the zooming logic.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ZoomRotatedSlate()
+        {
+            // Configuring camera and hands to interact with rotated slate
+            InstantiateFromPrefab(Vector3.right, Quaternion.LookRotation(Vector3.right));
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 90));
+            yield return null;
+
+            // Right hand pinches slate
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.Show(panZoom.transform.position + Vector3.forward * -0.1f + Vector3.right * -0.3f);
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Left hand pinches slate
+            TestHand handLeft = new TestHand(Handedness.Left);
+            yield return handLeft.Show(panZoom.transform.position + Vector3.forward * 0.1f + Vector3.right * -0.3f);
+            yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Use both hands to zoom in
+            yield return handRight.Move(new Vector3(0f, 0f, -0.1f), 5);
+            yield return handLeft.Move(new Vector3(0f, 0f, 0.1f), 5);
+
+            Assert.AreEqual(0.6, panZoom.CurrentScale, 0.1, "Rotated slate did not zoom in using near interaction");
+
+            // Reset slate and hands configuration
+            panZoom.Reset();
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Both hands touch slate
+            yield return handRight.MoveTo(panZoom.transform.position + Vector3.forward * -0.1f);
+            yield return handLeft.MoveTo(panZoom.transform.position + Vector3.forward * 0.1f);
+            yield return null;
+
+            // Use both hands to zoom in
+            yield return handRight.Move(new Vector3(0f, 0f, -0.1f), 5);
+            yield return handLeft.Move(new Vector3(0f, 0f, 0.1f), 5);
+
+            Assert.AreEqual(0.6, panZoom.CurrentScale, 0.1, "Rotated slate did not zoom in using far interaction");
+
+            yield return handRight.Hide();
+            yield return handLeft.Hide();
+        }
+
         /// <summary>
         /// Test ggv scroll instantiated from prefab
         /// </summary>
         [UnityTest]
-        public IEnumerator Prefab_GGVScroll()
+        public IEnumerator PrefabGGVScroll()
         {
-            InstantiateFromPrefab(Vector3.forward);
+            InstantiateFromPrefab();
             yield return RunGGVScrollTest(0.25f);
         }
 
@@ -161,10 +220,195 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test hand ray scroll instantiated from prefab
         /// </summary>
         [UnityTest]
-        public IEnumerator Instantiate_GGVScroll()
+        public IEnumerator InstantiateGGVScroll()
         {
-            InstantiateFromCode(Vector3.forward);
+            InstantiateFromCode();
             yield return RunGGVScrollTest(0.08f);
+        }
+
+        /// <summary>
+        /// Test scroll up pan limit instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabScrollUpLimited()
+        {
+            var maxPan = 4f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+
+            yield return ScrollToLimit(Vector3.up);
+
+            var uvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, uvs);
+#if UNITY_2019_1_OR_NEWER
+            Assert.AreEqual(maxPan * material.mainTextureScale.y, uvs[3].y, 0.05, "mesh uv is not correct");
+#else
+            Assert.AreEqual(maxPan * material.mainTextureScale.y, uvs[1].y, 0.05, "mesh uv is not correct");
+#endif
+        }
+
+        /// <summary>
+        /// Test scroll down pan limit instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabScrollDownLimited()
+        {
+            var maxPan = 4f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+
+            yield return ScrollToLimit(Vector3.down);
+
+            var uvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, uvs);
+            Assert.AreEqual(-maxPan * material.mainTextureScale.y, uvs[0].y, 0.05, "mesh uv is not correct");
+        }
+
+        /// <summary>
+        /// Test scroll left pan limit instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabScrollLeftLimited()
+        {
+            var maxPan = 2f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+
+            yield return ScrollToLimit(Vector3.left);
+
+            var uvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, uvs);
+            Assert.AreEqual(-maxPan * material.mainTextureScale.x, uvs[0].x, 0.05, "mesh uv is not correct");
+        }
+
+        /// <summary>
+        /// Test scroll right pan limit instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabScrollRightLimited()
+        {
+            var maxPan = 4f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+
+            yield return ScrollToLimit(Vector3.right);
+
+            var uvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, uvs);
+#if UNITY_2019_1_OR_NEWER
+            Assert.AreEqual(maxPan * material.mainTextureScale.x, uvs[3].x, 0.05, "mesh uv is not correct");
+#else
+            Assert.AreEqual(maxPan * material.mainTextureScale.x, uvs[1].x, 0.05, "mesh uv is not correct");
+#endif
+        }
+
+        /// <summary>
+        /// Test scroll up, scroll right and zoom out instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabScrollUpZoomOutLimited()
+        {
+            var maxPanHorizontal = 4f;
+            var maxPanVertical = 4f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPanHorizontal, maxPanVertical: maxPanVertical);
+
+            yield return ScrollToLimit(new Vector3(1, 1, 0));
+
+            // Right hand pinches slate
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.MoveTo(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * 0.2f);
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Left hand pinches slate
+            TestHand handLeft = new TestHand(Handedness.Left);
+            yield return handLeft.Show(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * -0.2f);
+            yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Use both hands to zoom out
+            yield return handLeft.Move(new Vector3(0.1f, 0.1f, 0f), 10);
+
+            var uvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, uvs);
+
+#if UNITY_2019_1_OR_NEWER
+            Assert.AreEqual(maxPanHorizontal * material.mainTextureScale.x, uvs[3].x, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(maxPanVertical * material.mainTextureScale.y, uvs[3].y, 0.05, "mesh uv is not correct");
+#else
+            Assert.AreEqual(maxPanHorizontal * material.mainTextureScale.x, uvs[1].x, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(maxPanVertical * material.mainTextureScale.y, uvs[1].y, 0.05, "mesh uv is not correct");
+#endif
+
+            yield return handRight.Hide();
+            yield return handLeft.Hide();
+        }
+
+        /// <summary>
+        /// Test scroll down, scroll left and zoom out instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabScrollDownZoomOutLimited()
+        {
+            var maxPanHorizontal = 2f;
+            var maxPanVertical = 4f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPanHorizontal, maxPanVertical: maxPanVertical);
+
+            yield return ScrollToLimit(new Vector3(-1, -1, 0));
+
+            // Right hand pinches slate
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.MoveTo(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * 0.2f);
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Left hand pinches slate
+            TestHand handLeft = new TestHand(Handedness.Left);
+            yield return handLeft.Show(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * -0.2f);
+            yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Use both hands to zoom out
+            yield return handRight.Move(new Vector3(-0.1f, -0.1f, 0f), 10);
+
+            var uvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, uvs);
+
+            Assert.AreEqual(-maxPanHorizontal * material.mainTextureScale.x, uvs[0].x, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(-maxPanVertical * material.mainTextureScale.y, uvs[0].y, 0.05, "mesh uv is not correct");
+
+            yield return handRight.Hide();
+            yield return handLeft.Hide();
+        }
+
+        /// <summary>
+        /// Test scroll right pan limit instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabZoomOutWithoutJitter()
+        {
+            var maxPan = 1.2f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+
+            yield return ScrollToLimit(new Vector3(-1, -1, 0));
+
+            // Right hand pinches slate
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.MoveTo(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * 0.2f);
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Left hand pinches slate
+            TestHand handLeft = new TestHand(Handedness.Left);
+            yield return handLeft.Show(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * -0.2f);
+            yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Use both hands to zoom out
+            var previousUvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, previousUvs);
+            for (var i = 0; i < 10; i++)
+            {
+                yield return handLeft.Move(new Vector3(0f, 0.02f, 0f), 1);
+                var uvs = new List<Vector2>();
+                meshFilter.mesh.GetUVs(0, uvs);
+                for (int j = 0; j < uvs.Count; j++)
+                {
+                    Assert.AreEqual(previousUvs[j].x, uvs[j].x, 0.05, "mesh is jittering");
+                    Assert.AreEqual(previousUvs[j].y, uvs[j].y, 0.05, "mesh is jittering");
+                }
+                previousUvs = uvs;
+            }
         }
 
         /// <summary>
@@ -174,7 +418,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="expectedScroll">The amount panZoom is expected to scroll</param>
         private IEnumerator RunGGVScrollTest(float expectedScroll)
         {
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
@@ -190,30 +436,89 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.1, "pan delta is not correct");
 
             yield return handRight.Hide();
+
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
         }
 
-        private void InstantiateFromCode(Vector3 pos)
+        /// <summary>
+        /// Scroll contents to the limit in the specified direction
+        /// </summary>
+        /// <param name="direction">Scroll direction</param>
+        private IEnumerator ScrollToLimit(Vector3 direction)
+        {
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.Show(Vector3.zero);
+
+            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
+            var moveDelta = -0.5f * direction;
+            for (var i = 0; i < 3; i++)
+            {
+                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
+                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+                yield return handRight.Move(moveDelta, 10);
+                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
+            }
+
+            yield return handRight.Hide();
+        }
+
+        private void InstantiateFromCode(Vector3? position = null, Quaternion? rotation = null)
         {
             panObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             panObject.EnsureComponent<BoxCollider>();
-            panObject.transform.position = pos;
+            panObject.transform.position = position != null ? (Vector3)position : Vector3.forward;
+            panObject.transform.rotation = rotation != null ? (Quaternion)rotation : Quaternion.identity;
             panZoom = panObject.AddComponent<HandInteractionPanZoom>();
             panObject.AddComponent<NearInteractionTouchable>();
-
+            meshFilter = panZoom.GetComponent<MeshFilter>();
+            material = panZoom.GetComponent<Renderer>().material;
         }
+
         /// <summary>
-        /// Instantiates a slate from the default prefab at position, looking at the camera
+        /// Instantiates a slate from the default prefab at position and rotation
         /// </summary>
-        private void InstantiateFromPrefab(Vector3 position)
+        private void InstantiateFromPrefab(Vector3? position = null, Quaternion? rotation = null)
         {
             UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(slatePrefabAssetPath, typeof(UnityEngine.Object));
             panObject = UnityEngine.Object.Instantiate(prefab) as GameObject;
             Assert.IsNotNull(panObject);
-            panObject.transform.position = position;
+            panObject.transform.position = position != null ? (Vector3)position : Vector3.forward;
+            panObject.transform.rotation = rotation != null ? (Quaternion)rotation : Quaternion.identity;
             panZoom = panObject.GetComponentInChildren<HandInteractionPanZoom>();
             Assert.IsNotNull(panZoom);
+            meshFilter = panZoom.GetComponent<MeshFilter>();
+            material = panZoom.GetComponent<Renderer>().material;
         }
 
+        /// <summary>
+        /// Instantiates a slate from the default prefab at position and rotation and sets pan limit
+        /// </summary>
+        private void InstantiatePanLimitedSlateFromPrefab(Vector3? position = null, Quaternion? rotation = null,
+            float maxPanVertical = 1.0f, float maxPanHorizontal = 1.0f)
+        {
+            InstantiateFromPrefab(position, rotation);
+
+            var unlimitedPanField = typeof(HandInteractionPanZoom).GetField("unlimitedPan", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(unlimitedPanField);
+            unlimitedPanField.SetValue(panZoom, false);
+
+            var lockHorizontalField = typeof(HandInteractionPanZoom).GetField("lockHorizontal", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(lockHorizontalField);
+            lockHorizontalField.SetValue(panZoom, false);
+
+            var lockVerticalField = typeof(HandInteractionPanZoom).GetField("lockVertical", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(lockVerticalField);
+            lockVerticalField.SetValue(panZoom, false);
+
+            var maxPanVerticalField = typeof(HandInteractionPanZoom).GetField("maxPanVertical", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(maxPanVerticalField);
+            maxPanVerticalField.SetValue(panZoom, maxPanVertical);
+
+            var maxPanHorizontalField = typeof(HandInteractionPanZoom).GetField("maxPanHorizontal", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(maxPanHorizontalField);
+            maxPanHorizontalField.SetValue(panZoom, maxPanHorizontal);
+        }
     }
 }
 #endif

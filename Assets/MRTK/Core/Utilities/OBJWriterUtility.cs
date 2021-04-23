@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -20,9 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Export mesh data of provided GameObject, and children if enabled, to file provided in OBJ format
         /// </summary>
         /// <remarks>
-        /// Traversal of GameObject mesh data is done via Coroutine on main Unity thread due to limitations by Unity.
+        /// <para>Traversal of GameObject mesh data is done via Coroutine on main Unity thread due to limitations by Unity.
         /// If a file does not exist at given file path, a new one is automatically created
-        /// If applicable, children Mesh data will be bundled into same OBJ file.
+        /// If applicable, children Mesh data will be bundled into same OBJ file.</para>
         /// </remarks>
         public static async Task ExportOBJAsync(GameObject root, string filePath, bool includeChildren = true)
         {

@@ -18,7 +18,11 @@ MonoBehaviour:
   mouseX: Mouse X
   mouseY: Mouse Y
   mouseScroll: Mouse ScrollWheel
+  interactionButton:
+    bindingType: 1
+    code: 0
   doublePressTime: 0.4
+  isHandsFreeInputEnabled: 1
   isCameraControlEnabled: 1
   mouseLookSpeed: 3
   mouseLookButton:
@@ -26,34 +30,35 @@ MonoBehaviour:
     code: 1
   mouseLookToggle: 0
   isControllerLookInverted: 1
+  cameraOriginOffset: {x: 0, y: 0, z: 0}
   currentControlMode: 0
   fastControlKey:
     bindingType: 2
     code: 305
-  controlSlowSpeed: 0.1
-  controlFastSpeed: 1
+  controlSlowSpeed: 1
+  controlFastSpeed: 5
   moveHorizontal: Horizontal
   moveVertical: Vertical
   moveUpDown: UpDown
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
-  simulateEyePosition: 0
-  defaultHandSimulationMode: 1
-  toggleLeftHandKey:
+  defaultEyeGazeSimulationMode: 0
+  defaultControllerSimulationMode: 1
+  toggleLeftControllerKey:
     bindingType: 2
     code: 116
-  toggleRightHandKey:
+  toggleRightControllerKey:
     bindingType: 2
     code: 121
-  handHideTimeout: 0.2
-  leftHandManipulationKey:
+  controllerHideTimeout: 0.2
+  leftControllerManipulationKey:
     bindingType: 2
     code: 304
-  rightHandManipulationKey:
+  rightControllerManipulationKey:
     bindingType: 2
     code: 32
-  mouseHandRotationSpeed: 30
-  handRotateButton:
+  mouseControllerRotationSpeed: 30
+  controllerRotateButton:
     bindingType: 2
     code: 306
   defaultHandGesture: 2
@@ -63,6 +68,15 @@ MonoBehaviour:
   handGestureAnimationSpeed: 8
   holdStartDuration: 0.5
   navigationStartThreshold: 0.03
-  defaultHandDistance: 0.5
-  handDepthMultiplier: 0.03
-  handJitterAmount: 0
+  defaultControllerDistance: 0.5
+  controllerDepthMultiplier: 0.03
+  controllerJitterAmount: 0
+  motionControllerTriggerKey:
+    bindingType: 1
+    code: 0
+  motionControllerGrabKey:
+    bindingType: 2
+    code: 103
+  motionControllerMenuKey:
+    bindingType: 2
+    code: 109

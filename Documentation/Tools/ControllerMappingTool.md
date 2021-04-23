@@ -35,3 +35,5 @@ The smaller, narrow display panel shows the Unity input axed and buttons which a
 ## See also
 
 - [Creating an input system data provider](../Input/CreateDataProvider.md)
+- [InputFeatureUsage tool](./InputFeatureUsageTool.md)
+- [MixedRealityInteractionMapping tool](./MixedRealityInteractionTool.md)

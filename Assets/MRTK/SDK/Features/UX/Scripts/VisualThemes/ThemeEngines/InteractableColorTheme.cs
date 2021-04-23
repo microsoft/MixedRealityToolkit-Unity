@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public InteractableColorTheme()
         {
-            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Graphic)};
+            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Graphic) };
             Name = "Color Theme";
         }
 
@@ -335,6 +335,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 host.GetComponent<TextMesh>() != null ||
                 host.GetComponent<Text>() != null);
         }
-        
+
     }
 }

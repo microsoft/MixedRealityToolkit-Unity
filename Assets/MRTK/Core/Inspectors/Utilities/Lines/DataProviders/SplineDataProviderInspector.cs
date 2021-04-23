@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using UnityEditor;
@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             for (int i = 0; i < 3; i++)
             {
-                controlPoints.arraySize = controlPoints.arraySize + 1;
+                controlPoints.arraySize += 1;
                 var newControlPointProperty = controlPoints.GetArrayElementAtIndex(controlPoints.arraySize - 1);
                 newControlPointProperty.FindPropertyRelative("position").vector3Value = newControlPoints[i].Position;
                 newControlPointProperty.FindPropertyRelative("rotation").quaternionValue = Quaternion.identity;

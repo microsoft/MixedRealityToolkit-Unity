@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Validates the docs to check for common patterns and usage that shouldn't be
@@ -50,6 +53,30 @@ function CheckDocLinks {
             Write-Host "An non-relative doc link was found in $FileName at line $LineNumber "
             Write-Host "Avoid doc links containing https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation "
             Write-Host "and use relative links instead."
+            $true;
+        }
+        $false
+    }
+}
+
+<#
+.SYNOPSIS
+    Checks if the given file at the given line contains an incorrect relative path
+    (for example /Documentation/...). These "absolute" paths will only resolve correct on
+    github.com and not github.io
+#>
+function CheckIncorrectRelativePath {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        if ($FileContent[$LineNumber] -match "]\(/") {
+            Write-Host "An incorrect absolute path was found in $FileName at line $LineNumber "
+            Write-Host "Avoid links of the form '/Documentation/Folder' and use relative paths "
+            Write-Host "'../Folder' instead."
             $true;
         }
         $false
@@ -200,6 +227,8 @@ function CheckDocument {
             if (CheckDocLinks $FileName $fileContent $i) {
                 $issueFound = $true
             } elseif (CheckBrokenImages $FileName $fileContent $i) {
+                $issueFound = $true
+            } elseif (CheckIncorrectRelativePath $FileName $fileContent $i) {
                 $issueFound = $true
             }
         }

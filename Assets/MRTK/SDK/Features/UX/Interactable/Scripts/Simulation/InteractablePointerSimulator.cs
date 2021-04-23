@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// A way to test button state feedback while in the editor
     /// </summary>
-    
+
     [AddComponentMenu("Scripts/MRTK/SDK/InteractablePointerSimulator")]
     public class InteractablePointerSimulator : MonoBehaviour
     {
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (isClicked != Clicked)
             {
-                Button.TriggerOnClick();
+                Button.TriggerOnClick(true);
                 Clicked = isClicked;
             }
         }

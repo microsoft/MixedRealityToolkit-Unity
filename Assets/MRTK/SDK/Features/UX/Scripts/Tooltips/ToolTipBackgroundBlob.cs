@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Transform Targets
 
-                /// <summary>
+        /// <summary>
         /// Determines whether background of Tooltip is visible.
         /// </summary>
         public bool IsVisible
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             localContentSize.y /= meshBounds.size.y;
             localContentSize.z = 1;
 
-            localContentBounds.size = Vector3.one; //localContentSize;
+            localContentBounds.size = Vector3.one; // localContentSize;
             localContentBounds.center = localContentOffset;
         }
 
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 currentDistortion = -velocity * blobDistortion;
             distortion = Vector3.Lerp(distortion, currentDistortion, 1f / blobDistortion * Time.deltaTime);
 
-            inertialContentBounds.center = inertialContentBounds.center + velocity;
+            inertialContentBounds.center += velocity;
             Vector3 size = inertialContentBounds.size + distortion;
             inertialContentBounds.size = size;
 

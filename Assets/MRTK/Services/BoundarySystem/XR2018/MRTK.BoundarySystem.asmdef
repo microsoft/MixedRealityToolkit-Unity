@@ -1,0 +1,16 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "!UNITY_2020_1_OR_NEWER"
+    ]
+}

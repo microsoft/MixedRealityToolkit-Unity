@@ -1,4 +1,4 @@
-# Eye tracking examples in MRTK
+# Eye tracking examples
 
 This topic describes how to quickly get started with eye tracking in MRTK by building on MRTK eye tracking examples (Assets/MRTK/Examples/Demos/EyeTracking).
 These samples let you experience one of our new magical input capabilities: **Eye tracking**!

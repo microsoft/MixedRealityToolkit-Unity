@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -23,23 +24,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityXRSDKArticulatedHand : BaseWindowsMixedRealityXRSDKSource, IMixedRealityHand
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityXRSDKArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+        public WindowsMixedRealityXRSDKArticulatedHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new WindowsMixedRealityArticulatedHandDefinition(inputSource, controllerHandedness);
+            handDefinition = Definition as ArticulatedHandDefinition;
+
+            handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.Left : WindowsMixedRealityHandMeshProvider.Right;
+            handMeshProvider.SetInputSource(inputSource);
         }
 
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
+        private readonly ArticulatedHandDefinition handDefinition;
+        private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
-        private readonly WindowsMixedRealityArticulatedHandDefinition handDefinition;
 
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
         private readonly List<Bone> fingerBones = new List<Bone>();
@@ -65,25 +73,35 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         #region Update data functions
 
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityXRSDKArticulatedHand.UpdateController");
+
         /// <inheritdoc />
         public override void UpdateController(InputDevice inputDevice)
         {
             if (!Enabled) { return; }
 
-            base.UpdateController(inputDevice);
-
-            UpdateHandData(inputDevice);
-
-            for (int i = 0; i < Interactions?.Length; i++)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                switch (Interactions[i].InputType)
+                base.UpdateController(inputDevice);
+
+                UpdateHandData(inputDevice);
+
+                for (int i = 0; i < Interactions?.Length; i++)
                 {
-                    case DeviceInputType.IndexFinger:
-                        handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
-                        break;
+                    switch (Interactions[i].InputType)
+                    {
+                        case DeviceInputType.IndexFinger:
+                            handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
+                            break;
+                        case DeviceInputType.ThumbStick:
+                            handDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
+                            break;
+                    }
                 }
             }
         }
+
+        private static readonly ProfilerMarker UpdateHandDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityXRSDKArticulatedHand.UpdateHandData");
 
         /// <summary>
         /// Update the hand data from the device.
@@ -91,53 +109,62 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateHandData(InputDevice inputDevice)
         {
+            using (UpdateHandDataPerfMarker.Auto())
+            {
 #if WINDOWS_UWP && WMR_ENABLED
-            XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
+                XRSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
 
-            foreach (SpatialInteractionSourceState sourceState in states)
-            {
-                if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
+                foreach (SpatialInteractionSourceState sourceState in states)
                 {
-                    handDefinition?.UpdateHandMesh(sourceState);
-                    break;
-                }
-            }
-#endif // WINDOWS_UWP && WMR_ENABLED
-
-            Hand hand;
-            if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out hand))
-            {
-                foreach (HandFinger finger in handFingers)
-                {
-                    if (hand.TryGetFingerBones(finger, fingerBones))
+                    if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
                     {
-                        for (int i = 0; i < fingerBones.Count; i++)
-                        {
-                            TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(finger, i);
-                            Bone bone = fingerBones[i];
-
-                            Vector3 position = Vector3.zero;
-                            Quaternion rotation = Quaternion.identity;
-
-                            if (bone.TryGetPosition(out position) || bone.TryGetRotation(out rotation))
-                            {
-                                // We want input sources to follow the playspace, so fold in the playspace transform here to
-                                // put the controller pose into world space.
-                                position = MixedRealityPlayspace.TransformPoint(position);
-                                rotation = MixedRealityPlayspace.Rotation * rotation;
-
-                                unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
-                            }
-                        }
-
-                        // Unity doesn't provide a palm joint, so we synthesize one here
-                        MixedRealityPose palmPose = CurrentControllerPose;
-                        palmPose.Rotation *= (ControllerHandedness == Handedness.Left ? leftPalmOffset : rightPalmOffset);
-                        unityJointPoses[TrackedHandJoint.Palm] = palmPose;
+                        handMeshProvider?.UpdateHandMesh(sourceState);
+                        break;
                     }
                 }
+#endif // WINDOWS_UWP && WMR_ENABLED
 
-                handDefinition?.UpdateHandJoints(unityJointPoses);
+                Hand hand;
+                if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out hand))
+                {
+                    foreach (HandFinger finger in handFingers)
+                    {
+                        if (hand.TryGetFingerBones(finger, fingerBones))
+                        {
+                            for (int i = 0; i < fingerBones.Count; i++)
+                            {
+                                TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(finger, i);
+                                Bone bone = fingerBones[i];
+
+                                Vector3 position = Vector3.zero;
+                                Quaternion rotation = Quaternion.identity;
+
+                                bool positionAvailable = bone.TryGetPosition(out position);
+                                bool rotationAvailable = bone.TryGetRotation(out rotation);
+
+                                // If either position or rotation is available, use both pieces of data given.
+                                // This might result in using a zeroed out position or rotation. Most likely,
+                                // either both are available or both are unavailable.
+                                if (positionAvailable || rotationAvailable)
+                                {
+                                    // We want input sources to follow the playspace, so fold in the playspace transform here to
+                                    // put the controller pose into world space.
+                                    position = MixedRealityPlayspace.TransformPoint(position);
+                                    rotation = MixedRealityPlayspace.Rotation * rotation;
+
+                                    unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
+                                }
+                            }
+
+                            // Unity doesn't provide a palm joint, so we synthesize one here
+                            MixedRealityPose palmPose = CurrentControllerPose;
+                            palmPose.Rotation *= (ControllerHandedness == Handedness.Left ? leftPalmOffset : rightPalmOffset);
+                            unityJointPoses[TrackedHandJoint.Palm] = palmPose;
+                        }
+                    }
+
+                    handDefinition?.UpdateHandJoints(unityJointPoses);
+                }
             }
         }
 
@@ -145,8 +172,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// Converts a Unity finger bone into an MRTK hand joint.
         /// </summary>
         /// <remarks>
-        /// For HoloLens 2, Unity provides four joints per finger, in index order of metacarpal (0) to tip (4).
-        /// The first joint for the thumb is the wrist joint. Palm joint is not provided.
+        /// <para>For HoloLens 2, Unity provides four joints per finger, in index order of metacarpal (0) to tip (4).
+        /// The first joint for the thumb is the wrist joint. Palm joint is not provided.</para>
         /// </remarks>
         /// <param name="finger">The Unity classification of the current finger.</param>
         /// <param name="index">The Unity index of the current finger bone.</param>

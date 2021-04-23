@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -27,12 +27,12 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Angles to use for fitting the rectangle within the boundary.
         /// </summary>
-        private static readonly float[] fitAngles = { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165 };
+        private static readonly float[] FitAngles = { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165 };
 
         /// <summary>
         /// Aspect ratios used when fitting rectangles within the boundary.
         /// </summary>
-        private static float[] aspectRatios = {
+        private static readonly float[] AspectRatios = {
                 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f,
                 5.0f, 5.5f, 6, 6.5f, 7, 7.5f, 8.0f, 8.5f, 9.0f,
                 9.5f, 10.0f, 10.5f, 11.0f, 11.5f, 12.0f, 12.5f,
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// Is the described rectangle valid?
         /// </summary>
         /// <remarks>
-        /// A rectangle is considered valid if it's center point is valid.
+        /// A rectangle is considered valid if its center point is valid.
         /// </remarks>
         public bool IsValid => EdgeUtilities.IsValidPoint(Center);
 
@@ -80,8 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <param name="geometryEdges">The boundary geometry.</param>
         /// <param name="randomSeed">Random number generator seed.</param>
         /// <remarks>
-        /// For the most reproducible results, use the same randomSeed value 
-        /// each time this method is called.
+        /// For the most reproducible results, use the same randomSeed value each time this method is called.
         /// </remarks>
         public InscribedRectangle(Edge[] geometryEdges, int randomSeed)
         {
@@ -148,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
             }
 
-            for (int angleIndex = 0; angleIndex < fitAngles.Length; angleIndex++)
+            for (int angleIndex = 0; angleIndex < FitAngles.Length; angleIndex++)
             {
                 for (int pointIndex = 0; pointIndex < startingPoints.Length; pointIndex++)
                 {
@@ -157,18 +156,18 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                     Vector2 leftCollisionPoint;
                     Vector2 rightCollisionPoint;
 
-                    float angleRadians = MathUtilities.DegreesToRadians(fitAngles[angleIndex]);
+                    float angleRadians = MathUtilities.DegreesToRadians(FitAngles[angleIndex]);
 
                     // Find the collision point of a cross through the given point at the given angle.
                     // Note, we are ignoring the return value as we are checking each point's validity
                     // individually.
                     FindSurroundingCollisionPoints(
-                        geometryEdges, 
-                        startingPoints[pointIndex], 
+                        geometryEdges,
+                        startingPoints[pointIndex],
                         angleRadians,
-                        out topCollisionPoint, 
-                        out bottomCollisionPoint, 
-                        out leftCollisionPoint, 
+                        out topCollisionPoint,
+                        out bottomCollisionPoint,
+                        out leftCollisionPoint,
                         out rightCollisionPoint);
 
                     float newWidth;
@@ -192,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                             out newHeight))
                         {
                             Center = verticalMidpoint;
-                            Angle = fitAngles[angleIndex];
+                            Angle = FitAngles[angleIndex];
                             Width = newWidth;
                             Height = newHeight;
                         }
@@ -216,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                             out newHeight))
                         {
                             Center = horizontalMidpoint;
-                            Angle = fitAngles[angleIndex];
+                            Angle = FitAngles[angleIndex];
                             Width = newWidth;
                             Height = newHeight;
                         }
@@ -332,9 +331,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
 
             // Each corner of the rectangle must intersect with the geometry.
-            if (!EdgeUtilities.IsValidPoint(topCollisionPoint) || 
+            if (!EdgeUtilities.IsValidPoint(topCollisionPoint) ||
                 !EdgeUtilities.IsValidPoint(bottomCollisionPoint) ||
-                !EdgeUtilities.IsValidPoint(leftCollisionPoint) || 
+                !EdgeUtilities.IsValidPoint(leftCollisionPoint) ||
                 !EdgeUtilities.IsValidPoint(rightCollisionPoint))
             {
                 return false;
@@ -510,19 +509,19 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
             // For each aspect ratio we do a binary search to find the maximum rectangle that fits, 
             // though once we start increasing our area by minimumHeightGain we call it good enough.
-            for (int i = 0; i < aspectRatios.Length; i++)
+            for (int i = 0; i < AspectRatios.Length; i++)
             {
                 // The height is limited by the width. If a height would make our width exceed maxWidth, it can't be used
-                float searchHeightUpperBound = Mathf.Max(maxHeight, maxWidth / aspectRatios[i]);
+                float searchHeightUpperBound = Mathf.Max(maxHeight, maxWidth / AspectRatios[i]);
 
                 // Set to the min height that will out perform our previous area at the given aspect ratio. This is 0 the first time.
                 // Derived from biggestAreaSoFar=height*(height*aspectRatio)
-                float searchHeightLowerBound = Mathf.Sqrt(Mathf.Max((width * height), minArea) / aspectRatios[i]);
+                float searchHeightLowerBound = Mathf.Sqrt(Mathf.Max((width * height), minArea) / AspectRatios[i]);
 
                 // If the lowest value needed to outperform the previous best is greater than our max, 
                 // this aspect ratio can't outperform what we've already calculated.
-                if ((searchHeightLowerBound > searchHeightUpperBound) || 
-                    (searchHeightLowerBound * aspectRatios[i] > maxWidth))
+                if ((searchHeightLowerBound > searchHeightUpperBound) ||
+                    (searchHeightLowerBound * AspectRatios[i] > maxWidth))
                 {
                     continue;
                 }
@@ -533,19 +532,19 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 // Perform the binary search until continuing to search will not give us a significant win.
                 do
                 {
-                    if (CheckRectangleFit(geometryEdges, 
-                        centerPoint, 
-                        angleRadians, 
-                        aspectRatios[i] * currentTestingHeight, 
+                    if (CheckRectangleFit(geometryEdges,
+                        centerPoint,
+                        angleRadians,
+                        AspectRatios[i] * currentTestingHeight,
                         currentTestingHeight))
                     {
                         // Binary search up-ward
                         // If the rectangle will fit, increase the lower bounds of our binary search
                         searchHeightLowerBound = currentTestingHeight;
 
-                        width = currentTestingHeight * aspectRatios[i];
+                        width = currentTestingHeight * AspectRatios[i];
                         height = currentTestingHeight;
-                        aspectRatio = aspectRatios[i];
+                        aspectRatio = AspectRatios[i];
                         currentTestingHeight = (searchHeightUpperBound + currentTestingHeight) * 0.5f;
                     }
                     else

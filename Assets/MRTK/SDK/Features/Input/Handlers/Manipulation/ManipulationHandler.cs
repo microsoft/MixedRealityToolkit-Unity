@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/manipulation-handler")]
     [AddComponentMenu("Scripts/MRTK/SDK/ManipulationHandler")]
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => hostTransform;
             set => hostTransform = value;
         }
-        
+
         [SerializeField]
         [Tooltip("Can manipulation be done only with one hand, only with two hands, or with both?")]
         private HandMovementType manipulationType = HandMovementType.OneAndTwoHanded;
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => releaseBehavior;
             set => releaseBehavior = value;
         }
-        
+
         [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => constraintOnMovement;
             set => constraintOnMovement = value;
         }
-        
+
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing. ")]
         private bool smoothingActive = true;
@@ -315,11 +315,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             moveConstraint = this.EnsureComponent<FixedDistanceConstraint>();
-            moveConstraint.TargetTransform = hostTransform;
             moveConstraint.ConstraintTransform = CameraCache.Main.transform;
 
             rotateConstraint = this.EnsureComponent<RotationAxisConstraint>();
-            rotateConstraint.TargetTransform = hostTransform;
             rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(constraintOnRotation);
             rotateConstraint.UseLocalSpaceForConstraint = useLocalSpaceForConstraint;
 
@@ -328,6 +326,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MonoBehaviour Functions
 
         #region Private Methods
+
+        /// <summary>
+        /// Calculates the unweighted average, or centroid, of all pointers'
+        /// grab points, as defined by the PointerData.GrabPoint property.
+        /// Does not use the rotation of each pointer; represents a pure
+        /// geometric centroid  of the grab points in world space.
+        /// </summary>
+        /// <returns>
+        /// Worldspace grab point centroid of all pointers 
+        /// in pointerIdToPointerMap.
+        /// </returns>
         private Vector3 GetPointersCentroid()
         {
             Vector3 sum = Vector3.zero;
@@ -340,6 +349,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return sum / Math.Max(1, count);
         }
 
+        /// <summary>
+        /// Calculates the multiple-handed pointer pose, used for
+        /// far-interaction hand-ray-based manipulations. Uses the
+        /// unweighted vector average of the pointers' forward vectors
+        /// to calculate a compound pose that takes into account the
+        /// pointing direction of each pointer.
+        /// </summary>
+        /// <returns>
+        /// Compound pose calculated as the average of the poses
+        /// corresponding to all of the pointers in pointerIdToPointerMap.
+        /// </returns>
         private MixedRealityPose GetAveragePointerPose()
         {
             Vector3 sumPos = Vector3.zero;
@@ -561,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion Public Methods
-            
+
         #region Hand Event Handlers
 
         /// <inheritdoc />
@@ -660,7 +680,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if ((currentState & State.Moving) > 0)
             {
-                MixedRealityPose pose = GetAveragePointerPose();
+                // If near manipulation, a pure grabpoint centroid is used for
+                // the initial pointer pose; if far manipulation, a more complex
+                // look-rotation-based pointer pose is used.
+                MixedRealityPose pose = IsNearManipulation() ? new MixedRealityPose(GetPointersCentroid()) : GetAveragePointerPose();
                 targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
                 if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
                 {
@@ -748,7 +771,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if ((newState & State.Moving) > 0)
             {
-                MixedRealityPose pointerPose = GetAveragePointerPose();
+                // If near manipulation, a pure grabpoint centroid is used for
+                // the initial pointer pose; if far manipulation, a more complex
+                // look-rotation-based pointer pose is used.
+                MixedRealityPose pointerPose = IsNearManipulation() ? new MixedRealityPose(GetPointersCentroid()) : GetAveragePointerPose();
                 MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
                 moveLogic.Setup(pointerPose, GetPointersCentroid(), hostPose, hostTransform.localScale);
             }
@@ -813,7 +839,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
             }
 
-            var pose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
+            var pose = new MixedRealityTransform(hostTransform);
             if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
             {
                 moveConstraint.Initialize(pose);
@@ -947,8 +973,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-
-            for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
+            for (int i = 0; i < (pointer.Controller?.Interactions?.Length ?? 0); i++)
             {
                 if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
                 {

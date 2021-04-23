@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -10,15 +10,11 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using System.Collections;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -29,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         GameObject cube;
         Interactable interactable;
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -40,13 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             interactable = cube.AddComponent<Interactable>();
             Assert.NotNull(interactable, "Failed to add interactable to cube");
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             GameObject.Destroy(cube);
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -56,8 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestClickEvents()
         {
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -73,7 +72,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked);
 
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            iss.ControllerSimulationMode = oldSimMode;
+        }
+
+        [UnityTest]
+        public IEnumerator TestMotionControllerClickEvents()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            var testMotionController = new TestMotionController(Handedness.Right);
+            yield return testMotionController.Show(new Vector3(1, 0, 0));
+            yield return testMotionController.Click();
+            yield return testMotionController.Hide();
+
+            Assert.True(wasClicked);
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+
+            yield return null;
         }
 
         [UnityTest]
@@ -115,6 +139,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
+        public IEnumerator TestMotionControllerHoldEvents()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            // Hold
+            var holdReceiver = interactable.AddReceiver<InteractableOnHoldReceiver>();
+            bool didHold = false;
+            holdReceiver.OnHold.AddListener(() => didHold = true);
+
+            var testMotionController = new TestMotionController(Handedness.Right);
+            yield return testMotionController.Show(new Vector3(1, 0, 0));
+
+            SimulatedMotionControllerButtonState selectButtonState = new SimulatedMotionControllerButtonState()
+            {
+                IsSelecting = true
+            };
+            yield return testMotionController.SetState(selectButtonState);
+            yield return new WaitForSeconds(holdReceiver.HoldTime);
+            yield return testMotionController.Hide();
+
+            Assert.True(didHold, "Did not receive hold event");
+            GameObject.Destroy(cube);
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator TestPressEvents()
         {
             var testHand = new TestHand(Handedness.Right);
@@ -131,8 +189,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestToggleEvents()
         {
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
             interactable.transform.position = Vector3.forward * 2f;
@@ -156,7 +215,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(didSelect, "Toggle select did not fire");
             Assert.True(didUnselect, "Toggle unselect did not fire");
 
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            iss.ControllerSimulationMode = oldSimMode;
+        }
+
+        [UnityTest]
+        public IEnumerator TestMotionControllerToggleEvents()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
+            interactable.transform.position = Vector3.forward * 2f;
+            interactable.NumOfDimensions = 2;
+            interactable.CanSelect = true;
+            interactable.CanDeselect = true;
+            bool didSelect = false;
+            bool didUnselect = false;
+            toggleReceiver.OnSelect.AddListener(() => didSelect = true);
+            toggleReceiver.OnDeselect.AddListener(() => didUnselect = true);
+
+            var testMotionController = new TestMotionController(Handedness.Right);
+            yield return testMotionController.Show(Vector3.zero);
+
+            yield return testMotionController.Click();
+            yield return testMotionController.Click();
+            yield return testMotionController.Hide();
+
+            Assert.True(didSelect, "Toggle select did not fire");
+            Assert.True(didUnselect, "Toggle unselect did not fire");
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+
+            yield return null;
         }
 
 
@@ -173,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testHand = new TestHand(Handedness.Right);
             yield return testHand.Show(Vector3.forward);
             yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return testHand.MoveTo(interactable.transform.position);
+            yield return testHand.MoveTo(interactable.transform.position - Vector3.forward * 0.1f);
             yield return testHand.MoveTo(Vector3.forward);
             yield return testHand.Hide();
             Assert.True(didTouch, "Did not receive touch event");

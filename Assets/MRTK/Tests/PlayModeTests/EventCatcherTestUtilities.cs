@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -31,7 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return gameObject.AddComponent<T>();
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
             Destroy(this);
@@ -52,10 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return go.AddComponent<T>();
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -146,7 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             button.onClick.AddListener(OnClick);
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
             button.onClick.RemoveListener(OnClick);
@@ -175,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             toggle.onValueChanged.AddListener(OnValueChanged);
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
             toggle.onValueChanged.RemoveListener(OnValueChanged);

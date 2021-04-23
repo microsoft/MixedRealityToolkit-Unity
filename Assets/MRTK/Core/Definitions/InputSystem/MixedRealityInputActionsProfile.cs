@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -10,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Configuration profile settings for setting up and consuming Input Actions.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input Actions Profile", fileName = "MixedRealityInputActionsProfile", order = (int)CreateProfileMenuItemIndices.InputActions)]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html")]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Input Actions Profile", fileName = "MixedRealityInputActionsProfile", order = (int)CreateProfileMenuItemIndices.InputActions)]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/input-actions")]
     public class MixedRealityInputActionsProfile : BaseMixedRealityProfile
     {
         private readonly string[] defaultInputActions =

@@ -1,8 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -65,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public Dictionary<Type, List<EventHandlerEntry>> EventHandlersByType { get; } = new Dictionary<Type, List<EventHandlerEntry>>();
 
-    #region IMixedRealityEventSystem Implementation
+        #region IMixedRealityEventSystem Implementation
 
         /// <inheritdoc />
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
@@ -105,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit
                     var handlerEntry = handlers[i];
 
                     // If handler's parent is in object collection (traversed above), it has already received an event.
-                    if(handlerEntry.parentObjectIsInObjectCollection)
+                    if (handlerEntry.parentObjectIsInObjectCollection)
                     {
                         continue;
                     }
@@ -165,12 +167,14 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
-            #if WINDOWS_UWP && !ENABLE_IL2CPP
-                Debug.Assert(typeof(T).IsInterface(), "RegisterHandler must be called with an interface as a generic parameter.");
-            #else
-                Debug.Assert(typeof(T).IsInterface, "RegisterHandler must be called with an interface as a generic parameter.");
-            #endif
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+            Debug.Assert(typeof(T).IsInterface(), "RegisterHandler must be called with an interface as a generic parameter.");
+#else
+            Debug.Assert(typeof(T).IsInterface, "RegisterHandler must be called with an interface as a generic parameter.");
+#endif
             Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to RegisterHandler doesn't implement a type given as generic parameter.");
+
+            DebugUtilities.LogVerboseFormat("Registering handler {0} against system {1}", handler.ToString().Trim(), this);
 
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }
@@ -184,12 +188,14 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
-            #if WINDOWS_UWP && !ENABLE_IL2CPP
-                Debug.Assert(typeof(T).IsInterface(), "UnregisterHandler must be called with an interface as a generic parameter.");
-            #else
-                Debug.Assert(typeof(T).IsInterface, "UnregisterHandler must be called with an interface as a generic parameter.");
-            #endif
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+            Debug.Assert(typeof(T).IsInterface(), "UnregisterHandler must be called with an interface as a generic parameter.");
+#else
+            Debug.Assert(typeof(T).IsInterface, "UnregisterHandler must be called with an interface as a generic parameter.");
+#endif
             Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to UnregisterHandler doesn't implement a type given as generic parameter.");
+
+            DebugUtilities.LogVerboseFormat("Unregistering handler {0} against system {1}", handler, this);
 
             TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
         }
@@ -280,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void Destroy()
         {
-            if(!enableDanglingHandlerDiagnostics)
+            if (!enableDanglingHandlerDiagnostics)
             {
                 return;
             }
@@ -304,9 +310,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-    #endregion IMixedRealityEventSystem Implementation
+        #endregion IMixedRealityEventSystem Implementation
 
-    #region Registration helpers
+        #region Registration helpers
 
         private void UnregisterHandler(Type handlerType, IEventSystemHandler handler)
         {
@@ -390,35 +396,40 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-    #endregion Registration helpers
+        #endregion Registration helpers
 
-    #region Utilities
+        #region Utilities
+
+        private static readonly ProfilerMarker TraverseEventSystemHandlerHierarchyPerfMarker = new ProfilerMarker("[MRTK] BaseEventSystem.TraverseEventSystemHandlerHierarchy");
 
         /// <summary>
         /// Utility function for registering parent interfaces of a given handler.
         /// </summary>
         /// <remarks>
-        /// Event handler interfaces may derive from each other. Some events will be raised using a base handler class, and are supposed to trigger on
+        /// <para>Event handler interfaces may derive from each other. Some events will be raised using a base handler class, and are supposed to trigger on
         /// all derived handler classes too. Example of that is IMixedRealityBaseInputHandler hierarchy.
         /// To support that current implementation registers multiple dictionary entries per handler, one for each level of event handler hierarchy.
         /// Alternative would be to register just one root type and 
         /// then determine which handlers to call dynamically in 'HandleEvent'.
         /// Implementation was chosen based on performance of 'HandleEvent'. Without determining type it is about 2+ times faster.
         /// There are possible ways to bypass that, but this will make implementation of classes 
-        /// that derive from Input System unnecessarily more complicated.
+        /// that derive from Input System unnecessarily more complicated.</para>
         /// </remarks>
         private void TraverseEventSystemHandlerHierarchy<T>(IEventSystemHandler handler, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
         {
-            var handlerType = typeof(T);
-
-            // Need to call on handlerType first, because GetInterfaces below will only return parent types.
-            func(handlerType, handler);
-
-            foreach (var iface in handlerType.GetInterfaces())
+            using (TraverseEventSystemHandlerHierarchyPerfMarker.Auto())
             {
-                if (!iface.Equals(eventSystemHandlerType))
+                var handlerType = typeof(T);
+
+                // Need to call on handlerType first, because GetInterfaces below will only return parent types.
+                func(handlerType, handler);
+
+                foreach (var iface in handlerType.GetInterfaces())
                 {
-                    func(iface, handler);
+                    if (!iface.Equals(eventSystemHandlerType))
+                    {
+                        func(iface, handler);
+                    }
                 }
             }
         }
@@ -430,21 +441,22 @@ namespace Microsoft.MixedReality.Toolkit
                 "cause performance issues. It is recommended to remove or replace usages of 'Register/Unregister' methods with 'RegisterHandler/UnregisterHandler'.");
         }
 
-    #endregion Utilities
+        #endregion Utilities
+
         // Example Event Pattern #############################################################
 
-        //public void RaiseGenericEvent(IEventSource eventSource)
-        //{
-        //    genericEventData.Initialize(eventSource);
-        //    HandleEvent(genericEventData, GenericEventHandler);
-        //}
+        // public void RaiseGenericEvent(IEventSource eventSource)
+        // {
+        //     genericEventData.Initialize(eventSource);
+        //     HandleEvent(genericEventData, GenericEventHandler);
+        // }
 
-        //private static readonly ExecuteEvents.EventFunction<IEventHandler> GenericEventHandler =
-        //    delegate (IEventHandler handler, BaseEventData eventData)
-        //    {
-        //        var casted = ExecuteEvents.ValidateEventData<GenericBaseEventData>(eventData);
-        //        handler.OnEventRaised(casted);
-        //    };
+        // private static readonly ExecuteEvents.EventFunction<IEventHandler> GenericEventHandler =
+        //     delegate (IEventHandler handler, BaseEventData eventData)
+        //     {
+        //         var casted = ExecuteEvents.ValidateEventData<GenericBaseEventData>(eventData);
+        //         handler.OnEventRaised(casted);
+        //     };
 
         // Example Event Pattern #############################################################
     }

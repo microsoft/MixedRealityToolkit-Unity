@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information. 
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License. 
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -19,13 +19,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         const float DragAreaOffset = 10;
         const float LightingSceneTypesLabelWidth = 45;
 
-        private static string managerSceneContent = 
-            "The Manager scene is loaded first and remains loaded for the duration of the app. Only one Manager scene is ever loaded, and no scene operation will ever unload it.";
+        private const string defaultSceneContent =
+            "Default scene system resources were not found.\nIf using custom manager and lighting scenes, this message can be ignored.\nIf not, please see the documentation for more information";
 
-        private static string lightingSceneContent =
-            "The Lighting scene controls lighting settings such as ambient light, skybox and sun direction. A Lighting scene's content is restricted based on the types defined in your editor settings. A default lighting scene is loaded on initialization. Only one lighting scene will ever be loaded at a time.";
+        private const string managerSceneContent =
+            "The manager scene is loaded first and remains loaded for the duration of the app. Only one manager scene is ever loaded, and no scene operation will ever unload it.";
 
-        private static string contentSceneContent =
+        private const string lightingSceneContent =
+            "The lighting scene controls lighting settings such as ambient light, skybox and sun direction. A lighting scene's content is restricted based on the types defined in your editor settings. A default lighting scene is loaded on initialization. Only one lighting scene will ever be loaded at a time.";
+
+        private const string contentSceneContent =
             "Content scenes are everything else. You can load and unload any number of content scenes in any combination, and their content is unrestricted.";
 
         private static bool showEditorProperties = true;
@@ -86,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 return;
             }
-            
+
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
             {
                 return;
@@ -97,6 +100,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.Update();
 
             MixedRealitySceneSystemProfile profile = (MixedRealitySceneSystemProfile)target;
+
+            if (!FindDefaultResources())
+            {
+                EditorGUILayout.HelpBox(defaultSceneContent, MessageType.Info);
+            }
 
             RenderFoldout(ref showEditorProperties, "Editor Settings", () =>
             {
@@ -186,8 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
 
                         EditorGUILayout.PropertyField(lightingScenes, includeChildren: true);
-                        //DrawSceneInfoDragAndDrop(lightingScenes);
-
                         EditorGUILayout.Space();
 
                         if (profile.NumLightingScenes > 0)
@@ -215,7 +221,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // Enable the tag field since we're drawing content scenes
                     SceneInfoDrawer.DrawTagProperty = true;
                     EditorGUILayout.PropertyField(contentScenes, includeChildren: true);
-                    //DrawSceneInfoDragAndDrop(contentScenes);
                 }
             }, ShowSceneSystem_Content_PreferenceKey);
 
@@ -273,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     arrayElement = arrayProperty.GetArrayElementAtIndex(i);
                                     assetProperty = arrayElement.FindPropertyRelative("Asset");
                                     if (assetProperty.objectReferenceValue != null && assetProperty.objectReferenceValue == draggedObject)
-                                    {   
+                                    {
                                         isDuplicate = true;
                                         break;
                                     }
@@ -284,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     Debug.LogWarning("Skipping " + draggedObject.name + " - it's already in the " + arrayProperty.displayName + " list.");
                                     continue;
                                 }
-                                
+
                                 // Create the new element at 0
                                 arrayProperty.InsertArrayElementAtIndex(0);
                                 arrayProperty.serializedObject.ApplyModifiedProperties();
@@ -313,6 +318,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void DrawContentSceneElement(Rect rect, int index, bool isActive, bool isFocused)
         {
             SceneInfoDrawer.DrawProperty(rect, contentScenes.GetArrayElementAtIndex(index), GUIContent.none, isActive, isFocused);
+        }
+
+        private const string defaultManagerAssetGuid = "ae7bb08d297fb69408695d8de0962524";
+        private Object defaultManagerAsset = null;
+        private const string defaultLightingAssetGuid = "7e54e36c44f826c438c95da79f8de638";
+        private Object defaultLightingAsset = null;
+
+        private bool FindDefaultResources()
+        {
+            if ((defaultManagerAsset != null) &&
+                (defaultLightingAsset != null))
+            {
+                return true;
+            }
+
+            defaultManagerAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(defaultManagerAssetGuid));
+            defaultLightingAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(defaultLightingAssetGuid));
+
+            return ((defaultManagerAsset != null) && (defaultLightingAsset != null));
         }
     }
 }

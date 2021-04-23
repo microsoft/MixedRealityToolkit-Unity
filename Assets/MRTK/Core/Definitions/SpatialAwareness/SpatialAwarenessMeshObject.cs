@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        private static readonly Type[] requiredMeshComponents =
+        private static readonly Type[] RequiredMeshComponents =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),
@@ -48,13 +48,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject
             {
                 Id = meshId,
-                GameObject = new GameObject(name, requiredMeshComponents)
+                GameObject = new GameObject(name, RequiredMeshComponents)
                 {
                     layer = layer
                 }
             };
 
-            newMesh.GameObject.transform.parent = (meshParent != null) ? meshParent.transform : null;
+            /// Preserve local transform when attaching to parent.
+            newMesh.GameObject.transform.SetParent(meshParent != null ? meshParent.transform : null, false);
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;

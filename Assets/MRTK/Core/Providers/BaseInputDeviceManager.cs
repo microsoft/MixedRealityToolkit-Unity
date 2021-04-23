@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The input system configuration profile in use in the application.
         /// </summary>
-        protected MixedRealityInputSystemProfile InputSystemProfile => Service != null ? Service.InputSystemProfile : null;
+        protected MixedRealityInputSystemProfile InputSystemProfile => Service?.InputSystemProfile;
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
@@ -73,8 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
-        { }
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         #region Private members
 
@@ -90,10 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             private static PointerEqualityComparer defaultComparer;
 
-            internal static PointerEqualityComparer Default
-            {
-                get =>  defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
-            }
+            internal static PointerEqualityComparer Default => defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
 
             /// <summary>
             /// Check that references equals for two pointers
@@ -104,8 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <summary>
-            /// Unity objects have unique equals comparison and to check keys in a dictionary, 
-            /// we want the hascode match to be Unity's unique InstanceID to compare objects
+            /// Unity objects have unique equals comparison and to check keys in a dictionary,
+            /// we want the hash code match to be Unity's unique InstanceID to compare objects.
             /// </summary>
             public int GetHashCode(IMixedRealityPointer pointer)
             {
@@ -120,10 +116,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
+        private static readonly ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
-        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         #endregion
@@ -164,8 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Loop through active pointers in scene, destroy all gameobjects and clear our tracking dictionary
             foreach (var pointer in activePointersToConfig.Keys)
             {
-                var pointerComponent = pointer as MonoBehaviour;
-                if (!UnityObjectExtensions.IsNull(pointerComponent))
+                if (pointer.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                 {
                     GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                 }
@@ -173,6 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             pointerConfigurations = System.Array.Empty<PointerConfig>();
             activePointersToConfig.Clear();
+
+            base.Destroy();
         }
 
         #endregion
@@ -206,13 +203,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             while (pointerCache.Count > 0)
                             {
                                 var p = pointerCache.Pop();
-                                var pointerComponent = p as MonoBehaviour;
-                                if (!UnityObjectExtensions.IsNull(pointerComponent))
+                                if (p.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                                 {
                                     pointerComponent.gameObject.SetActive(true);
 
                                     // We got pointer from cache, continue to next pointer option to review
                                     requestedPointer = p;
+
+                                    DebugUtilities.LogVerboseFormat("RequestPointers: Reusing a cached pointer {0} for controller type {1} and handedness {2}",
+                                        requestedPointer,
+                                        controllerType,
+                                        controllingHand);
                                     break;
                                 }
                             }
@@ -221,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (requestedPointer == null)
                         {
                             // We couldn't obtain a pointer from our cache, resort to creating a new one
-                            requestedPointer = CreatePointer(in option);
+                            requestedPointer = CreatePointer(ref option);
                         }
 
                         if (requestedPointer != null)
@@ -238,52 +239,58 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker RecyclePointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RecyclePointers");
+
         /// <summary>
         /// Recycle all pointers associated with the provided <see cref="IMixedRealityInputSource"/>. 
         /// This involves reseting the pointer, disabling the pointer GameObject, and possibly caching it for re-use.
         /// </summary>
         protected virtual void RecyclePointers(IMixedRealityInputSource inputSource)
         {
-            if (inputSource != null)
+            using (RecyclePointersPerfMarker.Auto())
             {
-                CleanActivePointers();
-
-                var pointers = inputSource.Pointers;
-                for (int i = 0; i < pointers.Length; i++)
+                if (inputSource != null)
                 {
-                    var pointer = pointers[i];
-                    var pointerComponent = pointer as MonoBehaviour;
-                    if (!UnityObjectExtensions.IsNull(pointerComponent))
+                    CleanActivePointers();
+
+                    var pointers = inputSource.Pointers;
+                    for (int i = 0; i < pointers.Length; i++)
                     {
-                        // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
-                        // At least if this is a controller we know about and we expect it to be destroyed, skip
-                        if (pointer is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
+                        var pointer = pointers[i];
+                        if (pointers[i].TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                         {
-                            continue;
-                        }
-
-                        if (EnablePointerCache)
-                        {
-                            pointer.Reset();
-                            pointerComponent.gameObject.SetActive(false);
-
-                            if (EnablePointerCache && activePointersToConfig.ContainsKey(pointer))
+                            // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
+                            // At least if this is a controller we know about and we expect it to be destroyed, skip
+                            if (pointer is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
                             {
-                                uint pointerOptionIndex = activePointersToConfig[pointer];
-                                activePointersToConfig.Remove(pointer);
-
-                                // Add our pointer back to our cache
-                                pointerConfigurations[(int)pointerOptionIndex].cache.Push(pointer);
+                                continue;
                             }
-                        }
-                        else
-                        {
-                            GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
+
+                            if (EnablePointerCache)
+                            {
+                                pointer.Reset();
+                                pointerComponent.gameObject.SetActive(false);
+
+                                if (EnablePointerCache && activePointersToConfig.ContainsKey(pointer))
+                                {
+                                    uint pointerOptionIndex = activePointersToConfig[pointer];
+                                    activePointersToConfig.Remove(pointer);
+
+                                    // Add our pointer back to our cache
+                                    pointerConfigurations[(int)pointerOptionIndex].cache.Push(pointer);
+                                }
+                            }
+                            else
+                            {
+                                GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
+                            }
                         }
                     }
                 }
             }
         }
+
+        private static readonly ProfilerMarker CreatePointerPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.CreatePointer");
 
         /// <summary>
         /// Instantiate the Pointer prefab with supplied PointerOption details. If there is no IMixedRealityPointer on the prefab, then destroy and log error
@@ -291,43 +298,51 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// PointerOption is passed by ref to reduce copy overhead of struct
         /// </remarks>
-        private IMixedRealityPointer CreatePointer(in PointerOption option)
+        private IMixedRealityPointer CreatePointer(ref PointerOption option)
         {
-            var pointerObject = Object.Instantiate(option.PointerPrefab);
-            MixedRealityPlayspace.AddChild(pointerObject.transform);
-            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-            if (pointer == null)
+            using (CreatePointerPerfMarker.Auto())
             {
-                Debug.LogError($"{option.PointerPrefab} does not have {typeof(IMixedRealityPointer).Name} component. Cannot create and utilize pointer");
+                var pointerObject = Object.Instantiate(option.PointerPrefab);
+                MixedRealityPlayspace.AddChild(pointerObject.transform);
+                var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+                if (pointer == null)
+                {
+                    Debug.LogError($"Ensure that the prefab '{option.PointerPrefab.name}' listed under Input -> Pointers -> Pointer Options has an {typeof(IMixedRealityPointer).Name} component.\nThis prefab can't be used as a pointer as configured and won't be instantiated.");
 
-                GameObjectExtensions.DestroyGameObject(pointerObject);
+                    GameObjectExtensions.DestroyGameObject(pointerObject);
+                }
+
+                return pointer;
             }
-
-            return pointer;
         }
 
+        private static readonly ProfilerMarker CleanActivePointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.CleanActivePointers");
+
         /// <summary>
-        /// This class tracks pointers that have been requested and thus are considered "active" gameobjects in the scene. 
+        /// This class tracks pointers that have been requested and thus are considered "active" GameObjects in the scene. 
         /// As GameObjects, these pointers may be destroyed and thus their entry becomes "null" although the managed object is not destroyed
         /// This helper loops through all dictionary entries and checks if it is null, if so it is removed
         /// </summary>
         private void CleanActivePointers()
         {
-            var removal = new List<IMixedRealityPointer>();
-
-            var enumerator = activePointersToConfig.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (CleanActivePointersPerfMarker.Auto())
             {
-                var pointer = enumerator.Current.Key as MonoBehaviour;
-                if (UnityObjectExtensions.IsNull(pointer))
+                var removal = new List<IMixedRealityPointer>();
+
+                var enumerator = activePointersToConfig.GetEnumerator();
+                while (enumerator.MoveNext())
                 {
-                    removal.Add(enumerator.Current.Key);
+                    var pointer = enumerator.Current.Key;
+                    if (pointer.IsNull())
+                    {
+                        removal.Add(pointer);
+                    }
                 }
-            }
 
-            for (int i = 0; i < removal.Count; i++)
-            {
-                activePointersToConfig.Remove(removal[i]);
+                for (int i = 0; i < removal.Count; i++)
+                {
+                    activePointersToConfig.Remove(removal[i]);
+                }
             }
         }
 
@@ -340,8 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 while (pointerConfigurations[i].cache.Count > 0)
                 {
-                    var pointerComponent = pointerConfigurations[i].cache.Pop() as MonoBehaviour;
-                    if (!UnityObjectExtensions.IsNull(pointerComponent))
+                    if (pointerConfigurations[i].cache.Pop().TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                     {
                         GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                     }

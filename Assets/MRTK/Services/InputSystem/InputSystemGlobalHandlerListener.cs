@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Threading.Tasks;
@@ -54,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// A task that will only complete when the input system has in a valid state.
         /// </summary>
         /// <remarks>
-        /// It's possible for this object to have been destroyed after the await, which
-        /// implies that callers should check that this != null after awaiting this task.
+        /// <para>It's possible for this object to have been destroyed after the await, which
+        /// implies that callers should check that this != null after awaiting this task.</para>
         /// </remarks>
         protected async Task EnsureInputSystemValid()
         {

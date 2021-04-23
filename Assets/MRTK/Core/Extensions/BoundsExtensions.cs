@@ -1,7 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -121,8 +120,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="positions">Output corner positions</param>
         /// <param name="bounds">Input bounds, in local space</param>
         /// <remarks>
-        /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
-        /// corners array.
+        /// <para>Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
+        /// corners array.</para>
         /// </remarks>
         public static void GetCornerPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
@@ -158,8 +157,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// Gets all the corner points of the bounds 
         /// </summary>
         /// <remarks>
-        /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
-        /// corners array.
+        /// <para>Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
+        /// corners array.</para>
         /// </remarks>
         public static void GetCornerPositions(this Bounds bounds, ref Vector3[] positions)
         {
@@ -427,14 +426,27 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="target">gameObject that boundingBox bounds.</param>
         /// <param name="boundsPoints">array reference that gets filled with points</param>
         /// <param name="ignoreLayers">layerMask to simplify search</param>
-        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        /// <param name="relativeTo">compute bounds relative to this transform</param>
+        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers, Transform relativeTo = null)
         {
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)
             {
-                GetColliderBoundsPoints(colliders[i], boundsPoints, ignoreLayers);
+                GetColliderBoundsPoints(colliders[i], boundsPoints, ignoreLayers, relativeTo);
             }
         }
+
+        private static void InverseTransformPoints(ref Vector3[] positions, Transform relativeTo)
+        {
+            if (relativeTo)
+            {
+                for (var i = 0; i < positions.Length; ++i)
+                {
+                    positions[i] = relativeTo.InverseTransformPoint(positions[i]);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Method to get bounds from a single Collider
@@ -442,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="collider">Target collider</param>
         /// <param name="boundsPoints">array reference that gets filled with points</param>
         /// <param name="ignoreLayers">layerMask to simplify search</param>
-        public static void GetColliderBoundsPoints(Collider collider, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        public static void GetColliderBoundsPoints(Collider collider, List<Vector3> boundsPoints, LayerMask ignoreLayers, Transform relativeTo = null)
         {
             if (ignoreLayers == (1 << collider.gameObject.layer | ignoreLayers)) { return; }
 
@@ -451,6 +463,7 @@ namespace Microsoft.MixedReality.Toolkit
                 SphereCollider sc = collider as SphereCollider;
                 Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
                 sphereBounds.GetFacePositions(sc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
             }
             else if (collider is BoxCollider)
@@ -458,6 +471,7 @@ namespace Microsoft.MixedReality.Toolkit
                 BoxCollider bc = collider as BoxCollider;
                 Bounds boxBounds = new Bounds(bc.center, bc.size);
                 boxBounds.GetCornerPositions(bc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
 
             }
@@ -466,6 +480,7 @@ namespace Microsoft.MixedReality.Toolkit
                 MeshCollider mc = collider as MeshCollider;
                 Bounds meshBounds = mc.sharedMesh.bounds;
                 meshBounds.GetCornerPositions(mc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
             }
             else if (collider is CapsuleCollider)
@@ -487,6 +502,7 @@ namespace Microsoft.MixedReality.Toolkit
                         break;
                 }
                 capsuleBounds.GetFacePositions(cc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
             }
         }
@@ -576,11 +592,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// Transforms 'bounds' using the specified transform matrix.
         /// </summary>
         /// <remarks>
-        /// Transforming a 'Bounds' instance means that the function will construct a new 'Bounds' 
+        /// <para>Transforming a 'Bounds' instance means that the function will construct a new 'Bounds' 
         /// instance which has its center translated using the translation information stored in
         /// the specified matrix and its size adjusted to account for rotation and scale. The size
         /// of the new 'Bounds' instance will be calculated in such a way that it will contain the
-        /// old 'Bounds'.
+        /// old 'Bounds'.</para>
         /// </remarks>
         /// <param name="bounds">
         /// The 'Bounds' instance which must be transformed.
@@ -729,9 +745,9 @@ namespace Microsoft.MixedReality.Toolkit
             var x = bounds.extents.x;
             var y = bounds.extents.y;
             var z = bounds.extents.z;
-            var a = new Vector3(-x,  y, -z);
-            var b = new Vector3( x, -y, -z);
-            var c = new Vector3( x,  y, -z);
+            var a = new Vector3(-x, y, -z);
+            var b = new Vector3(x, -y, -z);
+            var c = new Vector3(x, y, -z);
 
             var verticies = new Vector3[]
             {

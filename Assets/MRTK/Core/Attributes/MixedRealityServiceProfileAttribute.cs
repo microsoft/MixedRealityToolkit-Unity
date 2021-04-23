@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit
         public MixedRealityServiceProfileAttribute(Type[] requiredTypes, Type[] excludedTypes = null)
         {
             RequiredTypes = requiredTypes;
-            ExcludedTypes = excludedTypes != null ? excludedTypes : new Type[0];
+            ExcludedTypes = excludedTypes ?? (new Type[0]);
         }
 
         public Type[] RequiredTypes { get; private set; }

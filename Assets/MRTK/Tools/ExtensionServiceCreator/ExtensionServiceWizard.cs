@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     internal class ExtensionServiceWizard : EditorWindow
     {
         private static ExtensionServiceWizard window;
-        private static readonly string servicesDocumentationURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/ExtensionServiceCreationWizard.html";
+        private static readonly string servicesDocumentationURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/extension-service-creation-wizard";
         private static readonly Vector2 minWindowSize = new Vector2(500, 0);
         private const int DocLinkWidth = 200;
         private const string TargetFolderLabel = "Target Folder";
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Vector2 outputFoldersScrollPos;
         private bool useUniversalFolder = true;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Create Extension Service", false, 500)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Create Extension Service", false, 500)]
         private static void CreateExtensionServiceMenuItem()
         {
             if (window != null)
@@ -341,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!registered)
             {
                 EditorGUILayout.LabelField("Would you like to register this service in your current MixedRealityToolkit profile?", EditorStyles.miniLabel);
-                
+
                 // Check to see whether it's possible to register the profile
                 bool canRegisterProfile = true;
                 if (MixedRealityToolkit.Instance == null || !MixedRealityToolkit.Instance.HasActiveProfile)

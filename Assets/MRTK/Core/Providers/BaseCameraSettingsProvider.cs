@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             // It is the responsibility of the camera settings provider to set the display settings (this allows overriding the
             // default values with per-camera provider values).
-            MixedRealityCameraProfile cameraProfile = (Service as IMixedRealityCameraSystem)?.CameraProfile;
+            MixedRealityCameraProfile cameraProfile = Service?.CameraProfile;
             if (cameraProfile == null) { return; }
 
             if (IsOpaque)

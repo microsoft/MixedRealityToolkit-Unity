@@ -1,12 +1,12 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using UnityEngine;
-using UnityEngine.UI;
-using System;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -171,6 +171,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Event fired when shift key on keyboard is pressed.
         /// </summary>
         public event Action<bool> OnKeyboardShifted = delegate { };
+
+        /// <summary>
+        /// Event fired when char key on keyboard is pressed.
+        /// </summary>
+        public event Action<KeyboardValueKey> OnKeyboardValueKeyPressed = delegate { };
+
+        /// <summary>
+        /// Event fired when function key on keyboard is pressed.
+        /// Fires before internal keyboard state is updated.
+        /// </summary>
+        public event Action<KeyboardKeyFunc> OnKeyboardFunctionKeyPressed = delegate { };
 
         /// <summary>
         /// Current shift state of keyboard.
@@ -598,6 +609,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             IndicateActivity();
             string value = "";
 
+            OnKeyboardValueKeyPressed(valueKey);
+
             // Shift value should only be applied if a shift value is present.
             if (m_IsShifted && !string.IsNullOrEmpty(valueKey.ShiftValue))
             {
@@ -628,6 +641,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public void FunctionKey(KeyboardKeyFunc functionKey)
         {
             IndicateActivity();
+            OnKeyboardFunctionKeyPressed(functionKey);
             switch (functionKey.ButtonFunction)
             {
                 case KeyboardKeyFunc.Function.Enter:
@@ -783,10 +797,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (SubmitOnEnter)
             {
                 // Send text entered event and close the keyboard
-                if (OnTextSubmitted != null)
-                {
-                    OnTextSubmitted(this, EventArgs.Empty);
-                }
+                OnTextSubmitted?.Invoke(this, EventArgs.Empty);
 
                 Close();
             }

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
  # Runs the playmode tests in batch mode. This is the same technique as 
  # used by the MRTK PR validation when you do "/azp run mrtk_pr" on github.
@@ -15,7 +18,7 @@ param(
     # Path to your Unity Executable
     [ValidateScript({[System.IO.File]::Exists($_) -and $_.EndsWith(".exe") })]
     [string]
-    $unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.6f1\Editor\Unity.exe",
+    $unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.26f1\Editor\Unity.exe",
     # Optional test filter
     [Parameter(Mandatory=$false)]
     [string]

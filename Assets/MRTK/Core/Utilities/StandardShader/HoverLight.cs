@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
@@ -11,15 +11,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// the "MixedRealityToolkit/Standard" shader "_HoverLight" feature.
     /// </summary>
     [ExecuteInEditMode]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/HoverLight.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/hover-light")]
     [AddComponentMenu("Scripts/MRTK/Core/HoverLight")]
     public class HoverLight : MonoBehaviour
     {
-        // Two hover lights are supported at this time.
-        private const int hoverLightCount = 2;
+        // The MRTK Standard shader supports two (2) hover lights by default, but will scale to support four (4) then ten (10) as 
+        // more lights are added to the scene. Having many HoverLights illuminate a material will increase pixel shader instructions 
+        // and will impact performance. Please profile light changes within your project.
+        private const int hoverLightCountLow = 2;
+        private const int hoverLightCountMedium = 4;
+        private const string hoverLightCountMediumName = "_HOVER_LIGHT_MEDIUM";
+        private const int hoverLightCountHigh = 10;
+        private const string hoverLightCountHighName = "_HOVER_LIGHT_HIGH";
         private const int hoverLightDataSize = 2;
-        private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
-        private static Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
+
+        private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCountHigh);
+        private static Vector4[] hoverLightData = new Vector4[hoverLightDataSize * hoverLightCountHigh];
         private static int _HoverLightDataID;
         private static int lastHoverLightUpdate = -1;
 
@@ -98,9 +105,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void AddHoverLight(HoverLight light)
         {
-            if (activeHoverLights.Count >= hoverLightCount)
+            if (activeHoverLights.Count == hoverLightCountLow)
             {
-                Debug.LogWarningFormat("Max hover light count ({0}) exceeded.", hoverLightCount);
+                Shader.EnableKeyword(hoverLightCountMediumName);
+            }
+            else if (activeHoverLights.Count == hoverLightCountMedium)
+            {
+                Shader.DisableKeyword(hoverLightCountMediumName);
+                Shader.EnableKeyword(hoverLightCountHighName);
+            }
+            else if (activeHoverLights.Count >= hoverLightCountHigh)
+            {
+                Debug.LogWarningFormat("Max hover light count {0} exceeded. {1} will not be considered by the MRTK Standard shader.", hoverLightCountHigh, light.gameObject.name);
             }
 
             activeHoverLights.Add(light);
@@ -109,6 +125,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private void RemoveHoverLight(HoverLight light)
         {
             activeHoverLights.Remove(light);
+
+            if (activeHoverLights.Count == hoverLightCountLow)
+            {
+                Shader.DisableKeyword(hoverLightCountMediumName);
+            }
+            else if (activeHoverLights.Count == hoverLightCountMedium)
+            {
+                Shader.EnableKeyword(hoverLightCountMediumName);
+                Shader.DisableKeyword(hoverLightCountHighName);
+            }
         }
 
         private void Initialize()
@@ -128,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            for (int i = 0; i < hoverLightCount; ++i)
+            for (int i = 0; i < hoverLightCountHigh; ++i)
             {
                 HoverLight light = (i >= activeHoverLights.Count) ? null : activeHoverLights[i];
                 int dataIndex = i * hoverLightDataSize;

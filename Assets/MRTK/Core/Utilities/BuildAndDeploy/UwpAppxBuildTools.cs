@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
@@ -22,6 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Query the build process to see if we're already building.
         /// </summary>
         public static bool IsBuilding { get; private set; } = false;
+
+        /// <summary>
+        /// The list of filename extensions that are valid VCProjects.
+        /// </summary>
+        private static readonly string[] VcProjExtensions = { "vcsproj", "vcxproj" };
 
         /// <summary>
         /// Build the UWP appx bundle for this project.  Requires that <see cref="UwpPlayerBuildTools.BuildPlayer(string,bool,CancellationToken)"/> has already be run or a user has
@@ -85,13 +90,27 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             string storagePath = Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildInfo.OutputDirectory));
             string solutionProjectPath = Path.GetFullPath(Path.Combine(storagePath, $@"{PlayerSettings.productName}.sln"));
 
+            int exitCode;
+
             // Building the solution requires first restoring NuGet packages - when built through
             // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
             // we have to do that step manually.
-            int exitCode = await Run(msBuildPath,
+            // We use msbuild for nuget restore by default, but if a path to nuget.exe is supplied then we use that executable
+            if (string.IsNullOrEmpty(buildInfo.NugetExecutablePath))
+            {
+                exitCode = await Run(msBuildPath,
                 $"\"{solutionProjectPath}\" /t:restore {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "nugetRestore.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
+            }
+            else
+            {
+                exitCode = await Run(buildInfo.NugetExecutablePath,
+                $"restore \"{solutionProjectPath}\"",
+                !Application.isBatchMode,
+                cancellationToken);
+            }
+            
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -108,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             // Now that NuGet packages have been restored, we can run the actual build process.
-            exitCode = await Run(msBuildPath, 
+            exitCode = await Run(msBuildPath,
                 $"\"{solutionProjectPath}\" {(buildInfo.Multicore ? "/m /nr:false" : "")} /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {(string.IsNullOrEmpty(buildInfo.PlatformToolset) ? string.Empty : $"/p:PlatformToolset={buildInfo.PlatformToolset}")} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
@@ -229,20 +248,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // For ARM64 builds we need to add ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch
             // to vcxproj file in order to ensure that the build passes
-
-            string projectName = PlayerSettings.productName;
-            string projectFilePath = Path.Combine(Path.GetFullPath(buildInfo.OutputDirectory), projectName, $"{projectName}.vcsproj");
-
-            if (!File.Exists(projectFilePath))
+            string projectFilePath = GetProjectFilePath(buildInfo);
+            if (projectFilePath == null)
             {
-                Debug.LogError($"Cannot find project file: {projectFilePath}");
                 return false;
             }
 
             var rootNode = XElement.Load(projectFilePath);
             var defaultNamespace = rootNode.GetDefaultNamespace();
             var propertyGroupNode = rootNode.Element(defaultNamespace + "PropertyGroup");
-            
+
             if (propertyGroupNode == null)
             {
                 propertyGroupNode = new XElement(defaultNamespace + "PropertyGroup", new XAttribute("Label", "Globals"));
@@ -252,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var newNode = propertyGroupNode.Element(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch");
             if (newNode != null)
             {
-                // If this setting already exists in the project, ensure it's value is "None"
+                // If this setting already exists in the project, ensure its value is "None"
                 newNode.Value = "None";
             }
             else
@@ -263,6 +278,28 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             rootNode.Save(projectFilePath);
 
             return true;
+        }
+
+        /// <summary>
+        /// Given the project name and build path, resolves the valid VcProject file (i.e. .vcsproj, vcxproj)
+        /// </summary>
+        /// <returns>A valid path if the project file exists, null otherwise</returns>
+        private static string GetProjectFilePath(IBuildInfo buildInfo)
+        {
+            string projectName = PlayerSettings.productName;
+            foreach (string extension in VcProjExtensions)
+            {
+                string projectFilePath = Path.Combine(Path.GetFullPath(buildInfo.OutputDirectory), projectName, $"{projectName}.{extension}");
+                if (File.Exists(projectFilePath))
+                {
+                    return projectFilePath;
+                }
+            }
+
+            string projectDirectory = Path.Combine(Path.GetFullPath(buildInfo.OutputDirectory), projectName);
+            string combinedExtensions = String.Join("|", VcProjExtensions);
+            Debug.LogError($"Cannot find project file {projectDirectory} given names {projectName}.{combinedExtensions}");
+            return null;
         }
 
         private static bool UpdateAppxManifest(IBuildInfo buildInfo)
@@ -536,10 +573,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Adds the 'Gaze Input' capability to the manifest.
         /// </summary>
         /// <remarks>
-        /// This is a workaround for versions of Unity which don't have native support
+        /// <para>This is a workaround for versions of Unity which don't have native support
         /// for the 'Gaze Input' capability in its Player Settings preference location.
         /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
+        /// take a dependency on this function.</para>
         /// </remarks>
         public static void AddGazeInputCapability(XElement rootNode)
         {
@@ -561,10 +598,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Adds the 'Research Mode' capability to the manifest.
         /// </summary>
         /// <remarks>
-        /// This is only for research projects and should not be used in production.
+        /// <para>This is only for research projects and should not be used in production.
         /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
         /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
+        /// take a dependency on this function.</para>
         /// </remarks>
         public static void AddResearchModeCapability(XElement rootNode)
         {
@@ -597,12 +634,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Enables unsafe code in the generated Assembly-CSharp project.
         /// </summary>
         /// <remarks>
-        /// This is not required by the research mode, but not using unsafe code with
-        /// direct memory access results in poor performance. So its kinda recommended
-        /// to use unsafe code.
-        /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
-        /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
+        /// <para>This is not required by the research mode, but not using unsafe code with
+        /// direct memory access results in poor performance. So it is recommended
+        /// to use unsafe code to an extent.</para>
+        /// <para>For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode. </para>
+        /// <para>Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.</para>
         /// </remarks>
         public static void AllowUnsafeCode(XElement rootNode)
         {

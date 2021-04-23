@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // Unity doesn't include the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
+// Given that the .NET backend is deprecated by Unity at this point, we have
 // to work around this on our end.
 
 using Microsoft.MixedReality.Toolkit.UI;
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab
         private const string progressIndicatorRotatingObjectPrefabGuid = "274fde8ad8cd85a4a88acb4c2c892028";
         private static readonly string progressIndicatorRotatingObjectPrefabPath = AssetDatabase.GUIDToAssetPath(progressIndicatorRotatingObjectPrefabGuid);
-        
+
         // SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab
         private const string progressIndicatorRotatingOrbsPrefabGuid = "65fa42bb01c733c42b05a4e91628f494";
         private static readonly string progressIndicatorRotatingOrbsPrefabPath = AssetDatabase.GUIDToAssetPath(progressIndicatorRotatingOrbsPrefabGuid);
@@ -93,7 +93,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private async Task TestOpenCloseProgressIndicatorAsync(GameObject progressIndicatorObject, IProgressIndicator progressIndicator, float timeOpen = 2f)
+        /// <summary>
+        /// Tests that prefab finishes closing after being disabled at runtime.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHideBeforeClosingRotatingOrbsPrefab()
+        {
+            GameObject progressIndicatorObject;
+            IProgressIndicator progressIndicator;
+            InstantiatePrefab(progressIndicatorRotatingOrbsPrefabPath, out progressIndicatorObject, out progressIndicator);
+            Task testTask = TestOpenCloseProgressIndicatorAsync(progressIndicatorObject, progressIndicator, 3f, hideAfterOpening: true);
+
+            // Wait a maximum time before considering the progress bar as stuck
+            float timeStarted = Time.time;
+            const float timeout = 5.0f; 
+            while (!testTask.IsCompleted)
+            {
+                if (Time.time < timeStarted + timeout)
+                {
+                    yield return null;
+                }
+                else
+                {
+                    Assert.Fail("The progress bar is stuck closing.");
+                }
+            }
+
+            // clean up
+            GameObject.Destroy(progressIndicatorObject);
+            yield return null;
+        }
+
+        private async Task TestOpenCloseProgressIndicatorAsync(GameObject progressIndicatorObject, IProgressIndicator progressIndicator, float timeOpen = 2f, bool hideAfterOpening = false)
         {
             // Deactivate the progress indicator
             progressIndicatorObject.SetActive(false);
@@ -110,6 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Make sure it's actually open
             Assert.True(progressIndicator.State == ProgressIndicatorState.Open, "Progress indicator was not open after open async call: " + progressIndicator.State);
+
+            // Hide the gameObject if requested
+            if (hideAfterOpening)
+            {
+                progressIndicatorObject.SetActive(false);
+            }
 
             // Make sure we can set its progress and message while open
             // Also make sure we can set progress to a value greater than 1 without blowing anything up

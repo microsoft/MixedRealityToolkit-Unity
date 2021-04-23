@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Teleport;
@@ -61,9 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public ICursorModifier CursorModifier { get; set; }
 
-        /// <inheritdoc />
-        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
-
         private bool isInteractionEnabled = true;
 
         /// <inheritdoc />
@@ -72,10 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return isInteractionEnabled && IsActive; }
             set
             {
-                isInteractionEnabled = value;
-                if (BaseCursor != null)
+                if (isInteractionEnabled != value)
                 {
-                    BaseCursor.SetVisibility(value);
+                    isInteractionEnabled = value;
+                    if (BaseCursor != null)
+                    {
+                        BaseCursor.SetVisibility(value);
+                    }
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;
-        
+
         /// <inheritdoc />
         public float SphereCastRadius { get; set; }
 
@@ -141,6 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             return left.Equals(right);
@@ -160,12 +161,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }
 
+        /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
             return obj.GetHashCode();
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked

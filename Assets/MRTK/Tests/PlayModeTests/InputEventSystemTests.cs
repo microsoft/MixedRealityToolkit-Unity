@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -28,16 +28,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     class InputEventSystemTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -72,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 "Input event system doesn't contain expected event handler types.");
 
             CollectionAssert.AreEquivalent(
-                new HandleList { new Handle (handlerBasedListener, true) },
+                new HandleList { new Handle(handlerBasedListener, true) },
                 inputSystem.EventHandlersByType[typeof(IMixedRealitySpeechHandler)],
                 "Input event system doesn't contain expected IMixedRealitySpeechHandler handlers.");
 
@@ -205,30 +207,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSystem.RaisePointerClicked(inputSystem.GazeProvider.GazePointer, MixedRealityInputAction.None, 1);
 
             Assert.AreEqual(objectBasedListener.pointerClickedCount, 1, "Pointer clicked event is not received by old API handler.");
-            Assert.Zero(objectBasedListener.pointerDownCount,           "Pointer down event is received by old API handler.");
-            Assert.Zero(objectBasedListener.pointerUpCount,             "Pointer up event is received by old API handler.");
-            Assert.Zero(objectBasedListener.pointerDraggedCount,        "Pointer dragged event is received by old API handler.");
-            Assert.Zero(objectBasedListener.speechCount,                "Speech event is received by old API handler.");
+            Assert.Zero(objectBasedListener.pointerDownCount, "Pointer down event is received by old API handler.");
+            Assert.Zero(objectBasedListener.pointerUpCount, "Pointer up event is received by old API handler.");
+            Assert.Zero(objectBasedListener.pointerDraggedCount, "Pointer dragged event is received by old API handler.");
+            Assert.Zero(objectBasedListener.speechCommandsReceived.Count(), "Speech event is received by old API handler.");
 
             // Wrong behavior, preserved for backward compatibility
             Assert.AreEqual(handlerBasedListener.pointerClickedCount, 1, "Pointer clicked event is not received by new API handler.");
-            Assert.Zero(handlerBasedListener.pointerDownCount,           "Pointer down event is received by new  API handler.");
-            Assert.Zero(handlerBasedListener.pointerUpCount,             "Pointer up event is received by new API handler.");
-            Assert.Zero(handlerBasedListener.pointerDraggedCount,        "Pointer dragged event is received by new API handler.");
-            Assert.Zero(handlerBasedListener.speechCount,                "Speech event is received by new API handler.");
+            Assert.Zero(handlerBasedListener.pointerDownCount, "Pointer down event is received by new  API handler.");
+            Assert.Zero(handlerBasedListener.pointerUpCount, "Pointer up event is received by new API handler.");
+            Assert.Zero(handlerBasedListener.pointerDraggedCount, "Pointer dragged event is received by new API handler.");
+            Assert.Zero(handlerBasedListener.speechCommandsReceived.Count(), "Speech event is received by new API handler.");
 
             Assert.AreEqual(handlerBasedListener1.pointerClickedCount, 1, "Pointer clicked event is not received by all-handlers component.");
-            Assert.Zero(handlerBasedListener1.pointerDownCount,           "Pointer down event is received by all-handlers component.");
-            Assert.Zero(handlerBasedListener1.pointerUpCount,             "Pointer up event is received by all-handlers component.");
-            Assert.Zero(handlerBasedListener1.pointerDraggedCount,        "Pointer dragged event is received by all-handlers component.");
-            Assert.Zero(handlerBasedListener1.speechCount,                "Speech event is received by all-handlers component.");
+            Assert.Zero(handlerBasedListener1.pointerDownCount, "Pointer down event is received by all-handlers component.");
+            Assert.Zero(handlerBasedListener1.pointerUpCount, "Pointer up event is received by all-handlers component.");
+            Assert.Zero(handlerBasedListener1.pointerDraggedCount, "Pointer dragged event is received by all-handlers component.");
+            Assert.Zero(handlerBasedListener1.speechCommandsReceived.Count(), "Speech event is received by all-handlers component.");
 
             // No pointer clicked event:
-            Assert.Zero(handlerBasedListener2.pointerClickedCount,        "Pointer clicked event is received by speech-handler component.");
-            Assert.Zero(handlerBasedListener2.pointerDownCount,           "Pointer down event is received by speech-handler component.");
-            Assert.Zero(handlerBasedListener2.pointerUpCount,             "Pointer up event is received by speech-handler component.");
-            Assert.Zero(handlerBasedListener2.pointerDraggedCount,        "Pointer dragged event is received by speech-handler component.");
-            Assert.Zero(handlerBasedListener2.speechCount,                "Speech event is received by speech-handler component.");
+            Assert.Zero(handlerBasedListener2.pointerClickedCount, "Pointer clicked event is received by speech-handler component.");
+            Assert.Zero(handlerBasedListener2.pointerDownCount, "Pointer down event is received by speech-handler component.");
+            Assert.Zero(handlerBasedListener2.pointerUpCount, "Pointer up event is received by speech-handler component.");
+            Assert.Zero(handlerBasedListener2.pointerDraggedCount, "Pointer dragged event is received by speech-handler component.");
+            Assert.Zero(handlerBasedListener2.speechCommandsReceived.Count(), "Speech event is received by speech-handler component.");
 
             Object.Destroy(object1);
             Object.Destroy(object2);
@@ -257,34 +259,41 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             LogAssert.Expect(LogType.Error, new Regex("Detected simultaneous usage of IMixedRealityEventSystem.Register and IMixedRealityEventSystem.RegisterHandler"));
 
-            // Emit speech event, which should be received by all handlers.
+            // Emit speech events, which should be received by all handlers.
             var gazeInputSource = CoreServices.InputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
-            CoreServices.InputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("menu", KeyCode.Alpha1, MixedRealityInputAction.None));
+            SpeechCommands[] commandList = CoreServices.InputSystem.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
+            foreach (SpeechCommands command in commandList)
+            {
+                CoreServices.InputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands(command.Keyword, command.KeyCode, MixedRealityInputAction.None));
+            }
 
             Assert.Zero(objectBasedListener.pointerClickedCount, "Pointer clicked event is received by old API handler.");
-            Assert.Zero(objectBasedListener.pointerDownCount,    "Pointer down event is received by old API handler.");
-            Assert.Zero(objectBasedListener.pointerUpCount,      "Pointer up event is received by old API handler.");
+            Assert.Zero(objectBasedListener.pointerDownCount, "Pointer down event is received by old API handler.");
+            Assert.Zero(objectBasedListener.pointerUpCount, "Pointer up event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerDraggedCount, "Pointer dragged event is received by old API handler.");
-            Assert.AreEqual(objectBasedListener.speechCount, 1,  "Speech event is not received by old API handler.");
+            Assert.True(objectBasedListener.speechCommandsReceived.SequenceEqual(commandList.Select(x => x.Keyword)), "Speech events were not received correctly by old API handler.");
 
             Assert.Zero(handlerBasedListener.pointerClickedCount, "Pointer clicked event is received by new API handler.");
-            Assert.Zero(handlerBasedListener.pointerDownCount,    "Pointer down event is received by new  API handler.");
-            Assert.Zero(handlerBasedListener.pointerUpCount,      "Pointer up event is received by new API handler.");
+            Assert.Zero(handlerBasedListener.pointerDownCount, "Pointer down event is received by new  API handler.");
+            Assert.Zero(handlerBasedListener.pointerUpCount, "Pointer up event is received by new API handler.");
             Assert.Zero(handlerBasedListener.pointerDraggedCount, "Pointer dragged event is received by new API handler.");
-            Assert.AreEqual(handlerBasedListener.speechCount, 1,  "Speech event is not received by new API handler.");
+            Assert.True(handlerBasedListener.speechCommandsReceived.SequenceEqual(commandList.Select(x => x.Keyword)), "Speech events were not received correctly by new API handler.");
 
             Assert.Zero(handlerBasedListener1.pointerClickedCount, "Pointer clicked event is received by all-handlers component.");
-            Assert.Zero(handlerBasedListener1.pointerDownCount,    "Pointer down event is received by all-handlers component.");
-            Assert.Zero(handlerBasedListener1.pointerUpCount,      "Pointer up event is received by all-handlers component.");
+            Assert.Zero(handlerBasedListener1.pointerDownCount, "Pointer down event is received by all-handlers component.");
+            Assert.Zero(handlerBasedListener1.pointerUpCount, "Pointer up event is received by all-handlers component.");
             Assert.Zero(handlerBasedListener1.pointerDraggedCount, "Pointer dragged event is received by all-handlers component.");
-            Assert.AreEqual(handlerBasedListener1.speechCount, 1,  "Speech event is not received by all-handlers component.");
+            Assert.True(handlerBasedListener1.speechCommandsReceived.SequenceEqual(commandList.Select(x => x.Keyword)), "Speech events were not received correctly by all-handlers component");
 
             // No pointer clicked event:
             Assert.Zero(handlerBasedListener2.pointerClickedCount, "Pointer clicked event is received by speech-handler component.");
-            Assert.Zero(handlerBasedListener2.pointerDownCount,    "Pointer down event is received by speech-handler component.");
-            Assert.Zero(handlerBasedListener2.pointerUpCount,      "Pointer up event is received by speech-handler component.");
+            Assert.Zero(handlerBasedListener2.pointerDownCount, "Pointer down event is received by speech-handler component.");
+            Assert.Zero(handlerBasedListener2.pointerUpCount, "Pointer up event is received by speech-handler component.");
             Assert.Zero(handlerBasedListener2.pointerDraggedCount, "Pointer dragged event is received by speech-handler component.");
-            Assert.AreEqual(handlerBasedListener2.speechCount, 1,  "Speech event is not received by speech-handler component.");
+            Assert.True(handlerBasedListener2.speechCommandsReceived.SequenceEqual(commandList.Select(x => x.Keyword)), "Speech events were not received correctly by speech-handler component.");
+
+            // Checks that the appropriate speech commands were received
+            Assert.True(objectBasedListener.speechCommandsReceived.SequenceEqual(commandList.Select(x => x.Keyword)), "Speech events were not received correctly.");
 
             Object.Destroy(object1);
             Object.Destroy(object2);

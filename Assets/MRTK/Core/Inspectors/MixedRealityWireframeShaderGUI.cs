@@ -1,9 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -54,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             float? cullMode = GetFloatProperty(material, "_Cull");
 
             base.AssignNewShaderToMaterial(material, oldShader, newShader);
-   
+
             SetShaderFeatureActive(material, null, BaseStyles.cullModeName, cullMode);
 
             // Setup the rendering mode based on the old shader.

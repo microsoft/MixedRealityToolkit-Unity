@@ -1,0 +1,21 @@
+# [Template] Publish packages to artifacts and NuGet feed
+
+parameters:
+  version: '$(MRTKVersion)-$(Build.BuildNumber)'
+  packageLocation: '$(Build.SourcesDirectory)/artifacts'
+
+steps:
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish NuGet artifacts'
+  inputs:
+    PathToPublish: ${{ parameters.packageLocation }}
+    ArtifactName: 'mrtk-nuget'
+
+- task: 333b11bd-d341-40d9-afcf-b32d5ce6f23b@2 # NuGetCommand
+  displayName: 'NuGet push'
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+  inputs:
+    command: push
+    packagesToPush: '${{ parameters.packageLocation }}/**/*.nupkg;!${{ parameters.packageLocation }}/**/*.symbols.nupkg'
+    publishVstsFeed: '$(NuGetFeedId)'
+    buildProperties: 'version=${{ parameters.version }}'

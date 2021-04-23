@@ -1,4 +1,5 @@
 # Dock
+![Dock](../../../../../Documentation/Images/Dock/MRTK_UX_Dock_Main.png)
 
 This control enables moving objects in and out of predetermined positions, to create palettes, shelves and navigation bars.
 
@@ -12,12 +13,12 @@ This control enables moving objects in and out of predetermined positions, to cr
 
 - Create a GameObject with the Dock component and add some children GameObjects to it.
 - Add the DockPosition component to each of the children.
-- Add the Dockable component to any number of objects in the scene to allow them to be docked. They must have the [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator) component and a Collider as well.
+- Add the Dockable component to any number of objects in the scene to allow them to be docked. They must have the [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.UI.ObjectManipulator) component and a Collider as well.
 - *Optional:* use a [`GridObjectCollection`](xref:Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection) to the Dock to automatically lay out the DockPositions.
 
 ### Prerequisites
 
-- Every dockable object must have a collider with an [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator) or [`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
+- Every dockable object must have a collider with an [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.UI.ObjectManipulator) or [`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 - If you want an object to start Docked when the scene loads, assign it to any DockPosition's docked object property.
 
 ## How it works

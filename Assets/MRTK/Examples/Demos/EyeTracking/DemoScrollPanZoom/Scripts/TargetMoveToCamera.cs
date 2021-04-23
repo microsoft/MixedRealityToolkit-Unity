@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -99,13 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (inTransition)
             {
-                //Vector3 destination; //= CameraCache.Main.transform.position + (CameraCache.Main.transform.forward * DistanceToCamera);
                 Vector3 destination = (isInNearFocusMode) ?
                     (CameraCache.Main.transform.position + (CameraCache.Main.transform.forward * DistanceToCamera))
                     : originalPosition;
 
                 Vector3 incr = (destination - gameObject.transform.position) * Time.deltaTime * speed;
-                //Debug.Log("target is moving "+ incr.magnitude);
 
                 if (Vector3.Distance(destination, transform.position) < minDistToStopTransition)
                 {

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Interactable[] ToggleList
         {
             get => toggleList;
-            set 
+            set
             {
                 if (value != null && toggleList != value)
                 {
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public int CurrentIndex
         {
             get => currentIndex;
-            set => SetSelection(value, true, true);    
+            set => SetSelection(value, true, true);
         }
 
         [Tooltip("This event is triggered when any of the toggles in the ToggleList are selected")]
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     AddSelectionListeners();
 
                     SetSelection(CurrentIndex, true, true);
-                }  
+                }
             }
         }
 
@@ -106,7 +106,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (fireOnClick)
                 {
-                    ToggleList[index].TriggerOnClick();
+                    // Trigger the OnClick event without checking CanInteract as we did not check when setting the index earlier
+                    ToggleList[index].TriggerOnClick(true);
                 }
             }
         }
@@ -146,7 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < toggleActions.Count; ++i)
             {
-                ToggleList[i]?.OnClick.RemoveListener(toggleActions[i]);
+                Interactable toggle = ToggleList[i];
+                if (toggle != null)
+                {
+                    toggle.OnClick.RemoveListener(toggleActions[i]);
+                }
             }
 
             toggleActions.Clear();

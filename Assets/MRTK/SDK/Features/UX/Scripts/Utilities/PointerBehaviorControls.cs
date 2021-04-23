@@ -1,11 +1,9 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq.Expressions;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -157,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Sets pointer behavior to mimic HoloLens 1 interactions, useful
-        /// for using Hololens 1 interactions on HoloLens 2.
+        /// for using HoloLens 1 interactions on HoloLens 2.
         /// PokePointer will be off
         /// GrabPointer will be off
         /// HandRayPointer will be off

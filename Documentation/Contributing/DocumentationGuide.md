@@ -113,7 +113,7 @@ General rule of thumb: Try to **sound professional**. That usually means to avoi
 
 * Use **Sentence case for headlines**. Ie. capitalize the first letter and names, but nothing else.
 * Use regular English for everything else. That means **do not capitalize arbitrary words**, even if they hold a special meaning in that context. Prefer *italic text* for highlighting certain words, [see below](#emphasis-and-highlighting).
-* When a link is embedded in a sentence (which is the preferred method), the standard chapter name always uses capital letters, thus breaking the rule of no arbitrary capitalization inside text. Therefore use a custom link name to fix the capitalization. As an example, here is a link to the [bounding box](../README_BoundingBox.md) documentation.
+* When a link is embedded in a sentence (which is the preferred method), the standard chapter name always uses capital letters, thus breaking the rule of no arbitrary capitalization inside text. Therefore use a custom link name to fix the capitalization. As an example, here is a link to the [bounds control](../README_BoundsControl.md) documentation.
 * Do capitalize names, such as *Unity*.
 * Do NOT capitalize "editor" when writing *Unity editor*.
 
@@ -158,6 +158,7 @@ When adding a link, consider whether it should also be listed in the [See also](
 
 Some other aspects:
 
+* The editor UI for screenshots should use light gray theme editor as not all users have access to the dark theme and we'd like to keep things as consistent as possible.
 * Default image width is 500 pixels, as this displays well on most monitors. Try not to deviate too much from it. 800 pixels width should be the maximum.
 * Use PNGs for screenshots of UI.
 * Use PNGs or JPGs for 3D viewport screenshots. Prefer quality over compression ratio.

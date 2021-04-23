@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     /// The profile definition for an <see cref="ILostTrackingService"/>.
     /// </summary>
     [MixedRealityServiceProfile(typeof(ILostTrackingService))]
-    [CreateAssetMenu(fileName = "LostTrackingServiceProfile", menuName = "Mixed Reality Toolkit/Extensions/Lost Tracking Service/Mixed Reality Lost Tracking Service Profile")]
+    [CreateAssetMenu(fileName = "LostTrackingServiceProfile", menuName = "Mixed Reality/Toolkit/Extensions/Lost Tracking Service/Mixed Reality Lost Tracking Service Profile")]
     public class LostTrackingServiceProfile : BaseMixedRealityProfile
     {
         /// <summary>

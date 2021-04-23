@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
@@ -9,6 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
         public TestExtensionService3(
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base( name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(name, priority, profile) { }
     }
 }

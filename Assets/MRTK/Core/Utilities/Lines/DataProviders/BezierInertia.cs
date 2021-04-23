@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
-{ 
+{
     [ExecuteAlways]
     [AddComponentMenu("Scripts/MRTK/Core/BezierInertia")]
     public class BezierInertia : MonoBehaviour
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             Vector3 p1WorldTarget = bezier.LineTransform.TransformPoint(p1Target);
             Vector3 p2WorldTarget = bezier.LineTransform.TransformPoint(p2Target);
-            
+
             p1Offset += p1WorldTarget - p1Position;
             p2Offset += p2WorldTarget - p2Position;
 
@@ -58,14 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             p2Velocity = Vector3.Lerp(p2Velocity, p2Offset, Time.deltaTime * inertia);
             p2Velocity = Vector3.Lerp(p2Velocity, Vector3.zero, Time.deltaTime * dampen);
 
-            p1Position = p1Position + p1Velocity;
-            p2Position = p2Position + p2Velocity;
+            p1Position += p1Velocity;
+            p2Position += p2Velocity;
 
             p1Position = Vector3.Lerp(p1Position, p1WorldTarget, seekTargetStrength * Time.deltaTime);
             p2Position = Vector3.Lerp(p2Position, p2WorldTarget, seekTargetStrength * Time.deltaTime);
 
             bezier.SetPoint(1, p1Position);
-            bezier.SetPoint(2, p2Position);            
+            bezier.SetPoint(2, p2Position);
         }
     }
 }

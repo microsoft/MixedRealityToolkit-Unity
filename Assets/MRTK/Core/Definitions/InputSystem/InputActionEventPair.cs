@@ -1,11 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Input {
+namespace Microsoft.MixedReality.Toolkit.Input
+{
     /// <summary>
     /// Data class that maps <see cref="MixedRealityInputAction"/>s to <see cref="UnityEvent"/>s wired up in the inspector.
     /// </summary>

@@ -1,13 +1,23 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using System;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using Unity.Profiling;
+using UnityEngine;
 
-#if UNITY_WSA
+#if ARSUBSYSTEMS_ENABLED
+using System.Collections.Generic;
+using UnityEngine.XR.ARSubsystems;
+
+#if UNITY_2018
+using UnityEngine.Experimental;
+#endif // UNITY_2018
+#endif // ARSUBSYSTEMS_ENABLED
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
 using UnityEngine.XR.WSA;
-#endif
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 {
@@ -46,9 +56,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         /// <param name="profile">The service's configuration profile.</param>
         [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public LostTrackingService(
-            IMixedRealityServiceRegistrar registrar, 
-            string name, 
-            uint priority, 
+            IMixedRealityServiceRegistrar registrar,
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : this(name, priority, profile)
         {
             Registrar = registrar;
@@ -61,8 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public LostTrackingService(
-            string name, 
-            uint priority, 
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : base(name, priority, profile)
         {
             this.profile = profile as LostTrackingServiceProfile;
@@ -71,116 +81,203 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         /// <inheritdoc />
         public override void Initialize()
         {
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+            base.Initialize();
             WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
-#else
+#elif !ARSUBSYSTEMS_ENABLED
             Debug.LogWarning("This service is not supported on this platform.");
 #endif
         }
 
-#if UNITY_EDITOR
+#if ARSUBSYSTEMS_ENABLED
+        private UnityEngine.XR.ARSubsystems.TrackingState lastTrackingState = UnityEngine.XR.ARSubsystems.TrackingState.None;
+        private NotTrackingReason lastNotTrackingReason = NotTrackingReason.None;
+
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.Update");
+
         /// <inheritdoc />
-        public void EditorSetTrackingLost(bool trackingLost)
+        public override void Update()
         {
-            SetTrackingLost(trackingLost);
-        }
-#endif
-
-        private void DisableTrackingLostVisual()
-        {
-            if (visual != null && visual.Enabled)
+            using (UpdatePerfMarker.Auto())
             {
-                CameraCache.Main.cullingMask = cullingMaskOnTrackingLost;
-
-                if (profile.HaltTimeWhileTrackingLost)
+                XRSessionSubsystem sessionSubsystem = SessionSubsystem;
+                if (sessionSubsystem == null)
                 {
-                    Time.timeScale = timeScaleOnTrackingLost;
-                }
-
-                if (profile.HaltAudioOnTrackingLost)
-                {
-                    AudioListener.pause = false;
-                }
-
-                visual.Enabled = false;
-            }
-        }
-
-        private void EnableTrackingLostVisual()
-        {
-            if (visual == null)
-            {
-                GameObject visualObject = UnityEngine.Object.Instantiate(profile.TrackingLostVisualPrefab);
-
-                if (visualObject != null)
-                {
-                    visual = visualObject.GetComponentInChildren<ILostTrackingVisual>();
-                }
-
-                if (visual == null)
-                {
-                    Debug.LogError("No ILostTrackingVisual found on prefab supplied by LostTrackingServiceProfile.");
                     return;
                 }
 
-                visual.Enabled = false;
-            }
-
-            if (!visual.Enabled)
-            {
-                // Store these settings for later when tracking is regained
-                cullingMaskOnTrackingLost = CameraCache.Main.cullingMask;
-                timeScaleOnTrackingLost = Time.timeScale;
-                CameraCache.Main.cullingMask = profile.TrackingLostCullingMask;
-
-                if (profile.HaltTimeWhileTrackingLost)
+                if (sessionSubsystem.trackingState == lastTrackingState && sessionSubsystem.notTrackingReason == lastNotTrackingReason)
                 {
-                    Time.timeScale = 0.0f;
+                    return;
                 }
 
-                if (profile.HaltAudioOnTrackingLost)
-                {
-                    AudioListener.pause = true;
-                }
+                base.Update();
 
-                visual.Enabled = true;
-                visual.SetLayer(profile.TrackingLostVisualLayer);
-                visual.ResetVisual();
-            }
-        }
-
-        private void SetTrackingLost(bool trackingLost)
-        {
-            if (TrackingLost != trackingLost)
-            {
-                TrackingLost = trackingLost;
-                if (TrackingLost)
+                // This combination of states is from the Windows XR Plugin docs, describing the combination when positional tracking is inhibited.
+                if (sessionSubsystem.trackingState == UnityEngine.XR.ARSubsystems.TrackingState.None && sessionSubsystem.notTrackingReason == NotTrackingReason.Relocalizing)
                 {
-                    OnTrackingLost?.Invoke();
-                    EnableTrackingLostVisual();
+                    SetTrackingLost(true);
                 }
                 else
                 {
-                    OnTrackingRestored?.Invoke();
-                    DisableTrackingLostVisual();
+                    SetTrackingLost(false);
+                }
+
+                lastTrackingState = sessionSubsystem.trackingState;
+                lastNotTrackingReason = sessionSubsystem.notTrackingReason;
+            }
+        }
+#endif // ARSUBSYSTEMS_ENABLED
+
+#if UNITY_EDITOR
+        /// <inheritdoc />
+        public void EditorSetTrackingLost(bool trackingLost) => SetTrackingLost(trackingLost);
+#endif // UNITY_EDITOR
+
+        private static readonly ProfilerMarker DisableTrackingLostVisualPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.DisableTrackingLostVisual");
+
+        private void DisableTrackingLostVisual()
+        {
+            using (DisableTrackingLostVisualPerfMarker.Auto())
+            {
+                if (visual != null && visual.Enabled)
+                {
+                    CameraCache.Main.cullingMask = cullingMaskOnTrackingLost;
+
+                    if (profile.HaltTimeWhileTrackingLost)
+                    {
+                        Time.timeScale = timeScaleOnTrackingLost;
+                    }
+
+                    if (profile.HaltAudioOnTrackingLost)
+                    {
+                        AudioListener.pause = false;
+                    }
+
+                    visual.Enabled = false;
                 }
             }
         }
 
-#if UNITY_WSA
-        private void OnPositionalLocatorStateChanged(PositionalLocatorState oldState, PositionalLocatorState newState)
-        {
-            switch (newState)
-            {
-                case PositionalLocatorState.Inhibited:
-                    SetTrackingLost(true);
-                    break;
+        private static readonly ProfilerMarker EnableTrackingLostVisualPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.EnableTrackingLostVisual");
 
-                default:
-                    SetTrackingLost(false);
-                    break;
+        private void EnableTrackingLostVisual()
+        {
+            using (EnableTrackingLostVisualPerfMarker.Auto())
+            {
+                if (visual == null)
+                {
+                    GameObject visualObject = UnityEngine.Object.Instantiate(profile.TrackingLostVisualPrefab);
+
+                    if (visualObject != null)
+                    {
+                        visual = visualObject.GetComponentInChildren<ILostTrackingVisual>();
+                    }
+
+                    if (visual == null)
+                    {
+                        Debug.LogError("No ILostTrackingVisual found on prefab supplied by LostTrackingServiceProfile.");
+                        return;
+                    }
+
+                    visual.Enabled = false;
+                }
+
+                if (!visual.Enabled)
+                {
+                    // Store these settings for later when tracking is regained
+                    cullingMaskOnTrackingLost = CameraCache.Main.cullingMask;
+                    timeScaleOnTrackingLost = Time.timeScale;
+                    CameraCache.Main.cullingMask = profile.TrackingLostCullingMask;
+
+                    if (profile.HaltTimeWhileTrackingLost)
+                    {
+                        Time.timeScale = 0.0f;
+                    }
+
+                    if (profile.HaltAudioOnTrackingLost)
+                    {
+                        AudioListener.pause = true;
+                    }
+
+                    visual.Enabled = true;
+                    visual.SetLayer(profile.TrackingLostVisualLayer);
+                    visual.ResetVisual();
+                }
             }
         }
-#endif
+
+        private static readonly ProfilerMarker SetTrackingLostPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.SetTrackingLost");
+
+        private void SetTrackingLost(bool trackingLost)
+        {
+            using (SetTrackingLostPerfMarker.Auto())
+            {
+                if (TrackingLost != trackingLost)
+                {
+                    TrackingLost = trackingLost;
+                    if (TrackingLost)
+                    {
+                        OnTrackingLost?.Invoke();
+                        EnableTrackingLostVisual();
+                    }
+                    else
+                    {
+                        OnTrackingRestored?.Invoke();
+                        DisableTrackingLostVisual();
+                    }
+                }
+            }
+        }
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+        private static readonly ProfilerMarker OnPositionLocatorStateChangedPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.OnPositionalLocatorStateChanged");
+
+        private void OnPositionalLocatorStateChanged(PositionalLocatorState oldState, PositionalLocatorState newState)
+        {
+            using (OnPositionLocatorStateChangedPerfMarker.Auto())
+            {
+                switch (newState)
+                {
+                    case PositionalLocatorState.Inhibited:
+                        SetTrackingLost(true);
+                        break;
+
+                    default:
+                        SetTrackingLost(false);
+                        break;
+                }
+            }
+        }
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
+
+#if ARSUBSYSTEMS_ENABLED
+        private static XRSessionSubsystem sessionSubsystem = null;
+        private static readonly List<XRSessionSubsystem> XRSessionSubsystems = new List<XRSessionSubsystem>();
+
+        /// <summary>
+        /// The XR SDK display subsystem for the currently loaded XR plug-in.
+        /// </summary>
+        private static XRSessionSubsystem SessionSubsystem
+        {
+            get
+            {
+                if (sessionSubsystem == null || !sessionSubsystem.running)
+                {
+                    sessionSubsystem = null;
+                    SubsystemManager.GetInstances(XRSessionSubsystems);
+                    foreach (XRSessionSubsystem xrSessionSubsystem in XRSessionSubsystems)
+                    {
+                        if (xrSessionSubsystem.running)
+                        {
+                            sessionSubsystem = xrSessionSubsystem;
+                            break;
+                        }
+                    }
+                }
+                return sessionSubsystem;
+            }
+        }
+#endif // ARSUBSYSTEMS_ENABLED
     }
 }

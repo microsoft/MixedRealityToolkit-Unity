@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEditor;
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         Net20,
         Net46
     }
-    
+
     /// <summary>
     /// Helper extensions for the <see cref="TargetFramework"/> enum.
     /// </summary>
@@ -35,7 +35,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 case TargetFramework.Net20:
                     return "net20";
                 case TargetFramework.Net46:
+#if UNITY_2020_2_OR_NEWER
+                    return "net471";
+#else
                     return "net46";
+#endif
             }
 
             throw new ArgumentOutOfRangeException(nameof(@this));

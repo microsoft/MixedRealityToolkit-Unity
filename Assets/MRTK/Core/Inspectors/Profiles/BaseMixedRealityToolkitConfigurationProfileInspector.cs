@@ -1,8 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor.Search;
 using System.Reflection;
@@ -146,22 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Inspect the attributes of the provided system type to determine if a configuration profile is required.
-        /// </summary>
-        /// <param name="serviceType">The system type representing the service.</param>
-        /// <returns>
-        /// True if the service is decorated with an attribute indicating a profile is required, false otherwise.
-        /// </returns>
-        protected bool IsProfileRequired(SystemType serviceType)
-        {
-            // Services marked with the MixedRealityExtensionServiceAttribute (or a derivative)
-            // support specifying whether or not a profile is required.
-            MixedRealityExtensionServiceAttribute attribute = (serviceType?.Type != null) ? MixedRealityExtensionServiceAttribute.Find(serviceType.Type) : null;
-
-            return ((attribute != null) && attribute.RequiresProfile);
-        }
-
-        /// <summary>
         /// Helper function to render header correctly for all profiles
         /// </summary>
         /// <param name="title">Title of profile</param>
@@ -210,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             Selection.activeObject = selectionObject;
                         }
                     }
-                    else if(!MixedRealityToolkit.Instance.HasActiveProfile)
+                    else if (!MixedRealityToolkit.Instance.HasActiveProfile)
                     {
                         EditorGUILayout.HelpBox("There is no active profile assigned in the current MRTK instance. Some properties may not be editable.", MessageType.Error);
                     }

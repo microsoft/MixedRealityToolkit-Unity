@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
@@ -16,10 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// for a build to be successful.
         /// </summary>
         /// <remarks>
-        /// This controls the version of the Windows SDK that is build against on the local
+        /// <para>This controls the version of the Windows SDK that is build against on the local
         /// machine, NOT the version of the OS that must be present on the device that
         /// the built application is deployed to (this other aspect is controlled by
-        /// MIN_PLATFORM_VERSION)
+        /// MIN_PLATFORM_VERSION)</para>
         /// </remarks>
         public static Version MIN_SDK_VERSION = new Version("10.0.18362.0");
 
@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// is deployed to.
         /// </summary>
         /// <remarks>
-        /// This is intentionally set to a very low version, so that the application can be
-        /// deployed to variety of different devices which may be on older OS versions.
+        /// <para>This is intentionally set to a very low version, so that the application can be
+        /// deployed to variety of different devices which may be on older OS versions.</para>
         /// </remarks>
         public static Version MIN_PLATFORM_VERSION = new Version("10.0.10240.0");
 
@@ -40,11 +40,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string EDITOR_PREF_LOCAL_CONNECT_INFO = "BuildDeployWindow_LocalConnection";
         private const string EDITOR_PREF_FULL_REINSTALL = "BuildDeployWindow_FullReinstall";
         private const string EDITOR_PREF_USE_SSL = "BuildDeployWindow_UseSSL";
+        private const string EDITOR_PREF_VERIFY_SSL = "BuildDeployWindow_VerifySSL";
         private const string EDITOR_PREF_PROCESS_ALL = "BuildDeployWindow_ProcessAll";
         private const string EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED = "BuildDeployWindow_GazeInputCapabilityEnabled";
         private const string EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED = "BuildDeployWindow_MulticoreAppxBuildEnabled";
         private const string EDITOR_PREF_RESEARCH_MODE_CAPABILITY_ENABLED = "BuildDeployWindow_ResearchModeCapabilityEnabled";
         private const string EDITOR_PREF_ALLOW_UNSAFE_CODE = "BuildDeployWindow_AllowUnsafeCode";
+        private const string EDITOR_PREF_NUGET_EXECUTABLE_PATH = "BuildDeployWindow_NugetExecutablePath";
 
         /// <summary>
         /// The current Build Configuration. (Debug, Release, or Master)
@@ -56,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Gets the build configuraition type as a WSABuildType enum
+        /// Gets the build configuration type as a WSABuildType enum
         /// </summary>
         public static WSABuildType BuildConfigType
         {
@@ -139,6 +141,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
+        /// Current setting to verify SSL certificates for connections to the device portal.
+        /// </summary>
+        public static bool VerifySSL
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_VERIFY_SSL, true);
+            set => EditorPreferences.Set(EDITOR_PREF_VERIFY_SSL, value);
+        }
+
+        /// <summary>
         /// Current setting to target all the devices registered to the build window.
         /// </summary>
         public static bool TargetAllConnections
@@ -183,6 +194,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_ALLOW_UNSAFE_CODE, false);
             set => EditorPreferences.Set(EDITOR_PREF_ALLOW_UNSAFE_CODE, value);
+        }
+
+        /// <summary>
+        /// Current value of the optional path to nuget.exe.
+        /// </summary>
+        public static string NugetExecutablePath
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_NUGET_EXECUTABLE_PATH, string.Empty);
+            set => EditorPreferences.Set(EDITOR_PREF_NUGET_EXECUTABLE_PATH, value);
         }
     }
 }

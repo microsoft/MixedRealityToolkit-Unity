@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -12,11 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
     [AddComponentMenu("Scripts/MRTK/SDK/TeleportCursor")]
     public class TeleportCursor : AnimatedCursor, IMixedRealityTeleportHandler
     {
+        private Vector3 cursorOrientation = Vector3.zero;
+
         [SerializeField]
         [Tooltip("Arrow Transform to point in the Teleporting direction.")]
         private Transform arrowTransform = null;
-
-        private Vector3 cursorOrientation = Vector3.zero;
 
         #region IMixedRealityCursor Implementation
 
@@ -26,11 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             get { return pointer; }
             set
             {
-                Debug.Assert(value.GetType() == typeof(TeleportPointer) ||
-                             value.GetType() == typeof(ParabolicTeleportPointer),
-                    "Teleport Cursor's Pointer must derive from a TeleportPointer type.");
+                Debug.Assert(value is TeleportPointer,
+                    "Teleport Cursor's Pointer must derive from TeleportPointer.");
 
-                pointer = (TeleportPointer)value;
+                pointer = value as TeleportPointer;
                 pointer.BaseCursor = this;
                 RegisterManagers();
             }
@@ -59,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         case TeleportSurfaceResult.None:
                             return CursorStateEnum.Release;
                         case TeleportSurfaceResult.Invalid:
-                            return CursorStateEnum.ObserveHover;
+                            return CursorStateEnum.Observe;
                         case TeleportSurfaceResult.HotSpot:
                         case TeleportSurfaceResult.Valid:
                             return CursorStateEnum.ObserveHover;
@@ -115,10 +114,17 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             arrowTransform.eulerAngles = cursorOrientation;
         }
 
+        public override void SetVisibility(bool visible)
+        {
+            if (this.PrimaryCursorVisual != null)
+            {
+                this.PrimaryCursorVisual.gameObject.SetChildrenActive(visible);
+            }
+        }
+
         #endregion IMixedRealityCursor Implementation
 
         #region IMixedRealityTeleportHandler Implementation
-
         /// <inheritdoc />
         public void OnTeleportRequest(TeleportEventData eventData)
         {

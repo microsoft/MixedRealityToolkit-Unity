@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     [MixedRealityServiceProfile(typeof(ISceneTransitionService))]
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Extensions/Scene Transition Service/Scene Transition Service Profile", fileName = "SceneTransitionServiceProfile", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Extensions/Scene Transition Service/Scene Transition Service Profile", fileName = "SceneTransitionServiceProfile", order = 100)]
     public class SceneTransitionServiceProfile : BaseMixedRealityProfile
     {
         public bool UseDefaultProgressIndicator => useDefaultProgressIndicator;

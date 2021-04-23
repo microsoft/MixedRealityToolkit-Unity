@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     /// Class which supports components implementing <see cref="Microsoft.MixedReality.Toolkit.Audio.IAudioInfluencer"/> being used with audio sources.
     /// </summary>
     /// <remarks>
-    /// AudioInfluencerController requires an <see href="https://docs.unity3d.com/ScriptReference/AudioSource.html">AudioSource</see> component. If one is not attached, it will be added automatically.
-    /// Each sound playing game object needs to have an AudioInfluencerController attached in order to have it's audio influenced.
+    /// <para>AudioInfluencerController requires an <see href="https://docs.unity3d.com/ScriptReference/AudioSource.html">AudioSource</see> component. If one is not attached, it will be added automatically.
+    /// Each sound playing game object needs to have an AudioInfluencerController attached in order to have its audio influenced.</para>
     /// </remarks>
     [RequireComponent(typeof(AudioSource))]
     [DisallowMultipleComponent]
@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Frequency below the nominal range of human hearing.
         /// </summary>
         /// <remarks>
-        /// This frequency can be used to set a high pass filter to allow all
-        /// audible frequencies through the filter.
+        /// <para>This frequency can be used to set a high pass filter to allow all
+        /// audible frequencies through the filter.</para>
         /// </remarks>
         public static readonly float NeutralLowFrequency = 10.0f;
 
@@ -34,8 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Frequency above the nominal range of human hearing.
         /// </summary>
         /// <remarks>
-        /// This frequency can be used to set a low pass filter to allow all
-        /// audible frequencies through the filter.
+        /// <para>This frequency can be used to set a low pass filter to allow all
+        /// audible frequencies through the filter.</para>
         /// </remarks>
         public static readonly float NeutralHighFrequency = 22000.0f;
 
@@ -43,9 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Time, in seconds, between audio influence updates.
         /// </summary>
         /// <remarks>
-        /// The UpdateInterval range is between 0.0 and 1.0, inclusive.
+        /// <para>The UpdateInterval range is between 0.0 and 1.0, inclusive.
         /// The default value is 0.25.
-        /// A value of 0.0f indicates that updates occur every frame.
+        /// A value of 0.0f indicates that updates occur every frame.</para>
         /// </remarks>
         [Tooltip("Time, in seconds, between audio influence updates.  0 indicates to update every frame.")]
         [Range(0.0f, 1.0f)]
@@ -64,8 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Maximum distance, in meters, to look when attempting to find the user and any influencers.
         /// </summary>
         /// <remarks>
-        /// The MaxDistance range is 1.0 to 50.0, inclusive.
-        /// The default value is 20.0.
+        /// <para>The MaxDistance range is 1.0 to 50.0, inclusive.
+        /// The default value is 20.0.</para>
         /// </remarks>
         [Tooltip("Maximum distance, in meters, to look when attempting to find the user and any influencers.")]
         [Range(1.0f, 50.0f)]
@@ -85,9 +85,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Setting this value too high may have a negative impact on the performance of your experience.
         /// </summary>
         /// <remarks>
-        /// MaxObjects can only be set in the Unity Inspector.
+        /// <para>MaxObjects can only be set in the Unity Inspector.
         /// The MaxObjects range is 1 to 25, inclusive.
-        /// The default value is 10.
+        /// The default value is 10.</para>
         /// </remarks>
         [Tooltip("Maximum number of objects that will be considered when looking for influencers.")]
         [Range(1, 25)]
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             hits = new RaycastHit[maxObjects];
         }
 
-        private void Update() 
+        private void Update()
         {
             DateTime now = DateTime.UtcNow;
 
@@ -191,15 +191,17 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                 List<IAudioInfluencer> influencersToRemove = new List<IAudioInfluencer>();
                 for (int i = 0; i < previousInfluencers.Count; i++)
                 {
-                    MonoBehaviour mbPrev = previousInfluencers[i] as MonoBehaviour;
+                    var audioInfluencer = previousInfluencers[i];
 
-                    // Remove influencers that are no longer in line of sight
-                    // OR
-                    // Have been disabled
-                    if (!influencers.Contains(previousInfluencers[i]) ||
-                        ((mbPrev != null) && !mbPrev.isActiveAndEnabled))
+                    // Remove influencers that are
+                    // no longer in line of sight,
+                    // have been destroyed,
+                    // or have been disabled
+                    if (!influencers.Contains(audioInfluencer) ||
+                        !audioInfluencer.TryGetMonoBehaviour(out MonoBehaviour mbPrev) ||
+                        !mbPrev.isActiveAndEnabled)
                     {
-                        influencersToRemove.Add(previousInfluencers[i]);
+                        influencersToRemove.Add(audioInfluencer);
                     }
                 }
                 RemoveInfluencers(influencersToRemove);
@@ -241,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                                                 distance,
                                                 UnityPhysics.DefaultRaycastLayers,
                                                 QueryTriggerInteraction.Ignore);
-            
+
             for (int i = 0; i < count; i++)
             {
                 IAudioInfluencer influencer = hits[i].collider.gameObject.GetComponentInParent<IAudioInfluencer>();

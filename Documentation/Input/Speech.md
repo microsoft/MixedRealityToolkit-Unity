@@ -1,5 +1,7 @@
 # Speech
 
+![Near Menu](../../Documentation/Images/Input/MRTK_Input_Speech.png)
+
 Speech input providers, like *Windows Speech Input*, don't create any controllers but instead allow you to define keywords that will raise speech input events when recognized. The **Speech Commands Profile** in the *Input System Profile* is where you configure the keywords to recognize. For each command you can also:
 
 - Select an **input action** to map it to. This way you can for example use the keyword *Select* to have the same effect as a left mouse click, by mapping both to the same action.

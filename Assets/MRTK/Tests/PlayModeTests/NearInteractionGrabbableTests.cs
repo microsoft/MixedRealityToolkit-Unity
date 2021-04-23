@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -11,7 +11,6 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using NUnit.Framework;
 using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -21,17 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class NearInteractionGrabbableTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.EnsureInputModule();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>

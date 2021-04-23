@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// The current native root <see href="https://docs.microsoft.com/uwp/api/windows.perception.spatial.spatialcoordinatesystem">ISpatialCoordinateSystem</see>.
         /// </summary>
         public IntPtr ISpatialCoordinateSystemPtr;
-        
+
         /// <summary>
         /// The current native <see href="https://docs.microsoft.com/uwp/api/Windows.Graphics.Holographic.HolographicFrame">IHolographicFrame</see>.
         /// </summary>

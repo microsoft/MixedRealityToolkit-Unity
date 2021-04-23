@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -10,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     /// to listening to sound from outside of an enclosed space.
     /// </summary>
     /// <remarks>
-    /// Ensure that all sound emitting objects have an attached <see cref="AudioInfluencerController"/>. 
-    /// Failing to do so will result in the desired effect not being applied to the sound.
+    /// <para>Ensure that all sound emitting objects have an attached <see cref="AudioInfluencerController"/>. 
+    /// Failing to do so will result in the desired effect not being applied to the sound.</para>
     /// </remarks>
     [DisallowMultipleComponent]
     [AddComponentMenu("Scripts/MRTK/SDK/AudioOccluder")]
@@ -27,9 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Setting this value to 22000.0 effectively disables the effect.
         /// </summary>
         /// <remarks>
-        /// Chaining occluders will result in the lowest of the cutoff frequencies being applied to the sound.
+        /// <para>Chaining occluders will result in the lowest of the cutoff frequencies being applied to the sound.
         /// The CutoffFrequency range is 0.0 - 22000.0 (0 - 22kHz), inclusive.
-        /// The default value is 5000.0 (5kHz).
+        /// The default value is 5000.0 (5kHz).</para>
         /// </remarks>
         public float CutoffFrequency
         {
@@ -49,10 +49,10 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// Percentage of the audio source volume that will be heard after applying occlusion.
         /// </summary>
         /// <remarks>
-        /// VolumePassThrough is cumulative. It is applied to the current volume of the object at the time
+        /// <para>VolumePassThrough is cumulative. It is applied to the current volume of the object at the time
         /// the effect is applied.
         /// The VolumePassThrough range is from 0.0 - 1.0 (0-100%), inclusive.
-        /// The default value is 1.0.
+        /// The default value is 1.0.</para>
         /// </remarks>
         public float VolumePassThrough
         {

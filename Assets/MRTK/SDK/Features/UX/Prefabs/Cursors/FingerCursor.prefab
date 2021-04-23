@@ -81,10 +81,12 @@ MonoBehaviour:
   scaleLerpTime: 0.01
   rotationLerpTime: 0.1
   lookRotationBlend: 0.5
+  resizeCursorWithDistance: 0
+  cursorAngularSize: 50
   PrimaryCursorVisual: {fileID: 7521151737680088869}
   SourceDownIds: 
   defaultCursorDistance: 2
-  checkForGrabbables: 0
+  checkForGrabbables: 1
   skinSurfaceOffset: 0.01
   alignWithSurfaceDistance: 0.1
   indexFingerRingRenderer: {fileID: 7442314219999054210}
@@ -150,25 +152,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: MRTK_FingerTipRing_Index
       objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_LightProbeUsage
+    - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_ReflectionProbeUsage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_MotionVectors
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -183,6 +169,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -195,14 +185,6 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -212,6 +194,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

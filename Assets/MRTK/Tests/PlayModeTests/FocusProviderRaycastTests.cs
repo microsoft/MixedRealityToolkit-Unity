@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -47,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        [SetUp]
-        public void SetupFocusProviderRaycastTests()
+        [UnitySetUp]
+        public IEnumerator SetupFocusProviderRaycastTests()
         {
             PlayModeTestUtilities.Setup();
 
@@ -59,10 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GameObject raycastTestPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath("dc3b0cf66c0615e4c81d979f35d51eaa"));
             raycastTestPrefabInstance = Object.Instantiate(raycastTestPrefab);
+            yield return null;
         }
 
-        [TearDown]
-        public void ShutdownFocusProviderRaycastTests()
+        [UnityTearDown]
+        public IEnumerator ShutdownFocusProviderRaycastTests()
         {
             if (raycastTestPrefabInstance)
             {
@@ -75,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             pointer = null;
 
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
     }
 }

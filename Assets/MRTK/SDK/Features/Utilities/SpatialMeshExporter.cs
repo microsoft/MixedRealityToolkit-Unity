@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -22,8 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Utilities
         /// <param name="folderPath">Absolute folder path to place OBJ files</param>
         /// <param name="consolidate">If true, attempts to consolidate all meshes per Observer into one OBJ file. If false, creates an OBJ file per mesh object on each observer</param>
         /// <remarks>
-        /// Accessing GameObject/Mesh data will occur as Coroutine on Unity Main thread. May impact performance.
-        /// If folder path does not exist, throws exception
+        /// <para>Accessing GameObject/Mesh data will occur as Coroutine on Unity Main thread. May impact performance.
+        /// If folder path does not exist, throws exception</para>
         /// </remarks>
         public static async Task Save(string folderPath, bool consolidate = true)
         {
@@ -44,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Utilities
         /// <param name="folderPath">Folder path to pull all OBJ files</param>
         /// <param name="consolidate">if true, merge all mesh data from observer into one OBJ file. If false, create OBJ file per mesh object</param>
         /// <remarks>
-        /// Accessing GameObject/Mesh data will occur as Coroutine on Unity Main thread. May impact performance.
-        /// If folder path does not exist, throws exception
+        /// <para>Accessing GameObject/Mesh data will occur as Coroutine on Unity Main thread. May impact performance.
+        /// If folder path does not exist, throws exception</para>
         /// </remarks>
         public static async Task Save(IMixedRealitySpatialAwarenessMeshObserver meshObserver, string folderPath, bool consolidate = true)
         {

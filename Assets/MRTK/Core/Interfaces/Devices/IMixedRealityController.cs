@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -40,8 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Indicates that this controller is currently providing position data.
         /// </summary>
         /// <remarks>
-        /// This value may change during usage for some controllers. As a best practice,
-        /// be sure to check this value before using position data.
+        /// <para>This value may change during usage for some controllers. As a best practice,
+        /// be sure to check this value before using position data.</para>
         /// </remarks>
         bool IsPositionAvailable { get; }
 
@@ -54,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Indicates that this controller is currently providing rotation data.
         /// </summary>
         /// <remarks>
-        /// This value may change during usage for some controllers. As a best practice,
-        /// be sure to check this value before using rotation data.
+        /// <para>This value may change during usage for some controllers. As a best practice,
+        /// be sure to check this value before using rotation data.</para>
         /// </remarks>
         bool IsRotationAvailable { get; }
 

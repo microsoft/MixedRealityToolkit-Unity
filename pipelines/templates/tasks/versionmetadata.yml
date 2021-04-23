@@ -1,0 +1,13 @@
+parameters:
+  # The MRTK Version to use (i.e. 2.3.0).
+  MRTKVersion: $(MRTKVersion)
+
+steps:
+- task: PowerShell@2
+  displayName: 'Version Metadata'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/packaging/versionmetadata.ps1
+    arguments: >
+      -Directory: '$(Build.SourcesDirectory)'
+      -Version: '${{ parameters.MRTKVersion }}'

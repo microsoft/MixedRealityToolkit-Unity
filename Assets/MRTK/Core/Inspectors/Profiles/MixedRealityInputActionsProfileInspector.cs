@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
         }
 
-        private static void RenderList(SerializedProperty list)
+        private void RenderList(SerializedProperty list)
         {
             using (new EditorGUILayout.VerticalScope())
             {
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUIUtility.labelWidth = labelWidth;
                 }
 
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(100f));
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, RenderAsSubProfile ? GUILayout.Height(100f) : GUILayout.ExpandHeight(true));
 
                 for (int i = 0; i < list.arraySize; i++)
                 {

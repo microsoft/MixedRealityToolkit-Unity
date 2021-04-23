@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -10,12 +10,12 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 
         /// <summary>
-        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection 
+        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled back-press protection
         /// if hands were moving too fast in low framerate
         /// </summary>
         [UnityTest]
@@ -358,15 +358,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
 
-            if (buttonComponent != null)
-            {
-                // For unknown reasons, Unity UI buttons don't seem to function properly in batch/headless mode when triggered via far field interaction.
-                // So just ignore this until that bug is resolved.
-                // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5887
-                Assert.Ignore();
-                yield break;
-            }
-
             var objectToMoveAndScale = testButton.transform;
 
             if (buttonComponent != null)
@@ -396,6 +387,58 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
 
             Object.Destroy(testButton);
+            yield return null;
+        }
+
+        /// <summary>
+        /// This test verifies that buttons will trigger with motion controller far interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TriggerButtonFarInteractionWithMotionController([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
+        {
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            Interactable interactableComponent = testButton.GetComponent<Interactable>();
+            Button buttonComponent = testButton.GetComponent<Button>();
+
+            Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
+
+            var objectToMoveAndScale = testButton.transform;
+
+            if (buttonComponent != null)
+            {
+                objectToMoveAndScale = testButton.transform.parent;
+            }
+
+            objectToMoveAndScale.position += new Vector3(0f, 0.3f, 0.8f);
+            objectToMoveAndScale.localScale *= 15f; // scale button up so it's easier to hit it with the far interaction pointer
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            bool buttonTriggered = false;
+
+            var onClickEvent = (interactableComponent != null) ? interactableComponent.OnClick : buttonComponent.onClick;
+
+            onClickEvent.AddListener(() =>
+            {
+                buttonTriggered = true;
+            });
+
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+            TestMotionController motionController = new TestMotionController(Handedness.Right);
+            Vector3 initialmotionControllerPosition = new Vector3(0.05f, -0.05f, 0.3f); // orient hand so far interaction ray will hit button
+            yield return motionController.Show(initialmotionControllerPosition);
+            yield return motionController.Click();
+            Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
+
+            Object.Destroy(testButton);
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -566,8 +609,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(AreApproximatelyEqual(maxPushDistanceWorld * zScale.z, maxPushDistanceWorld_Scaled, tolerance), "Max push distance plane did not scale correctly");
             Assert.IsTrue(AreApproximatelyEqual(pressDistanceWorld * zScale.z, pressDistanceWorld_Scaled, tolerance), "Press distance plane did not scale correctly");
             Assert.IsTrue(AreApproximatelyEqual(releaseDistanceWorld * zScale.z, releaseDistanceWorld_Scaled, tolerance), "Release distance plane did not scale correctly");
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a chance to actually destroy the object
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestParentZeroScale([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
+        {
+            // instantiate scene and button
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+
+            PressableButton button = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(button);
+
+            // check default value -> default must be using local space in order for the button to scale and function correctly
+            Assert.IsTrue(button.DistanceSpaceMode == PressableButton.SpaceMode.Local);
+
+            // make sure there's no scale on our button and non-zero to start push distance
+            testButton.transform.localScale = Vector3.one;
+            button.StartPushDistance = 0.00003f;
+
+            // Create an empty GameObject for our parent.
+            GameObject emptyParent = new GameObject();
+            emptyParent.transform.position = testButton.transform.position;
+            // This should not cause any NaN errors, as per resolution to #7874
+            emptyParent.transform.localScale = Vector3.zero;
+            // Parent our button to the empty object.
+            testButton.transform.SetParent(emptyParent.transform, false);
+            yield return null;
+
+            // Scale up the parent. Should not throw NaN exceptions.
+            emptyParent.transform.localScale = Vector3.one;
+            yield return null;
 
             Object.Destroy(testButton);
+            Object.Destroy(emptyParent);
             // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
         }

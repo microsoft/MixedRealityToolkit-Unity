@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Tests.EditMode.Services;
 using NUnit.Framework;
@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
             {
                 Scene scene = SceneManager.GetSceneAt(i);
                 SceneManager.SetActiveScene(scene);
-                MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                _ = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             }
 
             MixedRealityToolkit[] instances = GameObject.FindObjectsOfType<MixedRealityToolkit>();

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
 
                     controlPoints.Point1 = point;
-                    controlPoints.Point2 = controlPoints.Point2 + localOffset;
+                    controlPoints.Point2 += localOffset;
                     break;
 
                 case 1:
@@ -93,14 +93,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
 
                     controlPoints.Point4 = point;
-                    controlPoints.Point3 = controlPoints.Point3 + localOffset;
+                    controlPoints.Point3 += localOffset;
                     break;
 
                 default:
                     break;
             }
         }
-        
+
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {

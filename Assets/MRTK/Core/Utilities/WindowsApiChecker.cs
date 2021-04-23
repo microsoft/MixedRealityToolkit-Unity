@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -15,15 +15,17 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Utilities
     /// <summary>
     /// Helper class for determining if a Windows API contract is available.
     /// </summary>
-    /// <remarks> See https://docs.microsoft.com/uwp/extension-sdks/windows-universal-sdk
-    /// for a full list of contracts.</remarks>
+    /// <remarks>
+    /// <para>See https://docs.microsoft.com/uwp/extension-sdks/windows-universal-sdk
+    /// for a full list of contracts.</para>
+    /// </remarks>
     public static class WindowsApiChecker
     {
+        [Obsolete("The CheckApiContracts method is obsolete (and should not need to be called manually regardless) and will be removed from a future version of MRTK. Please use IsMethodAvailable(), IsPropertyAvailable() or IsTypeAvailable().")]
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void CheckApiContracts()
         {
             // Disable the obsolete warning to enable setting the properties for legacy code.
-#pragma warning disable 0618
 #if WINDOWS_UWP
             UniversalApiContractV8_IsAvailable = ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8);
             UniversalApiContractV7_IsAvailable = ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 7);
@@ -39,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Utilities
             UniversalApiContractV4_IsAvailable = false;
             UniversalApiContractV3_IsAvailable = false;
 #endif // WINDOWS_UWP
-#pragma warning restore 0618
         }
 
         /// <summary>

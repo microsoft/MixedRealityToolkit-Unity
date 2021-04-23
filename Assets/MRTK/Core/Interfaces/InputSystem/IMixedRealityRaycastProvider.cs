@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
@@ -11,9 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Interface to handle raycasts into the scene. Used by FocusProvider to perform ray and sphere cast queries for pointers.
     /// </summary>
     /// <remarks>
-    /// Implementations of IMixedRealityRaycastProvider would likely use Unity's physics system to get hit results from Colliders. However,
+    /// <para>Implementations of IMixedRealityRaycastProvider would likely use Unity's physics system to get hit results from Colliders. However,
     /// in a custom implementation, the raycast does not have to rely only on Unity-based Colliders to provide hit results, e.g. a
-    /// GameObject may use a different mechanism for raycasting, and with a custom implementation, it could be included in the hit result.
+    /// GameObject may use a different mechanism for raycasting, and with a custom implementation, it could be included in the hit result.</para>
     /// </remarks>
     public interface IMixedRealityRaycastProvider : IMixedRealityService
     {

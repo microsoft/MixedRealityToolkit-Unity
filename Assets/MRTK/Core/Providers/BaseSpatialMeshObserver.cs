@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// Class providing a base implementation of the <see cref="IMixedRealitySpatialAwarenessMeshObserver"/> interface.
     /// </summary>
-    public abstract class BaseSpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
+    public abstract class BaseSpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, ISpatialAwarenessPhysicsProperties
     {
         /// <summary>
         /// Constructor.
@@ -36,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// The parent GameObject for all observed meshes to be placed under.
         /// </summary>
-        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent(Name));
+        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent(Name));
 
         protected virtual void ReadProfile()
         {
@@ -65,10 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             LevelOfDetail = profile.LevelOfDetail;
             MeshPhysicsLayer = profile.MeshPhysicsLayer;
             OcclusionMaterial = profile.OcclusionMaterial;
+            PhysicsMaterial = profile.PhysicsMaterial;
             RecalculateNormals = profile.RecalculateNormals;
             TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
             VisibleMaterial = profile.VisibleMaterial;
+
+            RuntimeSpatialMeshPrefab = profile.RuntimeSpatialMeshPrefab;
         }
+
+        private static readonly ProfilerMarker ApplyUpdatedMeshDisplayOptionPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshDisplayOption");
 
         /// <summary>
         /// Applies the mesh display option to existing meshes when modified at runtime.
@@ -76,20 +82,40 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> value to be used to determine the appropriate material.</param>
         protected virtual void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
         {
-            bool enable = (option != SpatialAwarenessMeshDisplayOptions.None);
-
-            foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+            using (ApplyUpdatedMeshDisplayOptionPerfMarker.Auto())
             {
-                if (meshObject?.Renderer == null) { continue; }
+                bool enable = (option != SpatialAwarenessMeshDisplayOptions.None);
 
-                if (enable)
+                foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
                 {
-                    meshObject.Renderer.sharedMaterial = (option == SpatialAwarenessMeshDisplayOptions.Visible) ?
-                        VisibleMaterial :
-                        OcclusionMaterial;
-                }
+                    if (meshObject?.Renderer == null) { continue; }
 
-                meshObject.Renderer.enabled = enable;
+                    if (enable)
+                    {
+                        meshObject.Renderer.sharedMaterial = (option == SpatialAwarenessMeshDisplayOptions.Visible) ?
+                            VisibleMaterial :
+                            OcclusionMaterial;
+                    }
+
+                    meshObject.Renderer.enabled = enable;
+                }
+            }
+        }
+
+        private static readonly ProfilerMarker ApplyUpdatedMeshPhysicsPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshPhysics");
+
+        /// <summary>
+        /// Applies the physical material to existing meshes when modified at runtime.
+        /// </summary>
+        protected virtual void ApplyUpdatedMeshPhysics()
+        {
+            using (ApplyUpdatedMeshPhysicsPerfMarker.Auto())
+            {
+                foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+                {
+                    if (meshObject?.Collider == null) { continue; }
+                    meshObject.Collider.material = PhysicsMaterial;
+                }
             }
         }
 
@@ -106,18 +132,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             return TrianglesPerCubicMeter;
         }
 
+        private static readonly ProfilerMarker ApplyUpdatedPhysicsLayerPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedPhysicsLayer");
+
         /// <summary>
         /// Updates the mesh physics layer for current mesh observations.
         /// </summary>
         protected virtual void ApplyUpdatedPhysicsLayer()
         {
-            foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+            using (ApplyUpdatedPhysicsLayerPerfMarker.Auto())
             {
-                if (meshObject?.GameObject == null) { continue; }
+                foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+                {
+                    if (meshObject?.GameObject == null) { continue; }
 
-                meshObject.GameObject.layer = MeshPhysicsLayer;
+                    meshObject.GameObject.layer = MeshPhysicsLayer;
+                }
             }
         }
+
+        private static readonly ProfilerMarker OnMeshAddedPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.OnMeshAdded - Raising OnObservationAdded");
 
         /// <summary>
         /// Event sent whenever a mesh is added.
@@ -125,9 +158,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         protected static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshAdded =
             delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
-                handler.OnObservationAdded(spatialEventData);
+                using (OnMeshAddedPerfMarker.Auto())
+                {
+                    MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                    handler.OnObservationAdded(spatialEventData);
+                }
             };
+
+        private static readonly ProfilerMarker OnMeshUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.OnMeshUpdated - Raising OnObservationUpdated");
 
         /// <summary>
         /// Event sent whenever a mesh is updated.
@@ -135,9 +173,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         protected static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshUpdated =
             delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
-                handler.OnObservationUpdated(spatialEventData);
+                using (OnMeshUpdatedPerfMarker.Auto())
+                {
+                    MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                    handler.OnObservationUpdated(spatialEventData);
+                }
             };
+
+        private static readonly ProfilerMarker OnMeshRemovedPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.OnMeshRemoved - Raising OnObservationRemoved");
 
         /// <summary>
         /// Event sent whenever a mesh is discarded.
@@ -145,8 +188,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         protected static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshRemoved =
             delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
             {
-                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
-                handler.OnObservationRemoved(spatialEventData);
+                using (OnMeshRemovedPerfMarker.Auto())
+                {
+                    MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                    handler.OnObservationRemoved(spatialEventData);
+                }
             };
 
         #endregion BaseSpatialMeshObserver Implementation
@@ -255,6 +301,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
+        private PhysicMaterial physicsMaterial;
+
+        public PhysicMaterial PhysicsMaterial
+        {
+            get { return physicsMaterial; }
+            set
+            {
+                if (value != physicsMaterial)
+                {
+                    physicsMaterial = value;
+                    ApplyUpdatedMeshPhysics();
+                }
+            }
+        }
+
         private Material visibleMaterial = null;
 
         /// <inheritdoc />
@@ -275,6 +336,58 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
+        private GameObject runtimeSpatialMeshPrefab = null;
+
+        /// <inheritdoc />
+        public GameObject RuntimeSpatialMeshPrefab
+        {
+            get { return runtimeSpatialMeshPrefab; }
+            set
+            {
+                if (value != runtimeSpatialMeshPrefab)
+                {
+                    runtimeSpatialMeshPrefab = value;
+                }
+            }
+        }
+
         #endregion IMixedRealitySpatialMeshObserver Implementation
+
+        /// <summary>
+        /// Instantiates and appends a prefab to the Runtime (on device and not in editor) 
+        /// Spatial Awareness hierarchy. 
+        /// 
+        /// The default structure of the Spatial Awareness System:
+        /// 
+        /// Spatial Awareness System 
+        ///     Windows Mixed Reality Spatial Mesh Observer
+        ///         Spatial Mesh - ID
+        ///         Spatial Mesh - ID
+        ///         ...
+        /// 
+        /// If the Runtime Spatial Mesh Prefab field is not null, this method adds the prefab 
+        /// between the Spatial Awareness System and the Windows Mixed Reality Spatial Mesh Observer which results in this structure:
+        /// 
+        /// Spatial Awareness System 
+        ///         Runtime Spatial Mesh Prefab
+        ///             Windows Mixed Reality Spatial Mesh Observer
+        ///                 Spatial Mesh - ID
+        ///                 Spatial Mesh - ID
+        ///                 ...
+        /// </summary>
+        protected void AddRuntimeSpatialMeshPrefabToHierarchy()
+        {
+            if (RuntimeSpatialMeshPrefab != null)
+            {
+                GameObject spatialMeshPrefab = Object.Instantiate(RuntimeSpatialMeshPrefab, Service.SpatialAwarenessObjectParent.transform);
+
+                if (spatialMeshPrefab.transform.position != Vector3.zero)
+                {
+                    spatialMeshPrefab.transform.position = Vector3.zero;
+                }
+
+                ObservedObjectParent.transform.SetParent(spatialMeshPrefab.transform, false);
+            }
+        }
     }
 }

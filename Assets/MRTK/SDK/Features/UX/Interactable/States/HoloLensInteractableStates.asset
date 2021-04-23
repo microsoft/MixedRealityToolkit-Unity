@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33e3b76d6c5c0e48bb3b6ee686c7fd6, type: 3}
   m_Name: HoloLensInteractableStates
   m_EditorClassIdentifier: 
-  StateList:
+  stateList:
   - Name: Interactive
     Index: 4
     Bit: 1
@@ -43,6 +43,6 @@ MonoBehaviour:
     Bit: 32
     Value: 0
     ActiveIndex: 5
-  DefaultIndex: 0
-  StateLogicName: InteractableStates
+  defaultIndex: 0
+  StateModelClassName: InteractableStates
   AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableStates, Microsoft.MixedReality.Toolkit.SDK

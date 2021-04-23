@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             // Ensure a [MinMaxScaleConstraint](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) exists and it is initialized.
             scaleConstraint = gameObject.EnsureComponent<MinMaxScaleConstraint>();
-            scaleConstraint.Start();
+            scaleConstraint.Initialize(new MixedRealityTransform(transform));
 
             if (thumbPrefab == null)
             {

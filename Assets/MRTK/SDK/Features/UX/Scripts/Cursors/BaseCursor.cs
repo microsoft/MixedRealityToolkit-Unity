@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return cursorAngularSize; }
             set { cursorAngularSize = value; }
         }
-        
+
         [SerializeField, FormerlySerializedAs("cursorAngularScale")]
         [Tooltip("The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)")]
         private float cursorAngularSize = 50.0f;
@@ -361,6 +361,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
+            // Skip Update if the input system is missing during a runtime profile switch
+            if ((CoreServices.InputSystem == null) ||
+                (CoreServices.InputSystem.FocusProvider == null))
+            {
+                return;
+            }
             if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
                 if (CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))

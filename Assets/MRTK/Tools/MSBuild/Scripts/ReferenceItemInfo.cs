@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -36,8 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Gets a set of platforms supported for the InEditor configuration.
         /// </summary>
         /// <remarks>
-        /// In the editor, we can support all platforms if it's a pre-defined assembly, or an asmdef with Editor platform checked. 
-        /// Otherwise we fallback to just the platforms specified in the editor.
+        /// <para>In the editor, we can support all platforms if it's a pre-defined assembly, or an asmdef with Editor platform checked. 
+        /// Otherwise we fallback to just the platforms specified in the editor.</para>
         /// </remarks>
         public IReadOnlyDictionary<BuildTarget, CompilationPlatformInfo> InEditorPlatforms { get; protected set; }
 

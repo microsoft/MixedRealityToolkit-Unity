@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using System;
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
             ProfileSearchResult result = new ProfileSearchResult();
             result.Profile = profile;
             BaseMixedRealityProfile baseProfile = (profile as BaseMixedRealityProfile);
-            result.IsCustomProfile = (baseProfile != null) ? baseProfile.IsCustomProfile : false;
+            result.IsCustomProfile = baseProfile != null && baseProfile.IsCustomProfile;
             searchResults.Add(result);
 
             // Go through the profile's serialized fields
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                     CheckFieldForKeywords(property, config, result);
                 }
             }
-           
+
             if (result.Fields.Count > 0)
             {
                 result.Fields.Sort(delegate (FieldSearchResult r1, FieldSearchResult r2)
@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
             return isProfileField;
         }
 
-        private static IEnumerable<SerializedProperty> GatherProperties (UnityEngine.Object profile)
+        private static IEnumerable<SerializedProperty> GatherProperties(UnityEngine.Object profile)
         {
             List<SerializedProperty> properties = new List<SerializedProperty>();
             SerializedProperty iterator = new SerializedObject(profile).GetIterator();
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                             break;
 
                         case SerializedPropertyType.String:
-                            if(!string.IsNullOrEmpty(property.stringValue) && property.stringValue.ToLower().Contains(keyword))
+                            if (!string.IsNullOrEmpty(property.stringValue) && property.stringValue.ToLower().Contains(keyword))
                             {
                                 keywordMatch = true;
                                 numContentMatches++;

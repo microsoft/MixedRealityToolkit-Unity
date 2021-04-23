@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     /// over various telephony or radio sources.
     /// </summary>
     /// <remarks>
-    /// For the best results, also attach an <see cref="AudioInfluencerController"/> to the sound
+    /// <para>For the best results, also attach an <see cref="AudioInfluencerController"/> to the sound
     /// source. This will ensure that the proper frequencies will be restored
-    /// when audio influencers are used in the scene.
+    /// when audio influencers are used in the scene.</para>
     /// </remarks>
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(AudioLowPassFilter))]
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         public AudioLoFiSourceQuality SourceQuality
         {
             get { return sourceQuality; }
-            set { sourceQuality = value;  }
+            set { sourceQuality = value; }
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             /// </summary>
             /// <returns>True if equivalent, false otherwise.</returns>
             public override bool Equals(object obj)
-            {               
+            {
                 if (obj == null)
                 {
                     return false;

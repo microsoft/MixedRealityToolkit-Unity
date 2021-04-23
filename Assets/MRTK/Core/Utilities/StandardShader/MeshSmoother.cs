@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// with the MRTK/Standard shader which assumes smoothed normals are packed into the 3rd UV set.
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html#mesh-outlines")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/mrtk-standard-shader#mesh-outlines")]
     [AddComponentMenu("Scripts/MRTK/Core/MeshSmoother")]
     public class MeshSmoother : MonoBehaviour
     {
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             MeshReference meshReference;
             var sharedMesh = meshFilter.sharedMesh;
 
-            if (sharedMesh != null && 
+            if (sharedMesh != null &&
                 processedMeshes.TryGetValue(sharedMesh, out meshReference))
             {
                 meshReference.Decrement();
@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             var smoothNormals = new List<Vector3>(normals);
 
-            // If we don't hit the degenerate case of each vertex is it's own group (no vertices shared a location), average the normals of each group.
+            // If we don't hit the degenerate case of each vertex is its own group (no vertices shared a location), average the normals of each group.
             if (groupedVerticies.Count != vertices.Length)
             {
                 foreach (var group in groupedVerticies)

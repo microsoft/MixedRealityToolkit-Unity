@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -7,8 +7,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Component for limiting the rotation axes for ManipulationHandler
-    /// or BoundingBox
+    /// Component for limiting the rotation axes for ObjectManipulator
+    /// or BoundsControl
     /// </summary>
     public class RotationAxisConstraint : TransformConstraint
     {
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eulers.z = 0;
             }
 
-            transform.Rotation = useLocalSpaceForConstraint 
+            transform.Rotation = useLocalSpaceForConstraint
                 ? worldPoseOnManipulationStart.Rotation * Quaternion.Euler(eulers)
                 : Quaternion.Euler(eulers) * worldPoseOnManipulationStart.Rotation;
         }

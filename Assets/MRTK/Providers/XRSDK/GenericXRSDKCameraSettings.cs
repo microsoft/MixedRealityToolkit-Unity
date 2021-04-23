@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
         (SupportedPlatforms)(-1),
-        "XR SDK Camera Settings")]
+        "XR SDK Camera Settings",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class GenericXRSDKCameraSettings : BaseCameraSettingsProvider
     {
         /// <summary>
@@ -41,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public override bool IsOpaque => XRSDKSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
+        public override bool IsOpaque => XRSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
 
 #if SPATIALTRACKING_ENABLED
         /// <inheritdoc/>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using UnityEngine;
@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// The property name of the clip plane data within the shader.
         /// </summary>
         protected int clipPlaneID;
+        private Vector4 clipPlane;
 
         /// <inheritdoc />
         protected override string Keyword
@@ -51,13 +52,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             clipPlaneID = Shader.PropertyToID("_ClipPlane");
         }
 
+        protected override void BeginUpdateShaderProperties()
+        {
+            Vector3 up = transform.up;
+            clipPlane = new Vector4(up.x, up.y, up.z, Vector3.Dot(up, transform.position));
+
+            base.BeginUpdateShaderProperties();
+        }
+
         /// <inheritdoc />
         protected override void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock)
         {
-            Vector3 up = transform.up;
-            Vector4 plane = new Vector4(up.x, up.y, up.z, Vector3.Dot(up, transform.position));
-
-            materialPropertyBlock.SetVector(clipPlaneID, plane);
+            materialPropertyBlock.SetVector(clipPlaneID, clipPlane);
         }
     }
 }
