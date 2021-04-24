@@ -16,20 +16,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     public static class XRSettingsUtilities
     {
 #if UNITY_2019_3_OR_NEWER
-        private static bool? isLegacyXRActive = null;
+        private static bool? legacyXRAvailable = null;
 #endif // UNITY_2019_3_OR_NEWER
 
         /// <summary>
         /// Checks if an XR SDK plug-in is installed that disables legacy VR. Returns false if so.
         /// </summary>
-        public static bool IsLegacyXRActive
+        public static bool LegacyXRAvailable
         {
             get
             {
 #if UNITY_2019_3_OR_NEWER
-                if (!isLegacyXRActive.HasValue)
+                if (!legacyXRAvailable.HasValue)
                 {
-                    isLegacyXRActive = true;
+                    legacyXRAvailable = true;
 
                     List<XRDisplaySubsystemDescriptor> descriptors = new List<XRDisplaySubsystemDescriptor>();
                     SubsystemManager.GetSubsystemDescriptors(descriptors);
@@ -38,13 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     {
                         if (displayDescriptor.disablesLegacyVr)
                         {
-                            isLegacyXRActive = false;
+                            legacyXRAvailable = false;
                             break;
                         }
                     }
                 }
 
-                return isLegacyXRActive.HasValue && isLegacyXRActive.Value;
+                return legacyXRAvailable.HasValue && legacyXRAvailable.Value;
 #else
                 return true;
 #endif // UNITY_2019_3_OR_NEWER

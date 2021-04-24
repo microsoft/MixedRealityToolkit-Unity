@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Boundary system class to instantiate at runtime.
         /// </summary>
-        public SystemType BoundarySystemSystemType => (!XRSettingsUtilities.IsLegacyXRActive && xrsdkBoundarySystemType?.Type != null) ? xrsdkBoundarySystemType : boundarySystemType;
+        public SystemType BoundarySystemSystemType => (!XRSettingsUtilities.LegacyXRAvailable && xrsdkBoundarySystemType?.Type != null) ? xrsdkBoundarySystemType : boundarySystemType;
 
         [SerializeField]
         [Tooltip("Profile for wiring up boundary visualization assets.")]

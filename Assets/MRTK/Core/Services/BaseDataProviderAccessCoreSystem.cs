@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_2020_1_OR_NEWER
                 SupportedUnityXRPipelines.XRSDK;
 #elif UNITY_2019
-                !XRSettingsUtilities.IsLegacyXRActive ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
+                !XRSettingsUtilities.LegacyXRAvailable ? SupportedUnityXRPipelines.XRSDK : SupportedUnityXRPipelines.LegacyXR;
 #else
                 SupportedUnityXRPipelines.LegacyXR;
 #endif
