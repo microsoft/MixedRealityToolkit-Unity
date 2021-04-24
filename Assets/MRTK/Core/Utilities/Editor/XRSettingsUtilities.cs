@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// <summary>
     /// Utilities that abstract XR settings functionality
     /// </summary>
-    public static class XRSettingsEditorUtilities
+    public static class XRSettingsUtilities
     {
         /// <summary>
         /// Is either LegacyXR pipeline or XRSDK pipeline enabled?
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
         private static bool? isXRSDKSuppressingLegacyXR = null;
         
-        static XRSettingsEditorUtilities()
+        static XRSettingsUtilities()
         {
             // Called when packages are installed or uninstalled
             EditorApplication.projectChanged += EditorApplication_projectChanged;

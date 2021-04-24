@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization, new ConfigGetter(IsForceTextSerialization) },
             { Configurations.VisibleMetaFiles, new ConfigGetter(IsVisibleMetaFiles) },
 #if !UNITY_2019_3_OR_NEWER
-            { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsEditorUtilities.LegacyXREnabled) },
+            { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsUtilities.LegacyXREnabled) },
 #endif // !UNITY_2019_3_OR_NEWER
             { Configurations.OptimalRenderingPath, new ConfigGetter(MixedRealityOptimizeUtils.IsOptimalRenderingPath) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(HasSpatialAwarenessLayer) },
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization, SetForceTextSerialization },
             { Configurations.VisibleMetaFiles, SetVisibleMetaFiles },
 #if !UNITY_2019_3_OR_NEWER
-            { Configurations.VirtualRealitySupported, () => XRSettingsEditorUtilities.LegacyXREnabled = true },
+            { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
 #endif // !UNITY_2019_3_OR_NEWER
             { Configurations.OptimalRenderingPath, MixedRealityOptimizeUtils.SetOptimalRenderingPath },
             { Configurations.SpatialAwarenessLayer,  SetSpatialAwarenessLayer },
