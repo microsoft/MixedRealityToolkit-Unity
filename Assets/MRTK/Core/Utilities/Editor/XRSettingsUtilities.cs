@@ -34,11 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-#if UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
+#if XR_MANAGEMENT_ENABLED
                 return XRSDKLoadersOfCurrentBuildTarget.Count > 0;
 #else
                 return false;
-#endif // UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
+#endif // XR_MANAGEMENT_ENABLED
             }
         }
 
@@ -49,11 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-#if UNITY_2020_2_OR_NEWER && MSFT_OPENXR
+#if MSFT_OPENXR
                 return true;
 #else
                 return false;
-#endif // UNITY_2019_3_OR_NEWER
+#endif // MSFT_OPENXR
             }
         }
 
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-#if UNITY_2020_2_OR_NEWER && MSFT_OPENXR
+#if MSFT_OPENXR
                 return XRSDKLoadersOfCurrentBuildTarget.Any(p => p.name.Contains("Open XR"));
 #else
                 return false;
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-#if UNITY_2020_2_OR_NEWER && XR_MANAGEMENT_ENABLED
+#if XR_MANAGEMENT_ENABLED
                 return XRSDKLoadersOfCurrentBuildTarget.Any(p => p.name.Contains("Open XR"));
 #else
                 return false;
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && !UNITY_2020_2_OR_NEWER
         private static bool? isXRSDKSuppressingLegacyXR = null;
         
         static XRSettingsUtilities()
@@ -190,6 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Called when packages are installed or uninstalled, to toggle a new check on XR SDK package installation status.
         /// </summary>
         private static void EditorApplication_projectChanged() => isXRSDKSuppressingLegacyXR = null;
+#endif // UNITY_2019_3_OR_NEWER && !UNITY_2020_2_OR_NEWER
+
 #if XR_MANAGEMENT_ENABLED
         /// <summary>
         /// Retrieves the enabled XRSDK XR loaders (plugins) for the current build target
@@ -206,7 +208,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 #endif // XR_MANAGEMENT_ENABLED
-#endif // UNITY_2019_3_OR_NEWER
 
         /// <summary>
         /// Checks if an XR SDK plugin is installed that disables legacy XR. Returns false if so.
