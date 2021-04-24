@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public void Enable()
         {
-            tab = XRSettingsUtilities.IsLegacyXRActive ? 0 : 1;
+            tab = XRSettingsUtilities.LegacyXRAvailable ? 0 : 1;
         }
 
         /// <summary>
@@ -54,15 +54,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             switch (SelectedPipeline)
             {
                 case SupportedUnityXRPipelines.LegacyXR:
-                    if (!XRSettingsUtilities.IsLegacyXRActive)
+                    if (!XRSettingsUtilities.LegacyXREnabled)
                     {
-                        EditorGUILayout.HelpBox("Legacy XR is not active, so this list will not be loaded at runtime.", MessageType.Info);
+                        EditorGUILayout.HelpBox("Legacy XR is not enabled, so this list will not be loaded at runtime.", MessageType.Info);
                     }
                     break;
                 case SupportedUnityXRPipelines.XRSDK:
-                    if (XRSettingsUtilities.IsLegacyXRActive)
+                    if (!XRSettingsUtilities.XRSDKEnabled)
                     {
-                        EditorGUILayout.HelpBox("XR SDK is not active, so this list will not be loaded at runtime.", MessageType.Info);
+                        EditorGUILayout.HelpBox("XR SDK is not enabled, so this list will not be loaded at runtime.", MessageType.Info);
                     }
                     break;
             }
