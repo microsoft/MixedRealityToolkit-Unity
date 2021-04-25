@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),
-        "OpenXR XRSDK Device Manager")]
+        "OpenXR XRSDK Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class OpenXRDeviceManager : XRSDKDeviceManager
     {
         /// <summary>
@@ -33,21 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-        private bool? isActiveLoader = null;
-        private bool IsActiveLoader
-        {
-            get
-            {
+        private bool IsActiveLoader =>
 #if UNITY_OPENXR
-                if (!isActiveLoader.HasValue)
-                {
-                    isActiveLoader = IsLoaderActive<OpenXRLoaderBase>();
-                }
+            LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
+#else
+            false;
 #endif // UNITY_OPENXR
-
-                return isActiveLoader ?? false;
-            }
-        }
 
         /// <inheritdoc />
         public override void Enable()

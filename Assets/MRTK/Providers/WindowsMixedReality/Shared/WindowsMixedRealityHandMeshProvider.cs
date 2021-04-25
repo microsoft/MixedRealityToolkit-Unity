@@ -33,7 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private WindowsMixedRealityHandMeshProvider(Handedness handedness) => this.handedness = handedness;
 
         [Obsolete("WindowsMixedRealityHandMeshProvider(IMixedRealityController) is obsolete. Please use either the static Left or Right members and call SetInputSource()")]
-        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => inputSource = controller.InputSource;
+        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) : this(controller.ControllerHandedness)
+        {
+            SetInputSource(controller.InputSource);
+        }
 
         private readonly Handedness handedness;
         private IMixedRealityInputSource inputSource = null;
@@ -107,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityArticulatedHandDefinition.UpdateHandMesh");
+        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker($"[MRTK] {nameof(WindowsMixedRealityHandMeshProvider)}.UpdateHandMesh");
 
         /// <summary>
         /// Updates the current hand mesh based on the passed in state of the hand.

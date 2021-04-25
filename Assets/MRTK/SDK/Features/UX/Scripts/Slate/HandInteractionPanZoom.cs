@@ -379,20 +379,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateUVMapping()
         {
-            Vector2 tiling = currentMaterial != null ? currentMaterial.mainTextureScale : new Vector2(1.0f, 1.0f);
-            Vector2 uvTestValue;
             mesh.GetUVs(0, uvs);
             uvsOrig.Clear();
             uvsOrig.AddRange(uvs);
-            float scaleUVDelta = 0.0f;
-            Vector2 scaleUVCentroid = Vector2.zero;
-            float currentContactRatio = 0.0f;
 
+            Vector2 offsetUVDelta = new Vector2(-totalUVOffset.x, totalUVOffset.y);
+
+            // Scale
             if (ScaleActive)
             {
-                scaleUVCentroid = GetDisplayedUVCentroid(uvs);
-                currentContactRatio = GetUVScaleFromTouches();
-                scaleUVDelta = currentContactRatio / previousContactRatio;
+                var scaleUVCentroid = GetDisplayedUVCentroid(uvs);
+                var currentContactRatio = GetUVScaleFromTouches();
+                var scaleUVDelta = currentContactRatio / previousContactRatio;
                 previousContactRatio = currentContactRatio;
 
                 currentScale = totalUVScale.x / scaleUVDelta;
@@ -400,25 +398,53 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Test for scale limits
                 if (currentScale > minScale && currentScale < maxScale)
                 {
-                    // Track total scale
-                    totalUVScale /= scaleUVDelta;
-                    for (int i = 0; i < uvs.Count; ++i)
+                    var scaleAndScrollUVDeltas = new List<Vector2>();
+                    for (int i = 0; i < uvs.Count; i++)
                     {
-                        // This is where zoom is applied if Active
-                        uvs[i] = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid;
+                        Vector2 adjustedScaleUVDelta = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid - uvs[i];
+                        scaleAndScrollUVDeltas.Add(adjustedScaleUVDelta + offsetUVDelta);
                     }
+                    UpdateUV(uvs, scaleAndScrollUVDeltas);
+
+                    Vector2 upperLeft = uvs[UpperLeftQuadIndex];
+                    Vector2 upperRight = uvs[UpperRightQuadIndex];
+                    Vector2 lowerLeft = uvs[LowerLeftQuadIndex];
+                    totalUVScale.x = upperRight.x - upperLeft.x;
+                    totalUVScale.y = upperLeft.y - lowerLeft.y;
                 }
             }
+            else
+            {
+                // Scroll
+                UpdateUVWithScroll(uvs, offsetUVDelta);
+            }
 
-            // Test for pan limits
-            Vector2 uvDelta = new Vector2(totalUVOffset.x, -totalUVOffset.y);
+            mesh.SetUVs(0, uvs);
+        }
+
+        private void UpdateUVWithScroll(List<Vector2> uvs, Vector2 uvDelta)
+        {
+            var uvDeltas = new List<Vector2>();
+            for (int i = 0; i < uvs.Count; i++)
+            {
+                uvDeltas.Add(uvDelta);
+            }
+
+            UpdateUV(uvs, uvDeltas, true);
+        }
+
+        private void UpdateUV(List<Vector2> uvs, List<Vector2> uvDeltas, bool scrollOnly = false)
+        {
+            Vector2 tiling = currentMaterial != null ? currentMaterial.mainTextureScale : new Vector2(1.0f, 1.0f);
+
             if (!unlimitedPan)
             {
                 bool xLimited = false;
                 bool yLimited = false;
-                for (int i = 0; i < uvs.Count; ++i)
+
+                for (int i = 0; i < uvs.Count; i++)
                 {
-                    uvTestValue = uvs[i] - uvDelta;
+                    var uvTestValue = uvs[i] + uvDeltas[i];
                     if (uvTestValue.x > tiling.x * maxPanHorizontal || uvTestValue.x < -(tiling.x * maxPanHorizontal))
                     {
                         xLimited = true;
@@ -429,20 +455,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
 
-                for (int i = 0; i < uvs.Count; ++i)
+                if (scrollOnly)
                 {
-                    uvs[i] = new Vector2(xLimited ? uvs[i].x : uvs[i].x - uvDelta.x, yLimited ? uvs[i].y : uvs[i].y - uvDelta.y);
+                    for (int i = 0; i < uvs.Count; ++i)
+                    {
+                        uvs[i] = new Vector2(xLimited ? uvs[i].x : uvs[i].x + uvDeltas[i].x, yLimited ? uvs[i].y : uvs[i].y + uvDeltas[i].y);
+                    }
+                }
+                else if (!xLimited && !yLimited)
+                {
+                    for (int i = 0; i < uvs.Count; ++i)
+                    {
+                        uvs[i] += uvDeltas[i];
+                    }
                 }
             }
             else
             {
                 for (int i = 0; i < uvs.Count; ++i)
                 {
-                    uvs[i] -= uvDelta;
+                    uvs[i] += uvDeltas[i];
                 }
             }
-
-            mesh.SetUVs(0, uvs);
         }
 
         private float GetUVScaleFromTouches()

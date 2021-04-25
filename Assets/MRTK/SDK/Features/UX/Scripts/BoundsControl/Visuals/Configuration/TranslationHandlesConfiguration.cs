@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// Configuration for <see cref="TranslationHandles"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create translation handles for <see cref="BoundsControl"/>
     /// </summary>
-    [CreateAssetMenu(fileName = "TranslationHandlesConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Translation Handles Configuration")]
+    [CreateAssetMenu(fileName = "TranslationHandlesConfiguration", menuName = "Mixed Reality/Toolkit/Bounds Control/Translation Handles Configuration")]
     public class TranslationHandlesConfiguration : PerAxisHandlesConfiguration
     {
         TranslationHandlesConfiguration()

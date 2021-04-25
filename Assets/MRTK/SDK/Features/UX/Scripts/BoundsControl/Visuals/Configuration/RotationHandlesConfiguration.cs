@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// Configuration for <see cref="RotationHandles"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create rotation handles for <see cref="BoundsControl"/>
     /// </summary>
-    [CreateAssetMenu(fileName = "RotationHandlesConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Rotation Handles Configuration")]
+    [CreateAssetMenu(fileName = "RotationHandlesConfiguration", menuName = "Mixed Reality/Toolkit/Bounds Control/Rotation Handles Configuration")]
     public class RotationHandlesConfiguration : PerAxisHandlesConfiguration
     {
         /// <summary>

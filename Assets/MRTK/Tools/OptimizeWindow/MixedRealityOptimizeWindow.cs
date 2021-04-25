@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private PerformanceTarget PerfTarget = PerformanceTarget.AR_Headsets;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Optimize Window", false, 0)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Optimize Window", false, 0)]
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.

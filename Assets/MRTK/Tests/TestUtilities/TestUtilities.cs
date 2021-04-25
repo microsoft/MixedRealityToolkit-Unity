@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -288,13 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
-
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
-                MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
-                MixedRealityToolkit.ConfirmInitialized();
-            }
+#if UNITY_EDITOR
+            MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
+#endif
 
             // Todo: this condition shouldn't be here.
             // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
@@ -308,8 +304,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(MixedRealityToolkit.IsInitialized);
             Debug.Assert(MixedRealityToolkit.Instance != null);
 
-
-            MixedRealityToolkit.Instance.ActiveProfile = configuration;
             Debug.Assert(MixedRealityToolkit.Instance.ActiveProfile != null);
         }
 
@@ -415,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 #if UNITY_EDITOR
-        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
         {
             Texture2D icon = null;

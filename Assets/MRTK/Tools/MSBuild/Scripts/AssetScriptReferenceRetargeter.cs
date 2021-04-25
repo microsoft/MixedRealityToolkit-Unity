@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/MSBuild/Retarget assets to scripts")]
+        [MenuItem("Mixed Reality/Toolkit/MSBuild/Retarget assets to scripts")]
         public static void RetargetAssetsToScript() => RunRetargetToScript();
 
         private static void RunRetargetToDLL()

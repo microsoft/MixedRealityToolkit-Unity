@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.OpenVR.Input;
 using NUnit.Framework;
 using UnityEditor;
 
@@ -18,8 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         {
             MixedRealityControllerMapping[] testMappingsChanged = new MixedRealityControllerMapping[]
             {
-                new MixedRealityControllerMapping(typeof(ViveWandController), Utilities.Handedness.Left),
-                new MixedRealityControllerMapping(typeof(ViveWandController), Utilities.Handedness.Right)
+#if UNITY_2020_1_OR_NEWER
+                new MixedRealityControllerMapping(typeof(XRSDK.OpenXR.HPReverbG2Controller), Utilities.Handedness.Left),
+                new MixedRealityControllerMapping(typeof(XRSDK.OpenXR.HPReverbG2Controller), Utilities.Handedness.Right)
+#else
+                new MixedRealityControllerMapping(typeof(OpenVR.Input.ViveWandController), Utilities.Handedness.Left),
+                new MixedRealityControllerMapping(typeof(OpenVR.Input.ViveWandController), Utilities.Handedness.Right)
+#endif
             };
 
             testMappingsChanged[0].SetDefaultInteractionMapping();

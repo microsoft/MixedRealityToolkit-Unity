@@ -228,10 +228,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that the teleport pointer functions as expected
         /// </summary>
         [UnityTest]
-        public IEnumerator TestTeleport()
+        public IEnumerator TestTeleportAndContentOffset()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
+            ExperienceScale originalExperienceScale;
+            float originalProfileContentOffset;
 
+            float contentOffset = 1.3f;
+
+            // MRTK has already been created by SetUp prior to calling this,
+            // we have to shut it down to re-init with the custom input profile which
+            // has our contentOffset value set
+            PlayModeTestUtilities.TearDown();
+            yield return null;
+
+            // Initialize a profile with the appropriate contentOffset
+            var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
+
+            originalProfileContentOffset = profile.ExperienceSettingsProfile.ContentOffset;
+            originalExperienceScale = profile.ExperienceSettingsProfile.TargetExperienceScale;
+
+            profile.ExperienceSettingsProfile.ContentOffset = contentOffset;
+            profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
+
+            PlayModeTestUtilities.Setup(profile);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Ensure that the SceneContent object is contentOffset units above the origin
+            Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, contentOffset, 0.005f);
+            
             // Create a floor and make sure it's below the camera
             var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
             floor.transform.position = -0.5f * Vector3.up;
@@ -251,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
-
+            
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
             // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -279,6 +305,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // We should have teleported in the forward direction after the teleport
             Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
+
+            // Reset the profile's settings to it's original value
+            profile.ExperienceSettingsProfile.TargetExperienceScale = originalExperienceScale;
+            profile.ExperienceSettingsProfile.ContentOffset = originalProfileContentOffset;
+
             leftHand.Hide();
         }
 

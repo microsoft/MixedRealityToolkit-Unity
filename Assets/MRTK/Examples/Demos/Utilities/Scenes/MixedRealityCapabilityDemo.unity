@@ -1432,8 +1432,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1229001242}
   - component: {fileID: 1229001243}
+  - component: {fileID: 1229001244}
   m_Layer: 0
-  m_Name: SceneContent
+  m_Name: MixedRealitySceneContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1476,6 +1477,19 @@ MonoBehaviour:
   spatialMeshResult: {fileID: 876700502}
   spatialPlaneResult: {fileID: 1888610663}
   spatialPointResult: {fileID: 2075593296}
+--- !u!114 &1229001244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229001241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65c9dd2f312b8d41b8849d58e1053fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alignmentType: 0
 --- !u!1 &1289414259
 GameObject:
   m_ObjectHideFlags: 0

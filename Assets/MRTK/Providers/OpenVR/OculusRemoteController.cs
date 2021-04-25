@@ -10,7 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     [MixedRealityController(
         SupportedControllerType.OculusRemote,
         new[] { Handedness.None },
-        "Textures/OculusRemoteController")]
+        "Textures/OculusRemoteController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class OculusRemoteController : GenericOpenVRController
     {
         /// <summary>

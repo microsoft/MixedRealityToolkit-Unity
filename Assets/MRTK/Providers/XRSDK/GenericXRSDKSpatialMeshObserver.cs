@@ -19,7 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "XR SDK Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
-        "MixedRealityToolkit.SDK")]
+        "MixedRealityToolkit.SDK",
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class GenericXRSDKSpatialMeshObserver :
         BaseSpatialMeshObserver,
@@ -38,6 +40,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
+
+        // Don't run this one on Windows MR, since that has its own observer
+        // There's probably a better way to manage these two...
+        protected virtual bool IsActiveLoader => !LoaderHelpers.IsLoaderActive("Windows MR Loader");
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
 
         #region BaseSpatialObserver Implementation
 
@@ -131,6 +149,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             using (UpdatePerfMarker.Auto())
             {
+                if (!IsEnabled)
+                {
+                    return;
+                }
+
                 base.Update();
                 UpdateObserver();
             }

@@ -29,7 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class WindowsMixedRealityArticulatedHand : BaseWindowsMixedRealitySource, IMixedRealityHand
     {
         /// <summary>

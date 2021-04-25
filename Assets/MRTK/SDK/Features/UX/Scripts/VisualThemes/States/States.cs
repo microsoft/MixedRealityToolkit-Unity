@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// States scriptableObject for storing available states and related state model
     /// </summary>
-    [CreateAssetMenu(fileName = "States", menuName = "Mixed Reality Toolkit/State", order = 1)]
+    [CreateAssetMenu(fileName = "States", menuName = "Mixed Reality/Toolkit/State", order = 1)]
     public class States : ScriptableObject
     {
         [FormerlySerializedAs("StateList")]

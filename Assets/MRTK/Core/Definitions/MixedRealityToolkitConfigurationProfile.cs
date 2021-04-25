@@ -21,11 +21,26 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide")]
     public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile
     {
         #region Mixed Reality Toolkit configurable properties
+
+        [SerializeField]
+        [Tooltip("Experience Settings profile.")]
+        private MixedRealityExperienceSettingsProfile experienceSettingsProfile;
+
+        /// <summary>
+        /// Profile for configuring the experience settings of your project.
+        /// Determines whether your project targers AR/VR, the scale of your experience, and the height of the user where applicable
+        /// </summary>
+        public MixedRealityExperienceSettingsProfile ExperienceSettingsProfile
+        {
+            get { return experienceSettingsProfile; }
+            internal set { experienceSettingsProfile = value; }
+        }
+
 
         [SerializeField]
         [Tooltip("The scale of the Mixed Reality experience.")]
@@ -33,7 +48,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <summary>
         /// The desired the scale of the experience.
+        /// Profile for configuring the experience settings of your project.
+        /// Determines whether your project targers AR/VR, the scale of your experience, and the height of the user where applicable
         /// </summary>
+        /// <remarks>
+        /// The target experience scale is now configured via ExperienceSettingsProfile
+        /// </remarks>
+        [Obsolete("The target experience scale is now configured via ExperienceSettingsProfile, please use the ExperienceSettingsProfile.TargetExperienceScale instead")]
         public ExperienceScale TargetExperienceScale
         {
             get { return targetExperienceScale; }

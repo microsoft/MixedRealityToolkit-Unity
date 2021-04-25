@@ -37,7 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsUniversal,
-        "Windows Mixed Reality Device Manager")]
+        "Windows Mixed Reality Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
     {
         /// <summary>
