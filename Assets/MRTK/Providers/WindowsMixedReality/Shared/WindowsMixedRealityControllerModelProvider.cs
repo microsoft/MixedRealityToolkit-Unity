@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// <summary>
     /// Queries the WinRT APIs for a renderable controller model.
     /// </summary>
-    public class WindowsMixedRealityControllerModelProvider
+    internal class WindowsMixedRealityControllerModelProvider
     {
         public WindowsMixedRealityControllerModelProvider(Handedness handedness)
         {
