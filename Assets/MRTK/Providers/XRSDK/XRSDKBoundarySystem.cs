@@ -40,12 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <inheritdoc/>
         protected override List<Vector3> GetBoundaryGeometry()
         {
-            // Boundaries are supported for Room Scale experiences only.
-            if (XRSubsystemHelpers.InputSubsystem?.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
-            {
-                return null;
-            }
-
             // Get the boundary geometry.
             var boundaryGeometry = new List<Vector3>(0);
 
