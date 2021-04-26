@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
         private Transform containerObject = null;
 
         private Vector3 contentPosition = Vector3.zero;
+        private const uint MaxEditorFrameWaitCount = 5;
 
         private void Awake()
         {
@@ -46,10 +47,22 @@ namespace Microsoft.MixedReality.Toolkit
             StartCoroutine(InitializeSceneContentWithDelay());
         }
 
-        // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
+        // Not waiting often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
+        // Editor takes a little longer to init.
         private IEnumerator InitializeSceneContentWithDelay()
         {
-            yield return null;
+            if (Application.isEditor)
+            {
+                for (int i = 0; i < MaxEditorFrameWaitCount; i++)
+                {
+                    yield return null;
+                }
+            }
+            else
+            {
+                yield return null;
+            }
+
             InitializeSceneContent();
         }
 
