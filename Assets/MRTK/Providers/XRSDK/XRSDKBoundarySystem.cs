@@ -54,11 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         xrInputSubsystem.TryGetBoundaryPoints(boundaryGeometry) &&
                         boundaryGeometry.Count > 0)
                     {
-                        return boundaryGeometry;
+                        break;
                     }
                 }
 #endif // UNITY_2019_3_OR_NEWER
-                return null;
             }
 
             return boundaryGeometry;
