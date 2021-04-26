@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public class MixedRealitySceneContent : MonoBehaviour
     {
-        public enum AlignmentType
+        private enum AlignmentType
         {
             AlignWithExperienceScale,
             AlignWithHeadHeight
@@ -27,12 +27,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         [SerializeField]
         [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
-        public AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
+        private AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
 
-        private Vector3 contentPosition = Vector3.zero;
-
+        [SerializeField]
         [Tooltip("Optional container object reference. If null, this script will move the object it's attached to.")]
         private Transform containerObject = null;
+
+        private Vector3 contentPosition = Vector3.zero;
 
         private void Awake()
         {
@@ -77,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_2020_1_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor);
 #elif UNITY_2019_1_OR_NEWER
-#pragma warning disable 0618
                     (XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor)) ||
+#pragma warning disable 0618
                     (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
 #pragma warning restore 0618
 #else
