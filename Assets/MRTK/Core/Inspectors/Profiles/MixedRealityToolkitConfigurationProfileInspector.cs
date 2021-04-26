@@ -38,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
+        private SerializedProperty xrsdkBoundarySystemType;
         private SerializedProperty boundaryVisualizationProfile;
         // Teleport system properties
         private SerializedProperty enableTeleportSystem;
@@ -81,6 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
 
+        private readonly XRPipelineUtility xrPipelineUtility = new XRPipelineUtility();
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -109,7 +112,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
+            xrsdkBoundarySystemType = serializedObject.FindProperty("xrsdkBoundarySystemType");
             boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
+#if UNITY_2019
+            xrPipelineUtility.Enable();
+#endif // UNITY_2019
+
             // Teleport system configuration
             enableTeleportSystem = serializedObject.FindProperty("enableTeleportSystem");
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
@@ -258,7 +266,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             {
                                 CheckSystemConfiguration(service, mrtkConfigProfile.BoundarySystemSystemType, mrtkConfigProfile.BoundaryVisualizationProfile != null);
 
-                                EditorGUILayout.PropertyField(boundarySystemType);
+#if UNITY_2019
+                                xrPipelineUtility.RenderXRPipelineTabs();
+#endif // UNITY_2019
+
+                                EditorGUILayout.PropertyField(xrPipelineUtility.SelectedPipeline == SupportedUnityXRPipelines.XRSDK ? xrsdkBoundarySystemType : boundarySystemType);
 
                                 changed |= RenderProfile(boundaryVisualizationProfile, null, true, false, typeof(IMixedRealityBoundarySystem));
                             }

@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Display null data providers
 
-        private static readonly GUIContent NullDataProviderContent = new GUIContent("Show null data providers in the input profile", "Mainly used for debugging unexpected behavior. Will render null data providers in red in the inspector.");
+        private static readonly GUIContent NullDataProviderContent = new GUIContent("Show null data providers in the profile inspector", "Mainly used for debugging unexpected behavior. Will render null data providers in red in the inspector.");
         private const string NULL_DATA_PROVIDER_KEY = "MixedRealityToolkit_Editor_NullDataProviders";
         private static bool nullDataProviderPrefLoaded;
         private static bool nullDataProvider;
@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.HelpBox("These settings are serialized into ProjectPreferences.asset in the MixedRealityToolkit-Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
 
                 var prevLabelWidth = EditorGUIUtility.labelWidth;
-                EditorGUIUtility.labelWidth = 250f;
+                EditorGUIUtility.labelWidth = 300f;
 
                 bool lockProfilesResult = EditorGUILayout.Toggle(LockContent, LockProfiles);
                 if (lockProfilesResult != LockProfiles)
@@ -257,13 +257,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorAssemblyReloadManager.LockReloadAssemblies = scriptLock;
                 }
 
-                EditorGUI.BeginChangeCheck();
-                runOptimalConfig = EditorGUILayout.Toggle(RunOptimalConfigContent, RunOptimalConfiguration);
-
-                // Save the preference
-                if (EditorGUI.EndChangeCheck())
+                bool optimalConfig = EditorGUILayout.Toggle(RunOptimalConfigContent, RunOptimalConfiguration);
+                if (RunOptimalConfiguration != optimalConfig)
                 {
-                    RunOptimalConfiguration = runOptimalConfig;
+                    RunOptimalConfiguration = optimalConfig;
                 }
 
                 bool nullProviders = EditorGUILayout.Toggle(NullDataProviderContent, ShowNullDataProviders);

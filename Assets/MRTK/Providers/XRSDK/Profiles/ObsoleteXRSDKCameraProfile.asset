@@ -10,10 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4a1c93114e9437cb75d8b3ee4e0e1ba, type: 3}
-  m_Name: DefaultOpenXRCameraProfile
+  m_Name: ObsoleteXRSDKCameraProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   settingsConfigurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    componentName: XR SDK Windows Mixed Reality Camera Settings
+    priority: 0
+    runtimePlatform: 9
+    settingsProfile: {fileID: 11400000, guid: b8be5b71c8e0a254c83b691d62a79ff5, type: 2}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK

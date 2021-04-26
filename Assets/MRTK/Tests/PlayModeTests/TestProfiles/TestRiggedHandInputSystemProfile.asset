@@ -15,48 +15,6 @@ MonoBehaviour:
   isCustomProfile: 0
   dataProviderConfigurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    componentName: Windows Mixed Reality Device Manager
-    priority: 0
-    runtimePlatform: 8
-    deviceManagerProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager,
-        Microsoft.MixedReality.Toolkit.Providers.OpenVR
-    componentName: OpenVR Device Manager
-    priority: 0
-    runtimePlatform: 7
-    deviceManagerProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager,
-        Microsoft.MixedReality.Toolkit
-    componentName: Unity Joystick Manager
-    priority: 0
-    runtimePlatform: -1
-    deviceManagerProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchDeviceManager,
-        Microsoft.MixedReality.Toolkit
-    componentName: Unity Touch Device Manager
-    priority: 0
-    runtimePlatform: -1
-    deviceManagerProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
-    componentName: Windows Speech Input
-    priority: 0
-    runtimePlatform: 25
-    deviceManagerProfile: {fileID: 0}
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput
-    componentName: Windows Dictation Input
-    priority: 0
-    runtimePlatform: 25
-    deviceManagerProfile: {fileID: 0}
-  - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.HandJointService, Microsoft.MixedReality.Toolkit
     componentName: Hand Joint Service
     priority: 0
