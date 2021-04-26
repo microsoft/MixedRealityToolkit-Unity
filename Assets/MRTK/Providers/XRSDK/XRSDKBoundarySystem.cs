@@ -30,17 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         private static readonly List<XRInputSubsystem> XRInputSubsystems = new List<XRInputSubsystem>();
 #endif // UNITY_2019_3_OR_NEWER
 
-        /// <inheritdoc/>
-        protected override bool IsXRDevicePresent
-        {
-            get
-            {
-                List<InputDevice> devices = new List<InputDevice>();
-                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, devices);
-                return devices.Count > 0;
-            }
-        }
-
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>

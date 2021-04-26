@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Whether any XR device is present.
         /// </summary>
+        [System.Obsolete("This value is no longer used.")]
         protected virtual bool IsXRDevicePresent { get; } = true;
 
         #region IMixedRealityService Implementation
@@ -69,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             // after profile change reads the correct data.
             ReadProfile();
 
-            if (!Application.isPlaying || !IsXRDevicePresent) { return; }
+            if (!Application.isPlaying || !DeviceUtility.IsPresent) { return; }
 
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
