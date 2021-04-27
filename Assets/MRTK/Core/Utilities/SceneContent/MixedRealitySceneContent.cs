@@ -111,11 +111,6 @@ namespace Microsoft.MixedReality.Toolkit
 
                     containerObject.position = contentPosition;
                 }
-                else
-                {
-                    contentPosition = Vector3.zero;
-                    containerObject.position = contentPosition;
-                }
             }
 
             if (alignmentType == AlignmentType.AlignWithHeadHeight)
