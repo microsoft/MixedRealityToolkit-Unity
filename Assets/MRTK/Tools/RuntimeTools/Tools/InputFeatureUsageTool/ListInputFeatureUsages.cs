@@ -57,14 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
 
             listInputDevicesTextMesh.text = $"Detected {sourceCount} input source{(sourceCount > 1 ? "s:" : sourceCount != 0 ? ":" : "s")}\n";
 
+            bool collectionNeedsUpdating = false;
+
             for (int i = displayFeatureUsagesTextMeshes.Count; i < sourceCount; i++)
             {
                 displayFeatureUsagesTextMeshes.Add(Instantiate(displayFeatureUsagesPrefab, gameObject.transform).GetComponentInChildren<TextMesh>());
-                // For optimal performance, only update the collection when adding the final text panel
-                if (i == sourceCount - 1)
-                {
-                    gridObjectCollection.UpdateCollection();
-                }
+                collectionNeedsUpdating = true;
             }
 
             for (int i = 0; i < displayFeatureUsagesTextMeshes.Count; i++)
@@ -80,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                     if (textMesh.transform.parent.gameObject.activeSelf)
                     {
                         textMesh.transform.parent.gameObject.SetActive(false);
-                        gridObjectCollection.UpdateCollection();
+                        collectionNeedsUpdating = true;
                     }
                     continue;
                 }
@@ -88,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                 if (!textMesh.transform.parent.gameObject.activeSelf)
                 {
                     textMesh.transform.parent.gameObject.SetActive(true);
-                    gridObjectCollection.UpdateCollection();
+                    collectionNeedsUpdating = true;
                 }
 
                 InputDevice inputDevice = inputDevices[i];
@@ -168,6 +166,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                         }
                     }
                 }
+            }
+
+            if (collectionNeedsUpdating)
+            {
+                gridObjectCollection.UpdateCollection();
             }
 #else
             listInputDevicesTextMesh.text = $"This feature is only supported on Unity 2019.3 or newer.";
