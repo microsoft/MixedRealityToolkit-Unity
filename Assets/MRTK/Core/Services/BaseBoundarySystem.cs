@@ -82,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             RaiseBoundaryVisualizationChanged();
         }
 
+#if UNITY_EDITOR
         public override void Update()
         {
             base.Update();
@@ -92,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 Initialize();
             }
         }
+#endif // UNITY_EDITOR
 
         /// <inheritdoc/>
         public override void Destroy()
