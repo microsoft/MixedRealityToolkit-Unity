@@ -557,7 +557,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdatePerfMarker.Auto())
             {
-                if (!IsSetupValid) { return; }
+                if (!IsInitialized) { return; }
 
                 base.Update();
 
