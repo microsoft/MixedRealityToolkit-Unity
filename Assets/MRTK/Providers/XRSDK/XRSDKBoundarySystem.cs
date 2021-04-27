@@ -43,16 +43,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             // Get the boundary geometry.
             var boundaryGeometry = new List<Vector3>(0);
 
-            if (!XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry) || boundaryGeometry.Count == 0)
+            if (XRSubsystemHelpers.InputSubsystem?.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor
+                || !XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry)
+                || boundaryGeometry.Count == 0)
             {
 #if UNITY_2019_3_OR_NEWER
                 // If the "main" input subsystem doesn't have an available boundary, check the rest of them
                 SubsystemManager.GetInstances(XRInputSubsystems);
                 foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
                 {
-                    if (xrInputSubsystem.running &&
-                        xrInputSubsystem.TryGetBoundaryPoints(boundaryGeometry) &&
-                        boundaryGeometry.Count > 0)
+                    if (xrInputSubsystem.running
+                        && xrInputSubsystem.GetTrackingOriginMode() == TrackingOriginModeFlags.Floor
+                        && xrInputSubsystem.TryGetBoundaryPoints(boundaryGeometry)
+                        && boundaryGeometry.Count > 0)
                     {
                         break;
                     }
@@ -91,8 +94,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     break;
             }
 
-            if (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+            if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
             {
+#if UNITY_2019_3_OR_NEWER
+                // If the "main" input subsystem can't set the origin mode, check the rest of them
+                SubsystemManager.GetInstances(XRInputSubsystems);
+                foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
+                {
+                    if (xrInputSubsystem.running && xrInputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+                    {
+                        return;
+                    }
+                }
+#endif // UNITY_2019_3_OR_NEWER
                 Debug.LogWarning("Tracking origin unable to be set.");
             }
         }
