@@ -82,6 +82,16 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             RaiseBoundaryVisualizationChanged();
         }
 
+        public override void Update()
+        {
+            base.Update();
+
+            // If a device is attached late, initialize with the new state of the world
+            if (!IsInitialized && DeviceUtility.IsPresent)
+            {
+                Initialize();
+            }
+        }
 
         /// <inheritdoc/>
         public override void Destroy()
