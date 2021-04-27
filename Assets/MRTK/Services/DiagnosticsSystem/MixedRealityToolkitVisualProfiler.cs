@@ -291,6 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             appCapture = AppCapture.GetForCurrentView();
             if (appCapture != null)
             {
+                appCaptureIsCapturingVideo = appCapture.IsCapturingVideo;
                 appCapture.CapturingChanged += AppCapture_CapturingChanged;
             }
 #endif // WINDOWS_UWP
