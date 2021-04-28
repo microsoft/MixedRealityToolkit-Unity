@@ -27,17 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Tests for runtime behavior of bounds control
     /// </summary>
-    public class BoundsControlTests
+    public class BoundsControlTests : BasePlayModeTests
     {
         private Material testMaterial;
         private Material testMaterialGrabbed;
 
         #region Utilities
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
 
+        public override IEnumerator Setup()
+        {
             // create shared test materials
             var shader = StandardShaderUtility.MrtkStandardShader;
             testMaterial = new Material(shader);
@@ -45,14 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             testMaterialGrabbed = new Material(shader);
             testMaterialGrabbed.color = Color.green;
-            yield return null;
-        }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.Setup();
         }
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
