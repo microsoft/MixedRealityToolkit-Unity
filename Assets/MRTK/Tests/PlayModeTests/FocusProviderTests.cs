@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GazeProvider gazeProvider = CoreServices.InputSystem.GazeProvider.GameObjectReference.GetComponent<GazeProvider>();
             gazeProvider.GazePointer.BaseCursor.Destroy();
             DebugUtilities.LogVerbose("Application was playing, destroyed the gaze pointer's BaseCursor");
-            UnityObjectExtensions.DestroyObject(gazeProvider as Component);
+            UnityObjectExtensions.DestroyObject(gazeProvider);
             gazeProvider = null;
 
             // Ensure that the input system and it's related input sources are able to be reinitialized without issue.
@@ -201,10 +201,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(focusProvider.TryGetFocusDetails(pointer, out focusDetails));
             Assert.IsNull(focusDetails.Object);
 
-            var newFocusDetails = new Physics.FocusDetails();
-            newFocusDetails.Object = cube;
-            newFocusDetails.RayDistance = 10;
-            newFocusDetails.Point = new Vector3(1, 2, 3);
+            var newFocusDetails = new Physics.FocusDetails
+            {
+                Object = cube,
+                RayDistance = 10,
+                Point = new Vector3(1, 2, 3)
+            };
             Assert.IsTrue(focusProvider.TryOverrideFocusDetails(pointer, newFocusDetails));
 
             Assert.IsTrue(focusProvider.TryGetFocusDetails(pointer, out focusDetails));
