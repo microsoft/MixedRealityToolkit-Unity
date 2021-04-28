@@ -138,6 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     for (int i = 0; i < jointPoses.Length; i++)
                     {
+                        // Note: This is allocating. We should investigate a non-alloc approach.
                         Vector3 jointPosition = jointPoses[i].Position.ToUnityVector3();
                         Quaternion jointOrientation = jointPoses[i].Orientation.ToUnityQuaternion();
 
@@ -153,8 +154,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                             lastIndexTipRadius = jointPoses[i].Radius;
                         }
 
-                        unityJointPoses[handJoint] = new MixedRealityPose(jointPosition, jointOrientation);
-                    }
+                        MixedRealityPose pose = unityJointPoses[handJoint];
+                        pose.Position = jointPosition;
+                        pose.Rotation = jointOrientation;
+                        unityJointPoses[handJoint] = pose;
+                   }
 
                     handDefinition?.UpdateHandJoints(unityJointPoses);
                 }

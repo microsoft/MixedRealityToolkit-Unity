@@ -112,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
         private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker($"[MRTK] {nameof(WindowsMixedRealityHandMeshProvider)}.UpdateHandMesh");
 
+        private HandMeshInfo handMeshInfo = new HandMeshInfo();
+
         /// <summary>
         /// Updates the current hand mesh based on the passed in state of the hand.
         /// </summary>
@@ -129,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     if (handMeshObserver != null)
                     {
                         // Notify that hand mesh has been updated (cleared)
-                        HandMeshInfo handMeshInfo = new HandMeshInfo();
+                        handMeshInfo = new HandMeshInfo();
                         CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                         hasRequestedHandMeshObserver = false;
                         handMeshObserver = null;
@@ -214,15 +216,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                             Vector3 positionUnity = MixedRealityPlayspace.TransformPoint(translation.ToUnityVector3());
                             Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion();
 
-                            HandMeshInfo handMeshInfo = new HandMeshInfo
-                            {
-                                vertices = handMeshVerticesUnity,
-                                normals = handMeshNormalsUnity,
-                                triangles = handMeshTriangleIndicesUnity,
-                                uvs = handMeshUVsUnity,
-                                position = positionUnity,
-                                rotation = rotationUnity
-                            };
+                            handMeshInfo.vertices = handMeshVerticesUnity;
+                            handMeshInfo.normals = handMeshNormalsUnity;
+                            handMeshInfo.triangles = handMeshTriangleIndicesUnity;
+                            handMeshInfo.uvs = handMeshUVsUnity;
+                            handMeshInfo.position = positionUnity;
+                            handMeshInfo.rotation = rotationUnity;
 
                             CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                         }
