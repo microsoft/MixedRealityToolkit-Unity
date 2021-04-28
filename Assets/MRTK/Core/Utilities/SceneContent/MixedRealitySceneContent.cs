@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private Vector3 contentPosition = Vector3.zero;
         private const uint MaxEditorFrameWaitCount = 5;
+        private Coroutine initializeSceneContentWithDelay;
 
         private void Awake()
         {
@@ -44,7 +45,15 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // Init the content height on non-XR platforms
-            StartCoroutine(InitializeSceneContentWithDelay());
+            initializeSceneContentWithDelay = StartCoroutine(InitializeSceneContentWithDelay());
+        }
+
+        private void OnDestroy()
+        {
+            if (initializeSceneContentWithDelay != null)
+            {
+                StopCoroutine(initializeSceneContentWithDelay);
+            }
         }
 
         // Not waiting often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
@@ -64,6 +73,8 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             InitializeSceneContent();
+
+            initializeSceneContentWithDelay = null;
         }
 
 
