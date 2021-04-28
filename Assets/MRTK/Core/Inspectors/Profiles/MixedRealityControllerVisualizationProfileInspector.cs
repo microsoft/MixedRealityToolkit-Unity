@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand{(mixedRealityControllerHandedness.intValue == 3 ? "s" : "")}", EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand{(mixedRealityControllerHandedness.intValue == (int)(Handedness.Both) ? "s" : "")}", EditorStyles.boldLabel);
 
                     if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                     {
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 var handednessValue = mixedRealityControllerHandedness.intValue - 1;
 
-                // Reset in case it was set to something other than left or right.
+                // Reset in case it was set to something other than left, right, or both.
                 if (handednessValue < 0 || handednessValue > 2) { handednessValue = 0; }
 
                 EditorGUI.BeginChangeCheck();
