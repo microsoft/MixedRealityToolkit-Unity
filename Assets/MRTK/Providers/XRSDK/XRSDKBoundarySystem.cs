@@ -30,17 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         private static readonly List<XRInputSubsystem> XRInputSubsystems = new List<XRInputSubsystem>();
 #endif // UNITY_2019_3_OR_NEWER
 
-        /// <inheritdoc/>
-        protected override bool IsXRDevicePresent
-        {
-            get
-            {
-                List<InputDevice> devices = new List<InputDevice>();
-                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, devices);
-                return devices.Count > 0;
-            }
-        }
-
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>
@@ -51,31 +40,27 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <inheritdoc/>
         protected override List<Vector3> GetBoundaryGeometry()
         {
-            // Boundaries are supported for Room Scale experiences only.
-            if (XRSubsystemHelpers.InputSubsystem?.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
-            {
-                return null;
-            }
-
             // Get the boundary geometry.
             var boundaryGeometry = new List<Vector3>(0);
 
-            if (!XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry) || boundaryGeometry.Count == 0)
+            if (XRSubsystemHelpers.InputSubsystem?.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor
+                || !XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry)
+                || boundaryGeometry.Count == 0)
             {
 #if UNITY_2019_3_OR_NEWER
                 // If the "main" input subsystem doesn't have an available boundary, check the rest of them
                 SubsystemManager.GetInstances(XRInputSubsystems);
                 foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
                 {
-                    if (xrInputSubsystem.running &&
-                        xrInputSubsystem.TryGetBoundaryPoints(boundaryGeometry) &&
-                        boundaryGeometry.Count > 0)
+                    if (xrInputSubsystem.running
+                        && xrInputSubsystem.GetTrackingOriginMode() == TrackingOriginModeFlags.Floor
+                        && xrInputSubsystem.TryGetBoundaryPoints(boundaryGeometry)
+                        && boundaryGeometry.Count > 0)
                     {
-                        return boundaryGeometry;
+                        break;
                     }
                 }
 #endif // UNITY_2019_3_OR_NEWER
-                return null;
             }
 
             return boundaryGeometry;
@@ -109,8 +94,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     break;
             }
 
-            if (XRSubsystemHelpers.InputSubsystem != null && !XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+            if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
             {
+#if UNITY_2019_3_OR_NEWER
+                // If the "main" input subsystem can't set the origin mode, check the rest of them
+                SubsystemManager.GetInstances(XRInputSubsystems);
+                foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
+                {
+                    if (xrInputSubsystem.running && xrInputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+                    {
+                        return;
+                    }
+                }
+#endif // UNITY_2019_3_OR_NEWER
                 Debug.LogWarning("Tracking origin unable to be set.");
             }
         }

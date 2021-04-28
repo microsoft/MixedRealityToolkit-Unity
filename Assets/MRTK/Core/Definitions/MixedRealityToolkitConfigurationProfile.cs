@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public bool IsBoundarySystemEnabled
         {
-            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem && boundaryVisualizationProfile != null; }
+            get { return BoundarySystemSystemType != null && BoundarySystemSystemType.Type != null && enableBoundarySystem && boundaryVisualizationProfile != null; }
             internal set { enableBoundarySystem = value; }
         }
 

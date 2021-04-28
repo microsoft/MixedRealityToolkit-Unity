@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public class MixedRealitySceneContent : MonoBehaviour
     {
-        public enum AlignmentType
+        private enum AlignmentType
         {
             AlignWithExperienceScale,
             AlignWithHeadHeight
@@ -27,12 +27,15 @@ namespace Microsoft.MixedReality.Toolkit
 
         [SerializeField]
         [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
-        public AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
+        private AlignmentType alignmentType = AlignmentType.AlignWithExperienceScale;
 
-        private Vector3 contentPosition = Vector3.zero;
-
+        [SerializeField]
         [Tooltip("Optional container object reference. If null, this script will move the object it's attached to.")]
         private Transform containerObject = null;
+
+        private Vector3 contentPosition = Vector3.zero;
+        private const uint MaxEditorFrameWaitCount = 5;
+        private Coroutine initializeSceneContentWithDelay;
 
         private void Awake()
         {
@@ -42,14 +45,36 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // Init the content height on non-XR platforms
-            StartCoroutine(InitializeSceneContentWithDelay());
+            initializeSceneContentWithDelay = StartCoroutine(InitializeSceneContentWithDelay());
         }
 
-        // Not waiting a frame often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
+        private void OnDestroy()
+        {
+            if (initializeSceneContentWithDelay != null)
+            {
+                StopCoroutine(initializeSceneContentWithDelay);
+            }
+        }
+
+        // Not waiting often caused the camera's position to be incorrect at this point. This seems like a Unity bug.
+        // Editor takes a little longer to init.
         private IEnumerator InitializeSceneContentWithDelay()
         {
-            yield return null;
+            if (Application.isEditor)
+            {
+                for (int i = 0; i < MaxEditorFrameWaitCount; i++)
+                {
+                    yield return null;
+                }
+            }
+            else
+            {
+                yield return null;
+            }
+
             InitializeSceneContent();
+
+            initializeSceneContentWithDelay = null;
         }
 
 
@@ -77,8 +102,8 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_2020_1_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor);
 #elif UNITY_2019_1_OR_NEWER
-#pragma warning disable 0618
                     (XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor)) ||
+#pragma warning disable 0618
                     (XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale);
 #pragma warning restore 0618
 #else
@@ -95,11 +120,6 @@ namespace Microsoft.MixedReality.Toolkit
                     contentPosition.y = containerObject.position.y + experienceSettingsProfile.ContentOffset;
                     contentPosition.z = containerObject.position.z;
 
-                    containerObject.position = contentPosition;
-                }
-                else
-                {
-                    contentPosition = Vector3.zero;
                     containerObject.position = contentPosition;
                 }
             }
