@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Contains a set of animation curves that describe motion of camera and hands.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class InputAnimation
     {
         /// <summary>

@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Whether the hand is currently being tracked
         /// </summary>
         public bool IsTracked => isTracked;
+
         [SerializeField]
         private MixedRealityPose[] joints = new MixedRealityPose[ArticulatedHandPose.JointCount];
 
@@ -28,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Array storing the joints of the hand
         /// </summary>
         public MixedRealityPose[] Joints => joints;
+
         [SerializeField]
         private bool isPinching = false;
 

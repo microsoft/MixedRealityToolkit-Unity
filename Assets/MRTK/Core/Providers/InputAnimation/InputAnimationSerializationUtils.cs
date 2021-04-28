@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string filename;
             if (appendTimestamp)
             {
-                filename = String.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
+                filename = string.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), Extension);
             }
             else
             {
