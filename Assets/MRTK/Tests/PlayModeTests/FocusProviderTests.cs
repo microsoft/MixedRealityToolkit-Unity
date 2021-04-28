@@ -22,22 +22,8 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class FocusProviderTests
+    public class FocusProviderTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         /// <summary>
         /// Test that the gaze cursor behaves properly with articulated hand pointers.
         /// </summary>
@@ -176,7 +162,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestGazeProviderDestroyed()
         {
-            PlayModeTestUtilities.Setup();
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // remove the gaze provider and it's components from the scene
@@ -201,8 +186,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestOverrideFocusDetails()
         {
-            PlayModeTestUtilities.Setup();
-
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             yield return null;
 

@@ -21,24 +21,16 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class PinchSliderTests
+    class PinchSliderTests : BasePlayModeTests
     {
         // SDK/Features/UX/Prefabs/Sliders/PinchSlider.prefab
         private const string defaultPinchSliderPrefabGuid = "1093263a89abe47499cccf7dcb08effb";
         private static readonly string defaultPinchSliderPrefabPath = AssetDatabase.GUIDToAssetPath(defaultPinchSliderPrefabGuid);
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 
