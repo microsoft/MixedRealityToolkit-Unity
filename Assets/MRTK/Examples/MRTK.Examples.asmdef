@@ -10,12 +10,19 @@
         "Unity.TextMeshPro",
         "Microsoft.MixedReality.Toolkit.MicStream"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.toolkit.micstream",
+            "expression": "",
+            "define": "MICSTREAM_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
 }
