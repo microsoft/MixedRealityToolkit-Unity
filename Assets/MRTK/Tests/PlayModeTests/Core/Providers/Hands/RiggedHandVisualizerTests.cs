@@ -21,25 +21,17 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class RiggedHandVisualizerTests
+    public class RiggedHandVisualizerTests : BasePlayModeTests
     {
         private const string RiggedHandProfileName = "TestRiggedHandVisualizationConfigurationProfile";
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-
             var riggedHandProfile = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>()
                            .FirstOrDefault(x => x.name.Equals(RiggedHandProfileName));
             PlayModeTestUtilities.Setup(riggedHandProfile);
 
             yield return null;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
         }
 
 #if UNITY_2019_3_OR_NEWER

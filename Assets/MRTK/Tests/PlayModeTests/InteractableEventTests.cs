@@ -20,15 +20,14 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class InteractableEventTests
+    class InteractableEventTests : BasePlayModeTests
     {
         GameObject cube;
         Interactable interactable;
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -39,12 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
-            GameObject.Destroy(cube);
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            Object.Destroy(cube);
+            yield return base.TearDown();
         }
 
         /// <summary>

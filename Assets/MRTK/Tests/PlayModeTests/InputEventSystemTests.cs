@@ -26,22 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     using Handle = BaseEventSystem.EventHandlerEntry;
     using HandleList = List<BaseEventSystem.EventHandlerEntry>;
 
-    class InputEventSystemTests
+    class InputEventSystemTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         /// <summary>
         /// </summary>
         [UnityTest]
