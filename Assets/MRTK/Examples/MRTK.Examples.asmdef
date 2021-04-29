@@ -6,22 +6,16 @@
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.Providers.LeapMotion",
         "Unity.TextMeshPro",
         "Microsoft.MixedReality.Toolkit.MicStream"
     ],
+    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "com.microsoft.mixedreality.toolkit.micstream",
-            "expression": "",
-            "define": "MICSTREAM_PRESENT"
-        }
-    ],
-    "noEngineReferences": false
+    "defineConstraints": []
 }

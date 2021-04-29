@@ -3,8 +3,7 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "LeapMotion",
-        "LeapMotion.LeapCSharp",
-        "Unity.TextMeshPro"
+        "LeapMotion.LeapCSharp"
     ],
     "includePlatforms": [
         "Editor",

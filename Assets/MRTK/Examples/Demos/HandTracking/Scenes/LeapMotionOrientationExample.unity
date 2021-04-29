@@ -395,12 +395,12 @@ PrefabInstance:
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.266
+      value: -0.146
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6436119
+      value: 0.39874974
       objectReference: {fileID: 0}
     - target: {fileID: 2955373760948247394, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1315,10 +1315,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1232899165}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a64e6ed703561f041a7bc613ea7eb1e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 60e254936276f0d4ab8e4c7a47d068be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toolkit: {fileID: 1941004376}
   orientationText: {fileID: 646157690}
 --- !u!1001 &1487501834
 PrefabInstance:
@@ -1761,7 +1760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 2eff3529ea1367f498099215dee855c8, type: 2}
+  activeProfile: {fileID: 11400000, guid: f294f783b6b196849bd01c5d1c64b951, type: 2}
 --- !u!4 &1941004377
 Transform:
   m_ObjectHideFlags: 0

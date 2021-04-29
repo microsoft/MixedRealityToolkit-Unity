@@ -6,19 +6,16 @@ using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
 using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
 
-namespace Microsoft.MixedReality.Toolkit.LeapMotion
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// Returns the orientation of Leap Motion Controller
     /// </summary>
-    /// 
     public class LeapMotionOrientationDisplay : MonoBehaviour
     {
-        [SerializeField] MixedRealityToolkit toolkit;
         [SerializeField] TextMeshProUGUI orientationText;
         LeapMotionDeviceManagerProfile managerProfile;
 
-        // Update is called once per frame
         private void Start()
         {
             if (GetLeapManager())
