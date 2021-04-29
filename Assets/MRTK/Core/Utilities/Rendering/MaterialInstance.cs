@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
             if (autoDestroy && materialOwners.Count == 0)
             {
-                DestorySafe(this);
+                DestroySafe(this);
 
                 // OnDestroy not called on inactive objects
                 if (!gameObject.activeInHierarchy)
@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             {
                 for (var i = 0; i < materials.Length; ++i)
                 {
-                    DestorySafe(materials[i]);
+                    DestroySafe(materials[i]);
                 }
             }
         }
@@ -321,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             return false;
         }
 
-        private static void DestorySafe(UnityEngine.Object toDestroy)
+        private static void DestroySafe(Object toDestroy)
         {
             if (toDestroy != null)
             {
