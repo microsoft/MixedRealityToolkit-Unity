@@ -50,11 +50,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 return null;
             }
 
+            string key = GenerateKey(spatialInteractionSource);
+
             // See if we've generated this model before and if we can return it
-            if (ControllerModelDictionary.TryGetValue(GenerateKey(spatialInteractionSource), out GameObject controllerModel))
+            if (ControllerModelDictionary.TryGetValue(key, out gltfGameObject))
             {
-                controllerModel.SetActive(true);
-                return controllerModel;
+                gltfGameObject.SetActive(true);
+                return gltfGameObject;
             }
 
             Debug.Log("Trying to load controller model from platform SDK");
@@ -82,7 +84,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 gltfGameObject = await gltfObject.ConstructAsync();
                 if (gltfGameObject != null)
                 {
-                    ControllerModelDictionary.Add(GenerateKey(spatialInteractionSource), gltfGameObject);
+                    // After all the awaits, double check that another task didn't finish earlier
+                    if (ControllerModelDictionary.TryGetValue(key, out GameObject existingGameObject))
+                    {
+                        UnityEngine.Object.Destroy(gltfGameObject);
+                        return existingGameObject;
+                    }
+                    else
+                    {
+                        ControllerModelDictionary.Add(key, gltfGameObject);
+                    }
                 }
             }
 #endif // WINDOWS_UWP

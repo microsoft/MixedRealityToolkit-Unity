@@ -46,10 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 return null;
             }
 
-            if (ControllerModelDictionary.TryGetValue(modelKey, out GameObject controllerModel))
+            if (ControllerModelDictionary.TryGetValue(modelKey, out gltfGameObject))
             {
-                controllerModel.SetActive(true);
-                return controllerModel;
+                gltfGameObject.SetActive(true);
+                return gltfGameObject;
             }
 
             byte[] modelStream = await controllerModelProvider.TryGetControllerModel(modelKey);
@@ -65,7 +65,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
             if (gltfGameObject != null)
             {
-                ControllerModelDictionary.Add(modelKey, gltfGameObject);
+                // After all the awaits, double check that another task didn't finish earlier
+                if (ControllerModelDictionary.TryGetValue(modelKey, out GameObject existingGameObject))
+                {
+                    Object.Destroy(gltfGameObject);
+                    return existingGameObject;
+                }
+                else
+                {
+                    ControllerModelDictionary.Add(modelKey, gltfGameObject);
+                }
             }
 #endif // MSFT_OPENXR_0_9_4_OR_NEWER
 
