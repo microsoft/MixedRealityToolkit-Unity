@@ -23,11 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             if (GetLeapManager())
             {
-                orientationText.text = "Orientation" + GetLeapManager().LeapControllerOrientation.ToString();
+                orientationText.text = "Orientation: " + GetLeapManager().LeapControllerOrientation.ToString();
             }
             else
             {
-                orientationText.text = "Orientation Unavailable";
+                orientationText.text = "Orientation: Unavailable";
             }
         }
 
