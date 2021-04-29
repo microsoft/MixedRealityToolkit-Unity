@@ -20,8 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// </summary>
         public HPReverbG2Controller(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new HPMotionControllerDefinition(controllerHandedness))
-        {
-        }
+        { }
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
@@ -95,42 +94,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
             GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
 
-            if (controllerModel != null)
+            if (this != null)
             {
-                if (this != null)
+                if (controllerModel != null
+                    && MixedRealityControllerModelHelpers.TryAddVisualizationScript(controllerModel, GetType(), ControllerHandedness)
+                    && TryAddControllerModelToSceneHierarchy(controllerModel))
                 {
-                    var visualizationProfile = GetControllerVisualizationProfile();
-                    if (visualizationProfile != null)
-                    {
-                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
-                        if (visualizationType != null)
-                        {
-                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
-                            // and re-enabled when the same controller is re-detected.
-                            if (controllerModel.EnsureComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
-                            {
-                                visualizer.DestroyOnSourceLost = false;
-                            }
-
-                            if (TryAddControllerModelToSceneHierarchy(controllerModel))
-                            {
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            Debug.LogError("Controller visualization type not defined for controller visualization profile");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("Failed to obtain a controller visualization profile");
-                    }
-
-                    Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
-                    base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+                    controllerModel.SetActive(true);
+                    return;
                 }
 
+                Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+            }
+
+            if (controllerModel != null)
+            {
                 // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
                 controllerModel.SetActive(false);
             }
