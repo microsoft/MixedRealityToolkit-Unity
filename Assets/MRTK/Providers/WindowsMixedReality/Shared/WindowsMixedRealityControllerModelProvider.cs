@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Threading.Tasks;
+using UnityEngine;
 
 #if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
 #endif
@@ -32,13 +32,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private readonly SpatialInteractionSource spatialInteractionSource;
 
         private static readonly Dictionary<string, GameObject> ControllerModelDictionary = new Dictionary<string, GameObject>(2);
+#endif // WINDOWS_UWP
 
+        // Disables "This async method lacks 'await' operators and will run synchronously." for non-UWP
+#pragma warning disable CS1998
         /// <summary>
         /// Attempts to load the glTF controller model from the Windows SDK.
         /// </summary>
         /// <returns>The controller model as a GameObject or null if it was unobtainable.</returns>
         public async Task<GameObject> TryGenerateControllerModelFromPlatformSDK()
         {
+            GameObject gltfGameObject = null;
+
+#if WINDOWS_UWP
             if (spatialInteractionSource == null)
             {
                 return null;
@@ -70,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 }
             }
 
-            GameObject gltfGameObject = null;
             if (fileBytes != null)
             {
                 Utilities.Gltf.Schema.GltfObject gltfObject = GltfUtility.GetGltfObjectFromGlb(fileBytes);
@@ -80,10 +85,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     ControllerModelDictionary.Add(GenerateKey(spatialInteractionSource), gltfGameObject);
                 }
             }
+#endif // WINDOWS_UWP
 
             return gltfGameObject;
         }
+#pragma warning restore CS1998
 
+#if WINDOWS_UWP
         private string GenerateKey(SpatialInteractionSource spatialInteractionSource)
         {
             return spatialInteractionSource.Controller.VendorId + "/" + spatialInteractionSource.Controller.ProductId + "/" + spatialInteractionSource.Controller.Version + "/" + spatialInteractionSource.Handedness;

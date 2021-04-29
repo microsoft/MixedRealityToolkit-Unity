@@ -29,13 +29,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private readonly ControllerModel controllerModelProvider;
 #endif // MSFT_OPENXR_0_9_4_OR_NEWER
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER
+        // Disables "This async method lacks 'await' operators and will run synchronously." when the correct OpenXR package isn't installed
+#pragma warning disable CS1998
         /// <summary>
         /// Attempts to load the glTF controller model from OpenXR.
         /// </summary>
         /// <returns>The controller model as a GameObject or null if it was unobtainable.</returns>
         public async Task<GameObject> TryGenerateControllerModelFromPlatformSDK()
         {
+            GameObject gltfGameObject = null;
+
+#if MSFT_OPENXR_0_9_4_OR_NEWER
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
                 Debug.LogError("Failed to obtain controller model key from platform.");
@@ -57,15 +61,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             Utilities.Gltf.Schema.GltfObject gltfObject = GltfUtility.GetGltfObjectFromGlb(modelStream);
-            GameObject gltfGameObject = await gltfObject.ConstructAsync();
+            gltfGameObject = await gltfObject.ConstructAsync();
 
             if (gltfGameObject != null)
             {
                 ControllerModelDictionary.Add(modelKey, gltfGameObject);
             }
+#endif // MSFT_OPENXR_0_9_4_OR_NEWER
 
             return gltfGameObject;
         }
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER
+#pragma warning restore CS1998
     }
 }
