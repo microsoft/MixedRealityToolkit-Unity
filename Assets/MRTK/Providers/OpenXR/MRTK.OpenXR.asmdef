@@ -10,6 +10,7 @@
         "Unity.XR.OpenXR"
     ],
     "includePlatforms": [
+        "Android",
         "Editor",
         "WSA",
         "WindowsStandalone32",
