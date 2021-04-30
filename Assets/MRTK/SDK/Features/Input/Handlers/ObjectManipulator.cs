@@ -975,7 +975,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigidBody.isKinematic = wasKinematic;
             }
 
-            // Match the object't velocity to the controller for near interactions
+            // Match the object's velocity to the controller for near interactions
             // Otherwise keep the objects current velocity so that it's not dampened unnaturally
             if(isNearManipulation)
             {
