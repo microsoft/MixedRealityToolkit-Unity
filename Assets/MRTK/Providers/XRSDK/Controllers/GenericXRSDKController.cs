@@ -86,29 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
         protected virtual void UpdateSixDofData(InputDevice inputDevice)
         {
-            var lastState = TrackingState;
-            LastControllerPose = CurrentControllerPose;
-
-            // Check for position and rotation.
-            IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
-            IsPositionApproximate = false;
-
-            IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
-
-            // Devices are considered tracked if we receive position OR rotation data from the sensors.
-            TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-            CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
-            CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
-
-            CurrentControllerPose.Position = CurrentControllerPosition;
-            CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-            // Raise input system events if it is enabled.
-            if (lastState != TrackingState)
-            {
-                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-            }
+            UpdateSourceData(inputDevice);
+            UpdateVelocity(inputDevice);
 
             if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
             {
@@ -133,6 +112,61 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     case AxisType.SixDof:
                         UpdatePoseData(Interactions[i], inputDevice);
                         break;
+                }
+            }
+        }
+
+        private static readonly ProfilerMarker UpdateSourceDataPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateSourceData");
+
+        /// <summary>
+        /// Update the source input from the device.
+        /// </summary>
+        /// <param name="inputDevice">The InputDevice retrieved from the platform.</param>
+        public void UpdateSourceData(InputDevice inputDevice)
+        {
+            using (UpdateSourceDataPerfMarker.Auto())
+            {
+                var lastState = TrackingState;
+                LastControllerPose = CurrentControllerPose;
+
+                // Check for position and rotation.
+                IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
+                IsPositionApproximate = false;
+
+                IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
+
+                // Devices are considered tracked if we receive position OR rotation data from the sensors.
+                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+                CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
+                CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
+
+                CurrentControllerPose.Position = CurrentControllerPosition;
+                CurrentControllerPose.Rotation = CurrentControllerRotation;
+
+                // Raise input system events if it is enabled.
+                if (lastState != TrackingState)
+                {
+                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+                }
+            }
+        }
+
+        private static readonly ProfilerMarker UpdateVelocityPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdateVelocity");
+
+        public void UpdateVelocity(InputDevice inputDevice)
+        {
+            using (UpdateVelocityPerfMarker.Auto())
+            {
+                Vector3 newVelocity;
+                if (inputDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out newVelocity))
+                {
+                    Velocity = newVelocity;
+                }
+                Vector3 newAngularVelocity;
+                if (inputDevice.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out newAngularVelocity))
+                {
+                    AngularVelocity = newAngularVelocity;
                 }
             }
         }
