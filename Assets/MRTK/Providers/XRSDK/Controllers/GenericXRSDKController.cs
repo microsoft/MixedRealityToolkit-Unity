@@ -158,11 +158,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             using (UpdateVelocityPerfMarker.Auto())
             {
-                Debug.Log("updating velocity");
                 Vector3 newVelocity;
                 if (inputDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out newVelocity))
                 {
-                    Debug.Log("updating velocity2" + newVelocity);
                     Velocity = newVelocity;
                 }
                 Vector3 newAngularVelocity;
