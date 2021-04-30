@@ -973,16 +973,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 rigidBody.useGravity = wasGravity;
                 rigidBody.isKinematic = wasKinematic;
-
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
-                {
-                    rigidBody.velocity = velocity;
-                }
-
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
-                {
-                    rigidBody.angularVelocity = angularVelocity;
-                }
             }
         }
 
