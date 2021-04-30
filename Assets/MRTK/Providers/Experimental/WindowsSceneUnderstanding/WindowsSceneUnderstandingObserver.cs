@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public void UpdateOnDemand()
         {
 #if SCENE_UNDERSTANDING_PRESENT
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled || (SpatialAwarenessSystem == null))
+            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled || (Service == null))
             {
                 return;
             }
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 #if SCENE_UNDERSTANDING_PRESENT
 
         #region Other Property
-        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
+        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
         #endregion Other Property
 
         #region Private Fields
@@ -520,7 +520,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         protected virtual void SendSceneObjectAdded(SpatialAwarenessSceneObject sceneObj, int id)
         {
             sceneEventData.Initialize(this, id, sceneObj);
-            SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectAdded);
+            Service?.HandleEvent(sceneEventData, OnSceneObjectAdded);
         }
 
         /// <summary>
@@ -531,7 +531,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         protected virtual void SendSceneObjectUpdated(SpatialAwarenessSceneObject sceneObj, int id)
         {
             sceneEventData.Initialize(this, id, sceneObj);
-            SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectUpdated);
+            Service?.HandleEvent(sceneEventData, OnSceneObjectUpdated);
         }
 
         /// <summary>
@@ -541,7 +541,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         protected virtual void SendSceneObjectRemoved(int id)
         {
             sceneEventData.Initialize(this, id, null);
-            SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectRemoved);
+            Service?.HandleEvent(sceneEventData, OnSceneObjectRemoved);
         }
 
         private async Task<SceneObserverAccessStatus> RequestAccess()
@@ -900,9 +900,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             System.Numerics.Vector3 worldTranslationSystem;
             System.Numerics.Quaternion worldRotationSystem;
-            System.Numerics.Vector3 localScale;
 
-            System.Numerics.Matrix4x4.Decompose(worldTransformMatrix, out localScale, out worldRotationSystem, out worldTranslationSystem);
+            System.Numerics.Matrix4x4.Decompose(worldTransformMatrix, out _, out worldRotationSystem, out worldTranslationSystem);
 
             int hashedId = sceneObject.Id.GetHashCode();
             var result = SpatialAwarenessSceneObject.Create(
