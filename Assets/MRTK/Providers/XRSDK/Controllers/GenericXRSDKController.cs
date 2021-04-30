@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         new[] { Handedness.Left, Handedness.Right },
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings,
         supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
-    public class GenericXRSDKController : BaseController
+    public class GenericXRSDKController : BaseController, IMixedRealityHapticFeedback
     {
         public GenericXRSDKController(
             TrackingState trackingState,
@@ -44,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// The current rotation of this XR SDK controller.
         /// </summary>
         protected Quaternion CurrentControllerRotation = Quaternion.identity;
+
+        /// <summary>
+        /// The most recent input device that this controller represents.
+        /// </summary>
+        private InputDevice lastInputDevice;
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdateController");
 
@@ -81,6 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                             break;
                     }
                 }
+
+                lastInputDevice = inputDevice;
             }
         }
 
@@ -368,5 +375,27 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 }
             }
         }
+
+        /// <inheritdoc />
+        public bool StartHapticImpulse(float intensity, float durationInSeconds = float.MaxValue)
+        {
+            if (lastInputDevice.TryGetHapticCapabilities(out HapticCapabilities hapticCapabilities) && hapticCapabilities.supportsImpulse)
+            {
+                if (Mathf.Approximately(durationInSeconds, float.MaxValue))
+                {
+                    lastInputDevice.SendHapticImpulse(0, intensity);
+                }
+                else
+                {
+                    lastInputDevice.SendHapticImpulse(0, intensity, durationInSeconds);
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc />
+        public void StopHapticFeedback() => lastInputDevice.StopHaptics();
     }
 }

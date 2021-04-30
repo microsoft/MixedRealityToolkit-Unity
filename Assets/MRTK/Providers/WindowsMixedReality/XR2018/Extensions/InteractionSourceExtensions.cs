@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 if (hapticsFeedback.Waveform.Equals(ContinuousBuzzWaveform))
                 {
-                    if (durationInSeconds.Equals(float.MaxValue))
+                    if (UnityEngine.Mathf.Approximately(durationInSeconds, float.MaxValue))
                     {
                         simpleHapticsController.SendHapticFeedback(hapticsFeedback, intensity);
                     }
