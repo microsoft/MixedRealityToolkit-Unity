@@ -974,6 +974,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigidBody.useGravity = wasGravity;
                 rigidBody.isKinematic = wasKinematic;
             }
+
+            // Match the object't velocity to the controller for near interactions
+            // Otherwise keep the objects current velocity so that it's not dampened unnaturally
+            if(isNearManipulation)
+            {
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                {
+                    rigidBody.velocity = velocity;
+                }
+
+                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                {
+                    rigidBody.angularVelocity = angularVelocity;
+                }
+            }
         }
 
         private PointerData GetFirstPointer()

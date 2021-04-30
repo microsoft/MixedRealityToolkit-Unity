@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// certain distance when being released from grab during hand movement
         /// </summary>
         [UnityTest]
-        public IEnumerator ObjectManipulatorThrow()
+        public IEnumerator ObjectManipulatorNearThrow()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
