@@ -41,12 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
             if (IsDwelling)
             {
                 float value = DwellHandler.DwellProgress;
-                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
+                dwellVisualImage.GetComponentInChildren<MeshRenderer>().material.SetFloat("_BorderWidth", value);
             }
             else if (!IsDwelling && dwellVisualImage.transform.localScale.x > 0)
             {
                 float value = Mathf.Clamp(dwellVisualImage.transform.localScale.x - (cancelStartScale / dwellVisualCancelDurationInFrames), 0f, 1f);
-                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
+                dwellVisualImage.GetComponentInChildren<MeshRenderer>().material.SetFloat("_BorderWidth", value);
             }
         }
 
@@ -54,7 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         public override void DwellIntended(IMixedRealityPointer pointer)
         {
             buttonBackground.GetComponent<MeshRenderer>().material.color = dwellIntendedColor;
-            dwellVisualImage.transform.localScale = Vector3.zero;
         }
 
         /// <inheritdoc/>
@@ -69,14 +68,15 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         {
             base.DwellCanceled(pointer);
             buttonBackground.GetComponent<MeshRenderer>().material.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
-            cancelStartScale = dwellVisualImage.transform.localScale.x;
+            cancelStartScale = dwellVisualImage.GetComponentInChildren<MeshRenderer>().material.GetFloat("_BorderWidth");
         }
 
         /// <inheritdoc/>
         public override void DwellCompleted(IMixedRealityPointer pointer)
         {
             base.DwellCompleted(pointer);
-            dwellVisualImage.transform.localScale = Vector3.zero;
+            buttonBackground.GetComponent<MeshRenderer>().material.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
+            //dwellVisualImage.transform.localScale = Vector3.zero;
         }
 
         /// <inheritdoc/>
