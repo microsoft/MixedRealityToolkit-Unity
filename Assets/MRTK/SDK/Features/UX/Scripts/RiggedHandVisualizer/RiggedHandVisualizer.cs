@@ -175,6 +175,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Start()
         {
+            // Ensure hand is not visible until we can update position first time.
+            HandRenderer.enabled = false;
+
             // Initialize joint dictionary with their corresponding joint transforms
             joints[TrackedHandJoint.Wrist] = Wrist;
             joints[TrackedHandJoint.Palm] = Palm;
