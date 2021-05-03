@@ -133,7 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         {
                             for (int i = 0; i < fingerBones.Count; i++)
                             {
-                                TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(finger, i);
                                 Bone bone = fingerBones[i];
 
                                 bool positionAvailable = bone.TryGetPosition(out Vector3 position);
@@ -149,10 +148,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                     position = MixedRealityPlayspace.TransformPoint(position);
                                     rotation = MixedRealityPlayspace.Rotation * rotation;
 
-                                    MixedRealityPose pose = unityJointPoses[trackedHandJoint];
-                                    pose.Position = position;
-                                    pose.Rotation = rotation;
-                                    unityJointPoses[trackedHandJoint] = pose;
+                                    TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(finger, i);
+
+                                    if (unityJointPoses.TryGetValue(trackedHandJoint, out MixedRealityPose pose))
+                                    {
+                                        pose.Position = position;
+                                        pose.Rotation = rotation;
+                                        unityJointPoses[trackedHandJoint] = pose;
+                                    }
+                                    else
+                                    {
+                                        unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
+                                    }
                                 }
                             }
 

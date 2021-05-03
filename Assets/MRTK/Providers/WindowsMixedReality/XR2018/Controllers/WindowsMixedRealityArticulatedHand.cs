@@ -154,10 +154,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                             lastIndexTipRadius = jointPoses[i].Radius;
                         }
 
-                        MixedRealityPose pose = unityJointPoses[trackedHandJoint];
-                        pose.Position = position;
-                        pose.Rotation = rotation;
-                        unityJointPoses[trackedHandJoint] = pose;
+                        if (unityJointPoses.TryGetValue(trackedHandJoint, out MixedRealityPose pose))
+                        {
+                            pose.Position = position;
+                            pose.Rotation = rotation;
+                            unityJointPoses[trackedHandJoint] = pose;
+                        }
+                        else
+                        {
+                            unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
+                        }
                    }
 
                     handDefinition?.UpdateHandJoints(unityJointPoses);
