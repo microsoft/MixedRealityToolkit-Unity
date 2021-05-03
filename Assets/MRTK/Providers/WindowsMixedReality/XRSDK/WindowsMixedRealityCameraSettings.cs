@@ -33,6 +33,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
+        private bool IsActiveLoader =>
+#if WMR_ENABLED
+            LoaderHelpers.IsLoaderActive("Windows MR Loader");
+#else
+            false;
+#endif // WMR_ENABLED
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
+
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
