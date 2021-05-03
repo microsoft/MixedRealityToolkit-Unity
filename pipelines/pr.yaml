@@ -56,7 +56,7 @@ jobs:
       buildUWPDotNet: false
       UnityVersion: $(Unity2019Version)
 
-  - job: Unity2020Validation
+- job: Unity2020Validation
   timeoutInMinutes: 90
   pool:
     name: On-Prem Unity
