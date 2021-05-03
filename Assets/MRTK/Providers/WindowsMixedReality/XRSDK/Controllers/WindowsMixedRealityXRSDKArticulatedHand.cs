@@ -136,11 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                 TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(finger, i);
                                 Bone bone = fingerBones[i];
 
-                                Vector3 position = Vector3.zero;
-                                Quaternion rotation = Quaternion.identity;
-
-                                bool positionAvailable = bone.TryGetPosition(out position);
-                                bool rotationAvailable = bone.TryGetRotation(out rotation);
+                                bool positionAvailable = bone.TryGetPosition(out Vector3 position);
+                                bool rotationAvailable = bone.TryGetRotation(out Quaternion rotation);
 
                                 // If either position or rotation is available, use both pieces of data given.
                                 // This might result in using a zeroed out position or rotation. Most likely,
@@ -152,10 +149,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                     position = MixedRealityPlayspace.TransformPoint(position);
                                     rotation = MixedRealityPlayspace.Rotation * rotation;
 
-                                    MixedRealityPose pose = unityJointPoses[handJoint];
-                                    pose.Position = jointPosition;
-                                    pose.Rotation = jointOrientation;
-                                    unityJointPoses[handJoint] = pose;
+                                    MixedRealityPose pose = unityJointPoses[trackedHandJoint];
+                                    pose.Position = position;
+                                    pose.Rotation = rotation;
+                                    unityJointPoses[trackedHandJoint] = pose;
                                 }
                             }
 
