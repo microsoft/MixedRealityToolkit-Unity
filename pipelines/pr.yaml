@@ -1,4 +1,4 @@
-# Build for PR validation via Unity 2018 + Unity 2019.
+# Build for PR validation via Unity 2018, 2019 and 2020.
 
 variables:
 - template: config/settings.yml
@@ -55,4 +55,21 @@ jobs:
       buildUWPArm: false
       buildUWPDotNet: false
       UnityVersion: $(Unity2019Version)
+
+  - job: Unity2020Validation
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - ${{ variables.Unity2020Version }}
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+    - VS2019 -equals TRUE
+  steps:
+  - template: templates/common.yml
+    parameters:
+      buildUWPX86: false
+      buildUWPArm: false
+      buildUWPDotNet: false
+      UnityVersion: $(Unity2020Version)
   - template: templates/end.yml
