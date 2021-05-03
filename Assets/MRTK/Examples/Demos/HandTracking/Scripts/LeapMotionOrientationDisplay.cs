@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
 using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
+#if LEAPMOTIONCORE_PRESENT
+using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
@@ -13,8 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     /// </summary>
     public class LeapMotionOrientationDisplay : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI orientationText;
-        LeapMotionDeviceManagerProfile managerProfile;
+#if LEAPMOTIONCORE_PRESENT
+        [SerializeField]
+        private TextMeshProUGUI orientationText;
+        private LeapMotionDeviceManagerProfile managerProfile;
 
         private void Start()
         {
@@ -44,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
             return null;
         }
-
+#endif
     }
 }
 
