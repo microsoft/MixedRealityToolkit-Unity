@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Input;
 
 #if UNITY_WSA
 using Unity.Profiling;
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         new[] { Handedness.Left, Handedness.Right },
         "Textures/MotionController",
         supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
-    public class WindowsMixedRealityController : BaseWindowsMixedRealitySource
+    public class WindowsMixedRealityController : BaseWindowsMixedRealitySource, IMixedRealityHapticFeedback
     {
         /// <summary>
         /// Constructor.
@@ -283,5 +284,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #endregion Controller model functions
 #endif // UNITY_WSA
+
+        #region Haptic feedback functions
+
+        public bool StartHapticImpulse(float intensity, float durationInSeconds = float.MaxValue) =>
+#if UNITY_WSA
+            LastSourceStateReading.source.StartHaptics(intensity, durationInSeconds);
+#else
+            false;
+#endif // UNITY_WSA
+
+        public void StopHapticFeedback()
+        {
+#if UNITY_WSA
+            LastSourceStateReading.source.StopHaptics();
+#endif // UNITY_WSA
+        }
+
+        #endregion Haptic feedback functions
     }
 }
