@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             targetProfile.FindProperty(IsCustomProfileProperty).boolValue = true;
             targetProfile.targetObject.name = originalName;
 
-            //Set the targetProfile to be a default
+            // Set the targetProfile to be a default
             targetProfile.FindProperty(IsDefaultProfileProperty).boolValue = setAsDefault;
             targetProfile.ApplyModifiedProperties();
 
