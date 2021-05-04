@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical(GUILayout.Width(100));
-            string[] subsystemNames = availableSubsystems.Select(x => x.type.ToString()).ToArray();
+            string[] subsystemNames = availableSubsystems.Select(x => ObjectNames.NicifyVariableName(x.type.ToString())).ToArray();
 
             int prefsSelectedSubsystemTab = SessionState.GetInt("SelectdSubsystemTab", 0);
             int selectedSubsystem = GUILayout.SelectionGrid(prefsSelectedSubsystemTab, subsystemNames, 1, GUILayout.MaxWidth(125));

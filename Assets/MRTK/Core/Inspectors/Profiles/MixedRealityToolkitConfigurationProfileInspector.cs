@@ -11,6 +11,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public enum SubsystemProfile
     {
+        ExperienceSettings,
         Camera,
         Input,
         Boundary,
@@ -78,19 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Func<bool>[] renderProfileFuncs;
 
         private List<SubsystemProfile> enabledSubsystems;
-
-        private static readonly string[] ProfileTabTitles = {
-            "Experience Settings",
-            "Camera",
-            "Input",
-            "Boundary",
-            "Teleport",
-            "Spatial Awareness",
-            "Diagnostics",
-            "Scene System",
-            "Extensions",
-            "Editor",
-        };
 
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
@@ -162,6 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 renderProfileFuncs = new Func<bool>[]
                 {
                     () => {
+                        // Experience Settings
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
@@ -212,11 +202,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return changed;
                     },
                     () => {
+                        // Camera System
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
-                            EditorGUILayout.PropertyField(enableCameraSystem);
-
                             const string service = "Camera System";
                             changed |= RenderSubsystem(service, SubsystemProfile.Camera, cameraSystemType, cameraProfile, null, typeof(MixedRealityCameraProfile));
                             changed |= c.changed;
@@ -224,6 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return changed;
                     },
                     () => {
+                        // Input System
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
@@ -234,6 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return changed;
                     },
                     () => {
+                        // Boundary System
                         var experienceScale = mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
                         if (experienceScale != ExperienceScale.Room)
                         {
@@ -246,41 +237,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
                             const string service = "Boundary System";
-                            if (enableBoundarySystem.boolValue)
-                            {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.BoundarySystemSystemType, mrtkConfigProfile.BoundaryVisualizationProfile != null);
-
 #if UNITY_2019
-                                xrPipelineUtility.RenderXRPipelineTabs();
+                            xrPipelineUtility.RenderXRPipelineTabs();
 #endif // UNITY_2019
-
-                                EditorGUILayout.PropertyField(xrPipelineUtility.SelectedPipeline == SupportedUnityXRPipelines.XRSDK ? xrsdkBoundarySystemType : boundarySystemType);
-
-                                changed |= RenderProfile(boundaryVisualizationProfile, null, true, false, typeof(IMixedRealityBoundarySystem));
-                            }
-                            else
-                            {
-                                RenderSystemDisabled(service);
-                            }
-
+                            var selectedBoundarySystemType = xrPipelineUtility.SelectedPipeline == SupportedUnityXRPipelines.XRSDK ? xrsdkBoundarySystemType : boundarySystemType;
+                            changed |= RenderSubsystem(service, SubsystemProfile.Boundary, selectedBoundarySystemType, boundaryVisualizationProfile, mrtkConfigProfile.BoundarySystemSystemType, typeof(MixedRealityBoundaryVisualizationProfile));
                             changed |= c.changed;
                         }
                         return changed;
                     },
                     () => {
+                        // Teleport System
+                        bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
                             const string service = "Teleport System";
-                            EditorGUILayout.PropertyField(enableTeleportSystem);
-                            
-                            // Teleport System does not have a profile scriptableobject so auto to true
-                            CheckSystemConfiguration(service, mrtkConfigProfile.TeleportSystemSystemType,true);
-                            EditorGUILayout.PropertyField(teleportSystemType);
-
-                            return c.changed;
+                            changed |= RenderSubsystem(service, SubsystemProfile.Teleport, teleportSystemType, null, null, null);
+                            changed |= c.changed;
                         }
+                        return changed;
                     },
                     () => {
+                        // Spatial Awareness System
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
@@ -292,6 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return changed;
                     },
                     () => {
+                        // Diagnostic System
                         EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
 
                         bool changed = false;
@@ -318,18 +297,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return changed;
                     },
                     () => {
+                        // Scene System
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
                             const string service = "Scene System";
-                            if (enableSceneSystem.boolValue)
-                            {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.SceneSystemSystemType, mrtkConfigProfile.SceneSystemProfile != null);
-
-                                EditorGUILayout.PropertyField(sceneSystemType);
-
-                                changed |= RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
-                            }
+                            changed |= RenderSubsystem(service, SubsystemProfile.SceneSystem, sceneSystemType, sceneSystemProfile, null, typeof(MixedRealitySceneSystemProfile));
                             changed |= c.changed;
                         }
                         return changed;
@@ -409,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = true; // Force enable so we can view profile defaults
 
             int prefsSelectedTab = SessionState.GetInt(SelectedTabPreferenceKey, 0);
-            string[] subsystemNames = enabledSubsystems.Select(x => x.ToString()).ToArray();
+            string[] subsystemNames = enabledSubsystems.Select(x => ObjectNames.NicifyVariableName(x.ToString())).ToArray();
             SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, subsystemNames, 1, GUILayout.MaxWidth(125));
             if (SelectedProfileTab != prefsSelectedTab)
             {
@@ -484,16 +457,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 // create the menu and add items to it
                 GenericMenu menu = new GenericMenu();
-                menu.AddItem(new GUIContent("Remove System"), true, () => RemoveSubsystem(subsystem));
+                menu.AddItem(new GUIContent("Remove System"), false, () => RemoveSubsystem(subsystem));
 
                 // display the menu
                 menu.ShowAsContext();
             }
             EditorGUILayout.EndHorizontal();
-            bool subSystemRendered = RenderProfile(subsystemProfile, profileType, true, false, subsystemType);
-            CheckSystemConfiguration(service, subsystemType, subsystemProfile.objectReferenceValue != null);
 
-            return subSystemRendered;
+            if (subsystemProfile != null)
+            {
+                CheckSystemConfiguration(service, subsystemType, subsystemProfile.objectReferenceValue != null);
+                return RenderProfile(subsystemProfile, profileType, true, false, subsystemType);
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public void RefreshEnabledSubsystemList()
@@ -504,6 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private List<SubsystemProfile> GetEnabledSubsystemList()
         {
             List<SubsystemProfile> subsystemList = new List<SubsystemProfile>();
+            subsystemList.Add(SubsystemProfile.ExperienceSettings);
             if (enableCameraSystem.boolValue)
             {
                 subsystemList.Add(SubsystemProfile.Camera);
