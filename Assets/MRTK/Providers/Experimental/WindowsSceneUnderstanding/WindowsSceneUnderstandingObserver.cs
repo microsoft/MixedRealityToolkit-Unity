@@ -17,6 +17,9 @@ using Microsoft.MixedReality.SceneUnderstanding;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
+#if MSFT_OPENXR
+using Microsoft.MixedReality.OpenXR;
+#endif // MSFT_OPENXR
 #endif // WINDOWS_UWP
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -662,8 +665,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         }
                         await new WaitForUpdate();
 
-                        sceneToWorldTransformMatrix = GetSceneToWorldTransform();
-
+                        System.Numerics.Matrix4x4? transformResult = GetSceneToWorldTransform();
+                        if (transformResult.HasValue)
+                        {
+                            sceneToWorldTransformMatrix = transformResult.Value;
+                        }
+                        else
+                        {
+                            await new WaitForUpdate();
+                            continue;
+                        }
+                        
                         if (!UsePersistentObjects)
                         {
                             ClearObservations();
@@ -760,10 +772,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// Gets the matrix representing the transform from scene space to world space
         /// </summary>
         /// <returns>The transform matrix</returns>
-        private System.Numerics.Matrix4x4 GetSceneToWorldTransform()
+        private System.Numerics.Matrix4x4? GetSceneToWorldTransform()
         {
             var result = System.Numerics.Matrix4x4.Identity;
 #if WINDOWS_UWP
+#if MSFT_OPENXR
+            SpatialGraphNode node = SpatialGraphNode.FromStaticNodeId(sceneOriginId);
+            if (node.TryLocate(FrameTime.OnUpdate, out Pose pose))
+            {
+                result = Matrix4x4.TRS(pose.position, pose.rotation, Vector3.one).ToSystemNumerics();
+            }
+            else
+            {
+                return null;
+            }
+#else
             SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
             SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
 
@@ -773,7 +796,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             {
                 result = sceneToWorld.Value; // numerics
             }
-#endif
+#endif // MSFT_OPENXR
+#endif // WINDOWS_UWP
             return result;
         }
 
