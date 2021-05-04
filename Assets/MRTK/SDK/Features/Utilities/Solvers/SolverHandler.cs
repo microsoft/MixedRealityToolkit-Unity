@@ -328,8 +328,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected void OnDestroy()
         {
-            DetachFromCurrentTrackedObject();
+            if (trackingTarget != null)
+            {
+                Destroy(trackingTarget);
+            }
         }
+
 
         #endregion MonoBehaviour Implementation
 
@@ -366,8 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (trackingTarget != null)
             {
-                Destroy(trackingTarget);
-                trackingTarget = null;
+                trackingTarget.transform.parent = null;
             }
         }
 
@@ -444,15 +447,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private void TrackTransform(Transform target)
         {
-            if (trackingTarget != null || target == null) return;
+            if (trackingTarget == null)
+            {
+                trackingTarget = new GameObject("SolverHandler Tracking Target");
+                trackingTarget.hideFlags = HideFlags.HideInHierarchy;
+            }
 
-            string name = string.Format("SolverHandler Target on {0} with offset {1}, {2}", target.gameObject.name, AdditionalOffset, AdditionalRotation);
-            trackingTarget = new GameObject(name);
-            trackingTarget.hideFlags = HideFlags.HideInHierarchy;
+            if (target != null)
+            {
+                trackingTarget.transform.parent = target;
+                trackingTarget.transform.localPosition = Vector3.Scale(AdditionalOffset, trackingTarget.transform.localScale);
+                trackingTarget.transform.localRotation = Quaternion.Euler(AdditionalRotation);
+            }
 
-            trackingTarget.transform.parent = target;
-            trackingTarget.transform.localPosition = Vector3.Scale(AdditionalOffset, trackingTarget.transform.localScale);
-            trackingTarget.transform.localRotation = Quaternion.Euler(AdditionalRotation);
         }
 
         private LinePointer GetControllerRay(Handedness handedness)
@@ -466,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns>true if not tracking valid hands and/or target, false otherwise</returns>
         private bool IsInvalidTracking()
         {
-            if (trackingTarget == null)
+            if (trackingTarget?.transform.parent == null)
             {
                 return true;
             }
