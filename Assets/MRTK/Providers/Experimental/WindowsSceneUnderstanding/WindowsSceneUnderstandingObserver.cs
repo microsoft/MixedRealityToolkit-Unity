@@ -19,6 +19,8 @@ using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
 #if MSFT_OPENXR
 using Microsoft.MixedReality.OpenXR;
+using Microsoft.MixedReality.Toolkit.XRSDK;
+using UnityEngine.XR.OpenXR;
 #endif // MSFT_OPENXR
 #endif // WINDOWS_UWP
 using UnityEngine.Assertions;
@@ -127,6 +129,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
 #else
             base.Initialize();
+#if WINDOWS_UWP
+#if MSFT_OPENXR
+            isOpenXRLoaderActive = LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
+#else
+            isOpenXRLoaderActive = false;
+#endif // MSFT_OPENXR
+#endif // WINDOWS_UWP
             sceneEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>(EventSystem.current);
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
 
@@ -404,6 +413,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private System.Numerics.Matrix4x4 sceneToWorldTransformMatrix;
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
         private Texture defaultTexture;
+#if WINDOWS_UWP
+        private bool isOpenXRLoaderActive;
+#endif // WINDOWS_UWP
 
         #endregion Private Fields
 
@@ -777,31 +789,36 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         {
             var result = System.Numerics.Matrix4x4.Identity;
 #if WINDOWS_UWP
+            if (isOpenXRLoaderActive)
+            {
 #if MSFT_OPENXR
-            SpatialGraphNode node = SpatialGraphNode.FromStaticNodeId(sceneOriginId);
-            if (node.TryLocate(FrameTime.OnUpdate, out Pose pose))
-            {
-                result = Matrix4x4.TRS(pose.position, pose.rotation, Vector3.one).ToSystemNumerics();
-            }
-            else
-            {
-                return null;
-            }
-#else
-            SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
-            SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
-
-            var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);
-
-            if (sceneToWorld.HasValue)
-            {
-                result = sceneToWorld.Value; // numerics
-            }
-            else
-            {
-                return null;
-            }
+                SpatialGraphNode node = SpatialGraphNode.FromStaticNodeId(sceneOriginId);
+                if (node.TryLocate(FrameTime.OnUpdate, out Pose pose))
+                {
+                    result = Matrix4x4.TRS(pose.position, pose.rotation, Vector3.one).ToSystemNumerics();
+                }
+                else
+                {
+                    return null;
+                }
 #endif // MSFT_OPENXR
+            }
+            else
+            {
+                SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
+                SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
+
+                var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);
+
+                if (sceneToWorld.HasValue)
+                {
+                    result = sceneToWorld.Value; // numerics
+                }
+                else
+                {
+                    return null;
+                }
+            }
 #endif // WINDOWS_UWP
             return result;
         }
