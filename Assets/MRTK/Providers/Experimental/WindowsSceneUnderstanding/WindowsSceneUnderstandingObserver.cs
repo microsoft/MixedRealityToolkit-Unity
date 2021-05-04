@@ -673,6 +673,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         else
                         {
                             await new WaitForUpdate();
+                            observerState = ObserverState.GetScene;
                             continue;
                         }
                         
@@ -795,6 +796,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             if (sceneToWorld.HasValue)
             {
                 result = sceneToWorld.Value; // numerics
+            }
+            else
+            {
+                return null;
             }
 #endif // MSFT_OPENXR
 #endif // WINDOWS_UWP
