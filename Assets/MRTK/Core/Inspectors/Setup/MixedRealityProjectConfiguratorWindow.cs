@@ -526,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(15);
             EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
             CreateSpace(15);
-            EditorGUILayout.LabelField(dialogContent);
+            EditorGUILayout.LabelField(dialogContent, EditorStyles.wordWrappedLabel);
 
             CreateSpace(10);
             if (GUILayout.Button(ApplyButtonContent))
