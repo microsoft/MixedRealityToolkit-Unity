@@ -4,7 +4,18 @@ variables:
 - template: config/settings.yml
 
 jobs:
-- job: PRValidation
+- job: CodeValidation
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: templates/validation.yml
+    parameters:
+      # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
+      # the set of changed files, so that we can save some time. There's no need to
+      # check unchanged files for code style/doc style violations.
+      scopedValidation: true
+
+- job: UnityValidation
   timeoutInMinutes: 90
   pool:
     name: On-Prem Unity
@@ -26,11 +37,5 @@ jobs:
       buildUWPX86: false
       buildUWPArm: false
       buildUWPDotNet: false
-      # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
-      # the set of changed files, so that we can save some time. There's no need to
-      # check unchanged files for code style/doc style violations.
-      # Temporarily commented out due to VM issue.
-      # scopedValidation: true
       UnityVersion: $(Unity2018Version)
-
   - template: templates/end.yml

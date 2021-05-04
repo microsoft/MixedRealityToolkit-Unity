@@ -15,7 +15,4 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packagingEnabled: true
-      packagePublishing: true
-      UnityVersion: $(Unity2018Version)
-      MRTKVersion: $(MRTKVersion)
+        UnityVersion: $(Unity2018Version)

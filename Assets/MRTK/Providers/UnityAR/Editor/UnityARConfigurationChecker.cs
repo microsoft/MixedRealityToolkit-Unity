@@ -11,9 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// Class to perform checks for configuration checks for the UnityAR provider.
     /// </summary>
     /// <remarks>
-    /// Note that the checks that this class runs are fairly expensive and are only done manually by the user
+    /// <para>Note that the checks that this class runs are fairly expensive and are only done manually by the user
     /// as part of their setup steps described here:
-    /// https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/UsingARFoundation.html
+    /// https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/using-ar-foundation </para>
     /// </remarks>
     static class UnityARConfigurationChecker
     {
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// Ensures that the appropriate symbolic constant is defined based on the presence of the AR Foundation package.
         /// </summary>
         /// <returns>True if the define was added, false otherwise.</returns>
-        [MenuItem("Mixed Reality Toolkit/Utilities/UnityAR/Update Scripting Defines")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/UnityAR/Update Scripting Defines")]
         private static bool ReconcileArFoundationDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInPackageCache(FileName);

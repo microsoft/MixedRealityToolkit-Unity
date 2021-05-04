@@ -291,6 +291,9 @@ MonoBehaviour:
   autoFollowAtDistance: 0
   autoFollowDistance: 2
   autoFollowTransformTarget: {fileID: 0}
+  autoFollowTriggered:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &6191257353991019938
 AudioSource:
   m_ObjectHideFlags: 0

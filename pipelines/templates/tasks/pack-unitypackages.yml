@@ -1,0 +1,25 @@
+# [Template] Builds and publishes .unitypackages
+
+parameters:
+  version: '$(MRTKVersion)-$(Build.BuildNumber)'
+  UnityVersion: ""
+
+steps:
+- task: PowerShell@2
+  displayName: 'Build .unitypackages'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/packaging/unitypackage.ps1
+    arguments: >
+      -UnityDirectory ${Env:${{ parameters.UnityVersion }}}
+      -OutputDirectory $(Build.ArtifactStagingDirectory)\build\unitypackages\output
+      -RepoDirectory $(Get-Location)
+      -LogDirectory $(Build.ArtifactStagingDirectory)\build\unitypackages\logs
+      -PackageVersion ${{ parameters.version }}
+      -Verbose
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish .unitypackages'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\unitypackages\output'
+    ArtifactName: 'mrtk-unitypackages'

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// GameObject eye gaze is currently targeting, updated once per frame.
-        /// null if no object with colllider is currently being looked at.
+        /// null if no object with collider is currently being looked at.
         /// </summary>
         public static GameObject LookedAtTarget { get; private set; }
 
@@ -260,8 +260,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (isHit)
                     {
-                        LookedAtTarget = hitInfo.collider.gameObject;
-                        LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
+                        LookedAtEyeTarget = hitInfo.collider.transform.GetComponent<EyeTrackingTarget>();
+                        if(LookedAtEyeTarget != null)
+                        {
+                            LookedAtTarget = LookedAtEyeTarget.gameObject;
+                        }
                         LookedAtPoint = hitInfo.point;
                     }
                     else
@@ -282,12 +285,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             lookAtStartTime = DateTime.UtcNow;
             IsLookedAt = true;
-            OnLookAtStart.Invoke();
+            OnLookAtStart?.Invoke();
         }
 
         protected void OnEyeFocusStay()
         {
-            WhileLookingAtTarget.Invoke();
+            WhileLookingAtTarget?.Invoke();
 
             if ((!IsDwelledOn) && (DateTime.UtcNow - lookAtStartTime).TotalSeconds > dwellTimeInSec)
             {
@@ -305,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             IsDwelledOn = false;
             IsLookedAt = false;
-            OnLookAway.Invoke();
+            OnLookAway?.Invoke();
         }
 
         #endregion 

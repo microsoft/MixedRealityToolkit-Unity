@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A near interaction pointer that generates touch events based on touchables in close proximity.
     /// </summary>
-    /// <remarks>
+    /// <remarks><format type="text/markdown">
     /// _Reachable Objects_ are objects with a both a [BaseNearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable) and a collider within [TouchableDistance](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.TouchableDistance) from the poke pointer (based on [OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html)).
     ///
     /// If a poke pointer has no [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown), then it will try to select one from the Reachable Objects based on:
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// 1. Ray Distance: The object becomes the [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) once the ray cast distance becomes negative (behind the surface). At this point the [OnTouchStarted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchStarted*) or [OnPointerDown](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerDown*) event is raised.
     ///
     /// If a poke pointer _does_  have a [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) it will not consider any other object, until the [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*) exceeds the [DebounceThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold) (in front of the surface). At this point the active object is cleared and the [OnTouchCompleted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchCompleted*) or [OnPointerUp](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerUp*) event is raised.
-    /// </remarks>
+    /// </format></remarks>
     [AddComponentMenu("Scripts/MRTK/SDK/PokePointer")]
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
@@ -29,12 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// touch up even when pointer is inside the volume
         /// </summary>
         private const int maximumTouchableVolumeSize = 1000;
-
-        [SerializeField]
-        protected LineRenderer line;
-
-        [SerializeField]
-        protected GameObject visuals;
 
         [SerializeField]
         [Tooltip("Maximum distance a which a touchable surface can be interacted with.")]
@@ -96,6 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float closestDistance = 0.0f;
 
         private Vector3 closestNormal = Vector3.forward;
+
+        private Vector3 endPoint;
+
         // previous frame pointer position
         public Vector3 PreviousPosition { get; private set; } = Vector3.zero;
 
@@ -104,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The closest touchable component that has been detected.
         /// </summary>
         /// <remarks>
-        /// The closest touchable component limits the set of objects which are currently touchable.
-        /// These are all the game objects in the subtree of the closest touchable component's owner object.
+        /// <para>The closest touchable component limits the set of objects which are currently touchable.
+        /// These are all the game objects in the subtree of the closest touchable component's owner object.</para>
         /// </remarks>
         public BaseNearInteractionTouchable ClosestProximityTouchable => closestProximityTouchable;
 
@@ -173,9 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Vector3 start = Position + lengthOfPointerRay * closestNormal;
                     Vector3 end = Position - lengthOfPointerRay * closestNormal;
                     Rays[0].UpdateRayStep(ref start, ref end);
-
-                    line.SetPosition(0, Position);
-                    line.SetPosition(1, end);
                 }
 
                 // Check if the currently touched object is still part of the new touchable.
@@ -190,8 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Set new touchable only now: If we have to raise a poke-up event for the previous touchable object,
                 // we need to do so using the previous touchable in TryRaisePokeUp().
                 closestProximityTouchable = newClosestTouchable;
-
-                visuals.SetActive(IsActive);
             }
         }
 
@@ -300,19 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             TryRaisePokeDown();
                         }
                     }
-                }
-
-                if (!IsNearObject)
-                {
-                    line.endColor = line.startColor = new Color(1, 1, 1, 0.25f);
-                }
-                else if (currentTouchableObjectDown == null)
-                {
-                    line.endColor = line.startColor = new Color(1, 1, 1, 0.75f);
-                }
-                else
-                {
-                    line.endColor = line.startColor = new Color(0, 0, 1, 0.75f);
                 }
 
                 PreviousPosition = Position;
@@ -492,9 +471,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnEnable();
 
             IsTargetPositionLockedOnFocusLock = false;
+        }
 
-            Debug.Assert(line != null, "No line renderer found in PokePointer.");
-            Debug.Assert(visuals != null, "No visuals object found in PokePointer.");
+        private void OnDrawGizmos()
+        {
+            if (!IsNearObject)
+            {
+                return;
+            }
+            else
+            {
+                Gizmos.color = Color.green;
+            }
+
+            if (closestProximityTouchable != null)
+            {
+                Gizmos.DrawLine(transform.position, closestProximityTouchable.transform.position);
+            }
         }
     }
 }

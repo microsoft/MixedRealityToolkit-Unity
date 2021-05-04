@@ -10,34 +10,32 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Assert = UnityEngine.Assertions.Assert;
-using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
-using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
     /// Tests for runtime behavior of bounds control
     /// </summary>
-    public class BoundsControlTests
+    public class BoundsControlTests : BasePlayModeTests
     {
         private Material testMaterial;
         private Material testMaterialGrabbed;
 
         #region Utilities
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
 
+        public override IEnumerator Setup()
+        {
             // create shared test materials
             var shader = StandardShaderUtility.MrtkStandardShader;
             testMaterial = new Material(shader);
@@ -45,14 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             testMaterialGrabbed = new Material(shader);
             testMaterialGrabbed.color = Color.green;
-            yield return null;
-        }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.Setup();
         }
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
@@ -108,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private BoundsControl InstantiateSceneAndDefaultBoundsControl(GameObject target = null)
         {
             GameObject boundsControlGameObject;
-            if(target != null)
+            if (target != null)
             {
                 boundsControlGameObject = new GameObject();
             }
@@ -297,17 +289,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
             yield return VerifyInitialBoundsCorrect(boundsControl);
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            
+
             boundsControl.gameObject.transform.position = new Vector3(0, 0, 1.386f);
             boundsControl.gameObject.transform.rotation = Quaternion.Euler(0, 45.0f, 0);
-            
+
             TestHand hand = new TestHand(Handedness.Left);
             yield return hand.Show(new Vector3(0, 0, 1));
-            
+
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Check for a few loops that the hand is not flickering between states
-            // number of iterations is an arbirary number to check that the box isn't flickering
+            // number of iterations is an arbitrary number to check that the box isn't flickering
             int iterations = 15;
             for (int i = 0; i < iterations; i++)
             {
@@ -499,7 +491,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // induce drift/error.
             for (int i = 0; i < 50; i++)
             {
-                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1 / 1000.0f) * i));
             }
 
             // Move the rest of the way very quickly.
@@ -688,14 +680,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // grab front right rotation point
             yield return hand.MoveTo(rightFrontRotationHandlePoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            
+
             // First, we make a series of very very tiny movements, as if the user
             // is making very precise adjustments to the rotation. If the rotation is
             // being calculated per-frame instead of per-manipulation-event, this should
             // induce drift/error.
             for (int i = 0; i < 50; i++)
             {
-                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1 / 1000.0f) * i));
             }
 
             // Move the rest of the way very quickly.
@@ -1116,7 +1108,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // move camera to look at translation sphere
             Transform transformHandle = control.gameObject.transform.Find("rigRoot/faceCenter_2");
-            CameraCache.Main.transform.LookAt(transformHandle.position); 
+            CameraCache.Main.transform.LookAt(transformHandle.position);
 
             var startHandPos = new Vector3(0.191f, -0.07f, 0.499f);
             var endPoint = new Vector3(-0.368f, -0.221f, 0.499f);
@@ -1281,7 +1273,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialHandPosition = new Vector3(0, 0, 0f);
             // this is specific to scale handles
             Transform scaleHandle = boundsControl.gameObject.transform.Find("rigRoot/corner_3");
-            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            Transform proximityScaledVisual = (scaleHandle.GetChild(0) != null) ? scaleHandle.GetChild(0).GetChild(0) : null;
             var frontRightCornerPos = scaleHandle.position; // front right corner is corner 
             Assert.IsNotNull(proximityScaledVisual, "Couldn't get visual gameobject for scale handle");
             Assert.IsTrue(proximityScaledVisual.name == "visuals", "scale visual has unexpected name");
@@ -1339,7 +1331,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             ScaleHandlesConfiguration scaleHandleConfig = boundsControl.ScaleHandlesConfig;
             Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
             Transform scaleHandle = boundsControl.gameObject.transform.Find("rigRoot/corner_3");
-            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            Transform proximityScaledVisual = (scaleHandle.GetChild(0) != null) ? scaleHandle.GetChild(0).GetChild(0) : null;
             var frontRightCornerPos = scaleHandle.position;
             // check far scale applied
             ProximityEffectConfiguration proximityConfig = boundsControl.HandleProximityEffectConfig;
@@ -2025,7 +2017,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
 
             // get handle and make sure it's active per default
-            Transform handle = rigRoot.transform.Find(testData.handleName +"_0");
+            Transform handle = rigRoot.transform.Find(testData.handleName + "_0");
             Assert.IsNotNull(handle, "couldn't find rotation handle");
             Assert.IsTrue(handle.gameObject.activeSelf, "handle wasn't enabled by default");
 
@@ -2048,7 +2040,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         [UnityTest]
         public IEnumerator PerAxisHandlePrefabTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
-        { 
+        {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
             GameObject childBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -2504,6 +2496,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             iss.ControllerSimulationMode = oldSimMode;
 
             yield return null;
+        }
+
+        /// <summary>
+        /// Test creating an new instance of a scriptable configuration and setting it.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SetVisualConfiguration()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+
+            // Make sure the material on the object has not been applied 
+            Assert.AreNotEqual(GetBoxVisual(boundsControl).GetComponent<Renderer>().material.color, testMaterial.color);
+
+            // Create new scriptable
+            BoxDisplayConfiguration boxDisplayConfiguration = ScriptableObject.CreateInstance<BoxDisplayConfiguration>();
+            yield return null;
+
+            // Set the material property of the new scriptable
+            boxDisplayConfiguration.BoxMaterial = testMaterial;
+            yield return null;
+
+            // Set new scriptable
+            boundsControl.BoxDisplayConfig = boxDisplayConfiguration;
+            yield return null;
+
+            // Make sure the new scriptable visuals have been applied to the object
+            Assert.AreEqual(GetBoxVisual(boundsControl).GetComponent<Renderer>().material.color, testMaterial.color);
+        }
+
+        // Returns the "box display" transform in the bounds control rig
+        private Transform GetBoxVisual(BoundsControl boundsControl)
+        {
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            Transform boxVisual = rigRoot.transform.Find("box display");
+            Assert.IsNotNull(boxVisual, "box visual couldn't be found");
+
+            return boxVisual;
         }
 
         /// <summary>

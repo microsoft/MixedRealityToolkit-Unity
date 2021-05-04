@@ -6,7 +6,13 @@ variables:
   value: false
 
 jobs:
-- job: CIDeveloperValidation
+- job: CodeValidation
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: templates/validation.yml
+
+- job: DeveloperValidation
   timeoutInMinutes: 120
   pool:
     name: On-Prem Unity
@@ -19,4 +25,3 @@ jobs:
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2018Version)
-      MRTKVersion: $(MRTKVersion)

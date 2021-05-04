@@ -6,7 +6,8 @@
         "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
         "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Unity.TextMeshPro.Editor"
+        "Unity.TextMeshPro.Editor",
+        "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
@@ -17,5 +18,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

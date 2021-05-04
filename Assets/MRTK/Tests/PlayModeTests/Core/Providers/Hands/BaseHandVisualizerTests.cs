@@ -10,17 +10,16 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using System.Collections;
-using UnityEngine.TestTools;
-using NUnit.Framework;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
-using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class BaseHandVisualizerTests
+    public class BaseHandVisualizerTests : BasePlayModeTests
     {
         /// <summary>
         /// A mock IMixedRealityInputSource, used to test BaseHandVisualizer::OnHandMeshUpdated.
@@ -69,20 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             public Vector3 Velocity => throw new System.NotImplementedException();
 
             public bool IsInPointingPose => throw new System.NotImplementedException();
-        }
-
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
-            yield return null;
         }
 
         /// <summary>

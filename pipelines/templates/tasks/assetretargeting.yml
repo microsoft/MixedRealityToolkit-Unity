@@ -1,0 +1,49 @@
+# [Template] Run Unity asset retargeting for NuGet packages.
+
+parameters:
+  UnityVersion: ""
+
+steps:
+- powershell: |
+    # Some machines require that the protocol be explicitly set to Tls12
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Install-Module -Name UnitySetup -Scope CurrentUser -Force
+  displayName: Install unitysetup.powershell
+
+- powershell: |
+    $logFile = New-Item -Path "$(Build.ArtifactStagingDirectory)\build\retargeting_log.log" -ItemType File -Force
+
+    $method = "Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets"
+    # Uses unitysetup.powershell
+    try {
+      Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -AdditionalArguments "-NoGraphics -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01} -dictionaryFileOutputFolder `"$(Build.SourcesDirectory)/Assets/MRTK/Tools/MSBuild`""
+    }
+    finally {
+      if (Test-Path $logFile)
+      {
+        Write-Output '====================================================='
+        Write-Output '           Begin Unity Player Log                    '
+        Write-Output '====================================================='
+
+        Get-Content $logFile
+
+        Write-Output '====================================================='
+        Write-Output '           End Unity Player Log                      '
+        Write-Output '====================================================='
+      }
+      else
+      {
+        Write-Output 'Unity Player Log missing!'
+      }
+
+      Write-Output '====================================================='
+      Write-Output '           Begin Retargeted Directory                '
+      Write-Output '====================================================='
+
+      cmd /r dir /s/b NuGet
+
+      Write-Output '====================================================='
+      Write-Output '           End Retargeted Directory                  '
+      Write-Output '====================================================='
+    }
+  displayName: 'Run Asset Retargeting'

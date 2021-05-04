@@ -10,38 +10,36 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using NUnit.Framework;
 using System.Collections;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class GltfTests
+    public class GltfTests : BasePlayModeTests
     {
         private const string AvocadoCustomAttrGuid = "fea29429b97dbb14b97820f56c74060a";
         private const string CubeCustomAttrGuid = "f0bb9fb635c69be4e8526b0fb6b48f39";
 
         private AsyncCoroutineRunner asyncCoroutineRunner;
-        [UnitySetUp]
-        public IEnumerator Setup()
+
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             asyncCoroutineRunner = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
-            PlayModeTestUtilities.TearDown();
-            GameObject.Destroy(asyncCoroutineRunner.gameObject);
-            yield return null;
+            Object.Destroy(asyncCoroutineRunner.gameObject);
+            yield return base.TearDown();
         }
 
         private IEnumerator WaitForTask(Task task)

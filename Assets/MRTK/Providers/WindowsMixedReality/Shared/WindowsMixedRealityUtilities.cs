@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// The provider that should be used for the corresponding utilities.
         /// </summary>
         /// <remarks>
-        /// This is intended to be used to support both XR SDK and Unity's legacy XR pipeline, which provide
-        /// different APIs to access these native objects.
+        /// <para>This is intended to be used to support both XR SDK and Unity's legacy XR pipeline, which provide
+        /// different APIs to access these native objects.</para>
         /// </remarks>
         public static IWindowsMixedRealityUtilitiesProvider UtilitiesProvider { get; set; } = null;
 
@@ -63,10 +63,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Helps marshal WinRT IInspectable objects that have been passed to managed code as an IntPtr.
         /// </summary>
         /// <remarks>
-        /// On .NET Native, IInspectable pointers cannot be marshaled from native to managed code using Marshal.GetObjectForIUnknown.
+        /// <para>On .NET Native, IInspectable pointers cannot be marshaled from native to managed code using Marshal.GetObjectForIUnknown.
         /// This class calls into a native method that specifically marshals the type as a specific WinRT interface, which
-        /// is supported by the marshaller on both .NET Core and .NET Native.
-        /// Please see https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/HandTracking.html#net-native for more info.
+        /// is supported by the marshaller on both .NET Core and .NET Native.</para>
+        /// <para>Please see https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/hand-tracking#net-native for more info.</para>
         /// </remarks>
         private static SpatialCoordinateSystem GetSpatialCoordinateSystem(IntPtr nativePtr)
         {
@@ -88,8 +88,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Access the underlying native spatial coordinate system.
         /// </summary>
         /// <remarks>
-        /// Changing the state of the native objects received via this API may cause unpredictable
-        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.
+        /// <para>Changing the state of the native objects received via this API may cause unpredictable
+        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.</para>
         /// </remarks>
         public static SpatialCoordinateSystem SpatialCoordinateSystem
         {
@@ -120,8 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Access the underlying native current holographic frame.
         /// </summary>
         /// <remarks>
-        /// Changing the state of the native objects received via this API may cause unpredictable
-        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.
+        /// <para>Changing the state of the native objects received via this API may cause unpredictable
+        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.</para>
         /// </remarks>
         public static HolographicFrame CurrentHolographicFrame
         {
@@ -144,6 +144,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+
+#if WINDOWS_UWP
+        /// <summary>
+        /// Access the underlying native current holographic frame.
+        /// </summary>
+        /// <remarks>
+        /// <para>Changing the state of the native objects received via this API may cause unpredictable
+        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.</para>
+        /// </remarks>
+        internal static global::Windows.Graphics.Holographic.HolographicFrame CurrentWindowsHolographicFrame
+        {
+            get
+            {
+                if (UtilitiesProvider == null || UtilitiesProvider.IHolographicFramePtr == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                return Marshal.GetObjectForIUnknown(UtilitiesProvider.IHolographicFramePtr) as global::Windows.Graphics.Holographic.HolographicFrame;
+            }
+        }
+#endif // WINDOWS_UWP
 
         [Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)

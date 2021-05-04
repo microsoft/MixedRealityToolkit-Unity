@@ -32,7 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnToggleHandJoint()
         {
-            MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile;
+            MixedRealityHandTrackingProfile handTrackingProfile = null;
+
+            if (CoreServices.InputSystem?.InputSystemProfile != null)
+            {
+                handTrackingProfile = CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile;
+            }
+
             if (handTrackingProfile != null)
             {
                 handTrackingProfile.EnableHandJointVisualization = !handTrackingProfile.EnableHandJointVisualization;

@@ -1,7 +1,8 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Tools.Runtime",
     "references": [
-        "Microsoft.MixedReality.Toolkit"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.SDK"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

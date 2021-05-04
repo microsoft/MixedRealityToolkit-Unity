@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Whether any XR device is present.
         /// </summary>
+        [System.Obsolete("This value is no longer used.")]
         protected virtual bool IsXRDevicePresent { get; } = true;
 
         #region IMixedRealityService Implementation
@@ -58,30 +59,41 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Boundary System";
 
-        private bool boundarySystemInitialized = false;
-
         /// <inheritdoc/>
         public override void Initialize()
         {
-            base.Initialize();
+            // Initialize this value earlier than other systems, so we can use it to block boundary events being raised too early
+            IsInitialized = false;
 
             // The profile needs to be read on initialization to ensure that re-initialization
             // after profile change reads the correct data.
             ReadProfile();
 
-            if (!Application.isPlaying || !IsXRDevicePresent) { return; }
+            if (!Application.isPlaying || !DeviceUtility.IsPresent) { return; }
 
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
 
-            boundarySystemInitialized = true;
+            base.Initialize();
 
             RefreshVisualization();
             RaiseBoundaryVisualizationChanged();
         }
 
+#if UNITY_EDITOR
+        public override void Update()
+        {
+            base.Update();
+
+            // If a device is attached late, initialize with the new state of the world
+            if (!IsInitialized && DeviceUtility.IsPresent)
+            {
+                Initialize();
+            }
+        }
+#endif // UNITY_EDITOR
 
         /// <inheritdoc/>
         public override void Destroy()
@@ -526,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         {
             // If not done initializing, no need to raise the changed event or check the visualization.
             // These will both happen at the end of the initialization flow.
-            if (!boundarySystemInitialized)
+            if (!IsInitialized)
             {
                 return;
             }

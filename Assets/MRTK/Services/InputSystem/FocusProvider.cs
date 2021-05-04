@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The focus provider handles the focused objects per input source.
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class FocusProvider : BaseCoreSystem,
         IMixedRealityFocusProvider,
         IPointerPreferences
@@ -834,7 +834,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RegisterPointer(inputSource.Pointers[i]);
 
                     // Special Registration for Gaze
-                    if (inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                    if (!CoreServices.InputSystem.GazeProvider.IsNull() && inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                     {
                         gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                     }

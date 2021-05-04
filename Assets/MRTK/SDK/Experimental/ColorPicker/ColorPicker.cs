@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using UnityEngine;
-using TMPro;
 using Microsoft.MixedReality.Toolkit.UI;
+using TMPro;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 {
@@ -237,7 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         /// <summary>
         /// Applies Red, Green, Blue slider values to the Hue, Saturation, Brightness sliders
         /// </summary>
-        public void UpdateColorRGB() {
+        public void UpdateColorRGB()
+        {
             if (IsDraggingSliders == true)
             {
                 CustomColor.r = SliderRed.SliderValue;
@@ -287,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         #region UI Logic
         private void UpdateSliderText()
         {
-            TextRed.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.r * 255),0,255).ToString();
+            TextRed.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.r * 255), 0, 255).ToString();
             TextBlue.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.b * 255), 0, 255).ToString();
             TextGreen.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.g * 255), 0, 255).ToString();
             TextAlpha.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.a * 100), 0, 100) + "%";
@@ -299,40 +300,41 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         private void ApplyColor()
         {
-            if(GradientMesh != null && GradientMesh.material != null)
+            if (GradientMesh != null && GradientMesh.material != null)
             {
                 GradientMesh.material.color = Color.HSVToRGB(Hue, 1, 1);
             }
-            if(TargetObjectMesh != null && TargetObjectMesh.material != null)
+            if (TargetObjectMesh != null && TargetObjectMesh.material != null)
             {
                 TargetObjectMesh.material.color = CustomColor;
             }
-            if(TargetObjectSprite != null)
+            if (TargetObjectSprite != null)
             {
                 TargetObjectSprite.color = CustomColor;
             }
-            foreach(MeshRenderer rend in PickerUIMeshes)
+            foreach (MeshRenderer rend in PickerUIMeshes)
             {
-                if(rend != null)
+                if (rend != null)
                 {
                     rend.material.color = CustomColor;
                 }
             }
-            foreach(SpriteRenderer rend in PickerUISprites)
+            foreach (SpriteRenderer rend in PickerUISprites)
             {
-                if(rend != null)
+                if (rend != null)
                 {
                     rend.color = CustomColor;
                     if (rend.name == "Dragger")
                     {
-                        // dont fade the alpha of the dragger object
+                        // don't fade the alpha of the dragger object
                         rend.color = new Color(CustomColor.r, CustomColor.g, CustomColor.b, 1);
                     }
                 }
             }
         }
-        private void ApplySliderValues() {
-            SliderRed.SliderValue = Mathf.Clamp(CustomColor.r,0,1);
+        private void ApplySliderValues()
+        {
+            SliderRed.SliderValue = Mathf.Clamp(CustomColor.r, 0, 1);
             SliderGreen.SliderValue = Mathf.Clamp(CustomColor.g, 0, 1);
             SliderBlue.SliderValue = Mathf.Clamp(CustomColor.b, 0, 1);
             SliderAlpha.SliderValue = Mathf.Clamp(CustomColor.a, 0, 1);

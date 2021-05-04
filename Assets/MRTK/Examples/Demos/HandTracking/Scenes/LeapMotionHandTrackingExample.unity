@@ -1071,6 +1071,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 0
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 0}
   linksConfiguration: {fileID: 0}

@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514da61389c049c0bdaf31b7f6970d33, type: 3}
+  m_Name: ObsoleteMixedRealityXRSDKControllerVisualizationProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  renderMotionControllers: 1
+  defaultControllerVisualizationType:
+    reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizer,
+      Microsoft.MixedReality.Toolkit.SDK
+  usePlatformModels: 1
+  platformModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2,
+    type: 2}
+  globalLeftControllerModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
+    type: 3}
+  globalRightControllerModel: {fileID: 1760394390528354, guid: 9ef0df44319c4fb4a05649e5b8ceb6d1,
+    type: 3}
+  globalLeftHandVisualizer: {fileID: 61451597023024772, guid: 6080fb9e3b49fda449e3d70daf6d2254,
+    type: 3}
+  globalRightHandVisualizer: {fileID: 3512491064599439886, guid: 7a857af0cb85b4a47b6ec8a1babcb73c,
+    type: 3}
+  controllerVisualizationSettings:
+  - description: Windows Mixed Reality XRSDK Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 1
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: Windows Mixed Reality XRSDK Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 2
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: Windows Mixed Reality XRSDK Articulated Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 1
+    usePlatformModels: 0
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
+  - description: Windows Mixed Reality XRSDK Articulated Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 2
+    usePlatformModels: 0
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 1788309537287834, guid: 132c9402d5843aa4f94380840186fd41,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
+  - description: HP Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.HPMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 1
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: HP Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.HPMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 2
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK

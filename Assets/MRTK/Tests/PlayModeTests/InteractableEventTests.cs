@@ -20,15 +20,14 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class InteractableEventTests
+    class InteractableEventTests : BasePlayModeTests
     {
         GameObject cube;
         Interactable interactable;
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -39,12 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
-            GameObject.Destroy(cube);
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            Object.Destroy(cube);
+            yield return base.TearDown();
         }
 
         /// <summary>
@@ -267,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testHand = new TestHand(Handedness.Right);
             yield return testHand.Show(Vector3.forward);
             yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return testHand.MoveTo(interactable.transform.position-Vector3.forward * 0.1f);
+            yield return testHand.MoveTo(interactable.transform.position - Vector3.forward * 0.1f);
             yield return testHand.MoveTo(Vector3.forward);
             yield return testHand.Hide();
             Assert.True(didTouch, "Did not receive touch event");

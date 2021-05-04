@@ -38,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     return;
                 }
 
+                manipulatedObject.GetComponent<ConstraintManager>();
                 var manipulationHandler = manipulatedObject.GetComponent<ManipulationHandler>();
                 var objectManipulator = manipulatedObject.GetComponent<ObjectManipulator>();
                 if (manipulationHandler != null || objectManipulator != null)

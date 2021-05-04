@@ -45,6 +45,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -56,6 +57,7 @@ LineRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -190,6 +192,10 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 0
   overrideGlobalPointerExtent: 0

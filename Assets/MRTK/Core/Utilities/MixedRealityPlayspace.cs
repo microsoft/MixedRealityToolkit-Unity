@@ -158,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="transformation">The transformation to be applied to the playspace.</param>
         /// <remarks>
-        /// This method takes a lambda function and may contribute to garbage collector pressure.
-        /// For best performance, avoid calling this method from an inner loop function.
+        /// <para>This method takes a lambda function and may contribute to garbage collector pressure.
+        /// For best performance, avoid calling this method from an inner loop function.</para>
         /// </remarks>
         public static void PerformTransformation(Action<Transform> transformation)
         {

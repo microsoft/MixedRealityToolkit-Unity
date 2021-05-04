@@ -4,13 +4,14 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Profile that determines relevant overrides and properties for controller visualization
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityControllerVisualizer))]
     public class MixedRealityControllerVisualizationProfile : BaseMixedRealityProfile
     {
@@ -43,29 +44,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.")]
-        private bool useDefaultModels = false;
+        [FormerlySerializedAs("useDefaultModels")]
+        private bool usePlatformModels = false;
 
         /// <summary>
         /// Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.
         /// </summary>
-        public bool UseDefaultModels
+        public bool UsePlatformModels
         {
-            get => useDefaultModels;
-            private set => useDefaultModels = value;
+            get => usePlatformModels;
+            private set => usePlatformModels = value;
         }
+
+        /// <summary>
+        /// Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.
+        /// </summary>
+        [Obsolete("Use UsePlatformModels instead.")]
+        public bool UseDefaultModels => usePlatformModels;
 
         [SerializeField]
         [Tooltip("The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.")]
-        private Material defaultControllerModelMaterial;
+        [FormerlySerializedAs("defaultControllerModelMaterial")]
+        private Material platformModelMaterial;
 
         /// <summary>
         /// The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.
         /// </summary>
-        public Material DefaultControllerModelMaterial
+        public Material PlatformModelMaterial
         {
-            get => defaultControllerModelMaterial;
-            private set => defaultControllerModelMaterial = value;
+            get => platformModelMaterial;
+            private set => platformModelMaterial = value;
         }
+
+        /// <summary>
+        /// The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.
+        /// </summary>
+        [Obsolete("Use PlatformModelMaterial instead.")]
+        public Material DefaultControllerModelMaterial => platformModelMaterial;
 
         [SerializeField]
         [Tooltip("Override Left Controller Model.")]
@@ -139,6 +154,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public MixedRealityControllerVisualizationSetting[] ControllerVisualizationSettings => controllerVisualizationSettings;
 
+        private MixedRealityControllerVisualizationSetting? GetControllerVisualizationDefinition(Type controllerType, Handedness hand)
+        {
+            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
+            {
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
+                {
+                    return controllerVisualizationSettings[i];
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Gets the override model for a specific controller type and hand
         /// </summary>
@@ -146,15 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public GameObject GetControllerModelOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].OverrideControllerModel;
-                }
-            }
-
-            return null;
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.OverrideControllerModel : null;
         }
 
         /// <summary>
@@ -165,53 +185,63 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public SystemType GetControllerVisualizationTypeOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].ControllerVisualizationType;
-                }
-            }
-
-            return defaultControllerVisualizationType;
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.ControllerVisualizationType : DefaultControllerVisualizationType;
         }
 
         /// <summary>
-        /// Gets the UseDefaultModels value defined for the specified controller definition.
-        /// If the requested controller type is not defined, the default UseDefaultModels is returned.
+        /// Gets the UsePlatformModels value defined for the specified controller definition.
+        /// If the requested controller type is not defined, the default UsePlatformModels is returned.
         /// </summary>
         /// <param name="controllerType">The type of controller to query for</param>
         /// <param name="hand">The specific hand assigned to the controller</param>
+        /// <remarks>
+        /// GetUseDefaultModelsOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetUsePlatformModelsOverride.
+        /// </remarks>
+        [Obsolete("GetUseDefaultModelsOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetUsePlatformModelsOverride.")]
         public bool GetUseDefaultModelsOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].UseDefaultModel;
-                }
-            }
+            return GetUsePlatformModelsOverride(controllerType, hand);
+        }
 
-            return useDefaultModels;
+        /// <summary>
+        /// Gets the UsePlatformModels value defined for the specified controller definition.
+        /// If the requested controller type is not defined, the default UsePlatformModels is returned.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public bool GetUsePlatformModelsOverride(Type controllerType, Handedness hand)
+        {
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.UsePlatformModels : usePlatformModels;
         }
 
         /// <summary>
         /// Gets the DefaultModelMaterial value defined for the specified controller definition.
-        /// If the requested controller type is not defined, the global DefaultControllerModelMaterial is returned.
+        /// If the requested controller type is not defined, the global platformModelMaterial is returned.
         /// </summary>
         /// <param name="controllerType">The type of controller to query for</param>
         /// <param name="hand">The specific hand assigned to the controller</param>
+        /// <remarks>
+        /// GetDefaultControllerModelMaterialOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetPlatformModelMaterialOverride.
+        /// </remarks>
+        [Obsolete("GetDefaultControllerModelMaterialOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetPlatformModelMaterial.")]
         public Material GetDefaultControllerModelMaterialOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].DefaultModelMaterial;
-                }
-            }
+            return GetPlatformModelMaterialOverride(controllerType, hand);
+        }
 
-            return defaultControllerModelMaterial;
+        /// <summary>
+        /// Gets the PlatformModelMaterial value defined for the specified controller definition.
+        /// If the requested controller type is not defined, the global platformModelMaterial is returned.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public Material GetPlatformModelMaterialOverride(Type controllerType, Handedness hand)
+        {
+
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.PlatformModelMaterial : platformModelMaterial;
         }
 
         private bool SettingContainsParameters(MixedRealityControllerVisualizationSetting setting, Type controllerType, Handedness hand)

@@ -24,22 +24,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SimulatedArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+        public SimulatedArticulatedHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
+            handDefinition = Definition as ArticulatedHandDefinition;
         }
 
-        /// <summary>
-        /// The definition and data store for this articulated hand class.
-        /// </summary>
-        protected ArticulatedHandDefinition handDefinition;
-
-        /// <summary>
-        /// The simulated articulated hand's default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
+        private readonly ArticulatedHandDefinition handDefinition;
 
         /// <inheritdoc />
         protected override void UpdateHandJoints(SimulatedHandData handData)
@@ -121,6 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     case DeviceInputType.Select:
                     case DeviceInputType.TriggerPress:
+                    case DeviceInputType.GripPress:
                         Interactions[i].BoolData = handData.IsPinching;
 
                         if (Interactions[i].Changed)
@@ -143,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     case DeviceInputType.ThumbStick:
-                        handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
+                        handDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }

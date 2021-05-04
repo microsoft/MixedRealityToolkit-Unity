@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// used to drive per pixel based clipping.
     /// </summary>
     [ExecuteAlways]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/ClippingPrimitive.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/clipping-primitive")]
     public abstract class ClippingPrimitive : MonoBehaviour, IMaterialInstanceOwner
     {
         [Tooltip("The renderer(s) that should be affected by the primitive.")]
@@ -84,16 +84,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
                 }
 
-                if (value)
+                if (useOnPreRender != value)
                 {
-                    cameraMethods.OnCameraPreRender += OnCameraPreRender;
-                }
-                else
-                {
-                    cameraMethods.OnCameraPreRender -= OnCameraPreRender;
-                }
+                    if (value)
+                    {
+                        cameraMethods.OnCameraPreRender += OnCameraPreRender;
+                    }
+                    else if (!value)
+                    {
+                        cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+                    }
 
-                useOnPreRender = value;
+                    useOnPreRender = value;
+                }
             }
         }
 
@@ -157,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        private void RemoveRenderer(int index)
+        private void RemoveRenderer(int index, bool autoDestroyMaterial = true)
         {
             Renderer _renderer = renderers[index];
 
@@ -178,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 var materialInstance = _renderer.GetComponent<MaterialInstance>();
                 if (materialInstance != null)
                 {
-                    materialInstance.ReleaseMaterial(this);
+                    materialInstance.ReleaseMaterial(this, autoDestroyMaterial);
                 }
             }
         }
@@ -186,13 +189,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Removes all renderers in the list of objects this clipping primitive clips.
         /// </summary>
-        public void ClearRenderers()
+        public void ClearRenderers(bool autoDestroyMaterial = true)
         {
             if (renderers != null)
             {
                 while (renderers.Count != 0)
                 {
-                    RemoveRenderer(renderers.Count - 1);
+                    RemoveRenderer(renderers.Count - 1, autoDestroyMaterial);
                 }
             }
         }
@@ -240,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (cameraMethods != null)
             {
-                cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+                UseOnPreRender = false;
             }
         }
 
@@ -311,9 +314,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             for (int i = renderers.Count - 1; i >= 0; --i)
             {
                 var _renderer = renderers[i];
-                if (Application.isPlaying && _renderer == null)
+                if (_renderer == null)
                 {
-                    RemoveRenderer(i);
+                    if (Application.isPlaying)
+                    {
+                        RemoveRenderer(i);
+                    }
                     continue;
                 }
 

@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             StopOrbs();
 
-            while (!hasAnimationFinished)
+            while (!hasAnimationFinished && isActiveAndEnabled)
             {
                 await Task.Yield();
             }

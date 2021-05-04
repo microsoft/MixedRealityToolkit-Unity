@@ -3,13 +3,13 @@
 // Licensed under the MIT License.
 //
 
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private SerializedProperty autoConstraintSelection;
         private SerializedProperty selectedConstraints;
-       
+
         private ConstraintManager constraintManager;
 
         private const string autoMsg = "Constraint manager is currently set to auto mode. In auto mode all" +
@@ -185,12 +185,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         {
                             var guiEnabledRestore = GUI.enabled;
                             GUI.enabled = false;
-                            menu.AddItem(new GUIContent("No constraint available", 
+                            menu.AddItem(new GUIContent("No constraint available",
                                 "Either there's no constraint attached to this game object or all available constraints " +
                                 "are already part of the list."), false, null);
                             GUI.enabled = guiEnabledRestore;
                         }
-                        
+
                         menu.ShowAsContext();
                     }
 
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         menu.ShowAsContext();
                     }
                 }
-            } 
+            }
         }
 
         public override void OnInspectorGUI()
@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // Usually this should be ensured by the component requirement. However 
                 // for components that had this requirement added after they were serialized
                 // this won't work out of the box.
-                gameObject.EnsureComponent<ConstraintManager>(); 
+                gameObject.EnsureComponent<ConstraintManager>();
                 var constraintManagers = gameObject.GetComponents<ConstraintManager>();
 
                 int selected = 0;
@@ -335,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         selected = i;
                     }
 
-                    // popups will only show unqiue elements
+                    // popups will only show unique elements
                     // in case of auto selection we don't care which one we're selecting as the behavior will be the same.
                     // in case of manual selection users might want to differentiate which constraintmanager they are referring to.
                     if (manager.AutoConstraintSelection == true)

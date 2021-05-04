@@ -5,7 +5,7 @@ schedules:
 - cron: 0 14 * * 1,2,3,4,5
   branches:
     include:
-    - mrtk_development
+    - main
 
 pr: none
 trigger: none
@@ -13,10 +13,10 @@ trigger: none
 parameters:
 - name: sourceBranch
   type: string
-  default: mrtk_development
+  default: prerelease/2.7.0_stabilization
 - name: destinationBranch
   type: string
-  default: feature/interactive_element
+  default: main
 
 pool:
   vmImage: 'windows-latest'

@@ -3,12 +3,17 @@
 variables:
 - template: config/settings.yml
 
+parameters:
+- name: PreviewNumber
+  type: string
+  default: ''
+
 jobs:
 - job: UPMPublicRelease
   timeoutInMinutes: 30
   pool:
     vmImage: windows-2019
   steps:
-  - template: templates/tasks/upmpackages.yml
+  - template: templates/tasks/pack-upm.yml
     parameters:
-      excludeBuildNumber: 1
+      previewNumber: ${{ parameters.PreviewNumber }}

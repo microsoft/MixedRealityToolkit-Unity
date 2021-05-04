@@ -63,6 +63,10 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 1
   overrideGlobalPointerExtent: 0

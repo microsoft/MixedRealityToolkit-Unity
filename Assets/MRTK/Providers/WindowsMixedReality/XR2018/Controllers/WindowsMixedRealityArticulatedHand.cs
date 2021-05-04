@@ -29,28 +29,30 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class WindowsMixedRealityArticulatedHand : BaseWindowsMixedRealitySource, IMixedRealityHand
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+        public WindowsMixedRealityArticulatedHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
-            handMeshProvider = new WindowsMixedRealityHandMeshProvider(this);
+            handDefinition = Definition as ArticulatedHandDefinition;
+
+            handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.Left : WindowsMixedRealityHandMeshProvider.Right;
+            handMeshProvider.SetInputSource(inputSource);
+
             articulatedHandApiAvailable = WindowsApiChecker.IsMethodAvailable(
                 "Windows.UI.Input.Spatial",
                 "SpatialInteractionSourceState",
                 "TryGetHandPose");
         }
-
-        /// <summary>
-        /// The Windows Mixed Reality articulated hands default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private readonly ArticulatedHandDefinition handDefinition;

@@ -26,14 +26,15 @@
 //SOFTWARE.
 //------------------------------------------------------------------------------ -
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using UnityEngine;
 
 #if OCULUSINTEGRATION_PRESENT
 using static OVRSkeleton;
+
+using Microsoft.MixedReality.Toolkit;
+using UnityEngine;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
@@ -43,7 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class OculusHand : BaseHand
     {
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
@@ -53,35 +55,24 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// </summary>
         public MixedRealityPose HandPointerPose => currentPointerPose;
 
-        private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
-
 #if OCULUSINTEGRATION_PRESENT
+        private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
         private bool isIndexGrabbing = false;
         private bool isMiddleGrabbing = false;
-#endif
-        
         private OculusXRSDKDeviceManagerProfile settingsProfile;
         private MixedRealityHandTrackingProfile handTrackingProfile;
-        private int pinchStrengthProp;
-
+#endif
 
         /// <summary>
         /// Default constructor used by reflection for profiles
         /// </summary>
-        public OculusHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
-        }
-
-        internal ArticulatedHandDefinition handDefinition;
-
-        // Set the interactions for each hand to the Default interactions of the hand definition
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
-
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
-
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
+        public OculusHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
+        { }
 
         public override void SetupDefaultInteractions()
         {
@@ -100,6 +91,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         #endregion IMixedRealityHand Implementation
 
 #if OCULUSINTEGRATION_PRESENT
+        private ArticulatedHandDefinition handDefinition;
+        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
+
         public void InitializeHand(OVRHand ovrHand, OculusXRSDKDeviceManagerProfile deviceManagerSettings)
         {
             settingsProfile = deviceManagerSettings;
@@ -107,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         }
 
         /// <inheritdoc/>
-        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
+        public override bool IsInPointingPose => HandDefinition.IsInPointingPose;
 
         protected bool IsPinching { set; get; }
 
@@ -180,6 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                         }
                         break;
                     case DeviceInputType.TriggerPress:
+                    case DeviceInputType.GripPress:
                         Interactions[i].BoolData = IsPinching || IsGrabbing;
 
                         if (Interactions[i].Changed)
@@ -195,10 +190,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                         }
                         break;
                     case DeviceInputType.IndexFinger:
-                        handDefinition.UpdateCurrentIndexPose(Interactions[i]);
+                        HandDefinition.UpdateCurrentIndexPose(Interactions[i]);
                         break;
                     case DeviceInputType.ThumbStick:
-                        handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
+                        HandDefinition.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }
@@ -275,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 UpdatePalm();
             }
             
-            handDefinition?.UpdateHandJoints(jointPoses);
+            HandDefinition?.UpdateHandJoints(jointPoses);
 
             // Note: After some testing, it seems when moving your hand fast, Oculus's pinch estimation data gets frozen, which leads to stuck pinches.
             // To counter this, we perform a distance check between thumb and index to determine if we should force the pinch to a false state.
@@ -289,12 +284,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 if (IsPinching)
                 {
                     // If we are already pinching, we make the pinch a bit sticky
-                    IsPinching = pinchStrength > 0.85f;
+                    IsPinching = pinchStrength > 0.5f;
                 }
                 else
                 {
                     // If not yet pinching, only consider pinching if finger confidence is high
-                    IsPinching = pinchStrength > 0.5f && ovrHand.GetFingerConfidence(OVRHand.HandFinger.Index) == OVRHand.TrackingConfidence.High;
+                    IsPinching = pinchStrength > 0.85f && ovrHand.GetFingerConfidence(OVRHand.HandFinger.Index) == OVRHand.TrackingConfidence.High;
                 }
             }
 
@@ -401,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 jointPoses[joint] = pose;
             }
         }
-                #endregion
+        #endregion
 #endif
-            }
-        }
+    }
+}

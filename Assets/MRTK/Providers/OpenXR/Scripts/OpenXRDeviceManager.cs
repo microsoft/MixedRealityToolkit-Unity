@@ -8,12 +8,17 @@ using System;
 using Unity.Profiling;
 using UnityEngine.XR;
 
+#if UNITY_OPENXR
+using UnityEngine.XR.OpenXR;
+#endif // UNITY_OPENXR
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),
-        "OpenXR XRSDK Device Manager")]
+        "OpenXR XRSDK Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class OpenXRDeviceManager : XRSDKDeviceManager
     {
         /// <summary>
@@ -28,6 +33,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
+
+        private bool IsActiveLoader =>
+#if UNITY_OPENXR
+            LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
+#else
+            false;
+#endif // UNITY_OPENXR
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
 
         #region Controller Utilities
 

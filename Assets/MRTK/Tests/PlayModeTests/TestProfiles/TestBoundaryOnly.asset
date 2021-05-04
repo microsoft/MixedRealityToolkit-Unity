@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: TestBoundaryOnly
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  experienceSettingsProfile: {fileID: 11400000, guid: 1ccbb3b1d759d6a49b4161a958329d9d,
+    type: 2}
   targetExperienceScale: 3
   enableCameraSystem: 0
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}
@@ -27,6 +29,8 @@ MonoBehaviour:
   boundarySystemType:
     reference: Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem,
       Microsoft.MixedReality.Toolkit.Services.BoundarySystem
+  xrsdkBoundarySystemType:
+    reference: Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem, Microsoft.MixedReality.Toolkit.Providers.XRSDK
   boundaryVisualizationProfile: {fileID: 11400000, guid: 76348156fa93fec48b20a487b75b1e96,
     type: 2}
   enableTeleportSystem: 0

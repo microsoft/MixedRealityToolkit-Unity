@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
     [System.Serializable]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/interactable")]
     [AddComponentMenu("Scripts/MRTK/SDK/Interactable")]
     public class Interactable :
         MonoBehaviour,
@@ -202,11 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Returns the current selection mode of the Interactable based on the number of Dimensions available
         /// </summary>
         /// <remarks>
-        /// Returns the following under the associated conditions:
-        /// SelectionModes.Invalid => Dimensions less than or equal to 0
-        /// SelectionModes.Button => Dimensions == 1
-        /// SelectionModes.Toggle => Dimensions == 2
-        /// SelectionModes.MultiDimension => Dimensions > 2
+        /// <para>Returns the following under the associated conditions:</para>
+        /// <para>SelectionModes.Invalid => Dimensions less than or equal to 0</para>
+        /// <para>SelectionModes.Button => Dimensions == 1</para>
+        /// <para>SelectionModes.Toggle => Dimensions == 2</para>
+        /// <para>SelectionModes.MultiDimension => Dimensions > 2</para>
         /// </remarks>
         public SelectionModes ButtonMode => ConvertToSelectionMode(NumOfDimensions);
 
@@ -1302,7 +1302,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             yield return new WaitForSeconds(time);
 
             HasVoiceCommand = false;
-            if (!HasFocus)
+            if (HasFocus && focusingPointers.Count == 0)
             {
                 HasFocus = false;
             }

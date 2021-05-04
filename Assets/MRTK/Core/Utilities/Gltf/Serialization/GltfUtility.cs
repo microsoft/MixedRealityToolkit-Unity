@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <param name="uri">the path to the file to load</param>
         /// <returns>New <see cref="Schema.GltfObject"/> imported from uri.</returns>
         /// <remarks>
-        /// Must be called from the main thread.
-        /// If the <see href="https://docs.unity3d.com/ScriptReference/Application-isPlaying.html">Application.isPlaying</see> is false, then this method will run synchronously.
+        /// <para>Must be called from the main thread.
+        /// If the <see href="https://docs.unity3d.com/ScriptReference/Application-isPlaying.html">Application.isPlaying</see> is false, then this method will run synchronously.</para>
         /// </remarks>
         public static async Task<GltfObject> ImportGltfObjectFromPathAsync(string uri)
         {
@@ -170,13 +170,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (gltfObject.extensionsRequired?.Length > 0)
             {
-                Debug.LogError($"Required Extension Unsupported: {gltfObject.extensionsRequired[0]}");
+                Debug.LogError("One or more unsupported glTF extensions required. Unable to load the model.");
+                for (int i = 0; i < gltfObject.extensionsRequired.Length; ++i)
+                {
+                    Debug.Log($"Extension: {gltfObject.extensionsRequired[i]}");
+                }
                 return null;
             }
 
-            for (int i = 0; i < gltfObject.extensionsUsed?.Length; i++)
+            if (gltfObject.extensionsUsed?.Length > 0)
             {
-                Debug.LogWarning($"Unsupported Extension: {gltfObject.extensionsUsed[i]}");
+                Debug.Log("One or more unsupported glTF extensions in use, ignoring them.");
+                for (int i = 0; i < gltfObject.extensionsUsed.Length; ++i)
+                {
+                    Debug.Log($"Extension: {gltfObject.extensionsUsed[i]}");
+                }
             }
 
             var meshPrimitiveAttributes = GetGltfMeshPrimitiveAttributes(jsonString);

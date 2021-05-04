@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The configuration profile for the service.
         /// </summary>
-        [Obsolete("Use Profile property instead")]
+        [Obsolete("Use the Profile property instead.")]
         public BaseMixedRealityProfile ConfigurationProfile => configurationProfile;
     }
 }

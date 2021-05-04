@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using UnityEngine.Rendering;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get => fadeLineAnimationTime;
             set => fadeLineAnimationTime = value;
         }
-        
+
         /// <summary>
         /// Gets the LineRenderer points
         /// </summary>

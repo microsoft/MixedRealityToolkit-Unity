@@ -121,6 +121,30 @@ MonoBehaviour:
     BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: bf3eb3415bffceb41810526380c2c71c, type: 3}
+  - Name: ScrollingObjectCollection
+    Path: Assets/MRTK/Examples/Demos/ScrollingObjectCollection/Scenes/ScrollingObjectCollection.unity
+    Included: 0
+    BuildIndex: -1
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 79a0bb4c0426b7a4099c35eeced52ee4, type: 3}
+  - Name: HandCoachExample
+    Path: Assets/MRTK/Examples/Demos/HandCoach/Scenes/HandCoachExample.unity
+    Included: 0
+    BuildIndex: -1
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 58e887502677eb649950ada695c4ad38, type: 3}
+  - Name: SceneUnderstandingExample
+    Path: Assets/MRTK/Examples/Experimental/SceneUnderstanding/Scenes/SceneUnderstandingExample.unity
+    Included: 0
+    BuildIndex: -1
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: d42a352dc9a8c4d4990a924687759199, type: 3}
+  - Name: SurfaceMagnetismSpatialAwarenessExample
+    Path: Assets/MRTK/Examples/Demos/Solvers/Scenes/SurfaceMagnetismSpatialAwarenessExample.unity
+    Included: 0
+    BuildIndex: -1
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 8feae87497f549c4e8dc08a6e4b7b15c, type: 3}
   permittedLightingSceneComponentTypes:
   - reference: UnityEngine.Transform, UnityEngine.CoreModule
   - reference: UnityEngine.GameObject, UnityEngine.CoreModule

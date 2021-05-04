@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     [MixedRealityServiceProfile(typeof(ISceneTransitionService))]
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Extensions/Scene Transition Service/Scene Transition Service Profile", fileName = "SceneTransitionServiceProfile", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Extensions/Scene Transition Service/Scene Transition Service Profile", fileName = "SceneTransitionServiceProfile", order = 100)]
     public class SceneTransitionServiceProfile : BaseMixedRealityProfile
     {
         public bool UseDefaultProgressIndicator => useDefaultProgressIndicator;

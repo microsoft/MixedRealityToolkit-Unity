@@ -4,9 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
-using UnityEngine;
-using UnityEngine.XR;
-using System;
 using UnityEngine.XR.WSA.Input;
 
 #if HP_CONTROLLER_ENABLED
@@ -22,7 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class HPMotionController : WindowsMixedRealityController
     {
 #if HP_CONTROLLER_ENABLED
@@ -30,19 +28,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         internal MotionControllerState MotionControllerState = null;
 #endif
 
-        public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+        public HPMotionController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, new HPMotionControllerDefinition(controllerHandedness), inputSource, interactions)
         {
 #if HP_CONTROLLER_ENABLED
             InputHandler = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);
 #endif
-            controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
         }
-
-        private readonly HPMotionControllerDefinition controllerDefinition;
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition.DefaultLeftHandedInteractions;
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition.DefaultRightHandedInteractions;
-
 
 #if UNITY_WSA
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPMotionController.UpdateController");
@@ -58,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 if (MotionControllerState != null)
                 {
                     // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data
-                    // the interaction source updates the 6-dof data first since some interaction mappings rely on 6dof data
+                    // the interaction source updates the 6-DoF data first since some interaction mappings rely on 6-DoF data
                     UpdateSixDofData(interactionSourceState);
                     InputHandler.UpdateController(MotionControllerState);
                 }
@@ -68,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     base.UpdateController(interactionSourceState);
                 }
 #else
-                
+
                 base.UpdateController(interactionSourceState);
 #endif
             }

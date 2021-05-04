@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Maanages the Mixed Reality Toolkit code preservation settings. Please see
+    /// Manages the Mixed Reality Toolkit code preservation settings. Please see
     /// https://docs.unity3d.com/Manual/ManagedCodeStripping.html for more information.
     /// </summary>
     internal static class MixedRealityToolkitPreserveSettings
@@ -48,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.XRSDK\" preserve=\"all\"/> \n" +
+            "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsSceneUnderstanding\" preserve=\"all\"/> \n" +
             "  <!-- Extension services --> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Extensions.HandPhysics\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Extensions.Tracking\" preserve=\"all\"/> \n" +

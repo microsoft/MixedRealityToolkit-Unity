@@ -5,53 +5,51 @@ parameters:
 
 steps:
 - powershell: |
-   $UnityPath = ${Env:${{ parameters.UnityVersion }}}
-   $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
-   
-   Write-Host "======================= EditMode Tests ======================="
-   
-   $logFile = New-Item -Path .\editmode-test-run.log -ItemType File -Force
-   
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -runTests -testPlatform EditMode -batchMode -buildTarget StandaloneWindows -logFile $($logFile.Name) -editorTestsResultFile .\test-editmode-default.xml" -PassThru
-   $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
-   
-   while (-not $proc.HasExited -and $ljob.HasMoreData)
-   {
-       Receive-Job $ljob
-       Start-Sleep -Milliseconds 200
-   }
-   Receive-Job $ljob
-   
-   Stop-Job $ljob
-   
-   Remove-Job $ljob
-   Stop-Process $proc
+    $UnityPath = ${Env:${{ parameters.UnityVersion }}}
+    $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 
+    Write-Host "======================= EditMode Tests ======================="
+
+    $logFile = New-Item -Path .\editmode-test-run.log -ItemType File -Force
+
+    $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -runTests -testPlatform EditMode -batchMode -buildTarget StandaloneWindows -logFile $($logFile.Name) -editorTestsResultFile .\test-editmode-default.xml" -PassThru
+    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
+
+    while (-not $proc.HasExited -and $ljob.HasMoreData)
+    {
+        Receive-Job $ljob
+        Start-Sleep -Milliseconds 200
+    }
+    Receive-Job $ljob
+
+    Stop-Job $ljob
+
+    Remove-Job $ljob
+    Stop-Process $proc
   displayName: 'Run EditMode tests'
 
 - powershell: |
-   $UnityPath = ${Env:${{ parameters.UnityVersion }}}
-   $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
-   
-   Write-Host "======================= PlayMode Tests ======================="
-   
-   $logFile = New-Item -Path .\playmode-test-run.log -ItemType File -Force
-   
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -runTests -testPlatform PlayMode -batchMode -buildTarget StandaloneWindows -logFile $($logFile.Name) -editorTestsResultFile .\test-playmode-default.xml" -PassThru
-   $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
-   
-   while (-not $proc.HasExited -and $ljob.HasMoreData)
-   {
-       Receive-Job $ljob
-       Start-Sleep -Milliseconds 200
-   }
-   Receive-Job $ljob
-   
-   Stop-Job $ljob
-   
-   Remove-Job $ljob
-   Stop-Process $proc
+    $UnityPath = ${Env:${{ parameters.UnityVersion }}}
+    $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 
+    Write-Host "======================= PlayMode Tests ======================="
+
+    $logFile = New-Item -Path .\playmode-test-run.log -ItemType File -Force
+
+    $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -runTests -testPlatform PlayMode -batchMode -buildTarget StandaloneWindows -logFile $($logFile.Name) -editorTestsResultFile .\test-playmode-default.xml" -PassThru
+    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
+
+    while (-not $proc.HasExited -and $ljob.HasMoreData)
+    {
+        Receive-Job $ljob
+        Start-Sleep -Milliseconds 200
+    }
+    Receive-Job $ljob
+
+    Stop-Job $ljob
+
+    Remove-Job $ljob
+    Stop-Process $proc
   displayName: 'Run PlayMode tests'
 
 - task: PublishTestResults@2

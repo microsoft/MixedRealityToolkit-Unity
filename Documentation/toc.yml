@@ -242,6 +242,8 @@
       href: README_SystemKeyboard.md
     - name: Interactable
       href: README_Interactable.md
+    - name: Interactive Element 
+      href: README_InteractiveElement.md
     - name: Solvers
       href: README_Solver.md
       items:
@@ -271,8 +273,8 @@
       href: README_Dialog.md
     - name: Hand Coach
       href: README_HandCoach.md
-    - name: Pulse Shader [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
+    - name: Pulse Shader 
+      href: README_PulseShader.md
     - name: Dock Control [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
     - name: HoloLens Keyboard Helpers [Experimental]

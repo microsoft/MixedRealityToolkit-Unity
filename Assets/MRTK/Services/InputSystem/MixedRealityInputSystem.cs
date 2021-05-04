@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class MixedRealityInputSystem : BaseDataProviderAccessCoreSystem, IMixedRealityInputSystem, IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
                 {
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
-                    object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
+                    object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.Profile };
 
                     DebugUtilities.LogVerboseFormat(
                         "Attempting to register input system data provider {0}, {1}, {2}",

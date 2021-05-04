@@ -12,39 +12,26 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class HPMotionController : GenericOpenVRController
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-            controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
-        }
-
-        private readonly HPMotionControllerDefinition controllerDefinition;
+        public HPMotionController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, new HPMotionControllerDefinition(controllerHandedness), inputSource, interactions)
+        { }
 
         /// <inheritdoc />
         public override float PointerOffsetAngle { get; protected set; } = -30f;
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions
-        {
-            get
-            {
-                MixedRealityInteractionMapping[] definitionInteractions = controllerDefinition.DefaultLeftHandedInteractions;
-                MixedRealityInteractionMapping[] defaultLeftHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Length];
-                for (int i = 0; i < definitionInteractions.Length; i++)
-                {
-                    defaultLeftHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LeftHandedLegacyInputSupport[i]);
-                }
-                return defaultLeftHandedInteractions;
-            }
-        }
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport = new[]
+        protected override MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport { get; } = new[]
         {
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Pointer
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Grip
@@ -62,22 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         };
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions
-        {
-            get
-            {
-                MixedRealityInteractionMapping[] definitionInteractions = controllerDefinition.DefaultRightHandedInteractions;
-                MixedRealityInteractionMapping[] defaultRightHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Length];
-                for (int i = 0; i < definitionInteractions.Length; i++)
-                {
-                    defaultRightHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], RightHandedLegacyInputSupport[i]);
-                }
-                return defaultRightHandedInteractions;
-            }
-        }
-
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport = new[]
+        protected override MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport { get; } = new[]
         {
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Pointer
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Grip

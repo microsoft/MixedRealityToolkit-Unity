@@ -17,7 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),  // All platforms supported by Unity
-        "Unity Joystick Manager")]
+        "Unity Joystick Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
+#if UNITY_2020_1_OR_NEWER
+    [Obsolete("The legacy XR pipeline has been removed in Unity 2020 or newer. Please migrate to XR SDK.")]
+#endif // UNITY_2020_1_OR_NEWER
     public class UnityJoystickManager : BaseInputDeviceManager
     {
         /// <summary>

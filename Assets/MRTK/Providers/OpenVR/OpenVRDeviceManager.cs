@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Runtime.InteropServices;
 using Unity.Profiling;
 using UnityEngine;
 
@@ -17,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.LinuxStandalone,
-        "OpenVR Device Manager")]
+        "OpenVR Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityCapabilityCheck
     {
         /// <summary>

@@ -7,7 +7,6 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -713,6 +712,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             materialEditor.EnableInstancingField();
 
+            GUI.enabled = true;
+
             materialEditor.ShaderProperty(stencil, Styles.stencil);
 
             if (PropertyEnabled(stencil))
@@ -780,9 +781,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
 #if UNITY_2019_1_OR_NEWER
-        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline")]
 #else
-        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
 #endif
         protected static void UpgradeShaderForUniversalRenderPipeline()
         {
@@ -839,9 +840,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
 #if UNITY_2019_1_OR_NEWER
-        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline", true)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline", true)]
 #else
-        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline", true)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline", true)]
 #endif
         protected static bool UpgradeShaderForUniversalRenderPipelineValidate()
         {

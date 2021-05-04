@@ -10,36 +10,26 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
-using System;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class ManipulationHandlerTests
+    public class ManipulationHandlerTests : BasePlayModeTests
     {
         private readonly List<Action> cleanupAction = new List<Action>();
 
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
             cleanupAction.ForEach(f => f?.Invoke());
-
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.TearDown();
         }
 
         /// <summary>

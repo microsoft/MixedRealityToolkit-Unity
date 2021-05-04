@@ -15,12 +15,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        protected BaseController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
         {
             TrackingState = trackingState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
             Interactions = interactions;
+            Definition = definition;
 
             IsPositionAvailable = false;
             IsPositionApproximate = false;
@@ -96,17 +102,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The default interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultInteractions { get; } = null;
+        public virtual MixedRealityInteractionMapping[] DefaultInteractions => BuildInteractions(Definition?.GetDefaultMappings(ControllerHandedness));
 
         /// <summary>
-        /// The Default Left Handed interactions for this controller.
+        /// The default left-handed interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions { get; } = null;
+        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => BuildInteractions(Definition?.GetDefaultMappings(Handedness.Left));
 
         /// <summary>
-        /// The Default Right Handed interactions for this controller.
+        /// The default right-handed interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions { get; } = null;
+        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions => BuildInteractions(Definition?.GetDefaultMappings(Handedness.Right));
+
+        private MixedRealityInteractionMapping[] BuildInteractions(System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions)
+        {
+            if (definitionInteractions == null)
+            {
+                return null;
+            }
+
+            MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+            for (int i = 0; i < definitionInteractions.Count; i++)
+            {
+                defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i]);
+            }
+            return defaultInteractions;
+        }
+
+        /// <summary>
+        /// Represents the archetypal definition of what this controller supports and can perform.
+        /// </summary>
+        protected virtual IMixedRealityInputSourceDefinition Definition { get; } = null;
 
         #region IMixedRealityController Implementation
 
@@ -208,50 +234,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>True if a model was successfully loaded or model rendering is disabled. False if a model tried to load but failed.</returns>
         protected virtual bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
-            GameObject controllerModel = null;
-
-            if (GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().RenderMotionControllers)
+            MixedRealityControllerVisualizationProfile controllerVisualizationProfile = GetControllerVisualizationProfile();
+            bool controllerVisualizationProfilePresent = controllerVisualizationProfile != null;
+           
+            if (!controllerVisualizationProfilePresent || !controllerVisualizationProfile.RenderMotionControllers)
             {
                 return true;
             }
 
-            // If a specific controller template wants to override the global model, assign that instead.
-            if (IsControllerMappingEnabled() &&
-                GetControllerVisualizationProfile() != null &&
-                !(GetControllerVisualizationProfile().GetUseDefaultModelsOverride(controllerType, ControllerHandedness)))
+            GameObject controllerModel = null;
+            bool usePlatformModels = controllerVisualizationProfile.GetUsePlatformModelsOverride(controllerType, ControllerHandedness);
+
+            // If a specific controller template wants to override the global model, assign it
+            if (!usePlatformModels)
             {
-                controllerModel = GetControllerVisualizationProfile().GetControllerModelOverride(controllerType, ControllerHandedness);
+                controllerModel = controllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
             }
 
-            // Get the global controller model for each hand.
-            if (controllerModel == null &&
-                GetControllerVisualizationProfile() != null)
+            // If the Controller model is still null in the end, use the global defaults.
+            if (controllerModel == null)
             {
                 if (inputSourceType == InputSourceType.Controller)
                 {
                     if (ControllerHandedness == Handedness.Left &&
-                        GetControllerVisualizationProfile().GlobalLeftHandModel != null)
+                        controllerVisualizationProfile.GlobalLeftHandModel != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalLeftHandModel;
+                        controllerModel = controllerVisualizationProfile.GlobalLeftHandModel;
                     }
                     else if (ControllerHandedness == Handedness.Right &&
-                        GetControllerVisualizationProfile().GlobalRightHandModel != null)
+                        controllerVisualizationProfile.GlobalRightHandModel != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
+                        controllerModel = controllerVisualizationProfile.GlobalRightHandModel;
                     }
                 }
                 else if (inputSourceType == InputSourceType.Hand)
                 {
                     if (ControllerHandedness == Handedness.Left &&
-                        GetControllerVisualizationProfile().GlobalLeftHandVisualizer != null)
+                        controllerVisualizationProfile.GlobalLeftHandVisualizer != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalLeftHandVisualizer;
+                        controllerModel = controllerVisualizationProfile.GlobalLeftHandVisualizer;
                     }
                     else if (ControllerHandedness == Handedness.Right &&
-                        GetControllerVisualizationProfile().GlobalRightHandVisualizer != null)
+                        controllerVisualizationProfile.GlobalRightHandVisualizer != null)
                     {
-                        controllerModel = GetControllerVisualizationProfile().GlobalRightHandVisualizer;
+                        controllerModel = controllerVisualizationProfile.GlobalRightHandVisualizer;
                     }
                 }
             }

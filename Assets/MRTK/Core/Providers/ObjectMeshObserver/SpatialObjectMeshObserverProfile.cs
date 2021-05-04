@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
@@ -10,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
     /// <summary>
     /// Configuration profile for the spatial object mesh observer.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Spatial Object Mesh Observer Profile", fileName = "SpatialObjectMeshObserverProfile", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Spatial Object Mesh Observer Profile", fileName = "SpatialObjectMeshObserverProfile", order = 100)]
     public class SpatialObjectMeshObserverProfile : MixedRealitySpatialAwarenessMeshObserverProfile
     {
         [SerializeField]

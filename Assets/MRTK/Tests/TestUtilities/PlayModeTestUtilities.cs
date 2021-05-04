@@ -65,9 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </code>
         /// </example>
         /// <remarks>
-        /// Note that this value is reset to false after each play mode test that uses
+        /// <para>Note that this value is reset to false after each play mode test that uses
         /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
-        /// UseSlowTestController = true ends up slowing all subsequent tests.
+        /// UseSlowTestController = true ends up slowing all subsequent tests.</para>
         /// </remarks>
         public static bool UseSlowTestController = false;
 
@@ -82,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// steps should be used or not.
         /// </summary>
         /// <remarks>
-        /// This is primarily something that exists to get around the limitation of default parameter
-        /// values requiring compile-time constants.
+        /// <para>This is primarily something that exists to get around the limitation of default parameter
+        /// values requiring compile-time constants.</para>
         /// </remarks>
         internal const int ControllerMoveStepsSentinelValue = -1;
 
@@ -346,9 +346,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Moves the hand from startPos to endPos.
         /// </summary>
         /// <remarks>
-        /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
         /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.
+        /// time constant, which is a requirement for default parameter values.</para>
         /// </remarks>
         public static IEnumerator MoveHand(
             Vector3 startPos, Vector3 endPos,
@@ -378,9 +378,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Moves the motion controller from startPos to endPos.
         /// </summary>
         /// <remarks>
-        /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
         /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.
+        /// time constant, which is a requirement for default parameter values.</para>
         /// </remarks>
         public static IEnumerator MoveMotionController(
             Vector3 startPos, Vector3 endPos, SimulatedMotionControllerButtonState buttonState,
@@ -480,8 +480,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             Debug.Assert(
-                ((inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures) || 
-                (inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand)), 
+                ((inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures) ||
+                (inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand)),
                 "The current ControllerSimulationMode must be HandGestures or ArticulatedHand!");
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation, Quaternion.identity));
@@ -588,9 +588,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </code>
         /// </example>
         /// <remarks>
-        /// Note that this value is reset to false after each play mode test that uses
+        /// <para>Note that this value is reset to false after each play mode test that uses
         /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
-        /// UseSlowTestController = true ends up slowing all subsequent tests.
+        /// UseSlowTestController = true ends up slowing all subsequent tests.</para>
         /// </remarks>
         [Obsolete("Use UseSlowTestController instead.")]
         public static bool UseSlowTestHand
@@ -611,8 +611,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// steps should be used or not.
         /// </summary>
         /// <remarks>
-        /// This is primarily something that exists to get around the limitation of default parameter
-        /// values requiring compile-time constants.
+        /// <para>This is primarily something that exists to get around the limitation of default parameter
+        /// values requiring compile-time constants.</para>
         /// </remarks>
         [Obsolete("Use ControllerMoveStepsSentinelValue instead.")]
         internal const int HandMoveStepsSentinelValue = ControllerMoveStepsSentinelValue;

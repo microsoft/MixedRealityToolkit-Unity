@@ -35,7 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
         // Experience properties
-        private SerializedProperty targetExperienceScale;
+        private SerializedProperty experienceSettingsType;
+        private SerializedProperty experienceSettingsProfile;
+
+        // Tracking the old experience scale property for compatibility
+        private SerializedProperty experienceScaleMigration;
+
         // Camera properties
         private SerializedProperty enableCameraSystem;
         private SerializedProperty cameraSystemType;
@@ -47,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
+        private SerializedProperty xrsdkBoundarySystemType;
         private SerializedProperty boundaryVisualizationProfile;
         // Teleport system properties
         private SerializedProperty enableTeleportSystem;
@@ -73,14 +79,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private List<SubsystemProfile> enabledSubsystems;
 
-        //    "Spatial Awareness",
-        //    "Diagnostics",
-        //    "Scene System",
-        //    "Extensions",
-        //};
+        private static readonly string[] ProfileTabTitles = {
+            "Experience Settings",
+            "Camera",
+            "Input",
+            "Boundary",
+            "Teleport",
+            "Spatial Awareness",
+            "Diagnostics",
+            "Scene System",
+            "Extensions",
+            "Editor",
+        };
 
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
+
+        private readonly XRPipelineUtility xrPipelineUtility = new XRPipelineUtility();
 
         protected override void OnEnable()
         {
@@ -95,7 +110,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityToolkitConfigurationProfile mrtkConfigProfile = target as MixedRealityToolkitConfigurationProfile;
 
             // Experience configuration
-            targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
+            experienceSettingsType = serializedObject.FindProperty("experienceSettingsType");
+            experienceSettingsProfile = serializedObject.FindProperty("experienceSettingsProfile");
+            experienceScaleMigration = serializedObject.FindProperty("targetExperienceScale");
+
             // Camera configuration
             enableCameraSystem = serializedObject.FindProperty("enableCameraSystem");
             cameraSystemType = serializedObject.FindProperty("cameraSystemType");
@@ -107,7 +125,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
+            xrsdkBoundarySystemType = serializedObject.FindProperty("xrsdkBoundarySystemType");
             boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
+#if UNITY_2019
+            xrPipelineUtility.Enable();
+#endif // UNITY_2019
+
             // Teleport system configuration
             enableTeleportSystem = serializedObject.FindProperty("enableTeleportSystem");
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
@@ -142,6 +165,58 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
+                            // Reconciling old Experience Scale property with the Experience Settings Profile
+                            var oldExperienceSettigsScale = (experienceSettingsProfile.objectReferenceValue as MixedRealityExperienceSettingsProfile)?.TargetExperienceScale;
+
+                            changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false,  null, true);
+
+                            // Experience configuration
+                            if(!mrtkConfigProfile.ExperienceSettingsProfile.IsNull())
+                            {                            
+                                // If the Experience Scale property changed, make sure we also alter the configuration profile's target experience scale property for compatibility
+                                var newExperienceSettigs = (experienceSettingsProfile.objectReferenceValue as MixedRealityExperienceSettingsProfile)?.TargetExperienceScale;
+                                if(oldExperienceSettigsScale.HasValue && newExperienceSettigs.HasValue && oldExperienceSettigsScale != newExperienceSettigs)
+                                {
+                                    experienceScaleMigration.intValue = (int)newExperienceSettigs;
+                                    experienceScaleMigration.serializedObject.ApplyModifiedProperties();
+                                }
+                                // If we have not changed the Experience Settings profile and it's value is out of sync with the top level configuration profile, display a migration prompt
+                                else if ((ExperienceScale)experienceScaleMigration.intValue != mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale)
+                                {
+                                    Color errorColor = Color.Lerp(Color.white, Color.red, 0.5f);
+                                    Color defaultColor = GUI.color;
+
+                                    GUI.color = errorColor;
+                                    EditorGUILayout.HelpBox("A previous version of this profile has a different Experience Scale, displayed below. Please modify the Experience Setting Profile's Target Experience Scale or select your desired scale below", MessageType.Warning);
+                                    var oldValue = experienceScaleMigration.intValue;
+                                    EditorGUILayout.PropertyField(experienceScaleMigration);
+                                    if (oldValue != experienceScaleMigration.intValue)
+                                    {
+                                        mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale = (ExperienceScale)experienceScaleMigration.intValue;
+                                    }
+                                    GUI.color = defaultColor;
+                                }
+
+
+                                ExperienceScale experienceScale = mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
+                                string targetExperienceSummary = GetExperienceDescription(experienceScale);
+                                if (!string.IsNullOrEmpty(targetExperienceSummary))
+                                {
+                                    EditorGUILayout.HelpBox(targetExperienceSummary, MessageType.None);
+                                    EditorGUILayout.Space();
+                                }
+                            }
+
+                            changed |= c.changed;
+                        }
+                        return changed;
+                    },
+                    () => {
+                        bool changed = false;
+                        using (var c = new EditorGUI.ChangeCheckScope())
+                        {
+                            EditorGUILayout.PropertyField(enableCameraSystem);
+
                             const string service = "Camera System";
                             changed |= RenderSubsystem(service, SubsystemProfile.Camera, cameraSystemType, cameraProfile, null, typeof(MixedRealityCameraProfile));
                             changed |= c.changed;
@@ -159,8 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return changed;
                     },
                     () => {
-                        // Alert the user if the experience scale does not support boundary features.
-                        var experienceScale = (ExperienceScale)targetExperienceScale.intValue;
+                        var experienceScale = mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
                         if (experienceScale != ExperienceScale.Room)
                         {
                             GUILayout.Space(6f);
@@ -172,7 +246,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
                             const string service = "Boundary System";
-                            changed |= RenderSubsystem(service, SubsystemProfile.Boundary, boundarySystemType, boundaryVisualizationProfile, mrtkConfigProfile.BoundarySystemSystemType, typeof(MixedRealityBoundaryVisualizationProfile));
+                            if (enableBoundarySystem.boolValue)
+                            {
+                                CheckSystemConfiguration(service, mrtkConfigProfile.BoundarySystemSystemType, mrtkConfigProfile.BoundaryVisualizationProfile != null);
+
+#if UNITY_2019
+                                xrPipelineUtility.RenderXRPipelineTabs();
+#endif // UNITY_2019
+
+                                EditorGUILayout.PropertyField(xrPipelineUtility.SelectedPipeline == SupportedUnityXRPipelines.XRSDK ? xrsdkBoundarySystemType : boundarySystemType);
+
+                                changed |= RenderProfile(boundaryVisualizationProfile, null, true, false, typeof(IMixedRealityBoundarySystem));
+                            }
+                            else
+                            {
+                                RenderSystemDisabled(service);
+                            }
+
                             changed |= c.changed;
                         }
                         return changed;
@@ -232,7 +322,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
                             const string service = "Scene System";
-                            changed |= RenderSubsystem(service, SubsystemProfile.SceneSystem, sceneSystemType, sceneSystemProfile, null, typeof(MixedRealitySceneSystemProfile));
+                            if (enableSceneSystem.boolValue)
+                            {
+                                CheckSystemConfiguration(service, mrtkConfigProfile.SceneSystemSystemType, mrtkConfigProfile.SceneSystemProfile != null);
+
+                                EditorGUILayout.PropertyField(sceneSystemType);
+
+                                changed |= RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
+                            }
                             changed |= c.changed;
                         }
                         return changed;
@@ -305,22 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool isGUIEnabled = !IsProfileLock((BaseMixedRealityProfile)target) && GUI.enabled;
             GUI.enabled = isGUIEnabled;
 
-            EditorGUI.BeginChangeCheck();
             bool changed = false;
-
-            // Experience configuration
-            ExperienceScale experienceScale = (ExperienceScale)targetExperienceScale.intValue;
-            EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
-
-            string scaleDescription = GetExperienceDescription(experienceScale);
-            if (!string.IsNullOrEmpty(scaleDescription))
-            {
-                EditorGUILayout.HelpBox(scaleDescription, MessageType.None);
-                EditorGUILayout.Space();
-            }
-
-            changed |= EditorGUI.EndChangeCheck();
-
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical(GUILayout.Width(100));
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));

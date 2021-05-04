@@ -3315,6 +3315,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 0
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 589130342}
   linksConfiguration: {fileID: 269292274}
@@ -3512,6 +3513,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 0
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 323831377}
   linksConfiguration: {fileID: 1742904529}
@@ -4286,6 +4288,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 3
   flattenAxis: 4
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0.01, y: 0.01, z: 0.01}
   boxDisplayConfiguration: {fileID: 1723668357}
   linksConfiguration: {fileID: 1259952563}
@@ -4850,6 +4853,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 0
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 756750852}
   linksConfiguration: {fileID: 354167283}
@@ -9474,8 +9478,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1044594866}
+  - component: {fileID: 1044594867}
   m_Layer: 0
-  m_Name: SceneContent
+  m_Name: MixedRealitySceneContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9498,6 +9503,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1044594867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044594865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65c9dd2f312b8d41b8849d58e1053fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alignmentType: 0
 --- !u!1 &1057394252
 GameObject:
   m_ObjectHideFlags: 0
@@ -10138,6 +10156,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 3
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 1726820403}
   linksConfiguration: {fileID: 854647054}
@@ -13117,6 +13136,7 @@ MonoBehaviour:
   boundsCalculationMethod: 0
   activation: 4
   flattenAxis: 0
+  uniformScaleOnFlattenedAxis: 1
   boxPadding: {x: 0, y: 0, z: 0}
   boxDisplayConfiguration: {fileID: 2107814813}
   linksConfiguration: {fileID: 135819929}
