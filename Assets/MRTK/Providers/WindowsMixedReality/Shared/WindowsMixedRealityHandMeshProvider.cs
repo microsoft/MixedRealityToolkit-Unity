@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 out System.Numerics.Quaternion rotation,
                                 out System.Numerics.Vector3 translation);
 
-                            for(int i = 0; i < handMeshObserver.VertexCount; i++)
+                            for (int i = 0; i < handMeshObserver.VertexCount; i++)
                             {
                                 vertexAndNormals[i].Position.ConvertToUnityVector3(ref handMeshVerticesUnity[i]);
                                 vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
