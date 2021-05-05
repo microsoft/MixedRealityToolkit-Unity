@@ -74,19 +74,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             handMeshObserver = await sourceState.Source.TryCreateHandMeshObserverAsync();
         }
 
-        private void InitializeUVs(Vector3[] neutralPoseVertices)
+        private void InitializeUVs(Vector3[] poseVertices)
         {
-            if (neutralPoseVertices.Length == 0)
+            if (poseVertices.Length == 0)
             {
-                Debug.LogError("Loaded 0 verts for neutralPoseVertices");
+                Debug.LogError("Loaded 0 verts for poseVertices");
             }
 
-            float minY = neutralPoseVertices[0].y;
+            float minY = poseVertices[0].y;
             float maxY = minY;
 
-            for (int ix = 1; ix < neutralPoseVertices.Length; ix++)
+            for (int ix = 1; ix < poseVertices.Length; ix++)
             {
-                Vector3 p = neutralPoseVertices[ix];
+                Vector3 p = poseVertices[ix];
 
                 if (p.y < minY)
                 {
@@ -100,11 +100,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
             float scale = 1.0f / (maxY - minY);
 
-            handMeshUVsUnity = new Vector2[neutralPoseVertices.Length];
-
-            for (int ix = 0; ix < neutralPoseVertices.Length; ix++)
+            if ((handMeshUVsUnity == null) ||
+                (handMeshUVsUnity.Length != poseVertices.Length))
             {
-                Vector3 p = neutralPoseVertices[ix];
+                handMeshUVsUnity = new Vector2[poseVertices.Length];
+            }
+
+            for (int ix = 0; ix < poseVertices.Length; ix++)
+            {
+                Vector3 p = poseVertices[ix];
 
                 handMeshUVsUnity[ix] = new Vector2(p.x * scale + 0.5f, (p.y - minY) * scale);
             }
@@ -113,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker($"[MRTK] {nameof(WindowsMixedRealityHandMeshProvider)}.UpdateHandMesh");
 
         private HandMeshInfo handMeshInfo = new HandMeshInfo();
+        private Vector3[] neutralPoseVertices = null;
+        private HandMeshVertex[] neutralVertexAndNormals = null;
 
         /// <summary>
         /// Updates the current hand mesh based on the passed in state of the hand.
@@ -169,16 +175,24 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     if (neutralPoseVersion != poseVersion)
                     {
                         // Compute neutral pose
-                        Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
+                        if ((neutralPoseVertices == null) ||
+                            (neutralPoseVertices.Length != handMeshObserver.VertexCount))
+                        {
+                            neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
+                        }
                         HandPose neutralPose = handMeshObserver.NeutralPose;
-                        var neutralVertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
+                        if ((neutralVertexAndNormals == null) ||
+                            (neutralVertexAndNormals.Length != handMeshObserver.VertexCount))
+                        {
+                             neutralVertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
+                        }
                         HandMeshVertexState handMeshVertexState = handMeshObserver.GetVertexStateForPose(neutralPose);
                         handMeshVertexState.GetVertices(neutralVertexAndNormals);
 
-                        Parallel.For(0, handMeshObserver.VertexCount, i =>
+                        for (int i = 0; i < handMeshObserver.VertexCount; i++)
                         {
                             neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
-                        });
+                        };
 
                         neutralPoseVersion = poseVersion;
 
@@ -206,11 +220,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 out System.Numerics.Quaternion rotation,
                                 out System.Numerics.Vector3 translation);
 
-                            Parallel.For(0, handMeshObserver.VertexCount, i =>
+                            for(int i = 0; i < handMeshObserver.VertexCount; i++)
                             {
                                 vertexAndNormals[i].Position.ConvertToUnityVector3(ref handMeshVerticesUnity[i]);
                                 vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
-                            });
+                            };
 
                             // Hands should follow the Playspace to accommodate teleporting, so fold in the Playspace transform.
                             Vector3 positionUnity = MixedRealityPlayspace.TransformPoint(translation.ToUnityVector3());
