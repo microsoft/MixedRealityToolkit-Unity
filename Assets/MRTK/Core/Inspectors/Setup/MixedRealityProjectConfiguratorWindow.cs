@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 GUILayout.Label("Welcome to MRTK!", MixedRealityStylesUtility.BoldLargeTitleStyle);
                 CreateSpace(5);
-                EditorGUILayout.LabelField("This configurator will go through some settings to make sure the project is ready for MRTK.");
+                EditorGUILayout.LabelField("This configurator will go through some settings to make sure the project is ready for MRTK.", EditorStyles.wordWrappedLabel);
                 CreateSpace(20);
                 EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             }
@@ -507,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(15);
             EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
             CreateSpace(15);
-            EditorGUILayout.LabelField(dialogContent);
+            EditorGUILayout.LabelField(dialogContent, EditorStyles.wordWrappedLabel);
 
             CreateSpace(10);
             if (GUILayout.Button("Next"))
@@ -526,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(15);
             EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
             CreateSpace(15);
-            EditorGUILayout.LabelField(dialogContent);
+            EditorGUILayout.LabelField(dialogContent, EditorStyles.wordWrappedLabel);
 
             CreateSpace(10);
             if (GUILayout.Button(ApplyButtonContent))
