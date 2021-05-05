@@ -185,6 +185,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => smoothingFar = value;
         }
 
+        [SerializeField]
+        [Tooltip("The concrete type of TransformSmoothingLogic to use for smoothing between transforms.")]
+        [Extends(typeof(TransformSmoothingLogic), TypeGrouping.ByNamespaceFlat)]
+        private SystemType transformSmoothingLogicType = typeof(DefaultTransformSmoothingLogic);
+
         [FormerlySerializedAs("smoothingActive")]
         [SerializeField]
         [Tooltip("Frame-rate independent smoothing for far interactions. Far smoothing is enabled by default.")]
@@ -361,6 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ManipulationMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
+        private TransformSmoothingLogic smoothingLogic;
 
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray
@@ -408,6 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             moveLogic = new ManipulationMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
+            smoothingLogic = (TransformSmoothingLogic)Activator.CreateInstance(transformSmoothingLogicType);
 
             if (elasticsManager)
             {
@@ -867,15 +874,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (!transformUpdated.HasFlag(TransformFlags.Move))
                 {
-                    HostTransform.position = isSmoothing ? Smoothing.SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
+                    HostTransform.position = isSmoothing ? smoothingLogic.SmoothPosition(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
                 }
                 if (!transformUpdated.HasFlag(TransformFlags.Rotate))
                 {
-                    HostTransform.rotation = isSmoothing ? Smoothing.SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
+                    HostTransform.rotation = isSmoothing ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
                 }
                 if (!transformUpdated.HasFlag(TransformFlags.Scale))
                 {
-                    HostTransform.localScale = isSmoothing ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                    HostTransform.localScale = isSmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
                 }
             }
             else
@@ -888,8 +895,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     if (isSmoothing)
                     {
-                        rigidBody.MovePosition(Smoothing.SmoothTo(rigidBody.position, targetTransform.Position, moveLerpTime, Time.deltaTime));
-                        rigidBody.MoveRotation(Smoothing.SmoothTo(rigidBody.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime));
+                        rigidBody.MovePosition(smoothingLogic.SmoothPosition(rigidBody.position, targetTransform.Position, moveLerpTime, Time.deltaTime));
+                        rigidBody.MoveRotation(smoothingLogic.SmoothRotation(rigidBody.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime));
                     }
                     else
                     {
@@ -916,7 +923,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
 
-                HostTransform.localScale = isSmoothing ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                HostTransform.localScale = isSmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
             }
         }
 
