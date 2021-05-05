@@ -30,11 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Contains a set of animation curves that describe motion of camera and hands.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class InputAnimation
     {
-        protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         /// <summary>
         /// Arbitrarily large weight for representing a boolean value in float curves.
         /// </summary>
@@ -340,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveLeft, startTime);
                 InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveRight, startTime);
 
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
                     if (!handJointCurvesLeft.TryGetValue((TrackedHandJoint)i, out var curves))
                     {
@@ -348,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     PoseCurvesToStream(writer, curves, startTime);
                 }
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
                     if (!handJointCurvesRight.TryGetValue((TrackedHandJoint)i, out var curves))
                     {
@@ -612,7 +610,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputAnimationSerializationUtils.ReadBoolCurve(reader, animation.handPinchCurveLeft);
                 InputAnimationSerializationUtils.ReadBoolCurve(reader, animation.handPinchCurveRight);
 
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
                     if (!animation.handJointCurvesLeft.TryGetValue((TrackedHandJoint)i, out var curves))
                     {
@@ -623,7 +621,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     PoseCurvesFromStream(reader, curves, useNewFormat);
                 }
 
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
                     if (!animation.handJointCurvesRight.TryGetValue(key: (TrackedHandJoint)i, out var curves))
                     {

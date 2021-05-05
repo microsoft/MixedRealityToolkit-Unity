@@ -59,15 +59,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             internal set { raycastProviderType = value; }
         }
 
+        [SerializeField]
+        [Range(1, 2048)]
+        [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
+        private int focusQueryBufferSize = 128;
+
         /// <summary>
         /// Maximum number of colliders that can be detected in a SphereOverlap scene query.
         /// </summary>
         public int FocusQueryBufferSize => focusQueryBufferSize;
 
         [SerializeField]
-        [Range(1, 2048)]
-        [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
-        private int focusQueryBufferSize = 128;
+        [Tooltip("Whether or not MRTK should try to raycast against Unity UI.")]
+        private bool shouldUseGraphicsRaycast = true;
+
+        /// <summary>
+        /// Whether or not MRTK should try to raycast against Unity UI.
+        /// </summary>
+        public bool ShouldUseGraphicsRaycast => shouldUseGraphicsRaycast;
 
         [SerializeField]
         [Tooltip("In case of a compound collider, does the individual collider receive focus")]
