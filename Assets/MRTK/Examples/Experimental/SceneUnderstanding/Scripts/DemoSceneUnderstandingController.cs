@@ -152,7 +152,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         {
             RemoveFromData(eventData.Id);
 
-            observedSceneObjects[eventData.SpatialObject.SurfaceType].Remove(eventData.Id);
+            foreach (var sceneObjectDict in observedSceneObjects.Values)
+            {
+                sceneObjectDict?.Remove(eventData.Id);
+            }
         }
 
         #endregion IMixedRealitySpatialAwarenessObservationHandler Implementations

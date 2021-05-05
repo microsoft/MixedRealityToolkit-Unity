@@ -17,6 +17,11 @@ using Microsoft.MixedReality.SceneUnderstanding;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
+#if MSFT_OPENXR
+using Microsoft.MixedReality.OpenXR;
+using Microsoft.MixedReality.Toolkit.XRSDK;
+using UnityEngine.XR.OpenXR;
+#endif // MSFT_OPENXR
 #endif // WINDOWS_UWP
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -124,6 +129,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
 #else
             base.Initialize();
+#if WINDOWS_UWP
+#if MSFT_OPENXR
+            isOpenXRLoaderActive = LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
+#else
+            isOpenXRLoaderActive = false;
+#endif // MSFT_OPENXR
+#endif // WINDOWS_UWP
             sceneEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>(EventSystem.current);
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
 
@@ -401,6 +413,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private System.Numerics.Matrix4x4 sceneToWorldTransformMatrix;
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
         private Texture defaultTexture;
+#if WINDOWS_UWP
+        private bool isOpenXRLoaderActive;
+#endif // WINDOWS_UWP
 
         #endregion Private Fields
 
@@ -662,8 +677,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         }
                         await new WaitForUpdate();
 
-                        sceneToWorldTransformMatrix = GetSceneToWorldTransform();
-
+                        System.Numerics.Matrix4x4? transformResult = GetSceneToWorldTransform();
+                        if (transformResult.HasValue)
+                        {
+                            sceneToWorldTransformMatrix = transformResult.Value;
+                        }
+                        else
+                        {
+                            await new WaitForUpdate();
+                            observerState = ObserverState.GetScene;
+                            continue;
+                        }
+                        
                         if (!UsePersistentObjects)
                         {
                             ClearObservations();
@@ -760,20 +785,41 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// Gets the matrix representing the transform from scene space to world space
         /// </summary>
         /// <returns>The transform matrix</returns>
-        private System.Numerics.Matrix4x4 GetSceneToWorldTransform()
+        private System.Numerics.Matrix4x4? GetSceneToWorldTransform()
         {
             var result = System.Numerics.Matrix4x4.Identity;
 #if WINDOWS_UWP
-            SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
-            SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
-
-            var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);
-
-            if (sceneToWorld.HasValue)
+            if (isOpenXRLoaderActive)
             {
-                result = sceneToWorld.Value; // numerics
+#if MSFT_OPENXR
+                SpatialGraphNode node = SpatialGraphNode.FromStaticNodeId(sceneOriginId);
+                if (node.TryLocate(FrameTime.OnUpdate, out Pose pose))
+                {
+                    result = Matrix4x4.TRS(pose.position, pose.rotation, Vector3.one).ToSystemNumerics();
+                }
+                else
+                {
+                    return null;
+                }
+#endif // MSFT_OPENXR
             }
-#endif
+            else
+            {
+                SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
+                SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
+
+                var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);
+
+                if (sceneToWorld.HasValue)
+                {
+                    result = sceneToWorld.Value; // numerics
+                }
+                else
+                {
+                    return null;
+                }
+            }
+#endif // WINDOWS_UWP
             return result;
         }
 
