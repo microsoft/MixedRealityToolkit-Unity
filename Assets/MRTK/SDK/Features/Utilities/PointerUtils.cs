@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
         public static PointerBehavior GetPointerBehavior<T>(Handedness handedness, InputSourceType inputSourceType) where T : class, IMixedRealityPointer
         {
-            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences preferences)
+            if (CoreServices.InputSystem?.FocusProvider is IPointerPreferences preferences)
             {
                 if (typeof(T) == typeof(GGVPointer))
                 {

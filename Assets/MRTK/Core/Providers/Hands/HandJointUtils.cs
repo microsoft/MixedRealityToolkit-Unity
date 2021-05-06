@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public static T FindHand<T>(Handedness handedness) where T : class, IMixedRealityHand
         {
-            foreach (var detectedController in CoreServices.InputSystem.DetectedControllers)
+            foreach (IMixedRealityController detectedController in CoreServices.InputSystem?.DetectedControllers)
             {
                 if (detectedController is T hand)
                 {

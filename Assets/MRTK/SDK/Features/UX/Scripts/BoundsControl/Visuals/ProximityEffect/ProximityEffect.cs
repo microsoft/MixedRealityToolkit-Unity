@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             proximityPoints.Clear();
 
             // Find all valid pointers
-            foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
+            foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem?.DetectedInputSources)
             {
                 foreach (var pointer in inputSource.Pointers)
                 {
