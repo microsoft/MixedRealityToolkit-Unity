@@ -138,7 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     for (int i = 0; i < jointPoses.Length; i++)
                     {
-                        // Note: This is allocating. We should investigate a non-alloc approach.
                         Vector3 position = jointPoses[i].Position.ToUnityVector3();
                         Quaternion rotation = jointPoses[i].Orientation.ToUnityQuaternion();
 
