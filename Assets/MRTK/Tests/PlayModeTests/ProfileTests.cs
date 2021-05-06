@@ -92,10 +92,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private List<IMixedRealityPointer> GetAllPointers()
         {
             var allPointers = new List<IMixedRealityPointer>();
-            foreach (var i in CoreServices.InputSystem.DetectedInputSources)
+
+            HashSet<IMixedRealityInputSource> inputSources = CoreServices.InputSystem?.DetectedInputSources;
+
+            if (inputSources != null)
             {
-                allPointers.AddRange(i.Pointers);
+                foreach (var inputSource in inputSources)
+                {
+                    allPointers.AddRange(inputSource.Pointers);
+                }
             }
+
             return allPointers;
         }
 

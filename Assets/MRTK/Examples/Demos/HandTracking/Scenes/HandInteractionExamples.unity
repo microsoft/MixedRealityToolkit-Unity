@@ -22202,6 +22202,7 @@ GameObject:
   - component: {fileID: 1541735672}
   - component: {fileID: 1541735671}
   - component: {fileID: 1541735673}
+  - component: {fileID: 1541735674}
   m_Layer: 0
   m_Name: Platonic
   m_TagString: Untagged
@@ -22325,7 +22326,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1541735674}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -22397,6 +22398,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91cf8ec3353d87d409bfce42a1bc6d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1541735674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541735666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1001 &1542015560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24514,12 +24529,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1666569904}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1666569906 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100004, guid: 40bb9772594a93140a43a9a4f5cf9356,
-    type: 3}
-  m_PrefabInstance: {fileID: 1666569904}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1666569907 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: 40bb9772594a93140a43a9a4f5cf9356,
@@ -24532,7 +24541,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666569906}
+  m_GameObject: {fileID: 1666569907}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dac28f8bfe57b7f4182539cec9c0b40d, type: 3}
@@ -24554,46 +24563,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
---- !u!114 &1666569910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666569906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 181cd563a8349c34ea8978b0bc8d9c7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hostTransform: {fileID: 1666569914}
-  manipulationType: 3
-  twoHandedManipulationType: 7
-  allowFarManipulation: 1
-  useForcesForNearManipulation: 0
-  oneHandRotationModeNear: 1
-  oneHandRotationModeFar: 1
-  releaseBehavior: -1
-  smoothingFar: 1
-  smoothingNear: 1
-  moveLerpTime: 0.000001
-  rotateLerpTime: 0.000001
-  scaleLerpTime: 0.000001
-  enableConstraints: 1
-  constraintsManager: {fileID: 0}
-  elasticsManager: {fileID: 0}
-  onManipulationStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  onManipulationEnded:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  onHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!82 &1666569911
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24715,12 +24684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91cf8ec3353d87d409bfce42a1bc6d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1666569914 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400004, guid: 40bb9772594a93140a43a9a4f5cf9356,
-    type: 3}
-  m_PrefabInstance: {fileID: 1666569904}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1666569917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24747,7 +24710,7 @@ MonoBehaviour:
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1666569918}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -24785,6 +24748,21 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1666569918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666569907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints:
+  - {fileID: 1666569908}
 --- !u!1001 &1672675963
 PrefabInstance:
   m_ObjectHideFlags: 0
