@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns>true if not tracking valid hands and/or target, false otherwise</returns>
         private bool IsInvalidTracking()
         {
-            if (trackingTarget?.transform.parent == null)
+            if (trackingTarget == null || trackingTarget.transform.parent == null)
             {
                 return true;
             }
