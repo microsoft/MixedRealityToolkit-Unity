@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// The Input Source for Windows Speech Input.
         /// </summary>
-        public IMixedRealityInputSource InputSource = null;
+        public BaseGlobalInputSource InputSource = null;
 
         /// <summary>
         /// The minimum confidence level for the recognizer to fire an event.
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 return;
             }
 
-            InputSource = Service?.RequestNewGenericInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
+            InputSource = Service?.RequestNewGlobalInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
 
             var newKeywords = new string[Commands.Length];
 
@@ -239,10 +239,19 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (OnPhraseRecognizedPerfMarker.Auto())
             {
+                // Ensuring that we only update the input sources's set of pointer's once per event call.
+                bool globalInputSourceUpdated = false;
                 for (int i = 0; i < Commands?.Length; i++)
                 {
                     if (Commands[i].LocalizedKeyword == text)
                     {
+                        // Have the input source update the set of pointers it's sending events to.
+                        if(!globalInputSourceUpdated)
+                        {
+                            InputSource.UpdateActivePointers();
+                            globalInputSourceUpdated = true;
+                        }
+
                         Service?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
                         break;
                     }
