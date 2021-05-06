@@ -560,7 +560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b468aa5b7f931c140adaa4a3e66d718e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HelpGuideShortcutKeys: 3201000068000000
-  HelpGuideShortcutTip: {fileID: 2003569881887503376}
-  DisplayHelpGuideShortcutTipOnStart: 1
-  HelpGuideVisual: {fileID: 3884521507736125813}
+  helpGuideShortcutKeys: 3201000068000000
+  helpGuideShortcutTip: {fileID: 2003569881887503376}
+  displayHelpGuideShortcutTipOnStart: 1
+  helpGuideVisual: {fileID: 3884521507736125813}
