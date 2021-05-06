@@ -275,9 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                         Quaternion rotation = MixedRealityPlayspace.Rotation * handJointLocation.Rotation;
 #endif // MSFT_OPENXR_0_2_0_OR_NEWER
 
-                        TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(handJoint);
-
-                        unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
+                        unityJointPoses[ConvertToTrackedHandJoint(handJoint)] = new MixedRealityPose(position, rotation);
                     }
 #else
                 if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out Hand hand))

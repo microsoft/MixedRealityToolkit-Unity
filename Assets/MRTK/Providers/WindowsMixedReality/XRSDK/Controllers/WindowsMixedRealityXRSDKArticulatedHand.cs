@@ -148,9 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                     position = MixedRealityPlayspace.TransformPoint(position);
                                     rotation = MixedRealityPlayspace.Rotation * rotation;
 
-                                    TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(finger, i);
-
-                                    unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
+                                    unityJointPoses[ConvertToTrackedHandJoint(finger, i)] = new MixedRealityPose(position, rotation);
                                 }
                             }
 
