@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -31,6 +32,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Start()
         {
+            if (DeviceUtility.IsPresent)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
             string HelpGuideShortcutString = "";
             for (int i = 0; i < helpGuideShortcutKeys.Count; i++)
             {
