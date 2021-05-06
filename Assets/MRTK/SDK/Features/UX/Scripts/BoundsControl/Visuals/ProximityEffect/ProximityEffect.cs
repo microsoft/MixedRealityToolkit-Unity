@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             // Find all valid pointers
             foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem?.DetectedInputSources)
             {
-                foreach (var pointer in inputSource.Pointers)
+                foreach (IMixedRealityPointer pointer in inputSource.Pointers)
                 {
                     // don't use IsInteractionEnabled for near pointers as the pointers might have a different radius when deciding
                     // if they can interact with a near-by object - we might still want to show proximity scaling even if
@@ -187,10 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             float closestDistanceSqr = float.MaxValue;
             foreach (var point in proximityPoints)
             {
-
                 foreach (var keyValuePair in registeredObjects)
                 {
-
                     foreach (var item in keyValuePair.Value)
                     {
                         // If object can't be visible, skip calculations

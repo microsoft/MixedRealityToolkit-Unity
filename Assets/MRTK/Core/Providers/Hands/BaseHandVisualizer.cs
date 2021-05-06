@@ -131,15 +131,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         else if (handJoint == TrackedHandJoint.Palm)
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
+                            prefab = handTrackingProfile.PalmJointPrefab;
                         }
                         else if (handJoint == TrackedHandJoint.IndexTip)
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.FingerTipPrefab;
+                            prefab = handTrackingProfile.FingerTipPrefab;
                         }
                         else
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.JointPrefab;
+                            prefab = handTrackingProfile.JointPrefab;
                         }
 
                         GameObject jointObject;

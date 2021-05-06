@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
             {
-                foreach (var pointer in inputSource.Pointers)
+                foreach (IMixedRealityPointer pointer in inputSource.Pointers)
                 {
                     yield return pointer;
                 }
