@@ -259,6 +259,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private IMixedRealityHandJointService handJointService = null;
 
+        private const string TrackingTargetName = "SolverHandler Tracking Target";
+
         #region MonoBehaviour Implementation
 
         private void Awake()
@@ -449,7 +451,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (trackingTarget == null)
             {
-                trackingTarget = new GameObject("SolverHandler Tracking Target");
+                trackingTarget = new GameObject(TrackingTargetName);
                 trackingTarget.hideFlags = HideFlags.HideInHierarchy;
             }
 
