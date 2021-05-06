@@ -150,16 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
                                     TrackedHandJoint trackedHandJoint = ConvertToTrackedHandJoint(finger, i);
 
-                                    if (unityJointPoses.TryGetValue(trackedHandJoint, out MixedRealityPose pose))
-                                    {
-                                        pose.Position = position;
-                                        pose.Rotation = rotation;
-                                        unityJointPoses[trackedHandJoint] = pose;
-                                    }
-                                    else
-                                    {
-                                        unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
-                                    }
+                                    unityJointPoses[trackedHandJoint] = new MixedRealityPose(position, rotation);
                                 }
                             }
 
