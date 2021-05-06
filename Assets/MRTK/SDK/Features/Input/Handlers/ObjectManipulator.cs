@@ -414,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             moveLogic = new ManipulationMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
-            smoothingLogic = (TransformSmoothingLogic)Activator.CreateInstance(transformSmoothingLogicType);
+            smoothingLogic = Activator.CreateInstance(transformSmoothingLogicType) as TransformSmoothingLogic;
 
             if (elasticsManager)
             {
@@ -864,6 +864,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
+
+            bool applySmoothing = isSmoothing and smoothingLogic != null;
+
             if (rigidBody == null)
             {
                 TransformFlags transformUpdated = 0;
@@ -871,19 +874,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     transformUpdated = elasticsManager.ApplyTargetTransform(targetTransform);
                 }
-
                 if (!transformUpdated.HasFlag(TransformFlags.Move))
                 {
-                    HostTransform.position = isSmoothing ? smoothingLogic.SmoothPosition(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
+                    HostTransform.position = applySmoothing ? smoothingLogic.SmoothPosition(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
                 }
                 if (!transformUpdated.HasFlag(TransformFlags.Rotate))
                 {
-                    HostTransform.rotation = isSmoothing ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
+                    HostTransform.rotation = applySmoothing ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
                 }
                 if (!transformUpdated.HasFlag(TransformFlags.Scale))
                 {
-                    HostTransform.localScale = isSmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                    HostTransform.localScale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
                 }
+                
             }
             else
             {
@@ -893,7 +896,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     // This is a near manipulation and we're not using forces
                     // Apply direct updates but account for smoothing
 
-                    if (isSmoothing)
+                    if (applySmoothing)
                     {
                         rigidBody.MovePosition(smoothingLogic.SmoothPosition(rigidBody.position, targetTransform.Position, moveLerpTime, Time.deltaTime));
                         rigidBody.MoveRotation(smoothingLogic.SmoothRotation(rigidBody.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime));
@@ -923,7 +926,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
 
-                HostTransform.localScale = isSmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                HostTransform.localScale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
             }
         }
 
