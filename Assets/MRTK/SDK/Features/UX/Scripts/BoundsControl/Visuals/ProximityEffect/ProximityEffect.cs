@@ -146,8 +146,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             proximityPointers.Clear();
             proximityPoints.Clear();
 
+            HashSet<IMixedRealityInputSource> inputSources = CoreServices.InputSystem?.DetectedInputSources;
+
+            if (inputSources == null)
+            {
+                return;
+            }
+
             // Find all valid pointers
-            foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem?.DetectedInputSources)
+            foreach (IMixedRealityInputSource inputSource in inputSources)
             {
                 foreach (IMixedRealityPointer pointer in inputSource.Pointers)
                 {

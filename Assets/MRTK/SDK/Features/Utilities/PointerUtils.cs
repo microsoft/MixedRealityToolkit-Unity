@@ -136,7 +136,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public static IEnumerable<IMixedRealityPointer> GetPointers()
         {
-            foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
+            HashSet<IMixedRealityInputSource> inputSources = CoreServices.InputSystem?.DetectedInputSources;
+
+            if (inputSources == null)
+            {
+                yield break;
+            }
+
+            foreach (IMixedRealityInputSource inputSource in inputSources)
             {
                 foreach (IMixedRealityPointer pointer in inputSource.Pointers)
                 {
