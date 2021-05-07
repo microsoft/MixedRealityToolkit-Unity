@@ -21,6 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// UWP keyboard from showing up again after it is closed.
     /// Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
     /// </summary>
+    /// <remarks>
+    /// <para>If using Unity 2019 or 2020, make sure the version >= 2019.4.25 or 2020.3.2 to ensure the latest fixes for Unity keyboard bugs are present.</para>
+    /// </remarks>
     public abstract class MixedRealityKeyboardBase : MonoBehaviour
     {
         #region Properties
@@ -187,12 +190,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                             UpdateText();
                         }
                         break;
-
-                    case KeyboardState.Hiding:
-                        {
-                            onHideKeyboard?.Invoke();
-                        }
-                        break;
                 }
 
                 yield return null;
@@ -262,6 +259,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             onShowKeyboard?.Invoke();
+#if UNITY_2019_3_OR_NEWER
+            keyboard.selection = new RangeInt(Text.Length, 0);
+#endif
             MovePreviewCaretToEnd();
             if (stateUpdate == null)
             {
@@ -290,6 +290,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             if (keyboard != null)
             {
+#if UNITY_2019_3_OR_NEWER
+                Text = keyboard.text;
+                CaretIndex = keyboard.selection.end;
+#else
                 // Check the current language of the keyboard
                 string newKeyboardLanguage = Language.CurrentInputMethodLanguageTag;
                 if (newKeyboardLanguage != keyboardLanguage)
@@ -367,6 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                 }
 
+#endif
                 // Handle commit via the return key.
                 if (!multiLine)
                 {
@@ -388,10 +393,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void OnKeyboardHiding()
         {
-            if (state != KeyboardState.Hidden)
-            {
-                state = KeyboardState.Hiding;
-            }
+            UnityEngine.WSA.Application.InvokeOnAppThread(() => onHideKeyboard?.Invoke(), false);
+            state = KeyboardState.Hidden;
         }
 
         private void OnKeyboardShowing() { }

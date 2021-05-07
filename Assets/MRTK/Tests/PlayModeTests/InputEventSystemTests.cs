@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     using Handle = BaseEventSystem.EventHandlerEntry;
     using HandleList = List<BaseEventSystem.EventHandlerEntry>;
 
-    public class InputEventSystemTests: BasePlayModeTests
+    class InputEventSystemTests : BasePlayModeTests
     {
         /// <summary>
         /// </summary>

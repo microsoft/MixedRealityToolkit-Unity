@@ -23,7 +23,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class SlateTests
+    public class SlateTests : BasePlayModeTests
     {
         // SDK/Features/UX/Prefabs/Slate/Slate.prefab
         private const string slatePrefabAssetGuid = "937ce507dd7ee334ba569554e24adbdd";
@@ -34,21 +34,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private MeshFilter meshFilter;
         private Material material;
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
-            GameObject.Destroy(panObject);
-            GameObject.Destroy(panZoom);
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            Object.Destroy(panObject);
+            Object.Destroy(panZoom);
+            yield return base.TearDown();
         }
 
         /// <summary>

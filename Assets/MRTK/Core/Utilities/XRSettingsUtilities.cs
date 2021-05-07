@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     public static class XRSettingsUtilities
     {
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && !UNITY_2020_2_OR_NEWER
         private static bool? legacyXRAvailable = null;
-#endif // UNITY_2019_3_OR_NEWER
+#endif // UNITY_2019_3_OR_NEWER && !UNITY_2020_2_OR_NEWER
 
         /// <summary>
         /// Checks if an XR SDK plug-in is installed that disables legacy VR. Returns false if so.
@@ -26,7 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             get
             {
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2020_2_OR_NEWER
+                return false;
+#elif UNITY_2019_3_OR_NEWER
                 if (!legacyXRAvailable.HasValue)
                 {
                     legacyXRAvailable = true;
@@ -47,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return legacyXRAvailable.HasValue && legacyXRAvailable.Value;
 #else
                 return true;
-#endif // UNITY_2019_3_OR_NEWER
+#endif // UNITY_2020_2_OR_NEWER
             }
         }
     }

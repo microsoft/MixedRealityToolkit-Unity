@@ -49,7 +49,7 @@ It's also possible to run the playmode tests multiple times via the `run_repeat_
 
 MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.
 
-Only after all of the tests have passed successfully can the PR be merged into mrtk_development.
+Only after all of the tests have passed successfully can the PR be merged into main.
 
 ### Stress tests / bulk tests
 

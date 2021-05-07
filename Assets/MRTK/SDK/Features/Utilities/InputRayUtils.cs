@@ -110,7 +110,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             controller = null;
 
-            foreach (IMixedRealityController c in CoreServices.InputSystem.DetectedControllers)
+            System.Collections.Generic.HashSet<IMixedRealityController> controllers = CoreServices.InputSystem?.DetectedControllers;
+
+            if (controllers == null)
+            {
+                return false;
+            }
+
+            foreach (IMixedRealityController c in controllers)
             {
                 if ((c.InputSource?.SourceType == sourceType) &&
                     (c.ControllerHandedness == hand))

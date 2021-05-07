@@ -20,23 +20,10 @@ using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class JoystickTests
+    public class JoystickTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         #region Tests
+
         [UnityTest]
         public IEnumerator TestJoystickTranslation()
         {
@@ -147,9 +134,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(startScale != endScale);
         }
+
         #endregion Tests
 
         #region Utilities
+
         public readonly string JoystickPrefabAssetPath = AssetDatabase.GUIDToAssetPath(JoystickPrefabGuid);
 
         // Examples/Experimental/Joystick/JoystickPrefab.prefab
@@ -182,6 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(joystick);
             return joystick;
         }
+
         #endregion Utilities
     }
 }

@@ -4,15 +4,14 @@ parameters:
   projectRoot: $(Get-Location)
   outputDirectory: $(Build.ArtifactStagingDirectory)\build\upm\output
   version: $(MRTKVersion)
-  buildNumber: $(Build.BuildNumber)
-  excludeBuildNumber: false
+  previewNumber: $(Build.BuildNumber)
 
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '12.18.0'
 
-- ${{ if eq(parameters.excludeBuildNumber, false) }}:
+- ${{ if not(eq(parameters.previewNumber, '')) }}:
   - task: PowerShell@2
     displayName: 'Build PREVIEW UPM packages'
     inputs:
@@ -22,9 +21,9 @@ steps:
         -ProjectRoot ${{ parameters.projectRoot }}
         -OutputDirectory ${{ parameters.outputDirectory }}
         -Version ${{ parameters.version }}
-        -BuildNumber ${{ parameters.buildNumber }}
+        -PreviewNumber ${{ parameters.previewNumber }}
 
-- ${{ if eq(parameters.excludeBuildNumber, true) }}:
+- ${{ if eq(parameters.previewNumber, '') }}:
   - task: PowerShell@2
     displayName: 'Build OFFICIAL UPM packages'
     inputs:
@@ -34,8 +33,6 @@ steps:
         -ProjectRoot ${{ parameters.projectRoot }}
         -OutputDirectory ${{ parameters.outputDirectory }}
         -Version ${{ parameters.version }}
-        -BuildNumber ${{ parameters.buildNumber }}
-        -ExcludeBuildNumber
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish UPM artifacts'

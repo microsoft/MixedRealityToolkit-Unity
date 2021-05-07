@@ -20,7 +20,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     // tests for eyetracking
-    public class EyeTrackingTargetTest
+    public class EyeTrackingTargetTest : BasePlayModeTests
     {
         // Assets/MRTK/Examples/Demos/EyeTracking/General/Profiles/EyeTrackingDemoConfigurationProfile.asset
         private const string eyeTrackingConfigurationProfileGuid = "6615cacb3eaaa044f99b917186093aeb";
@@ -31,18 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
         // This method is called once before we enter play mode and execute any of the tests
         // do any kind of setup here that can't be done in playmode
-        [SetUp]
-        public void Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-        }
-
-        // Destroy the scene - this method is called after each test listed below has completed
-        [TearDown]
-        public void TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         #region Tests
