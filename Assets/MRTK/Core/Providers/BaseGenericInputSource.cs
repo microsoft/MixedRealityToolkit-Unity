@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other)
         {
-            SourceId = (CoreServices.InputSystem != null) ? CoreServices.InputSystem.GenerateNewSourceId() : 0;
+            SourceId = CoreServices.InputSystem?.GenerateNewSourceId() ?? 0;
             SourceName = name;
             if (pointers != null)
             {
