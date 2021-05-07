@@ -864,7 +864,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
-
             bool applySmoothing = isSmoothing && smoothingLogic != null;
 
             if (rigidBody == null)
