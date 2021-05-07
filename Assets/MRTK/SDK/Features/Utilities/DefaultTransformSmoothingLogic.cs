@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// A default implementation of TransformSmoother for smoothing transforms.
+    /// A default implementation of ITransformSmoothingLogic for smoothing transforms.
     /// </summary>
     public class DefaultTransformSmoothingLogic : ITransformSmoothingLogic
     {
