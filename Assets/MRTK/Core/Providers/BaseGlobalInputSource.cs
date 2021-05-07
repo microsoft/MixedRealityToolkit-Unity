@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Base class for input sources whose pointers are all active pointers in the scene.
     /// </summary>
     /// <remarks>
-    /// <para>This base class is intended to represent input sources which raise event to all active pointers found by the FocusProvider in a scene.</para>
+    /// <para>This base class is intended to represent input sources which raise events to all active pointers found by the FocusProvider in a scene.</para>
     /// </remarks>
     public class BaseGlobalInputSource : IMixedRealityInputSource, IDisposable
     {
