@@ -10,17 +10,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     public class DefaultTransformSmoothingLogic : ITransformSmoothingLogic
     {
-        public override Vector3 SmoothPosition(Vector3 source, Vector3 goal, float lerpTime, float deltaTime)
+        public Vector3 SmoothPosition(Vector3 source, Vector3 goal, float lerpTime, float deltaTime)
         {
             return Smoothing.SmoothTo(source, goal, lerpTime, deltaTime);
         }
         
-        public override Quaternion SmoothRotation(Quaternion source, Quaternion goal, float slerpTime, float deltaTime)
+        public Quaternion SmoothRotation(Quaternion source, Quaternion goal, float slerpTime, float deltaTime)
         {
             return Smoothing.SmoothTo(source, goal, slerpTime, deltaTime);
         }
         
-        public override Vector3 SmoothScale(Vector3 source, Vector3 goal, float lerpTime, float deltaTime)
+        public Vector3 SmoothScale(Vector3 source, Vector3 goal, float lerpTime, float deltaTime)
         {
             return Smoothing.SmoothTo(source, goal, lerpTime, deltaTime);
         }
