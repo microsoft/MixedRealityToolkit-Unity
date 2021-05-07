@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// A default implementation of TransformSmoother for smoothing transforms.
     /// </summary>
-    public class DefaultTransformSmoothingLogic : TransformSmoothingLogic
+    public class DefaultTransformSmoothingLogic : ITransformSmoothingLogic
     {
         public override Vector3 SmoothPosition(Vector3 source, Vector3 goal, float lerpTime, float deltaTime)
         {
