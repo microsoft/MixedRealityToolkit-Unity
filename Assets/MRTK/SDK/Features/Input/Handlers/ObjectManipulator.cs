@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("The concrete type of TransformSmoothingLogic to use for smoothing between transforms.")]
-        [Extends(typeof(TransformSmoothingLogic), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(ITransformSmoothingLogic), TypeGrouping.ByNamespaceFlat)]
         private SystemType transformSmoothingLogicType = typeof(DefaultTransformSmoothingLogic);
 
         [FormerlySerializedAs("smoothingActive")]
@@ -366,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ManipulationMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
-        private TransformSmoothingLogic smoothingLogic;
+        private ITransformSmoothingLogic smoothingLogic;
 
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray
@@ -414,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             moveLogic = new ManipulationMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
-            smoothingLogic = Activator.CreateInstance(transformSmoothingLogicType) as TransformSmoothingLogic;
+            smoothingLogic = Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
 
             if (elasticsManager)
             {
