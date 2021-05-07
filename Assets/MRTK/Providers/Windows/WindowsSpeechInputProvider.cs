@@ -61,12 +61,17 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// The Input Source for Windows Speech Input.
         /// </summary>
-        public BaseGlobalInputSource InputSource = null;
+        public IMixedRealityInputSource InputSource => globalInputSource;
 
         /// <summary>
         /// The minimum confidence level for the recognizer to fire an event.
         /// </summary>
         public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
+
+        /// <summary>
+        /// The global input source used by the the speech input provider to raise events.
+        /// </summary>
+        private BaseGlobalInputSource globalInputSource;
 
         /// <inheritdoc />
         public bool IsRecognitionActive =>
@@ -152,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 return;
             }
 
-            InputSource = Service?.RequestNewGlobalInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
+            globalInputSource = Service?.RequestNewGlobalInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
 
             var newKeywords = new string[Commands.Length];
 
@@ -239,18 +244,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (OnPhraseRecognizedPerfMarker.Auto())
             {
-                // Ensuring that we only update the input sources's set of pointers once per event call.
-                bool globalInputSourceUpdated = false;
                 for (int i = 0; i < Commands?.Length; i++)
                 {
                     if (Commands[i].LocalizedKeyword == text)
                     {
-                        // Have the input source update the set of pointers it's sending events to.
-                        if(!globalInputSourceUpdated)
-                        {
-                            InputSource.UpdateActivePointers();
-                            globalInputSourceUpdated = true;
-                        }
+                        globalInputSource.UpdateActivePointers();
 
                         Service?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
                         break;
