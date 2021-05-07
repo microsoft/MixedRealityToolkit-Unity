@@ -176,12 +176,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var object2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var focusBasedListener2 = object2.AddComponent<TestInputFocusListener>();
 
-
             // Position the objects
             object1.transform.position = new Vector3(-1, 0, 2);
             object2.transform.position = new Vector3(1, 0, 2);
-
-            yield return null;
 
             var globalInputSource = CoreServices.InputSystem.RequestNewGlobalInputSource("GlobalInputSource", sourceType: InputSourceType.Voice);
             globalInputSource.UpdateActivePointers();
@@ -246,7 +243,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(focusBasedListener1.speechCommandsReceived.Count == 0, "Speech events were received when object was out of focus");
             Assert.True(focusBasedListener2.speechCommandsReceived.Count == commandList.Count() * 2, "Speech events were not received correctly.");
 
-            yield return null;
+            // Tests that events are expended upon use
+            focusBasedListener1.useEventDataOnReception = true;
+            focusBasedListener2.useEventDataOnReception = true;
+
+            focusBasedListener1.speechCommandsReceived.Clear();
+            focusBasedListener2.speechCommandsReceived.Clear();
+
+            yield return leftHand.Show(object2.transform.position + Vector3.back * 0.5f);
+            yield return rightHand.Show(object2.transform.position + Vector3.back * 0.5f);
+            globalInputSource.UpdateActivePointers();
+
+            foreach (SpeechCommands command in commandList)
+            {
+                CoreServices.InputSystem.RaiseSpeechCommandRecognized(globalInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands(command.Keyword, command.KeyCode, MixedRealityInputAction.None));
+            }
+
+            Assert.True(focusBasedListener1.speechCommandsReceived.Count == 0, "Speech events were received when object was out of focus");
+            Assert.True(focusBasedListener2.speechCommandsReceived.Count == commandList.Count(), "Speech events were not received correctly.");
         }
 
         /// <summary>

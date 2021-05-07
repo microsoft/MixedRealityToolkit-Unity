@@ -15,8 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     internal class TestInputFocusListener : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         // Parameters, which are set by child classes
-        protected bool useObjectBasedRegistration = false;
-        protected bool registerSpeechOnly = false;
+        public bool useEventDataOnReception = false;
 
         // Values changed by class to validate event receiving
         public int pointerDownCount = 0;
@@ -43,36 +42,71 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             pointerDownCount++;
+
+            if (useEventDataOnReception)
+            {
+                eventData.Use();
+            }
         }
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             pointerDraggedCount++;
+
+            if (useEventDataOnReception)
+            {
+                eventData.Use();
+            }
         }
 
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             pointerUpCount++;
+
+            if (useEventDataOnReception)
+            {
+                eventData.Use();
+            }
         }
 
         public virtual void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             pointerClickedCount++;
+
+            if (useEventDataOnReception)
+            {
+                eventData.Use();
+            }
         }
 
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             speechCommandsReceived.Add(eventData.Command.Keyword);
+
+            if(useEventDataOnReception)
+            {
+                eventData.Use();
+            }
         }
 
         public void OnFocusEnter(FocusEventData eventData)
         {
             focusGainedCount++;
+
+            if (useEventDataOnReception)
+            {
+                eventData.Use();
+            }
         }
 
         public void OnFocusExit(FocusEventData eventData)
         {
             focusLostCount++;
+
+            if (useEventDataOnReception)
+            {
+                eventData.Use();
+            }
         }
     }
 #pragma warning restore 0618
