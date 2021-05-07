@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (OnPhraseRecognizedPerfMarker.Auto())
             {
-                // Ensuring that we only update the input sources's set of pointer's once per event call.
+                // Ensuring that we only update the input sources's set of pointers once per event call.
                 bool globalInputSourceUpdated = false;
                 for (int i = 0; i < Commands?.Length; i++)
                 {
