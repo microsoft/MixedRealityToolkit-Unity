@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SourceName = name;
             FocusProvider = focusProvider;
             SourceType = sourceType;
+
+            UpdateActivePointers();
         }
 
         /// <inheritdoc />
