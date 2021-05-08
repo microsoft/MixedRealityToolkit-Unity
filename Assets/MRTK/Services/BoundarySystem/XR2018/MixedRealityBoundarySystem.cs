@@ -24,9 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             MixedRealityBoundaryVisualizationProfile profile,
             ExperienceScale scale) : base(profile, scale) { }
 
-        /// <inheritdoc/>
-        protected override bool IsXRDevicePresent => XRDevice.isPresent;
-
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>

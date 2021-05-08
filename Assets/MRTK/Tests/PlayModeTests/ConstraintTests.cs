@@ -22,22 +22,8 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class ConstraintTests
+    public class ConstraintTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator SetUp()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         /// <summary>
         /// Tests that the MoveAxisConstraint works for various axes.
         /// This test uses world space axes.

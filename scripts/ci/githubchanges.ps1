@@ -18,16 +18,16 @@
     in the output file.
 
     Note that this script assumes that the local git repo doesn't already contain the
-    target branch (e.g. mrtk_development). This is what happens by default on Azure DevOps
+    target branch (e.g. main). This is what happens by default on Azure DevOps
     pipeline integrations with GitHub pull requests.
 
     In particular, this will checkout (via this command:
     git fetch --force --tags --prune --progress --no-recurse-submodules origin $(System.PullRequest.TargetBranch))
 .EXAMPLE
-    .\githubchanges.ps1 -OutputFile c:\path\to\changes\file.txt -RepoRoot c:\path\to\mrtk -TargetBranch mrtk_development
+    .\githubchanges.ps1 -OutputFile c:\path\to\changes\file.txt -RepoRoot c:\path\to\mrtk -TargetBranch main
 #>
 param(
-    # The target branch that the pull request will merge into (e.g. mrtk_development)
+    # The target branch that the pull request will merge into (e.g. main)
     [string]$TargetBranch,
 
     # The output filename (e.g. c:\path\to\output.txt)

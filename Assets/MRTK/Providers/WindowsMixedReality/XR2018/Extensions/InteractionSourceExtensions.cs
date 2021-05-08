@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// </summary>
         /// <param name="interactionSource">The source to start haptics on.</param>
         /// <param name="intensity">The strength of the haptic feedback from 0.0 (no haptics) to 1.0 (maximum strength).</param>
-        public static void StartHaptics(this InteractionSource interactionSource, float intensity) => interactionSource.StartHaptics(intensity, float.MaxValue);
+        public static bool StartHaptics(this InteractionSource interactionSource, float intensity) => interactionSource.StartHaptics(intensity, float.MaxValue);
 
         /// <summary>
         /// Start haptic feedback on the interaction source with the specified intensity and continue for the specified amount of time.
@@ -85,11 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="interactionSource">The source to start haptics on.</param>
         /// <param name="intensity">The strength of the haptic feedback from 0.0 (no haptics) to 1.0 (maximum strength).</param>
         /// <param name="durationInSeconds">The time period expressed in seconds.</param>
-        public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
+        public static bool StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
         {
             if (!IsHapticsAvailable)
             {
-                return;
+                return false;
             }
 
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 if (hapticsFeedback.Waveform.Equals(ContinuousBuzzWaveform))
                 {
-                    if (durationInSeconds.Equals(float.MaxValue))
+                    if (UnityEngine.Mathf.Approximately(durationInSeconds, float.MaxValue))
                     {
                         simpleHapticsController.SendHapticFeedback(hapticsFeedback, intensity);
                     }
@@ -106,10 +106,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                     {
                         simpleHapticsController.SendHapticFeedbackForDuration(hapticsFeedback, intensity, TimeSpan.FromSeconds(durationInSeconds));
                     }
-                    return;
+                    return true;
                 }
             }
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
+
+            return false;
         }
 
         /// <summary>

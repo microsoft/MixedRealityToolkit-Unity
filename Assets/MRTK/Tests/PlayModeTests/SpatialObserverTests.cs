@@ -15,7 +15,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -117,9 +116,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestDisableSpatialAwarenessSystem()
         {
             var mrtkProfile = CreateMRTKTestProfile(TestSpatialAwarenessSystemProfilePath);
-            
+
             mrtkProfile.IsSpatialAwarenessSystemEnabled = false;
-            
+
             TestUtilities.InitializeMixedRealityToolkit(mrtkProfile);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
@@ -129,11 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static MixedRealityToolkitConfigurationProfile CreateMRTKTestProfile(string spatialAwarenessSystemPath)
         {
             var mrtkProfile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
-            
+
             mrtkProfile.SpatialAwarenessSystemSystemType = new SystemType(typeof(MixedRealitySpatialAwarenessSystem));
             mrtkProfile.IsSpatialAwarenessSystemEnabled = true;
             mrtkProfile.SpatialAwarenessSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealitySpatialAwarenessSystemProfile>(spatialAwarenessSystemPath);
-            
+
             return mrtkProfile;
         }
     }

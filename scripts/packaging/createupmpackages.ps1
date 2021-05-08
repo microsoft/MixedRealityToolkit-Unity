@@ -12,11 +12,8 @@
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER Version
     What version of the artifacts should we build?
-.PARAMETER BuildNumber
-    The build number to append to the version. Note: This value is required when the ExcludeBuildNumber parameter is omitted.
-.PARAMETER ExcludeBuildNumber
-    Indicates that the build number should be excluded from the generated artifacts. If this parameter is specified, the version
-    of the artifacts will be formatted as "<$Version>", if omitted, the artifact version will be "<$Version>-preview.<BuildNumber>".
+.PARAMETER PreviewNumber
+    The preview number to append to the version. Note: Exclude this parameter to create non-preview packages.
 #>
 param(
     [string]$ProjectRoot,
@@ -24,9 +21,7 @@ param(
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$Version,
     [ValidatePattern("^\d+?[\.\d+]*$")]
-    [string]$BuildNumber,
-    [Parameter(Mandatory=$false)]
-    [Switch]$ExcludeBuildNumber
+    [string]$PreviewNumber
 )
 
 [string]$startPath = $(Get-Location)
@@ -40,12 +35,10 @@ if (-not $Version) {
     throw "Missing required parameter: -Version."
 }
 
-if ((-not $BuildNumber) -and (-not $ExcludeBuildNumber)) {
-    throw "Missing required parameter: -BuildNumber. This parameter is required when -ExcludeBuildNumber is not specified."
+if ($PreviewNumber) {
+    $Version = "$Version-preview.$PreviewNumber"
 }
-if (-not $ExcludeBuildNumber) {
-    $Version = "$Version-preview.$BuildNumber"
-}
+
 Write-Output "Package version: $Version"
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {

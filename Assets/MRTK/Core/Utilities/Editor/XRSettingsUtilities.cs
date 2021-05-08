@@ -202,9 +202,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 BuildTargetGroup currentBuildTarget = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
                 XRGeneralSettings settingsOfCurrentTarget = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(currentBuildTarget);
+                if (settingsOfCurrentTarget != null && settingsOfCurrentTarget.AssignedSettings != null)
+                {
 #pragma warning disable CS0618 // Suppressing the warning to support xr management plugin 3.x and 4.x
-                return settingsOfCurrentTarget.AssignedSettings.loaders;
+                    return settingsOfCurrentTarget.AssignedSettings.loaders;
 #pragma warning restore CS0618
+                }
+                else
+                {
+                    return System.Array.Empty<XRLoader>();
+                }
             }
         }
 #endif // XR_MANAGEMENT_ENABLED

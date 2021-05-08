@@ -19,12 +19,11 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class NearInteractionTouchableTests
+    public class NearInteractionTouchableTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             PlayModeTestUtilities.EnsureInputModule();
 
             inputSim = PlayModeTestUtilities.GetInputSimulationService();
@@ -44,13 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             pokeMaterial = new Material(shader);
             pokeMaterial.color = Color.green;
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 

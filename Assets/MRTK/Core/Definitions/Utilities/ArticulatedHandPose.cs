@@ -18,7 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     public class ArticulatedHandPose
     {
         private static readonly TrackedHandJoint[] Joints = Enum.GetValues(typeof(TrackedHandJoint)) as TrackedHandJoint[];
-        private static readonly int JointCount = Joints.Length;
+
+        /// <summary>
+        /// Represents the maximum number of tracked hand joints.
+        /// </summary>
+        public static int JointCount { get; } = Joints.Length;
 
         /// <summary>
         /// Joint poses are stored as right-hand poses in camera space.
@@ -302,14 +306,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [Serializable]
         internal class ArticulatedHandPoseDictionary
         {
-            private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
             public ArticulatedHandPoseItem[] items = null;
 
             public void FromJointPoses(MixedRealityPose[] jointPoses)
             {
-                items = new ArticulatedHandPoseItem[jointCount];
-                for (int i = 0; i < jointCount; ++i)
+                items = new ArticulatedHandPoseItem[JointCount];
+                for (int i = 0; i < JointCount; ++i)
                 {
                     items[i].JointIndex = (TrackedHandJoint)i;
                     items[i].pose = jointPoses[i];
@@ -318,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             public void ToJointPoses(MixedRealityPose[] jointPoses)
             {
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < JointCount; ++i)
                 {
                     jointPoses[i] = MixedRealityPose.ZeroIdentity;
                 }

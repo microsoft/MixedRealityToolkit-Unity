@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (indicators)
             {
-                GameObject.Destroy(indicators);
+                UnityEngine.Object.Destroy(indicators);
             }
 
             DisableCameraControl();

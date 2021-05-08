@@ -10,7 +10,7 @@ A comment in the PR will let you know if you do.
 
 ## Creating a pull request
 
-When you are ready to submit a pull request, [create a pull request](https://github.com/microsoft/MixedRealityToolkit-Unity/compare/mrtk_development...mrtk_development?expand=1) targeting the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch.
+When you are ready to submit a pull request, [create a pull request](https://github.com/microsoft/MixedRealityToolkit-Unity/compare/main...main?expand=1) targeting the [main](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/main) branch. For bug fixes during a release stabilization period, look for the latest `prerelease/*` branch. New features should always go into `main`.
 
 Read the guidelines and ensure your pull request meets the guidelines.
 

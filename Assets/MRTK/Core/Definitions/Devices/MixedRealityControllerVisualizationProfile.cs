@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SystemType GetControllerVisualizationTypeOverride(Type controllerType, Handedness hand)
         {
             MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
-            return setting.HasValue ? setting.Value.ControllerVisualizationType : null;
+            return setting.HasValue ? setting.Value.ControllerVisualizationType : DefaultControllerVisualizationType;
         }
 
         /// <summary>
