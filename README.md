@@ -95,7 +95,7 @@ If you're an experienced Mixed Reality or MRTK developer, check the links in the
 
 Explore MRTK's various types of interactions and UI controls through the example scenes. You can find example scenes under [**Assets/MRTK/Examples/Demos**](/Assets/MixedRealityToolkit.Examples/Demos) folder.
 
-[![Example Scene](Documentation/Images/MRTK_Examples.png)](https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/example-scenes/hand-interaction-examples)
+[![Example Scene](Documentation/Images/MRTK_Examples.png)](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/example-scenes/hand-interaction-examples)
 
 # MRTK examples hub
 
@@ -103,7 +103,7 @@ With the MRTK Examples Hub, you can try various example scenes in MRTK. On HoloL
 
 See [Examples Hub README page](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/example-scenes/example-hub) to learn about the details on creating a multi-scene hub with MRTK's scene system and scene transition service.
 
-[![Example Scene](Documentation/Images/MRTK_ExamplesHub.png)](https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/example-scenes/hand-interaction-examples)
+[![Example Scene](Documentation/Images/MRTK_ExamplesHub.png)](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/example-scenes/hand-interaction-examples)
 
 # Sample apps made with MRTK
 
