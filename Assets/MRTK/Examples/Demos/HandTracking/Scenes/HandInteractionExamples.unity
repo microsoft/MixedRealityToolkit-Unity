@@ -22889,11 +22889,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 914966060}
     m_Modifications:
-    - target: {fileID: 1025555136919324373, guid: af7def2dd5079e044b0e1cf4a927cfc8,
-        type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 5629718995931189460, guid: af7def2dd5079e044b0e1cf4a927cfc8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22953,11 +22948,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Help Panel Viewer
-      objectReference: {fileID: 0}
-    - target: {fileID: 6335558611449888476, guid: af7def2dd5079e044b0e1cf4a927cfc8,
-        type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af7def2dd5079e044b0e1cf4a927cfc8, type: 3}
