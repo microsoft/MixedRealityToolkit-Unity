@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
     /// Example script to demonstrate a toggle button using dwell
+    /// This script uses _BorderWidth property of Mixed Reality Standard Shader
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/ToggleDwellPressableButton")]
     public class ToggleDwellPressableButton : BaseDwellPressableButton
