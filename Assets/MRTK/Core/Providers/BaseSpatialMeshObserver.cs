@@ -63,12 +63,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
             // IMixedRealitySpatialAwarenessMeshObserver settings
             DisplayOption = profile.DisplayOption;
+            TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter; // Set this before LevelOfDetail so it doesn't overwrite in the non-Custom case
             LevelOfDetail = profile.LevelOfDetail;
             MeshPhysicsLayer = profile.MeshPhysicsLayer;
             OcclusionMaterial = profile.OcclusionMaterial;
             PhysicsMaterial = profile.PhysicsMaterial;
             RecalculateNormals = profile.RecalculateNormals;
-            TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
             VisibleMaterial = profile.VisibleMaterial;
 
             RuntimeSpatialMeshPrefab = profile.RuntimeSpatialMeshPrefab;
