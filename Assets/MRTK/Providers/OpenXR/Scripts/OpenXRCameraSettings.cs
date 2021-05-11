@@ -3,12 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
 
-#if MSFT_OPENXR
-using Microsoft.MixedReality.OpenXR;
+#if UNITY_OPENXR
 using UnityEngine.XR.OpenXR;
-#endif // MSFT_OPENXR
+#endif // UNTIY_OPENXR
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -39,17 +37,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         { }
 
         private bool IsActiveLoader =>
-#if MSFT_OPENXR
+#if UNITY_OPENXR
             LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
 #else
             false;
-#endif // MSFT_OPENXR
+#endif // UNITY_OPENXR
 
-#if MSFT_OPENXR
-        private static readonly bool IsReprojectionExtensionSupported = OpenXRRuntime.IsExtensionEnabled("XR_MSFT_composition_layer_reprojection_preview");
-#endif // MSFT_OPENXR
+#if UNITY_OPENXR
+        private static readonly bool IsReprojectionModeSupported = OpenXRRuntime.IsExtensionEnabled("XR_MSFT_composition_layer_reprojection_preview");
+#endif // UNTIY_OPENXR
 
         private OpenXRCameraSettingsProfile Profile => ConfigurationProfile as OpenXRCameraSettingsProfile;
+
+        private OpenXRReprojectionUpdater reprojectionUpdater = null;
 
         /// <inheritdoc />
         public override void Enable()
@@ -61,7 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             base.Enable();
-            InitializeReprojectionMode();
+            InitializeReprojectionUpdater();
+        }
+
+        /// <inheritdoc/>
+        public override void Disable()
+        {
+            UninitializeReprojectionUpdater();
+            base.Disable();
         }
 
         #region IMixedRealityCameraSettings
@@ -74,36 +81,24 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <summary>
         /// Adds and initializes the reprojection updater component.
         /// </summary>
-        private void InitializeReprojectionMode()
+        private void InitializeReprojectionUpdater()
         {
-            if (IsReprojectionExtensionSupported && Profile != null)
+            if (reprojectionUpdater == null && Profile != null)
             {
-                ReprojectionMode reprojectionMode;
+                reprojectionUpdater = CameraCache.Main.EnsureComponent<OpenXRReprojectionUpdater>();
+                reprojectionUpdater.ReprojectionMethod = Profile.ReprojectionMethod;
+            }
+        }
 
-                switch (Profile.ReprojectionMethod)
-                {
-                    case HolographicReprojectionMethod.Depth:
-                        reprojectionMode = ReprojectionMode.Depth;
-                        break;
-                    case HolographicReprojectionMethod.PlanarFromDepth:
-                        reprojectionMode = ReprojectionMode.PlanarFromDepth;
-                        break;
-                    case HolographicReprojectionMethod.PlanarManual:
-                        reprojectionMode = ReprojectionMode.PlanarManual;
-                        break;
-                    case HolographicReprojectionMethod.OrientationOnly:
-                        reprojectionMode = ReprojectionMode.OrientationOnly;
-                        break;
-                    case HolographicReprojectionMethod.NoReprojection:
-                    default:
-                        reprojectionMode = ReprojectionMode.NoReprojection;
-                        break;
-                }
-
-                if (ReprojectionSettings.SupportedReprojectionModes.Contains(reprojectionMode))
-                {
-                    ReprojectionSettings.ReprojectionMode = reprojectionMode;
-                }
+        /// <summary>
+        /// Uninitializes and removes the reprojection updater component.
+        /// </summary>
+        private void UninitializeReprojectionUpdater()
+        {
+            if (reprojectionUpdater != null)
+            {
+                UnityObjectExtensions.DestroyObject(reprojectionUpdater);
+                reprojectionUpdater = null;
             }
         }
     }
