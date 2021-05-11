@@ -224,7 +224,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             set
             {
                 displayOption = value;
-                ApplyUpdatedMeshDisplayOption(displayOption);
+                if (Application.isPlaying)
+                {
+                    ApplyUpdatedMeshDisplayOption(displayOption);
+                }
             }
         }
 
@@ -293,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 {
                     occlusionMaterial = value;
 
-                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion)
+                    if (Application.isPlaying && DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion)
                     {
                         ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Occlusion);
                     }
@@ -328,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 {
                     visibleMaterial = value;
 
-                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
+                    if (Application.isPlaying && DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
                     {
                         ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
                     }
