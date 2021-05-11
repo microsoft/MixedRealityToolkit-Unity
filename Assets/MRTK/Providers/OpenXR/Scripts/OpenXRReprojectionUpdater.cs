@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
-using UnityEngine.XR.OpenXR;
 
-#if MSFT_OPENXR
-using System.Collections.Generic;
-#endif // MSFT_OPENXR
+#if MSFT_OPENXR_0_9_4_OR_NEWER
+using Microsoft.MixedReality.OpenXR;
+using System.Linq;
+using UnityEngine.XR.OpenXR;
+#endif // MSFT_OPENXR_0_9_4_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -17,54 +18,45 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// </summary>
         public HolographicReprojectionMethod ReprojectionMethod { get; set; }
 
-#if MSFT_OPENXR
-        private readonly Dictionary<uint, bool> cameraIdToSupportsAutoPlanar = new Dictionary<uint, bool>();
-
+#if MSFT_OPENXR_0_9_4_OR_NEWER
         private static readonly bool IsReprojectionModeSupported = OpenXRRuntime.IsExtensionEnabled("XR_MSFT_composition_layer_reprojection_preview");
+        private ReprojectionSettings reprojectionSettings = default;
 
-        //private void OnPostRender()
-        //{
-        //    // The reprojection method needs to be set each frame.
-        //    if (IsReprojectionModeSupported)
-        //    {
-        //        Microsoft.Windows.Graphics.Holographic.HolographicFrame frame = WindowsMixedRealityUtilities.CurrentHolographicFrame;
-        //        foreach (var cameraPose in frame?.CurrentPrediction.CameraPoses)
-        //        {
-        //            if (CameraSupportsAutoPlanar(cameraPose.HolographicCamera))
-        //            {
-        //                Microsoft.Windows.Graphics.Holographic.HolographicCameraRenderingParameters renderingParams = frame.GetRenderingParameters(cameraPose);
-        //                renderingParams.DepthReprojectionMethod = Microsoft.Windows.Graphics.Holographic.HolographicDepthReprojectionMethod.AutoPlanar;
-        //            }
-        //        }
-        //    }
-        //}
+        private void OnPostRender()
+        {
+            // The reprojection method needs to be set each frame.
+            if (IsReprojectionModeSupported
+                && ReprojectionMethod != HolographicReprojectionMethod.Depth)
+            {
+                ReprojectionMode reprojectionMode = MapMRTKReprojectionMethodToOpenXR(ReprojectionMethod);
+                reprojectionSettings.ReprojectionMode = reprojectionMode;
+                foreach (ViewConfiguration viewConfiguration in ViewConfiguration.EnabledViewConfigurations)
+                {
+                    if (viewConfiguration.IsActive && viewConfiguration.SupportedReprojectionModes.Contains(reprojectionMode))
+                    {
+                        viewConfiguration.SetReprojectionSettings(reprojectionSettings);
+                    }
+                }
+            }
+        }
 
-        ///// <summary>
-        ///// Checks the Holographic camera to see if it supports auto-planar reprojection.
-        ///// </summary>
-        ///// <param name="camera">The camera to be queried.</param>
-        ///// <returns>
-        ///// True if the camera supports auto-planar reprojection, false otherwise.
-        ///// </returns>
-        //private bool CameraSupportsAutoPlanar(Microsoft.Windows.Graphics.Holographic.HolographicCamera camera)
-        //{
-        //    bool supportsAutoPlanar = false;
-
-        //    if (!cameraIdToSupportsAutoPlanar.TryGetValue(camera.Id, out supportsAutoPlanar))
-        //    {
-        //        foreach (var method in camera.ViewConfiguration.SupportedDepthReprojectionMethods)
-        //        {
-        //            if (method == Microsoft.Windows.Graphics.Holographic.HolographicDepthReprojectionMethod.AutoPlanar)
-        //            {
-        //                supportsAutoPlanar = true;
-        //                break;
-        //            }
-        //        }
-        //        cameraIdToSupportsAutoPlanar.Add(camera.Id, supportsAutoPlanar);
-        //    }
-
-        //    return supportsAutoPlanar;
-        //}
-#endif // MSFT_OPENXR
+        private ReprojectionMode MapMRTKReprojectionMethodToOpenXR(HolographicReprojectionMethod reprojectionMethod)
+        {
+            switch (reprojectionMethod)
+            {
+                case HolographicReprojectionMethod.Depth:
+                    return ReprojectionMode.Depth;
+                case HolographicReprojectionMethod.PlanarFromDepth:
+                    return ReprojectionMode.PlanarFromDepth;
+                case HolographicReprojectionMethod.PlanarManual:
+                    return ReprojectionMode.PlanarManual;
+                case HolographicReprojectionMethod.OrientationOnly:
+                    return ReprojectionMode.OrientationOnly;
+                case HolographicReprojectionMethod.NoReprojection:
+                default:
+                    return ReprojectionMode.NoReprojection;
+            }
+        }
+#endif // MSFT_OPENXR_0_9_4_OR_NEWER
     }
 }

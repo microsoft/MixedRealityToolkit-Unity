@@ -43,10 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             false;
 #endif // UNITY_OPENXR
 
-#if UNITY_OPENXR
-        private static readonly bool IsReprojectionModeSupported = OpenXRRuntime.IsExtensionEnabled("XR_MSFT_composition_layer_reprojection_preview");
-#endif // UNTIY_OPENXR
-
         private OpenXRCameraSettingsProfile Profile => ConfigurationProfile as OpenXRCameraSettingsProfile;
 
         private OpenXRReprojectionUpdater reprojectionUpdater = null;
