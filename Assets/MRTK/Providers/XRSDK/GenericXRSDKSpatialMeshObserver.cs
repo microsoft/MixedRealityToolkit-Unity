@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             var descriptors = new List<XRMeshSubsystemDescriptor>();
             SubsystemManager.GetSubsystemDescriptors(descriptors);
 
-            return descriptors.Count > 0;
+            return descriptors.Count > 0 && IsActiveLoader;
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation

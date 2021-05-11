@@ -23,8 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         SupportedUnityXRPipelines.XRSDK)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class OpenXRSpatialAwarenessMeshObserver :
-        GenericXRSDKSpatialMeshObserver,
-        IMixedRealityCapabilityCheck
+        GenericXRSDKSpatialMeshObserver
     {
         /// <summary>
         /// Constructor.
