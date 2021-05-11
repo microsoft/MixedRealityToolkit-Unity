@@ -47,30 +47,40 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 #endif // MSFT_OPENXR_0_9_4_OR_NEWER
 
 #if MSFT_OPENXR_0_9_4_OR_NEWER
-        private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker($"[MRTK] {nameof(OpenXRSpatialAwarenessMeshObserver)}.ConfigureObserverVolume");
+        private static readonly ProfilerMarker ApplyUpdatedMeshDisplayOptionPerfMarker = new ProfilerMarker($"[MRTK] {nameof(OpenXRSpatialAwarenessMeshObserver)}.ApplyUpdatedMeshDisplayOption");
 
         /// <inheritdoc/>
-        protected override void ConfigureObserverVolume()
+        protected override void ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions option)
         {
-            using (ConfigureObserverVolumePerfMarker.Auto())
+            using (ApplyUpdatedMeshDisplayOptionPerfMarker.Auto())
             {
-                base.ConfigureObserverVolume();
-
-                MixedRealitySpatialAwarenessMeshObserverProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessMeshObserverProfile;
-                if (profile == null)
-                {
-                    return;
-                }
-
-                MeshComputeSettings settings = new MeshComputeSettings
-                {
-                    MeshType = (profile.DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible) ? MeshType.Visual : MeshType.Collider,
-                    VisualMeshLevelOfDetail = MapMRTKLevelOfDetailToOpenXR(profile.LevelOfDetail),
-                    OcclusionHint = true
-                };
-
-                MeshSettings.SetMeshComputeSettings(settings);
+                SetMeshComputeSettings(option, LevelOfDetail);
+                base.ApplyUpdatedMeshDisplayOption(option);
             }
+        }
+
+        private static readonly ProfilerMarker LookupTriangleDensityPerfMarker = new ProfilerMarker($"[MRTK] {nameof(OpenXRSpatialAwarenessMeshObserver)}.LookupTriangleDensity");
+
+        /// <inheritdoc/>
+        protected override int LookupTriangleDensity(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
+        {
+            using (LookupTriangleDensityPerfMarker.Auto())
+            {
+                SetMeshComputeSettings(DisplayOption, levelOfDetail);
+                return (int)levelOfDetail;
+            }
+        }
+
+        private void SetMeshComputeSettings(SpatialAwarenessMeshDisplayOptions option, SpatialAwarenessMeshLevelOfDetail levelOfDetail)
+        {
+            MeshComputeSettings settings = new MeshComputeSettings
+            {
+                MeshType = (option == SpatialAwarenessMeshDisplayOptions.Visible) ? MeshType.Visual : MeshType.Collider,
+                VisualMeshLevelOfDetail = MapMRTKLevelOfDetailToOpenXR(levelOfDetail),
+                OcclusionHint = true
+            };
+
+            MeshSettings.SetMeshComputeSettings(settings);
         }
 
         private VisualMeshLevelOfDetail MapMRTKLevelOfDetailToOpenXR(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
