@@ -66,12 +66,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (LookupTriangleDensityPerfMarker.Auto())
             {
-                SetMeshComputeSettings(DisplayOption, levelOfDetail);
-                return (int)levelOfDetail;
+                if (Application.isPlaying && SetMeshComputeSettings(DisplayOption, levelOfDetail))
+                {
+                    return (int)levelOfDetail;
+                }
+                else
+                {
+                    return base.LookupTriangleDensity(levelOfDetail);
+                }
             }
         }
 
-        private void SetMeshComputeSettings(SpatialAwarenessMeshDisplayOptions option, SpatialAwarenessMeshLevelOfDetail levelOfDetail)
+        private bool SetMeshComputeSettings(SpatialAwarenessMeshDisplayOptions option, SpatialAwarenessMeshLevelOfDetail levelOfDetail)
         {
             MeshComputeSettings settings = new MeshComputeSettings
             {
@@ -80,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 OcclusionHint = true
             };
 
-            MeshSettings.SetMeshComputeSettings(settings);
+            return MeshSettings.TrySetMeshComputeSettings(settings);
         }
 
         private VisualMeshLevelOfDetail MapMRTKLevelOfDetailToOpenXR(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
