@@ -874,6 +874,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return new BaseGenericInputSource(name, pointers, sourceType);
         }
 
+        /// <inheritdoc />
+        public BaseGlobalInputSource RequestNewGlobalInputSource(string name, IMixedRealityFocusProvider focusProvider = null, InputSourceType sourceType = InputSourceType.Other)
+        {
+            var inputSourceFocusProvider = focusProvider.IsNull() ? FocusProvider : focusProvider;
+            return new BaseGlobalInputSource(name, inputSourceFocusProvider, sourceType);
+        }
+
+
         #region Input Source State Events
 
         private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourceDetected");
