@@ -72,7 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
             if (observer == null)
             {
-                Debug.LogError("Couldn't access Scene Understanding Observer!");
+                Debug.LogError("Couldn't access Scene Understanding Observer! Please make sure the current build target is set to Universal Windows Platform. "
+                    + "Visit https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/scene-understanding for more information.");
                 return;
             }
             InitToggleButtonState();
