@@ -561,7 +561,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
 #if UNITY_2019_3_OR_NEWER
-        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package (UPM)")]
         private static void DisplayExamplesInPackageManager()
         {
             UnityEditor.PackageManager.UI.Window.Open("Mixed Reality Toolkit Examples");
@@ -668,7 +668,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return isTMPEssentialsImported.Value;
         }
 
-        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package", true)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package (UPM)", true)]
         private static bool MRTKExamplesPackageImportedViaUPM()
         {
 #if !UNITY_2019_3_OR_NEWER
