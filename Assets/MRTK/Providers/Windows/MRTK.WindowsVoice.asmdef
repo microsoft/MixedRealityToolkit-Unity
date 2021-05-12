@@ -1,11 +1,12 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput",
+    "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Unity.InputSystem"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
         "WSA",
@@ -17,5 +18,13 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "INPUTSYSTEM_PACKAGE"
+        }
+    ],
+    "noEngineReferences": false
 }
