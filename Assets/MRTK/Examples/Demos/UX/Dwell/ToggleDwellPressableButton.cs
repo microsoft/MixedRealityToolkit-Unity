@@ -77,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         {
             base.DwellCompleted(pointer);
             buttonBackground.GetComponent<MeshRenderer>().material.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
-            //dwellVisualImage.transform.localScale = Vector3.zero;
         }
 
         /// <inheritdoc/>
