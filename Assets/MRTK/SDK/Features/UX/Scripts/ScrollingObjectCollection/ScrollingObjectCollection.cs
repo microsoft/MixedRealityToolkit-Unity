@@ -1691,7 +1691,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Bounds clippingThresholdBounds = ClippingBoundsCollider.bounds;
 
             Renderer[] contentRenderers = ScrollContainer.GetComponentsInChildren<Renderer>(true);
-            List<Renderer> clippedRenderers = ClipBox.GetRenderersCopy().ToList();
+            HashSet<Renderer> clippedRenderers = new HashSet<Renderer>(ClipBox.GetRenderersCopy());
 
             // Remove all renderers from clipping primitive that are not part of scroll content
             foreach (var clippedRenderer in clippedRenderers)
