@@ -260,14 +260,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void UpdateCurrentTeleportPose(MixedRealityInteractionMapping interactionMapping)
         {
-            // Disabling the teleport pose on AR devices, specifically Hololens, due to not having a good way to specify valid teleport surfaces.
-#if WINDOWS_UWP
-            if(!CoreServices.CameraSystem.IsNull() && !CoreServices.CameraSystem.IsOpaque)
-            {
-                return;
-            }
-#endif
-
             using (UpdateCurrentTeleportPosePerfMarker.Auto())
             {
                 // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
