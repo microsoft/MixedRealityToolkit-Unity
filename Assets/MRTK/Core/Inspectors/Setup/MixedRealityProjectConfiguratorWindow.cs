@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 GUILayout.Label("Welcome to MRTK!", MixedRealityStylesUtility.BoldLargeTitleStyle);
                 CreateSpace(5);
-                EditorGUILayout.LabelField("This configurator will go through some settings to make sure the project is ready for MRTK.");
+                EditorGUILayout.LabelField("This configurator will go through some settings to make sure the project is ready for MRTK.", EditorStyles.wordWrappedLabel);
                 CreateSpace(20);
                 EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             }
@@ -507,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(15);
             EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
             CreateSpace(15);
-            EditorGUILayout.LabelField(dialogContent);
+            EditorGUILayout.LabelField(dialogContent, EditorStyles.wordWrappedLabel);
 
             CreateSpace(10);
             if (GUILayout.Button("Next"))
@@ -526,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(15);
             EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
             CreateSpace(15);
-            EditorGUILayout.LabelField(dialogContent);
+            EditorGUILayout.LabelField(dialogContent, EditorStyles.wordWrappedLabel);
 
             CreateSpace(10);
             if (GUILayout.Button(ApplyButtonContent))
@@ -560,6 +560,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             });
         }
 
+#if UNITY_2019_3_OR_NEWER
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package (UPM)")]
+        private static void DisplayExamplesInPackageManager()
+        {
+            UnityEditor.PackageManager.UI.Window.Open("Mixed Reality Toolkit Examples");
+        }
+#endif // UNITY_2019_3_OR_NEWER
+
         private void RenderShowUPMExamples()
         {
             if (!MRTKExamplesPackageImportedViaUPM())
@@ -579,8 +587,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (GUILayout.Button("Show me the examples"))
                 {
 #if UNITY_2019_3_OR_NEWER
-                    UnityEditor.PackageManager.UI.Window.Open("Mixed Reality Toolkit Examples");
-#endif
+                    DisplayExamplesInPackageManager();
+#endif // UNITY_2019_3_OR_NEWER
                 }
                 if (GUILayout.Button("Got it, next"))
                 {
@@ -660,7 +668,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return isTMPEssentialsImported.Value;
         }
 
-        private bool MRTKExamplesPackageImportedViaUPM()
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package (UPM)", true)]
+        private static bool MRTKExamplesPackageImportedViaUPM()
         {
 #if !UNITY_2019_3_OR_NEWER
             return false;
