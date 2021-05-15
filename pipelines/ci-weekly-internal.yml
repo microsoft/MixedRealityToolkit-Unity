@@ -6,14 +6,14 @@ schedules:
   displayName: Weekly build
   branches:
     include: 
-    - mrtk_development
+    - main
 
 variables:
 - template: config/settings.yml
 - name: 'SOMWorkspaceID'
   value: '9aee72fc-a4e1-4f86-8343-8bcb69b03955'
 - name: 'ComplianceBranch'
-  value: 'refs/heads/mrtk_development'
+  value: 'refs/heads/main'
 
 jobs:
 - job: Compliance
@@ -25,7 +25,7 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-  # the following tasks should only be run on mrtk_development branch, otherwise we risk issue being reported multiple times on topic/release branches
+  # the following tasks should only be run on main branch, otherwise we risk issue being reported multiple times on topic/release branches
   - task: PoliCheck@1
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], variables['ComplianceBranch']))
     inputs:

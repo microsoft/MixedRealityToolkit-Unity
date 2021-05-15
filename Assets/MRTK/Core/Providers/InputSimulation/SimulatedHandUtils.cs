@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Linq;
 using UnityEngine;
 
@@ -10,8 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class SimulatedHandUtils
     {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         /// <summary>
         /// Compute the rotation of each joint, with the forward vector of the rotation pointing along the joint bone, 
         /// and the up vector pointing up.

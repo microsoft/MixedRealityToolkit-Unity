@@ -136,9 +136,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public static IEnumerable<IMixedRealityPointer> GetPointers()
         {
-            foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
+            HashSet<IMixedRealityInputSource> inputSources = CoreServices.InputSystem?.DetectedInputSources;
+
+            if (inputSources == null)
             {
-                foreach (var pointer in inputSource.Pointers)
+                yield break;
+            }
+
+            foreach (IMixedRealityInputSource inputSource in inputSources)
+            {
+                foreach (IMixedRealityPointer pointer in inputSource.Pointers)
                 {
                     yield return pointer;
                 }
@@ -153,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
         public static PointerBehavior GetPointerBehavior<T>(Handedness handedness, InputSourceType inputSourceType) where T : class, IMixedRealityPointer
         {
-            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences preferences)
+            if (CoreServices.InputSystem?.FocusProvider is IPointerPreferences preferences)
             {
                 if (typeof(T) == typeof(GGVPointer))
                 {

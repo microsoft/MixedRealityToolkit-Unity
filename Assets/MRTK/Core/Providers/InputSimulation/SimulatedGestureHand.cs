@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         protected override void UpdateHandJoints(SimulatedHandData handData)
         {
-            for (int i = 0; i < jointCount; i++)
+            for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
             {
                 TrackedHandJoint handJoint = (TrackedHandJoint)i;
 
