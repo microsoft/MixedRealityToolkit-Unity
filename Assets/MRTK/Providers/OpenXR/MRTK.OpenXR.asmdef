@@ -32,7 +32,7 @@
         },
         {
             "name": "com.microsoft.mixedreality.openxr",
-            "expression": "0.9.4",
+            "expression": "0.9.4-preview",
             "define": "MSFT_OPENXR_0_9_4_OR_NEWER"
         },
         {
