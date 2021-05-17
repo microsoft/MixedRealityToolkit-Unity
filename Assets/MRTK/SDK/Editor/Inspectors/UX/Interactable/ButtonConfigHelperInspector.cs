@@ -205,14 +205,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                                     }
                                     else
                                     {
-                                        EditorGUILayout.HelpBox("There is no interactable attached linked to the button config helper. One is needed to display the appropriate speech command", MessageType.Warning);
+                                        EditorGUILayout.HelpBox("There is no interactable linked to the button config helper. One is needed to display the appropriate speech command", MessageType.Warning);
                                     }
                                 }
                                 sisiChanged |= EditorGUI.EndChangeCheck();
 
                                 if (sisiChanged)
                                 {
-                                    Debug.Log("hitting here3");
                                     sisiLabelTextObject.ApplyModifiedProperties();
                                 }
                             }
