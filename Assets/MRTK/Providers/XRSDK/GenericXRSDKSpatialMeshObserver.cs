@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
-        (SupportedPlatforms)(-1), // All platforms supported by Unity
+        (SupportedPlatforms)(-1) ^ SupportedPlatforms.WindowsUniversal, // All platforms supported by Unity except UWP
         "XR SDK Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK",
@@ -41,9 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
-        // Don't run this one on Windows MR, since that has its own observer
-        // There's probably a better way to manage these two...
-        protected virtual bool IsActiveLoader => !LoaderHelpers.IsLoaderActive("Windows MR Loader");
+        protected virtual bool IsActiveLoader => true;
 
         /// <inheritdoc />
         public override void Enable()
@@ -135,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             var descriptors = new List<XRMeshSubsystemDescriptor>();
             SubsystemManager.GetSubsystemDescriptors(descriptors);
 
-            return descriptors.Count > 0;
+            return descriptors.Count > 0 && IsActiveLoader;
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation

@@ -1,12 +1,11 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Editor",
+    "name": "MRTK.OpenXR.Editor",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
-        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
+        "Microsoft.MixedReality.Toolkit.Providers.OpenXR"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -15,5 +14,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [
+        "UNITY_2020_2_OR_NEWER"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

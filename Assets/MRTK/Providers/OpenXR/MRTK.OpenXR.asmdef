@@ -1,6 +1,6 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.OpenXR",
-    "rootNamespace": "",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.XRSDK.OpenXR",
     "references": [
         "Microsoft.MixedReality.OpenXR",
         "Microsoft.MixedReality.Toolkit",

@@ -722,6 +722,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool oldIsTargetPositionLockedOnFocusLock;
 
+        private readonly HashSet<Renderer> clippedRenderers = new HashSet<Renderer>();
+
         #region scroll state variables
 
         /// <summary>
@@ -1691,7 +1693,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Bounds clippingThresholdBounds = ClippingBoundsCollider.bounds;
 
             Renderer[] contentRenderers = ScrollContainer.GetComponentsInChildren<Renderer>(true);
-            List<Renderer> clippedRenderers = ClipBox.GetRenderersCopy().ToList();
+            clippedRenderers.Clear();
+            clippedRenderers.UnionWith(ClipBox.GetRenderersCopy());
 
             // Remove all renderers from clipping primitive that are not part of scroll content
             foreach (var clippedRenderer in clippedRenderers)
