@@ -603,6 +603,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
     "Assets/MRTK/Providers/OpenXR/MRTK.OpenXR.asmdef",
+    "Assets/MRTK/Providers/OpenXR/Editor/MRTK.OpenXR.Editor.asmdef",
     "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/MRTK.UnityAR.Editor.asmdef",
     "Assets/MRTK/Providers/Windows/MRTK.WindowsVoice.asmdef",
