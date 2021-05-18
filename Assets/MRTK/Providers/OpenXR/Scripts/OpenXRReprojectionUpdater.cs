@@ -6,7 +6,6 @@ using UnityEngine;
 #if MSFT_OPENXR_0_9_4_OR_NEWER
 using Microsoft.MixedReality.OpenXR;
 using System.Linq;
-using UnityEngine.XR.OpenXR;
 #endif // MSFT_OPENXR_0_9_4_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
@@ -19,14 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         public HolographicReprojectionMethod ReprojectionMethod { get; set; }
 
 #if MSFT_OPENXR_0_9_4_OR_NEWER
-        private static readonly bool IsReprojectionModeSupported = OpenXRRuntime.IsExtensionEnabled("XR_MSFT_composition_layer_reprojection_preview");
         private ReprojectionSettings reprojectionSettings = default;
 
         private void OnPostRender()
         {
             // The reprojection method needs to be set each frame.
-            if (IsReprojectionModeSupported
-                && ReprojectionMethod != HolographicReprojectionMethod.Depth)
+            if (ReprojectionMethod != HolographicReprojectionMethod.Depth)
             {
                 ReprojectionMode reprojectionMode = MapMRTKReprojectionMethodToOpenXR(ReprojectionMethod);
                 reprojectionSettings.ReprojectionMode = reprojectionMode;
