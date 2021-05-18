@@ -11,26 +11,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <summary>
         /// Turns any reprojection off.
         /// </summary>
-        NoReprojection = 0,
+        NoReprojection = -1,
 
         /// <summary>
         /// Use the depth buffer.
         /// </summary>
-        Depth = 1,
+        Depth = 0,
 
         /// <summary>
         /// Automatically-placed plane based on the depth buffer.
         /// </summary>
-        PlanarFromDepth = 2,
+        PlanarFromDepth = 1,
 
         /// <summary>
         /// Manually-placed plane.
         /// </summary>
-        PlanarManual = 3,
+        PlanarManual = 2,
 
         /// <summary>
         /// Reprojection for an orientation-only experience.
         /// </summary>
-        OrientationOnly = 4
+        OrientationOnly = 3,
     }
 }
