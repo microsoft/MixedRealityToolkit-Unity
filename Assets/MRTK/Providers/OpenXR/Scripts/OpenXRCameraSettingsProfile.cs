@@ -11,13 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     public class OpenXRCameraSettingsProfile : BaseCameraSettingsProfile
     {
         [SerializeField]
-        [Tooltip("Specifies the default reprojection method for HoloLens 2. Note: AutoPlanar requires the DotNetWinRT adapter. DepthReprojection is the default if the adapter isn't present.")]
+        [Tooltip("Specifies the default reprojection method for HoloLens 2.")]
         private HolographicReprojectionMethod reprojectionMethod = HolographicReprojectionMethod.Depth;
 
         /// <summary>
         /// Specifies the default reprojection method for HoloLens 2.
         /// </summary>
-        /// <remarks>AutoPlanar requires the DotNetWinRT adapter. DepthReprojection is the default if the adapter isn't present.</remarks>
         public HolographicReprojectionMethod ReprojectionMethod => reprojectionMethod;
     }
 }
