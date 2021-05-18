@@ -128,6 +128,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3024129124519395749}
     m_Modifications:
+    - target: {fileID: 1482935810948463702, guid: 7d4c42928b6cb354890f921430b6bcd5,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 7de780622ddab5e49b73d5d7a806faf9, type: 3}
     - target: {fileID: 6899953347654123990, guid: 7d4c42928b6cb354890f921430b6bcd5,
         type: 3}
       propertyPath: m_Mesh
@@ -3683,6 +3688,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3024129124519395749}
     m_Modifications:
+    - target: {fileID: 2130212251640386003, guid: 005e88c8b4bdc854fa6deb50b78a6001,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: ea677436af9004848a7f20878e38257c, type: 3}
     - target: {fileID: 6252673596012702803, guid: 005e88c8b4bdc854fa6deb50b78a6001,
         type: 3}
       propertyPath: m_Mesh
@@ -5395,6 +5405,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6209975610912876185, guid: 50469ebdb56a73345a8d145b7acfd0cc,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: ed2f699f32ec17f4cad3423d2c449119, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50469ebdb56a73345a8d145b7acfd0cc, type: 3}
 --- !u!4 &1612197541 stripped
@@ -7039,6 +7054,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3024129124519395749}
     m_Modifications:
+    - target: {fileID: 2709720224938396943, guid: 343baf424cf9521478e8c308bc456039,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 937867e9be7912d4a903cd401ee0a959, type: 3}
     - target: {fileID: 5739952295631599288, guid: 343baf424cf9521478e8c308bc456039,
         type: 3}
       propertyPath: m_Mesh
