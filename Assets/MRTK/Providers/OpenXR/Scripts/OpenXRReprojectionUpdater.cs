@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             switch (reprojectionMethod)
             {
                 case HolographicReprojectionMethod.Depth:
+                default:
                     return ReprojectionMode.Depth;
                 case HolographicReprojectionMethod.PlanarFromDepth:
                     return ReprojectionMode.PlanarFromDepth;
@@ -53,7 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 case HolographicReprojectionMethod.OrientationOnly:
                     return ReprojectionMode.OrientationOnly;
                 case HolographicReprojectionMethod.NoReprojection:
-                default:
                     return ReprojectionMode.NoReprojection;
             }
         }
