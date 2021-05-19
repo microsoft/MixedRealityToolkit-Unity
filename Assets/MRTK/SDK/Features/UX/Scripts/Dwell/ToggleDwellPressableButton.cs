@@ -10,15 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
 {
     /// <summary>
     /// Example script to demonstrate a toggle button using dwell
+    /// This script uses _BorderWidth property of Mixed Reality Standard Shader
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/Examples/ToggleDwellSample")]
-    public class ToggleDwellSample : BaseDwellSample
+    [AddComponentMenu("Scripts/MRTK/Examples/ToggleDwellPressableButton")]
+    public class ToggleDwellPressableButton : BaseDwellPressableButton
     {
         [SerializeField]
-        private TextMeshProUGUI dwellStatus = null;
+        private TextMeshPro dwellStatus = null;
 
         [SerializeField]
-        private Image buttonBackground = null;
+        private MeshRenderer buttonBackground = null;
 
         private bool isDwellEnabled = true;
 
@@ -41,42 +42,41 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
             if (IsDwelling)
             {
                 float value = DwellHandler.DwellProgress;
-                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
+                dwellVisualImage.material.SetFloat("_BorderWidth", value);
             }
             else if (!IsDwelling && dwellVisualImage.transform.localScale.x > 0)
             {
                 float value = Mathf.Clamp(dwellVisualImage.transform.localScale.x - (cancelStartScale / dwellVisualCancelDurationInFrames), 0f, 1f);
-                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
+                dwellVisualImage.material.SetFloat("_BorderWidth", value);
             }
         }
 
         /// <inheritdoc/>
         public override void DwellIntended(IMixedRealityPointer pointer)
         {
-            buttonBackground.color = dwellIntendedColor;
-            dwellVisualImage.transform.localScale = Vector3.zero;
+            buttonBackground.material.color = dwellIntendedColor;
         }
 
         /// <inheritdoc/>
         public override void DwellStarted(IMixedRealityPointer pointer)
         {
             base.DwellStarted(pointer);
-            buttonBackground.color = dwellIntendedColor;
+            buttonBackground.material.color = dwellIntendedColor;
         }
 
         /// <inheritdoc/>
         public override void DwellCanceled(IMixedRealityPointer pointer)
         {
             base.DwellCanceled(pointer);
-            buttonBackground.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
-            cancelStartScale = dwellVisualImage.transform.localScale.x;
+            buttonBackground.material.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
+            cancelStartScale = dwellVisualImage.material.GetFloat("_BorderWidth");
         }
 
         /// <inheritdoc/>
         public override void DwellCompleted(IMixedRealityPointer pointer)
         {
             base.DwellCompleted(pointer);
-            dwellVisualImage.transform.localScale = Vector3.zero;
+            buttonBackground.material.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
         }
 
         /// <inheritdoc/>
@@ -86,8 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
             dwellStatus.text = isDwellEnabled ? "On" : "Off";
 
             // swap the button background and dwell visuals overlay color
-            buttonBackground.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
-            dwellVisualImage.color = isDwellEnabled ? this.dwellOffColor : this.dwellOnColor;
+            buttonBackground.material.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
+            dwellVisualImage.material.color = isDwellEnabled ? this.dwellOffColor : this.dwellOnColor;
         }
     }
 }

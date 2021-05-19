@@ -39,6 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         [Range(0, 20)]
         private float timeToAllowDwellResume = 0;
 
+        [Tooltip("Whether the dwell timer decays when not in focus. If false, all dwell progress is lost at once after timeToAllowDwellResume elapses. Otherwise, the dwell progress decreases over time. ")]
+        [SerializeField]
+        private bool decayDwellOverTime = false;
+
+
         /// <summary>
         /// Pointer type to use for triggering a dwell interaction
         /// </summary>
@@ -82,6 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         {
             get => timeToAllowDwellResume;
             set => timeToAllowDwellResume = value;
+        }
+
+        public bool DecayDwellOverTime
+        {
+            get => decayDwellOverTime;
+            set => decayDwellOverTime = value;
         }
     }
 }

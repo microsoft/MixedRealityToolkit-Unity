@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd881857e1a860e4b8497aee2cef6991, type: 3}
+  m_Script: {fileID: 11500000, guid: f3db035c6526baa42b9beae76c31a814, type: 3}
   m_Name: DwellProfileWithDecay
   m_EditorClassIdentifier: 
   dwellTriggerPointerType: 4
   dwellIntentDelay: 0.5
   dwellStartDelay: 0.5
   timeToCompleteDwell: 2
-  timeToAllowDwellResume: 5
-  timeToAllowDwellDecay: 2
+  timeToAllowDwellResume: 2
+  decayDwellOverTime: 1
