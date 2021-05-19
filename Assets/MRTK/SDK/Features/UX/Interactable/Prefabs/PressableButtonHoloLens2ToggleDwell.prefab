@@ -54,7 +54,6 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -66,7 +65,6 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -79,7 +77,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &71809043
+--- !u!114 &891746972133814752
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,27 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8620660178667928554}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 716f5dcd475219b4380b815105f8cf45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dwellVisualImage: {fileID: 844479590}
-  targetButton: {fileID: 1216451627269739849}
-  dwellStatus: {fileID: 8620660179154758170}
-  buttonBackground: {fileID: 844479590}
-  dwellOnColor: {r: 0.07058824, g: 0.11764707, b: 0.427451, a: 0}
-  dwellOffColor: {r: 0.06666667, g: 0.10980393, b: 0.4156863, a: 0}
-  dwellIntendedColor: {r: 0.25663045, g: 0.32800654, b: 0.745283, a: 1}
-  dwellVisualCancelDurationInFrames: 60
---- !u!114 &71809044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8620660178667928554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 723900beab8f10945bd52acc0326ec46, type: 3}
+  m_Script: {fileID: 11500000, guid: 54277e9e7b297324880fa818608ea979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dwellProfile: {fileID: 11400000, guid: 64a7207a42b2440428db96879a6bb283, type: 2}
@@ -165,9 +143,29 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Dwell Canceled...
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &71809043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620660178667928554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 716f5dcd475219b4380b815105f8cf45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dwellVisualImage: {fileID: 844479590}
+  targetButton: {fileID: 1216451627269739849}
+  dwellStatus: {fileID: 8620660179154758170}
+  buttonBackground: {fileID: 844479590}
+  dwellOnColor: {r: 0.07058824, g: 0.11764707, b: 0.427451, a: 0}
+  dwellOffColor: {r: 0.06666667, g: 0.10980393, b: 0.4156863, a: 0}
+  dwellIntendedColor: {r: 0.25663045, g: 0.32800654, b: 0.745283, a: 1}
+  dwellVisualCancelDurationInFrames: 60
 --- !u!1001 &3040501218779176565
 PrefabInstance:
   m_ObjectHideFlags: 0
