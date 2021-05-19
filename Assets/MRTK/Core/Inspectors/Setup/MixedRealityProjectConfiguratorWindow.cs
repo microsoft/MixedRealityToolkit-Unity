@@ -560,6 +560,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             });
         }
 
+#if UNITY_2019_3_OR_NEWER
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package (UPM)")]
+        private static void DisplayExamplesInPackageManager()
+        {
+            UnityEditor.PackageManager.UI.Window.Open("Mixed Reality Toolkit Examples");
+        }
+#endif // UNITY_2019_3_OR_NEWER
+
         private void RenderShowUPMExamples()
         {
             if (!MRTKExamplesPackageImportedViaUPM())
@@ -579,8 +587,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (GUILayout.Button("Show me the examples"))
                 {
 #if UNITY_2019_3_OR_NEWER
-                    UnityEditor.PackageManager.UI.Window.Open("Mixed Reality Toolkit Examples");
-#endif
+                    DisplayExamplesInPackageManager();
+#endif // UNITY_2019_3_OR_NEWER
                 }
                 if (GUILayout.Button("Got it, next"))
                 {
@@ -660,7 +668,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return isTMPEssentialsImported.Value;
         }
 
-        private bool MRTKExamplesPackageImportedViaUPM()
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Import Examples from Package (UPM)", true)]
+        private static bool MRTKExamplesPackageImportedViaUPM()
         {
 #if !UNITY_2019_3_OR_NEWER
             return false;

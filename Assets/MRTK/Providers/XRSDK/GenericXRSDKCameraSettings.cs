@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             if (trackedPoseDriver != null)
             {
-                Object.Destroy(trackedPoseDriver);
+                UnityObjectExtensions.DestroyObject(trackedPoseDriver);
                 trackedPoseDriver = null;
             }
 

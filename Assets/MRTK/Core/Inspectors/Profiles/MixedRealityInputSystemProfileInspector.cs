@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     }
                 }, ShowInputSystem_Speech_PreferenceKey);
 
-                RenderFoldout(ref showHandTrackingProperties, "Hand Tracking", () =>
+                RenderFoldout(ref showHandTrackingProperties, "Articulated Hand Tracking", () =>
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
