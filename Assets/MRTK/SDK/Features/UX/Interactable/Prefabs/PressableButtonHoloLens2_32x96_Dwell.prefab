@@ -54,6 +54,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -65,6 +66,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -158,10 +160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 716f5dcd475219b4380b815105f8cf45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dwellVisualImage: {fileID: 305050697}
+  dwellVisualImage: {fileID: 305050698}
   targetButton: {fileID: 1866125003408799948}
   dwellStatus: {fileID: 9126199676526380959}
-  buttonBackground: {fileID: 305050697}
+  buttonBackground: {fileID: 305050698}
   dwellOnColor: {r: 0.07058824, g: 0.11764707, b: 0.427451, a: 0}
   dwellOffColor: {r: 0.06666667, g: 0.10980393, b: 0.4156863, a: 0}
   dwellIntendedColor: {r: 0.25663045, g: 0.32800654, b: 0.745283, a: 1}
@@ -270,13 +272,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
