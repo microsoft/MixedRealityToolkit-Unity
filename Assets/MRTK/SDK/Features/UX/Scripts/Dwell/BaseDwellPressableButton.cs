@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
     public abstract class BaseDwellPressableButton : MonoBehaviour
     {
         [SerializeField]
-        protected GameObject dwellVisualImage = null;
+        protected MeshRenderer dwellVisualImage = null;
 
         [SerializeField]
         protected Interactable targetButton = null;
