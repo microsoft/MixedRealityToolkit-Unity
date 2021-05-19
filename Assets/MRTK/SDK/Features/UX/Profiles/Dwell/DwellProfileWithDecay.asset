@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0f53b7a20151524496349154c40c679, type: 3}
-  m_Name: DefaultOpenXRCameraSettingsProfile
+  m_Script: {fileID: 11500000, guid: f3db035c6526baa42b9beae76c31a814, type: 3}
+  m_Name: DwellProfileWithDecay
   m_EditorClassIdentifier: 
-  isCustomProfile: 0
-  reprojectionMethod: 0
+  dwellTriggerPointerType: 4
+  dwellIntentDelay: 0.5
+  dwellStartDelay: 0.5
+  timeToCompleteDwell: 2
+  timeToAllowDwellResume: 2
+  decayDwellOverTime: 1

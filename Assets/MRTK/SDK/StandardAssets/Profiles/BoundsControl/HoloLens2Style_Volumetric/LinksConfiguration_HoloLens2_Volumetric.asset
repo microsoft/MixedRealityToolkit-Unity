@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0f53b7a20151524496349154c40c679, type: 3}
-  m_Name: DefaultOpenXRCameraSettingsProfile
+  m_Script: {fileID: 11500000, guid: b80d41f9007c4b948b0808690195e77c, type: 3}
+  m_Name: LinksConfiguration_HoloLens2_Volumetric
   m_EditorClassIdentifier: 
-  isCustomProfile: 0
-  reprojectionMethod: 0
+  wireframeMaterial: {fileID: 0}
+  wireframeEdgeRadius: 0.001
+  wireframeShape: 0
+  showWireframe: 0
