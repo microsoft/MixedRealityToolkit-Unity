@@ -53,6 +53,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [SerializeField, FormerlySerializedAs("RailsAxisZ")]
         private GameObject railsAxisZ = null;
 
+        [Header("Mapped gesture input actions")]
+
+        [SerializeField]
+        private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
+
+        [SerializeField]
+        private MixedRealityInputAction navigationAction = MixedRealityInputAction.None;
+
+        [SerializeField]
+        private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
+
+        [SerializeField]
+        private MixedRealityInputAction tapAction = MixedRealityInputAction.None;
+
         private void OnEnable()
         {
             HideRails();
@@ -62,16 +76,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             Debug.Log($"OnGestureStarted [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
 
-            var action = eventData.MixedRealityInputAction.Description;
-            if (action == "Hold Action")
+            MixedRealityInputAction action = eventData.MixedRealityInputAction;
+            if (action == holdAction)
             {
                 SetIndicator(holdIndicator, "Hold: started", holdMaterial);
             }
-            else if (action == "Manipulate Action")
+            else if (action == manipulationAction)
             {
                 SetIndicator(manipulationIndicator, $"Manipulation: started {Vector3.zero}", manipulationMaterial, Vector3.zero);
             }
-            else if (action == "Navigation Action")
+            else if (action == navigationAction)
             {
                 SetIndicator(navigationIndicator, $"Navigation: started {Vector3.zero}", navigationMaterial, Vector3.zero);
                 ShowRails(Vector3.zero);
@@ -84,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             Debug.Log($"OnGestureUpdated [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
 
-            var action = eventData.MixedRealityInputAction.Description;
-            if (action == "Hold Action")
+            MixedRealityInputAction action = eventData.MixedRealityInputAction;
+            if (action == holdAction)
             {
                 SetIndicator(holdIndicator, "Hold: updated", defaultMaterial);
             }
@@ -95,12 +109,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             Debug.Log($"OnGestureUpdated [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
 
-            var action = eventData.MixedRealityInputAction.Description;
-            if (action == "Manipulate Action")
+            MixedRealityInputAction action = eventData.MixedRealityInputAction;
+            if (action == manipulationAction)
             {
                 SetIndicator(manipulationIndicator, $"Manipulation: updated {eventData.InputData}", manipulationMaterial, eventData.InputData);
             }
-            else if (action == "Navigation Action")
+            else if (action == navigationAction)
             {
                 SetIndicator(navigationIndicator, $"Navigation: updated {eventData.InputData}", navigationMaterial, eventData.InputData);
                 ShowRails(eventData.InputData);
@@ -111,12 +125,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             Debug.Log($"OnGestureCompleted [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
 
-            var action = eventData.MixedRealityInputAction.Description;
-            if (action == "Hold Action")
+            MixedRealityInputAction action = eventData.MixedRealityInputAction;
+            if (action == holdAction)
             {
                 SetIndicator(holdIndicator, "Hold: completed", defaultMaterial);
             }
-            else if (action == "Select")
+            else if (action == tapAction)
             {
                 SetIndicator(selectIndicator, "Select: completed", selectMaterial);
             }
@@ -126,12 +140,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             Debug.Log($"OnGestureCompleted [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
 
-            var action = eventData.MixedRealityInputAction.Description;
-            if (action == "Manipulate Action")
+            MixedRealityInputAction action = eventData.MixedRealityInputAction;
+            if (action == manipulationAction)
             {
                 SetIndicator(manipulationIndicator, $"Manipulation: completed {eventData.InputData}", defaultMaterial, eventData.InputData);
             }
-            else if (action == "Navigation Action")
+            else if (action == navigationAction)
             {
                 SetIndicator(navigationIndicator, $"Navigation: completed {eventData.InputData}", defaultMaterial, eventData.InputData);
                 HideRails();
@@ -142,16 +156,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             Debug.Log($"OnGestureCanceled [{Time.frameCount}]: {eventData.MixedRealityInputAction.Description}");
 
-            var action = eventData.MixedRealityInputAction.Description;
-            if (action == "Hold Action")
+            MixedRealityInputAction action = eventData.MixedRealityInputAction;
+            if (action == holdAction)
             {
                 SetIndicator(holdIndicator, "Hold: canceled", defaultMaterial);
             }
-            else if (action == "Manipulate Action")
+            else if (action == manipulationAction)
             {
                 SetIndicator(manipulationIndicator, "Manipulation: canceled", defaultMaterial);
             }
-            else if (action == "Navigation Action")
+            else if (action == navigationAction)
             {
                 SetIndicator(navigationIndicator, "Navigation: canceled", defaultMaterial);
                 HideRails();
