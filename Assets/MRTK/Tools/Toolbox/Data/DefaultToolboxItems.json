@@ -206,7 +206,7 @@
       "items": [
         {
           "name": "UI Backplate",
-          "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/slate",
+          "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/uibackplate",
           "assetGUID": "021378ec8dbd3e144b68bc5769a858ec",
           "iconGUID": "b8a06b991dec56749bf9bc6cebe5e36c"
         },
@@ -234,16 +234,16 @@
       "categoryName": "Tooltips",
       "items": [
         {
-          "name": "Bezier Tooltip",
-          "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/tooltip",
-          "assetGUID": "08b79a69f78da1d4aa8e117f1cbd9cef",
-          "iconGUID": "ceba60332833e364aa5692b372577b88"
-        },
-        {
           "name": "Simple Line Tooltip",
           "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/tooltip",
           "assetGUID": "afaef0108a478c44a9eac26658bc29bf",
           "iconGUID": "a73f410adbfd6424cbf056bda6733cd2"
+        },
+        {
+          "name": "Bezier Tooltip",
+          "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/tooltip",
+          "assetGUID": "08b79a69f78da1d4aa8e117f1cbd9cef",
+          "iconGUID": "ceba60332833e364aa5692b372577b88"
         },
         {
           "name": "Spline Tooltip",
@@ -276,7 +276,7 @@
         },
         {
           "name": "Indeterminate",
-          "docURL": "",
+          "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/progress-indicator",
           "assetGUID": "9c4ddc0ec93e1df449e9984dca497355",
           "iconGUID": "c35439ea766873b46995e9344e0c55fd"
         }
