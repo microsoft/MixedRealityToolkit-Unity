@@ -205,6 +205,12 @@
       "categoryName": "Miscellaneous",
       "items": [
         {
+          "name": "UI Backplate",
+          "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/slate",
+          "assetGUID": "021378ec8dbd3e144b68bc5769a858ec",
+          "iconGUID": "b8a06b991dec56749bf9bc6cebe5e36c"
+        },
+        {
           "name": "Slate",
           "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/slate",
           "assetGUID": "937ce507dd7ee334ba569554e24adbdd",
