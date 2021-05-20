@@ -4,26 +4,54 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     [AddComponentMenu("Scripts/MRTK/Examples/GestureTester")]
     public class GestureTester : MonoBehaviour, IMixedRealityGestureHandler<Vector3>
     {
-        public GameObject HoldIndicator = null;
-        public GameObject ManipulationIndicator = null;
-        public GameObject NavigationIndicator = null;
-        public GameObject SelectIndicator = null;
+        [Header("Gesture indicators")]
 
-        public Material DefaultMaterial = null;
-        public Material HoldMaterial = null;
-        public Material ManipulationMaterial = null;
-        public Material NavigationMaterial = null;
-        public Material SelectMaterial = null;
+        [SerializeField, FormerlySerializedAs("HoldIndicator")]
+        private GameObject holdIndicator = null;
 
-        public GameObject RailsAxisX = null;
-        public GameObject RailsAxisY = null;
-        public GameObject RailsAxisZ = null;
+        [SerializeField, FormerlySerializedAs("ManipulationIndicator")]
+        private GameObject manipulationIndicator = null;
+
+        [SerializeField, FormerlySerializedAs("NavigationIndicator")]
+        private GameObject navigationIndicator = null;
+
+        [SerializeField, FormerlySerializedAs("SelectIndicator")]
+        private GameObject selectIndicator = null;
+
+        [Header("Gesture materials")]
+
+        [SerializeField, FormerlySerializedAs("DefaultMaterial")]
+        private Material defaultMaterial = null;
+
+        [SerializeField, FormerlySerializedAs("HoldMaterial")]
+        private Material holdMaterial = null;
+
+        [SerializeField, FormerlySerializedAs("ManipulationMaterial")]
+        private Material manipulationMaterial = null;
+
+        [SerializeField, FormerlySerializedAs("NavigationMaterial")]
+        private Material navigationMaterial = null;
+
+        [SerializeField, FormerlySerializedAs("SelectMaterial")]
+        private Material selectMaterial = null;
+
+        [Header("Rails axis visuals")]
+
+        [SerializeField, FormerlySerializedAs("RailsAxisX")]
+        private GameObject railsAxisX = null;
+
+        [SerializeField, FormerlySerializedAs("RailsAxisY")]
+        private GameObject railsAxisY = null;
+
+        [SerializeField, FormerlySerializedAs("RailsAxisZ")]
+        private GameObject railsAxisZ = null;
 
         private void OnEnable()
         {
@@ -37,19 +65,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             var action = eventData.MixedRealityInputAction.Description;
             if (action == "Hold Action")
             {
-                SetIndicator(HoldIndicator, "Hold: started", HoldMaterial);
+                SetIndicator(holdIndicator, "Hold: started", holdMaterial);
             }
             else if (action == "Manipulate Action")
             {
-                SetIndicator(ManipulationIndicator, $"Manipulation: started {Vector3.zero}", ManipulationMaterial, Vector3.zero);
+                SetIndicator(manipulationIndicator, $"Manipulation: started {Vector3.zero}", manipulationMaterial, Vector3.zero);
             }
             else if (action == "Navigation Action")
             {
-                SetIndicator(NavigationIndicator, $"Navigation: started {Vector3.zero}", NavigationMaterial, Vector3.zero);
+                SetIndicator(navigationIndicator, $"Navigation: started {Vector3.zero}", navigationMaterial, Vector3.zero);
                 ShowRails(Vector3.zero);
             }
 
-            SetIndicator(SelectIndicator, "Select:", DefaultMaterial);
+            SetIndicator(selectIndicator, "Select:", defaultMaterial);
         }
 
         public void OnGestureUpdated(InputEventData eventData)
@@ -59,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             var action = eventData.MixedRealityInputAction.Description;
             if (action == "Hold Action")
             {
-                SetIndicator(HoldIndicator, "Hold: updated", DefaultMaterial);
+                SetIndicator(holdIndicator, "Hold: updated", defaultMaterial);
             }
         }
 
@@ -70,11 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             var action = eventData.MixedRealityInputAction.Description;
             if (action == "Manipulate Action")
             {
-                SetIndicator(ManipulationIndicator, $"Manipulation: updated {eventData.InputData}", ManipulationMaterial, eventData.InputData);
+                SetIndicator(manipulationIndicator, $"Manipulation: updated {eventData.InputData}", manipulationMaterial, eventData.InputData);
             }
             else if (action == "Navigation Action")
             {
-                SetIndicator(NavigationIndicator, $"Navigation: updated {eventData.InputData}", NavigationMaterial, eventData.InputData);
+                SetIndicator(navigationIndicator, $"Navigation: updated {eventData.InputData}", navigationMaterial, eventData.InputData);
                 ShowRails(eventData.InputData);
             }
         }
@@ -86,11 +114,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             var action = eventData.MixedRealityInputAction.Description;
             if (action == "Hold Action")
             {
-                SetIndicator(HoldIndicator, "Hold: completed", DefaultMaterial);
+                SetIndicator(holdIndicator, "Hold: completed", defaultMaterial);
             }
             else if (action == "Select")
             {
-                SetIndicator(SelectIndicator, "Select: completed", SelectMaterial);
+                SetIndicator(selectIndicator, "Select: completed", selectMaterial);
             }
         }
 
@@ -101,11 +129,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             var action = eventData.MixedRealityInputAction.Description;
             if (action == "Manipulate Action")
             {
-                SetIndicator(ManipulationIndicator, $"Manipulation: completed {eventData.InputData}", DefaultMaterial, eventData.InputData);
+                SetIndicator(manipulationIndicator, $"Manipulation: completed {eventData.InputData}", defaultMaterial, eventData.InputData);
             }
             else if (action == "Navigation Action")
             {
-                SetIndicator(NavigationIndicator, $"Navigation: completed {eventData.InputData}", DefaultMaterial, eventData.InputData);
+                SetIndicator(navigationIndicator, $"Navigation: completed {eventData.InputData}", defaultMaterial, eventData.InputData);
                 HideRails();
             }
         }
@@ -117,15 +145,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             var action = eventData.MixedRealityInputAction.Description;
             if (action == "Hold Action")
             {
-                SetIndicator(HoldIndicator, "Hold: canceled", DefaultMaterial);
+                SetIndicator(holdIndicator, "Hold: canceled", defaultMaterial);
             }
             else if (action == "Manipulate Action")
             {
-                SetIndicator(ManipulationIndicator, "Manipulation: canceled", DefaultMaterial);
+                SetIndicator(manipulationIndicator, "Manipulation: canceled", defaultMaterial);
             }
             else if (action == "Navigation Action")
             {
-                SetIndicator(NavigationIndicator, "Navigation: canceled", DefaultMaterial);
+                SetIndicator(navigationIndicator, "Navigation: canceled", defaultMaterial);
                 HideRails();
             }
         }
@@ -161,33 +189,33 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             var gestureProfile = CoreServices.InputSystem.InputSystemProfile.GesturesProfile;
             var useRails = gestureProfile.UseRailsNavigation;
 
-            if (RailsAxisX)
+            if (railsAxisX)
             {
-                RailsAxisX.SetActive(!useRails || position.x != 0.0f);
+                railsAxisX.SetActive(!useRails || position.x != 0.0f);
             }
-            if (RailsAxisY)
+            if (railsAxisY)
             {
-                RailsAxisY.SetActive(!useRails || position.y != 0.0f);
+                railsAxisY.SetActive(!useRails || position.y != 0.0f);
             }
-            if (RailsAxisZ)
+            if (railsAxisZ)
             {
-                RailsAxisZ.SetActive(!useRails || position.z != 0.0f);
+                railsAxisZ.SetActive(!useRails || position.z != 0.0f);
             }
         }
 
         private void HideRails()
         {
-            if (RailsAxisX)
+            if (railsAxisX)
             {
-                RailsAxisX.SetActive(false);
+                railsAxisX.SetActive(false);
             }
-            if (RailsAxisY)
+            if (railsAxisY)
             {
-                RailsAxisY.SetActive(false);
+                railsAxisY.SetActive(false);
             }
-            if (RailsAxisZ)
+            if (railsAxisZ)
             {
-                RailsAxisZ.SetActive(false);
+                railsAxisZ.SetActive(false);
             }
         }
     }
