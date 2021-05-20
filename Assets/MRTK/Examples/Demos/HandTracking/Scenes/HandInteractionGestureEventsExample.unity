@@ -1398,19 +1398,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6fc880018c3d354186867d28e6e9a86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HoldIndicator: {fileID: 186401207}
-  ManipulationIndicator: {fileID: 573086754}
-  NavigationIndicator: {fileID: 1717465671}
-  SelectIndicator: {fileID: 1978665207}
-  DefaultMaterial: {fileID: 2100000, guid: 835cb4a58f172d7478801db95e510f56, type: 2}
-  HoldMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
-  ManipulationMaterial: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb,
+  holdIndicator: {fileID: 186401207}
+  manipulationIndicator: {fileID: 573086754}
+  navigationIndicator: {fileID: 1717465671}
+  selectIndicator: {fileID: 1978665207}
+  defaultMaterial: {fileID: 2100000, guid: 835cb4a58f172d7478801db95e510f56, type: 2}
+  holdMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
+  manipulationMaterial: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb,
     type: 2}
-  NavigationMaterial: {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
-  SelectMaterial: {fileID: 2100000, guid: d808c628536649eaa61f2a2f2d16c6cc, type: 2}
-  RailsAxisX: {fileID: 1050040353}
-  RailsAxisY: {fileID: 1655644218}
-  RailsAxisZ: {fileID: 188309176}
+  navigationMaterial: {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
+  selectMaterial: {fileID: 2100000, guid: d808c628536649eaa61f2a2f2d16c6cc, type: 2}
+  railsAxisX: {fileID: 1050040353}
+  railsAxisY: {fileID: 1655644218}
+  railsAxisZ: {fileID: 188309176}
+  holdAction:
+    id: 8
+    description: Hold Action
+    axisConstraint: 0
+  navigationAction:
+    id: 10
+    description: Navigation Action
+    axisConstraint: 0
+  manipulationAction:
+    id: 9
+    description: Manipulate Action
+    axisConstraint: 0
+  tapAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
 --- !u!1 &907128738
 GameObject:
   m_ObjectHideFlags: 0
