@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             CreateSpace(15);
             if (GUILayout.Button("\n<b>XR SDK/XR Management</b><size=4>\n\n</size>"
-            + "Choose this if you want to have a smoother upgrade path to Unity 2020. Supports HoloLens and Windows Mixed Reality/Oculus headsets. Note: do NOT choose this if you anticipate using Azure Spatial Anchors as there is a known compatibility issue.\n", multiLineButtonStyle))
+            + "Choose this if you want to have a smoother upgrade path to Unity 2020. Supports HoloLens and Windows Mixed Reality/Oculus headsets. The Unity XR Management Plugin will be installed if not already. Note: NOT compatible with Azure Spatial Anchors.\n", multiLineButtonStyle))
             {
                 if (!XRSettingsUtilities.XRManagementPresent)
                 {
@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(15);
 
             if (GUILayout.Button("\n<b>Unity OpenXR plugin (recommended)</b><size=4>\n\n</size>"
-            + "Choose this if you want to embrace the new industry standard and easily support a wide range of AR/VR devices in the future! Currently officially supports HoloLens 2 and Windows Mixed Reality headsets with other devices coming soon.\n", multiLineButtonStyle))
+            + "Choose this if you want to embrace the new industry standard and easily support a wide range of AR/VR devices in the future! Currently officially supports HoloLens 2 and Windows Mixed Reality headsets with other devices coming soon. The Unity OpenXR Plugin will be installed.\n", multiLineButtonStyle))
             {
 
 #if UNITY_2020_2_OR_NEWER
@@ -380,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             CreateSpace(15);
             if (GUILayout.Button("\n<b>Built-in Unity plugins (non-OpenXR)</b><size=4>\n\n</size>"
-            + "Choose this if your application needs to support platforms beyond just HoloLens 2 and Windows Mixed Reality headsets (e.g. Oculus/Magic Leap headsets which are currently not supported via OpenXR).\n", multiLineButtonStyle))
+            + "Choose this if your application needs to support platforms beyond just HoloLens 2 and Windows Mixed Reality headsets (e.g. Oculus/Magic Leap headsets which are currently not fully supported via OpenXR). The Unity XR Management Plugin will be installed if not already.\n", multiLineButtonStyle))
             {
 #if UNITY_2019_3_OR_NEWER
                 if (!XRSettingsUtilities.XRManagementPresent)
