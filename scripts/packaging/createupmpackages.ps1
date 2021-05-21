@@ -100,9 +100,7 @@ foreach ($entry in $packages.GetEnumerator()) {
 
     # Apply the version number to the package json file
     $packageJsonPath = "$packagePath/package.json"
-    $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
-    $packageJson = ($packageJson -replace "%version%", $Version)
-    [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
+    ((Get-Content -Path $packageJsonPath -Raw) -Replace '("version\": )"([0-9.]+-?[a-zA-Z0-9.]*|%version%)', "`$1`"$VersionWithPreview") | Set-Content -Path $packageJsonPath -NoNewline
 
     # Create and publish the package
     $packageName = $entry.Name
