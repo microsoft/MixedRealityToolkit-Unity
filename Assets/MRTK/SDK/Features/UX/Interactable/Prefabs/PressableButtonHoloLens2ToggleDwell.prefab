@@ -177,6 +177,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2521141002669455045, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 2521141002669455045, guid: 64790b91b91094d49942373c4e83c237,
+        type: 3}
       propertyPath: m_textInfo.lineCount
       value: 1
       objectReference: {fileID: 0}
@@ -205,56 +210,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ec72a3a105768f746b556a8dfdae61a8, type: 2}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: Dimensions
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: VoiceCommand
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: profiles.Array.data[0].Themes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: profiles.Array.data[1].Themes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: profiles.Array.data[2].Themes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 8300000, guid: 06f9d598e90313646bbff63530142344, type: 3}
-    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.AudioClip, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 6742094790733259646, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
       propertyPath: m_RootOrder
@@ -339,6 +294,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: Toggle Dwell
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742094791873819759, guid: 64790b91b91094d49942373c4e83c237,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6742094791873819759, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
