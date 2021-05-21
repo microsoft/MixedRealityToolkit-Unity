@@ -217,6 +217,12 @@
           "iconGUID": "18dbe6d0bec68034f8d15a2ab9a03b87"
         },
         {
+          "name": "Slate Blank",
+          "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/slate",
+          "assetGUID": "a5963062303351340bc3be5f71890d29",
+          "iconGUID": "6bddff8dba168e54b99b810b593f5cec"
+        },
+        {
           "name": "Slider",
           "docURL": "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/sliders",
           "assetGUID": "1093263a89abe47499cccf7dcb08effb",
