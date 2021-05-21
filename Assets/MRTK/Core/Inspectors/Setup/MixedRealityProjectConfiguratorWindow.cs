@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string XRPipelineDocsUrl = "https://docs.microsoft.com/windows/mixed-reality/develop/unity/choosing-unity-version"; // Putting the generic MR docs on Unity versions/pipelines here before the MRTK XR pipeline doc is published.
         private const string XRSDKUnityDocsUrl = "https://docs.unity3d.com/Manual/configuring-project-for-xr.html";
         private const string MSOpenXRPluginUrl = "https://aka.ms/openxr-unity-install";
+        private const string MRTKConfiguratorLogPrefix = "[MRTK Configurator]";
         private const string XRPipelineIntro = "To build applications for AR/VR headsets you need to enable an XR pipeline. ";
         private const string AlternativePipelineText = "\n\nFor more information on alternative pipelines, please click on the Learn More button.";
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
@@ -216,6 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (GUILayout.Button("Enable Legacy XR"))
                 {
+                    Debug.Log(MRTKConfiguratorLogPrefix + " Enabling Legacy XR for this project. Operation performed is equivalent to toggling on Virual Reality Supported under Edit -> Project Settings -> Player -> XR Settings.");
                     XRSettingsUtilities.LegacyXREnabled = true;
                 }
                 if (GUILayout.Button("Learn More"))
@@ -229,6 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (GUILayout.Button("\n<b>Legacy XR (recommended)</b><size=4>\n\n</size>"
             + "Choose this if you want maximum stability and are willing to spend more effort when upgrading the project to Unity 2020. Supports HoloLens and Windows Mixed Reality/OpenVR headsets.\n", multiLineButtonStyle))
             {
+                Debug.Log(MRTKConfiguratorLogPrefix + " Enabling Legacy XR for this project. Operation performed is equivalent to toggling on Virual Reality Supported under Edit -> Project Settings -> Player -> XR Settings.");
                 XRSettingsUtilities.LegacyXREnabled = true;
             }
             CreateSpace(15);
@@ -237,6 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (!XRSettingsUtilities.XRManagementPresent)
                 {
+                    Debug.Log(MRTKConfiguratorLogPrefix + " Installing the Unity XR Management Plugin. Operation performed is equivalent to clicking on Install XR Plugin Management under Edit -> Project Settings -> XR Plugin Management (the button only appears when the plugin is not installed).");
                     AddUPMPackage("com.unity.xr.management");
                 }
                 CurrentStage = ConfigurationStage.InstallBuiltinPlugin;
@@ -368,6 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
 
 #if UNITY_2020_2_OR_NEWER
+                Debug.Log(MRTKConfiguratorLogPrefix + " Installing the Unity OpenXR Plugin. Operation performed is equivalent to installing the OpenXR plugin manually via Window -> Package Manager -> Packages: Unity Registry.");
                 AddUPMPackage("com.unity.xr.openxr");
                 CurrentStage = ConfigurationStage.InstallOpenXR;
 #endif // UNITY_2020_2_OR_NEWER
@@ -380,6 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
                 if (!XRSettingsUtilities.XRManagementPresent)
                 {
+                    Debug.Log(MRTKConfiguratorLogPrefix + " Installing the Unity XR Management Plugin. Operation performed is equivalent to clicking on Install XR Plugin Management under Edit -> Project Settings -> XR Plugin Management (the button only appears when the plugin is not installed).");
                     AddUPMPackage("com.unity.xr.management");
                 }
 #endif // UNITY_2019_3_OR_NEWER
