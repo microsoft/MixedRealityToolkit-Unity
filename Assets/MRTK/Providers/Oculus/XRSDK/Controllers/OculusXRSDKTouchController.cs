@@ -92,24 +92,24 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         }
 
         /// <summary>
-        /// Determines whether or not this controller uses MRTK for controller visualization or not
+        /// Determines whether or not this controller is using MRTK for controller visualization
+        /// 
+        /// When false, the Oculus Touch controller model visualization will not be managed by MRTK
+        /// Ensure that the Oculus Integration Package is installed and the Ovr Camera Rig is set correctly in the Oculus XRSDK Device Manager to use the
+        /// Oculus Integration Package's visualization
         /// </summary>
-        internal bool UseMRTKControllerVisualization { get; set; } = true;
-
-        /// <inheritdoc/>
-        /// <remarks>
-        /// If UseMRTKControllerVisualization is false, Oculus Touch controller model visualization will not be managed by MRTK
-        /// Ensure that the Oculus Integration Package is installed and the Ovr Camera Rig is set correctly in the Oculus XRSDK Device Manager
-        /// </remarks>
-        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
+        internal bool UseMRTKControllerVisualization
         {
-            if (UseMRTKControllerVisualization)
+            get
             {
-                return base.TryRenderControllerModel(controllerType, inputSourceType);
+                return Visualizer != null && Visualizer.GameObjectProxy != null && Visualizer.GameObjectProxy.activeSelf;
             }
-            else
+            set
             {
-                return false;
+                if(Visualizer != null && Visualizer.GameObjectProxy)
+                {
+                    Visualizer.GameObjectProxy.SetActive(value);
+                }
             }
         }
     }
