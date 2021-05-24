@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 #if UNITY_OPENXR
 using UnityEngine.XR.OpenXR;
@@ -36,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if UNITY_OPENXR
             LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
 #else
@@ -50,14 +51,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
 
-            base.Enable();
             InitializeReprojectionUpdater();
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
         /// <inheritdoc/>

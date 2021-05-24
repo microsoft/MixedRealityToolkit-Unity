@@ -3,6 +3,7 @@
     "rootNamespace": "Microsoft.MixedReality.Toolkit.XRSDK.OpenXR",
     "references": [
         "Microsoft.MixedReality.OpenXR",
+        "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Gltf",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",

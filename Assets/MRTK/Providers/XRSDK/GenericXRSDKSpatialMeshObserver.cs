@@ -41,18 +41,33 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
-        protected virtual bool IsActiveLoader => true;
+        protected virtual bool? IsActiveLoader => true;
 
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
 
             base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
         #region BaseSpatialObserver Implementation
@@ -133,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             var descriptors = new List<XRMeshSubsystemDescriptor>();
             SubsystemManager.GetSubsystemDescriptors(descriptors);
 
-            return descriptors.Count > 0 && IsActiveLoader;
+            return descriptors.Count > 0 && (IsActiveLoader ?? false);
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation

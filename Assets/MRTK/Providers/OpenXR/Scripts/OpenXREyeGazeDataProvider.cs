@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             gazeSmoother.OnSaccadeY += GazeSmoother_OnSaccadeY;
         }
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if UNITY_OPENXR
             LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
 #else
@@ -99,13 +99,28 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
 
             base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
         private void ReadProfile()
