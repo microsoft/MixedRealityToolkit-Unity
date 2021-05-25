@@ -109,8 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                         normals = normals.ToArray(),
                         triangles = triangles.ToArray(),
                         uvs = handMeshUVs,
-                        position = pose.position,
-                        rotation = pose.rotation
+                        position = MixedRealityPlayspace.TransformPoint(pose.position),
+                        rotation = MixedRealityPlayspace.Rotation * pose.rotation
                     };
 
                     CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
