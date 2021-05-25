@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             PlayModeTestUtilities.Setup(profile);
 
-            yield return PlayModeTestUtilities.WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
             // Ensure that the SceneContent object is contentOffset units above the origin
             Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, contentOffset, 0.005f);
