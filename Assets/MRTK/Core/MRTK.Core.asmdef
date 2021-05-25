@@ -2,7 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit",
     "references": [
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Unity.XR.Management"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -16,6 +17,11 @@
             "name": "com.microsoft.windows.mixedreality.dotnetwinrt",
             "expression": "",
             "define": "DOTNETWINRT_PRESENT"
+        },
+        {
+            "name": "com.unity.xr.management",
+            "expression": "",
+            "define": "XR_MANAGEMENT_ENABLED"
         }
     ],
     "noEngineReferences": false

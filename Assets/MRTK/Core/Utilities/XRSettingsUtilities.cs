@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#if UNITY_2019_3_OR_NEWER
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.XR;
-#endif // UNITY_2019_3_OR_NEWER
+#if XR_MANAGEMENT_ENABLED
+using UnityEngine.XR.Management;
+#endif // XR_MANAGEMENT_ENABLED
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -15,40 +13,37 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     public static class XRSettingsUtilities
     {
-#if UNITY_2019_3_OR_NEWER && !UNITY_2020_2_OR_NEWER
-        private static bool? legacyXRAvailable = null;
-#endif // UNITY_2019_3_OR_NEWER && !UNITY_2020_2_OR_NEWER
+#if !UNITY_2020_2_OR_NEWER && UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
+        private static bool? isXRSDKEnabled = null;
+#endif // !UNITY_2020_2_OR_NEWER && UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
 
         /// <summary>
         /// Checks if an XR SDK plug-in is installed that disables legacy VR. Returns false if so.
         /// </summary>
-        public static bool LegacyXRAvailable
+        public static bool XRSDKEnabled
         {
             get
             {
 #if UNITY_2020_2_OR_NEWER
-                return false;
-#elif UNITY_2019_3_OR_NEWER
-                if (!legacyXRAvailable.HasValue)
+                return true;
+#elif UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
+                if (!isXRSDKEnabled.HasValue)
                 {
-                    legacyXRAvailable = true;
-
-                    List<XRDisplaySubsystemDescriptor> descriptors = new List<XRDisplaySubsystemDescriptor>();
-                    SubsystemManager.GetSubsystemDescriptors(descriptors);
-
-                    foreach (XRDisplaySubsystemDescriptor displayDescriptor in descriptors)
+                    XRGeneralSettings currentSettings = XRGeneralSettings.Instance;
+                    if (currentSettings != null && currentSettings.AssignedSettings != null)
                     {
-                        if (displayDescriptor.disablesLegacyVr)
-                        {
-                            legacyXRAvailable = false;
-                            break;
-                        }
+#pragma warning disable CS0618 // Suppressing the warning to support xr management plugin 3.x and 4.x
+                        isXRSDKEnabled = currentSettings.AssignedSettings.loaders.Count > 0;
+#pragma warning restore CS0618
+                    }
+                    else
+                    {
+                        isXRSDKEnabled = false;
                     }
                 }
-
-                return legacyXRAvailable.HasValue && legacyXRAvailable.Value;
+                return isXRSDKEnabled.Value;
 #else
-                return true;
+                return false;
 #endif // UNITY_2020_2_OR_NEWER
             }
         }
