@@ -145,6 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else
             {
+                var _ = AsyncCoroutineRunner.Instance;
                 AsyncCoroutineRunner.Post(action);
             }
         }
