@@ -145,6 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else
             {
+                // Make sure there is an instance of AsyncCoroutineRunner before calling AsyncCoroutineRunner.Post
                 var _ = AsyncCoroutineRunner.Instance;
                 AsyncCoroutineRunner.Post(action);
             }

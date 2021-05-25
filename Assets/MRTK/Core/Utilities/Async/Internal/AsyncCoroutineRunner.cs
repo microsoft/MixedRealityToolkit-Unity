@@ -54,21 +54,40 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     instance = FindObjectOfType<AsyncCoroutineRunner>();
                 }
 
+                // FindObjectOfType() only search for active objects. The FindObjectOfType(bool includeInactive) variant is not available to Unity 2019.4 and earlier so cannot be used.
+                // We instead search for GameObject called AsyncCoroutineRunner and see if it has the component attached.
                 if (instance == null)
                 {
-                    instance = FindObjectOfType<AsyncCoroutineRunner>(true);
+                    var instanceGameObject = GameObject.Find("AsyncCoroutineRunner");
 
-                    if (instance != null)
+                    if (instanceGameObject != null)
                     {
-                        Debug.LogError($"GameObject {instance.gameObject.name} has an inactive AsyncCoroutineRunner attached and " +
-                        "there is no active AsyncCoroutineRunner in the scene. There must be an active AsyncCoroutineRunner attached to a GameObject at the root of the scene.");
-                        return instance;
+                        instance = instanceGameObject.GetComponent<AsyncCoroutineRunner>();
+
+                        if (instance == null)
+                        {
+                            Debug.Log("[AsyncCoroutineRunner] Found a \"AsyncCoroutineRunner\" GameObject but didn't have the AsyncCoroutineRunner component attached. Attaching the script.");
+                            instance = instanceGameObject.AddComponent<AsyncCoroutineRunner>();
+                        }
+                        else
+                        {
+                            if (!instance.enabled)
+                            {
+                                Debug.LogWarning("[AsyncCoroutineRunner] Found a disabled AsyncCoroutineRunner component. Enabling the component.");
+                                instance.enabled = true;
+                            }
+                            if (!instanceGameObject.activeSelf)
+                            {
+                                Debug.LogWarning("[AsyncCoroutineRunner] Found an AsyncCoroutineRunner attached to an inactive GameObject. Setting the GameObject active.");
+                                instanceGameObject.SetActive(true);
+                            }
+                        }
                     }
                 }
 
                 if (instance == null)
                 {
-                    Debug.LogWarning("There is no AsyncCoroutineRunner in the scene. Adding a GameObject with AsyncCoroutineRunner attached at the root of the scene.");
+                    Debug.Log("[AsyncCoroutineRunner] There is no AsyncCoroutineRunner in the scene. Adding a GameObject with AsyncCoroutineRunner attached at the root of the scene.");
                     instance = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
                 }
 
@@ -78,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 // This is ultimately to ensure that it persists across scene loads/unloads.
                 if (instance.transform.parent != null)
                 {
-                    Debug.LogWarning($"AsyncCoroutineRunner was found as a child of another GameObject {instance.transform.parent}, " +
+                    Debug.LogWarning($"[AsyncCoroutineRunner] AsyncCoroutineRunner was found as a child of another GameObject {instance.transform.parent}, " +
                         "it must be a root object in the scene. Moving the AsyncCoroutineRunner to the root.");
                     instance.transform.parent = null;
                 }
@@ -86,7 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 #if !UNITY_EDITOR
                 DontDestroyOnLoad(instance);
 #endif
-
                 return instance;
             }
         }
