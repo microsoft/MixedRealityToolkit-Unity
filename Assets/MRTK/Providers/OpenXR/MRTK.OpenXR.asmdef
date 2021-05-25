@@ -9,13 +9,7 @@
         "Unity.XR.Management",
         "Unity.XR.OpenXR"
     ],
-    "includePlatforms": [
-        "Android",
-        "Editor",
-        "WSA",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
