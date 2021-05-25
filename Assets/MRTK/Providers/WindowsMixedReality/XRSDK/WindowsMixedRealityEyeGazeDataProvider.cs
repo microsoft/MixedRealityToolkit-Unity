@@ -4,13 +4,13 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using UnityEngine;
 
 // These versions represent the first version eye tracking became usable across Unity 2019/2020/2021
 // WMR_2_7_0_OR_NEWER stops being defined at 3.0 and WMR_4_4_2_OR_NEWER stops being defined at 5.0, exclusive
 #if WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 using Unity.Profiling;
 using Unity.XR.WindowsMR;
-using UnityEngine;
 using UnityEngine.XR;
 #endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             gazeSmoother.OnSaccadeY += GazeSmoother_OnSaccadeY;
         }
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if WMR_ENABLED
             LoaderHelpers.IsLoaderActive("Windows MR Loader");
 #else
@@ -78,13 +78,28 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
 
             base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
         #region IMixedRealityCapabilityCheck Implementation
