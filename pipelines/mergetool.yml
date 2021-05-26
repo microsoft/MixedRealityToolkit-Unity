@@ -6,6 +6,7 @@ schedules:
   branches:
     include:
     - main
+  always: true
 
 pr: none
 trigger: none
