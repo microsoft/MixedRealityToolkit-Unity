@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                         if (meshTransform.HasValue)
                         {
                             System.Numerics.Matrix4x4.Decompose(meshTransform.Value,
-                                out System.Numerics.Vector3 scale,
+                                out _,
                                 out System.Numerics.Quaternion rotation,
                                 out System.Numerics.Vector3 translation);
 
