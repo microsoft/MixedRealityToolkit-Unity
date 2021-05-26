@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using UnityEngine;
 using UnityEngine.XR;
 
 #if HP_CONTROLLER_ENABLED
@@ -51,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if WMR_ENABLED
             LoaderHelpers.IsLoaderActive("Windows MR Loader");
 #else
@@ -63,13 +64,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
-
-            base.Enable();
 
             if (WindowsMixedRealityUtilities.UtilitiesProvider == null)
             {
@@ -87,6 +92,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             motionControllerWatcher.MotionControllerRemoved += RemoveTrackedMotionController;
             var nowait = motionControllerWatcher.StartAsync();
 #endif // HP_CONTROLLER_ENABLED
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP

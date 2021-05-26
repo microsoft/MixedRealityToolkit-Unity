@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
-        protected override bool IsActiveLoader =>
+        protected override bool? IsActiveLoader =>
 #if MSFT_OPENXR_0_9_4_OR_NEWER
             LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
 #else
