@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         private const float Default_Window_Height = 500.0f;
         private const float Default_Window_Width = 300.0f;
-        private const string XRPipelineDocsUrl = "https://aka.ms/mrtkxrpipeline"; // Putting the generic MR docs on Unity versions/pipelines here before the MRTK XR pipeline doc is published.
+        private const string XRPipelineDocsUrl = "https://aka.ms/mrtkxrpipeline";
         private const string XRSDKUnityDocsUrl = "https://docs.unity3d.com/Manual/configuring-project-for-xr.html";
         private const string MSOpenXRPluginUrl = "https://aka.ms/openxr-unity-install";
         private const string MRTKConfiguratorLogPrefix = "[MRTK Configurator]";
