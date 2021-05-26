@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// The global input source used by the the speech input provider to raise events.
         /// </summary>
-        private BaseGlobalInputSource globalInputSource;
+        private BaseGlobalInputSource globalInputSource = null;
 
         /// <inheritdoc />
         public bool IsRecognitionActive =>
