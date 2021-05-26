@@ -141,12 +141,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (SynchronizationContext.Current == SyncContextUtility.UnitySynchronizationContext)
             {
+                // Take the opportunity to ensure AsyncCoroutineRunner is running when we are on the Unity thread
+                if (!AsyncCoroutineRunner.IsInstanceRunning)
+                {
+                    var _ = AsyncCoroutineRunner.Instance;
+                }
                 action();
             }
             else
             {
-                // Make sure there is an instance of AsyncCoroutineRunner before calling AsyncCoroutineRunner.Post
-                var _ = AsyncCoroutineRunner.Instance;
+                // Make sure there is a running instance of AsyncCoroutineRunner before calling AsyncCoroutineRunner.Post
+                // If not warn the user. Note we cannot call AsyncCoroutineRunner.Instance here as that getter contains
+                // calls to Unity functions that can only be run on the Unity thread
+                if (!AsyncCoroutineRunner.IsInstanceRunning)
+                {
+                    Debug.LogWarning("There is no active AsyncCoroutineRunner when an action is posted. Place a GameObject " +
+                        "at the root of the scene and attach the AsyncCoroutineRunner script to make it function properly.");
+                }
                 AsyncCoroutineRunner.Post(action);
             }
         }
