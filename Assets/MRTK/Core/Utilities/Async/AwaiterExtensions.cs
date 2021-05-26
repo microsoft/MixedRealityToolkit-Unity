@@ -141,11 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (SynchronizationContext.Current == SyncContextUtility.UnitySynchronizationContext)
             {
-                // Take the opportunity to ensure AsyncCoroutineRunner is running when we are on the Unity thread
-                if (!AsyncCoroutineRunner.IsInstanceRunning)
-                {
-                    var _ = AsyncCoroutineRunner.Instance;
-                }
                 action();
             }
             else

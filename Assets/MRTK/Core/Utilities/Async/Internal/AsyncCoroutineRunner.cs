@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             Debug.Assert(Instance == this, "[AsyncCoroutineRunner] There should only be one AsyncCoroutineRunner in the scene.");
             isInstanceRunning = true;
