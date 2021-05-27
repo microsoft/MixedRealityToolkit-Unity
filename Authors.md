@@ -7,7 +7,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Addison Linville (radicalad)
 - ADP-JoNeff
 - afarchy
-- Against Lightning XR (againstlightning)
+- Against Lightning (AgainstLightning)
 - alandergrouse (alandergrouse)
 - Alex Floyd (elbuhofantasma)
 - Alexander Seeck (Alexees)
@@ -28,6 +28,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - CDiaz-MS
 - cefoot
 - cellarmation
+- cihankurt98
 - CoPrez
 - Cristiano Carvalheiro (ccarvalheiro)
 - Daniel Hofmann (danielhofmann-ms)
@@ -60,6 +61,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Harrison Yu (harrisonyu)
 - hybridherbst
 - Hyung-il Kim (hyungilkim)
+- Jack Yang (jackyangzzh)
 - Jared Bienz [MSFT] (jbienzms)
 - Jarod (Jarodshow)
 - Jerome Humbert (djee-ms)
@@ -73,6 +75,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - julesra
 - Julia Schwarz (julenka)
 - julianloehr-kg
+- JungJik Lee (fnwinter)
 - Ken Jakubzak (KenJakubzak)
 - Kent1 (Kent1LG)
 - Kevin Kennedy (KevinKennedy)
@@ -93,6 +96,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Matteo Valoriani (mvaloriani)
 - Matthew Johnson (matthejo)
 - MaxWang-MS
+- mbeagley-MS
 - michael (insominx)
 - Michael House (michael-house)
 - Michael Kozlowski (mpkoz)
@@ -103,6 +107,8 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - omanuke
 - Oscar Salandin (ossala)
 - PatientEz
+- Patrick Cook (darax)
+- Philipp (AllBecomesGood)
 - ritijain
 - Robert Onulak (Ziugy)
 - Roberto Sonnino (robertos)
@@ -110,6 +116,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Roland Smeenk (rolandsmeenk)
 - Rosthouse (Rosthouse)
 - rwinj
+- SabinMGeorge
 - Sarah (SarahSexton)
 - SGHolospace
 - Shawn Gwin (sgwin)
@@ -125,6 +132,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Tim Gerken (timGerken)
 - Todd Williams (killerantz)
 - Troy Ferrell (Troy-Ferrell)
+- Tux (NoTuxNoBux)
 - Vanessa Oliva (vaoliva)
 - Weasy (Weasy666)
 - Will (wiwei)
