@@ -118,6 +118,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - rwinj
 - SabinMGeorge
 - Sarah (SarahSexton)
+- SGHolospace
 - Shawn Gwin (sgwin)
 - Shinya Tachihara (decoc)
 - Simon (Darkside) Jackson (SimonDarksideJ)
