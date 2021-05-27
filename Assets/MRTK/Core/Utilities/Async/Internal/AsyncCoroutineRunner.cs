@@ -125,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (Instance != this)
             {
+                Debug.Log("[AsyncCoroutineRunner] Multiple active AsyncCoroutineRunners is present in the scene. Disabling duplicate ones.");
                 enabled = false;
                 return;
             }
