@@ -10,6 +10,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Against Lightning (AgainstLightning)
 - alandergrouse (alandergrouse)
 - Alex Floyd (elbuhofantasma)
+- Alexander Seeck (Alexees)
 - Andrew Hall (ryzngard)
 - Anton Zachesov (googlan)
 - Anuraag Puri (anuraag016)
