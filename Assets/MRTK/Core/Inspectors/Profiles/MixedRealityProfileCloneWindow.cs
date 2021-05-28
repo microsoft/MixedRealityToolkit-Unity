@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 cloneWindow.Close();
             }
 
-            cloneWindow = (MixedRealityProfileCloneWindow)GetWindow<MixedRealityProfileCloneWindow>(true, "Clone Profile", true);
+            cloneWindow = GetWindow<MixedRealityProfileCloneWindow>(true, "Clone Profile", true);
             cloneWindow.Initialize(parentProfile, childProfile, childProperty, selectionTarget);
             cloneWindow.Show(true);
         }
@@ -195,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(120)))
                                     {
                                         string profilePath = AssetDatabase.GetAssetPath(action.Property.objectReferenceValue);
-                                        action.TargetFolder = AssetDatabase.LoadAssetAtPath<Object>(System.IO.Path.GetDirectoryName(profilePath));
+                                        action.TargetFolder = AssetDatabase.LoadAssetAtPath<Object>(Path.GetDirectoryName(profilePath));
                                     }
                                 }
                                 break;
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(120)))
                 {
                     string profilePath = AssetDatabase.GetAssetPath(childProfile);
-                    targetFolder = AssetDatabase.LoadAssetAtPath<Object>(System.IO.Path.GetDirectoryName(profilePath));
+                    targetFolder = AssetDatabase.LoadAssetAtPath<Object>(Path.GetDirectoryName(profilePath));
                 }
             }
 
@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!AssetDatabase.IsValidFolder(customProfilesFolderPath))
             {
                 // AssetDatabase.CreateFolder must be called to create each child of the asset folder
-                // path individually. 
+                // path individually.
 
                 // If the packages have been imported via NugetForUnity, MixedRealityToolkitFiles.GetGeneratedFolder
                 // will also create the MixedRealityToolkit.Generated Folder and return the path to the folder.
