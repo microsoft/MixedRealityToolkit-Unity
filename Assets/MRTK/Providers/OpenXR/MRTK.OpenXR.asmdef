@@ -3,19 +3,14 @@
     "rootNamespace": "Microsoft.MixedReality.Toolkit.XRSDK.OpenXR",
     "references": [
         "Microsoft.MixedReality.OpenXR",
+        "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Gltf",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
         "Unity.XR.Management",
         "Unity.XR.OpenXR"
     ],
-    "includePlatforms": [
-        "Android",
-        "Editor",
-        "WSA",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

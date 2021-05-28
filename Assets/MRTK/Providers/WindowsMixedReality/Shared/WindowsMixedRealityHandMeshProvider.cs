@@ -209,14 +209,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
                     if (vertexAndNormals != null && handMeshTriangleIndices != null)
                     {
-                        var handMeshVertexState = handMeshObserver.GetVertexStateForPose(handPose);
+                        HandMeshVertexState handMeshVertexState = null;
+                        try
+                        {
+                            handMeshVertexState = handMeshObserver.GetVertexStateForPose(handPose);
+                        }
+                        catch (ArgumentException)
+                        {
+                            Debug.Log($"{nameof(WindowsMixedRealityHandMeshProvider)} failed to update the hand mesh. This might happen if a source was detected and lost rapidly. Otherwise, the mesh might be stale this frame.");
+                        }
+
+                        if (handMeshVertexState == null)
+                        {
+                            return;
+                        }
+
                         handMeshVertexState.GetVertices(vertexAndNormals);
 
                         var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(WindowsMixedRealityUtilities.SpatialCoordinateSystem);
                         if (meshTransform.HasValue)
                         {
                             System.Numerics.Matrix4x4.Decompose(meshTransform.Value,
-                                out System.Numerics.Vector3 scale,
+                                out _,
                                 out System.Numerics.Quaternion rotation,
                                 out System.Numerics.Vector3 translation);
 

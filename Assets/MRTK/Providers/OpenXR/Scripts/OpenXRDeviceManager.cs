@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
 using Unity.Profiling;
+using UnityEngine;
 using UnityEngine.XR;
 
 #if UNITY_OPENXR
@@ -39,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if UNITY_OPENXR
             LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
 #else
@@ -65,7 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
@@ -76,6 +83,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 #endif // MSFT_OPENXR_0_9_4_OR_NEWER && WINDOWS_UWP
 
             base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
 #if MSFT_OPENXR_0_9_4_OR_NEWER && WINDOWS_UWP

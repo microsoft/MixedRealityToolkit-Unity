@@ -131,10 +131,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (unityJointPoses.TryGetValue(TrackedHandJoint.Palm, out palmJoint))
                 {
                     Vector3 palmNormal = palmJoint.Rotation * (-1 * Vector3.up);
-                    if (cursorBeamBackwardTolerance >= 0)
+                    if (cursorBeamBackwardTolerance >= 0 && CameraCache.Main != null)
                     {
-                        Vector3 cameraBackward = -CameraCache.Main.transform.forward;
-                        if (Vector3.Dot(palmNormal.normalized, cameraBackward) > cursorBeamBackwardTolerance)
+                        if (Vector3.Dot(palmNormal.normalized, -CameraCache.Main.transform.forward) > cursorBeamBackwardTolerance)
                         {
                             return false;
                         }

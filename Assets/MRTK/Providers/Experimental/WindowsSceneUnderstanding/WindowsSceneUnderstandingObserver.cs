@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             base.Initialize();
 #if WINDOWS_UWP
 #if MSFT_OPENXR
-            isOpenXRLoaderActive = LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
+            isOpenXRLoaderActive = LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>() ?? false;
 #else
             isOpenXRLoaderActive = false;
 #endif // MSFT_OPENXR

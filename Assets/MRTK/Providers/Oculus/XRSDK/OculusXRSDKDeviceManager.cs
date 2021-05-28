@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using UnityEngine;
 using UnityEngine.XR;
 
 #if OCULUS_ENABLED
@@ -154,7 +155,7 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
 
         #endregion Controller Utilities
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if OCULUS_ENABLED
             LoaderHelpers.IsLoaderActive<OculusLoader>();
 #else
@@ -164,18 +165,33 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         /// <inheritdoc/>
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
 
-            base.Enable();
-
 #if OCULUSINTEGRATION_PRESENT
             SetupInput();
             ConfigurePerformancePreferences();
 #endif // OCULUSINTEGRATION_PRESENT
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
 #if OCULUSINTEGRATION_PRESENT

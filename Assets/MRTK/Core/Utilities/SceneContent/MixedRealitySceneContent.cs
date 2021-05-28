@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
         private Transform containerObject = null;
 
         private Vector3 contentPosition = Vector3.zero;
-        private const uint MaxEditorFrameWaitCount = 5;
+        private const uint MaxEditorFrameWaitCount = 15;
         private Coroutine initializeSceneContentWithDelay;
 
         private void Awake()
