@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void CloneMainProfile()
         {
-            var newChildProfile = CloneProfile(parentProfile, childProfile, childProfileTypeName, childProperty, targetFolder, childProfileAssetName);
+            var newChildProfile = CloneProfile(childProfileTypeName, childProperty, targetFolder, childProfileAssetName);
             SerializedObject newChildSerializedObject = new SerializedObject(newChildProfile);
             // First paste all values outright
             PasteProfileValues(parentProfile, childProfile, newChildSerializedObject);
@@ -302,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         // Clone the sub profile
                         Object subTargetFolder = (action.TargetFolder == null) ? targetFolder : action.TargetFolder;
-                        var newSubProfile = CloneProfile(newChildProfile, subProfileToClone, action.ProfileType.Name, actionProperty, subTargetFolder, action.CloneName);
+                        var newSubProfile = CloneProfile(action.ProfileType.Name, actionProperty, subTargetFolder, action.CloneName);
                         SerializedObject newSubProfileSerializedObject = new SerializedObject(newSubProfile);
                         // Paste values from existing profile
                         PasteProfileValues(newChildProfile, subProfileToClone, newSubProfileSerializedObject);
@@ -334,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             cloneWindow.Close();
         }
 
-        private static BaseMixedRealityProfile CloneProfile(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile profileToClone, string childProfileTypeName, SerializedProperty childProperty, Object targetFolder, string profileName)
+        private static BaseMixedRealityProfile CloneProfile(string childProfileTypeName, SerializedProperty childProperty, Object targetFolder, string profileName)
         {
             ScriptableObject instance = CreateInstance(childProfileTypeName);
             instance.name = string.IsNullOrEmpty(profileName) ? childProfileTypeName : profileName;
