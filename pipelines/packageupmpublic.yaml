@@ -4,9 +4,12 @@ variables:
 - template: config/settings.yml
 
 parameters:
+- name: IsFinal
+  type: boolean
+  default: false
 - name: PreviewNumber
   type: string
-  default: ''
+  default: 0
 
 jobs:
 - job: UPMPublicRelease
@@ -16,4 +19,7 @@ jobs:
   steps:
   - template: templates/tasks/pack-upm.yml
     parameters:
-      previewNumber: ${{ parameters.PreviewNumber }}
+    - ${{ if eq(parameters.IsFinal, false) }}:
+        previewNumber: ${{ parameters.PreviewNumber }}
+    - ${{ if eq(parameters.IsFinal, true) }}:
+        previewNumber: ""
