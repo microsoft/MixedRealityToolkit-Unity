@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             cloneWindow.maxSize = MinWindowSizeBasic;
 
-            targetFolder = EnsureTargetFolder(targetFolder);
+            targetFolder = EnsureTargetFolder(targetFolder, false);
         }
 
         private void OnGUI()
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 targetFolder = EditorGUILayout.ObjectField("Target Folder", targetFolder, typeof(DefaultAsset), false);
-                if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(120)))
+                if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(125)))
                 {
                     string profilePath = AssetDatabase.GetAssetPath(childProfile);
                     targetFolder = AssetDatabase.LoadAssetAtPath<Object>(Path.GetDirectoryName(profilePath));
@@ -409,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// If the targetFolder is invalid asset folder, this will create the CustomProfiles
         /// folder and use that as the default target.
         /// </summary>
-        private static Object EnsureTargetFolder(Object targetFolder)
+        private static Object EnsureTargetFolder(Object targetFolder, bool createDefaultIfNeeded = true)
         {
             if (targetFolder != null && AssetDatabase.IsValidFolder(AssetDatabase.GetAssetPath(targetFolder)))
             {
@@ -417,13 +417,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             string customProfilesFolderPath = DefaultCustomProfileFolder;
-            if (!AssetDatabase.IsValidFolder(customProfilesFolderPath))
+            if (createDefaultIfNeeded && !AssetDatabase.IsValidFolder(customProfilesFolderPath))
             {
                 // AssetDatabase.CreateFolder must be called to create each child of the asset folder
                 // path individually.
 
-                // If the packages have been imported via NugetForUnity, MixedRealityToolkitFiles.GetGeneratedFolder
-                // will also create the MixedRealityToolkit.Generated Folder and return the path to the folder.
+                // MixedRealityToolkitFiles.GetGeneratedFolder will create the MixedRealityToolkit.Generated
+                // folder if needed.
                 AssetDatabase.CreateFolder(MixedRealityToolkitFiles.GetGeneratedFolder, "CustomProfiles");
             }
             return AssetDatabase.LoadAssetAtPath(DefaultCustomProfileFolder, typeof(Object));
