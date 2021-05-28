@@ -14,10 +14,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         public enum ProfileCloneBehavior
         {
-            UseExisting,        // Use the existing reference
-            CloneExisting,      // Create a clone of the sub-profile
-            UseSubstitution,    // Manually select a profile
-            LeaveEmpty,         // Set the reference to null
+            /// <summary>
+            /// Use the existing reference.
+            /// </summary>
+            UseExisting,
+
+            /// <summary>
+            /// Create a clone of the sub-profile.
+            /// </summary>
+            CloneExisting,
+
+            /// <summary>
+            /// Manually select a profile.
+            /// </summary>
+            UseSubstitution,
+
+            /// <summary>
+            /// Set the reference to null.
+            /// </summary>
+            LeaveEmpty,
         }
 
         private struct SubProfileAction
