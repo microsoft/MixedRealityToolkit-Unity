@@ -17,9 +17,11 @@ jobs:
   pool:
     vmImage: windows-2019
   steps:
-  - template: templates/tasks/pack-upm.yml
-    parameters:
-    - ${{ if eq(parameters.IsFinal, false) }}:
+  - ${{ if eq(parameters.IsFinal, false) }}:
+    - template: templates/tasks/pack-upm.yml
+      parameters:
         previewNumber: ${{ parameters.PreviewNumber }}
-    - ${{ if eq(parameters.IsFinal, true) }}:
+  - ${{ if eq(parameters.IsFinal, true) }}:
+    - template: templates/tasks/pack-upm.yml
+      parameters:
         previewNumber: ""
