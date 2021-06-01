@@ -110,13 +110,14 @@ foreach ($entry in $packages.GetEnumerator()) {
     $docFolder = "$packagePath/Documentation~"
 
     # Copy files used by UPM to display license, change log, etc.
-    Copy-Item -Path "$projectRoot/LICENSE.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/LICENSE.md.meta.$packageName" "$packagePath/LICENSE.md.meta"
-    Copy-Item -Path "$projectRoot/NOTICE.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/NOTICE.md.meta.$packageName" "$packagePath/NOTICE.md.meta"
-    Copy-Item -Path "$projectRoot/CHANGELOG.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/CHANGELOG.md.meta.$packageName" "$packagePath/CHANGELOG.md.meta"
-    Copy-Item -Path "$projectRoot/UPM/Documentation~" $docFolder -Recurse
+    Copy-Item -Path "$ProjectRoot/LICENSE.md" -Destination "$packagePath"
+    Copy-Item -Path "$ProjectRoot/UPM/UnityMetaFiles/LICENSE.md.meta.$packageName" -Destination "$packagePath/LICENSE.md.meta"
+    Copy-Item -Path "$ProjectRoot/NOTICE.md" -Destination "$packagePath"
+    Copy-Item -Path "$ProjectRoot/UPM/UnityMetaFiles/NOTICE.md.meta.$packageName" -Destination "$packagePath/NOTICE.md.meta"
+    Copy-Item -Path "$ProjectRoot/CHANGELOG.md" -Destination "$packagePath"
+    Copy-Item -Path "$ProjectRoot/UPM/UnityMetaFiles/CHANGELOG.md.meta.$packageName" -Destination "$packagePath/CHANGELOG.md.meta"
+    Copy-Item -Path "$ProjectRoot/UPM/Documentation~" -Destination "$docFolder" -Recurse
+    Copy-Item -Path "$ProjectRoot/Authors.md" -Destination "$docFolder"
  
     $samplesFolder = "$packagePath/Samples~"
 
