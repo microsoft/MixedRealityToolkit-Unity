@@ -29,8 +29,8 @@ jobs:
         pipeline: 32
       ${{ if eq(parameters.SourcePipeline, 'mrtk_ci') }}:
         pipeline: 15
-        runVersion: latestFromBranch
-        runBranch: refs/heads/releases/$(MRTKVersion)
+      runVersion: latestFromBranch
+      runBranch: $(Build.SourceBranch)
       artifactName: mrtk-upm
       path: $(Agent.TempDirectory)
 
