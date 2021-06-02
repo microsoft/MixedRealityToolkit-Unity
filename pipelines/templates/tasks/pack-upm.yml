@@ -12,12 +12,15 @@ steps:
   inputs:
     versionSpec: '12.18.0'
 
-- ${{ if not(eq(parameters.previewNumber, '')) }}:
-  - task: PowerShell@2
+- task: PowerShell@2
+  ${{ if not(eq(parameters.previewNumber, '')) }}:
     displayName: 'Build PREVIEW UPM packages'
-    inputs:
-      targetType: filePath
-      filePath: ./scripts/packaging/createupmpackages.ps1
+  ${{ if eq(parameters.previewNumber, '') }}:
+    displayName: 'Build OFFICIAL UPM packages'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/packaging/createupmpackages.ps1
+    ${{ if not(eq(parameters.previewNumber, '')) }}:
       ${{ if eq(parameters.repack, true) }}:
         arguments: >
           -ProjectRoot ${{ parameters.projectRoot }}
@@ -31,13 +34,7 @@ steps:
           -OutputDirectory ${{ parameters.outputDirectory }}
           -Version ${{ parameters.version }}
           -PreviewNumber ${{ parameters.previewNumber }}
-
-- ${{ if eq(parameters.previewNumber, '') }}:
-  - task: PowerShell@2
-    displayName: 'Build OFFICIAL UPM packages'
-    inputs:
-      targetType: filePath
-      filePath: ./scripts/packaging/createupmpackages.ps1
+    ${{ if eq(parameters.previewNumber, '') }}:
       ${{ if eq(parameters.repack, true) }}:
         arguments: >
           -ProjectRoot ${{ parameters.projectRoot }}
