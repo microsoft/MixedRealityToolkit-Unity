@@ -5,6 +5,7 @@ parameters:
   outputDirectory: $(Build.ArtifactStagingDirectory)\build\upm\output
   version: $(MRTKVersion)
   previewNumber: $(Build.BuildNumber)
+  repack: false
 
 steps:
 - task: NodeTool@0
@@ -17,11 +18,19 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./scripts/packaging/createupmpackages.ps1
-      arguments: >
-        -ProjectRoot ${{ parameters.projectRoot }}
-        -OutputDirectory ${{ parameters.outputDirectory }}
-        -Version ${{ parameters.version }}
-        -PreviewNumber ${{ parameters.previewNumber }}
+      ${{ if eq(parameters.repack, true) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
+          -PreviewNumber ${{ parameters.previewNumber }}
+          -Repack
+      ${{ if eq(parameters.repack, false) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
+          -PreviewNumber ${{ parameters.previewNumber }}
 
 - ${{ if eq(parameters.previewNumber, '') }}:
   - task: PowerShell@2
@@ -29,10 +38,17 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./scripts/packaging/createupmpackages.ps1
-      arguments: >
-        -ProjectRoot ${{ parameters.projectRoot }}
-        -OutputDirectory ${{ parameters.outputDirectory }}
-        -Version ${{ parameters.version }}
+      ${{ if eq(parameters.repack, true) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
+          -Repack
+      ${{ if eq(parameters.repack, false) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish UPM artifacts'
