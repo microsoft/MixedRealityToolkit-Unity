@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
+    Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packages.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
 .PARAMETER ProjectRoot
@@ -110,19 +110,20 @@ foreach ($entry in $packages.GetEnumerator()) {
     $docFolder = "$packagePath/Documentation~"
 
     # Copy files used by UPM to display license, change log, etc.
-    Copy-Item -Path "$projectRoot/LICENSE.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/LICENSE.md.meta.$packageName" "$packagePath/LICENSE.md.meta"
-    Copy-Item -Path "$projectRoot/NOTICE.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/NOTICE.md.meta.$packageName" "$packagePath/NOTICE.md.meta"
-    Copy-Item -Path "$projectRoot/CHANGELOG.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/CHANGELOG.md.meta.$packageName" "$packagePath/CHANGELOG.md.meta"
-    Copy-Item -Path "$projectRoot/UPM/Documentation~" $docFolder -Recurse
+    Copy-Item -Path "$ProjectRoot/LICENSE.md" -Destination "$packagePath"
+    Copy-Item -Path "$ProjectRoot/UPM/UnityMetaFiles/LICENSE.md.meta.$packageName" -Destination "$packagePath/LICENSE.md.meta"
+    Copy-Item -Path "$ProjectRoot/NOTICE.md" -Destination "$packagePath"
+    Copy-Item -Path "$ProjectRoot/UPM/UnityMetaFiles/NOTICE.md.meta.$packageName" -Destination "$packagePath/NOTICE.md.meta"
+    Copy-Item -Path "$ProjectRoot/CHANGELOG.md" -Destination "$packagePath"
+    Copy-Item -Path "$ProjectRoot/UPM/UnityMetaFiles/CHANGELOG.md.meta.$packageName" -Destination "$packagePath/CHANGELOG.md.meta"
+    Copy-Item -Path "$ProjectRoot/UPM/Documentation~" -Destination "$docFolder" -Recurse
+    Copy-Item -Path "$ProjectRoot/Authors.md" -Destination "$docFolder"
  
     $samplesFolder = "$packagePath/Samples~"
 
     if ($packageName -eq "foundation") {
-        # The foundation package contains files that are requried to be copied into the Assets folder to be used.
-        # In order to perform the necessary preparaton, without overly complicating this script, we will use a
+        # The foundation package contains files that are required to be copied into the Assets folder to be used.
+        # In order to perform the necessary preparation, without overly complicating this script, we will use a
         # helper script to prepare the folder.
         Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/foundationpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
@@ -135,7 +136,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
     elseif ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
-        # preparaton, without overly complicating this script, we will use a helper script to prepare
+        # preparation, without overly complicating this script, we will use a helper script to prepare
         # the folder.
         Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
