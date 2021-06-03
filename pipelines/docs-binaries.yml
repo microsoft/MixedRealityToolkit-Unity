@@ -68,6 +68,8 @@ jobs:
     demands:
     - ${{ variables.Unity2018VersionInternal }}
     - COG-UnityCache-WUS2-01
+  workspace:
+    clean: resources
 
   steps:
   - checkout: self
