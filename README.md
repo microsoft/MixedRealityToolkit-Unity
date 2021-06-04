@@ -1,9 +1,3 @@
-# The docs have moved!
-
-**Starting from MRTK 2.6, we are publishing both conceptual docs and API references on docs.microsoft.com. For conceptual docs, please visit <a href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/">our new landing page</a>. For API references, please visit <a href="https://docs.microsoft.com/dotnet/api/microsoft.mixedreality.toolkit">the MRTK-Unity section of the dot net API explorer</a>. All links on this page have been updated.** 
-
-**Existing content will remain here but will not be updated further.**
-
 ![Mixed Reality Toolkit](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/Logo_MRTK_Unity_Banner.png)
 
 # What is the Mixed Reality Toolkit
@@ -13,22 +7,16 @@ MRTK-Unity is a Microsoft-driven project that provides a set of components and f
 * Provides the **cross-platform input system and building blocks for spatial interactions and UI**.
 * Enables **rapid prototyping** via in-editor simulation that allows you to see changes immediately.
 * Operates as an **extensible framework** that provides developers the ability to swap out core components.
-* **Supports a wide range of platforms**, including
-  * OpenXR (Unity 2020.2 or newer)
-    * Microsoft HoloLens 2
-    * Windows Mixed Reality headsets
-  * Windows Mixed Reality
-    * Microsoft HoloLens
-    * Microsoft HoloLens 2
-    * Windows Mixed Reality headsets
-  * Oculus (Unity 2019.3 or newer)
-    * Oculus Quest
-  * OpenVR
-    * Windows Mixed Reality headsets
-    * HTC Vive
-    * Oculus Rift
-  * Ultraleap Hand Tracking
-  * Mobile devices such as iOS and Android
+* **Supports a wide range of platforms**:
+
+| Platform | Supported Devices |
+|---|---|
+| OpenXR (Unity 2020.3) | Microsoft HoloLens 2 <br> Windows Mixed Reality headsets |
+| Windows Mixed Reality | Microsoft HoloLens <br> Microsoft HoloLens 2 <br> Windows Mixed Reality headsets  |
+| Oculus (Unity 2019.3 or newer) | Oculus Quest |
+| OpenVR |  Windows Mixed Reality headsets <br> HTC Vive <br> Oculus Rift |
+| Ultraleap Hand Tracking | Ultraleap Leap Motion controller |
+| Mobile | iOS and Android |
 
 # Getting started with MRTK
 
@@ -40,6 +28,8 @@ If you're new to MRTK or Mixed Reality development in Unity, **we recommend you 
 If you're an experienced Mixed Reality or MRTK developer, check the links in the next section for the newest packages and release notes.
 
 # Documentation
+
+**Starting from MRTK 2.6, we are publishing both conceptual docs and API references on docs.microsoft.com. For conceptual docs, please visit <a href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/">our new landing page</a>. For API references, please visit <a href="https://docs.microsoft.com/dotnet/api/microsoft.mixedreality.toolkit">the MRTK-Unity section of the dot net API explorer</a>. Existing content will remain here but will not be updated further.**
 
 | [![Release notes](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK_Icon_ReleaseNotes.png)](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/release-notes/mrtk-26-release-notes)<br/>[Release Notes](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/release-notes/mrtk-26-release-notes)| [![MRTK Overview](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK_Icon_ArchitectureOverview.png)](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/architecture/overview)<br/>[MRTK Overview](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/architecture/overview)| [![Feature Guides](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK_Icon_FeatureGuides.png)](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button)<br/>[Feature Guides](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button)| [![API Reference](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK_Icon_APIReference.png)](https://docs.microsoft.com/dotnet/api/Microsoft.MixedReality.Toolkit?view=mixed-reality-toolkit-unity-2020-dotnet-2.6.0)<br/>[API Reference](https://docs.microsoft.com/dotnet/api/Microsoft.MixedReality.Toolkit?view=mixed-reality-toolkit-unity-2020-dotnet-2.6.0)|
 |:---|:---|:---|:---|
