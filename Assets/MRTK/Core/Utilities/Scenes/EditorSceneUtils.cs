@@ -253,7 +253,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public static bool IsEditingPrefab()
         {
+#if UNITY_2021_2_OR_NEWER
+            var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#else
             var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#endif
             return prefabStage != null;
         }
 
