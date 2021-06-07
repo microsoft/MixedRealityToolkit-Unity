@@ -8,6 +8,7 @@
 [Bb]uild/
 [Ll]ibrary/
 [Aa]pp/
+[Uu]serSettings/
 UWP/
 WindowsStoreApp/
 WSA/
@@ -22,6 +23,7 @@ Assets/XR/
 Assets/XR.meta
 Assets/Oculus/
 Assets/Oculus.meta
+
 # ============ #
 # Certificates #
 # ============ #
@@ -34,6 +36,7 @@ Assets/Oculus.meta
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
 .vs/
+.vsconfig
 ExportedObj/
 obj/
 *.svd
