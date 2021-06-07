@@ -402,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // FIRST DISTANCE
             float firstAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, Vector3.Distance(cam.transform.position, baseCursor.transform.position));
 
-            cube.gameObject.SetActive(false);
+            cube.SetActive(false);
 
             yield return new WaitForFixedUpdate();
             yield return null;

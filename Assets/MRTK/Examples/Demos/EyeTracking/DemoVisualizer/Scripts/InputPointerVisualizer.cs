@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             {
                 for (int i = array.Length - 1; i >= 0; i--)
                 {
-                    Destroy(array[i].gameObject);
+                    Destroy(array[i]);
                 }
             }
         }

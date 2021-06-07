@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             if (seeItSayItLabel.activeSelf != seeItSayItLabelActive)
                             {
                                 seeItSayItLabel.SetActive(seeItSayItLabelActive);
-                                EditorUtility.SetDirty(seeItSayItLabel.gameObject);
+                                EditorUtility.SetDirty(seeItSayItLabel);
                             }
 
                             if (seeItSayItLabel.activeSelf)

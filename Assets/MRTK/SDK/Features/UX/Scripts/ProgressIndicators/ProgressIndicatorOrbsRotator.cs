@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 for (int index = 0; index < deployedCount; ++index)
                 {
                     float acceleratedDegrees = (rotationSpeedRawDegrees * (acceleration + -Mathf.Cos(Mathf.Deg2Rad * angles[index]))) * timeSlice;
-                    orbs[index].gameObject.transform.Rotate(0, 0, acceleratedDegrees);
+                    orbs[index].transform.Rotate(0, 0, acceleratedDegrees);
                     angles[index] += Mathf.Abs(acceleratedDegrees);
 
                     Color orbColor = propertyBlocks[index].GetColor("_Color");
