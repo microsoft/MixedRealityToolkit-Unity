@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.IO;
+using System.Xml;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -63,9 +64,41 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             string generatedFolder = MixedRealityToolkitFiles.MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType.Generated, "");
             string linkXmlPath = Path.Combine(generatedFolder, "link.xml");
+
             if (File.Exists(linkXmlPath))
             {
-                // Do not touch the existing file.
+                bool xmlUpdated = false;
+
+                // Update to ensure Unity's okay ignoring missing assemblies
+                XmlDocument doc = new XmlDocument();
+                doc.Load(linkXmlPath);
+
+                XmlNodeList assemblyNodes = doc.SelectNodes(@"/linker/assembly");
+
+                if (assemblyNodes != null)
+                {
+                    XmlAttribute newAttr = doc.CreateAttribute("ignoreIfMissing");
+                    newAttr.Value = "1";
+
+                    foreach (XmlNode assembly in assemblyNodes)
+                    {
+                        XmlNode fullname = assembly.Attributes.GetNamedItem("fullname");
+                        XmlNode ignoreIfMissing = assembly.Attributes.GetNamedItem("ignoreIfMissing");
+                        if (ignoreIfMissing == null && fullname.InnerText.StartsWith("Microsoft.MixedReality.Toolkit"))
+                        {
+                            assembly.Attributes.SetNamedItem(newAttr);
+                            xmlUpdated = true;
+                        }
+                    }
+                }
+
+                if (xmlUpdated)
+                {
+                    Debug.Log($"The link.xml file in {MixedRealityToolkitFiles.GetGeneratedFolder} was updated to include \"ignoreIfMissing\" tags.\n" +
+                        "This is required in Unity 2021 or later for legacy XR assemblies that are no longer used and is okay if this project is on an earlier version.");
+                    doc.Save(linkXmlPath);
+                }
+
                 return;
             }
 
@@ -73,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             using (StreamWriter writer = new StreamWriter(linkXmlPath))
             {
                 writer.WriteLine(defaultLinkXmlContents);
-                Debug.Log($"A link.xml file was created in {MixedRealityToolkitFiles.GetGeneratedFolder}. \n" +
+                Debug.Log($"A link.xml file was created in {MixedRealityToolkitFiles.GetGeneratedFolder}.\n" +
                     "This file is used to control preservation of MRTK code during linking. It is recommended to add link.xml (and link.xml.meta) to source control.");
             }
         }
