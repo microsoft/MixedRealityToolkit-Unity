@@ -474,7 +474,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.Hide();
 
             }
+        }
 
+        /// <summary>
+        /// This tests that the cursor doesn't become focus locked when the Object Manipulator component is disabled
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ObjectManipulatorNoFocusOnDisable()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
+
+            // Disable the manipulation handler
+            manipHandler.enabled = false;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Hand pointing at middle of cube
+            Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
+            TestHand hand = new TestHand(Handedness.Right);
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return hand.Show(initialHandPosition);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Vector3 initialPosition = testObject.transform.position;
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+            yield return hand.Hide();
         }
 
         /// <summary>
