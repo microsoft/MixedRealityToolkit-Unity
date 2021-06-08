@@ -507,8 +507,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         {
             GltfMesh gltfMesh = gltfObject.meshes[meshId];
 
-            var renderer = parent.gameObject.AddComponent<MeshRenderer>();
-            var filter = parent.gameObject.AddComponent<MeshFilter>();
+            var renderer = parent.AddComponent<MeshRenderer>();
+            var filter = parent.AddComponent<MeshFilter>();
 
             if (gltfMesh.primitives.Length == 1)
             {
