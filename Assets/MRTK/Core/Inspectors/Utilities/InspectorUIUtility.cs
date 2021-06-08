@@ -650,7 +650,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     else
                     {
                         bool isNestedInCurrentPrefab = false;
-                        var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+#if UNITY_2021_2_OR_NEWER
+                        var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#else
+                        var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#endif
                         if (prefabStage != null)
                         {
                             var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
