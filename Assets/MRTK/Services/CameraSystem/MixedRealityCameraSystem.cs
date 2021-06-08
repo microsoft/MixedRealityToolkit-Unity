@@ -120,6 +120,12 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
                     object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.SettingsProfile };
 
+                    DebugUtilities.LogVerboseFormat(
+                        "Attempting to register camera system settings {0}, {1}, {2}",
+                        configuration.ComponentType,
+                        configuration.ComponentName,
+                        configuration.RuntimePlatform);
+
                     if (RegisterDataProvider<IMixedRealityCameraSettingsProvider>(
                         configuration.ComponentType.Type,
                         configuration.ComponentName,
