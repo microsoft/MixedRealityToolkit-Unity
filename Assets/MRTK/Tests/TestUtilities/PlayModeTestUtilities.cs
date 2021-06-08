@@ -220,7 +220,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 {
                     CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
                 }
+
+#if !UNITY_2021_1_OR_NEWER
                 inputModule.forceModuleActive = true;
+#endif // !UNITY_2021_1_OR_NEWER
             }
         }
 

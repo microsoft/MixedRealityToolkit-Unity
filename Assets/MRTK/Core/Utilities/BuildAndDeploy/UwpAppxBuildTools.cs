@@ -531,7 +531,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 AddGazeInputCapability(rootElement);
             }
 
-            if (uwpBuildInfo.ResearchModeCapabilityEnabled && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+            if (uwpBuildInfo.ResearchModeCapabilityEnabled
+#if !UNITY_2021_2_OR_NEWER
+                && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
+#endif // !UNITY_2021_2_OR_NEWER
+                )
             {
                 AddResearchModeCapability(rootElement);
             }
