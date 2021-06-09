@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     Debug.LogError("EnterPinchDistance must be between 0.015 and 0.1, please change Enter Pinch Distance in the Leap Motion Device Manager Profile");
-                }   
+                }
             }
         }
 
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInputActionMapping("Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInputActionMapping("Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
             new MixedRealityInputActionMapping("Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInputActionMapping("Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInputActionMapping("Grab", AxisType.SingleAxis, DeviceInputType.GripPress),
             new MixedRealityInputActionMapping("Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
             new MixedRealityInputActionMapping("Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick),
         };
@@ -131,10 +131,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (unityJointPoses.TryGetValue(TrackedHandJoint.Palm, out palmJoint))
                 {
                     Vector3 palmNormal = palmJoint.Rotation * (-1 * Vector3.up);
-                    if (cursorBeamBackwardTolerance >= 0)
+                    if (cursorBeamBackwardTolerance >= 0 && CameraCache.Main != null)
                     {
-                        Vector3 cameraBackward = -CameraCache.Main.transform.forward;
-                        if (Vector3.Dot(palmNormal.normalized, cameraBackward) > cursorBeamBackwardTolerance)
+                        if (Vector3.Dot(palmNormal.normalized, -CameraCache.Main.transform.forward) > cursorBeamBackwardTolerance)
                         {
                             return false;
                         }

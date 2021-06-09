@@ -29,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public JoystickController[] Joysticks;
         private float MinimumFloatValue = 0.001f;
         private int MinimumIntValue = 1;
-        private float DefaultMoveValue= 0.001f;
-        private float DefaultScaleValue= 0.0001f;
+        private float DefaultMoveValue = 0.001f;
+        private float DefaultScaleValue = 0.0001f;
         private float DefaultRotateValue = 0.3f;
         private float DefaultReboundValue = 5f;
         private float DefaultSensitivityHorizontalValue = 3f;

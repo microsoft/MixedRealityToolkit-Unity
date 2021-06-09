@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -30,11 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Contains a set of animation curves that describe motion of camera and hands.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class InputAnimation
     {
-        protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         /// <summary>
         /// Arbitrarily large weight for representing a boolean value in float curves.
         /// </summary>
@@ -49,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Maximum duration of all animations curves.
         /// </summary>
         public float Duration => duration;
-        
+
         private class PoseCurves
         {
             public AnimationCurve PositionX = new AnimationCurve();
@@ -71,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 AddFloatKey(RotationZ, time, pose.Rotation.z);
                 AddFloatKey(RotationW, time, pose.Rotation.w);
             }
-            
+
             /// <summary>
             /// Optimizes the set of curves.
             /// </summary>
@@ -95,15 +93,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float rw = RotationW.Evaluate(time);
 
                 var pose = new MixedRealityPose();
-                
+
                 pose.Position = new Vector3(px, py, pz);
                 pose.Rotation = new Quaternion(rx, ry, rz, rw);
                 pose.Rotation.Normalize();
-                
+
                 return pose;
             }
         }
-        
+
         private class RayCurves
         {
             public AnimationCurve OriginX = new AnimationCurve();
@@ -118,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 AddVectorKey(OriginX, OriginY, OriginZ, time, ray.origin);
                 AddVectorKey(DirectionX, DirectionY, DirectionZ, time, ray.direction);
             }
-            
+
             /// <summary>
             /// Optimizes the set of curves.
             /// </summary>
@@ -139,9 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float dx = DirectionX.Evaluate(time);
                 float dy = DirectionY.Evaluate(time);
                 float dz = DirectionZ.Evaluate(time);
-            
+
                 var ray = new Ray();
-            
+
                 ray.origin = new Vector3(ox, oy, oz);
                 ray.direction = new Vector3(dx, dy, dz);
                 ray.direction.Normalize();
@@ -157,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return a.time.CompareTo(b.time);
             }
         }
-        
+
         [SerializeField]
         private AnimationCurve handTrackedCurveLeft;
         [SerializeField]
@@ -187,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Whether the animation has eye gaze curves
         /// </summary>
         public bool HasEyeGaze { get; private set; } = false;
-        
+
         /// <summary>
         /// Number of markers in the animation.
         /// </summary>
@@ -256,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             duration = Mathf.Max(duration, time);
         }
-        
+
         /// <summary>
         /// Add a user-defined marker.
         /// </summary>
@@ -313,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 CutoffBeforeTime(curve, time);
             }
         }
-        
+
         /// <summary>
         /// Serialize animation data into a stream.
         /// </summary>
@@ -325,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             writer.Write(HasCameraPose);
             writer.Write(HasHandData);
             writer.Write(HasEyeGaze);
-            
+
             var defaultCurves = new PoseCurves();
 
             if (HasCameraPose)
@@ -340,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveLeft, startTime);
                 InputAnimationSerializationUtils.WriteBoolCurve(writer, handPinchCurveRight, startTime);
 
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
                     if (!handJointCurvesLeft.TryGetValue((TrackedHandJoint)i, out var curves))
                     {
@@ -348,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     PoseCurvesToStream(writer, curves, startTime);
                 }
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
                     if (!handJointCurvesRight.TryGetValue((TrackedHandJoint)i, out var curves))
                     {
@@ -362,17 +360,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 RayCurvesToStream(writer, gazeCurves, startTime);
             }
-            
+
             InputAnimationSerializationUtils.WriteMarkerList(writer, markers, startTime);
         }
-        
+
         /// <summary>
         /// Serialize animation data into a stream asynchronously.
         /// </summary>
         public async Task ToStreamAsync(Stream stream, float startTime, Action callback = null)
         {
             await Task.Run(() => ToStream(stream, startTime));
-            
+
             callback?.Invoke();
         }
 
@@ -386,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 isTracked = false;
                 isPinching = false;
             }
-            
+
             if (handedness == Handedness.Left)
             {
                 EvaluateHandState(time, handTrackedCurveLeft, handPinchCurveLeft, out isTracked, out isPinching);
@@ -441,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return MixedRealityPose.ZeroIdentity;
             }
-            
+
             return cameraCurves.Evaluate(time);
         }
 
@@ -454,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return MixedRealityPose.ZeroIdentity;
             }
-            
+
             if (handedness == Handedness.Left)
             {
                 return EvaluateHandJoint(time, joint, handJointCurvesLeft);
@@ -478,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return new Ray(Vector3.zero, Vector3.forward);
             }
-            
+
             return gazeCurves.Evaluate(time);
         }
 
@@ -489,7 +487,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             return markers[index];
         }
-        
+
         /// <summary>
         /// Generates an input animation from the contents of a recording buffer.
         /// </summary>
@@ -503,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             animation.HasHandData = profile.RecordHandData;
             animation.HasCameraPose = profile.RecordCameraPose;
             animation.HasEyeGaze = profile.RecordEyeGaze;
-            
+
             foreach (var keyframe in recordingBuffer)
             {
                 float localTime = keyframe.Time - startTime;
@@ -514,28 +512,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     AddBoolKeyIfChanged(animation.handTrackedCurveRight, localTime, keyframe.RightTracked);
                     AddBoolKeyIfChanged(animation.handPinchCurveLeft, localTime, keyframe.LeftPinch);
                     AddBoolKeyIfChanged(animation.handPinchCurveRight, localTime, keyframe.RightPinch);
-                
-                    foreach (var joint in (TrackedHandJoint[]) Enum.GetValues(typeof(TrackedHandJoint)))
+
+                    foreach (var joint in (TrackedHandJoint[])Enum.GetValues(typeof(TrackedHandJoint)))
                     {
                         AddJointPoseKeys(animation.handJointCurvesLeft, keyframe.LeftJoints, joint, localTime);
                         AddJointPoseKeys(animation.handJointCurvesRight, keyframe.RightJoints, joint, localTime);
                     }
                 }
 
-                if (profile.RecordCameraPose) 
+                if (profile.RecordCameraPose)
                 {
                     animation.cameraCurves.AddKey(localTime, keyframe.CameraPose);
                 }
 
-                if (profile.RecordEyeGaze) 
+                if (profile.RecordEyeGaze)
                 {
                     animation.gazeCurves.AddKey(localTime, keyframe.GazeRay);
                 }
             }
-            
+
             animation.Optimize(profile);
             animation.ComputeDuration();
-            
+
             return animation;
 
             void AddBoolKeyIfChanged(AnimationCurve curve, float time, bool value)
@@ -577,16 +575,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             int latestVersionMajor = InputAnimationSerializationUtils.VersionMajor;
             int latestVersionMinor = InputAnimationSerializationUtils.VersionMinor;
-            
+
             if (versionMajor > latestVersionMajor || versionMajor == latestVersionMajor && versionMinor > latestVersionMinor)
             {
                 Debug.LogError($"Only version {latestVersionMajor}.{latestVersionMinor} and earlier of input animation file format is supported.");
-                
+
                 return animation;
             }
 
             bool useNewFormat = versionMajor > 1 || versionMajor == 1 && versionMinor >= 1;
-            
+
             if (useNewFormat)
             {
                 animation.HasCameraPose = reader.ReadBoolean();
@@ -612,23 +610,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputAnimationSerializationUtils.ReadBoolCurve(reader, animation.handPinchCurveLeft);
                 InputAnimationSerializationUtils.ReadBoolCurve(reader, animation.handPinchCurveRight);
 
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
-                    if (!animation.handJointCurvesLeft.TryGetValue((TrackedHandJoint) i, out var curves))
+                    if (!animation.handJointCurvesLeft.TryGetValue((TrackedHandJoint)i, out var curves))
                     {
                         curves = new PoseCurves();
-                        animation.handJointCurvesLeft.Add((TrackedHandJoint) i, curves);
+                        animation.handJointCurvesLeft.Add((TrackedHandJoint)i, curves);
                     }
 
                     PoseCurvesFromStream(reader, curves, useNewFormat);
                 }
 
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
-                    if (!animation.handJointCurvesRight.TryGetValue(key: (TrackedHandJoint) i, out var curves))
+                    if (!animation.handJointCurvesRight.TryGetValue(key: (TrackedHandJoint)i, out var curves))
                     {
                         curves = new PoseCurves();
-                        animation.handJointCurvesRight.Add((TrackedHandJoint) i, curves);
+                        animation.handJointCurvesRight.Add((TrackedHandJoint)i, curves);
                     }
 
                     PoseCurvesFromStream(reader, curves, useNewFormat);
@@ -639,7 +637,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 RayCurvesFromStream(reader, animation.gazeCurves, useNewFormat);
             }
-            
+
             InputAnimationSerializationUtils.ReadMarkerList(reader, animation.markers);
             animation.ComputeDuration();
 
@@ -652,7 +650,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static async Task<InputAnimation> FromStreamAsync(Stream stream, Action callback = null)
         {
             var result = await Task.Run(() => FromStream(stream));
-            
+
             callback?.Invoke();
 
             return result;
@@ -666,10 +664,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             AddBoolKeyFiltered(trackedCurve, time, isTracked);
             AddBoolKeyFiltered(pinchCurve, time, isPinching);
-        
+
             duration = Mathf.Max(duration, time);
         }
-        
+
         /// <summary>
         /// Add a keyframe for one hand joint.
         /// </summary>
@@ -681,9 +679,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 curves = new PoseCurves();
                 jointCurves.Add(joint, curves);
             }
-        
+
             AddPoseKeyFiltered(curves, time, jointPose, positionThreshold, rotationThreshold);
-        
+
             duration = Mathf.Max(duration, time);
         }
 
@@ -729,7 +727,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             return null;
         }
-        
+
         /// <summary>
         /// Get animation curves for the pose of the given hand joint, if they exist.
         /// </summary>
@@ -757,7 +755,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 duration = Mathf.Max(duration, curveDuration);
             }
         }
-        
+
         /// <summary>
         /// Optimizes the curves contained within the animation
         /// </summary>
@@ -817,7 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             yield return handTrackedCurveRight;
             yield return handPinchCurveLeft;
             yield return handPinchCurveRight;
-            
+
             foreach (var curves in handJointCurvesLeft.Values)
             {
                 yield return curves.PositionX;
@@ -828,7 +826,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 yield return curves.RotationZ;
                 yield return curves.RotationW;
             }
-            
+
             foreach (var curves in handJointCurvesRight.Values)
             {
                 yield return curves.PositionX;
@@ -839,7 +837,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 yield return curves.RotationZ;
                 yield return curves.RotationW;
             }
-            
+
             yield return cameraCurves.PositionX;
             yield return cameraCurves.PositionY;
             yield return cameraCurves.PositionZ;
@@ -854,7 +852,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             yield return gazeCurves.DirectionY;
             yield return gazeCurves.DirectionZ;
         }
-        
+
         /// <summary>
         /// Utility function that creates a non-interpolated keyframe suitable for boolean values.
         /// </summary>
@@ -863,11 +861,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float fvalue = value ? 1.0f : 0.0f;
             // Set tangents and weights such than the input value is cut off and out tangent is constant.
             var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, BoolOutWeight);
-            
+
             keyframe.weightedMode = WeightedMode.Both;
             curve.AddKey(keyframe);
         }
-        
+
         /// <summary>
         /// Add a float value to an animation curve.
         /// </summary>
@@ -875,11 +873,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Use linear interpolation by setting tangents and weights to zero.
             var keyframe = new Keyframe(time, value, 0.0f, 0.0f, 0.0f, 0.0f);
-            
+
             keyframe.weightedMode = WeightedMode.Both;
             curve.AddKey(keyframe);
         }
-        
+
         /// <summary>
         /// Add a vector value to an animation curve.
         /// </summary>
@@ -889,7 +887,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             curveY.AddKey(time, vector.y);
             curveZ.AddKey(time, vector.z);
         }
-        
+
         /// <summary>
         /// Add a pose keyframe to an animation curve.
         /// Keys are only added if the value changes sufficiently.
@@ -900,7 +898,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AddPositionKeyFiltered(curves.PositionX, curves.PositionY, curves.PositionZ, time, pose.Position, positionThreshold);
             AddRotationKeyFiltered(curves.RotationX, curves.RotationY, curves.RotationZ, curves.RotationW, time, pose.Rotation, rotationThreshold);
         }
-        
+
         /// <summary>
         /// Add a vector keyframe to animation curve if the threshold distance to the previous value is exceeded.
         /// Otherwise replace the last keyframe instead of adding a new one.
@@ -913,7 +911,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             int iX = FindKeyframeInterval(curveX, time);
             int iY = FindKeyframeInterval(curveY, time);
             int iZ = FindKeyframeInterval(curveZ, time);
-            
+
             if (iX > 0 && iY > 0 && iZ > 0)
             {
                 var v0 = new Vector3(curveX.keys[iX - 1].value, curveY.keys[iY - 1].value, curveZ.keys[iZ - 1].value);
@@ -946,7 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             int iY = FindKeyframeInterval(curveY, time);
             int iZ = FindKeyframeInterval(curveZ, time);
             int iW = FindKeyframeInterval(curveW, time);
-            
+
             if (iX > 0 && iY > 0 && iZ > 0 && iW > 0)
             {
                 var v0 = new Quaternion(curveX.keys[iX - 1].value, curveY.keys[iY - 1].value, curveZ.keys[iZ - 1].value, curveW.keys[iW - 1].value);
@@ -967,7 +965,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AddFloatKey(curveZ, time, rotation.z);
             AddFloatKey(curveW, time, rotation.w);
         }
-        
+
         private static void PoseCurvesToStream(BinaryWriter writer, PoseCurves curves, float startTime)
         {
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.PositionX, startTime);
@@ -982,8 +980,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static void PoseCurvesFromStream(BinaryReader reader, PoseCurves curves, bool readSimple)
         {
-             if (readSimple)
-             {
+            if (readSimple)
+            {
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionX);
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionY);
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionZ);
@@ -992,31 +990,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationY);
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationZ);
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationW);
-             }
-             else
-             {
-                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionX);
-                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionY);
-                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionZ);
+            }
+            else
+            {
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionX);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionY);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionZ);
 
-                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationX);
-                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationY);
-                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationZ);
-                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationW);
-             }
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationX);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationY);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationZ);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationW);
+            }
         }
-        
+
         private static void RayCurvesToStream(BinaryWriter writer, RayCurves curves, float startTime)
         {
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.OriginX, startTime);
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.OriginY, startTime);
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.OriginZ, startTime);
-            
+
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.DirectionX, startTime);
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.DirectionY, startTime);
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.DirectionZ, startTime);
         }
-        
+
         private static void RayCurvesFromStream(BinaryReader reader, RayCurves curves, bool readSimple)
         {
             if (readSimple)
@@ -1029,7 +1027,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionY);
                 InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionZ);
             }
-            else 
+            else
             {
                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.OriginX);
                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.OriginY);
@@ -1040,7 +1038,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.DirectionZ);
             }
         }
-    
+
         /// <summary>
         /// Removes points from a set of curves representing a 3D position, such that the error resulting from removing a point never exceeds 'threshold' units.
         /// </summary>
@@ -1057,7 +1055,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var outCurveX = new AnimationCurve();
             var outCurveY = new AnimationCurve();
             var outCurveZ = new AnimationCurve();
-            
+
             outCurveX.AddKey(curveX[0]);
             outCurveY.AddKey(curveY[0]);
             outCurveZ.AddKey(curveZ[0]);
@@ -1083,7 +1081,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             curveX = outCurveX;
             curveY = outCurveY;
             curveZ = outCurveZ;
-            
+
             void Recurse(int start, int end)
             {
                 if (start + 1 >= end - 1)
@@ -1097,12 +1095,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float endTime = inCurveX[end].time;
                 var startPosition = new Vector3(inCurveX[start].value, inCurveY[start].value, inCurveZ[start].value);
                 var endPosition = new Vector3(inCurveX[end].value, inCurveY[end].value, inCurveZ[end].value);
-                
+
                 for (int i = start + 1; i <= end - 1; i++)
                 {
                     var position = new Vector3(inCurveX[i].value, inCurveY[i].value, inCurveZ[i].value);
                     var interp = Vector3.Lerp(startPosition, endPosition, Mathf.InverseLerp(startTime, endTime, inCurveX[i].time));
-                    
+
                     float distance = (position - interp).sqrMagnitude;
 
                     if (distance > bestDistance)
@@ -1116,7 +1114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     return;
                 }
-                
+
                 outCurveX.AddKey(inCurveX[bestIndex]);
                 outCurveY.AddKey(inCurveY[bestIndex]);
                 outCurveZ.AddKey(inCurveZ[bestIndex]);
@@ -1124,7 +1122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Recurse(bestIndex, end);
             }
         }
-        
+
         /// <summary>
         /// Removes points from a set of curves representing a 3D direction vector, such that the error resulting from removing a point never exceeds 'threshold' degrees.
         /// </summary>
@@ -1141,11 +1139,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var outCurveX = new AnimationCurve();
             var outCurveY = new AnimationCurve();
             var outCurveZ = new AnimationCurve();
-            
+
             outCurveX.AddKey(curveX[0]);
             outCurveY.AddKey(curveY[0]);
             outCurveZ.AddKey(curveZ[0]);
-            
+
             if (partitionSize == 0)
             {
                 Recurse(0, curveX.length - 1);
@@ -1167,7 +1165,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             curveX = outCurveX;
             curveY = outCurveY;
             curveZ = outCurveZ;
-            
+
             void Recurse(int start, int end)
             {
                 if (start + 1 >= end - 1)
@@ -1181,12 +1179,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float endTime = inCurveX[end].time;
                 var startPosition = new Vector3(inCurveX[start].value, inCurveY[start].value, inCurveZ[start].value);
                 var endPosition = new Vector3(inCurveX[end].value, inCurveY[end].value, inCurveZ[end].value);
-                
+
                 for (int i = start + 1; i <= end - 1; i++)
                 {
                     var position = new Vector3(inCurveX[i].value, inCurveY[i].value, inCurveZ[i].value);
                     var interp = Vector3.Lerp(startPosition, endPosition, Mathf.InverseLerp(startTime, endTime, inCurveX[i].time)).normalized;
-                    
+
                     float dot = Vector3.Dot(position, interp);
 
                     if (dot < bestDot)
@@ -1200,7 +1198,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     return;
                 }
-                
+
                 outCurveX.AddKey(inCurveX[bestIndex]);
                 outCurveY.AddKey(inCurveY[bestIndex]);
                 outCurveZ.AddKey(inCurveZ[bestIndex]);
@@ -1208,7 +1206,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Recurse(bestIndex, end);
             }
         }
-        
+
         /// <summary>
         /// Removes points from a set of curves representing a quaternion, such that the error resulting from removing a point never exceeds 'threshold' degrees.
         /// </summary>
@@ -1227,12 +1225,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var outCurveY = new AnimationCurve();
             var outCurveZ = new AnimationCurve();
             var outCurveW = new AnimationCurve();
-            
+
             outCurveX.AddKey(curveX[0]);
             outCurveY.AddKey(curveY[0]);
             outCurveZ.AddKey(curveZ[0]);
             outCurveW.AddKey(curveW[0]);
-            
+
             if (partitionSize == 0)
             {
                 Recurse(0, curveX.length - 1);
@@ -1257,7 +1255,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             curveY = outCurveY;
             curveZ = outCurveZ;
             curveW = outCurveW;
-            
+
             void Recurse(int start, int end)
             {
                 if (start + 1 >= end - 1)
@@ -1271,13 +1269,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float endTime = inCurveX[end].time;
                 var startRotation = new Quaternion(inCurveX[start].value, inCurveY[start].value, inCurveZ[start].value, inCurveW[start].value).normalized;
                 var endRotation = new Quaternion(inCurveX[end].value, inCurveY[end].value, inCurveZ[end].value, inCurveW[end].value).normalized;
-                
+
                 for (int i = start + 1; i <= end - 1; i++)
                 {
                     var rotation = new Quaternion(inCurveX[i].value, inCurveY[i].value, inCurveZ[i].value, inCurveW[i].value).normalized;
                     var interp = Quaternion.Lerp(startRotation, endRotation, Mathf.InverseLerp(startTime, endTime, inCurveX[i].time));
 
-                    float dot = Quaternion.Dot(rotation, interp); 
+                    float dot = Quaternion.Dot(rotation, interp);
 
                     if (dot < bestDot)
                     {
@@ -1290,7 +1288,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     return;
                 }
-                
+
                 outCurveX.AddKey(inCurveX[bestIndex]);
                 outCurveY.AddKey(inCurveY[bestIndex]);
                 outCurveZ.AddKey(inCurveZ[bestIndex]);

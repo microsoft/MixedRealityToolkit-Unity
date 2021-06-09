@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">The handedness that this definition instance represents.</param>
         public OculusTouchControllerDefinition(Handedness handedness) : base(handedness)
         {
-            if ((handedness != Handedness.Left) && 
+            if ((handedness != Handedness.Left) &&
                 (handedness != Handedness.Right))
             {
                 throw new System.ArgumentException($"Unsupported Handedness ({handedness}). The OculusTouchControllerDefinition supports Left and Right.");

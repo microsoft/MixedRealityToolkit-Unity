@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI.HandCoach;
+using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {

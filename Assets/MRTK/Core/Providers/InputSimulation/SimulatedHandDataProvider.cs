@@ -233,9 +233,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         internal override void ResetInput(SimulatedControllerState state, bool isSimulating)
         {
             base.ResetInput(state, isSimulating);
-            
+
             var handState = state as SimulatedHandState;
-            
+
             handState.Gesture = profile.DefaultHandGesture;
             handState.ResetGesture();
             handState.ResetRotation();

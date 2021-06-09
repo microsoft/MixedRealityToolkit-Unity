@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
-using System.Text;
-using System.Collections.Generic;
 using UnityEngine.TextCore;
-using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// An asset for storing textures, sprites and character icons for use with MRTK buttons. Used by ButtonConfigHelper script.
     /// </summary>
-    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality Toolkit/IconSet")]
+    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality/Toolkit/IconSet")]
     public class ButtonIconSet : ScriptableObject
     {
         // Struct used to pair a font icon with a searchable name.
@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void UpdateSpriteIconTextures()
         {
-            if(spriteIcons != null)
+            if (spriteIcons != null)
             {
                 spriteIconTextures = new Texture[spriteIcons.Length];
                 for (int i = 0; i < spriteIcons.Length; i++)

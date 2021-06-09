@@ -1,7 +1,9 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
     "references": [
+        "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
         "Unity.XR.WindowsMixedReality"
@@ -25,6 +27,21 @@
             "name": "com.unity.xr.windowsmr",
             "expression": "",
             "define": "WMR_ENABLED"
+        },
+        {
+            "name": "com.unity.xr.windowsmr",
+            "expression": "[2.7,3.0)",
+            "define": "WMR_2_7_0_OR_NEWER"
+        },
+        {
+            "name": "com.unity.xr.windowsmr",
+            "expression": "[4.4.2,5.0)",
+            "define": "WMR_4_4_2_OR_NEWER"
+        },
+        {
+            "name": "com.unity.xr.windowsmr",
+            "expression": "5.2.2",
+            "define": "WMR_5_2_2_OR_NEWER"
         },
         {
             "name": "com.microsoft.mixedreality.input",

@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// New controller types can be registered by adding the MixedRealityControllerAttribute to
     /// the controller class.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
     public class MixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
         [SerializeField]
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappings;
 
 #if UNITY_EDITOR
-        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Controller Mapping Profiles")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Update/Controller Mapping Profiles")]
         private static void UpdateAllControllerMappingProfiles()
         {
             string[] guids = AssetDatabase.FindAssets("t:MixedRealityControllerMappingProfile");

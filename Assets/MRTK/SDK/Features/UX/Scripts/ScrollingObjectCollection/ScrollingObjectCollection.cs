@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool MaskEnabled
         {
             get { return maskEnabled; }
-            set 
+            set
             {
                 if (!value && value != wasMaskEnabled)
                 {
@@ -699,7 +699,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return clipBox;
             }
         }
-       
+
         // This collider will be used for checking intersection of the scroll visible area with any content collider or renderer bounds.
         private Collider clippingBoundsCollider;
         private Collider ClippingBoundsCollider
@@ -721,6 +721,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private readonly float contentVisibilityThresholdRatio = 1.025f;
 
         private bool oldIsTargetPositionLockedOnFocusLock;
+
+        private readonly HashSet<Renderer> clippedRenderers = new HashSet<Renderer>();
 
         #region scroll state variables
 
@@ -908,7 +910,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     contentBounds.Encapsulate(renderer.bounds);
                 }
-               
+
                 Vector3 localSize;
 
                 localSize.y = SafeDivisionFloat(contentBounds.size.y, transform.lossyScale.y);
@@ -941,7 +943,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             Vector3 colliderPosition;
             colliderPosition.x = ScrollingCollider.size.x / 2;
-            colliderPosition.y = - ScrollingCollider.size.y / 2;
+            colliderPosition.y = -ScrollingCollider.size.y / 2;
             colliderPosition.z = cellDepth / 2 + ScrollingColliderDepth;
             ScrollingCollider.center = colliderPosition;
 
@@ -950,7 +952,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Math.Abs(Vector3.Dot(ScrollingCollider.size, ScrollingTouchable.LocalUp)));
 
             Vector3 touchablePosition = colliderPosition;
-            touchablePosition.z = - cellDepth / 2;
+            touchablePosition.z = -cellDepth / 2;
 
             ScrollingTouchable.SetBounds(size);
             ScrollingTouchable.SetLocalCenter(touchablePosition);
@@ -1111,7 +1113,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, OverDampLerpInterval);
                         }
-                        else 
+                        else
                         {
                             workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, DragLerpInterval);
                         }
@@ -1143,8 +1145,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     lastPointerPos = currentPointerPos;
                 }
             }
-            else if ((CurrentVelocityState != VelocityState.None 
-                      || previousVelocityState != VelocityState.None) 
+            else if ((CurrentVelocityState != VelocityState.None
+                      || previousVelocityState != VelocityState.None)
                       && CurrentVelocityState != VelocityState.Animating) // Prevent the Animation coroutine from being overridden
             {
                 // We're not engaged, so handle any not touching behavior
@@ -1183,7 +1185,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityTouchHandler>(this);
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
 
+            // Currently in editor duplicating prefab GameObject containing both TMP and non-TMP children inside the Scrolling Object Collection container causes material life cycle management issues
+            // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9481
+            // Thus we do not automatically destroy material controlled by Material Instance if the OnDisable comes from pasting in editor
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                bool? isCalledFromPastingGameObject = new System.Diagnostics.StackFrame(1)?.GetMethod()?.Name?.Contains("Paste");
+                RestoreContentVisibility(!isCalledFromPastingGameObject.GetValueOrDefault());
+            }
+            else
+            {
+                RestoreContentVisibility();
+            }
+#else
             RestoreContentVisibility();
+#endif
 
             if (useOnPreRender && cameraMethods != null)
             {
@@ -1643,9 +1660,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Removes all renderers currently being clipped by the clipping box
         /// </summary>
-        private void ClearClippingBox()
+        private void ClearClippingBox(bool autoDestroyMaterial = true)
         {
-            ClipBox.ClearRenderers();
+            ClipBox.ClearRenderers(autoDestroyMaterial);
         }
 
         /// <summary>
@@ -1676,7 +1693,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Bounds clippingThresholdBounds = ClippingBoundsCollider.bounds;
 
             Renderer[] contentRenderers = ScrollContainer.GetComponentsInChildren<Renderer>(true);
-            List<Renderer> clippedRenderers = ClipBox.GetRenderersCopy().ToList();
+            clippedRenderers.Clear();
+            clippedRenderers.UnionWith(ClipBox.GetRenderersCopy());
 
             // Remove all renderers from clipping primitive that are not part of scroll content
             foreach (var clippedRenderer in clippedRenderers)
@@ -1713,8 +1731,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Complete or partially visible renders should be clipped and its game object should be active
                 if (isRestoringVisibility
-                    || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
-                    || clippingThresholdBounds.Intersects(renderer.bounds)) 
+                    || clippingThresholdBounds.ContainsBounds(renderer.bounds)
+                    || clippingThresholdBounds.Intersects(renderer.bounds))
                 {
                     if (disableClippedGameObjects)
                     {
@@ -1897,9 +1915,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// All inactive content objects and colliders are reactivated and renderers are unclipped.
         /// </summary>
-        private void RestoreContentVisibility()
+        private void RestoreContentVisibility(bool autoDestroyMaterial = true)
         {
-            ClearClippingBox();
+            ClearClippingBox(autoDestroyMaterial);
             ManageVisibility(true);
         }
 

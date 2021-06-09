@@ -11,7 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.GGVHand,
-        new[] { Handedness.Left, Handedness.Right, Handedness.None })]
+        new[] { Handedness.Left, Handedness.Right, Handedness.None },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityXRSDKGGVHand : BaseWindowsMixedRealityXRSDKSource
     {
         public WindowsMixedRealityXRSDKGGVHand(

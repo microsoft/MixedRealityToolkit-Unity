@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -14,8 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public static class InputAnimationSerializationUtils
     {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         public const string Extension = "bin";
 
         const long Magic = 0x6a8faf6e0f9e42c6;
@@ -31,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string filename;
             if (appendTimestamp)
             {
-                filename = String.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), InputAnimationSerializationUtils.Extension);
+                filename = string.Format("{0}-{1}.{2}", baseName, DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"), Extension);
             }
             else
             {
@@ -150,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             curve.keys = keys;
         }
-        
+
         /// <summary>
         /// Serialize an animation curve with tangents as binary data. Only encodes keyframe position and time.
         /// </summary>

@@ -27,10 +27,9 @@
 //------------------------------------------------------------------------------ -
 
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.﻿
+// Licensed under the MIT License.
 
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
@@ -179,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         public void ApplyConfiguredPerformanceSettings()
         {
 #if OCULUSINTEGRATION_PRESENT
-            XRSettings.eyeTextureResolutionScale = resolutionScale;
+            UnityEngine.XR.XRSettings.eyeTextureResolutionScale = resolutionScale;
             OVRManager.cpuLevel = CPULevel;
             OVRManager.gpuLevel = GPULevel;
 

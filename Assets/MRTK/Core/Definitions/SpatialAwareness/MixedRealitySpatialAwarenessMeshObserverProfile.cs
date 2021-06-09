@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// Configuration profile settings for spatial awareness mesh observers.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Spatial Awareness Mesh Observer Profile", fileName = "MixedRealitySpatialAwarenessMeshObserverProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwarenessMeshObserver)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Spatial Awareness Mesh Observer Profile", fileName = "MixedRealitySpatialAwarenessMeshObserverProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwarenessMeshObserver)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySpatialAwarenessMeshObserver))]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/configuring-spatial-awareness-mesh-observer")]
     public class MixedRealitySpatialAwarenessMeshObserverProfile : BaseSpatialAwarenessObserverProfile
@@ -82,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The material to be used when observed meshes should occlude other objects.
         /// </summary>
         public Material OcclusionMaterial => occlusionMaterial;
-        
-        [SerializeField] 
+
+        [SerializeField]
         [Tooltip("Optional physics material to apply to spatial mesh")]
         private PhysicMaterial physicsMaterial = null;
 
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         [SerializeField]
         [Tooltip("Optional prefab that is added to the runtime spatial mesh hierarchy.  This prefab will only" +
-            " be instantiated and appended to the hierarchy in a build, the behavior associated with this property is not" + 
+            " be instantiated and appended to the hierarchy in a build, the behavior associated with this property is not" +
             " enabled in editor.\n" +
             "\n" +
             "Default Runtime Spatial Awareness Hierarchy: \n" +

@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.license information.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -25,7 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         "Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK",
-        true)]
+        true,
+        SupportedUnityXRPipelines.LegacyXR)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class WindowsMixedRealitySpatialMeshObserver :
         BaseSpatialMeshObserver,
@@ -420,7 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     Pose anchorPose = new Pose(transform.position, transform.rotation);
                     /// Propagate any global scale on the playspace into the position.
                     Vector3 playspaceScale = MixedRealityPlayspace.Transform.lossyScale;
-                    anchorPose.position *= playspaceScale.x; 
+                    anchorPose.position *= playspaceScale.x;
                     Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
                     transform.parent.position = parentPose.position;
                     transform.parent.rotation = parentPose.rotation;
@@ -689,7 +690,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 // Check to see if the display option is set to none. If so, we disable
                 // the renderer.
                 meshObject.Renderer.enabled = (DisplayOption != SpatialAwarenessMeshDisplayOptions.None);
-                
+
                 // Set the physics material
                 if (meshObject.Renderer.enabled)
                 {
@@ -707,7 +708,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
                 // Preserve local transform relative to parent.
                 meshObject.GameObject.transform.SetParent(ObservedObjectParent != null ?
-                    ObservedObjectParent.transform: null, false);
+                    ObservedObjectParent.transform : null, false);
 
                 meshEventData.Initialize(this, meshObject.Id, meshObject);
                 if (isMeshUpdate)

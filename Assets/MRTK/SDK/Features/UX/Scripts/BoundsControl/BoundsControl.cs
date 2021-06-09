@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityPhysics = UnityEngine.Physics;
-using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 {
@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public ScaleHandlesConfiguration ScaleHandlesConfig
         {
             get => scaleHandlesConfiguration;
-            set 
+            set
             {
                 scaleHandlesConfiguration = value;
                 scaleHandles = scaleHandlesConfiguration.ConstructInstance();
@@ -698,7 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             scaleHandles = scaleHandlesConfiguration.ConstructInstance();
             rotationHandles = rotationHandlesConfiguration.ConstructInstance();
             translationHandles = translationHandlesConfiguration.ConstructInstance();
-            
+
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
@@ -850,6 +850,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             TargetBounds.EnsureComponent<NearInteractionGrabbable>();
         }
 
+        private readonly List<Transform> childTransforms = new List<Transform>();
+
         private Bounds GetTargetBounds()
         {
             TotalBoundsCorners.Clear();
@@ -859,7 +861,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             // Since those have the gizmo structure childed, be need to omit them completely in the calculation of the bounds
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
-            List<Transform> childTransforms = new List<Transform>();
+            childTransforms.Clear();
             if (Target != gameObject)
             {
                 childTransforms.Add(Target.transform);
@@ -900,8 +902,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void ExtractBoundsCorners(Transform childTransform, BoundsCalculationMethod boundsCalculationMethod)
         {
-            KeyValuePair<Transform, Collider> colliderByTransform;
-            KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
+            KeyValuePair<Transform, Collider> colliderByTransform = default;
+            KeyValuePair<Transform, Bounds> rendererBoundsByTransform = default;
 
             if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
             {
@@ -1206,8 +1208,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     }
                     if (!transformUpdated.HasFlag(TransformFlags.Rotate))
                     {
-                        Target.transform.rotation = smoothingActive ? 
-                            Smoothing.SmoothTo(Target.transform.rotation, constraintRotation.Rotation, rotateLerpTime, Time.deltaTime) : 
+                        Target.transform.rotation = smoothingActive ?
+                            Smoothing.SmoothTo(Target.transform.rotation, constraintRotation.Rotation, rotateLerpTime, Time.deltaTime) :
                             constraintRotation.Rotation;
                     }
                 }
@@ -1261,8 +1263,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     }
                     if (!transformUpdated.HasFlag(TransformFlags.Scale))
                     {
-                        Target.transform.localScale = smoothingActive ? 
-                            Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : 
+                        Target.transform.localScale = smoothingActive ?
+                            Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) :
                             clampedTransform.Scale;
                     }
 
@@ -1286,10 +1288,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     }
                     if (!transformUpdated.HasFlag(TransformFlags.Move))
                     {
-                        Target.transform.position = smoothingActive ? 
-                            Smoothing.SmoothTo(Target.transform.position, constraintTranslate.Position, translateLerpTime, Time.deltaTime) : 
+                        Target.transform.position = smoothingActive ?
+                            Smoothing.SmoothTo(Target.transform.position, constraintTranslate.Position, translateLerpTime, Time.deltaTime) :
                             constraintTranslate.Position;
-                    } 
+                    }
                 }
             }
         }
@@ -1514,7 +1516,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             proximityEffect.ClearObjects();
             links.Clear();
-            
+
             scaleHandles.DestroyHandles();
             rotationHandles.DestroyHandles();
             translationHandles.DestroyHandles();

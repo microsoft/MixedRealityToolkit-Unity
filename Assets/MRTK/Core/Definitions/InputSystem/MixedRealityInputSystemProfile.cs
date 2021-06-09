@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Configuration profile settings for setting up controller pointers.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/overview")]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
@@ -59,15 +59,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             internal set { raycastProviderType = value; }
         }
 
+        [SerializeField]
+        [Range(1, 2048)]
+        [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
+        private int focusQueryBufferSize = 128;
+
         /// <summary>
         /// Maximum number of colliders that can be detected in a SphereOverlap scene query.
         /// </summary>
         public int FocusQueryBufferSize => focusQueryBufferSize;
 
         [SerializeField]
-        [Range(1, 2048)]
-        [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
-        private int focusQueryBufferSize = 128;
+        [Tooltip("Whether or not MRTK should try to raycast against Unity UI.")]
+        private bool shouldUseGraphicsRaycast = true;
+
+        /// <summary>
+        /// Whether or not MRTK should try to raycast against Unity UI.
+        /// </summary>
+        public bool ShouldUseGraphicsRaycast => shouldUseGraphicsRaycast;
 
         [SerializeField]
         [Tooltip("In case of a compound collider, does the individual collider receive focus")]
@@ -155,13 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Returns whether speech is supported for the current language or not
         /// </summary>
-        public bool IsSpeechSupported
-        {
-            get
-            {
-                return supportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
-            }
-        }
+        public bool IsSpeechSupported => supportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]

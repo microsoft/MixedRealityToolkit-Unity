@@ -46,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED = "BuildDeployWindow_MulticoreAppxBuildEnabled";
         private const string EDITOR_PREF_RESEARCH_MODE_CAPABILITY_ENABLED = "BuildDeployWindow_ResearchModeCapabilityEnabled";
         private const string EDITOR_PREF_ALLOW_UNSAFE_CODE = "BuildDeployWindow_AllowUnsafeCode";
+        private const string EDITOR_PREF_NUGET_EXECUTABLE_PATH = "BuildDeployWindow_NugetExecutablePath";
 
         /// <summary>
         /// The current Build Configuration. (Debug, Release, or Master)
@@ -193,6 +194,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_ALLOW_UNSAFE_CODE, false);
             set => EditorPreferences.Set(EDITOR_PREF_ALLOW_UNSAFE_CODE, value);
+        }
+
+        /// <summary>
+        /// Current value of the optional path to nuget.exe.
+        /// </summary>
+        public static string NugetExecutablePath
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_NUGET_EXECUTABLE_PATH, string.Empty);
+            set => EditorPreferences.Set(EDITOR_PREF_NUGET_EXECUTABLE_PATH, value);
         }
     }
 }

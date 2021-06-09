@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
-using Microsoft.MixedReality.Toolkit.OpenVR.Input;
 using NUnit.Framework;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
@@ -39,11 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
             TestGenericJoystickControllerUpdate(controller);
         }
 
+#if !UNITY_2020_1_OR_NEWER
         [Test]
         public void GenericOpenVRControllerUpdateTest()
         {
-            GenericOpenVRController leftController = new GenericOpenVRController(TrackingState.NotTracked, Utilities.Handedness.Left);
-            GenericOpenVRController rightController = new GenericOpenVRController(TrackingState.NotTracked, Utilities.Handedness.Right);
+            OpenVR.Input.GenericOpenVRController leftController = new OpenVR.Input.GenericOpenVRController(TrackingState.NotTracked, Utilities.Handedness.Left);
+            OpenVR.Input.GenericOpenVRController rightController = new OpenVR.Input.GenericOpenVRController(TrackingState.NotTracked, Utilities.Handedness.Right);
 
             TestGenericJoystickControllerUpdate(leftController);
             TestGenericJoystickControllerUpdate(rightController);
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         [Test]
         public void OculusRemoteControllerUpdateTest()
         {
-            OculusRemoteController controller = new OculusRemoteController(TrackingState.NotTracked, Utilities.Handedness.None);
+            OpenVR.Input.OculusRemoteController controller = new OpenVR.Input.OculusRemoteController(TrackingState.NotTracked, Utilities.Handedness.None);
 
             TestGenericJoystickControllerUpdate(controller);
         }
@@ -60,8 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         [Test]
         public void OculusTouchControllerUpdateTest()
         {
-            OculusTouchController leftController = new OculusTouchController(TrackingState.NotTracked, Utilities.Handedness.Left);
-            OculusTouchController rightController = new OculusTouchController(TrackingState.NotTracked, Utilities.Handedness.Right);
+            OpenVR.Input.OculusTouchController leftController = new OpenVR.Input.OculusTouchController(TrackingState.NotTracked, Utilities.Handedness.Left);
+            OpenVR.Input.OculusTouchController rightController = new OpenVR.Input.OculusTouchController(TrackingState.NotTracked, Utilities.Handedness.Right);
 
             TestGenericJoystickControllerUpdate(leftController);
             TestGenericJoystickControllerUpdate(rightController);
@@ -70,8 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         [Test]
         public void ViveKnucklesControllerUpdateTest()
         {
-            ViveKnucklesController leftController = new ViveKnucklesController(TrackingState.NotTracked, Utilities.Handedness.Left);
-            ViveKnucklesController rightController = new ViveKnucklesController(TrackingState.NotTracked, Utilities.Handedness.Right);
+            OpenVR.Input.ViveKnucklesController leftController = new OpenVR.Input.ViveKnucklesController(TrackingState.NotTracked, Utilities.Handedness.Left);
+            OpenVR.Input.ViveKnucklesController rightController = new OpenVR.Input.ViveKnucklesController(TrackingState.NotTracked, Utilities.Handedness.Right);
 
             TestGenericJoystickControllerUpdate(leftController);
             TestGenericJoystickControllerUpdate(rightController);
@@ -80,8 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         [Test]
         public void ViveWandControllerUpdateTest()
         {
-            ViveWandController leftController = new ViveWandController(TrackingState.NotTracked, Utilities.Handedness.Left);
-            ViveWandController rightController = new ViveWandController(TrackingState.NotTracked, Utilities.Handedness.Right);
+            OpenVR.Input.ViveWandController leftController = new OpenVR.Input.ViveWandController(TrackingState.NotTracked, Utilities.Handedness.Left);
+            OpenVR.Input.ViveWandController rightController = new OpenVR.Input.ViveWandController(TrackingState.NotTracked, Utilities.Handedness.Right);
 
             TestGenericJoystickControllerUpdate(leftController);
             TestGenericJoystickControllerUpdate(rightController);
@@ -90,12 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         [Test]
         public void WindowsMixedRealityOpenVRMotionControllerUpdateTest()
         {
-            WindowsMixedRealityOpenVRMotionController leftController = new WindowsMixedRealityOpenVRMotionController(TrackingState.NotTracked, Utilities.Handedness.Left);
-            WindowsMixedRealityOpenVRMotionController rightController = new WindowsMixedRealityOpenVRMotionController(TrackingState.NotTracked, Utilities.Handedness.Right);
+            OpenVR.Input.WindowsMixedRealityOpenVRMotionController leftController = new OpenVR.Input.WindowsMixedRealityOpenVRMotionController(TrackingState.NotTracked, Utilities.Handedness.Left);
+            OpenVR.Input.WindowsMixedRealityOpenVRMotionController rightController = new OpenVR.Input.WindowsMixedRealityOpenVRMotionController(TrackingState.NotTracked, Utilities.Handedness.Right);
 
             TestGenericJoystickControllerUpdate(leftController);
             TestGenericJoystickControllerUpdate(rightController);
         }
+#endif // !UNITY_2020_1_OR_NEWER
 
         private void TestGenericJoystickControllerUpdate(GenericJoystickController controller)
         {

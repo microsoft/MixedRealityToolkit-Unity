@@ -641,7 +641,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     // case 5 -> can't create and/or store the local scriptable above - show link
                     bool isStoredAsset = scriptable.objectReferenceValue != null && AssetDatabase.Contains(scriptable.objectReferenceValue);
                     bool isEmptyInStagedPrefab = !isStoredAsset && ((Component)scriptable.serializedObject.targetObject).gameObject.scene.path == "";
-                    if (scriptable.objectReferenceValue == null ||  isEmptyInStagedPrefab)
+                    if (scriptable.objectReferenceValue == null || isEmptyInStagedPrefab)
                     {
                         EditorGUILayout.HelpBox("No scriptable " + scriptable.displayName + " linked to this prefab. Prefabs can't store " +
                             "local versions of scriptables and need to be linked to a scriptable asset.", MessageType.Warning);
@@ -650,7 +650,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     else
                     {
                         bool isNestedInCurrentPrefab = false;
-                        var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+#if UNITY_2021_2_OR_NEWER
+                        var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#else
+                        var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#endif
                         if (prefabStage != null)
                         {
                             var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
@@ -662,8 +666,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif
                             ;
                         }
-                        
-                        
+
                         if (isStoredAsset && !isNestedInCurrentPrefab)
                         {
                             // case 3 & 4 - greyed out drawer
@@ -699,8 +702,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
                             DrawScriptableSubEditor(scriptable);
                         }
-
-                        
                     }
                 }
             }
@@ -717,7 +718,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             isExpanded = EditorGUILayout.Foldout(isExpanded, typeDescription + "s", true);
 
             if (isExpanded)
-            { 
+            {
                 if (EditorGUILayout.DropdownButton(new GUIContent("Add " + typeDescription), FocusType.Keyboard))
                 {
                     // create the menu and add items to it

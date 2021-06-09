@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The time of the first keyframe in the buffer
         /// </summary>
         public float StartTime => keyframes.Peek().Time;
-        
+
         private Keyframe currentKeyframe;
         private Queue<Keyframe> keyframes;
 

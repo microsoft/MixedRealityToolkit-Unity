@@ -24,8 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// </summary>
         public MicrosoftMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new WindowsMixedRealityControllerDefinition(controllerHandedness))
-        {
-        }
+        { }
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
@@ -71,5 +70,54 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 }
             }
         }
+
+#if MSFT_OPENXR_0_9_4_OR_NEWER
+        private MicrosoftControllerModelProvider controllerModelProvider;
+
+        /// <inheritdoc />
+        protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
+        {
+            if (GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
+            {
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+            else
+            {
+                TryRenderControllerModelWithModelProvider();
+                return true;
+            }
+        }
+
+        private async void TryRenderControllerModelWithModelProvider()
+        {
+            if (controllerModelProvider == null)
+            {
+                controllerModelProvider = new MicrosoftControllerModelProvider(ControllerHandedness);
+            }
+
+            GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
+
+            if (this != null)
+            {
+                if (controllerModel != null
+                    && MixedRealityControllerModelHelpers.TryAddVisualizationScript(controllerModel, GetType(), ControllerHandedness)
+                    && TryAddControllerModelToSceneHierarchy(controllerModel))
+                {
+                    controllerModel.SetActive(true);
+                    return;
+                }
+
+                Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+            }
+
+            if (controllerModel != null)
+            {
+                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
+                controllerModel.SetActive(false);
+            }
+        }
+#endif // MSFT_OPENXR_0_9_4_OR_NEWER
     }
 }

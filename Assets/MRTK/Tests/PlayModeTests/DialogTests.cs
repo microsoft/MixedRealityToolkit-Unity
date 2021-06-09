@@ -21,7 +21,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class DialogTests
+    public class DialogTests : BasePlayModeTests
     {
         // SDK/Features/UX/Prefabs/Dialog/DialogSmall_192x96.prefab
         private const string smallDialogPrefabAssetGuid = "8e686c90124b8e14cbf8093893109e9a";
@@ -33,21 +33,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private const float DialogStabilizationTime = 1.5f;
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
-            GameObject.Destroy(dialogGameObject);
-            GameObject.Destroy(dialogComponent);
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            Object.Destroy(dialogGameObject);
+            Object.Destroy(dialogComponent);
+            yield return base.TearDown();
         }
 
         /// <summary>
@@ -75,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // The dialog only supports displaying up to two options
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog",DialogButtonType.Yes | DialogButtonType.No, true);
+            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, true);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             // near distances determined by the Dialog.Open() function
             dialogDistance = dialogGameObject.transform.position.magnitude;
@@ -146,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // The dialog only supports displaying up to two options
             yield return handRight.MoveTo(Vector3.zero);
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonType.Yes | DialogButtonType.No, false);
-            
+
             // Wait for the dialog to move to a stable position
             yield return new WaitForSeconds(DialogStabilizationTime);
 

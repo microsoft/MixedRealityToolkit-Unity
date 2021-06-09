@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         private void Start()
         {
             startPosition = grabberVisual.transform.localPosition;
-            if(grabberVisual != null)
+            if (grabberVisual != null)
             {
                 grabberVisual.GetComponent<MeshRenderer>().enabled = showGrabberVisual;
             }
@@ -90,10 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         private void Update()
         {
-            if(!isDragging)
+            if (!isDragging)
             {
                 // when dragging stops, move joystick back to idle
-                if(grabberVisual != null)
+                if (grabberVisual != null)
                 {
                     grabberVisual.transform.localPosition = Vector3.Lerp(grabberVisual.transform.localPosition, startPosition, Time.deltaTime * ReboundSpeed);
                 }
@@ -106,11 +106,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             joystickGrabberPosition = grabberVisual.transform.localPosition - startPosition;
             // Left Right = Horizontal
-            joystickVisualRotation.z = Mathf.Clamp(-joystickGrabberPosition.x * SensitivityLeftRight,-joystickVisualMaxRotation, joystickVisualMaxRotation);
+            joystickVisualRotation.z = Mathf.Clamp(-joystickGrabberPosition.x * SensitivityLeftRight, -joystickVisualMaxRotation, joystickVisualMaxRotation);
             // Forward Back = Vertical
-            joystickVisualRotation.x = Mathf.Clamp(joystickGrabberPosition.z * SensitivityForwardBack,-joystickVisualMaxRotation, joystickVisualMaxRotation);
+            joystickVisualRotation.x = Mathf.Clamp(joystickGrabberPosition.z * SensitivityForwardBack, -joystickVisualMaxRotation, joystickVisualMaxRotation);
             // TODO: calculate joystickVisualRotation.y to always face the proper direction (for when the joystick container gets moved around the scene)
-            if(joystickVisual != null)
+            if (joystickVisual != null)
             {
                 joystickVisual.transform.localRotation = Quaternion.Euler(joystickVisualRotation);
             }
@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             if (TargetObject != null)
             {
-                if(Mode == JoystickMode.Move)
+                if (Mode == JoystickMode.Move)
                 {
                     TargetObject.transform.position += (joystickGrabberPosition * MoveSpeed);
                     if (debugText != null)
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                         debugText.text = TargetObject.transform.position.ToString();
                     }
                 }
-                else if(Mode == JoystickMode.Rotate)
+                else if (Mode == JoystickMode.Rotate)
                 {
                     Vector3 newRotation = TargetObject.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                         debugText.text = TargetObject.transform.localRotation.eulerAngles.ToString();
                     }
                 }
-                else if(Mode == JoystickMode.Scale)
+                else if (Mode == JoystickMode.Scale)
                 {
                     // TODO: Clamp above zero
                     Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * ScaleSpeed;

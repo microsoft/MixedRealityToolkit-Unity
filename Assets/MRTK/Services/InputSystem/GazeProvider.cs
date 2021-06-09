@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("Scripts/MRTK/Services/GazeProvider")]
     public class GazeProvider :
         InputSystemGlobalHandlerListener,
-        IMixedRealityGazeProvider,
         IMixedRealityGazeProviderHeadOverride,
         IMixedRealityEyeGazeProvider,
         IMixedRealityInputHandler

@@ -13,14 +13,15 @@ jobs:
 - job: UnityValidation
   timeoutInMinutes: 90
   pool:
-    name: Analog N-1
+    name: Analog On-Prem
     demands:
     - ${{ variables.Unity2018VersionInternal }}
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
+  workspace:
+    clean: resources
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packageNuGet: true # deprecated and temporary
       publishPackagesToFeed: true
       UnityVersion: $(Unity2018VersionInternal)

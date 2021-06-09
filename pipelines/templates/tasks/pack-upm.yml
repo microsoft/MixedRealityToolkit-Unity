@@ -4,38 +4,48 @@ parameters:
   projectRoot: $(Get-Location)
   outputDirectory: $(Build.ArtifactStagingDirectory)\build\upm\output
   version: $(MRTKVersion)
-  buildNumber: $(Build.BuildNumber)
-  excludeBuildNumber: 0
+  previewNumber: $(Build.BuildNumber)
+  repack: false
 
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '12.18.0'
 
-- ${{ if eq(parameters.excludeBuildNumber, 0) }}:
-  - task: PowerShell@2
+- task: PowerShell@2
+  ${{ if not(eq(parameters.previewNumber, '')) }}:
     displayName: 'Build PREVIEW UPM packages'
-    inputs:
-      targetType: filePath
-      filePath: ./scripts/packaging/createupmpackages.ps1
-      arguments: >
-        -ProjectRoot ${{ parameters.projectRoot }}
-        -OutputDirectory ${{ parameters.outputDirectory }}
-        -Version ${{ parameters.version }}
-        -BuildNumber ${{ parameters.buildNumber }}
-
-- ${{ if eq(parameters.excludeBuildNumber, 1) }}:
-  - task: PowerShell@2
+  ${{ if eq(parameters.previewNumber, '') }}:
     displayName: 'Build OFFICIAL UPM packages'
-    inputs:
-      targetType: filePath
-      filePath: ./scripts/packaging/createupmpackages.ps1
-      arguments: >
-        -ProjectRoot ${{ parameters.projectRoot }}
-        -OutputDirectory ${{ parameters.outputDirectory }}
-        -Version ${{ parameters.version }}
-        -BuildNumber ${{ parameters.buildNumber }}
-        -ExcludeBuildNumber
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/packaging/createupmpackages.ps1
+    ${{ if not(eq(parameters.previewNumber, '')) }}:
+      ${{ if eq(parameters.repack, true) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
+          -PreviewNumber ${{ parameters.previewNumber }}
+          -Repack
+      ${{ if eq(parameters.repack, false) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
+          -PreviewNumber ${{ parameters.previewNumber }}
+    ${{ if eq(parameters.previewNumber, '') }}:
+      ${{ if eq(parameters.repack, true) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
+          -Repack
+      ${{ if eq(parameters.repack, false) }}:
+        arguments: >
+          -ProjectRoot ${{ parameters.projectRoot }}
+          -OutputDirectory ${{ parameters.outputDirectory }}
+          -Version ${{ parameters.version }}
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish UPM artifacts'

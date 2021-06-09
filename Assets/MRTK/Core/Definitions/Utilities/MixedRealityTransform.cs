@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public override string ToString()
         {
-            return $"{pose.Position} | {pose.Rotation}";
+            return $"{pose.Position} | {pose.Rotation} | {scale}";
         }
 
         /// <summary>

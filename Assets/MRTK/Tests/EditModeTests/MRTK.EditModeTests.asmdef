@@ -7,6 +7,7 @@
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Examples",
         "Microsoft.MixedReality.Toolkit.Providers.OpenVR",
+        "Microsoft.MixedReality.Toolkit.Providers.OpenXR",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Editor",
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.SDK.Editor",

@@ -14,8 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [Serializable]
     public class SimulatedHandData
     {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         [SerializeField]
         private bool isTracked = false;
 
@@ -23,13 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Whether the hand is currently being tracked
         /// </summary>
         public bool IsTracked => isTracked;
+
         [SerializeField]
-        private MixedRealityPose[] joints = new MixedRealityPose[jointCount];
+        private MixedRealityPose[] joints = new MixedRealityPose[ArticulatedHandPose.JointCount];
 
         /// <summary>
         /// Array storing the joints of the hand
         /// </summary>
         public MixedRealityPose[] Joints => joints;
+
         [SerializeField]
         private bool isPinching = false;
 
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             isTracked = other.isTracked;
             isPinching = other.isPinching;
-            for (int i = 0; i < jointCount; ++i)
+            for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
             {
                 joints[i] = other.joints[i];
             }
@@ -86,8 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         public abstract ControllerSimulationMode SimulationMode { get; }
 
-        protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
 
         /// <summary>
@@ -109,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UpdateHandJoints(handData);
             UpdateVelocity();
-            
+
             UpdateInteractions(handData);
         }
 

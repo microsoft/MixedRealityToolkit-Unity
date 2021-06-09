@@ -128,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { state = value; }
         }
 
-
         [Header("Default Button Options")]
 
         [Tooltip("Should the AppBar have a remove button")]
@@ -462,14 +461,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (!(Target is IBoundsTargetProvider boundsProvider) || boundsProvider.IsNull() || boundsProvider.Target == null)
             {
-                if (DisplayType == AppBarDisplayTypeEnum.Manipulation)
+                bool isDisplayTypeNotManipulation = DisplayType != AppBarDisplayTypeEnum.Manipulation;
+                if (BaseRenderer.activeSelf != isDisplayTypeNotManipulation)
                 {
-                    // Hide our buttons
-                    BaseRenderer.SetActive(false);
-                }
-                else
-                {
-                    BaseRenderer.SetActive(true);
+                    BaseRenderer.SetActive(isDisplayTypeNotManipulation);
                 }
                 return;
             }
@@ -562,10 +557,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         // Show hide, adjust, remove buttons
                         // The rest are hidden
-                        case AppBar.ButtonTypeEnum.Hide:
-                        case AppBar.ButtonTypeEnum.Remove:
-                        case AppBar.ButtonTypeEnum.Adjust:
-                        case AppBar.ButtonTypeEnum.Custom:
+                        case ButtonTypeEnum.Hide:
+                        case ButtonTypeEnum.Remove:
+                        case ButtonTypeEnum.Adjust:
+                        case ButtonTypeEnum.Custom:
                             return true;
 
                         default:
@@ -589,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         // Show done button
                         // The rest are hidden
-                        case AppBar.ButtonTypeEnum.Done:
+                        case ButtonTypeEnum.Done:
                             return true;
 
                         default:

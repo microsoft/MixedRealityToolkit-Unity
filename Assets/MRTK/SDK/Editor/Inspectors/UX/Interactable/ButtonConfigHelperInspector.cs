@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private const string BasicEventsFoldoutKey = "MRTK.ButtonConfigHelper.BasicEvents";
         private const string IconFoldoutKey = "MRTK.ButtonConfigHelper.Icon";
         private const string ShowComponentsKey = "MRTK.ButtonConfigHelper.ShowComponents";
+        private const string ShowSpeechCommandKey = "MRTK.ButtonConfigHelper.DisplayInteractableSpeechCommand";
 
         private const string generatedIconSetName = "CustomIconSet";
         private const string customIconSetsFolderName = "CustomIconSets";
@@ -27,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;
+        private SerializedProperty displayInteractableSpeechCommand;
         private SerializedProperty seeItSayItLabelTextProp;
 
         private SerializedProperty interactableProp;
@@ -51,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             mainLabelTextProp = serializedObject.FindProperty("mainLabelText");
             seeItSayItLabelProp = serializedObject.FindProperty("seeItSayItLabel");
+            displayInteractableSpeechCommand = serializedObject.FindProperty("displayInteractableSpeechCommand");
             seeItSayItLabelTextProp = serializedObject.FindProperty("seeItSayItLabelText");
 
             interactableProp = serializedObject.FindProperty("interactable");
@@ -78,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             bool basicEventsFoldout = SessionState.GetBool(BasicEventsFoldoutKey, true);
             bool iconFoldout = SessionState.GetBool(IconFoldoutKey, true);
             bool showComponents = SessionState.GetBool(ShowComponentsKey, false);
+            bool showSpeechCommand = SessionState.GetBool(ShowSpeechCommandKey, true);
 
             if (cb.EditorCheckForCustomIcon())
             {
@@ -90,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     {
                         if (GUILayout.Button("Use migration tool to upgrade buttons"))
                         {
-                            if (!EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window"))
+                            if (!EditorApplication.ExecuteMenuItem("Mixed Reality/Toolkit/Utilities/Migration Window"))
                             {
                                 EditorUtility.DisplayDialog("Package Required", "You need to install the MRTK tools (Microsoft.MixedRealityToolkit.Unity.Tools) package to use the Migration Tool", "OK");
                             }
@@ -155,24 +159,57 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             if (seeItSayItLabel.activeSelf != seeItSayItLabelActive)
                             {
                                 seeItSayItLabel.SetActive(seeItSayItLabelActive);
-                                EditorUtility.SetDirty(seeItSayItLabel.gameObject);
+                                EditorUtility.SetDirty(seeItSayItLabel);
                             }
 
                             if (seeItSayItLabel.activeSelf)
                             {
+                                var sisiChanged = false;
+                                EditorGUI.BeginChangeCheck();
+
                                 if (showComponents)
                                 {
                                     EditorGUILayout.PropertyField(seeItSayItLabelTextProp);
                                 }
 
-                                EditorGUI.BeginChangeCheck();
+                                showSpeechCommand = EditorGUILayout.Toggle("Display Speech Command", showSpeechCommand);
 
                                 SerializedObject sisiLabelTextObject = new SerializedObject(seeItSayItLabelTextProp.objectReferenceValue);
                                 SerializedProperty sisiTextProp = sisiLabelTextObject.FindProperty("m_text");
-                                EditorGUILayout.PropertyField(sisiTextProp, new GUIContent("See it / Say it Label"));
-                                EditorGUILayout.Space();
+                                if (!showSpeechCommand)
+                                {
+                                    EditorGUILayout.PropertyField(sisiTextProp, new GUIContent("See it / Say it Label"));
+                                    EditorGUILayout.Space();
+                                }
+                                else
+                                {
+                                    if (interactableProp.objectReferenceValue != null)
+                                    {
+                                        SerializedObject interactableObject = new SerializedObject(interactableProp.objectReferenceValue);
+                                        SerializedProperty voiceCommandProperty = interactableObject.FindProperty("VoiceCommand");
 
-                                if (EditorGUI.EndChangeCheck())
+                                        if(string.IsNullOrEmpty(voiceCommandProperty.stringValue))
+                                        {
+                                            EditorGUILayout.HelpBox("No valid speech command provided to the interactable", MessageType.Warning);
+                                        }
+                                        else
+                                        {
+                                            string sisiText = string.Format("Say \"{0}\"", voiceCommandProperty.stringValue);
+                                            if (sisiTextProp.stringValue != sisiText)
+                                            {
+                                                sisiTextProp.stringValue = sisiText;
+                                                sisiChanged = true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.HelpBox("There is no interactable linked to the button config helper. One is needed to display the appropriate speech command", MessageType.Warning);
+                                    }
+                                }
+                                sisiChanged |= EditorGUI.EndChangeCheck();
+
+                                if (sisiChanged)
                                 {
                                     sisiLabelTextObject.ApplyModifiedProperties();
                                 }
@@ -197,13 +234,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             EditorGUILayout.PropertyField(interactableProp);
                         }
 
-                        SerializedObject interactableObject = new SerializedObject(interactableProp.objectReferenceValue);
-                        SerializedProperty onClickProp = interactableObject.FindProperty("OnClick");
-                        EditorGUILayout.PropertyField(onClickProp);
-
-                        if (EditorGUI.EndChangeCheck())
+                        if (interactableProp.objectReferenceValue != null)
                         {
-                            interactableObject.ApplyModifiedProperties();
+                            SerializedObject interactableObject = new SerializedObject(interactableProp.objectReferenceValue);
+                            SerializedProperty onClickProp = interactableObject.FindProperty("OnClick");
+                            EditorGUILayout.PropertyField(onClickProp);
+
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                interactableObject.ApplyModifiedProperties();
+                            }
                         }
                     }
                 }
@@ -244,6 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             SessionState.SetBool(BasicEventsFoldoutKey, basicEventsFoldout);
             SessionState.SetBool(IconFoldoutKey, iconFoldout);
             SessionState.SetBool(ShowComponentsKey, showComponents);
+            SessionState.SetBool(ShowSpeechCommandKey, showSpeechCommand);
 
             serializedObject.ApplyModifiedProperties();
 

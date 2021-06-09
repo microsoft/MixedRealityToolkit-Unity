@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
 #if UNITY_EDITOR
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {

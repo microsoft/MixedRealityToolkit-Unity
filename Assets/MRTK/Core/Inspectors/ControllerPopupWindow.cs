@@ -2,8 +2,8 @@
 // Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -345,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 for (int i = 0; i < controllerList.Count; i++)
                 {
-                    var rectPosition = Vector2.up * (max_y + (i+5) * EditorGUIUtility.singleLineHeight);
+                    var rectPosition = Vector2.up * (max_y + (i + 5) * EditorGUIUtility.singleLineHeight);
                     var rectSize = new Vector2(1000, EditorGUIUtility.singleLineHeight);
 
                     var labelRect = new Rect(rectPosition, rectSize);

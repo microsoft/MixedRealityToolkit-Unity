@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Additional degree offset to apply from the stated SafeZone. Ignored if Safe Zone is Atop Palm." + 
+        [Tooltip("Additional degree offset to apply from the stated SafeZone. Ignored if Safe Zone is Atop Palm." +
         " Direction is clockwise on the left hand and anti-clockwise on the right hand.")]
         private float safeZoneAngleOffset = 0;
 
@@ -247,11 +247,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             get => onLastHandLost;
             set => onLastHandLost = value;
         }
-        
+
         private Handedness previousHandedness = Handedness.None;
-        
+
         public Handedness Handedness => previousHandedness;
-        
+
         protected IMixedRealityController trackedController = null;
         protected HandBounds handBounds = null;
 
@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 float distance;
                 Ray ray = CalculateGoalPositionRay(
-                    goalPosition, SolverHandler.TransformTarget, 
+                    goalPosition, SolverHandler.TransformTarget,
                     trackedController, safeZone, OffsetBehavior, safeZoneAngleOffset);
                 trackedHandBounds.Expand(safeZoneBuffer);
 
@@ -636,7 +636,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Ray fracPartSafeZoneRay = CalculateRayForSafeZone(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
 
             Vector3 direction = Vector3.Lerp(-intSafeZoneRay.direction, -fracPartSafeZoneRay.direction, fracOffset).normalized;
-            return new Ray(origin + direction, -direction);        }
+            return new Ray(origin + direction, -direction);
+        }
 
         private static bool IsPalmFacingCamera(IMixedRealityController hand)
         {

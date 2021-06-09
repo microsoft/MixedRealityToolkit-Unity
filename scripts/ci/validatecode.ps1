@@ -432,7 +432,7 @@ function CheckAssemblyTypes {
     process {
         $hasIssue = $false
 
-        if ($FileContent[$LineNumber] -match "\.GetTypes()") {
+        if ($FileContent[$LineNumber] -match "\.GetTypes\(\)") {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $AssemblyTypesExceptions.Contains($assetFileName)) {
                 Write-Host "$FileName at line $LineNumber has a possible usage of Assembly.GetTypes()"
@@ -592,7 +592,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/MRTK.Demos.InspectorFields.asmdef",
     "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Inspectors/MRTK.Demos.InspectorFields.Inspectors.asmdef",
     "Assets/MRTK/Examples/Demos/UX/Interactables/MRTK.Demos.UX.Interactables.asmdef",
-    "Assets/MRTK/Examples/Experimental/Dwell/Editor/MRTK.Examples.Editor.Dwell.asmdef",
+    "Assets/MRTK/Examples/Demos/UX/Dwell/Editor/MRTK.Demos.Dwell.Editor.asmdef",
     "Assets/MRTK/Extensions/HandPhysicsService/MRTK.HandPhysics.asmdef",
     "Assets/MRTK/Extensions/LostTrackingService/MRTK.LostTracking.asmdef",
     "Assets/MRTK/Extensions/LostTrackingService/Editor/MRTK.LostTracking.Editor.asmdef",
@@ -603,6 +603,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
     "Assets/MRTK/Providers/OpenXR/MRTK.OpenXR.asmdef",
+    "Assets/MRTK/Providers/OpenXR/Editor/MRTK.OpenXR.Editor.asmdef",
     "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/MRTK.UnityAR.Editor.asmdef",
     "Assets/MRTK/Providers/Windows/MRTK.WindowsVoice.asmdef",
@@ -614,7 +615,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/SDK/MRTK.SDK.asmdef",
     "Assets/MRTK/SDK/Editor/MRTK.SDK.Editor.asmdef",
     "Assets/MRTK/SDK/Experimental/Editor/MRTK.SDK.Experimental.Editor.asmdef",
-    "Assets/MRTK/SDK/Editor/Inspectors/Experimental/InteractiveElement/MRTK.SDK.Editor.Experimental.Interactive.asmdef",
+    "Assets/MRTK/SDK/Editor/Inspectors/Exp/InteractiveEl/MRTK.SDK.Editor.Experimental.Interactive.asmdef",
     "Assets/MRTK/SDK/Experimental/InteractiveElement/MRTK.SDK.Experimental.Interactive.asmdef",
     "Assets/MRTK/Services/BoundarySystem/XR2018/MRTK.BoundarySystem.asmdef",
     "Assets/MRTK/Services/CameraSystem/MRTK.CameraSystem.asmdef",

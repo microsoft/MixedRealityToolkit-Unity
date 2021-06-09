@@ -3,7 +3,6 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Microsoft.MixedReality.Toolkit.Gltf",
         "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
     ],
     "includePlatforms": [

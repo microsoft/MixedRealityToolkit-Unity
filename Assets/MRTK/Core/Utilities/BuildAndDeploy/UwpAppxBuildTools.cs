@@ -90,13 +90,27 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             string storagePath = Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildInfo.OutputDirectory));
             string solutionProjectPath = Path.GetFullPath(Path.Combine(storagePath, $@"{PlayerSettings.productName}.sln"));
 
+            int exitCode;
+
             // Building the solution requires first restoring NuGet packages - when built through
             // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
             // we have to do that step manually.
-            int exitCode = await Run(msBuildPath,
+            // We use msbuild for nuget restore by default, but if a path to nuget.exe is supplied then we use that executable
+            if (string.IsNullOrEmpty(buildInfo.NugetExecutablePath))
+            {
+                exitCode = await Run(msBuildPath,
                 $"\"{solutionProjectPath}\" /t:restore {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "nugetRestore.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
+            }
+            else
+            {
+                exitCode = await Run(buildInfo.NugetExecutablePath,
+                $"restore \"{solutionProjectPath}\"",
+                !Application.isBatchMode,
+                cancellationToken);
+            }
+            
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -517,7 +531,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 AddGazeInputCapability(rootElement);
             }
 
-            if (uwpBuildInfo.ResearchModeCapabilityEnabled && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+            if (uwpBuildInfo.ResearchModeCapabilityEnabled
+#if !UNITY_2021_2_OR_NEWER
+                && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
+#endif // !UNITY_2021_2_OR_NEWER
+                )
             {
                 AddResearchModeCapability(rootElement);
             }

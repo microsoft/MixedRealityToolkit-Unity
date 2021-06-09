@@ -14,10 +14,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         public enum ProfileCloneBehavior
         {
-            UseExisting,        // Use the existing reference
-            CloneExisting,      // Create a clone of the sub-profile
-            UseSubstitution,    // Manually select a profile
-            LeaveEmpty,         // Set the reference to null
+            /// <summary>
+            /// Use the existing reference.
+            /// </summary>
+            UseExisting,
+
+            /// <summary>
+            /// Create a clone of the sub-profile.
+            /// </summary>
+            CloneExisting,
+
+            /// <summary>
+            /// Manually select a profile.
+            /// </summary>
+            UseSubstitution,
+
+            /// <summary>
+            /// Set the reference to null.
+            /// </summary>
+            LeaveEmpty,
         }
 
         private struct SubProfileAction
@@ -70,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 cloneWindow.Close();
             }
 
-            cloneWindow = (MixedRealityProfileCloneWindow)GetWindow<MixedRealityProfileCloneWindow>(true, "Clone Profile", true);
+            cloneWindow = GetWindow<MixedRealityProfileCloneWindow>(true, "Clone Profile", true);
             cloneWindow.Initialize(parentProfile, childProfile, childProperty, selectionTarget);
             cloneWindow.Show(true);
         }
@@ -125,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             cloneWindow.maxSize = MinWindowSizeBasic;
 
-            targetFolder = EnsureTargetFolder(targetFolder);
+            targetFolder = EnsureTargetFolder(targetFolder, false);
         }
 
         private void OnGUI()
@@ -195,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(120)))
                                     {
                                         string profilePath = AssetDatabase.GetAssetPath(action.Property.objectReferenceValue);
-                                        action.TargetFolder = AssetDatabase.LoadAssetAtPath<Object>(System.IO.Path.GetDirectoryName(profilePath));
+                                        action.TargetFolder = AssetDatabase.LoadAssetAtPath<Object>(Path.GetDirectoryName(profilePath));
                                     }
                                 }
                                 break;
@@ -220,10 +235,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 targetFolder = EditorGUILayout.ObjectField("Target Folder", targetFolder, typeof(DefaultAsset), false);
-                if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(120)))
+                if (GUILayout.Button("Put in original folder", EditorStyles.miniButton, GUILayout.MaxWidth(125)))
                 {
                     string profilePath = AssetDatabase.GetAssetPath(childProfile);
-                    targetFolder = AssetDatabase.LoadAssetAtPath<Object>(System.IO.Path.GetDirectoryName(profilePath));
+                    targetFolder = AssetDatabase.LoadAssetAtPath<Object>(Path.GetDirectoryName(profilePath));
                 }
             }
 
@@ -263,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void CloneMainProfile()
         {
-            var newChildProfile = CloneProfile(parentProfile, childProfile, childProfileTypeName, childProperty, targetFolder, childProfileAssetName);
+            var newChildProfile = CloneProfile(childProfileTypeName, childProperty, targetFolder, childProfileAssetName);
             SerializedObject newChildSerializedObject = new SerializedObject(newChildProfile);
             // First paste all values outright
             PasteProfileValues(parentProfile, childProfile, newChildSerializedObject);
@@ -302,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         // Clone the sub profile
                         Object subTargetFolder = (action.TargetFolder == null) ? targetFolder : action.TargetFolder;
-                        var newSubProfile = CloneProfile(newChildProfile, subProfileToClone, action.ProfileType.Name, actionProperty, subTargetFolder, action.CloneName);
+                        var newSubProfile = CloneProfile(action.ProfileType.Name, actionProperty, subTargetFolder, action.CloneName);
                         SerializedObject newSubProfileSerializedObject = new SerializedObject(newSubProfile);
                         // Paste values from existing profile
                         PasteProfileValues(newChildProfile, subProfileToClone, newSubProfileSerializedObject);
@@ -334,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             cloneWindow.Close();
         }
 
-        private static BaseMixedRealityProfile CloneProfile(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile profileToClone, string childProfileTypeName, SerializedProperty childProperty, Object targetFolder, string profileName)
+        private static BaseMixedRealityProfile CloneProfile(string childProfileTypeName, SerializedProperty childProperty, Object targetFolder, string profileName)
         {
             ScriptableObject instance = CreateInstance(childProfileTypeName);
             instance.name = string.IsNullOrEmpty(profileName) ? childProfileTypeName : profileName;
@@ -394,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// If the targetFolder is invalid asset folder, this will create the CustomProfiles
         /// folder and use that as the default target.
         /// </summary>
-        private static Object EnsureTargetFolder(Object targetFolder)
+        private static Object EnsureTargetFolder(Object targetFolder, bool createDefaultIfNeeded = true)
         {
             if (targetFolder != null && AssetDatabase.IsValidFolder(AssetDatabase.GetAssetPath(targetFolder)))
             {
@@ -402,13 +417,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             string customProfilesFolderPath = DefaultCustomProfileFolder;
-            if (!AssetDatabase.IsValidFolder(customProfilesFolderPath))
+            if (createDefaultIfNeeded && !AssetDatabase.IsValidFolder(customProfilesFolderPath))
             {
                 // AssetDatabase.CreateFolder must be called to create each child of the asset folder
-                // path individually. 
+                // path individually.
 
-                // If the packages have been imported via NugetForUnity, MixedRealityToolkitFiles.GetGeneratedFolder
-                // will also create the MixedRealityToolkit.Generated Folder and return the path to the folder.
+                // MixedRealityToolkitFiles.GetGeneratedFolder will create the MixedRealityToolkit.Generated
+                // folder if needed.
                 AssetDatabase.CreateFolder(MixedRealityToolkitFiles.GetGeneratedFolder, "CustomProfiles");
             }
             return AssetDatabase.LoadAssetAtPath(DefaultCustomProfileFolder, typeof(Object));

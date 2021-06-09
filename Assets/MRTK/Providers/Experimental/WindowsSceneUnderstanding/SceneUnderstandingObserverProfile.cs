@@ -1,9 +1,9 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -54,9 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         [EnumFlags]
         [SerializeField]
         [Tooltip("Which plane types the observer should generate.")]
-        private SpatialAwarenessSurfaceTypes surfaceTypes = 
-            SpatialAwarenessSurfaceTypes.Floor | 
-            SpatialAwarenessSurfaceTypes.Ceiling | 
+        private SpatialAwarenessSurfaceTypes surfaceTypes =
+            SpatialAwarenessSurfaceTypes.Floor |
+            SpatialAwarenessSurfaceTypes.Ceiling |
             SpatialAwarenessSurfaceTypes.Wall |
             SpatialAwarenessSurfaceTypes.Platform;
 

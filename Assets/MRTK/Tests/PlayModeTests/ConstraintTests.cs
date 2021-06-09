@@ -22,22 +22,8 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class ConstraintTests
+    public class ConstraintTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator SetUp()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         /// <summary>
         /// Tests that the MoveAxisConstraint works for various axes.
         /// This test uses world space axes.
@@ -330,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private IEnumerator ConstraintManagerFilterTest(bool reuseDefaultManager)
-        { 
+        {
             float initialScale = 0.2f;
             float minScale = 0.5f;
             float maxScale = 2f;
@@ -339,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * initialScale;
             testObject.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0f, 0f, 1f));
-            
+
             testObject.AddComponent<NearInteractionGrabbable>();
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
@@ -350,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rotationConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
             rotationConstraint.UseLocalSpaceForConstraint = true;
             var scaleConstraint = testObject.EnsureComponent<MinMaxScaleConstraint>();
-            
+
             scaleConstraint.RelativeToInitialState = true;
             scaleConstraint.ScaleMinimum = minScale;
             scaleConstraint.ScaleMaximum = maxScale;

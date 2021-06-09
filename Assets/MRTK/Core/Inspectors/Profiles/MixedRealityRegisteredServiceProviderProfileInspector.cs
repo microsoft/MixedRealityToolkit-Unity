@@ -2,7 +2,6 @@
 // Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using UnityEditor;
 using UnityEngine;
 

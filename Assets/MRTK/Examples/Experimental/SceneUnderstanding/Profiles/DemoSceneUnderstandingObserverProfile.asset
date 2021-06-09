@@ -19,14 +19,14 @@ MonoBehaviour:
   observerVolumeType: 1
   updateInterval: 5
   updateOnceInitialized: 1
-  autoUpdate: 0
+  autoUpdate: 1
   defaultPhysicsLayer: 31
   surfaceTypes: 190
   instantiationBatchRate: 10
   defaultMaterial: {fileID: 2100000, guid: a2137747e94e9744b9c97181972d0ed8, type: 2}
   defaultWorldMeshMaterial: {fileID: 2100000, guid: f6d42d214eaa65e44965e766112eb678,
     type: 2}
-  shouldLoadFromFile: 1
+  shouldLoadFromFile: 0
   serializedScene: {fileID: 4900000, guid: cbf0602262c70ec4fbc01971010e5aca, type: 3}
   createGameObjects: 1
   requestPlaneData: 0

@@ -1158,11 +1158,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
-            MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
-            if (actions?.Length > 0)
+            if (CoreServices.InputSystem?.InputSystemProfile != null
+                && CoreServices.InputSystem.InputSystemProfile.InputActionsProfile != null)
             {
-                index = Mathf.Clamp(index, 0, actions.Length - 1);
-                return actions[index];
+                MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
+                if (actions?.Length > 0)
+                {
+                    index = Mathf.Clamp(index, 0, actions.Length - 1);
+                    return actions[index];
+                }
             }
 
             return default;
@@ -1302,7 +1306,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             yield return new WaitForSeconds(time);
 
             HasVoiceCommand = false;
-            if (!HasFocus)
+            if (HasFocus && focusingPointers.Count == 0)
             {
                 HasFocus = false;
             }

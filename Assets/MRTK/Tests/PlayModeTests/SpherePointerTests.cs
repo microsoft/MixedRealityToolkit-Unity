@@ -10,13 +10,13 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 using System.Collections;
 using UnityEditor;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.MoveTo(nearObjectPos + margin + pullbackDelta, numFramesPerMove);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            
+
             // Move hand back out to disable IsNearObject
             yield return rightHand.MoveTo(nearObjectPos - nearObjectMargin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            
+
             yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);

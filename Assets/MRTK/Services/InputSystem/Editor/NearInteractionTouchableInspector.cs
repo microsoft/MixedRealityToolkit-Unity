@@ -85,6 +85,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     t.SetLocalUp(t.LocalUp);
                 }
             }
+
+            // Warn users when using a non-box collider
+            if (t.TouchableCollider != null && !(t.TouchableCollider is BoxCollider))
+            {
+                if (t.Bounds == Vector2.zero)
+                {
+                    EditorGUILayout.HelpBox("When using a non-box collider the bounds must be manually specified. The default value (0, 0) will "
+                    + "not function as intended.\nWith NearInteractionTouchable touch is only detected when the collider is within range of the pointer "
+                    + "and the pointer is within the 2D bounds specified above. To detect touch with the whole collider (whenever the collider is "
+                    + "within range of the pointer) use NearInteractionTouchableVolume instead.", MessageType.Warning);
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("With NearInteractionTouchable touch is only detected when the collider is within range of the pointer "
+                    + "and the pointer is within the 2D bounds specified above. To detect touch with the whole collider (whenever the collider is "
+                    + "within range of the pointer) use NearInteractionTouchableVolume instead.", MessageType.Info);
+                }
+            }
         }
     }
 

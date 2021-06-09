@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
         (SupportedPlatforms)(-1),
-        "XR SDK Camera Settings")]
+        "XR SDK Camera Settings",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class GenericXRSDKCameraSettings : BaseCameraSettingsProvider
     {
         /// <summary>
@@ -62,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             if (trackedPoseDriver != null)
             {
-                Object.Destroy(trackedPoseDriver);
+                UnityObjectExtensions.DestroyObject(trackedPoseDriver);
                 trackedPoseDriver = null;
             }
 

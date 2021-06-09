@@ -18,20 +18,12 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class NearInteractionGrabbableTests
+    public class NearInteractionGrabbableTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             PlayModeTestUtilities.EnsureInputModule();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 

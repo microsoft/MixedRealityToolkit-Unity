@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Build.Editor;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Build.Editor
 {

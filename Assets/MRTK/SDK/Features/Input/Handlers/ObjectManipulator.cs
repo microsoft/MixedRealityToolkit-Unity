@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -186,6 +185,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => smoothingFar = value;
         }
 
+        [SerializeField]
+        [Tooltip("The concrete type of TransformSmoothingLogic to use for smoothing between transforms.")]
+        [Implements(typeof(ITransformSmoothingLogic), TypeGrouping.ByNamespaceFlat)]
+        private SystemType transformSmoothingLogicType = typeof(DefaultTransformSmoothingLogic);
+
         [FormerlySerializedAs("smoothingActive")]
         [SerializeField]
         [Tooltip("Frame-rate independent smoothing for far interactions. Far smoothing is enabled by default.")]
@@ -362,6 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ManipulationMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
+        private ITransformSmoothingLogic smoothingLogic;
 
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray
@@ -409,6 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             moveLogic = new ManipulationMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
+            smoothingLogic = Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
 
             if (elasticsManager)
             {
@@ -858,6 +864,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
+            bool applySmoothing = isSmoothing && smoothingLogic != null;
+
             if (rigidBody == null)
             {
                 TransformFlags transformUpdated = 0;
@@ -865,19 +873,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     transformUpdated = elasticsManager.ApplyTargetTransform(targetTransform);
                 }
-
                 if (!transformUpdated.HasFlag(TransformFlags.Move))
                 {
-                    HostTransform.position = isSmoothing ? Smoothing.SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
+                    HostTransform.position = applySmoothing ? smoothingLogic.SmoothPosition(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
                 }
                 if (!transformUpdated.HasFlag(TransformFlags.Rotate))
                 {
-                    HostTransform.rotation = isSmoothing ? Smoothing.SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
+                    HostTransform.rotation = applySmoothing ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
                 }
                 if (!transformUpdated.HasFlag(TransformFlags.Scale))
                 {
-                    HostTransform.localScale = isSmoothing ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                    HostTransform.localScale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
                 }
+                
             }
             else
             {
@@ -887,10 +895,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     // This is a near manipulation and we're not using forces
                     // Apply direct updates but account for smoothing
 
-                    if (isSmoothing)
+                    if (applySmoothing)
                     {
-                        rigidBody.MovePosition(Smoothing.SmoothTo(rigidBody.position, targetTransform.Position, moveLerpTime, Time.deltaTime));
-                        rigidBody.MoveRotation(Smoothing.SmoothTo(rigidBody.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime));
+                        rigidBody.MovePosition(smoothingLogic.SmoothPosition(rigidBody.position, targetTransform.Position, moveLerpTime, Time.deltaTime));
+                        rigidBody.MoveRotation(smoothingLogic.SmoothRotation(rigidBody.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime));
                     }
                     else
                     {
@@ -906,7 +914,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
                     relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
-                    
+
                     if (axis.IsValidVector())
                     {
                         if (angle > 180f)
@@ -917,7 +925,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
 
-                HostTransform.localScale = isSmoothing ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                HostTransform.localScale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
             }
         }
 
@@ -975,14 +983,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigidBody.useGravity = wasGravity;
                 rigidBody.isKinematic = wasKinematic;
 
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                // Match the object's velocity to the controller for near interactions
+                // Otherwise keep the objects current velocity so that it's not dampened unnaturally
+                if (isNearManipulation)
                 {
-                    rigidBody.velocity = velocity;
-                }
+                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                    {
+                        rigidBody.velocity = velocity;
+                    }
 
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
-                {
-                    rigidBody.angularVelocity = angularVelocity;
+                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                    {
+                        rigidBody.angularVelocity = angularVelocity;
+                    }
                 }
             }
         }

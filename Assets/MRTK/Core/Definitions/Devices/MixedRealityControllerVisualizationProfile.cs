@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Profile that determines relevant overrides and properties for controller visualization
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityControllerVisualizer))]
     public class MixedRealityControllerVisualizationProfile : BaseMixedRealityProfile
     {
@@ -154,6 +154,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public MixedRealityControllerVisualizationSetting[] ControllerVisualizationSettings => controllerVisualizationSettings;
 
+        private MixedRealityControllerVisualizationSetting? GetControllerVisualizationDefinition(Type controllerType, Handedness hand)
+        {
+            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
+            {
+                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
+                {
+                    return controllerVisualizationSettings[i];
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Gets the override model for a specific controller type and hand
         /// </summary>
@@ -161,15 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public GameObject GetControllerModelOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].OverrideControllerModel;
-                }
-            }
-
-            return null;
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.OverrideControllerModel : null;
         }
 
         /// <summary>
@@ -180,53 +185,63 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The specific hand assigned to the controller</param>
         public SystemType GetControllerVisualizationTypeOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].ControllerVisualizationType;
-                }
-            }
-
-            return defaultControllerVisualizationType;
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.ControllerVisualizationType : DefaultControllerVisualizationType;
         }
 
         /// <summary>
-        /// Gets the UseDefaultModels value defined for the specified controller definition.
-        /// If the requested controller type is not defined, the default UseDefaultModels is returned.
+        /// Gets the UsePlatformModels value defined for the specified controller definition.
+        /// If the requested controller type is not defined, the default UsePlatformModels is returned.
         /// </summary>
         /// <param name="controllerType">The type of controller to query for</param>
         /// <param name="hand">The specific hand assigned to the controller</param>
+        /// <remarks>
+        /// GetUseDefaultModelsOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetUsePlatformModelsOverride.
+        /// </remarks>
+        [Obsolete("GetUseDefaultModelsOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetUsePlatformModelsOverride.")]
         public bool GetUseDefaultModelsOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].UsePlatformModels;
-                }
-            }
+            return GetUsePlatformModelsOverride(controllerType, hand);
+        }
 
-            return usePlatformModels;
+        /// <summary>
+        /// Gets the UsePlatformModels value defined for the specified controller definition.
+        /// If the requested controller type is not defined, the default UsePlatformModels is returned.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public bool GetUsePlatformModelsOverride(Type controllerType, Handedness hand)
+        {
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.UsePlatformModels : usePlatformModels;
         }
 
         /// <summary>
         /// Gets the DefaultModelMaterial value defined for the specified controller definition.
-        /// If the requested controller type is not defined, the global DefaultControllerModelMaterial is returned.
+        /// If the requested controller type is not defined, the global platformModelMaterial is returned.
         /// </summary>
         /// <param name="controllerType">The type of controller to query for</param>
         /// <param name="hand">The specific hand assigned to the controller</param>
+        /// <remarks>
+        /// GetDefaultControllerModelMaterialOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetPlatformModelMaterialOverride.
+        /// </remarks>
+        [Obsolete("GetDefaultControllerModelMaterialOverride is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use GetPlatformModelMaterial.")]
         public Material GetDefaultControllerModelMaterialOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
-            {
-                if (SettingContainsParameters(controllerVisualizationSettings[i], controllerType, hand))
-                {
-                    return controllerVisualizationSettings[i].PlatformModelMaterial;
-                }
-            }
+            return GetPlatformModelMaterialOverride(controllerType, hand);
+        }
 
-            return platformModelMaterial;
+        /// <summary>
+        /// Gets the PlatformModelMaterial value defined for the specified controller definition.
+        /// If the requested controller type is not defined, the global platformModelMaterial is returned.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public Material GetPlatformModelMaterialOverride(Type controllerType, Handedness hand)
+        {
+
+            MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
+            return setting.HasValue ? setting.Value.PlatformModelMaterial : platformModelMaterial;
         }
 
         private bool SettingContainsParameters(MixedRealityControllerVisualizationSetting setting, Type controllerType, Handedness hand)

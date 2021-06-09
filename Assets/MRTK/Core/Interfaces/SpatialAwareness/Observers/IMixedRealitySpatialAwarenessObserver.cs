@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         VolumeType ObserverVolumeType { get; set; }
 
         /// <summary>
-        /// Gets or sets the extents( 1/2 size) of the volume, in meters per axis, from which individual observations will be made.
+        /// Gets or sets the extents (1/2 size) of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
         /// <remarks>
         /// <para>When used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.Sphere"/>.
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Vector3 ObservationExtents { get; set; }
 
         /// <summary>
-        /// Gets or sets the orientation of the volume in World Space. 
+        /// Gets or sets the orientation of the volume in world space.
         /// </summary>
         /// <remarks>
         /// This is only used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.UserAlignedCube"/>
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Quaternion ObserverRotation { get; set; }
 
         /// <summary>
-        /// Gets or sets the origin, in World Space, of the observer.
+        /// Gets or sets the origin, in world space, of the observer.
         /// </summary>
         /// <remarks>
         /// <para>Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user

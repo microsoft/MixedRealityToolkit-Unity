@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private SerializedProperty releaseBehavior;
 
+        private SerializedProperty transformSmoothingLogicType;
         private SerializedProperty smoothingFar;
         private SerializedProperty smoothingNear;
         private SerializedProperty moveLerpTime;
@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
 
             // Smoothing
+            transformSmoothingLogicType = serializedObject.FindProperty("transformSmoothingLogicType");
             smoothingFar = serializedObject.FindProperty("smoothingFar");
             smoothingNear = serializedObject.FindProperty("smoothingNear");
             moveLerpTime = serializedObject.FindProperty("moveLerpTime");
@@ -189,6 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (smoothingFoldout)
             {
+                EditorGUILayout.PropertyField(transformSmoothingLogicType);
                 EditorGUILayout.PropertyField(smoothingFar);
                 EditorGUILayout.PropertyField(smoothingNear);
                 EditorGUILayout.PropertyField(moveLerpTime);

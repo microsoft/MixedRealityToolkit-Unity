@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
-using Microsoft.MixedReality.Toolkit.UI;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void MigrateBoxDisplay(BoundsControl control, BoundingBox box)
         {
-            List<string> propertyPaths = new List<string>{ "boxMaterial", "boxGrabbedMaterial", "flattenAxisDisplayScale" };
+            List<string> propertyPaths = new List<string> { "boxMaterial", "boxGrabbedMaterial", "flattenAxisDisplayScale" };
             BoxDisplayConfiguration config = EnsureConfiguration(control.gameObject, control.BoxDisplayConfig, HasPropertyOverrides(box, propertyPaths));
             config.BoxMaterial = box.BoxMaterial;
             config.BoxGrabbedMaterial = box.BoxGrabbedMaterial;
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void MigrateScaleHandles(BoundsControl control, BoundingBox box)
         {
-            List<string> propertyPaths = new List<string> { "scaleHandleSlatePrefab", "showScaleHandles", "handleMaterial", "handleGrabbedMaterial", 
+            List<string> propertyPaths = new List<string> { "scaleHandleSlatePrefab", "showScaleHandles", "handleMaterial", "handleGrabbedMaterial",
             "scaleHandlePrefab", "scaleHandleSize", "scaleHandleColliderPadding", "drawTetherWhenManipulating", "handlesIgnoreCollider"};
             ScaleHandlesConfiguration config = EnsureConfiguration(control.gameObject, control.ScaleHandlesConfig, HasPropertyOverrides(box, propertyPaths));
             config.HandleSlatePrefab = box.ScaleHandleSlatePrefab;
@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private void MigrateRotationHandles(BoundsControl control, BoundingBox box)
         {
             List<string> propertyPaths = new List<string> { "rotationHandlePrefabColliderType", "showRotationHandleForX", "showRotationHandleForY",
-            "showRotationHandleForZ", "handleMaterial", "handleGrabbedMaterial", "rotationHandlePrefab", "rotationHandleSize", "rotateHandleColliderPadding", 
+            "showRotationHandleForZ", "handleMaterial", "handleGrabbedMaterial", "rotationHandlePrefab", "rotationHandleSize", "rotateHandleColliderPadding",
             "drawTetherWhenManipulating", "handlesIgnoreCollider"};
             RotationHandlesConfiguration config = EnsureConfiguration(control.gameObject, control.RotationHandlesConfig, HasPropertyOverrides(box, propertyPaths));
             config.HandlePrefabColliderType = MigrateRotationHandleColliderType(box.RotationHandlePrefabColliderType);
@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void MigrateProximityEffect(BoundsControl control, BoundingBox box)
         {
-            List<string> propertyPaths = new List<string> { "proximityEffectActive", "handleMediumProximity", "handleCloseProximity", "farScale", 
+            List<string> propertyPaths = new List<string> { "proximityEffectActive", "handleMediumProximity", "handleCloseProximity", "farScale",
             "mediumScale", "closeScale", "farGrowRate", "mediumGrowRate", "closeGrowRate"};
             ProximityEffectConfiguration config = EnsureConfiguration(control.gameObject, control.HandleProximityEffectConfig, HasPropertyOverrides(box, propertyPaths));
             config.ProximityEffectActive = box.ProximityEffectActive;

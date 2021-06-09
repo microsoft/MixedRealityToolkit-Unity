@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (base.Controller != null && this != null)
                 {
                     // Ensures that the basePointerName is only initialized once
-                    if(basePointerName == string.Empty)
+                    if (basePointerName == string.Empty)
                     {
                         basePointerName = gameObject.name;
                     }
