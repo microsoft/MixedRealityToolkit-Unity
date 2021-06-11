@@ -1,5 +1,7 @@
 ﻿# Data Binding Framework
 
+**NOTE: This framework is still under development and APIs may change. Also see Known Limitations section below for more information.**
+
 Welcome to the data binding framework of MRTK. This framework is designed to make it easy to create 
 visual elements that can be populated dynamically at runtime with data being provided from an external
 data source, and also dynamically update as the supplied data changes.
@@ -178,3 +180,15 @@ The majority of the work of a data consumer is to accept new data and then prepa
 A data collection item placer is responsible for managing which parts of a collection are currently visible and how to present that visible collection, whether the collection is a small static list, or a giant million record database.
 
 All item placers must provide the IDataCollectionItemPlacer interface.  Some of the basic funcationality is offered in a base class called DataColletionItemPlacerGOBase.  All item placers should derive from this class. 
+
+# Known Limitations and Missing Features #
+
+- Need to verify proper cleanup of resources in all use cases, particularly lists.
+- Dynamic changes to list data completely refreshes entire list instead of incrementally updating.
+- Data validation (eg. number in correct range) and formatting (eg. data and currency formats)
+- Predictive data fetching for faster list navigation
+- Material selector is work in progress
+- Font style selector is a work in progress
+- Populating other UX elements such as sliders, radio buttons, and checkboxes not yet supported
+- DataSourceJson nodes should implement IDataNode interface to be interoperable with DataSourceObjects
+- Not yet integrated with Volumetric Layouts and Scrolling Object Collection
