@@ -891,7 +891,7 @@ pre > code .line-highlight {
 }
 .alert-navbar-message hr{border-top-color:#e4b9c0}
 .alert-navbar-message .alert-link{color:#843534}
-.alert-navbar-message h5:before {
+.alert-navbar-message h1:before {
   position:relative;
   top:1px;
   display:inline-block;
