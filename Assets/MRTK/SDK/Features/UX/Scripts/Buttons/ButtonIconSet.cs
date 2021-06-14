@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 EditorGUILayout.BeginHorizontal();
 
                 EditorGUILayout.LabelField("Current Icon Name", EditorStyles.boldLabel);
-                EditorGUILayout.LabelField(charIcons[currentSelection].name);
+                EditorGUILayout.LabelField(charIcons[currentSelection].Name);
 
                 EditorGUILayout.EndHorizontal();
             }
