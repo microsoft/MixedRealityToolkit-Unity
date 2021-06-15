@@ -20,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (window != null)
             {
-                window.Close();
+                window.ShowUtility();
+                return;
             }
 
             window = CreateInstance<MRTKVersionPopup>();
