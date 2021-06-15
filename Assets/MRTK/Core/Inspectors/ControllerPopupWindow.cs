@@ -316,13 +316,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            GUIStyle headerStyle = new GUIStyle();
-            headerStyle.richText = true;
-
             using (new EditorGUILayout.VerticalScope())
             {
                 GUILayout.FlexibleSpace();
-                EditorGUILayout.LabelField("<b>Controllers affected by this mapping</b>", headerStyle);
+                EditorGUILayout.LabelField("Controllers affected by this mapping", EditorStyles.boldLabel);
                 for (int i = 0; i < controllerList.Count; i++)
                 {
                     EditorGUILayout.LabelField(controllerList[i]);
