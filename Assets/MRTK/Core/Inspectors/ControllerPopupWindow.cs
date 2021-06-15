@@ -321,7 +321,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (currentControllerOption == null || currentControllerTexture == null)
             {
-                GUILayout.BeginVertical();
                 using (new EditorGUILayout.VerticalScope())
                 {
                     GUILayout.FlexibleSpace();
@@ -331,7 +330,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.LabelField(controllerList[i]);
                     }
                 }
-                GUILayout.EndVertical();
             }
             else
             {
