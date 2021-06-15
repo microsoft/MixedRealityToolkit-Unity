@@ -12,10 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private SerializedProperty activeProfile;
         private UnityEditor.Editor activeProfileEditor;
+        private Object cachedProfile;
 
         private void OnEnable()
         {
             activeProfile = serializedObject.FindProperty("activeProfile");
+            cachedProfile = activeProfile.objectReferenceValue;
         }
 
         public override void OnInspectorGUI()
@@ -53,7 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.HelpBox("MixedRealityToolkit cannot initialize unless an Active Profile is assigned!", MessageType.Error);
             }
 
-            bool changed = MixedRealityInspectorUtility.DrawProfileDropDownList(activeProfile, null, activeProfile.objectReferenceValue, typeof(MixedRealityToolkitConfigurationProfile), false, false);
+            bool changed = MixedRealityInspectorUtility.DrawProfileDropDownList(activeProfile, null, activeProfile.objectReferenceValue, typeof(MixedRealityToolkitConfigurationProfile), false, false) ||
+                cachedProfile != activeProfile.objectReferenceValue;
 
             serializedObject.ApplyModifiedProperties();
 
@@ -61,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityToolkitConfigurationProfile)activeProfile.objectReferenceValue);
                 activeProfileEditor = null;
+                cachedProfile = activeProfile.objectReferenceValue;
             }
 
             if (activeProfile.objectReferenceValue != null && activeProfileEditor == null)

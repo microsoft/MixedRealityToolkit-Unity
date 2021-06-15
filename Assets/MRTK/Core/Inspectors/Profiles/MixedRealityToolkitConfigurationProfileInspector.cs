@@ -443,13 +443,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (GUILayout.Button("Copy & Customize"))
                 {
                     SerializedProperty targetProperty = null;
+                    UnityEngine.Object selectionTarget = null;
                     // If we have an active MRTK instance, find its config profile serialized property
                     if (MixedRealityToolkit.IsInitialized)
                     {
+                        selectionTarget = MixedRealityToolkit.Instance;
                         SerializedObject mixedRealityToolkitObject = new SerializedObject(MixedRealityToolkit.Instance);
                         targetProperty = mixedRealityToolkitObject.FindProperty("activeProfile");
                     }
-                    MixedRealityProfileCloneWindow.OpenWindow(null, target as BaseMixedRealityProfile, targetProperty);
+                    MixedRealityProfileCloneWindow.OpenWindow(null, target as BaseMixedRealityProfile, targetProperty, selectionTarget);
                 }
 
                 if (MixedRealityToolkit.IsInitialized)
