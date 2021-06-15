@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
             quadRenderer.sharedMaterial = testMat;
 
             ButtonConfigHelper buttonConfig = buttonGameObject.GetComponent<ButtonConfigHelper>();
-            ButtonIconSet testIconSet = new ButtonIconSet();
+            ButtonIconSet testIconSet = ScriptableObject.CreateInstance<ButtonIconSet>();
             buttonConfig.IconStyle = ButtonIconStyle.Quad;
             buttonConfig.IconSet = testIconSet;
             buttonConfig.EditorSetDefaultIconSet(testIconSet);
