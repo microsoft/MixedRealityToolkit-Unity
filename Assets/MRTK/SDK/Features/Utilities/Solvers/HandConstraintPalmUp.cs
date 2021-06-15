@@ -367,10 +367,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     referenceJoint2 = TrackedHandJoint.Palm;
                     break;
                 case SolverSafeZone.RadialSide:
-                case SolverSafeZone.UlnarSide:
-                default:
                     referenceJoint1 = TrackedHandJoint.IndexKnuckle;
                     referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
+                    break;
+                case SolverSafeZone.UlnarSide:
+                default:
+                    referenceJoint1 = TrackedHandJoint.PinkyKnuckle;
+                    referenceJoint2 = TrackedHandJoint.Wrist;
                     break;
             }
 
