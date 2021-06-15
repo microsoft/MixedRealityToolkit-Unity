@@ -902,7 +902,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numHandSteps = 1;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            var frontRightCornerPos = boundsControl.Target.gameObject.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
+            var frontRightCornerPos = boundsControl.Target.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
             TestHand hand = new TestHand(Handedness.Right);
 
             // Hands grab object at initial position

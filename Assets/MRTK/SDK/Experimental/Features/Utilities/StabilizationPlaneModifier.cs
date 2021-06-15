@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 #if UNITY_EDITOR
             debugMesh = GameObject.CreatePrimitive(PrimitiveType.Quad);
             debugMesh.hideFlags |= HideFlags.HideInHierarchy;
-            debugMesh.gameObject.SetActive(false);
+            debugMesh.SetActive(false);
             debugMeshFilter = debugMesh.GetComponent<MeshFilter>();
 #endif
 
