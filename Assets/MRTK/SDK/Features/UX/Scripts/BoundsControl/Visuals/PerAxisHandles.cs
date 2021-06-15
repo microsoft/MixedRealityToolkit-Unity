@@ -75,17 +75,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 // remove old colliders
                 bool shouldCreateNewCollider = false;
                 var oldBoxCollider = handle.GetComponent<BoxCollider>();
+
+                // Caution, Destroy() will destroy one frame later.
+                // Do not check later for presence this frame!
                 if (oldBoxCollider != null && config.HandlePrefabColliderType == HandlePrefabCollider.Sphere)
                 {
                     shouldCreateNewCollider = true;
-                    Object.DestroyImmediate(oldBoxCollider);
+                    Object.Destroy(oldBoxCollider);
                 }
 
                 var oldSphereCollider = handle.GetComponent<SphereCollider>();
                 if (oldSphereCollider != null && config.HandlePrefabColliderType == HandlePrefabCollider.Box)
                 {
                     shouldCreateNewCollider = true;
-                    Object.DestroyImmediate(oldSphereCollider);
+                    Object.Destroy(oldSphereCollider);
                 }
 
                 if (shouldCreateNewCollider)
@@ -211,7 +214,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 {
                     // get old child and remove it
                     obsoleteChild.parent = null;
-                    Object.DestroyImmediate(obsoleteChild.gameObject);
+
+                    // Caution, Destroy() will destroy one frame later.
+                    // Do not check later for presence this frame!
+                    Object.Destroy(obsoleteChild.gameObject);
                 }
                 else
                 {
@@ -263,7 +269,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 // so we can manually add our own properly configured collider later.
                 var collider = handleVisual.GetComponent<SphereCollider>();
                 collider.enabled = false;
-                Object.DestroyImmediate(collider);
+
+                // Caution, Destroy() will destroy one frame later.
+                // Do not check later for presence this frame!
+                Object.Destroy(collider);
             }           
 
             // handleVisualBounds are returned in handleVisual-local space.
