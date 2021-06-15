@@ -151,21 +151,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
                             // Reconciling old Experience Scale property with the Experience Settings Profile
-                            var oldExperienceSettigsScale = (experienceSettingsProfile.objectReferenceValue as MixedRealityExperienceSettingsProfile)?.TargetExperienceScale;
+                            ExperienceScale? oldExperienceSettingsScale = null;
+                            if (experienceSettingsProfile.objectReferenceValue is MixedRealityExperienceSettingsProfile oldExperienceSettingsProfile
+                                && oldExperienceSettingsProfile != null)
+                            {
+                                oldExperienceSettingsScale = oldExperienceSettingsProfile.TargetExperienceScale;
+                            }
 
                             changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false,  null);
 
                             // Experience configuration
-                            if(!mrtkConfigProfile.ExperienceSettingsProfile.IsNull())
-                            {                            
+                            if (mrtkConfigProfile.ExperienceSettingsProfile != null)
+                            {
                                 // If the Experience Scale property changed, make sure we also alter the configuration profile's target experience scale property for compatibility
-                                var newExperienceSettigs = (experienceSettingsProfile.objectReferenceValue as MixedRealityExperienceSettingsProfile)?.TargetExperienceScale;
-                                if(oldExperienceSettigsScale.HasValue && newExperienceSettigs.HasValue && oldExperienceSettigsScale != newExperienceSettigs)
+                                ExperienceScale? newExperienceSettingsScale = null;
+                                if (experienceSettingsProfile.objectReferenceValue is MixedRealityExperienceSettingsProfile newExperienceSettingsProfile
+                                    && newExperienceSettingsProfile != null)
                                 {
-                                    experienceScaleMigration.intValue = (int)newExperienceSettigs;
+                                    newExperienceSettingsScale = newExperienceSettingsProfile.TargetExperienceScale;
+                                }
+
+                                if (oldExperienceSettingsScale.HasValue && newExperienceSettingsScale.HasValue && oldExperienceSettingsScale != newExperienceSettingsScale)
+                                {
+                                    experienceScaleMigration.intValue = (int)newExperienceSettingsScale;
                                     experienceScaleMigration.serializedObject.ApplyModifiedProperties();
                                 }
-                                // If we have not changed the Experience Settings profile and it's value is out of sync with the top level configuration profile, display a migration prompt
+                                // If we have not changed the Experience Settings profile and its value is out of sync with the top level configuration profile, display a migration prompt
                                 else if ((ExperienceScale)experienceScaleMigration.intValue != mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale)
                                 {
                                     Color errorColor = Color.Lerp(Color.white, Color.red, 0.5f);
