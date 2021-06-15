@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Vector2 WindowSize = new Vector2(300, 150);
         private static readonly GUIContent Title = new GUIContent("Mixed Reality Toolkit");
 
-        [MenuItem("Mixed Reality/Toolkit/Show version...")]
+        [MenuItem("Mixed Reality/Toolkit/Show version...", priority = int.MaxValue)]
         private static void Init()
         {
             if (window != null)
