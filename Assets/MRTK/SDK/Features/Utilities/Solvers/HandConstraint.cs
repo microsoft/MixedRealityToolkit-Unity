@@ -547,7 +547,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             direction = IsPalmFacingCamera(hand) ? direction : -direction;
                         }
 
-                        if (hand.ControllerHandedness == Handedness.Right)
+                        if (hand.ControllerHandedness.IsRight())
                         {
                             direction = -direction;
                         }
@@ -672,7 +672,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </remarks>
         private static bool IsApplicableController(IMixedRealityController controller)
         {
-            return controller.ControllerHandedness != Handedness.None;
+            return !controller.ControllerHandedness.IsNone();
         }
 
         /// <summary>
