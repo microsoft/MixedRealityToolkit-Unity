@@ -95,7 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 {
                     // attach new collider
                     var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-                    var invScale = handleBounds.size.x == 0.0f ? 0.0f : config.HandleSize / handleBounds.size.x;
+                    float maxDim = VisualUtils.GetMaxComponent(handleBounds.size);
+                    float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
                     Vector3 colliderSizeScaled = handleBounds.size * invScale;
                     Vector3 colliderCenterScaled = handleBounds.center * invScale;
                     if (config.HandlePrefabColliderType == HandlePrefabCollider.Box)
@@ -109,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         SphereCollider sphere = handle.gameObject.AddComponent<SphereCollider>();
                         sphere.center = colliderCenterScaled;
-                        sphere.radius = colliderSizeScaled.x * 0.5f;
+                        sphere.radius = VisualUtils.GetMaxComponent(colliderSizeScaled) * 0.5f;
                         sphere.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
                     }
                 }
@@ -236,7 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
-            var invScale = visualSize.x == 0.0f ? 0.0f : config.HandleSize / visualSize.x;
+            float maxDim = VisualUtils.GetMaxComponent(visualSize);
+            float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
             GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
             if (config.HandlePrefabColliderType == HandlePrefabCollider.Box)
@@ -248,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             else
             {
                 SphereCollider collider = handle.gameObject.GetComponent<SphereCollider>();
-                collider.radius = colliderSizeScaled.x * 0.5f;
+                collider.radius = VisualUtils.GetMaxComponent(colliderSizeScaled) * 0.5f;
                 collider.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
             }
         }
