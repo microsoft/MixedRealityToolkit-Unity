@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that interactable raises proper events
         /// </summary>
         [UnityTest]
-        public IEnumerator TestAssembeInteractableAndEventsRaised()
+        public IEnumerator TestAssembleInteractableAndEventsRaised()
         {
             GameObject pinchSliderObject;
             PinchSlider slider;
@@ -165,6 +165,59 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(interactionEnded, "Slider did not raise interaction ended.");
 
             Assert.That(slider.SliderValue, Is.GreaterThan(0.5));
+
+            GameObject.Destroy(pinchSliderObject);
+        }
+
+        /// <summary>
+        /// Tests that interactable has the correct values when using step divisions
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAssembleStepPinchSlider()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            // Set the slider to use step divisions
+            slider.UseSliderStepDivisions = true;
+            slider.SliderStepDivisions = 4;
+
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+
+            bool interactionStarted = false;
+            slider.OnInteractionStarted.AddListener((x) => interactionStarted = true);
+            yield return rightHand.Show(initialPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
+
+            bool interactionUpdated = false;
+            slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
+
+            yield return rightHand.Move(new Vector3(0.3f, 0, 0));
+
+            Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
+
+            bool interactionEnded = false;
+            slider.OnInteractionEnded.AddListener((x) => interactionEnded = true);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            Assert.IsTrue(interactionEnded, "Slider did not raise interaction ended.");
+
+            Assert.AreEqual(0.75f, slider.SliderValue);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.Move(new Vector3(-0.6f, 0, 0));
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            yield return rightHand.Hide();
+
+            Assert.AreEqual(0.25f, slider.SliderValue);
 
             GameObject.Destroy(pinchSliderObject);
         }
