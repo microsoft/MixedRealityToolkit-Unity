@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             if (seeItSayItLabel.activeSelf != seeItSayItLabelActive)
                             {
                                 seeItSayItLabel.SetActive(seeItSayItLabelActive);
-                                EditorUtility.SetDirty(seeItSayItLabel.gameObject);
+                                EditorUtility.SetDirty(seeItSayItLabel);
                             }
 
                             if (seeItSayItLabel.activeSelf)
@@ -387,6 +387,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(iconSetProp);
+
+            EditorGUILayout.Space();
             if (iconSet == null)
             {
                 EditorGUILayout.HelpBox("No icon set assigned. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);

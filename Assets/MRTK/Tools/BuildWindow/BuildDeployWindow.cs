@@ -34,6 +34,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             DeployOptions
         }
 
+#if UNITY_2021_2_OR_NEWER
+        /// <summary>
+        /// Matches the deprecated WSASubtarget.
+        /// </summary>
+        private enum UWPSubtarget
+        {
+            AnyDevice = 0,
+            PC = 1,
+            Mobile = 2,
+            HoloLens = 3
+        }
+#endif // UNITY_2021_2_OR_NEWER
+
         #endregion Internal Types
 
         #region Constants and Readonly Values
@@ -166,7 +179,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             get
             {
                 bool canInstall = true;
-                if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                if (
+#if UNITY_2021_2_OR_NEWER
+                    currentSubtarget == UWPSubtarget.HoloLens
+#else
+                    EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
+#endif // UNITY_2021_2_OR_NEWER
+                    )
                 {
                     canInstall = DevicePortalConnectionEnabled;
                 }
@@ -270,6 +289,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static bool lastTestConnectionSuccessful = false;
         private static DeviceInfo lastTestConnectionTarget;
         private static DateTime? lastTestConnectionTime = null;
+
+#if UNITY_2021_2_OR_NEWER
+        private static UWPSubtarget currentSubtarget = UWPSubtarget.AnyDevice;
+#endif // UNITY_2021_2_OR_NEWER
 
         #endregion Fields
 
@@ -380,7 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderUnityBuildView()
         {
+#if UNITY_2021_2_OR_NEWER
+            currentSubtarget = (UWPSubtarget)EditorGUILayout.Popup("Target Device", (int)currentSubtarget, TARGET_DEVICE_OPTIONS, GUILayout.Width(HALF_WIDTH));
+#else
             EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup("Target Device", (int)EditorUserBuildSettings.wsaSubtarget, TARGET_DEVICE_OPTIONS, GUILayout.Width(HALF_WIDTH));
+#endif // UNITY_2021_2_OR_NEWER
 
 #if !UNITY_2019_1_OR_NEWER
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
