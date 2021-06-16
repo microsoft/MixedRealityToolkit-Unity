@@ -855,7 +855,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Unused Event Handlers
         /// <inheritdoc />
-        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        public virtual void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         public void OnBeforeFocusChange(FocusEventData eventData) { }
 
         #endregion Unused Event Handlers
