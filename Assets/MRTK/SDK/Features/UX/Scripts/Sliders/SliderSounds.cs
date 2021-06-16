@@ -28,6 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool playTickSounds = true;
 
         [SerializeField]
+        [Tooltip("Whether to line up the 'tick tick' sounds with slider step divisions when those are in use")]
+        private bool alignWithStepSlider = true;
+
+        [SerializeField]
         [Tooltip("Sound to play when slider passes a notch")]
         private AudioClip passNotchSound = null;
 
@@ -66,7 +70,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 passNotchAudioSource = gameObject.AddComponent<AudioSource>();
             }
+
+
             slider = GetComponent<PinchSlider>();
+            if (alignWithStepSlider && slider.UseSliderStepDivisions)
+            {
+                tickEvery = 1.0f / slider.SliderStepDivisions;
+            }
             slider.OnInteractionStarted.AddListener(OnInteractionStarted);
             slider.OnInteractionEnded.AddListener(OnInteractionEnded);
             slider.OnValueUpdated.AddListener(OnValueUpdated);
@@ -79,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 float delta = eventData.NewValue - eventData.OldValue;
                 accumulatedDeltaSliderValue += Mathf.Abs(delta);
                 var now = Time.timeSinceLevelLoad;
-                if (accumulatedDeltaSliderValue > tickEvery && now - lastSoundPlayTime > minSecondsBetweenTicks)
+                if (accumulatedDeltaSliderValue >= tickEvery && now - lastSoundPlayTime > minSecondsBetweenTicks)
                 {
                     passNotchAudioSource.pitch = Mathf.Lerp(startPitch, endPitch, eventData.NewValue);
                     if (passNotchAudioSource.isActiveAndEnabled)
