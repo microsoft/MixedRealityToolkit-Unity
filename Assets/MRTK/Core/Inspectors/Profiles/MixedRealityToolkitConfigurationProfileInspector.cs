@@ -21,7 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
         // Experience properties
-        private SerializedProperty experienceSettingsType;
         private SerializedProperty experienceSettingsProfile;
 
         // Tracking the old experience scale property for compatibility
@@ -97,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityToolkitConfigurationProfile mrtkConfigProfile = target as MixedRealityToolkitConfigurationProfile;
 
             // Experience configuration
-            experienceSettingsType = serializedObject.FindProperty("experienceSettingsType");
             experienceSettingsProfile = serializedObject.FindProperty("experienceSettingsProfile");
             experienceScaleMigration = serializedObject.FindProperty("targetExperienceScale");
 
@@ -160,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 oldExperienceSettingsScale = oldExperienceSettingsProfile.TargetExperienceScale;
                             }
 
-                            changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false,  null, true);
+                            changed |= RenderProfile(experienceSettingsProfile, typeof(MixedRealityExperienceSettingsProfile), true, false,  null);
 
                             // Experience configuration
                             if (mrtkConfigProfile.ExperienceSettingsProfile != null)
@@ -258,13 +256,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         return changed;
                     },
                     () => {
-                        var experienceScale = mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
-                        if (experienceScale != ExperienceScale.Room)
+                        if(mrtkConfigProfile.ExperienceSettingsProfile.IsNull())
                         {
-                            // Alert the user if the experience scale does not support boundary features.
+                            // Alert that an experience settings profile has not been selected
                             GUILayout.Space(6f);
-                            EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
+                            EditorGUILayout.HelpBox("Boundaries require an experience settings profile with a Room scale target experience scale.", MessageType.Warning);
                             GUILayout.Space(6f);
+                        }
+                        else
+                        {
+                            var experienceScale = mrtkConfigProfile.ExperienceSettingsProfile.TargetExperienceScale;
+                            if (experienceScale != ExperienceScale.Room)
+                            {
+                                // Alert the user if the experience scale does not support boundary features.
+                                GUILayout.Space(6f);
+                                EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
+                                GUILayout.Space(6f);
+                            }
                         }
 
                         bool changed = false;
