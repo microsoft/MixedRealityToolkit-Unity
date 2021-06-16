@@ -286,6 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             handleVisual.transform.parent = parent.transform;
             handleVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
             handleVisual.transform.localPosition = Vector3.zero;
+            handleVisual.transform.localRotation = Quaternion.identity;
 
             Quaternion realignment = GetRotationRealignment(handleIndex);
             parent.transform.localRotation = realignment;
