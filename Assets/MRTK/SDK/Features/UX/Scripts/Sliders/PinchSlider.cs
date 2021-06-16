@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/sliders")]
     [AddComponentMenu("Scripts/MRTK/SDK/PinchSlider")]
-    public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
+    public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler, IMixedRealityTouchHandler
     {
         #region Serialized Fields and Public Properties
         [Tooltip("The gameObject that contains the slider thumb.")]
@@ -31,6 +31,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 InitializeSliderThumb();
             }
         }
+
+        [SerializeField]
+        [Tooltip("Whether or not this slider is controllable via touch events")]
+        private bool isTouchable;
+
+        /// <summary>
+        /// Property accessor of isTouchable. Determines whether or not this slider is controllable via touch events.
+        /// </summary>
+        public bool IsTouchable
+        {
+            get { return isTouchable; }
+            set { isTouchable = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The collider object that receives touch input")]
+        private BoxCollider touchableCollider = null;
 
         [Range(minVal, maxVal)]
         [SerializeField]
@@ -546,8 +563,41 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
+
+        #region IMixedRealityTouchHandler
+        public void OnTouchStarted(HandTrackingInputEventData eventData) { }
+
+        public void OnTouchCompleted(HandTrackingInputEventData eventData) { }
+
+        /// <summary>
+        /// When the collider is touched, use the touch point to Calculate the Slider value
+        /// </summary>
+        public void OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            if(IsTouchable)
+            {
+                CalculateSliderValueBasedOnTouchPoint(eventData.InputData.x);
+            }
+        }
+
+        private void CalculateSliderValueBasedOnTouchPoint(float touchPoint)
+        {
+            // The collider's anchor is at the centerpoint, so convert the touchpoint to slider value
+            float colliderWidth = touchableCollider.bounds.size.x;
+            float colliderPosition = touchableCollider.gameObject.transform.position.x;
+            float colliderLeft = colliderPosition - colliderWidth / 2;
+            float colliderRight = colliderPosition + colliderWidth / 2;
+            float result = (touchPoint - colliderLeft) / (colliderRight - colliderLeft);
+
+            // clamp the value between zero and one, and also trim out the SnapValue
+            float clampedResult = Mathf.Clamp(result, minVal, maxVal);
+            SliderValue = clampedResult;
+        }
+
+        #endregion IMixedRealityTouchHandler
+
         #region Gizmos and Handlers
-        private void OnSceneGUI()
+        private void OnDrawGizmos()
         {
             PinchSlider slider = this as PinchSlider;
             if (slider != null)
