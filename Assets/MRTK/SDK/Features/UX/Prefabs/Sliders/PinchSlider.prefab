@@ -1,5 +1,107 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5928312515760230136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6475316257701582328}
+  - component: {fileID: 430449111430787343}
+  - component: {fileID: 6592760838699715155}
+  - component: {fileID: 5251832401172627236}
+  m_Layer: 0
+  m_Name: TouchCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6475316257701582328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5928312515760230136}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.25293, y: 0.04714, z: 0.25}
+  m_Children: []
+  m_Father: {fileID: 7307063430618434851}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &430449111430787343
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5928312515760230136}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.03}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6592760838699715155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5928312515760230136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  debounceThreshold: 0.01
+  localForward: {x: -0, y: -0, z: -1}
+  localUp: {x: 0, y: 1, z: 0}
+  localCenter: {x: 0, y: 0, z: -0.015}
+  bounds: {x: 1, y: 1}
+  touchableCollider: {fileID: 430449111430787343}
+--- !u!114 &5251832401172627236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5928312515760230136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e736ec19b1c5543a9bb27c150f94fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFocusRequired: 1
+  MarkEventsAsUsed: 0
+  OnPointerDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPointerUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPointerClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPointerDragged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7307063429480177091
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +992,7 @@ Transform:
   - {fileID: 7307063429529462948}
   - {fileID: 7307063429480177090}
   m_Father: {fileID: 7307063430618434851}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7307063430561165473
 MonoBehaviour:
@@ -1016,6 +1118,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 6475316257701582328}
   - {fileID: 7307063430758334045}
   - {fileID: 7307063431327029221}
   - {fileID: 7307063430561165486}
@@ -1036,7 +1139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thumbRoot: {fileID: 7307063430758334042}
   isTouchable: 0
-  touchableCollider: {fileID: 0}
+  snapToPosition: 1
+  ThumbCollider: {fileID: 7307063430134822091}
+  TouchCollider: {fileID: 430449111430787343}
   sliderValue: 0.5
   useSliderStepDivisions: 0
   sliderStepDivisions: 1
@@ -1045,7 +1150,7 @@ MonoBehaviour:
   thumbVisuals: {fileID: 7307063430134822100}
   sliderAxis: 0
   sliderStartDistance: -0.125
-  sliderEndDistance: 0.125
+  sliderEndDistance: 0.12499997
   OnValueUpdated:
     m_PersistentCalls:
       m_Calls: []
@@ -1121,6 +1226,7 @@ MonoBehaviour:
     type: 3}
   interactionEndSound: {fileID: 8300000, guid: 32c013149113ba24cb267e1e3f6725c7, type: 3}
   playTickSounds: 1
+  alignWithStepSlider: 1
   passNotchSound: {fileID: 8300000, guid: 0632575a55cf09349a999a10968f6395, type: 3}
   tickEvery: 0.1
   startPitch: 0.75
@@ -1232,7 +1338,7 @@ Transform:
   m_Children:
   - {fileID: 7307063430522344680}
   m_Father: {fileID: 7307063430618434851}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7307063430864003803
 GameObject:
@@ -1417,5 +1523,5 @@ Transform:
   m_Children:
   - {fileID: 7307063430008138807}
   m_Father: {fileID: 7307063430618434851}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

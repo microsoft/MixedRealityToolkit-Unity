@@ -32,12 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+
         [SerializeField]
         [Tooltip("Whether or not this slider is controllable via touch events")]
         private bool isTouchable;
 
         /// <summary>
-        /// Property accessor of isTouchable. Determines whether or not this slider is controllable via touch events.
+        /// Property accessor of isTouchable. Determines whether or not this slider is controllable via touch events
         /// </summary>
         public bool IsTouchable
         {
@@ -46,8 +47,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("The collider object that receives touch input")]
-        private BoxCollider touchableCollider = null;
+        [Tooltip("Whether or not this slider snaps to the designated position on the slider")]
+        private bool snapToPosition;
+
+        /// <summary>
+        /// Property accessor of snapToPosition. Determines whether or not this slider snaps to the designated position on the slider
+        /// </summary>
+        public bool SnapToPosition
+        {
+            get { return snapToPosition; }
+            set { snapToPosition = value; TouchCollider.enabled = value; ThumbCollider.enabled = !value; }
+        }
+
+        [SerializeField]
+        /// <summary>
+        /// Used to determine where we snap the slider to
+        /// </summary>
+        private Collider ThumbCollider;
+
+        [SerializeField]
+        /// <summary>
+        /// Used to determine the position we snap the slider do
+        /// </summary>
+        private Collider TouchCollider;
 
         [Range(minVal, maxVal)]
         [SerializeField]
@@ -324,6 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 throw new Exception($"Slider thumb on gameObject {gameObject.name} is not specified. Did you forget to set it?");
             }
 
+            SnapToPosition = snapToPosition;
             InitializeSliderThumb();
             OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, null, this));
         }
@@ -350,6 +373,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var thumbProjectedOnTrack = SliderStartPosition + Vector3.Project(startToThumb, SliderTrackDirection);
             sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
 
+            ThumbCollider = thumbRoot.GetComponentInChildren<Collider>();
+
             UpdateUI();
         }
 
@@ -359,7 +384,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void InitializeStepDivisions()
         {
             var stepCount = SliderValue / sliderStepVal;
-            Debug.Log("stepCount " + stepCount);
             var value = sliderStepVal * Mathf.FloorToInt(stepCount);
             Debug.Log(value);
             SliderValue = Mathf.Clamp(value, 0.0f, 1.0f);
@@ -524,12 +548,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (ActivePointer == null && !eventData.used)
             {
                 ActivePointer = eventData.Pointer;
-                StartSliderValue = sliderValue;
                 StartPointerPosition = ActivePointer.Position;
-                if (OnInteractionStarted != null)
+
+                if (SnapToPosition)
                 {
-                    OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, ActivePointer, this));
+                    CalculateSliderValueBasedOnPoint(ActivePointer.Result.Details.Point);
                 }
+                else
+                {
+                    if (OnInteractionStarted != null)
+                    {
+                        OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, ActivePointer, this));
+                    }
+                }
+
+                StartSliderValue = sliderValue;
 
                 // Mark the pointer data as used to prevent other behaviors from handling input events
                 eventData.Use();
@@ -543,10 +576,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var delta = ActivePointer.Position - StartPointerPosition;
                 var handDelta = Vector3.Dot(SliderTrackDirection.normalized, delta);
 
-                if(useSliderStepDivisions)
+                if (useSliderStepDivisions)
                 {
                     var stepVal = (handDelta / SliderTrackDirection.magnitude > 0) ? sliderStepVal : (sliderStepVal * -1);
-                    var stepMag = Mathf.Floor(Mathf.Abs((handDelta / SliderTrackDirection.magnitude)) / sliderStepVal);
+                    var stepMag = Mathf.Floor(Mathf.Abs(handDelta / SliderTrackDirection.magnitude) / sliderStepVal);
                     SliderValue = Mathf.Clamp(StartSliderValue + (stepVal * stepMag), 0, 1);
                 }
                 else
@@ -569,25 +602,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchCompleted(HandTrackingInputEventData eventData) { }
 
-        /// <summary>
+        /// <summary>b  
         /// When the collider is touched, use the touch point to Calculate the Slider value
         /// </summary>
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            if(IsTouchable)
+            if(isTouchable)
             {
-                CalculateSliderValueBasedOnTouchPoint(eventData.InputData.x);
+                CalculateSliderValueBasedOnPoint(eventData.InputData);
             }
         }
 
-        private void CalculateSliderValueBasedOnTouchPoint(float touchPoint)
+        private void CalculateSliderValueBasedOnPoint(Vector3 touchPoint)
         {
-            // The collider's anchor is at the centerpoint, so convert the touchpoint to slider value
-            float colliderWidth = touchableCollider.bounds.size.x;
-            float colliderPosition = touchableCollider.gameObject.transform.position.x;
-            float colliderLeft = colliderPosition - colliderWidth / 2;
-            float colliderRight = colliderPosition + colliderWidth / 2;
-            float result = (touchPoint - colliderLeft) / (colliderRight - colliderLeft);
+            var sliderTouchPoint = touchPoint - SliderStartPosition;
+            var sliderVector = SliderEndPosition - SliderStartPosition;
+            float sliderProgress = Vector3.Project(sliderTouchPoint, sliderVector).magnitude;
+            float result = sliderProgress / sliderVector.magnitude;
 
             // clamp the value between zero and one, and also trim out the SnapValue
             float clampedResult = Mathf.Clamp(result, minVal, maxVal);
@@ -595,47 +626,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion IMixedRealityTouchHandler
-
-        #region Gizmos and Handlers
-        private void OnDrawGizmos()
-        {
-            PinchSlider slider = this as PinchSlider;
-            if (slider != null)
-            {
-                Handles.color = Color.cyan;
-                Vector3 startPos = slider.SliderStartPosition;
-                Vector3 endPos = slider.SliderEndPosition;
-                Handles.DrawLine(startPos, endPos);
-
-
-                EditorGUI.BeginChangeCheck();
-
-                float handleSize = HandleUtility.GetHandleSize(startPos) * 0.15f;
-                slider.SliderStartPosition = Handles.FreeMoveHandle(startPos,
-                    Quaternion.identity,
-                    handleSize,
-                    Vector3.zero,
-                    Handles.SphereHandleCap);
-                slider.SliderEndPosition = Handles.FreeMoveHandle(endPos,
-                    Quaternion.identity,
-                    handleSize,
-                    Vector3.zero,
-                    Handles.SphereHandleCap);
-
-                DrawLabelWithDottedLine(startPos + (Vector3.up * handleSize * 10f), startPos, handleSize, "slider start");
-                DrawLabelWithDottedLine(endPos + (Vector3.up * handleSize * 10f), endPos, handleSize, "slider end");
-            }
-        }
-
-        private void DrawLabelWithDottedLine(Vector3 labelPos, Vector3 dottedLineStart, float handleSize, string labelText)
-        {
-            GUIStyle labelStyle = new GUIStyle();
-            labelStyle.normal.textColor = Color.white;
-
-            Handles.color = Color.white;
-            Handles.Label(labelPos + Vector3.up * handleSize, labelText, labelStyle);
-            Handles.DrawDottedLine(dottedLineStart, labelPos, 5f);
-        }
-        #endregion
     }
 }
