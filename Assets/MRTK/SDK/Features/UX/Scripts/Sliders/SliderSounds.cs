@@ -71,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 passNotchAudioSource = gameObject.AddComponent<AudioSource>();
             }
 
-
             slider = GetComponent<PinchSlider>();
             if (alignWithStepSlider && slider.UseSliderStepDivisions)
             {
