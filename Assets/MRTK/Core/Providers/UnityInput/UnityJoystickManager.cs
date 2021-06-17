@@ -238,6 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             // todo: this should be using an allow list, not a disallow list
             if (string.IsNullOrEmpty(joystickName) ||
                 joystickName.Contains("OpenVR") ||
+                joystickName.Contains("OpenXR") ||
                 joystickName.Contains("Spatial"))
             {
                 return 0;
