@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6475316257701582328}
   - component: {fileID: 430449111430787343}
   - component: {fileID: 6592760838699715155}
-  - component: {fileID: 5251832401172627236}
+  - component: {fileID: 1797467421067842154}
   m_Layer: 0
   m_Name: TouchCollider
   m_TagString: Untagged
@@ -42,7 +42,7 @@ BoxCollider:
   m_GameObject: {fileID: 5928312515760230136}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.03}
   m_Center: {x: 0, y: 0, z: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
   localCenter: {x: 0, y: 0, z: -0.015}
   bounds: {x: 1, y: 1}
   touchableCollider: {fileID: 430449111430787343}
---- !u!114 &5251832401172627236
+--- !u!114 &1797467421067842154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,34 +74,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5928312515760230136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e736ec19b1c5543a9bb27c150f94fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFocusRequired: 1
-  MarkEventsAsUsed: 0
-  OnPointerDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerUp:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerClicked:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerDragged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
 --- !u!1 &7307063429480177091
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +554,7 @@ GameObject:
   - component: {fileID: 7307063430134822102}
   - component: {fileID: 7307063430134822091}
   - component: {fileID: 7307063430134822088}
+  - component: {fileID: 1095924912137624347}
   m_Layer: 0
   m_Name: Slider_Button
   m_TagString: Untagged
@@ -670,6 +648,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
+--- !u!114 &1095924912137624347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7307063430134822100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  debounceThreshold: 0.01
+  localForward: {x: -0, y: -0, z: -1}
+  localUp: {x: 0, y: 1, z: 0}
+  localCenter: {x: 0, y: 0, z: -0.027000036}
+  bounds: {x: 0.03, y: 0.04}
+  touchableCollider: {fileID: 7307063430134822091}
 --- !u!1 &7307063430401729065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1140,8 +1137,8 @@ MonoBehaviour:
   thumbRoot: {fileID: 7307063430758334042}
   isTouchable: 0
   snapToPosition: 1
-  ThumbCollider: {fileID: 7307063430134822091}
-  TouchCollider: {fileID: 430449111430787343}
+  thumbCollider: {fileID: 7307063430134822091}
+  touchCollider: {fileID: 430449111430787343}
   sliderValue: 0.5
   useSliderStepDivisions: 0
   sliderStepDivisions: 1

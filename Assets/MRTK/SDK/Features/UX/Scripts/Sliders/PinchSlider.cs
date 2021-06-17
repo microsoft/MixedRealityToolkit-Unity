@@ -56,20 +56,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool SnapToPosition
         {
             get { return snapToPosition; }
-            set { snapToPosition = value; TouchCollider.enabled = value; ThumbCollider.enabled = !value; }
+            set { snapToPosition = value; touchCollider.enabled = value; thumbCollider.enabled = !value; }
         }
 
         [SerializeField]
         /// <summary>
-        /// Used to determine where we snap the slider to
+        /// Used control the slider on the track when snapToPosition is false
         /// </summary>
-        private Collider ThumbCollider;
+        private Collider thumbCollider = null;
 
         [SerializeField]
         /// <summary>
-        /// Used to determine the position we snap the slider do
+        /// Used to determine the position we snap the slider do when snapToPosition is true
         /// </summary>
-        private Collider TouchCollider;
+        private Collider touchCollider = null;
 
         [Range(minVal, maxVal)]
         [SerializeField]
@@ -372,8 +372,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var startToThumb = thumbRoot.transform.position - SliderStartPosition;
             var thumbProjectedOnTrack = SliderStartPosition + Vector3.Project(startToThumb, SliderTrackDirection);
             sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
-
-            ThumbCollider = thumbRoot.GetComponentInChildren<Collider>();
 
             UpdateUI();
         }
