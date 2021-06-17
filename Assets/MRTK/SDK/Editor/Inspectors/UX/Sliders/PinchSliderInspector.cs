@@ -15,15 +15,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static GUIStyle labelStyle;
 
-        //public override void OnInspectorGUI()
-        //{
-        //    if (target != null)
-        //    {
-        //        InspectorUIUtility.RenderHelpURL(target.GetType());
-        //    }
+        public override void OnInspectorGUI()
+        {
+            if (target != null)
+            {
+                InspectorUIUtility.RenderHelpURL(target.GetType());
+            }
 
-        //    DrawDefaultInspector();
-        //}
+            DrawDefaultInspector();
+        }
 
         private void OnSceneGUI()
         {
