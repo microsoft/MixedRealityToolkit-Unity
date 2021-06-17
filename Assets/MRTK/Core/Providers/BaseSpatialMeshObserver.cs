@@ -32,13 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         protected MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
 
-        private GameObject observedObjectParent = null;
-
-        /// <summary>
-        /// The parent GameObject for all observed meshes to be placed under.
-        /// </summary>
-        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent(Name));
-
         protected virtual void ReadProfile()
         {
             if (ConfigurationProfile == null)
