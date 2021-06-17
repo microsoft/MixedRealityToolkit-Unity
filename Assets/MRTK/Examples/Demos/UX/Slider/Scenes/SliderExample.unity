@@ -4641,17 +4641,22 @@ PrefabInstance:
     - target: {fileID: 48114245917028293, guid: 405b34842e32594499069ff558f96b82,
         type: 3}
       propertyPath: sliderStartDistance
-      value: -0.12499907
+      value: -0.12499915
       objectReference: {fileID: 0}
     - target: {fileID: 48114245917028293, guid: 405b34842e32594499069ff558f96b82,
         type: 3}
       propertyPath: sliderEndDistance
-      value: 0.12500426
+      value: 0.12500422
       objectReference: {fileID: 0}
     - target: {fileID: 48114245917028293, guid: 405b34842e32594499069ff558f96b82,
         type: 3}
       propertyPath: OnValueUpdated.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: OnSliderUpdated
+      objectReference: {fileID: 0}
+    - target: {fileID: 48114245917028293, guid: 405b34842e32594499069ff558f96b82,
+        type: 3}
+      propertyPath: snapToPosition
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 48114245917028294, guid: 405b34842e32594499069ff558f96b82,
         type: 3}
