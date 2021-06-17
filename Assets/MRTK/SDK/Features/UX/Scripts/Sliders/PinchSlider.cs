@@ -381,10 +381,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private void InitializeStepDivisions()
         {
-            var stepCount = SliderValue / sliderStepVal;
-            var value = sliderStepVal * Mathf.FloorToInt(stepCount);
-            Debug.Log(value);
-            SliderValue = Mathf.Clamp(value, 0.0f, 1.0f);
+            SliderValue = SnapSliderToStepPositions(SliderValue);
         }
 
         /// <summary>
@@ -514,6 +511,36 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ActivePointer = null;
         }
 
+        private float SnapSliderToStepPositions(float value)
+        {
+            var stepCount = value / sliderStepVal;
+            var snappedValue = sliderStepVal * Mathf.RoundToInt(stepCount);
+            Mathf.Clamp(snappedValue, 0.0f, 1.0f);
+            return snappedValue;
+        }
+
+        private void CalculateSliderValueBasedOnPoint(Vector3 touchPoint)
+        {
+            var sliderTouchPoint = touchPoint - SliderStartPosition;
+            var sliderVector = SliderEndPosition - SliderStartPosition;
+            float sliderProgress = Vector3.Project(sliderTouchPoint, sliderVector).magnitude;
+            float result = sliderProgress / sliderVector.magnitude;
+
+            float clampedResult = result;
+            if (UseSliderStepDivisions)
+            {
+                clampedResult = SnapSliderToStepPositions(result);
+            }
+            else
+            {
+                // clamp the value between zero and one, and also trim out the SnapValue
+                clampedResult = Mathf.Clamp(result, minVal, maxVal);
+            }
+
+            SliderValue = clampedResult;
+        }
+
+
         #endregion
 
         #region IMixedRealityFocusHandler
@@ -609,18 +636,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 CalculateSliderValueBasedOnPoint(eventData.InputData);
             }
-        }
-
-        private void CalculateSliderValueBasedOnPoint(Vector3 touchPoint)
-        {
-            var sliderTouchPoint = touchPoint - SliderStartPosition;
-            var sliderVector = SliderEndPosition - SliderStartPosition;
-            float sliderProgress = Vector3.Project(sliderTouchPoint, sliderVector).magnitude;
-            float result = sliderProgress / sliderVector.magnitude;
-
-            // clamp the value between zero and one, and also trim out the SnapValue
-            float clampedResult = Mathf.Clamp(result, minVal, maxVal);
-            SliderValue = clampedResult;
         }
 
         #endregion IMixedRealityTouchHandler
