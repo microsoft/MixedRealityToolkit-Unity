@@ -142,6 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightHand = new TestHand(Handedness.Right);
             Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
 
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
             bool interactionStarted = false;
             slider.OnInteractionStarted.AddListener((x) => interactionStarted = true);
             yield return rightHand.Show(initialPos);
@@ -185,6 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             slider.UseSliderStepDivisions = true;
             slider.SliderStepDivisions = 4;
 
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
             var rightHand = new TestHand(Handedness.Right);
             Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
 
@@ -212,6 +216,178 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(0.75f, slider.SliderValue);
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.Move(new Vector3(-0.6f, 0, 0));
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            yield return rightHand.Hide();
+
+            Assert.AreEqual(0.25f, slider.SliderValue);
+
+            GameObject.Destroy(pinchSliderObject);
+        }
+
+        /// <summary>
+        /// Tests that interactable has the correct values when snapping to a position
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAssembleSnapSlider()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            // Set the slider to use step divisions
+            slider.UseSliderStepDivisions = true;
+            slider.SliderStepDivisions = 4;
+
+            // Set slider to snap with touch
+            slider.SnapToPosition = true;
+            slider.IsTouchable = false;
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            bool interactionStarted = false;
+            slider.OnInteractionStarted.AddListener((x) => interactionStarted = true);
+            bool interactionUpdated = false;
+            slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
+
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 initialPos = new Vector3(0.3f, 0, 0.0f);
+            yield return rightHand.Show(initialPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Move(new Vector3(0, 0, 1.0f));
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.IsFalse(interactionStarted, "Slider raised interaction started early.");
+            Assert.IsFalse(interactionUpdated, "Slider raised SliderUpdated event early.");
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
+            Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
+
+            Assert.AreEqual(0.75f, slider.SliderValue);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Move(new Vector3(-0.6f, 0, 0));
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(0.25f, slider.SliderValue);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Move(new Vector3(0.3f, 0, 0));
+            Assert.AreEqual(0.25f, slider.SliderValue);
+
+            bool interactionEnded = false;
+            slider.OnInteractionEnded.AddListener((x) => interactionEnded = true);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Hide();
+
+            Assert.IsTrue(interactionEnded, "Slider did not raise interaction ended.");
+
+            GameObject.Destroy(pinchSliderObject);
+        }
+
+        /// <summary>
+        /// Tests that interactable has the correct values when snapping to a position
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAssembleTouchSnapSlider()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            // Set the slider to use step divisions
+            slider.UseSliderStepDivisions = true;
+            slider.SliderStepDivisions = 4;
+
+            // Set slider to snap with touch
+            slider.SnapToPosition = true;
+            slider.IsTouchable = true;
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            bool interactionStarted = false;
+            slider.OnInteractionStarted.AddListener((x) => interactionStarted = true);
+            bool interactionUpdated = false;
+            slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
+
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 initialPos = new Vector3(0.3f, 0, 0.0f);
+            yield return rightHand.Show(initialPos);
+            yield return rightHand.Move(new Vector3(0, 0, 1.0f));
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
+            Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
+
+            Assert.AreEqual(0.75f, slider.SliderValue);
+            
+            yield return rightHand.Move(new Vector3(-0.6f, 0, 0));
+            Assert.AreEqual(0.25f, slider.SliderValue);
+
+            yield return rightHand.Move(new Vector3(0.3f, 0, 0));
+            Assert.AreEqual(0.5f, slider.SliderValue);
+
+            bool interactionEnded = false;
+            slider.OnInteractionEnded.AddListener((x) => interactionEnded = true);
+
+            yield return rightHand.Hide();
+
+            Assert.IsTrue(interactionEnded, "Slider did not raise interaction ended.");
+
+            GameObject.Destroy(pinchSliderObject);
+        }
+
+        /// <summary>
+        /// Tests that interactable has the correct values when snapping to a position
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAssembleTouchNoSnapSlider()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            // Set the slider to use step divisions
+            slider.UseSliderStepDivisions = true;
+            slider.SliderStepDivisions = 4;
+
+            // Set slider to snap with touch
+            slider.SnapToPosition = false;
+            slider.IsTouchable = true;
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            bool interactionStarted = false;
+            slider.OnInteractionStarted.AddListener((x) => interactionStarted = true);
+            bool interactionUpdated = false;
+            slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
+
+
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+
+            yield return rightHand.Show(initialPos);
+
+            yield return rightHand.Move(new Vector3(0.3f, 0, 0));
+            Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
+            Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            Assert.AreEqual(0.75f, slider.SliderValue);
+
             yield return rightHand.Move(new Vector3(-0.6f, 0, 0));
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 
@@ -355,7 +531,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Generates an interactable from primitives and assigns a select action.
         /// </summary>
-        private void AssembleSlider(Vector3 position, Vector3 rotation, out GameObject pinchSliderObject, out PinchSlider slider, bool isNearInteractionGrabbable = true)
+        private void AssembleSlider(Vector3 position, Vector3 rotation, out GameObject pinchSliderObject, out PinchSlider slider)
         {
             // Assemble an interactable out of a set of primitives
             // This will be the slider root
@@ -369,17 +545,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             sliderTrack.transform.localScale = new Vector3(1f, .01f, .01f);
             sliderTrack.transform.parent = pinchSliderObject.transform;
 
+            var sliderTouchable = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            sliderTouchable.GetComponent<Renderer>().enabled = false;
+            sliderTouchable.transform.position = Vector3.zero;
+            sliderTouchable.transform.localScale = new Vector3(1f, .2f, .1f);
+            sliderTouchable.AddComponent<NearInteractionGrabbable>();
+            sliderTouchable.AddComponent<NearInteractionTouchable>();
+            sliderTouchable.transform.parent = pinchSliderObject.transform;
+
+
             // Make the thumb root
             var thumbRoot = GameObject.CreatePrimitive(PrimitiveType.Cube);
             thumbRoot.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             thumbRoot.transform.parent = pinchSliderObject.transform;
-            if (isNearInteractionGrabbable)
-            {
-                thumbRoot.AddComponent<NearInteractionGrabbable>();
-            }
 
+            thumbRoot.AddComponent<NearInteractionGrabbable>();
+            thumbRoot.AddComponent<NearInteractionTouchable>();
+
+            // Create and initialize the collider
             slider = pinchSliderObject.AddComponent<PinchSlider>();
             slider.ThumbRoot = thumbRoot;
+            slider.TouchCollider = sliderTrack.GetComponent<Collider>();
+            slider.ThumbCollider = thumbRoot.GetComponent<Collider>();
 
             pinchSliderObject.transform.position = position;
             pinchSliderObject.transform.eulerAngles = rotation;
