@@ -29,8 +29,8 @@ def get_num_diffs(source_branch: str, destination_branch: str) -> int:
     repo.git.checkout(source_branch)
     repo.git.checkout(destination_branch)
     source_branch_head = repo.heads[args.source_branch]
-    destination_branch_head = repo.heads[args.destination_branch]
-    return len(destination_branch_head.commit.diff(source_branch_head.commit))
+    common_ancestor = repo.merge_base(source_branch_head, repo.heads[args.destination_branch])
+    return len(common_ancestor[0].diff(source_branch_head.commit)) if len(common_ancestor) > 0 else 0
 
 def get_existing_pull_request(github_repo: Repository, search_label: str) -> PullRequest:
     pull_requests = github_repo.get_pulls()
@@ -59,7 +59,7 @@ def main(args):
         print(f'All commits from [{args.source_branch}] that are already present in [{args.destination_branch}]')
         return
 
-    print(f'There are {num_diffs} commits from [{args.source_branch}] that need to be merged into [{args.destination_branch}]')
+    print(f'There are {num_diffs} files from [{args.source_branch}] that need to be merged into [{args.destination_branch}]')
     print(f'Starting a pull request to merge [{args.source_branch}] into [{args.destination_branch}]')
 
     print('Checking to see if there is already an outstanding merge to avoid creating duplicate requests.')

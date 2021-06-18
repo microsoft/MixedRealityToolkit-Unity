@@ -1,19 +1,16 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.OpenXR",
-    "rootNamespace": "",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.XRSDK.OpenXR",
     "references": [
         "Microsoft.MixedReality.OpenXR",
+        "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Gltf",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
         "Unity.XR.Management",
         "Unity.XR.OpenXR"
     ],
-    "includePlatforms": [
-        "Editor",
-        "WSA",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
@@ -27,6 +24,11 @@
             "name": "com.microsoft.mixedreality.openxr",
             "expression": "",
             "define": "MSFT_OPENXR"
+        },
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "0.9.4-preview",
+            "define": "MSFT_OPENXR_0_9_4_OR_NEWER"
         },
         {
             "name": "com.microsoft.mixedreality.openxr",

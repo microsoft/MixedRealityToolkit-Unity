@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty focusQueryBufferSize;
         private SerializedProperty raycastProviderType;
         private SerializedProperty focusIndividualCompoundCollider;
+        private SerializedProperty shouldUseGraphicsRaycast;
 
         private static bool showPointerProperties = false;
         private const string ShowInputSystem_Pointers_PreferenceKey = "ShowInputSystem_Pointers_PreferenceKey";
@@ -64,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             focusQueryBufferSize = serializedObject.FindProperty("focusQueryBufferSize");
             raycastProviderType = serializedObject.FindProperty("raycastProviderType");
             focusIndividualCompoundCollider = serializedObject.FindProperty("focusIndividualCompoundCollider");
+            shouldUseGraphicsRaycast = serializedObject.FindProperty("shouldUseGraphicsRaycast");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
@@ -93,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.PropertyField(focusQueryBufferSize);
                 EditorGUILayout.PropertyField(raycastProviderType);
                 EditorGUILayout.PropertyField(focusIndividualCompoundCollider);
+                EditorGUILayout.PropertyField(shouldUseGraphicsRaycast);
                 changed |= EditorGUI.EndChangeCheck();
 
                 EditorGUILayout.Space();
@@ -157,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     }
                 }, ShowInputSystem_Speech_PreferenceKey);
 
-                RenderFoldout(ref showHandTrackingProperties, "Hand Tracking", () =>
+                RenderFoldout(ref showHandTrackingProperties, "Articulated Hand Tracking", () =>
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
@@ -211,14 +214,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
-            MixedRealityInputSystemProfile targetProfile = target as MixedRealityInputSystemProfile;
-            if (targetProfile != null)
+            MixedRealityInputSystemProfile profile = target as MixedRealityInputSystemProfile;
+            var configurations = (profile != null) ? profile.DataProviderConfigurations : null;
+            if (configurations != null && index >= 0 && index < configurations.Length)
             {
-                var configurations = targetProfile.DataProviderConfigurations;
-                if (configurations != null && index >= 0 && index < configurations.Length)
-                {
-                    return configurations[index];
-                }
+                return configurations[index];
             }
 
             return null;

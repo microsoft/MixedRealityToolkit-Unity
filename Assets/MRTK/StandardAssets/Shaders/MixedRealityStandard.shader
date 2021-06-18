@@ -142,6 +142,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ UNITY_UI_CLIP_RECT
             #pragma multi_compile _ _HOVER_LIGHT_MEDIUM _HOVER_LIGHT_HIGH
             #pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
@@ -186,6 +187,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
 
             #include "UnityCG.cginc"
+            #include "UnityUI.cginc"
             #include "UnityStandardConfig.cginc"
             #include "UnityStandardUtils.cginc"
             #include "MixedRealityShaderUtils.cginc"
@@ -211,7 +213,13 @@ Shader "Mixed Reality Toolkit/Standard"
             #undef _WORLD_POSITION
 #endif
 
-#if defined(_ALPHATEST_ON) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
+#if defined(UNITY_UI_CLIP_RECT)
+            #define _LOCAL_POSITION
+#else
+            #undef _LOCAL_POSITION
+#endif
+
+#if defined(_ALPHATEST_ON) || defined(UNITY_UI_CLIP_RECT) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
             #define _ALPHA_CLIP
 #else
             #undef _ALPHA_CLIP
@@ -298,6 +306,9 @@ Shader "Mixed Reality Toolkit/Standard"
                 float3 worldPosition : TEXCOORD2;
 #endif
 #endif
+#if defined(_LOCAL_POSITION)
+                float3 localPosition : TEXCOORD7;
+#endif
 #if defined(_SCALE)
                 float3 scale : TEXCOORD3;
 #endif
@@ -343,6 +354,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_ALPHA_CLIP)
             fixed _Cutoff;
+#endif
+
+#if defined(UNITY_UI_CLIP_RECT)
+            float4 _ClipRect;
 #endif
 
             fixed _Metallic;
@@ -621,6 +636,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_WORLD_POSITION)
                 o.worldPosition.xyz = worldVertexPosition;
+#endif
+
+#if defined(_LOCAL_POSITION)
+                o.localPosition.xyz = vertexPosition;
 #endif
 
 #if defined(_NEAR_PLANE_FADE)
@@ -1027,6 +1046,10 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_ROUND_CORNERS)
                 albedo *= roundCornerClip;
                 pointToLight *= roundCornerClip;
+#endif
+
+#ifdef UNITY_UI_CLIP_RECT
+                albedo.a *= UnityGet2DClipping(i.localPosition.xy, _ClipRect);
 #endif
 
 #if defined(_ALPHA_CLIP)

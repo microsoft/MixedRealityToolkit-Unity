@@ -22,7 +22,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that cursor state is updated correctly
-    public class BaseCursorTests
+    public class BaseCursorTests : BasePlayModeTests
     {
         // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
         private const int numFramesPerMove = 1;
@@ -41,10 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// for examples.
         /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
         /// </remarks>
-        [UnitySetUp]
-        public IEnumerator SetUp()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
+
             TestUtilities.PlayspaceToArbitraryPose();
 
             // Target frame rate is set to 50 to match the physics
@@ -69,12 +69,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
             Object.Destroy(cube);
-            TestUtilities.ShutdownMixedRealityToolkit();
-            yield return null;
+            yield return base.TearDown();
         }
 
         private void VerifyCursorStateFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorStateEnum state)
@@ -404,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // FIRST DISTANCE
             float firstAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, Vector3.Distance(cam.transform.position, baseCursor.transform.position));
 
-            cube.gameObject.SetActive(false);
+            cube.SetActive(false);
 
             yield return new WaitForFixedUpdate();
             yield return null;

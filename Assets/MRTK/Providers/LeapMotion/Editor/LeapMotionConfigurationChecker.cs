@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         private static bool isLeapRecognizedByMRTK = false;
 
         // The current supported Leap Core Assets version numbers.
-        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1" };
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0" };
 
         // The current Leap Core Assets version in this project
         private static string currentLeapCoreAssetsVersion = "";
@@ -132,7 +132,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                 if (isLeapCoreAssetsVersionSupported)
                 {
-                    Debug.Log($"Integrating the Leap Motion Unity Modules Version {currentLeapCoreAssetsVersion} with MRTK");
+                    if (currentLeapCoreAssetsVersion == "4.7.1")
+                    {
+                        Debug.Log($"Integrating the Leap Motion Unity Modules Version {currentLeapCoreAssetsVersion} or 4.8.0 with MRTK");
+                    }
+                    else
+                    {
+                        Debug.Log($"Integrating the Leap Motion Unity Modules Version {currentLeapCoreAssetsVersion} with MRTK");
+                    }
 
                     RemoveTestingFolders();
                     AddAndUpdateAsmDefs();
@@ -144,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 else
                 {
                     Debug.LogError("The Leap Motion Unity Modules version imported is not currently supported by MRTK, compatible versions are listed in the Leap Motion MRTK documentation: " +
-                        "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/leap-motion-mrtk");
+                        "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/supported-devices/leap-motion-mrtk");
                 }
             }
         }
@@ -170,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         {
                             currentLeapCoreAssetsVersion = versionNumberSupported;
 
-                            // The Leap Motion Unity modules Version.txt has remained 4.5.1 across versions 4.6.0, 4.7.0 and 4.7.1, check for the presence
+                            // The Leap Motion Unity modules Version.txt has remained 4.5.1 across versions 4.6.0, 4.7.0, 4.7.1, and 4.8.0 check for the presence
                             // of certain paths to infer the version number.
 
                             // This path is only present in 4.7.1
@@ -184,6 +191,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                             if (File.Exists(leap471Path))
                             {
+                                // The Leap Motion Unity modules Core package version 4.7.1 is identical to the version 4.8.0 
+                                // Core package. Due to the lack of differences between the two versions, the modules will be marked as 4.7.1 even
+                                // if they are version 4.8.0.
                                 currentLeapCoreAssetsVersion = "4.7.1";
                             }
                             else if (!File.Exists(leap471Path) && Directory.Exists(testDirectoryPath))
@@ -446,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// <summary>
         /// Integrate MRTK and the Leap Motion Unity Modules if the Leap Motion Unity Modules are in the project. If they are not in the project, display a pop up window.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Integrate Leap Motion Unity Modules")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Leap Motion/Integrate Leap Motion Unity Modules")]
         public static void IntegrateLeapMotionWithMRTK()
         {
             // Check if leap unity modules are in the project
@@ -467,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// <summary>
         /// Separate MRTK and the Leap Motion Unity Modules and display a prompt for the user to close unity and delete the assets.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Separate Leap Motion Unity Modules")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Leap Motion/Separate Leap Motion Unity Modules")]
         public static void SeparateLeapMotion()
         {
 
@@ -489,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// <summary>
         /// Check the integration status of the Leap Motion Assets and display a message to the user.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Check Integration Status")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Leap Motion/Check Integration Status")]
         public static void CheckIntegrationStatus()
         {
             if (isLeapRecognizedByMRTK)

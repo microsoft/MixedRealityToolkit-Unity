@@ -27,17 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Tests for runtime behavior of bounds control
     /// </summary>
-    public class BoundsControlTests
+    public class BoundsControlTests : BasePlayModeTests
     {
         private Material testMaterial;
         private Material testMaterialGrabbed;
 
         #region Utilities
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
 
+        public override IEnumerator Setup()
+        {
             // create shared test materials
             var shader = StandardShaderUtility.MrtkStandardShader;
             testMaterial = new Material(shader);
@@ -45,14 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             testMaterialGrabbed = new Material(shader);
             testMaterialGrabbed.color = Color.green;
-            yield return null;
-        }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.Setup();
         }
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
@@ -910,7 +902,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numHandSteps = 1;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            var frontRightCornerPos = boundsControl.Target.gameObject.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
+            var frontRightCornerPos = boundsControl.Target.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
             TestHand hand = new TestHand(Handedness.Right);
 
             // Hands grab object at initial position
@@ -2087,6 +2079,91 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // check if new mesh filter was applied
             Assert.IsTrue(sharedMeshFilter.mesh.name == handleVisualMeshFilter.mesh.name, "box handle wasn't applied");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test for verifying automatically generated handle colliders are properly aligned to the handle visual
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PerAxisHandleAlignmentTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
+        {
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // Create an oblong-shaped handle
+            // (cylinder primitive will do, as it is longer than it is wide!)
+            var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            GameObject.Destroy(cylinder.GetComponent<CapsuleCollider>());
+
+            // Wait for Destroy() to do its thing
+            yield return null;
+
+            // Set the rotation handles to be cylinders!
+            System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
+            PerAxisHandlesConfiguration config = (PerAxisHandlesConfiguration)propName.GetValue(boundsControl);
+            config.HandlePrefab = cylinder;
+
+            // Reflection voodoo to retrieve the ColliderPadding value regardless of which
+            // handle configuration subclass we're currently using
+            System.Type configType = config.GetType();
+            var paddingProperty = configType.GetProperty("ColliderPadding");
+            Vector3 padding = (Vector3)paddingProperty.GetValue(config);
+
+            // Wait for BoundsControl to update to new handle prefab/rebuild rig
+            yield return null;
+            yield return new WaitForFixedUpdate();
+
+            // Iterate over all handle transforms
+            foreach(Transform handle in boundsControl.transform.Find("rigRoot"))
+            {   
+                // Is this the handle type we're currently looking for?
+                if(handle.name.StartsWith(testData.handleName))
+                {
+                    BoxCollider handleCollider = handle.GetComponent<BoxCollider>();
+
+                    Vector3[] colliderPoints = new Vector3[8];
+                    Vector3[] globalColliderPoints = new Vector3[8];
+
+                    // Strip the padding off the collider bounds, so that these bounds will match up
+                    // correctly with the visual bounds, if the alignment was properly done.
+                    VisualUtils.GetCornerPositionsFromBounds(new Bounds(handleCollider.center, handleCollider.size - padding), ref colliderPoints);
+
+                    // Perform a local-global transformation on all corners of the local collider bounds.
+                    for(int i = 0; i < colliderPoints.Length; ++i)
+                    {
+                        globalColliderPoints[i] = handle.TransformPoint(colliderPoints[i]);
+                    }
+
+                    Transform visual = handle.GetChild(0);
+                    Bounds handleBounds = VisualUtils.GetMaxBounds(visual.gameObject);
+
+                    Vector3[] visualPoints = new Vector3[8];
+                    Vector3[] globalVisualPoints = new Vector3[8];
+
+                    VisualUtils.GetCornerPositionsFromBounds(handleBounds, ref visualPoints);
+
+                    // Perform a local-global transformation on all corners of the local visual handle bounds.
+                    for(int i = 0; i < visualPoints.Length; ++i)
+                    {
+                        globalVisualPoints[i] = visual.TransformPoint(visualPoints[i]);
+                    }
+
+                    // Make sure all corners/vertices of the bounds are coherent after realignment, in global space
+                    bool flag = true;
+                    for(int i = 0; i < globalColliderPoints.Length; ++i)
+                    {
+                        if(globalColliderPoints[i] != globalVisualPoints[i])
+                        {
+                            flag = false;
+                            Debug.LogError($"Bounds mismatch, collider point: {globalColliderPoints[i].ToString("F3")}, visual point: {globalVisualPoints[i].ToString("F3")}");
+                        }
+                    }
+
+                    Assert.IsTrue(flag, "Handle collider does not match visual bounds, likely incorrect realignment of handle/visual transforms");
+                }
+            }
 
             yield return null;
         }

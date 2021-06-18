@@ -5,27 +5,29 @@ schedules:
 - cron: 0 8 * * 1  # every Monday at 8:00 UTC
   displayName: Weekly build
   branches:
-    include: 
-    - mrtk_development
+    include:
+    - main
 
 variables:
 - template: config/settings.yml
 - name: 'SOMWorkspaceID'
   value: '9aee72fc-a4e1-4f86-8343-8bcb69b03955'
 - name: 'ComplianceBranch'
-  value: 'refs/heads/mrtk_development'
+  value: 'refs/heads/main'
 
 jobs:
 - job: Compliance
   timeoutInMinutes: 90
   pool:
-    name: Analog N-1
+    name: Analog On-Prem
     demands:
     - ${{ variables.Unity2018VersionInternal }}
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
+  workspace:
+    clean: resources
   steps:
-  # the following tasks should only be run on mrtk_development branch, otherwise we risk issue being reported multiple times on topic/release branches
+  # the following tasks should only be run on main branch, otherwise we risk issue being reported multiple times on topic/release branches
   - task: PoliCheck@1
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], variables['ComplianceBranch']))
     inputs:

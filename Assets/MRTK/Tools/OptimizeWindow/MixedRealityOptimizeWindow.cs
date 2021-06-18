@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private PerformanceTarget PerfTarget = PerformanceTarget.AR_Headsets;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Optimize Window", false, 0)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Optimize Window", false, 0)]
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.
@@ -146,12 +146,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.HelpBox(PerformanceTargetDescriptions[(int)PerfTarget], MessageType.Info);
             EditorGUILayout.Space();
 
-            if (!XRSettingsUtilities.LegacyXREnabled)
+            if (!Utilities.Editor.XRSettingsUtilities.LegacyXREnabled && Utilities.Editor.XRSettingsUtilities.LegacyXRAvailable)
             {
                 EditorGUILayout.HelpBox("Virtual reality support is not enabled in player settings", MessageType.Error);
                 if (GUILayout.Button("Enable Virtual Reality Support"))
                 {
-                    XRSettingsUtilities.LegacyXREnabled = true;
+                    Utilities.Editor.XRSettingsUtilities.LegacyXREnabled = true;
                 }
             }
             else

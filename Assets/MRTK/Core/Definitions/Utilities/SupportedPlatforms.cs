@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// The supported platforms for Mixed Reality Toolkit Components and Features.
+    /// The supported platforms for Mixed Reality Toolkit components and features.
     /// </summary>
     [Flags]
     public enum SupportedPlatforms
@@ -22,5 +22,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         IOS = 1 << 8,
         Web = 1 << 9,
         Lumin = 1 << 10
+    }
+
+    /// <summary>
+    /// The supported Unity XR pipelines for Mixed Reality Toolkit components and features.
+    /// </summary>
+    [Flags]
+    public enum SupportedUnityXRPipelines
+    {
+#if UNITY_2020_1_OR_NEWER
+        [Obsolete("The legacy XR pipeline has been removed in Unity 2020 or newer. Please migrate to XR SDK.")]
+#endif // UNITY_2020_1_OR_NEWER
+        LegacyXR = 1 << 0,
+        XRSDK = 1 << 1,
     }
 }

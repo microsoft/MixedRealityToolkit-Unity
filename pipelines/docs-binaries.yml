@@ -30,7 +30,6 @@ jobs:
 
   - task: PublishPipelineArtifact@1
     displayName: Publish docs binaries
-    condition: always()
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
       artifactName: DocsBinariesForUnity2020
@@ -59,17 +58,18 @@ jobs:
 
   - task: PublishPipelineArtifact@1
     displayName: Publish docs binaries
-    condition: always()
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
       artifactName: DocsBinariesForUnity2019
 
 - job: BuildUnity2018
   pool:
-    name: Analog N-1
+    name: Analog On-Prem
     demands:
     - ${{ variables.Unity2018VersionInternal }}
     - COG-UnityCache-WUS2-01
+  workspace:
+    clean: resources
 
   steps:
   - checkout: self

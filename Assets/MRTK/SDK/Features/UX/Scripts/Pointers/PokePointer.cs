@@ -31,12 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const int maximumTouchableVolumeSize = 1000;
 
         [SerializeField]
-        protected LineRenderer line;
-
-        [SerializeField]
-        protected GameObject visuals;
-
-        [SerializeField]
         [Tooltip("Maximum distance a which a touchable surface can be interacted with.")]
         protected float touchableDistance = 0.2f;
         /// <summary>
@@ -96,6 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float closestDistance = 0.0f;
 
         private Vector3 closestNormal = Vector3.forward;
+
+        private Vector3 endPoint;
+
         // previous frame pointer position
         public Vector3 PreviousPosition { get; private set; } = Vector3.zero;
 
@@ -130,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public bool IsNearObject
+        public virtual bool IsNearObject
         {
             get => closestProximityTouchable != null;
         }
@@ -173,9 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Vector3 start = Position + lengthOfPointerRay * closestNormal;
                     Vector3 end = Position - lengthOfPointerRay * closestNormal;
                     Rays[0].UpdateRayStep(ref start, ref end);
-
-                    line.SetPosition(0, Position);
-                    line.SetPosition(1, end);
                 }
 
                 // Check if the currently touched object is still part of the new touchable.
@@ -190,8 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Set new touchable only now: If we have to raise a poke-up event for the previous touchable object,
                 // we need to do so using the previous touchable in TryRaisePokeUp().
                 closestProximityTouchable = newClosestTouchable;
-
-                visuals.SetActive(IsActive);
             }
         }
 
@@ -300,19 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             TryRaisePokeDown();
                         }
                     }
-                }
-
-                if (!IsNearObject)
-                {
-                    line.endColor = line.startColor = new Color(1, 1, 1, 0.25f);
-                }
-                else if (currentTouchableObjectDown == null)
-                {
-                    line.endColor = line.startColor = new Color(1, 1, 1, 0.75f);
-                }
-                else
-                {
-                    line.endColor = line.startColor = new Color(0, 0, 1, 0.75f);
                 }
 
                 PreviousPosition = Position;
@@ -492,9 +471,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnEnable();
 
             IsTargetPositionLockedOnFocusLock = false;
+        }
 
-            Debug.Assert(line != null, "No line renderer found in PokePointer.");
-            Debug.Assert(visuals != null, "No visuals object found in PokePointer.");
+        private void OnDrawGizmos()
+        {
+            if (!IsNearObject)
+            {
+                return;
+            }
+            else
+            {
+                Gizmos.color = Color.green;
+            }
+
+            if (closestProximityTouchable != null)
+            {
+                Gizmos.DrawLine(transform.position, closestProximityTouchable.transform.position);
+            }
         }
     }
 }

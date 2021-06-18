@@ -34,6 +34,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             DeployOptions
         }
 
+#if UNITY_2021_2_OR_NEWER
+        /// <summary>
+        /// Matches the deprecated WSASubtarget.
+        /// </summary>
+        private enum UWPSubtarget
+        {
+            AnyDevice = 0,
+            PC = 1,
+            Mobile = 2,
+            HoloLens = 3
+        }
+#endif // UNITY_2021_2_OR_NEWER
+
         #endregion Internal Types
 
         #region Constants and Readonly Values
@@ -76,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string BuildWindowTabKey = "_BuildWindow_Tab";
 
         private const string WINDOWS_10_KITS_PATH_REGISTRY_PATH = @"SOFTWARE\Microsoft\Windows Kits\Installed Roots";
+
+        private const string WINDOWS_10_KITS_PATH_ALTERNATE_REGISTRY_PATH = @"SOFTWARE\WOW6432Node\Microsoft\Windows Kits\Installed Roots";
 
         private const string WINDOWS_10_KITS_PATH_REGISTRY_KEY = "KitsRoot10";
 
@@ -164,7 +179,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             get
             {
                 bool canInstall = true;
-                if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                if (
+#if UNITY_2021_2_OR_NEWER
+                    currentSubtarget == UWPSubtarget.HoloLens
+#else
+                    EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
+#endif // UNITY_2021_2_OR_NEWER
+                    )
                 {
                     canInstall = DevicePortalConnectionEnabled;
                 }
@@ -269,11 +290,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static DeviceInfo lastTestConnectionTarget;
         private static DateTime? lastTestConnectionTime = null;
 
+#if UNITY_2021_2_OR_NEWER
+        private static UWPSubtarget currentSubtarget = UWPSubtarget.AnyDevice;
+#endif // UNITY_2021_2_OR_NEWER
+
         #endregion Fields
 
         #region Methods
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Build Window", false, 0)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Build Window", false, 0)]
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.
@@ -378,7 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderUnityBuildView()
         {
+#if UNITY_2021_2_OR_NEWER
+            currentSubtarget = (UWPSubtarget)EditorGUILayout.Popup("Target Device", (int)currentSubtarget, TARGET_DEVICE_OPTIONS, GUILayout.Width(HALF_WIDTH));
+#else
             EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup("Target Device", (int)EditorUserBuildSettings.wsaSubtarget, TARGET_DEVICE_OPTIONS, GUILayout.Width(HALF_WIDTH));
+#endif // UNITY_2021_2_OR_NEWER
 
 #if !UNITY_2019_1_OR_NEWER
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
@@ -1419,11 +1448,24 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Try to detect the installation path by checking the registry.
             try
             {
-                var registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
+                var registryKey = Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
                 var registryValue = registryKey.GetValue(WINDOWS_10_KITS_PATH_REGISTRY_KEY) as string;
                 win10KitsPath = Path.Combine(registryValue, WINDOWS_10_KITS_PATH_POSTFIX);
+
+                if (!Directory.Exists(win10KitsPath))
+                {
+                    registryKey = Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_ALTERNATE_REGISTRY_PATH);
+                    registryValue = registryKey.GetValue(WINDOWS_10_KITS_PATH_REGISTRY_KEY) as string;
+                    win10KitsPath = Path.Combine(registryValue, WINDOWS_10_KITS_PATH_POSTFIX);
+
+                    if (!Directory.Exists(win10KitsPath))
+                    {
+                        Debug.LogWarning($"Could not find the Windows 10 SDK installation path via registry. Reverting to default path.");
+                        win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+                    }
+                }
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Debug.LogWarning($"Could not find the Windows 10 SDK installation path via registry. Reverting to default path. {e}");
                 win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// is a transparent device or an occluded device.
     /// Based on those values, you can customize your camera and quality settings.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
     [MixedRealityServiceProfile(typeof(IMixedRealityCameraSystem))]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#camera")]
     public class MixedRealityCameraProfile : BaseMixedRealityProfile

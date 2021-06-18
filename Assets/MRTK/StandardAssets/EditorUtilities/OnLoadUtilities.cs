@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Checks for updated shaders and bypasses the ignore update check.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Check for Shader Updates")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Check for Shader Updates")]
         private static void CheckForShaderUpdates()
         {
             EnsureShaders(true);

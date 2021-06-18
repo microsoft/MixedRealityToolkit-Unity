@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using UnityEngine;
 using UnityEngine.XR;
 
 #if OCULUS_ENABLED
@@ -27,7 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         "XR SDK Oculus Device Manager",
         "Oculus/XRSDK/Profiles/DefaultOculusXRSDKDeviceManagerProfile.asset",
         "MixedRealityToolkit.Providers",
-        requiresProfile: true)]
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
     public class OculusXRSDKDeviceManager : XRSDKDeviceManager
     {
         /// <summary>
@@ -48,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         {
             base.Initialize();
             UnityEngine.Debug.Log(@"Detected a potential deployment issue for the Oculus Quest. In order to use hand tracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
-The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
+The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
         }
 #endif
 
@@ -153,37 +155,43 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
         #endregion Controller Utilities
 
-        private bool? isActiveLoader = null;
-        private bool IsActiveLoader
-        {
-            get
-            {
+        private bool? IsActiveLoader =>
 #if OCULUS_ENABLED
-                if (!isActiveLoader.HasValue)
-                {
-                    isActiveLoader = IsLoaderActive<OculusLoader>();
-                }
+            LoaderHelpers.IsLoaderActive<OculusLoader>();
+#else
+            false;
 #endif // OCULUS_ENABLED
-
-                return isActiveLoader ?? false;
-            }
-        }
 
         /// <inheritdoc/>
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
 
-            base.Enable();
-
 #if OCULUSINTEGRATION_PRESENT
             SetupInput();
             ConfigurePerformancePreferences();
 #endif // OCULUSINTEGRATION_PRESENT
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
 #if OCULUSINTEGRATION_PRESENT

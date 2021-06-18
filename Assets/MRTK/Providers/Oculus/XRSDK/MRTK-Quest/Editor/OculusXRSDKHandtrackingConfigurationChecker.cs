@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
     /// <remarks>
     /// <para>Note that the checks that this class runs are fairly expensive and are only done manually by the user
     /// as part of their setup steps described here:
-    /// https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/oculus-quest-mrtk </para>
+    /// https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/supported-devices/oculus-quest-mrtk </para>
     /// </remarks>
     public static class OculusXRSDKHandtrackingConfigurationChecker
     {
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         /// <summary>
         /// Integrate MRTK and the Oculus Integration Unity Modules if the Oculus Integration Unity Modules is in the project. If it is not in the project, display a pop up window.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
         internal static void IntegrateOculusWithMRTK()
         {
             // Check if Oculus Integration package is present
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         /// <summary>
         /// Separate MRTK and the Oculus Integration Unity Modules and display a prompt for the user to close unity and delete the assets.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Separate Oculus Integration Unity Modules")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Oculus/Separate Oculus Integration Unity Modules")]
         internal static void SeparateOculusFromMRTK()
         {
             bool oculusIntegrationPresent = DetectOculusIntegrationAsset();
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         /// <summary>
         /// Initialize the Oculus Project Config with the appropriate settings to enable handtracking and keyboard support.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Oculus/Initialize Oculus Project Config")]
         internal static void InitializeOculusProjectConfig()
         {
 #if OCULUSINTEGRATION_PRESENT
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
 #endif
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config", true)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Oculus/Initialize Oculus Project Config", true)]
         private static bool CheckScriptingDefinePresent()
         {
 #if OCULUSINTEGRATION_PRESENT

@@ -470,10 +470,10 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
-            if (ActiveProfile.IsBoundarySystemEnabled)
+            if (ActiveProfile.IsBoundarySystemEnabled && ActiveProfile.ExperienceSettingsProfile != null)
             {
                 DebugUtilities.LogVerbose("Begin registration of the boundary system");
-                object[] args = { ActiveProfile.BoundaryVisualizationProfile, ActiveProfile.TargetExperienceScale };
+                object[] args = { ActiveProfile.BoundaryVisualizationProfile, ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale };
                 if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, args: args) || CoreServices.BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");

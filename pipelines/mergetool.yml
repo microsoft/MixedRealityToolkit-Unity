@@ -2,11 +2,11 @@
 
 schedules:
 # Cron schedules use UTC time. This is 2pm UTC on every weekday.
-# Uncomment the following lines when mergetool is needed again.
-# - cron: 0 14 * * 1,2,3,4,5
-#   branches:
-#     include:
-#     - mrtk_development
+- cron: 0 14 * * 1,2,3,4,5
+  branches:
+    include:
+    - main
+  always: true
 
 pr: none
 trigger: none
@@ -14,10 +14,10 @@ trigger: none
 parameters:
 - name: sourceBranch
   type: string
-  default: prerelease/2.6.0_stabilization
+  default: prerelease/2.7.0_stabilization
 - name: destinationBranch
   type: string
-  default: mrtk_development
+  default: main
 
 pool:
   vmImage: 'windows-latest'

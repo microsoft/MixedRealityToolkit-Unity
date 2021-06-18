@@ -13,7 +13,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using NUnit.Framework;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -22,22 +21,9 @@ using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class BoundingBoxTests
+    public class BoundingBoxTests : BasePlayModeTests
     {
         #region Utilities
-        [UnitySetUp]
-        public IEnumerator SetUp()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
 
         private readonly Vector3 boundingBoxStartCenter = Vector3.forward * 1.5f;
         private readonly Vector3 boundingBoxStartScale = Vector3.one * 0.5f;

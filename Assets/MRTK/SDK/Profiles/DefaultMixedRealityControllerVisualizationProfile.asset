@@ -33,18 +33,7 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    handedness: 1
-    usePlatformModels: 1
-    platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 0}
-    controllerVisualizationType:
-      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
-        Microsoft.MixedReality.Toolkit.SDK
-  - description: Windows Mixed Reality Controller
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    handedness: 2
+    handedness: 3
     usePlatformModels: 1
     platformModelMaterial: {fileID: 0}
     overrideModel: {fileID: 0}
@@ -55,18 +44,7 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.HPMotionController,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    handedness: 1
-    usePlatformModels: 1
-    platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 0}
-    controllerVisualizationType:
-      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
-        Microsoft.MixedReality.Toolkit.SDK
-  - description: HP Motion Controller
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.HPMotionController,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    handedness: 2
+    handedness: 3
     usePlatformModels: 1
     platformModelMaterial: {fileID: 0}
     overrideModel: {fileID: 0}
@@ -77,21 +55,76 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    handedness: 1
+    handedness: 3
     usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
     overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
       type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
-  - description: Windows Mixed Reality Articulated Hand
+  - description: Windows Mixed Reality XRSDK Motion Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand,
-        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
-    handedness: 2
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 3
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: HP Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.HPMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 3
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: Windows Mixed Reality XRSDK Articulated Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 3
     usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 1788309537287834, guid: 132c9402d5843aa4f94380840186fd41,
+    overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
       type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
+  - description: Microsoft Articulated Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.MicrosoftArticulatedHand,
+        Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    handedness: 3
+    usePlatformModels: 0
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
+  - description: Microsoft Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.MicrosoftMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    handedness: 3
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: HP Reverb G2 Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.HPReverbG2Controller,
+        Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    handedness: 3
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK

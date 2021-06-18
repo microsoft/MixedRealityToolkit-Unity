@@ -14,14 +14,13 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that pointer events are being raised correctly
-    public class PointerEventsTests
+    public class PointerEventsTests : BasePlayModeTests
     {
 
         // Helper script used to keep track of the number of pointer events raised
@@ -127,10 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const int numFramesPerMove = 1;
 
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
-        [UnitySetUp]
-        public IEnumerator SetUp()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
 
             // Target frame rate is set to 50 to match the physics
@@ -147,13 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(collider);
 
             handler = collider.gameObject.AddComponent<PointerHandler>();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
             yield return null;
         }
 

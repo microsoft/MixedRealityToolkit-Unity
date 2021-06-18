@@ -556,12 +556,26 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 return false;
             }
 
-            MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
 
-            descriptionsArray = new string[actions.Length];
-            for (int i = 0; i < actions.Length; i++)
+            if (inputSystemProfile != null && inputSystemProfile.SpeechCommandsProfile != null)
             {
-                descriptionsArray[i] = actions[i].Description;
+                MixedRealityInputAction[] actions = inputSystemProfile.InputActionsProfile.InputActions;
+
+                descriptionsArray = new string[actions.Length];
+                for (int i = 0; i < actions.Length; i++)
+                {
+                    descriptionsArray[i] = actions[i].Description;
+                }
+            }
+            else
+            {
+                descriptionsArray = null;
+            }
+
+            if (descriptionsArray == null || descriptionsArray.Length < 1)
+            {
+                return false;
             }
 
             return true;

@@ -17,11 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         SupportedPlatforms.WindowsUniversal,
         "XR SDK Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
-        "MixedRealityToolkit.SDK")]
+        "MixedRealityToolkit.SDK",
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class WindowsMixedRealitySpatialMeshObserver :
-        GenericXRSDKSpatialMeshObserver,
-        IMixedRealityCapabilityCheck
+        GenericXRSDKSpatialMeshObserver
     {
         /// <summary>
         /// Constructor.
@@ -36,6 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
+
+        protected override bool? IsActiveLoader =>
+#if WMR_ENABLED
+            LoaderHelpers.IsLoaderActive("Windows MR Loader");
+#else
+            false;
+#endif // WMR_ENABLED
 
         private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.ConfigureObserverVolume");
 

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Input;
 
 #if UNITY_WSA
 using Unity.Profiling;
@@ -17,8 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
-    public class WindowsMixedRealityController : BaseWindowsMixedRealitySource
+        "Textures/MotionController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
+    public class WindowsMixedRealityController : BaseWindowsMixedRealitySource, IMixedRealityHapticFeedback
     {
         /// <summary>
         /// Constructor.
@@ -238,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
             if (GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
@@ -258,42 +260,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             UnityEngine.GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
 
-            if (controllerModel != null)
+            if (this != null)
             {
-                if (this != null)
+                if (controllerModel != null
+                    && MixedRealityControllerModelHelpers.TryAddVisualizationScript(controllerModel, GetType(), ControllerHandedness)
+                    && TryAddControllerModelToSceneHierarchy(controllerModel))
                 {
-                    var visualizationProfile = GetControllerVisualizationProfile();
-                    if (visualizationProfile != null)
-                    {
-                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
-                        if (visualizationType != null)
-                        {
-                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
-                            // and re-enabled when the same controller is re-detected.
-                            if (controllerModel.EnsureComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
-                            {
-                                visualizer.DestroyOnSourceLost = false;
-                            }
-
-                            if (TryAddControllerModelToSceneHierarchy(controllerModel))
-                            {
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            UnityEngine.Debug.LogError("Controller visualization type not defined for controller visualization profile");
-                        }
-                    }
-                    else
-                    {
-                        UnityEngine.Debug.LogError("Failed to obtain a controller visualization profile");
-                    }
-
-                    UnityEngine.Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
-                    base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+                    controllerModel.SetActive(true);
+                    return;
                 }
 
+                UnityEngine.Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+            }
+
+            if (controllerModel != null)
+            {
                 // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
                 controllerModel.SetActive(false);
             }
@@ -302,5 +284,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #endregion Controller model functions
 #endif // UNITY_WSA
+
+        #region Haptic feedback functions
+
+        public bool StartHapticImpulse(float intensity, float durationInSeconds = float.MaxValue) =>
+#if UNITY_WSA
+            LastSourceStateReading.source.StartHaptics(intensity, durationInSeconds);
+#else
+            false;
+#endif // UNITY_WSA
+
+        public void StopHapticFeedback()
+        {
+#if UNITY_WSA
+            LastSourceStateReading.source.StopHaptics();
+#endif // UNITY_WSA
+        }
+
+        #endregion Haptic feedback functions
     }
 }

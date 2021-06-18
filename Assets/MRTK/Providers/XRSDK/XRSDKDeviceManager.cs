@@ -21,7 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.LinuxStandalone | SupportedPlatforms.WindowsUniversal,
-        "XR SDK Device Manager")]
+        "XR SDK Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class XRSDKDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -62,15 +63,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         /// <param name="loaderName">The string name to compare against the active loader.</param>
         /// <returns>True if the active loader has the same name as the parameter.</returns>
-        protected virtual bool IsLoaderActive(string loaderName) => XRGeneralSettings.Instance != null && XRGeneralSettings.Instance.Manager != null &&
-            XRGeneralSettings.Instance.Manager.activeLoader != null && XRGeneralSettings.Instance.Manager.activeLoader.name == loaderName;
+        [Obsolete("Use XRSDKLoaderHelpers instead.")]
+        protected virtual bool IsLoaderActive(string loaderName) => LoaderHelpers.IsLoaderActive(loaderName) ?? false;
 
         /// <summary>
         /// Checks if the active loader is of a specific type. Used in cases where the loader class is accessible, like OculusLoader.
         /// </summary>
         /// <typeparam name="T">The loader class type to check against the active loader.</typeparam>
         /// <returns>True if the active loader is of the specified type.</returns>
-        protected virtual bool IsLoaderActive<T>() where T : XRLoader => XRGeneralSettings.Instance != null && XRGeneralSettings.Instance.Manager != null && XRGeneralSettings.Instance.Manager.activeLoader is T;
+        [Obsolete("Use XRSDKLoaderHelpers instead.")]
+        protected virtual bool IsLoaderActive<T>() where T : XRLoader => LoaderHelpers.IsLoaderActive<T>() ?? false;
 #endif // XR_MANAGEMENT_ENABLED
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");

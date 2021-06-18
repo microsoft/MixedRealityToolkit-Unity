@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     /// <summary>
     /// Scriptable object that wraps the <see cref="ElasticProperties"/> struct, allowing for easily reusable spring configs.
     /// </summary>
-    [CreateAssetMenu(fileName = "ElasticConfiguration", menuName = "Mixed Reality Toolkit/Experimental/Elastic/Elastic Configuration")]
+    [CreateAssetMenu(fileName = "ElasticConfiguration", menuName = "Mixed Reality/Toolkit/Experimental/Elastic/Elastic Configuration")]
     public class ElasticConfiguration : ScriptableObject
     {
         [SerializeField]

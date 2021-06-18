@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string StandardRoughnessShaderName = "Standard (Roughness setup)";
         private const string StandardSpecularShaderName = "Standard (Specular setup)";
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Texture Combiner")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Texture Combiner")]
         private static void ShowWindow()
         {
             TextureCombinerWindow window = GetWindow<TextureCombinerWindow>();

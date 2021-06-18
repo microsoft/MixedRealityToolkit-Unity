@@ -22,24 +22,14 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class ObjectManipulatorTests
+    public class ObjectManipulatorTests : BasePlayModeTests
     {
         private readonly List<Action> cleanupAction = new List<Action>();
 
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
             cleanupAction.ForEach(f => f?.Invoke());
-
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.TearDown();
         }
 
         /// <summary>
@@ -179,10 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a
-        /// certain distance when being released from grab during hand movement
+        /// certain distance when being released from grab during hand movement. Specifically for near interactions, 
+        /// where we expect the thrown object to match the controllers velocities.
         /// </summary>
         [UnityTest]
-        public IEnumerator ObjectManipulatorThrow()
+        public IEnumerator ObjectManipulatorNearThrow()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -232,6 +223,59 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+
+        /// <summary>
+        /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a
+        /// certain distance when being released from grab during hand movement. Specifically for far interactions, 
+        /// where we expect the thrown object to maintain it's velocities after being thrown
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ObjectManipulatorFarThrow()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(-0.637f, -0.679f, 1.13f);
+            testObject.transform.position = initialObjectPosition;
+
+            var rigidBody = testObject.AddComponent<Rigidbody>();
+            rigidBody.useGravity = false;
+
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // grab the cube - move it to the right
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
+            Vector3 handOffset = new Vector3(0, 0, 0.1f);
+            Vector3 initialHandPosition = Vector3.zero;
+            Vector3 rightPosition = new Vector3(1f, 0f, 1f);
+
+            yield return hand.Show(initialHandPosition);
+
+            // Note: don't wait for a physics update after releasing, because it would recompute
+            // the velocity of the hand and make it deviate from the rigid body velocity!
+            yield return hand.GrabAndThrowAt(rightPosition, false);
+
+            // With simulated hand angular velocity would not be equal to 0, because of how simulation
+            // moves hand when releasing the Pitch. Even though it doesn't directly follow from hand movement, there will always be some rotation.
+            Assert.Zero(rigidBody.angularVelocity.magnitude, "Object should have maintained its angular velocity of zero being released.");
+            Assert.IsTrue(rigidBody.velocity != hand.GetVelocity() && rigidBody.velocity.magnitude > 0.0f, "ObjectManipulator should not dampen it's velocity to match the hand's upon release.");
+
+            // This is just for debugging purposes, so object's movement after release can be seen.
+            yield return hand.MoveTo(initialHandPosition);
+            yield return hand.Hide();
+
+            GameObject.Destroy(testObject);
+            yield return null;
+        }
 
         /// <summary>
         /// This tests the one hand near movement while camera (character) is moving around.
@@ -430,7 +474,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.Hide();
 
             }
+        }
 
+        /// <summary>
+        /// This tests that the cursor doesn't become focus locked when the Object Manipulator component is disabled
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ObjectManipulatorNoFocusOnDisable()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
+
+            // Disable the manipulation handler
+            manipHandler.enabled = false;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Hand pointing at middle of cube
+            Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
+            TestHand hand = new TestHand(Handedness.Right);
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return hand.Show(initialHandPosition);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Vector3 initialPosition = testObject.transform.position;
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+            yield return hand.Hide();
         }
 
         /// <summary>

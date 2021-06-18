@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private readonly MigrationTool migrationTool = new MigrationTool();
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Migration Window", false, 4)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Migration Window", false, 4)]
         private static void ShowWindow()
         {
             var window = GetWindow<MigrationWindow>(typeof(SceneView));

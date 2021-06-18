@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
     /// <summary>
     /// Tests for runtime behavior of the ElasticSystem.
     /// </summary>
-    public class ElasticSystemTests
+    public class ElasticSystemTests : BasePlayModeTests
     {
         #region Utilities
 
@@ -61,19 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Drag = 0.2f
         };
 
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
-            yield return null;
-        }
         #endregion
 
         /// <summary>

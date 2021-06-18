@@ -60,7 +60,7 @@
 	  // remove this section if you want to restore default behavior which publishes a version of the docs that keeps the "improve this doc" link pointing to the publishing branch
       "_gitContribute": {
         "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity",
-        "branch": "mrtk_development"
+        "branch": "main"
       }
 	  // section contribute end
     },

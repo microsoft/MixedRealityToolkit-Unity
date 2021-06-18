@@ -20,15 +20,14 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
-    class UserInputSimulationTest
+    class UserInputSimulationTest : BasePlayModeTests
     {
         GameObject cube;
         Interactable interactable;
 
-        [UnitySetUp]
-        public IEnumerator SetUp()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
 
             // Explicitly enable user input to test in editor behavior.
             InputSimulationService iss = PlayModeTestUtilities.GetInputSimulationService();
@@ -45,12 +44,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
             KeyInputSystem.StopKeyInputSimulation();
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.TearDown();
         }
 
         [UnityTest]

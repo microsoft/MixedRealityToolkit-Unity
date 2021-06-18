@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// Configuration for <see cref="Links"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create a link of a bounds control
     /// </summary>
-    [CreateAssetMenu(fileName = "LinksConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Links Configuration")]
+    [CreateAssetMenu(fileName = "LinksConfiguration", menuName = "Mixed Reality/Toolkit/Bounds Control/Links Configuration")]
     public class LinksConfiguration : ScriptableObject
     {
         #region Serialized Properties

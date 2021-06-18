@@ -87,13 +87,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// If MRTK is not initialized in scene, adds and initializes instance to current scene
         /// </summary>
-        public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null)
+        public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null, bool inPlayMode = false)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
                 MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
                 MixedRealityToolkit.SetActiveInstance(newInstance);
                 Selection.activeObject = newInstance;
+
+                MixedRealityToolkit.ConfirmInitialized();
 
                 if (configProfile == null)
                 {
@@ -104,7 +106,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     newInstance.ActiveProfile = configProfile;
                 }
-                EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+
+                if(!newInstance.ActiveProfile.ExperienceSettingsProfile.IsNull())
+                {
+                    // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
+                    MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
+                }
+
+                if (!inPlayMode)
+                {
+                    EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+                }
             }
         }
 

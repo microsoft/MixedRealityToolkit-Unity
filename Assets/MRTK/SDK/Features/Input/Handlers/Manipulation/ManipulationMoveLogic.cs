@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             }
             else
             {
-                return pointerCentroidPose.Position + (pointerCentroidPose.Rotation * pointerLocalGrabPoint + grabToObject) * distanceRatio;
+                return pointerCentroidPose.Position + grabToObject + (pointerCentroidPose.Rotation * pointerLocalGrabPoint) * distanceRatio;
             }
         }
 

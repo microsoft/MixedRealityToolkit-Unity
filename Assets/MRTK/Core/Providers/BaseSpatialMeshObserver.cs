@@ -32,13 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         protected MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
 
-        private GameObject observedObjectParent = null;
-
-        /// <summary>
-        /// The parent GameObject for all observed meshes to be placed under.
-        /// </summary>
-        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent(Name));
-
         protected virtual void ReadProfile()
         {
             if (ConfigurationProfile == null)
@@ -63,12 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
             // IMixedRealitySpatialAwarenessMeshObserver settings
             DisplayOption = profile.DisplayOption;
+            TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter; // Set this before LevelOfDetail so it doesn't overwrite in the non-Custom case
             LevelOfDetail = profile.LevelOfDetail;
             MeshPhysicsLayer = profile.MeshPhysicsLayer;
             OcclusionMaterial = profile.OcclusionMaterial;
             PhysicsMaterial = profile.PhysicsMaterial;
             RecalculateNormals = profile.RecalculateNormals;
-            TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
             VisibleMaterial = profile.VisibleMaterial;
 
             RuntimeSpatialMeshPrefab = profile.RuntimeSpatialMeshPrefab;
@@ -224,7 +217,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             set
             {
                 displayOption = value;
-                ApplyUpdatedMeshDisplayOption(displayOption);
+                if (Application.isPlaying)
+                {
+                    ApplyUpdatedMeshDisplayOption(displayOption);
+                }
             }
         }
 
@@ -293,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 {
                     occlusionMaterial = value;
 
-                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion)
+                    if (Application.isPlaying && DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion)
                     {
                         ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Occlusion);
                     }
@@ -328,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 {
                     visibleMaterial = value;
 
-                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
+                    if (Application.isPlaying && DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
                     {
                         ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
                     }

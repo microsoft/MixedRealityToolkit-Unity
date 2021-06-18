@@ -31,20 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// You can use GridObjectLayoutControl.cs in the examples package to
     /// quickly generate the expected positions used in these tests.
     /// </summary>
-    internal class GridObjectCollectionTests
+    internal class GridObjectCollectionTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 
