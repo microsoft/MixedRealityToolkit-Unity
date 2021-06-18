@@ -524,7 +524,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             yield return rightHand.MoveTo(Vector3.Lerp(slider.SliderStartPosition, slider.SliderEndPosition, toSliderValue));
-            //Buffer time for the hand to move to finish moving
+            // Buffer time for the hand to move to finish moving
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return rightHand.Hide();
