@@ -380,14 +380,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
 #if SCENE_UNDERSTANDING_PRESENT && UNITY_WSA
 
-        #region Other Property
-        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
-        #endregion Other Property
-
         #region Private Fields
         private Task task;
         private readonly Dictionary<int, SpatialAwarenessSceneObject> sceneObjects = new Dictionary<int, SpatialAwarenessSceneObject>(256);
-        private GameObject observedObjectParent = null;
         private System.Timers.Timer firstUpdateTimer = null;
         private System.Timers.Timer updateTimer = null;
         private Dictionary<int, Tuple<SceneQuad, SceneObject>> cachedSceneQuads = new Dictionary<int, Tuple<SceneQuad, SceneObject>>(256);
