@@ -4718,6 +4718,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: PinchSliderLunarModule (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 738180810467455902, guid: 405b34842e32594499069ff558f96b82,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 738180810467455902, guid: 405b34842e32594499069ff558f96b82,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 738180810467455902, guid: 405b34842e32594499069ff558f96b82,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 7335529122474826368, guid: 405b34842e32594499069ff558f96b82,
         type: 3}
       propertyPath: m_Mesh

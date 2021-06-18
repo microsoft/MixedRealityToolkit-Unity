@@ -539,23 +539,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return snappedValue;
         }
 
-        private void CalculateSliderValueBasedOnPoint(Vector3 touchPoint)
+        private void CalculateSliderValueBasedOnTouchPoint(Vector3 touchPoint)
         {
             var sliderTouchPoint = touchPoint - SliderStartPosition;
             var sliderVector = SliderEndPosition - SliderStartPosition;
+
+            // If our touch point goes off the start side of the slider, set it's value to minVal and return immediately
+            // Explanation of the math here: https://www.quora.com/Can-scalar-projection-be-negative
+            if (Vector3.Dot(sliderTouchPoint, sliderVector) < 0)
+            {
+                SliderValue = minVal;
+                return;
+            }
+
             float sliderProgress = Vector3.Project(sliderTouchPoint, sliderVector).magnitude;
             float result = sliderProgress / sliderVector.magnitude;
-
             float clampedResult = result;
             if (UseSliderStepDivisions)
             {
                 clampedResult = SnapSliderToStepPositions(result);
             }
-            else
-            {
-                // clamp the value between zero and one, and also trim out the SnapValue
-                clampedResult = Mathf.Clamp(result, minVal, maxVal);
-            }
+            clampedResult = Mathf.Clamp(clampedResult, minVal, maxVal);
 
             SliderValue = clampedResult;
         }
@@ -597,7 +601,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (SnapToPosition)
                 {
-                    CalculateSliderValueBasedOnPoint(ActivePointer.Result.Details.Point);
+                    CalculateSliderValueBasedOnTouchPoint(ActivePointer.Result.Details.Point);
                 }
 
                 if (OnInteractionStarted != null)
@@ -675,7 +679,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if(isTouchable)
             {
-                CalculateSliderValueBasedOnPoint(eventData.InputData);
+                CalculateSliderValueBasedOnTouchPoint(eventData.InputData);
             }
         }
 

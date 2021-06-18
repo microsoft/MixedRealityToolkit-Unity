@@ -29,6 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1105586234029917866}
+  - {fileID: 1058917031798402266}
   m_Father: {fileID: 48114245780348088}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -211,7 +212,7 @@ MonoBehaviour:
   thumbRoot: {fileID: 48114245780348095}
   isTouchable: 1
   snapToPosition: 1
-  thumbCollider: {fileID: 738180810467455902}
+  thumbCollider: {fileID: 1505799088109494833}
   touchCollider: {fileID: 6932249223571280874}
   sliderValue: 0.5
   useSliderStepDivisions: 0
@@ -356,26 +357,59 @@ Transform:
   m_Father: {fileID: 48114245917028294}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &738180810467455902
+--- !u!1 &1058917031798370554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1058917031798402266}
+  - component: {fileID: 1505799088109494833}
+  - component: {fileID: 8883421267215890694}
+  - component: {fileID: 5166699017767563660}
+  m_Layer: 0
+  m_Name: ThumbCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1058917031798402266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058917031798370554}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0125}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 48114245007537677}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1505799088109494833
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105586234030152330}
+  m_GameObject: {fileID: 1058917031798370554}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.032, y: 0.032, z: 0.0394858}
-  m_Center: {x: 0, y: 0, z: 0.0048665213}
---- !u!114 &769131978363015430
+  m_Size: {x: 0.05, y: 0.05, z: 0.05}
+  m_Center: {x: 0, y: 0, z: -0.01}
+--- !u!114 &8883421267215890694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105586234030152330}
+  m_GameObject: {fileID: 1058917031798370554}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
@@ -383,13 +417,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
---- !u!114 &6469161925679812320
+--- !u!114 &5166699017767563660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105586234030152330}
+  m_GameObject: {fileID: 1058917031798370554}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
@@ -399,41 +433,9 @@ MonoBehaviour:
   debounceThreshold: 0.01
   localForward: {x: -0, y: -0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 0, z: -0.014876379}
-  bounds: {x: 0.032, y: 0.032}
-  touchableCollider: {fileID: 738180810467455902}
---- !u!114 &7900477286192680146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105586234030152330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputActionId: 0
-  isGlobal: 0
-  Dimensions: 1
-  dimensionIndex: 0
-  startDimensionIndex: 0
-  CanSelect: 1
-  CanDeselect: 1
-  VoiceCommand: 
-  voiceRequiresFocus: 1
-  profiles:
-  - Target: {fileID: 1105586234030152330}
-    Themes:
-    - {fileID: 11400000, guid: ab3c6aa1de7cedb40b747c9e47d76af1, type: 2}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
-  Events: []
-  resetOnDestroy: 0
-  enabledOnStart: 1
+  localCenter: {x: 0, y: 0, z: -0.035}
+  bounds: {x: 0.05, y: 0.05}
+  touchableCollider: {fileID: 1505799088109494833}
 --- !u!1 &1436957251643611489
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,7 +849,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: eeef9bdf2a04b3f4da0b556c9b6ee297, type: 3}
       propertyPath: m_Name
-      value: Slider_Dot_geo
+      value: Slider_Button
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: eeef9bdf2a04b3f4da0b556c9b6ee297, type: 3}
       propertyPath: m_LocalPosition.x
@@ -914,12 +916,6 @@ PrefabInstance:
 --- !u!4 &1105586234029917866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: eeef9bdf2a04b3f4da0b556c9b6ee297,
-    type: 3}
-  m_PrefabInstance: {fileID: 1105586234030054442}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1105586234030152330 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: eeef9bdf2a04b3f4da0b556c9b6ee297,
     type: 3}
   m_PrefabInstance: {fileID: 1105586234030054442}
   m_PrefabAsset: {fileID: 0}
