@@ -65,9 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // This should not throw exception
             AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
 
-            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
-            yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(0.5f, slider.SliderValue, 1.0e-5f, "Slider should have value 0.5 at start");
+            yield return DirectPinchAndMoveSliderToEnd(slider, 1.0f);
+            Assert.AreEqual(1.0f, slider.SliderValue, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
@@ -83,9 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // This should not throw exception
             InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
 
-            Assert.AreEqual(slider.SliderValue, 0.5f, 1.0e-5f, "Slider should have value 0.5 at start");
-            yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Assert.AreEqual(slider.SliderValue, 1.0f, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(0.5f, slider.SliderValue, 1.0e-5f, "Slider should have value 0.5 at start");
+            yield return DirectPinchAndMoveSliderToEnd(slider, 1.0f);
+            Assert.AreEqual(1.0f, slider.SliderValue, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
@@ -416,9 +416,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             slider.ThumbVisuals = null;
 
             // Test that the slider still works
-            Assert.AreEqual(slider.SliderValue, 0.5f, 1.0e-5f, "Slider should have value 0.5 at start");
-            yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Assert.AreEqual(slider.SliderValue, 1.0f, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(0.5f, slider.SliderValue, 1.0e-5f, "Slider should have value 0.5 at start");
+            yield return DirectPinchAndMoveSliderToEnd(slider, 1.0f);
+            Assert.AreEqual(1.0f, slider.SliderValue, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
@@ -510,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #region Private methods
 
-        private IEnumerator DirectPinchAndMoveSlider(PinchSlider slider, float toSliderValue)
+        private IEnumerator DirectPinchAndMoveSliderToEnd(PinchSlider slider, float toSliderValue)
         {
             Debug.Log($"moving hand to value {toSliderValue}");
             var rightHand = new TestHand(Handedness.Right);
@@ -524,6 +524,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             yield return rightHand.MoveTo(Vector3.Lerp(slider.SliderStartPosition, slider.SliderEndPosition, toSliderValue));
+            //Buffer time for the hand to move to finish moving
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return rightHand.Hide();
         }
