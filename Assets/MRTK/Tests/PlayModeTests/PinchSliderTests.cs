@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             AssembleSlider(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
 
             Assert.AreEqual(0.5f, slider.SliderValue, 1.0e-5f, "Slider should have value 0.5 at start");
-            yield return DirectPinchAndMoveSliderToEnd(slider, 1.0f);
+            yield return DirectPinchAndMoveSlider(slider, 1.0f);
             Assert.AreEqual(1.0f, slider.SliderValue, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
@@ -75,16 +75,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator TestLoadPrefabAndNearManip()
+        public IEnumerator TestLoadPrefabAndNearManipNoSnap()
         {
             GameObject pinchSliderObject;
             PinchSlider slider;
 
             // This should not throw exception
             InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+            slider.SnapToPosition = false;
 
             Assert.AreEqual(0.5f, slider.SliderValue, 1.0e-5f, "Slider should have value 0.5 at start");
-            yield return DirectPinchAndMoveSliderToEnd(slider, 1.0f);
+            yield return DirectPinchAndMoveSlider(slider, 1.0f);
             Assert.AreEqual(1.0f, slider.SliderValue, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
@@ -242,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             slider.UseSliderStepDivisions = true;
             slider.SliderStepDivisions = 4;
 
-            // Set slider to snap with touch
+            // Set slider to snap without touch
             slider.SnapToPosition = true;
             slider.IsTouchable = false;
 
@@ -361,9 +362,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Set the slider to use step divisions
             slider.UseSliderStepDivisions = true;
-            slider.SliderStepDivisions = 4;
+            slider.SliderStepDivisions = 100;
 
-            // Set slider to snap with touch
+            // Set slider to not snap with touch
             slider.SnapToPosition = false;
             slider.IsTouchable = true;
 
@@ -374,26 +375,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bool interactionUpdated = false;
             slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
 
-
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+            Vector3 initialPos = new Vector3(0.0f, 0, 1.00f);
 
             yield return rightHand.Show(initialPos);
 
-            yield return rightHand.Move(new Vector3(0.3f, 0, 0));
+            yield return rightHand.Move(new Vector3(0.3f, 0, 0), 60);
             Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
             Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 
-            Assert.AreEqual(0.75f, slider.SliderValue);
-
-            yield return rightHand.Move(new Vector3(-0.6f, 0, 0));
+            yield return rightHand.Move(new Vector3(-0.6f, 0, 0), 60);
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 
             yield return rightHand.Hide();
 
-            Assert.AreEqual(0.25f, slider.SliderValue);
+            Assert.AreEqual(0.20f, slider.SliderValue, 0.005f);
 
             GameObject.Destroy(pinchSliderObject);
         }
@@ -402,13 +400,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that pinch slider visuals can be null
         /// </summary>
         [UnityTest]
-        public IEnumerator TestNullVisuals()
+        public IEnumerator TestNullVisualsNoSnap()
         {
             GameObject pinchSliderObject;
             PinchSlider slider;
 
             // This should not throw exception
             InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+            slider.SnapToPosition = false;
 
             // Remove references to visuals
             slider.TrackVisuals = null;
@@ -417,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Test that the slider still works
             Assert.AreEqual(0.5f, slider.SliderValue, 1.0e-5f, "Slider should have value 0.5 at start");
-            yield return DirectPinchAndMoveSliderToEnd(slider, 1.0f);
+            yield return DirectPinchAndMoveSlider(slider, 1.0f);
             Assert.AreEqual(1.0f, slider.SliderValue, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
@@ -510,7 +509,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #region Private methods
 
-        private IEnumerator DirectPinchAndMoveSliderToEnd(PinchSlider slider, float toSliderValue)
+        private IEnumerator DirectPinchAndMoveSlider(PinchSlider slider, float toSliderValue)
         {
             Debug.Log($"moving hand to value {toSliderValue}");
             var rightHand = new TestHand(Handedness.Right);
@@ -559,16 +558,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Make the thumb root
             var thumbRoot = GameObject.CreatePrimitive(PrimitiveType.Cube);
             thumbRoot.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            thumbRoot.transform.parent = pinchSliderObject.transform;
-
             thumbRoot.AddComponent<NearInteractionGrabbable>();
             thumbRoot.AddComponent<NearInteractionTouchable>();
+            thumbRoot.transform.parent = pinchSliderObject.transform;
+
 
             // Create and initialize the collider
             slider = pinchSliderObject.AddComponent<PinchSlider>();
             slider.ThumbRoot = thumbRoot;
-            slider.TouchCollider = sliderTrack.GetComponent<Collider>();
             slider.ThumbCollider = thumbRoot.GetComponent<Collider>();
+            slider.TouchCollider = sliderTouchable.GetComponent<Collider>();
 
             pinchSliderObject.transform.position = position;
             pinchSliderObject.transform.eulerAngles = rotation;
