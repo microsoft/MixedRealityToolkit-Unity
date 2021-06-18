@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
 using UnityEngine.UI;
 
 #if !UNITY_2019_3_OR_NEWER
@@ -11,38 +10,20 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// A derived class of UGUI's InputField to workaround with some issues of typing on HoloLens 2
+    /// A derived class of UGUI's InputField to workaround with some issues of typing on HoloLens 2 specific to Unity 2018.4
     /// </summary>
+    /// <remarks>
+    /// <para>If using Unity 2019 or 2020, make sure the version >= 2019.4.25 or 2020.3.2 to ensure the latest fixes for Unity keyboard bugs are present.</para>
+    /// </remarks>
     public class MRTKUGUIInputField : InputField
     {
-#if UNITY_2019_3_OR_NEWER
-        [SerializeField]
-        private bool disableUGUIWorkaround = false;
-
-        /// <summary>
-        /// Currently there is a Unity bug that needs a workaround. Please keep this setting to be false until an announcement of the version of Unity/UGUI that resolves the issue is made.
-        /// </summary>
-        public bool DisableUGUIWorkaround
-        {
-            get => disableUGUIWorkaround;
-            set => disableUGUIWorkaround = value;
-        }
-
-        protected override void LateUpdate()
-        {
-            if (!DisableUGUIWorkaround && isFocused && m_Keyboard != null && (UnityEngine.Input.GetKeyDown(KeyCode.Backspace)))
-            {
-                m_Keyboard.text = m_Text;
-            }
-            base.LateUpdate();
-        }
-#else
+#if !UNITY_2019_3_OR_NEWER
         public int SelectionPosition
         {
             get => caretSelectPositionInternal;
             set => caretSelectPositionInternal = value;
         }
         public override void OnUpdateSelected(BaseEventData eventData) { }
-#endif // UNITY_2019_3_OR_NEWER
+#endif // !UNITY_2019_3_OR_NEWER
     }
 }

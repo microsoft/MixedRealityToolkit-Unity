@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit
 #endif
             Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to RegisterHandler doesn't implement a type given as generic parameter.");
 
-            DebugUtilities.LogVerboseFormat("Registering handler {0} against system {1}", handler, this);
+            DebugUtilities.LogVerboseFormat("Registering handler {0} against system {1}", handler.ToString().Trim(), this);
 
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }

@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class HPMotionController : WindowsMixedRealityXRSDKMotionController
     {
 #if HP_CONTROLLER_ENABLED

@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     /// <summary>
     /// Configuration profile settings for setting up boundary visualizations.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityBoundarySystem))]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
     public class MixedRealityBoundaryVisualizationProfile : BaseMixedRealityProfile

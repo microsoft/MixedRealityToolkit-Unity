@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #if UNITY_WSA && DOTNETWINRT_PRESENT
         private readonly Dictionary<uint, bool> cameraIdToSupportsAutoPlanar = new Dictionary<uint, bool>();
 
-        private static readonly bool isDepthReprojectionModeSupported = WindowsApiChecker.IsPropertyAvailable(
+        private static readonly bool IsDepthReprojectionModeSupported = WindowsApiChecker.IsPropertyAvailable(
             "Windows.Graphics.Holographic",
             "HolographicCameraRenderingParameters",
             "DepthReprojectionMethod");
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private void OnPostRender()
         {
             // The reprojection method needs to be set each frame.
-            if (isDepthReprojectionModeSupported &&
+            if (IsDepthReprojectionModeSupported &&
                 (ReprojectionMethod == HolographicDepthReprojectionMethod.AutoPlanar))
             {
                 Microsoft.Windows.Graphics.Holographic.HolographicFrame frame = WindowsMixedRealityUtilities.CurrentHolographicFrame;

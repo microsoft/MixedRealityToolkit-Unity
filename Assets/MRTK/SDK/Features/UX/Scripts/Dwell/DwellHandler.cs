@@ -208,7 +208,18 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
                     break;
                 case DwellStateType.DwellCanceled:
                     // this is a conditional state transition and can be overridden by the deriving class as per profile settings.
-                    if ((Time.time - focusExitTime) > dwellProfile.TimeToAllowDwellResume)
+                    bool dwellCompleted = false;
+                    if(dwellProfile.DecayDwellOverTime)
+                    {
+                        FillTimer -= Time.deltaTime * dwellProfile.TimeToCompleteDwell / dwellProfile.TimeToAllowDwellResume;
+                        dwellCompleted = FillTimer <= 0;
+                    }
+                    else
+                    {
+                        dwellCompleted = (Time.time - focusExitTime) > dwellProfile.TimeToAllowDwellResume;
+                    }
+
+                    if (FillTimer <= 0)
                     {
                         FillTimer = 0;
                         CurrentDwellState = DwellStateType.None;

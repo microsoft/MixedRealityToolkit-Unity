@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public void Migrate(GameObject gameObject)
         {
             var manipHandler = gameObject.GetComponent<ManipulationHandler>();
+            gameObject.AddComponent<ConstraintManager>();
             var objManip = gameObject.AddComponent<ObjectManipulator>();
 
             objManip.enabled = manipHandler.enabled;

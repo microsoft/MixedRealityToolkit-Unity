@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
+        "Textures/MotionController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class WindowsMixedRealityOpenVRMotionController : GenericOpenVRController
     {
         /// <summary>

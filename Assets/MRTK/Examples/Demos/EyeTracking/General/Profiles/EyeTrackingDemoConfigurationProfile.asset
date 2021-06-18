@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: EyeTrackingDemoConfigurationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
+  experienceSettingsProfile: {fileID: 11400000, guid: d67dc8667c2253644891c8627f5f31f1,
+    type: 2}
   targetExperienceScale: 4
   enableCameraSystem: 1
   cameraProfile: {fileID: 11400000, guid: 0447581e7bd59f64fbb28151c65a3dc4, type: 2}
@@ -25,6 +27,8 @@ MonoBehaviour:
     reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem, Microsoft.MixedReality.Toolkit.Services.InputSystem
   enableBoundarySystem: 0
   boundarySystemType:
+    reference: 
+  xrsdkBoundarySystemType:
     reference: 
   boundaryVisualizationProfile: {fileID: 0}
   enableTeleportSystem: 0

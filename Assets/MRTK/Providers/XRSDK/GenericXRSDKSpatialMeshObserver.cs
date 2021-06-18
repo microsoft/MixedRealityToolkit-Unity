@@ -16,10 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
-        (SupportedPlatforms)(-1), // All platforms supported by Unity
+        (SupportedPlatforms)(-1) ^ SupportedPlatforms.WindowsUniversal, // All platforms supported by Unity except UWP
         "XR SDK Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
-        "MixedRealityToolkit.SDK")]
+        "MixedRealityToolkit.SDK",
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class GenericXRSDKSpatialMeshObserver :
         BaseSpatialMeshObserver,
@@ -38,6 +40,35 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
+
+        protected virtual bool? IsActiveLoader => true;
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
+        }
 
         #region BaseSpatialObserver Implementation
 
@@ -117,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             var descriptors = new List<XRMeshSubsystemDescriptor>();
             SubsystemManager.GetSubsystemDescriptors(descriptors);
 
-            return descriptors.Count > 0;
+            return descriptors.Count > 0 && (IsActiveLoader ?? false);
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
@@ -131,6 +162,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             using (UpdatePerfMarker.Auto())
             {
+                if (!IsEnabled)
+                {
+                    return;
+                }
+
                 base.Update();
                 UpdateObserver();
             }
@@ -527,8 +563,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         }
                         meshes.Add(meshObject.Id, meshObject);
 
-                        meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ?
-                            ObservedObjectParent.transform : null;
+                        // This is important. We need to preserve the mesh's local transform here, not its global pose.
+                        // Think of it like this. If we set the camera's coordinates 3 meters to the left, the physical camera
+                        // hasn't moved, only its coordinates have changed. Likewise, the physical room hasn't moved (relative to
+                        // the physical camera), so we also want to set its coordinates 3 meters to the left.
+                        Transform meshObjectParent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
+                        meshObject.GameObject.transform.SetParent(meshObjectParent, false);
 
                         meshEventData.Initialize(this, meshObject.Id, meshObject);
                         if (isMeshUpdate)

@@ -4,12 +4,15 @@ variables:
 - template: config/settings.yml
 
 parameters:
-- name: IsFinal
-  type: boolean
-  default: false
-- name: BuildNumber
+- name: SourcePipeline
   type: string
-  default: 0
+  default: stabilization_ci
+  values:
+    - stabilization_ci
+    - mrtk_ci
+- name: PreviewNumber
+  type: number
+  default: -1
 
 jobs:
 - job: UPMPublicRelease
@@ -17,7 +20,25 @@ jobs:
   pool:
     vmImage: windows-2019
   steps:
+  - task: DownloadPipelineArtifact@2
+    displayName: Download tarballs
+    inputs:
+      source: specific
+      project: $(System.TeamProjectId)
+      ${{ if eq(parameters.SourcePipeline, 'stabilization_ci') }}:
+        pipeline: 32
+      ${{ if eq(parameters.SourcePipeline, 'mrtk_ci') }}:
+        pipeline: 15
+      runVersion: latestFromBranch
+      runBranch: $(Build.SourceBranch)
+      artifactName: mrtk-upm
+      path: $(Agent.TempDirectory)
+
   - template: templates/tasks/pack-upm.yml
     parameters:
-      excludeBuildNumber: ${{ parameters.IsFinal }}
-      buildNumber: ${{ parameters.BuildNumber }}
+      ${{ if ge(parameters.PreviewNumber, 0) }}:
+        previewNumber: ${{ parameters.PreviewNumber }}
+      ${{ if lt(parameters.PreviewNumber, 0) }}:
+        previewNumber: ""
+      projectRoot: $(Agent.TempDirectory)
+      repack: true

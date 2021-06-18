@@ -15,42 +15,42 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// </summary>
     public class ScreenshotUtility
     {
-        [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/Native Resolution")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Take Screenshot/Native Resolution")]
         private static void CaptureScreenshot1x()
         {
             CaptureScreenshot(GetScreenshotPath(), 1);
             EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/Native Resolution (Transparent Background)")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Take Screenshot/Native Resolution (Transparent Background)")]
         private static void CaptureScreenshot1xAlphaComposite()
         {
             CaptureScreenshot(GetScreenshotPath(), 1, true);
             EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/2x Resolution")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Take Screenshot/2x Resolution")]
         private static void CaptureScreenshot2x()
         {
             CaptureScreenshot(GetScreenshotPath(), 2);
             EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/2x Resolution (Transparent Background)")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Take Screenshot/2x Resolution (Transparent Background)")]
         private static void CaptureScreenshot2xAlphaComposite()
         {
             CaptureScreenshot(GetScreenshotPath(), 2, true);
             EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/4x Resolution")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Take Screenshot/4x Resolution")]
         private static void CaptureScreenshot4x()
         {
             CaptureScreenshot(GetScreenshotPath(), 4);
             EditorUtility.RevealInFinder(GetScreenshotDirectory());
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Take Screenshot/4x Resolution (Transparent Background)")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Take Screenshot/4x Resolution (Transparent Background)")]
         private static void CaptureScreenshot4xAlphaComposite()
         {
             CaptureScreenshot(GetScreenshotPath(), 4, true);

@@ -850,6 +850,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             TargetBounds.EnsureComponent<NearInteractionGrabbable>();
         }
 
+        private readonly List<Transform> childTransforms = new List<Transform>();
+
         private Bounds GetTargetBounds()
         {
             TotalBoundsCorners.Clear();
@@ -859,7 +861,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             // Since those have the gizmo structure childed, be need to omit them completely in the calculation of the bounds
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
-            List<Transform> childTransforms = new List<Transform>();
+            childTransforms.Clear();
             if (Target != gameObject)
             {
                 childTransforms.Add(Target.transform);
@@ -900,8 +902,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void ExtractBoundsCorners(Transform childTransform, BoundsCalculationMethod boundsCalculationMethod)
         {
-            KeyValuePair<Transform, Collider> colliderByTransform;
-            KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
+            KeyValuePair<Transform, Collider> colliderByTransform = default;
+            KeyValuePair<Transform, Bounds> rendererBoundsByTransform = default;
 
             if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
             {

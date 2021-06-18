@@ -27,7 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnitySetUp]
         public IEnumerator Init()
         {
-            TestUtilities.InitializeMixedRealityToolkit(true);
+            var profile = AssetDatabase.LoadAssetAtPath(profilePath, typeof(MixedRealityToolkitConfigurationProfile)) as MixedRealityToolkitConfigurationProfile;
+            TestUtilities.InitializeMixedRealityToolkit(profile);
 
             yield return null;
         }
@@ -54,13 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static IEnumerator TestRecording(string recordingProfilePath)
         {
-            var profile = AssetDatabase.LoadAssetAtPath(profilePath, typeof(MixedRealityToolkitConfigurationProfile)) as MixedRealityToolkitConfigurationProfile;
-
-            MixedRealityToolkit.Instance.ActiveProfile = profile;
-
-            yield return null;
-            yield return null;
-
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
             var recordingService = CoreServices.GetInputSystemDataProvider<InputRecordingService>();
             var recordingProfile = AssetDatabase.LoadAssetAtPath(recordingProfilePath, typeof(MixedRealityInputRecordingProfile)) as MixedRealityInputRecordingProfile;

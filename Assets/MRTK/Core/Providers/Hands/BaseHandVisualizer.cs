@@ -93,15 +93,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnHandJointsUpdatedPerfMarker.Auto())
             {
-                var inputSystem = CoreServices.InputSystem;
-
                 if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
                 {
                     return;
                 }
                 Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
 
-                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
+                IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
                 if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
                 {
                     // clear existing joint GameObjects / meshes
@@ -125,22 +124,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     else
                     {
                         GameObject prefab;
-                        if (handJoint == TrackedHandJoint.None)
+                        if (handJoint == TrackedHandJoint.None || handTrackingProfile == null)
                         {
                             // No visible mesh for the "None" joint
                             prefab = null;
                         }
                         else if (handJoint == TrackedHandJoint.Palm)
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
+                            prefab = handTrackingProfile.PalmJointPrefab;
                         }
                         else if (handJoint == TrackedHandJoint.IndexTip)
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.FingerTipPrefab;
+                            prefab = handTrackingProfile.FingerTipPrefab;
                         }
                         else
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.JointPrefab;
+                            prefab = handTrackingProfile.JointPrefab;
                         }
 
                         GameObject jointObject;

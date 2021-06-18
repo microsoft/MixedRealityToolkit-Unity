@@ -1,6 +1,7 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
     "references": [
+        "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",

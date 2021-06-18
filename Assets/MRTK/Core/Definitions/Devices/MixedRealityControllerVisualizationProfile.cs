@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Profile that determines relevant overrides and properties for controller visualization
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityControllerVisualizer))]
     public class MixedRealityControllerVisualizationProfile : BaseMixedRealityProfile
     {
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SystemType GetControllerVisualizationTypeOverride(Type controllerType, Handedness hand)
         {
             MixedRealityControllerVisualizationSetting? setting = GetControllerVisualizationDefinition(controllerType, hand);
-            return setting.HasValue ? setting.Value.ControllerVisualizationType : null;
+            return setting.HasValue ? setting.Value.ControllerVisualizationType : DefaultControllerVisualizationType;
         }
 
         /// <summary>

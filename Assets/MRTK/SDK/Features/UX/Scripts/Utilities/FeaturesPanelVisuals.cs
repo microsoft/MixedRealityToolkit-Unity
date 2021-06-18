@@ -21,8 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private Interactable handJointsButton = null;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             profilerButton.IsToggled = (CoreServices.DiagnosticsSystem?.ShowProfiler).GetValueOrDefault(false);
             handRayButton.IsToggled = PointerUtils.GetPointerBehavior<ShellHandRayPointer>(Handedness.Any, InputSourceType.Hand) != PointerBehavior.AlwaysOff;
@@ -32,8 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 handProfile = CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile;
             }
-            handMeshButton.IsToggled = (handProfile != null) ? handProfile.EnableHandMeshVisualization : false;
-            handJointsButton.IsToggled = (handProfile != null) ? handProfile.EnableHandJointVisualization : false;
+            handMeshButton.IsToggled = handProfile != null && handProfile.EnableHandMeshVisualization;
+            handJointsButton.IsToggled = handProfile != null && handProfile.EnableHandJointVisualization;
         }
     }
 }

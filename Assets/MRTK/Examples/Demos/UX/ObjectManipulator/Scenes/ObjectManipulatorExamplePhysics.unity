@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 3944563}
   - component: {fileID: 3944562}
   - component: {fileID: 3944567}
+  - component: {fileID: 3944568}
   m_Layer: 0
   m_Name: Sphere (5)
   m_TagString: Untagged
@@ -168,13 +169,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 3944568}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -280,6 +284,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &3944568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3944560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &59998746
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,6 +313,7 @@ GameObject:
   - component: {fileID: 59998747}
   - component: {fileID: 59998752}
   - component: {fileID: 59998753}
+  - component: {fileID: 59998754}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -410,13 +429,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 59998754}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -448,6 +470,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &59998754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59998746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &75363373
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,8 +621,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 111179791}
+  - component: {fileID: 111179792}
   m_Layer: 0
-  m_Name: SceneContent
+  m_Name: MixedRealitySceneContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -611,6 +648,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &111179792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111179790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65c9dd2f312b8d41b8849d58e1053fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alignmentType: 0
+  containerObject: {fileID: 0}
 --- !u!1 &208981708
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,6 +939,7 @@ GameObject:
   - component: {fileID: 755072495}
   - component: {fileID: 755072494}
   - component: {fileID: 755072499}
+  - component: {fileID: 755072500}
   m_Layer: 0
   m_Name: Sphere (3)
   m_TagString: Untagged
@@ -929,13 +981,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 755072500}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -1041,6 +1096,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &755072500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755072492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &785928335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,6 +1442,7 @@ GameObject:
   - component: {fileID: 1033272173}
   - component: {fileID: 1033272172}
   - component: {fileID: 1033272177}
+  - component: {fileID: 1033272178}
   m_Layer: 0
   m_Name: Cube (6)
   m_TagString: Untagged
@@ -1414,13 +1484,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1033272178}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -1526,6 +1599,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1033272178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033272170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1043240014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,6 +1938,7 @@ GameObject:
   - component: {fileID: 1251687534}
   - component: {fileID: 1251687533}
   - component: {fileID: 1251687538}
+  - component: {fileID: 1251687539}
   m_Layer: 0
   m_Name: Sphere (6)
   m_TagString: Untagged
@@ -1892,13 +1980,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1251687539}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -2004,6 +2095,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1251687539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251687531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1335521960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,6 +2124,7 @@ GameObject:
   - component: {fileID: 1335521963}
   - component: {fileID: 1335521962}
   - component: {fileID: 1335521967}
+  - component: {fileID: 1335521968}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -2060,13 +2166,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1335521968}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -2172,6 +2281,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1335521968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335521960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1378923475
 GameObject:
   m_ObjectHideFlags: 0
@@ -2859,6 +2982,7 @@ GameObject:
   - component: {fileID: 1473336971}
   - component: {fileID: 1473336970}
   - component: {fileID: 1473336975}
+  - component: {fileID: 1473336976}
   m_Layer: 0
   m_Name: Sphere (4)
   m_TagString: Untagged
@@ -2900,13 +3024,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1473336976}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -3012,6 +3139,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1473336976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473336968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1492668536
 GameObject:
   m_ObjectHideFlags: 0
@@ -3027,6 +3168,7 @@ GameObject:
   - component: {fileID: 1492668539}
   - component: {fileID: 1492668538}
   - component: {fileID: 1492668543}
+  - component: {fileID: 1492668544}
   m_Layer: 0
   m_Name: Cube (5)
   m_TagString: Untagged
@@ -3068,13 +3210,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1492668544}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -3180,6 +3325,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1492668544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492668536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1508203478
 GameObject:
   m_ObjectHideFlags: 0
@@ -3287,6 +3446,7 @@ GameObject:
   - component: {fileID: 1511681761}
   - component: {fileID: 1511681760}
   - component: {fileID: 1511681765}
+  - component: {fileID: 1511681766}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -3328,13 +3488,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1511681766}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -3440,6 +3603,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1511681766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511681758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1516961174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3546,6 +3723,7 @@ GameObject:
   - component: {fileID: 1525793928}
   - component: {fileID: 1525793927}
   - component: {fileID: 1525793932}
+  - component: {fileID: 1525793933}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -3587,13 +3765,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1525793933}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -3699,6 +3880,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1525793933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525793925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1584890664
 GameObject:
   m_ObjectHideFlags: 0
@@ -4220,6 +4415,7 @@ GameObject:
   - component: {fileID: 1711666426}
   - component: {fileID: 1711666425}
   - component: {fileID: 1711666430}
+  - component: {fileID: 1711666431}
   m_Layer: 0
   m_Name: Sphere (2)
   m_TagString: Untagged
@@ -4261,13 +4457,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1711666431}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -4373,6 +4572,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1711666431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711666423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1757275548
 GameObject:
   m_ObjectHideFlags: 0
@@ -4419,6 +4632,7 @@ GameObject:
   - component: {fileID: 1769597375}
   - component: {fileID: 1769597374}
   - component: {fileID: 1769597379}
+  - component: {fileID: 1769597380}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -4460,13 +4674,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1769597380}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -4572,6 +4789,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1769597380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769597372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1789707284
 GameObject:
   m_ObjectHideFlags: 0
@@ -4587,6 +4818,7 @@ GameObject:
   - component: {fileID: 1789707287}
   - component: {fileID: 1789707286}
   - component: {fileID: 1789707291}
+  - component: {fileID: 1789707292}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Untagged
@@ -4628,13 +4860,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 1789707292}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -4740,6 +4975,20 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &1789707292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789707284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &1806829674
 GameObject:
   m_ObjectHideFlags: 0
@@ -4937,6 +5186,7 @@ GameObject:
   - component: {fileID: 2012762263}
   - component: {fileID: 2012762262}
   - component: {fileID: 2012762267}
+  - component: {fileID: 2012762268}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
@@ -4978,13 +5228,16 @@ MonoBehaviour:
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: -1
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 2012762268}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -5090,3 +5343,17 @@ MonoBehaviour:
   rightBounds: {fileID: 1378923476}
   bottomBounds: {fileID: 75363374}
   topBounds: {fileID: 1516961175}
+--- !u!114 &2012762268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012762260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []

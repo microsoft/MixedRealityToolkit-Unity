@@ -73,10 +73,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="showCloneButton">If true, draw the clone button, if false, don't</param>
         /// <param name="renderProfileInBox">if true, render box around profile content, if false, don't</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
+        /// <param name="profileRequiredOverride">Optional parameter to used to specify that a profile must be selected</param>
         /// <returns>True, if the profile changed.</returns>
-        protected static bool RenderProfile(SerializedProperty property, Type profileType, bool showCloneButton = true, bool renderProfileInBox = false, Type serviceType = null)
+        protected static bool RenderProfile(SerializedProperty property, Type profileType, bool showCloneButton = true, bool renderProfileInBox = false, Type serviceType = null, bool profileRequiredOverride = false)
         {
-            return RenderProfileInternal(property, profileType, showCloneButton, renderProfileInBox, serviceType);
+            return RenderProfileInternal(property, profileType, showCloneButton, renderProfileInBox, serviceType, profileRequiredOverride);
         }
 
         /// <summary>
@@ -86,9 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="showCloneButton">If true, draw the clone button, if false, don't</param>
         /// <param name="renderProfileInBox">if true, render box around profile content, if false, don't</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
+        /// <param name="profileRequiredOverride">Optional parameter to used to specify that a profile must be selected</param>
         /// <returns>True, if the profile changed.</returns>
         private static bool RenderProfileInternal(SerializedProperty property, Type profileType,
-            bool showCloneButton, bool renderProfileInBox, Type serviceType = null)
+            bool showCloneButton, bool renderProfileInBox, Type serviceType = null, bool profileRequiredOverride = false)
         {
             var profile = property.serializedObject.targetObject as BaseMixedRealityProfile;
             bool changed = false;
@@ -112,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             Type[] profileTypes = new Type[] { };
 
-            bool requiresProfile = IsProfileRequired(serviceType) ;
+            bool requiresProfile = IsProfileRequired(serviceType) || profileRequiredOverride;
             if (profileType == null)
             {
                 // Find the profile type so we can limit the available object field options

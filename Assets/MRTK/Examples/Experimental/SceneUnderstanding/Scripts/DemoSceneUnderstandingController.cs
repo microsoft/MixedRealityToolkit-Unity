@@ -72,7 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
             if (observer == null)
             {
-                Debug.LogError("Couldn't access Scene Understanding Observer!");
+                Debug.LogError("Couldn't access Scene Understanding Observer! Please make sure the current build target is set to Universal Windows Platform. "
+                    + "Visit https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/scene-understanding for more information.");
                 return;
             }
             InitToggleButtonState();
@@ -143,8 +144,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
             UpdateData(eventData.Id);
-
-            observedSceneObjects[eventData.SpatialObject.SurfaceType][eventData.Id] = eventData.SpatialObject;
+            
+            if (observedSceneObjects.TryGetValue(eventData.SpatialObject.SurfaceType, out Dictionary<int, SpatialAwarenessSceneObject> sceneObjectDict))
+            {
+                observedSceneObjects[eventData.SpatialObject.SurfaceType][eventData.Id] = eventData.SpatialObject;
+            }
+            else
+            {
+                observedSceneObjects.Add(eventData.SpatialObject.SurfaceType, new Dictionary<int, SpatialAwarenessSceneObject> { { eventData.Id, eventData.SpatialObject } });
+            }
         }
 
         /// <inheritdoc />
@@ -152,7 +160,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         {
             RemoveFromData(eventData.Id);
 
-            observedSceneObjects[eventData.SpatialObject.SurfaceType].Remove(eventData.Id);
+            foreach (var sceneObjectDict in observedSceneObjects.Values)
+            {
+                sceneObjectDict?.Remove(eventData.Id);
+            }
         }
 
         #endregion IMixedRealitySpatialAwarenessObservationHandler Implementations

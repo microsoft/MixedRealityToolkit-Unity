@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// Configuration for <see cref="ScaleHandles"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create scale handles for <see cref="BoundsControl"/>
     /// </summary>
-    [CreateAssetMenu(fileName = "ScaleHandlesConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Scale Handles Configuration")]
+    [CreateAssetMenu(fileName = "ScaleHandlesConfiguration", menuName = "Mixed Reality/Toolkit/Bounds Control/Scale Handles Configuration")]
     public class ScaleHandlesConfiguration : HandlesBaseConfiguration
     {
         #region serialized fields

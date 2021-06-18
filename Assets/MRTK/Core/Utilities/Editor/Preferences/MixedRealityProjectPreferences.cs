@@ -67,6 +67,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Ignore startup settings prompt
 
+        #region Configurator state
+
+        private const string CONFIG_KEY = "_MixedRealityToolkit_Editor_ConfiguratorState";
+        private static bool configuratorStateLoaded;
+        private static int configuratorSate;
+
+        /// <summary>
+        /// Should the project configurator show when the project isn't configured according to MRTK's recommendations?
+        /// </summary>
+        internal static ConfigurationStage ConfiguratorState
+        {
+            get
+            {
+                if (!configuratorStateLoaded)
+                {
+                    configuratorSate = ProjectPreferences.Get(CONFIG_KEY, 0);
+                    configuratorStateLoaded = true;
+                }
+
+                return (ConfigurationStage)configuratorSate;
+            }
+            set => ProjectPreferences.Set(CONFIG_KEY, configuratorSate = (int)value);
+        }
+
+        #endregion Configurator state
+
         #region Auto-Enable UWP Capabilities
 
         private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-enable UWP capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
@@ -122,6 +148,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Run optimal configuration analysis on Play
 
+        #region Display null data providers
+
+        private static readonly GUIContent NullDataProviderContent = new GUIContent("Show null data providers in the profile inspector", "Mainly used for debugging unexpected behavior. Will render null data providers in red in the inspector.");
+        private const string NULL_DATA_PROVIDER_KEY = "MixedRealityToolkit_Editor_NullDataProviders";
+        private static bool nullDataProviderPrefLoaded;
+        private static bool nullDataProvider;
+
+        /// <summary>
+        /// Whether to show null data providers in the profile UI.
+        /// </summary>
+        /// <remarks>Mainly used for debugging unexpected behavior. Data providers may be null due to a namespace change or while using an incompatible Unity version.</remarks>
+        public static bool ShowNullDataProviders
+        {
+            get
+            {
+                if (!nullDataProviderPrefLoaded)
+                {
+                    nullDataProvider = ProjectPreferences.Get(NULL_DATA_PROVIDER_KEY, false);
+                    nullDataProviderPrefLoaded = true;
+                }
+
+                return nullDataProvider;
+            }
+            set => ProjectPreferences.Set(NULL_DATA_PROVIDER_KEY, nullDataProvider = value);
+        }
+
+        #endregion Display null data providers
+
         #region Project configuration cache
 
         // This section contains data that gets cached for future reference to help detect configuration
@@ -172,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.HelpBox("These settings are serialized into ProjectPreferences.asset in the MixedRealityToolkit-Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
 
                 var prevLabelWidth = EditorGUIUtility.labelWidth;
-                EditorGUIUtility.labelWidth = 250f;
+                EditorGUIUtility.labelWidth = 300f;
 
                 bool lockProfilesResult = EditorGUILayout.Toggle(LockContent, LockProfiles);
                 if (lockProfilesResult != LockProfiles)
@@ -203,13 +257,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorAssemblyReloadManager.LockReloadAssemblies = scriptLock;
                 }
 
-                EditorGUI.BeginChangeCheck();
-                runOptimalConfig = EditorGUILayout.Toggle(RunOptimalConfigContent, RunOptimalConfiguration);
-
-                // Save the preference
-                if (EditorGUI.EndChangeCheck())
+                bool optimalConfig = EditorGUILayout.Toggle(RunOptimalConfigContent, RunOptimalConfiguration);
+                if (RunOptimalConfiguration != optimalConfig)
                 {
-                    RunOptimalConfiguration = runOptimalConfig;
+                    RunOptimalConfiguration = optimalConfig;
+                }
+
+                bool nullProviders = EditorGUILayout.Toggle(NullDataProviderContent, ShowNullDataProviders);
+                if (ShowNullDataProviders != nullProviders)
+                {
+                    ShowNullDataProviders = nullProviders;
                 }
 
                 EditorGUIUtility.labelWidth = prevLabelWidth;

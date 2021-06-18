@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -15,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsStandalone,
         "XR SDK Windows Mixed Reality Camera Settings",
         "WindowsMixedReality/Shared/Profiles/DefaultWindowsMixedRealityCameraSettingsProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "MixedRealityToolkit.Providers",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityCameraSettings : BaseWindowsMixedRealityCameraSettings
     {
         /// <summary>
@@ -31,6 +33,40 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             uint priority = DefaultPriority,
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
+
+        private bool? IsActiveLoader =>
+#if WMR_ENABLED
+            LoaderHelpers.IsLoaderActive("Windows MR Loader");
+#else
+            false;
+#endif // WMR_ENABLED
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
+            {
+                IsEnabled = false;
+                return;
+            }
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
+        }
 
         #region IMixedRealityCameraSettings
 

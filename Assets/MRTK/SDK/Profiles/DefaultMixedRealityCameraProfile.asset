@@ -21,6 +21,27 @@ MonoBehaviour:
     priority: 0
     runtimePlatform: 8
     settingsProfile: {fileID: 11400000, guid: b8be5b71c8e0a254c83b691d62a79ff5, type: 2}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    componentName: XR SDK Windows Mixed Reality Camera Settings
+    priority: 0
+    runtimePlatform: 9
+    settingsProfile: {fileID: 11400000, guid: b8be5b71c8e0a254c83b691d62a79ff5, type: 2}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK
+    componentName: XR SDK Camera Settings
+    priority: 0
+    runtimePlatform: -1
+    settingsProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    componentName: OpenXR Camera Settings
+    priority: 0
+    runtimePlatform: -1
+    settingsProfile: {fileID: 11400000, guid: 32349edfa9bacb94a9fe58923e9a2400, type: 2}
   nearClipPlaneOpaqueDisplay: 0.1
   farClipPlaneOpaqueDisplay: 1000
   cameraClearFlagsOpaqueDisplay: 1

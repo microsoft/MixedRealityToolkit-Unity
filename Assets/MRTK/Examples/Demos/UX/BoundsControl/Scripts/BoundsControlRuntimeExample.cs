@@ -68,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 boundsControl = cube.AddComponent<BoundsControl>();
                 boundsControl.HideElementsInInspector = false;
                 boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+                var cm = cube.AddComponent<ConstraintManager>();
                 var om = cube.AddComponent<ObjectManipulator>();
                 yield return WaitForSpeechCommand();
 
@@ -200,6 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
                 boundsControl.HideElementsInInspector = false;
                 boundsControl.LinksConfig.WireframeEdgeRadius = .05f;
+                multiRoot.AddComponent<ConstraintManager>();
                 multiRoot.AddComponent<ObjectManipulator>();
 
                 SetStatus("Randomize Child Scale for skewing");

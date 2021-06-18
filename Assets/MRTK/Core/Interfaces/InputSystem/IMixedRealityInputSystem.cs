@@ -132,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other);
 
+        BaseGlobalInputSource RequestNewGlobalInputSource(string name, IMixedRealityFocusProvider focusProvider = null, InputSourceType sourceType = InputSourceType.Other);
+
         /// <summary>
         /// Raise the event that the Input Source was detected.
         /// </summary>

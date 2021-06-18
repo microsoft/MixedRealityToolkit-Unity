@@ -44,7 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class OculusHand : BaseHand
     {
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;

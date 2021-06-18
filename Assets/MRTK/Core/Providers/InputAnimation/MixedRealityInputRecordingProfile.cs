@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Settings for recording input animation assets.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input Recording Profile", fileName = "MixedRealityInputRecordingProfile", order = (int)CreateProfileMenuItemIndices.Input)]
+    [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Input Recording Profile", fileName = "MixedRealityInputRecordingProfile", order = (int)CreateProfileMenuItemIndices.Input)]
     [MixedRealityServiceProfile(typeof(IMixedRealityInputRecordingService))]
     public class MixedRealityInputRecordingProfile : BaseMixedRealityProfile
     {

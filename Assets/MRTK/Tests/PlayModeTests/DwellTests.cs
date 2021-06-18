@@ -157,6 +157,158 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.DwellCompleted, "Unexpected dwell state!");
         }
 
+        /// <summary>
+        /// Test to verify that dwell was canceled with decay
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDwellDecayCanceled()
+        {
+            // Initialize
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with DwellHandler. At the position below the cube is not in focus.
+            LogAssert.Expect(LogType.Assert, "DwellProfile is null, creating default profile.");
+            GameObject dwellTarget = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            dwellTarget.transform.position = new Vector3(2, 0, 2);
+            DwellHandler dwellHandler = dwellTarget.AddComponent<DwellHandler>();
+
+            // Configure the handle and set up listeners for events
+            dwellHandler.DwellProfile.DwellPointerType = Toolkit.Input.InputSourceType.Head;
+            dwellHandler.DwellProfile.DwellIntentDelay = 1f;
+            dwellHandler.DwellProfile.TimeToAllowDwellResume = 1.0f;
+            dwellHandler.DwellProfile.TimeToCompleteDwell = dwellHandler.DwellProfile.TimeToAllowDwellResume + 1.0f;
+            dwellHandler.DwellProfile.DecayDwellOverTime = true;
+            bool dwellIntended = false;
+            dwellHandler.DwellIntended.AddListener((_) => { dwellIntended = true; });
+            bool dwellStarted = false;
+            dwellHandler.DwellStarted.AddListener((_) => { dwellStarted = true; });
+            bool dwellCanceled = false;
+            dwellHandler.DwellCanceled.AddListener((_) => { dwellCanceled = true; });
+
+            // Confirm initial states
+            Assert.IsFalse(dwellIntended, "dwellIntended triggered too early!");
+            Assert.IsFalse(dwellStarted, "dwellStarted triggered too early!");
+            Assert.IsFalse(dwellCanceled, "dwellCanceled triggered too early!");
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.None, "Unexpected dwell state!");
+            yield return null;
+
+            // Move the cube to a position to make it in focus and verify the state
+            dwellTarget.transform.position = new Vector3(0, 0, 2);
+            yield return null;
+            yield return null;
+            yield return null;
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.FocusGained, "Unexpected dwell state!");
+
+            // Verify we are in the dwell intended state
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.DwellIntentDelay + allowedDelay);
+            Assert.IsTrue(dwellIntended, "dwellIntended triggered too late!");
+            Assert.IsFalse(dwellStarted, "dwellStarted triggered too early!");
+            Assert.IsFalse(dwellCanceled, "dwellCompleted triggered too early!");
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.DwellIntended, "Unexpected dwell state!");
+
+            // Verify we are in the dwell started state
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.DwellStartDelay + allowedDelay);
+            Assert.IsTrue(dwellIntended, "dwellIntended triggered too late!");
+            Assert.IsTrue(dwellStarted, "dwellStarted triggered too late!");
+            Assert.IsFalse(dwellCanceled, "dwellCompleted triggered too early!");
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.DwellStarted, "Unexpected dwell state!");
+
+            // Let the dwell timer increase a bit
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume + allowedDelay);
+
+            // Move the cube out of the way
+            dwellTarget.transform.position = new Vector3(0, 0, -2);
+
+            // check that the dwell progress decreased
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume * 0.25f + allowedDelay);
+            float currentProgress = dwellHandler.DwellProgress;
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume * 0.25f + allowedDelay);
+            Debug.Log(currentProgress);
+
+            Assert.IsTrue(dwellHandler.DwellProgress < currentProgress, "Dwell progress didn't decay!");
+
+            // verify that the dwell progress is cancelled
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume * 0.5f + allowedDelay);
+            Assert.IsTrue(dwellIntended, "dwellIntended triggered too late!");
+            Assert.IsTrue(dwellStarted, "dwellStarted triggered too late!");
+            Assert.IsTrue(dwellCanceled, "dwellCanceled triggered too early!");
+        }
+
+        /// <summary>
+        /// Test to verify that dwell was canceled without any decay
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDwellCanceled()
+        {
+            // Initialize
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with DwellHandler. At the position below the cube is not in focus.
+            LogAssert.Expect(LogType.Assert, "DwellProfile is null, creating default profile.");
+            GameObject dwellTarget = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            dwellTarget.transform.position = new Vector3(2, 0, 2);
+            DwellHandler dwellHandler = dwellTarget.AddComponent<DwellHandler>();
+
+            // Configure the handle and set up listeners for events
+            dwellHandler.DwellProfile.DwellPointerType = Toolkit.Input.InputSourceType.Head;
+            dwellHandler.DwellProfile.DwellIntentDelay = 1f;
+            dwellHandler.DwellProfile.TimeToAllowDwellResume = 1.0f;
+            dwellHandler.DwellProfile.TimeToCompleteDwell = dwellHandler.DwellProfile.TimeToAllowDwellResume + 1.0f;
+            dwellHandler.DwellProfile.DecayDwellOverTime = false;
+            bool dwellIntended = false;
+            dwellHandler.DwellIntended.AddListener((_) => { dwellIntended = true; });
+            bool dwellStarted = false;
+            dwellHandler.DwellStarted.AddListener((_) => { dwellStarted = true; });
+            bool dwellCanceled = false;
+            dwellHandler.DwellCanceled.AddListener((_) => { dwellCanceled = true; });
+
+            // Confirm initial states
+            Assert.IsFalse(dwellIntended, "dwellIntended triggered too early!");
+            Assert.IsFalse(dwellStarted, "dwellStarted triggered too early!");
+            Assert.IsFalse(dwellCanceled, "dwellCanceled triggered too early!");
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.None, "Unexpected dwell state!");
+            yield return null;
+
+            // Move the cube to a position to make it in focus and verify the state
+            dwellTarget.transform.position = new Vector3(0, 0, 2);
+            yield return null;
+            yield return null;
+            yield return null;
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.FocusGained, "Unexpected dwell state!");
+
+            // Verify we are in the dwell intended state
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.DwellIntentDelay + allowedDelay);
+            Assert.IsTrue(dwellIntended, "dwellIntended triggered too late!");
+            Assert.IsFalse(dwellStarted, "dwellStarted triggered too early!");
+            Assert.IsFalse(dwellCanceled, "dwellCompleted triggered too early!");
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.DwellIntended, "Unexpected dwell state!");
+
+            // Verify we are in the dwell started state
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.DwellStartDelay + allowedDelay);
+            Assert.IsTrue(dwellIntended, "dwellIntended triggered too late!");
+            Assert.IsTrue(dwellStarted, "dwellStarted triggered too late!");
+            Assert.IsFalse(dwellCanceled, "dwellCompleted triggered too early!");
+            Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.DwellStarted, "Unexpected dwell state!");
+
+            // Let the dwell timer increase a bit
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume + allowedDelay);
+
+            // Move the cube out of the way
+            dwellTarget.transform.position = new Vector3(0, 0, -2);
+
+            // check that the dwell progress stayed the same
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume * 0.25f + allowedDelay);
+            float currentProgress = dwellHandler.DwellProgress;
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume * 0.25f + allowedDelay);
+            Assert.IsTrue(dwellHandler.DwellProgress == currentProgress, "Dwell progress decayed!");
+
+            // verify that the dwell progress is cancelled
+            yield return new WaitForSeconds(dwellHandler.DwellProfile.TimeToAllowDwellResume * 0.5f + allowedDelay);
+            Assert.IsTrue(dwellIntended, "dwellIntended triggered too late!");
+            Assert.IsTrue(dwellStarted, "dwellStarted triggered too late!");
+            Assert.IsTrue(dwellCanceled, "dwellCanceled triggered too early!");
+        }
+
         #endregion // Test cases
     }
 }

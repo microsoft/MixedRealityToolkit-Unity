@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// An asset for storing textures, sprites and character icons for use with MRTK buttons. Used by ButtonConfigHelper script.
     /// </summary>
-    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality Toolkit/IconSet")]
+    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality/Toolkit/IconSet")]
     public class ButtonIconSet : ScriptableObject
     {
         // Struct used to pair a font icon with a searchable name.
@@ -244,6 +244,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
+            if (currentSelection >= 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField("Current Icon Name", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(charIcons[currentSelection].Name);
+
+                EditorGUILayout.EndHorizontal();
+            }
+
             using (new EditorGUI.IndentLevelScope(indentLevel))
             {
                 int column = 0;
@@ -315,6 +325,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
+            if (currentSelection >= 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField("Current Icon Name", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(spriteIcons[currentSelection].name);
+
+                EditorGUILayout.EndHorizontal();
+            }
+
             if (spriteIconTextures == null || spriteIconTextures.Length != spriteIcons.Length)
             {
                 UpdateSpriteIconTextures();
@@ -384,6 +404,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     currentSelection = i;
                     break;
                 }
+            }
+
+            if(currentSelection >= 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField("Current Icon Name", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(quadIcons[currentSelection].name);
+
+                EditorGUILayout.EndHorizontal();
             }
 
             using (new EditorGUI.IndentLevelScope(indentLevel))

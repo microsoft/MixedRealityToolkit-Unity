@@ -43,6 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             maxQuerySceneResults = profile.FocusQueryBufferSize;
             focusIndividualCompoundCollider = profile.FocusIndividualCompoundCollider;
+            inputSystemProfile = profile;
+            shouldUseGraphicsRaycast = inputSystemProfile == null || inputSystemProfile.ShouldUseGraphicsRaycast;
         }
 
         private readonly Dictionary<uint, PointerData> pointers = new Dictionary<uint, PointerData>();
@@ -52,8 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private readonly PointerHitResult hitResult3d = new PointerHitResult();
         private readonly PointerHitResult hitResultUi = new PointerHitResult();
+        private readonly MixedRealityInputSystemProfile inputSystemProfile;
 
         private readonly int maxQuerySceneResults = 128;
+        private readonly bool shouldUseGraphicsRaycast = true;
         private bool focusIndividualCompoundCollider = false;
 
         public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators => pointerMediators;
@@ -98,11 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-
-                if (profile != null && profile.PointerProfile != null)
+                if (inputSystemProfile != null && inputSystemProfile.PointerProfile != null)
                 {
-                    return profile.PointerProfile.PointingExtent;
+                    return inputSystemProfile.PointerProfile.PointingExtent;
                 }
 
                 return 10f;
@@ -118,11 +120,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (focusLayerMasks == null)
                 {
-                    MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-
-                    if (profile != null && profile.PointerProfile != null)
+                    if (inputSystemProfile != null && inputSystemProfile.PointerProfile != null)
                     {
-                        return focusLayerMasks = profile.PointerProfile.PointingRaycastLayerMasks;
+                        return focusLayerMasks = inputSystemProfile.PointerProfile.PointingRaycastLayerMasks;
                     }
 
                     return focusLayerMasks = new LayerMask[] { UnityPhysics.DefaultRaycastLayers };
@@ -153,15 +153,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return false;
                 }
 
-                MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-
-                if (profile == null)
+                if (inputSystemProfile == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System Profile is required for this feature.");
                     return false;
                 }
 
-                if (profile.PointerProfile == null)
+                if (inputSystemProfile.PointerProfile == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Pointer Profile is required for this feature.");
                     return false;
@@ -557,7 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdatePerfMarker.Auto())
             {
-                if (!IsSetupValid) { return; }
+                if (!IsInitialized) { return; }
 
                 base.Update();
 
@@ -591,9 +589,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                             hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                        // get ui hit
-                        hitResultUi.Clear();
-                        RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                        if (shouldUseGraphicsRaycast)
+                        {
+                            // get ui hit
+                            hitResultUi.Clear();
+                            RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                        }
 
                         // set gaze hit according to distance and prioritization layer mask
                         gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
@@ -834,7 +835,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RegisterPointer(inputSource.Pointers[i]);
 
                     // Special Registration for Gaze
-                    if (!CoreServices.InputSystem.GazeProvider.IsNull() && inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                    if (!CoreServices.InputSystem.GazeProvider.IsNull()
+                        && inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId
+                        && gazeProviderPointingData == null)
                     {
                         gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                     }
@@ -950,8 +953,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdatePointersPerfMarker.Auto())
             {
-                MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-                if (profile == null) { return; }
+                if (inputSystemProfile == null) { return; }
 
                 ReconcilePointers();
 
@@ -968,7 +970,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UpdatePointer(pointerData);
 
 #if UNITY_EDITOR
-                    var pointerProfile = profile.PointerProfile;
+                    var pointerProfile = inputSystemProfile.PointerProfile;
                     if (pointerProfile != null && pointerProfile.DebugDrawPointingRays)
                     {
                         MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
@@ -1032,7 +1034,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         pointerData.UpdateFocusLockedHit();
 
                         // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
-                        if (EventSystem.current != null)
+                        if (shouldUseGraphicsRaycast && EventSystem.current != null)
                         {
                             // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
                             hitResultUi.Clear();
@@ -1057,7 +1059,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         PointerHitResult hit = hitResult3d;
                         // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
-                        if (EventSystem.current != null)
+                        if (shouldUseGraphicsRaycast && EventSystem.current != null)
                         {
                             // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
                             hitResultUi.Clear();
@@ -1270,7 +1272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                             else if (colliders.Length != maxQuerySceneResults)
                             {
-                                Array.Resize<Collider>(ref colliders, maxQuerySceneResults);
+                                Array.Resize(ref colliders, maxQuerySceneResults);
                             }
 
                             Vector3 testPoint = pointer.Rays[i].Origin;
@@ -1282,7 +1284,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             // Since this is usually done when a pointer passes a IsInteractionEnabled, maybe we can cache the selected colliders inside the pointer?
                             foreach (LayerMask layerMask in prioritizedLayerMasks)
                             {
-                                int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, layerMask);
+                                int numColliders = UnityPhysics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, layerMask);
                                 if (numColliders > 0)
                                 {
                                     if (numColliders >= maxQuerySceneResults)

@@ -21,8 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityInputPlaybackService,
         IMixedRealityEyeGazeDataProvider
     {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         /// <summary>
         /// Invoked when playback begins or resumes
         /// </summary>
@@ -276,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (handData.Update(isTracked, isPinching,
                 (MixedRealityPose[] joints) =>
                 {
-                    for (int i = 0; i < jointCount; ++i)
+                    for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                     {
                         joints[i] = animation.EvaluateHandJoint(localTime, handedness, (TrackedHandJoint)i);
                     }

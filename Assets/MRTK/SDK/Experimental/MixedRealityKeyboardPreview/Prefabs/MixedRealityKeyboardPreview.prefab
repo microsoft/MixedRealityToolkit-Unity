@@ -421,6 +421,7 @@ GameObject:
   - component: {fileID: 7444971991107798077}
   - component: {fileID: 2112173559973941710}
   - component: {fileID: 6553862962818015716}
+  - component: {fileID: 4147023346962729550}
   m_Layer: 0
   m_Name: ManipulationHandler
   m_TagString: Untagged
@@ -591,7 +592,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 4147023346962729550}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -667,6 +668,20 @@ MonoBehaviour:
   proximityType: 3
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
+--- !u!114 &4147023346962729550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4969729429136545061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &5819135953064820660
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,9 @@ using UnityEditor.Experimental.AssetImporters;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
 {
+#if !MRTK_GLTF_IMPORTER_OFF
     [ScriptedImporter(1, "glb")]
+#endif // !MRTK_GLTF_IMPORTER_OFF
     public class GlbAssetImporter : ScriptedImporter
     {
         public override void OnImportAsset(AssetImportContext context)
