@@ -111,7 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             boundsControlGameObject.transform.position = boundsControlStartCenter;
             boundsControlGameObject.transform.localScale = boundsControlStartScale;
             BoundsControl boundsControl = boundsControlGameObject.AddComponent<BoundsControl>();
-            boundsControl.HideElementsInInspector = false;
             if (target != null)
             {
                 target.transform.parent = boundsControlGameObject.transform;
