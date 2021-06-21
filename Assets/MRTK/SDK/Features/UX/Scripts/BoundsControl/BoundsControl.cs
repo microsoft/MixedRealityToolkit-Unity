@@ -1541,7 +1541,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 links.UpdateLinkScales(currentBoundsExtents);
 
                 translationHandles.CalculateHandlePositions(ref boundsCorners);
-                scaleHandles.UpdateHandles(ref boundsCorners);
+                scaleHandles.CalculateHandlePositions(ref boundsCorners);
 
                 boxDisplay.UpdateDisplay(currentBoundsExtents, flattenAxis);
 
