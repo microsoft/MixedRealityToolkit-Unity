@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         /// in case we have to reload the handles due to configuration changes.
         /// </summary>
         protected Vector3[] HandlePositions { get; private set; }
-        private int NumHandles => 8;
+        private const int NumHandles = 8;
         internal ScaleHandles(ScaleHandlesConfiguration configuration)
         {
             HandlePositions = new Vector3[NumHandles];
