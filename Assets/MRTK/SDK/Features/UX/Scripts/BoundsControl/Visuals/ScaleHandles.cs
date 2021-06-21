@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 }
                 else
                 {
-                    Debug.LogError("couldn't find corner visual on recreating visuals");
+                    Debug.LogError("Couldn't find corner visual on recreating visuals");
                 }
 
                 // create new visual
