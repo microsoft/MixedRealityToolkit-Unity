@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         static HandleTestData[] handleTestData = new HandleTestData[]
         {
-            new HandleTestData("corner_3", "corner_3/visualsScale/visuals", "ScaleHandlesConfig"),
+            new HandleTestData("corner_3", "corner_3/visuals", "ScaleHandlesConfig"),
             new HandleTestData("midpoint_2", "midpoint_2/visuals", "RotationHandlesConfig"),
             new HandleTestData("faceCenter_2", "faceCenter_2/visuals", "TranslationHandlesConfig")
         };
@@ -1273,7 +1273,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialHandPosition = new Vector3(0, 0, 0f);
             // this is specific to scale handles
             Transform scaleHandle = boundsControl.gameObject.transform.Find("rigRoot/corner_3");
-            Transform proximityScaledVisual = (scaleHandle.GetChild(0) != null) ? scaleHandle.GetChild(0).GetChild(0) : null;
+            Transform proximityScaledVisual = scaleHandle.GetChild(0);
             var frontRightCornerPos = scaleHandle.position; // front right corner is corner 
             Assert.IsNotNull(proximityScaledVisual, "Couldn't get visual gameobject for scale handle");
             Assert.IsTrue(proximityScaledVisual.name == "visuals", "scale visual has unexpected name");
@@ -1331,7 +1331,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             ScaleHandlesConfiguration scaleHandleConfig = boundsControl.ScaleHandlesConfig;
             Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
             Transform scaleHandle = boundsControl.gameObject.transform.Find("rigRoot/corner_3");
-            Transform proximityScaledVisual = (scaleHandle.GetChild(0) != null) ? scaleHandle.GetChild(0).GetChild(0) : null;
+            Transform proximityScaledVisual = scaleHandle.GetChild(0);
             var frontRightCornerPos = scaleHandle.position;
             // check far scale applied
             ProximityEffectConfiguration proximityConfig = boundsControl.HandleProximityEffectConfig;
@@ -1456,7 +1456,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(boundsControl.WireframeOnly, "wireframeonly should be enabled");
 
             // move to bounds control with hand and check if it activates on proximity
-            Transform cornerVisual = rigRoot.transform.Find("corner_1/visualsScale/visuals");
+            Transform cornerVisual = rigRoot.transform.Find("corner_1/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find scale handle visual");
             TestHand hand = new TestHand(Handedness.Right);
             Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
@@ -1719,7 +1719,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // fetch rigroot
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
-            Transform cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            Transform cornerVisual = rigRoot.transform.Find("corner_3/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find corner visual");
             var cornerVisualPosition = cornerVisual.position;
             var defaultPadding = boundsControl.BoxPadding;
@@ -1939,7 +1939,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(boxVisual.GetComponent<Renderer>().material.color, testMaterial.color, "box material wasn't applied to visual");
 
             // grab one of the scale handles and make sure grabbed material is applied to box
-            Transform cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            Transform cornerVisual = rigRoot.transform.Find("corner_3/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find scale handle visual");
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
@@ -2053,7 +2053,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // check default mesh filter
             Transform perAxisVisual = rigRoot.transform.Find(testData.handleName + "_2/visuals");
-            Transform cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            Transform cornerVisual = rigRoot.transform.Find("corner_3/visuals");
             Assert.IsNotNull(perAxisVisual, "couldn't find axis handle visual");
             Assert.IsNotNull(cornerVisual, "couldn't find scale handle visual");
             var handleVisualMeshFilter = perAxisVisual.GetComponent<MeshFilter>();
@@ -2087,22 +2087,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test for verifying automatically generated handle colliders are properly aligned to the handle visual
         /// </summary>
         [UnityTest]
-        public IEnumerator PerAxisHandleAlignmentTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
+        public IEnumerator HandleAlignmentTest([ValueSource("handleTestData")] HandleTestData testData)
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
             // Create an oblong-shaped handle
             // (cylinder primitive will do, as it is longer than it is wide!)
+            // Testing oblong handles will stress the alignment/rotation behavior
             var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             GameObject.Destroy(cylinder.GetComponent<CapsuleCollider>());
 
             // Wait for Destroy() to do its thing
             yield return null;
 
-            // Set the rotation handles to be cylinders!
+            // Set the handles to be cylinders!
             System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
-            PerAxisHandlesConfiguration config = (PerAxisHandlesConfiguration)propName.GetValue(boundsControl);
+            HandlesBaseConfiguration config = (HandlesBaseConfiguration)propName.GetValue(boundsControl);
             config.HandlePrefab = cylinder;
 
             // Reflection voodoo to retrieve the ColliderPadding value regardless of which
@@ -2184,7 +2185,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
 
             // check default mesh filter
-            Transform cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            Transform cornerVisual = rigRoot.transform.Find("corner_3/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find corner visual");
             Transform rotationHandleVisual = rigRoot.transform.Find("midpoint_2/visuals");
             Assert.IsNotNull(rotationHandleVisual, "couldn't find rotation handle visual");
@@ -2204,7 +2205,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNull(cornerVisual, "corner visual wasn't destroyed when swapping the prefab");
 
             // fetch new corner visual
-            cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            cornerVisual = rigRoot.transform.Find("corner_3/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find corner visual");
             cornerMeshFilter = cornerVisual.GetComponent<MeshFilter>();
             // check if new mesh filter was applied
@@ -2220,7 +2221,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNull(cornerVisual, "corner visual wasn't destroyed when swapping the prefab");
 
             // mesh should be cube again
-            cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            cornerVisual = rigRoot.transform.Find("corner_3/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find corner visual");
             cornerMeshFilter = cornerVisual.GetComponent<MeshFilter>();
             Assert.IsTrue(cornerMeshFilter.mesh.name == "Cube Instance", "Flattened scale handles weren't created with default cube");
@@ -2236,7 +2237,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNull(cornerVisual, "corner visual wasn't destroyed when swapping the prefab");
 
             // fetch new corner visual
-            cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            cornerVisual = rigRoot.transform.Find("corner_3/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find corner visual");
             cornerMeshFilter = cornerVisual.GetComponent<MeshFilter>();
 
@@ -2346,7 +2347,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-
             // set test materials so we know if we're interacting with the handle later in the test
             System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
             HandlesBaseConfiguration handleConfig = (HandlesBaseConfiguration)propName.GetValue(boundsControl);
