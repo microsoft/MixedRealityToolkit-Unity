@@ -175,7 +175,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             {
                 // Rotate 2D slate handle asset for proper orientation
                 parent.transform.Rotate(0, 0, -90);
-            } else {
+            }
+            else
+            {
                 Quaternion realignment = GetRotationRealignment(handleIndex);
                 parent.transform.localRotation = realignment;
             }
