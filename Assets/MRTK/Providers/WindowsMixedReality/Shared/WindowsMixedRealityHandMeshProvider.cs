@@ -78,7 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             if (poseVertices.Length == 0)
             {
-                Debug.LogError("Loaded 0 verts for poseVertices");
+                Debug.LogError("Loaded 0 vertices for poseVertices");
+                return System.Array.Empty<Vector2>();
             }
 
             float minY = poseVertices[0].y;
