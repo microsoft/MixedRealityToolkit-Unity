@@ -2088,22 +2088,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test for verifying automatically generated handle colliders are properly aligned to the handle visual
         /// </summary>
         [UnityTest]
-        public IEnumerator PerAxisHandleAlignmentTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
+        public IEnumerator HandleAlignmentTest([ValueSource("handleTestData")] HandleTestData testData)
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
             // Create an oblong-shaped handle
             // (cylinder primitive will do, as it is longer than it is wide!)
+            // Testing oblong handles will stress the alignment/rotation behavior
             var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             GameObject.Destroy(cylinder.GetComponent<CapsuleCollider>());
 
             // Wait for Destroy() to do its thing
             yield return null;
 
-            // Set the rotation handles to be cylinders!
+            // Set the handles to be cylinders!
             System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
-            PerAxisHandlesConfiguration config = (PerAxisHandlesConfiguration)propName.GetValue(boundsControl);
+            HandlesBaseConfiguration config = (HandlesBaseConfiguration)propName.GetValue(boundsControl);
             config.HandlePrefab = cylinder;
 
             // Reflection voodoo to retrieve the ColliderPadding value regardless of which
