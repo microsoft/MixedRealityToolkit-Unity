@@ -122,7 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             if (neutralPoseVertices.Length == 0)
             {
-                Debug.LogError("Loaded 0 verts for neutralPoseVertices");
+                Debug.LogError("Loaded 0 vertices for neutralPoseVertices");
+                return System.Array.Empty<Vector2>();
             }
 
             float minY = neutralPoseVertices[0].y;

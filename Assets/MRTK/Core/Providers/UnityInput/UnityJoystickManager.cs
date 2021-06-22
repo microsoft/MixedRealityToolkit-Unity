@@ -18,9 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1),  // All platforms supported by Unity
         "Unity Joystick Manager")]
-#if UNITY_2020_1_OR_NEWER
-    [Obsolete("The legacy XR pipeline has been removed in Unity 2020 or newer. Please migrate to XR SDK.")]
-#endif // UNITY_2020_1_OR_NEWER
     public class UnityJoystickManager : BaseInputDeviceManager
     {
         /// <summary>
@@ -237,8 +234,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             // todo: this should be using an allow list, not a disallow list
             if (string.IsNullOrEmpty(joystickName) ||
-                joystickName.Contains("OpenVR") ||
-                joystickName.Contains("Spatial"))
+                joystickName.Contains("OpenVR") || // This catches input sources from legacy OpenVR
+                joystickName.Contains("OpenXR") || // This catches input sources from OpenXR Plugin
+                joystickName.Contains("Oculus") || // This catches controllers from Oculus XR Plugin
+                joystickName.Contains("Hand - ") || // This catches HoloLens hands from Windows XR Plugin
+                joystickName.Contains("Spatial")) // This catches controllers from Windows XR Plugin and all input sources from legacy WMR
             {
                 return 0;
             }
