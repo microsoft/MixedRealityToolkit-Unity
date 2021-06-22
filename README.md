@@ -1,4 +1,4 @@
-![Mixed Reality Toolkit](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/Logo_MRTK_Unity_Banner.png)
+![Mixed Reality Toolkit](https://user-images.githubusercontent.com/13754172/122838732-89ea3400-d2ab-11eb-8c79-32dd84944989.png)
 
 # What is the Mixed Reality Toolkit
 
