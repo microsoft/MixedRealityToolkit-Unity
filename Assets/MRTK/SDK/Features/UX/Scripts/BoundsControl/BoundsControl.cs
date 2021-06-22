@@ -1255,11 +1255,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                         {
                             scaleFactor.x = 1;
                         }
-                        if (currentActualFlattenAxis == FlattenModeType.FlattenY)
+                        else if (currentActualFlattenAxis == FlattenModeType.FlattenY)
                         {
                             scaleFactor.y = 1;
                         }
-                        if (currentActualFlattenAxis == FlattenModeType.FlattenZ)
+                        else if (currentActualFlattenAxis == FlattenModeType.FlattenZ)
                         {
                             scaleFactor.z = 1;
                         }
@@ -1490,15 +1490,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 return;
             }
 
+            // Cache computed flatten axis for subsequent calls to Reset()
+            var actualAxis = ActualFlattenAxis;
+
             boxDisplay.Reset(active);
-            boxDisplay.UpdateFlattenAxis(ActualFlattenAxis);
+            boxDisplay.UpdateFlattenAxis(actualAxis);
 
             bool isVisible = (active == true && wireframeOnly == false);
 
-            rotationHandles.Reset(isVisible, ActualFlattenAxis);
-            links.Reset(active, ActualFlattenAxis);
-            scaleHandles.Reset(isVisible, ActualFlattenAxis);
-            translationHandles.Reset(isVisible, ActualFlattenAxis);
+            rotationHandles.Reset(isVisible, actualAxis);
+            links.Reset(active, actualAxis);
+            scaleHandles.Reset(isVisible, actualAxis);
+            translationHandles.Reset(isVisible, actualAxis);
         }
 
         private void CreateVisuals()
