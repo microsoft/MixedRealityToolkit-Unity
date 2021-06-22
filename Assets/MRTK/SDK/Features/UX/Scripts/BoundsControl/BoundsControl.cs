@@ -564,6 +564,21 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
 
+        // Current actual flattening axis, derived from FlattenAuto, if set
+        private FlattenModeType actualFlattenAxis {
+            get
+            {
+                if(FlattenAxis == FlattenModeType.FlattenAuto)
+                {
+                    return VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents);
+                }
+                else
+                {
+                    return FlattenAxis;
+                }
+            }
+        }
+
         #endregion
 
         #region public Properties
@@ -721,8 +736,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void OnEnable()
         {
-            SetActivationFlags();
             CreateRig();
+            SetActivationFlags();
             CaptureInitialState();
         }
 
@@ -1235,16 +1250,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     // If non-uniform scaling or uniform scaling only on the non-flattened axes
                     if (ScaleHandlesConfig.ScaleBehavior != HandleScaleMode.Uniform || !UniformScaleOnFlattenedAxis)
                     {
-                        FlattenModeType determinedType = FlattenAxis == FlattenModeType.FlattenAuto ? VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents) : FlattenAxis;
-                        if (determinedType == FlattenModeType.FlattenX)
+                        if (actualFlattenAxis == FlattenModeType.FlattenX)
                         {
                             scaleFactor.x = 1;
                         }
-                        if (determinedType == FlattenModeType.FlattenY)
+                        if (actualFlattenAxis == FlattenModeType.FlattenY)
                         {
                             scaleFactor.y = 1;
                         }
-                        if (determinedType == FlattenModeType.FlattenZ)
+                        if (actualFlattenAxis == FlattenModeType.FlattenZ)
                         {
                             scaleFactor.z = 1;
                         }
@@ -1476,14 +1490,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
 
             boxDisplay.Reset(active);
-            boxDisplay.UpdateFlattenAxis(flattenAxis);
+            boxDisplay.UpdateFlattenAxis(actualFlattenAxis);
 
             bool isVisible = (active == true && wireframeOnly == false);
 
-            rotationHandles.Reset(isVisible, flattenAxis);
-            links.Reset(active, flattenAxis);
-            scaleHandles.Reset(isVisible, flattenAxis);
-            translationHandles.Reset(isVisible, flattenAxis);
+            rotationHandles.Reset(isVisible, actualFlattenAxis);
+            links.Reset(active, actualFlattenAxis);
+            scaleHandles.Reset(isVisible, actualFlattenAxis);
+            translationHandles.Reset(isVisible, actualFlattenAxis);
         }
 
         private void CreateVisuals()
@@ -1543,7 +1557,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 translationHandles.CalculateHandlePositions(ref boundsCorners);
                 scaleHandles.CalculateHandlePositions(ref boundsCorners);
 
-                boxDisplay.UpdateDisplay(currentBoundsExtents, flattenAxis);
+                boxDisplay.UpdateDisplay(currentBoundsExtents, actualFlattenAxis);
 
                 // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
