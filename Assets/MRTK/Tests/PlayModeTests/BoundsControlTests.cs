@@ -2035,6 +2035,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test for verifying that per axis handles are properly switched off/on when
+        /// FlattenAuto mode is used.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator FlattenAutoTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
+        {
+            // test flatten mode of per axis handle
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true; // make sure translation handle test handle is enabled for per axis tests
+
+            // Make cube very flat on X axis.
+            boundsControl.transform.localScale = new Vector3(0.01f, 1f, 1f);
+            boundsControl.HideElementsInInspector = false;
+
+            // cache rig root for verifying that we're not recreating the rig on config changes
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            // get handle and make sure it's active per default
+            Transform handle = rigRoot.transform.Find(testData.handleName + "_0");
+            Assert.IsNotNull(handle, "couldn't find handle");
+            Assert.IsTrue(handle.gameObject.activeSelf, "handle wasn't enabled by default");
+
+            // Set FlattenModeType to FlattenAuto
+            boundsControl.FlattenAxis = FlattenModeType.FlattenAuto;
+
+            Assert.IsFalse(handle.gameObject.activeSelf, "handle wasn't disabled when FlattenAuto was used");
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+
+            // unflatten the control again and make sure handle gets activated accordingly
+            boundsControl.FlattenAxis = FlattenModeType.DoNotFlatten;
+            Assert.IsTrue(handle.gameObject.activeSelf, "handle wasn't enabled on unflatten");
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+
+            yield return null;
+        }
+
+        /// <summary>
         /// Test for verifying changing the per axis handle prefabs during runtime 
         /// and making sure the entire rig won't be recreated
         /// </summary>
