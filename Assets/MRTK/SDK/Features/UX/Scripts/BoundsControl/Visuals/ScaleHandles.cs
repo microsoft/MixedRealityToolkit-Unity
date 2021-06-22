@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 switch(currentFlattenAxis)
                 {
                     case FlattenModeType.FlattenAuto:
-                        Debug.LogError("ScaleHandles should never receive FlattenAuto. BoundsControl should pass actualFlattenAxis");
+                        Debug.LogError("ScaleHandles should never receive FlattenAuto. BoundsControl should pass ActualFlattenAxis");
                         break;
                     case FlattenModeType.FlattenX:
                         axis = Vector3.right;
