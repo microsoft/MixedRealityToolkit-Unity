@@ -565,7 +565,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public Vector3[] BoundsCorners { get; private set; }
 
         // Current actual flattening axis, derived from FlattenAuto, if set
-        private FlattenModeType actualFlattenAxis {
+        private FlattenModeType ActualFlattenAxis {
             get
             {
                 if(FlattenAxis == FlattenModeType.FlattenAuto)
@@ -1250,15 +1250,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     // If non-uniform scaling or uniform scaling only on the non-flattened axes
                     if (ScaleHandlesConfig.ScaleBehavior != HandleScaleMode.Uniform || !UniformScaleOnFlattenedAxis)
                     {
-                        if (actualFlattenAxis == FlattenModeType.FlattenX)
+                        if (ActualFlattenAxis == FlattenModeType.FlattenX)
                         {
                             scaleFactor.x = 1;
                         }
-                        if (actualFlattenAxis == FlattenModeType.FlattenY)
+                        if (ActualFlattenAxis == FlattenModeType.FlattenY)
                         {
                             scaleFactor.y = 1;
                         }
-                        if (actualFlattenAxis == FlattenModeType.FlattenZ)
+                        if (ActualFlattenAxis == FlattenModeType.FlattenZ)
                         {
                             scaleFactor.z = 1;
                         }
@@ -1490,14 +1490,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
 
             boxDisplay.Reset(active);
-            boxDisplay.UpdateFlattenAxis(actualFlattenAxis);
+            boxDisplay.UpdateFlattenAxis(ActualFlattenAxis);
 
             bool isVisible = (active == true && wireframeOnly == false);
 
-            rotationHandles.Reset(isVisible, actualFlattenAxis);
-            links.Reset(active, actualFlattenAxis);
-            scaleHandles.Reset(isVisible, actualFlattenAxis);
-            translationHandles.Reset(isVisible, actualFlattenAxis);
+            rotationHandles.Reset(isVisible, ActualFlattenAxis);
+            links.Reset(active, ActualFlattenAxis);
+            scaleHandles.Reset(isVisible, ActualFlattenAxis);
+            translationHandles.Reset(isVisible, ActualFlattenAxis);
         }
 
         private void CreateVisuals()
@@ -1557,7 +1557,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 translationHandles.CalculateHandlePositions(ref boundsCorners);
                 scaleHandles.CalculateHandlePositions(ref boundsCorners);
 
-                boxDisplay.UpdateDisplay(currentBoundsExtents, actualFlattenAxis);
+                boxDisplay.UpdateDisplay(currentBoundsExtents, ActualFlattenAxis);
 
                 // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
