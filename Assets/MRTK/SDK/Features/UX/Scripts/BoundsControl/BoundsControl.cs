@@ -1250,15 +1250,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     // If non-uniform scaling or uniform scaling only on the non-flattened axes
                     if (ScaleHandlesConfig.ScaleBehavior != HandleScaleMode.Uniform || !UniformScaleOnFlattenedAxis)
                     {
-                        if (ActualFlattenAxis == FlattenModeType.FlattenX)
+                        var currentActualFlattenAxis = ActualFlattenAxis; // Calculate flatten axis once
+                        if (currentActualFlattenAxis == FlattenModeType.FlattenX)
                         {
                             scaleFactor.x = 1;
                         }
-                        if (ActualFlattenAxis == FlattenModeType.FlattenY)
+                        if (currentActualFlattenAxis == FlattenModeType.FlattenY)
                         {
                             scaleFactor.y = 1;
                         }
-                        if (ActualFlattenAxis == FlattenModeType.FlattenZ)
+                        if (currentActualFlattenAxis == FlattenModeType.FlattenZ)
                         {
                             scaleFactor.z = 1;
                         }
