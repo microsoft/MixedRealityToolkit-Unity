@@ -262,6 +262,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         /// <returns>Flattened indices.</returns>
         internal static List<int> GetFlattenedIndices(FlattenModeType flattenAxis, CardinalAxisType[] axisArray)
         {
+            Debug.Assert(flattenAxis != FlattenModeType.FlattenAuto,
+                         "FlattenAuto passed to GetFlattenedIndices. Resolve FlattenAuto into an actual axis before calling.");
+                         
             List<int> flattenedIndices = new List<int>();
             for (int i = 0; i < axisArray.Length; ++i)
             {

@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         protected override HandlesBaseConfiguration BaseConfig => config;
         private ScaleHandlesConfiguration config;
         private bool areHandlesFlattened = false;
+        private FlattenModeType currentFlattenAxis = FlattenModeType.DoNotFlatten;
 
         /// <summary>
         /// Cached handle positions - we keep track of handle positions in this array
@@ -171,16 +172,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             handleVisual.transform.localPosition = Vector3.zero;
             handleVisual.transform.localRotation = Quaternion.identity;
 
-            if (isFlattened)
-            {
-                // Rotate 2D slate handle asset for proper orientation
-                parent.transform.Rotate(0, 0, -90);
-            }
-            else
-            {
-                Quaternion realignment = GetRotationRealignment(handleIndex);
-                parent.transform.localRotation = realignment;
-            }
+            
+            Quaternion realignment = GetRotationRealignment(handleIndex, isFlattened);
+            parent.transform.localRotation = realignment;
 
             if(config.HandleMaterial != null)
             {
@@ -190,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             return handleVisualBounds;
         }
 
-        protected Quaternion GetRotationRealignment(int handleIndex)
+        protected Quaternion GetRotationRealignment(int handleIndex, bool isFlattened)
         {
             // Helper lambda to sign a vector.
             Vector3 signVector(Vector3 i) => new Vector3(Mathf.Sign(i.x), Mathf.Sign(i.y), Mathf.Sign(i.z));
@@ -200,14 +194,44 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             Vector3 neutralHandle = signVector(HandlePositions[6]);
             Vector3 handlePos = signVector(HandlePositions[handleIndex]);
 
-            // Flip the handle if it's on the underside of the bounds.
-            Quaternion flip = Quaternion.Euler(0, 0, handlePos.y > 0 ? 0 : 90);
+            if(isFlattened)
+            {
+                Vector3 axis = Vector3.forward;
+                switch(currentFlattenAxis)
+                {
+                    case FlattenModeType.FlattenAuto:
+                        Debug.LogError("ScaleHandles should never receive FlattenAuto. BoundsControl should pass ActualFlattenAxis");
+                        break;
+                    case FlattenModeType.FlattenX:
+                        axis = Vector3.right;
+                        break;
+                    case FlattenModeType.FlattenY:
+                        axis = -Vector3.up;
+                        break;
+                    case FlattenModeType.FlattenZ:
+                        axis = Vector3.forward;
+                        break;
+                }
 
-            float angleAroundVertical = Vector3.SignedAngle(new Vector3(neutralHandle.x, 0, neutralHandle.z),
-                                                            new Vector3(handlePos.x, 0, handlePos.z),
-                                                            Vector3.up);
+                Vector3 neutralProjected = Vector3.ProjectOnPlane(neutralHandle, axis);
+                Vector3 handleProjected = Vector3.ProjectOnPlane(handlePos, axis);
 
-            return Quaternion.Euler(0, angleAroundVertical, 0) * flip;
+                float angleAroundAxis = Vector3.SignedAngle(neutralProjected,
+                                                                handleProjected,
+                                                                axis);
+
+                return Quaternion.AngleAxis(angleAroundAxis, axis) * Quaternion.LookRotation(axis, Vector3.up);
+            }
+            else
+            {
+                // Flip the handle if it's on the underside of the bounds.
+                Quaternion flip = Quaternion.Euler(0, 0, handlePos.y > 0 ? 0 : 90);
+
+                float angleAroundVertical = Vector3.SignedAngle(new Vector3(neutralHandle.x, 0, neutralHandle.z),
+                                                                new Vector3(handlePos.x, 0, handlePos.z),
+                                                                Vector3.up);
+                return Quaternion.Euler(0, angleAroundVertical, 0) * flip;
+            }   
         }
 
         internal void Reset(bool areHandlesActive, FlattenModeType flattenAxis)
@@ -215,6 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             IsActive = areHandlesActive;
             ResetHandles();
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
+            currentFlattenAxis = flattenAxis;
             if (areHandlesFlattened != isFlattened)
             {
                 areHandlesFlattened = isFlattened;
