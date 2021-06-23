@@ -159,7 +159,7 @@ foreach ($entry in $packages.GetEnumerator()) {
 
     # Apply the version number to the package json file
     $packageJsonPath = "$packagePath/package.json"
-    ((Get-Content -Path $packageJsonPath -Raw) -Replace '("version\": )"([0-9.]+-?[a-zA-Z0-9.]*|%version%)', "`$1`"$Version") | Set-Content -Path $packageJsonPath -NoNewline
+    ((Get-Content -Path $packageJsonPath -Raw) -Replace '("version": |"com\.microsoft\.mixedreality\.toolkit\.\w+": )"([0-9.]+-?[a-zA-Z0-9.]*|%version%)', "`$1`"$Version") | Set-Content -Path $packageJsonPath -NoNewline
 
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName"
