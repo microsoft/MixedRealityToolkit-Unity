@@ -1321,13 +1321,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// </summary>
         private void CleanupInstantiatedSceneObjects()
         {
-            if (observedObjectParent != null)
+            if (ObservedObjectParent != null)
             {
-                int kidCount = observedObjectParent.transform.childCount;
+                int kidCount = ObservedObjectParent.transform.childCount;
 
                 for (int i = 0; i < kidCount; ++i)
                 {
-                    UnityEngine.Object.Destroy(observedObjectParent.transform.GetChild(i).gameObject);
+                    UnityEngine.Object.Destroy(ObservedObjectParent.transform.GetChild(i).gameObject);
                 }
             }
         }
