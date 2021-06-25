@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 constraintList.Add(constraint);
                 return;
             }
-            else if(comparer.Compare(constraintList[0], constraint) > 0)
+            else if (comparer.Compare(constraintList[0], constraint) > 0)
             {
                 constraintList.Insert(0, constraint);
                 return;
