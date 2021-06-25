@@ -166,7 +166,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             // Terminate the background thread when we stop in editor.
             cancelToken = cancelTokenSource.Token;
 
-            task = Task.Run(() => RunObserverAsync(cancelToken));
+            task = Task.Run(() => RunObserverAsync(cancelToken)).ContinueWith(t =>
+            {
+                Debug.LogError($"{t.Exception.InnerException.GetType().Name}: {t.Exception.InnerException.Message} {t.Exception.InnerException.StackTrace}");
+            }, TaskContinuationOptions.OnlyOnFaulted);
 #else
             IsEnabled = false;
 #endif // SCENE_UNDERSTANDING_PRESENT && UNITY_WSA
@@ -180,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             if (instantiationQueue.Count > 0)
             {
                 // Make our new objects in batches and tell observers about it
-                int batchCount = Math.Min(InstantiationBatchRate, instantiationQueue.Count);
+                int batchCount = CreateGameObjects ? Math.Min(InstantiationBatchRate, instantiationQueue.Count) : instantiationQueue.Count;
 
                 for (int i = 0; i < batchCount; ++i)
                 {
@@ -313,7 +316,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public void SaveScene(string filenamePrefix)
         {
 #if WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
-            Task.Run(() => SaveToFile(filenamePrefix));
+            Task.Run(() => SaveToFile(filenamePrefix)).ContinueWith(t =>
+            {
+                Debug.LogError($"{t.Exception.InnerException.GetType().Name}: {t.Exception.InnerException.Message} {t.Exception.InnerException.StackTrace}");
+            }, TaskContinuationOptions.OnlyOnFaulted);
 #else // WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
             Debug.LogWarning("SaveScene() only supported at runtime! Ignoring request.");
 #endif // WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
@@ -665,7 +671,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
                     case ObserverState.GetScene:
                         observerState = ObserverState.Working;
-                        if (CreateGameObjects && instantiationQueue.Count > 0)
+                        while (CreateGameObjects && instantiationQueue.Count > 0)
                         {
                             await new WaitForUpdate();
                         }
@@ -1320,13 +1326,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// </summary>
         private void CleanupInstantiatedSceneObjects()
         {
-            if (observedObjectParent != null)
+            if (ObservedObjectParent != null)
             {
-                int kidCount = observedObjectParent.transform.childCount;
+                int kidCount = ObservedObjectParent.transform.childCount;
 
                 for (int i = 0; i < kidCount; ++i)
                 {
-                    UnityEngine.Object.Destroy(observedObjectParent.transform.GetChild(i).gameObject);
+                    UnityEngine.Object.Destroy(ObservedObjectParent.transform.GetChild(i).gameObject);
                 }
             }
         }

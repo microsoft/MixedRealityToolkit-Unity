@@ -43,8 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </remarks>
         Platform = 1 << 4,
 
-        // Insert additional surface types here.
-
         /// <summary>
         /// A surface that does not fit one of the defined surface types.
         /// </summary>
@@ -53,16 +51,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <para>Background should not be confused with Unknown. There is sufficient data to 
         /// classify the surface and it has been found to not correspond to a defined type.</para>
         /// </remarks>
-        Background = 1 << 29,
+        Background = 1 << 5,
 
         /// <summary>
         /// A boundless world mesh.
         /// </summary>
-        World = 1 << 30,
+        World = 1 << 6,
 
         /// <summary>
         /// Objects for which we have no observations
         /// </summary>
-        Inferred = 1 << 31
+        Inferred = 1 << 7
     }
 }
