@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             else
             {
                 int idx = constraintList.BinarySearch(constraint, comparer);
-                if(idx < 0)
+                if (idx < 0)
                 {
                     // idx will be the two's complement of the index of the
                     // next element that is "larger" than the given constraint.
