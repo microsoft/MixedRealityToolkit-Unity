@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Returns > 0 if y should be executed first.
         /// Returns = 0 if they are of equivalent execution priority.
         /// </returns>	
-        internal virtual int Compare(TransformConstraint x, TransformConstraint y)
+        public virtual int Compare(TransformConstraint x, TransformConstraint y)
         {
             return x.ExecutionPriority - y.ExecutionPriority;
         }
