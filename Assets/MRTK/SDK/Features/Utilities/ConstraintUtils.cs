@@ -23,17 +23,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="comparer">ConstraintExecOrderComparer for comparing two constraint priorities</param>
         internal static void AddWithPriority(ref List<TransformConstraint> constraintList, TransformConstraint constraint, ConstraintExecOrderComparer comparer)
         {
-            if(constraintList.Contains(constraint))
+            if (constraintList.Contains(constraint))
             {
                 return;
             }
 
-            if(constraintList.Count == 0 || comparer.Compare(constraintList[constraintList.Count-1], constraint) < 0)
+            if (constraintList.Count == 0 || comparer.Compare(constraintList[constraintList.Count-1], constraint) < 0)
             {
                 constraintList.Add(constraint);
                 return;
             }
-            else if(comparer.Compare(constraintList[0], constraint) > 0)
+            else if (comparer.Compare(constraintList[0], constraint) > 0)
             {
                 constraintList.Insert(0, constraint);
                 return;
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             else
             {
                 int idx = constraintList.BinarySearch(constraint, comparer);
-                if(idx < 0)
+                if (idx < 0)
                 {
                     // idx will be the two's complement of the index of the
                     // next element that is "larger" than the given constraint.
