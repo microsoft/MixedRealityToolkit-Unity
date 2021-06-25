@@ -12,14 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// requested execution order, or any other priority
     /// mechanism that a subclass utilizes.
     /// </summary>
-    public class ConstraintExecOrderComparer : IComparer<TransformConstraint>
+    internal class ConstraintExecOrderComparer : IComparer<TransformConstraint>
     {
         /// <returns>
         /// Returns < 0 if x should be executed first.
         /// Returns > 0 if y should be executed first.
         /// Returns = 0 if they are of equivalent execution priority.
         /// </returns>	
-        public virtual int Compare(TransformConstraint x, TransformConstraint y)
+        internal virtual int Compare(TransformConstraint x, TransformConstraint y)
         {
             return x.ExecutionPriority - y.ExecutionPriority;
         }
