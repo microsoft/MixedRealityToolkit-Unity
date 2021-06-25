@@ -4,7 +4,7 @@
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
-#if LEAPMOTIONCORE_PRESENT
+#if LEAPMOTIONCORE_PRESENT && UNITY_STANDALONE
 using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
 #endif
 
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     /// </summary>
     public class LeapMotionOrientationDisplay : MonoBehaviour
     {
-#if LEAPMOTIONCORE_PRESENT
+#if LEAPMOTIONCORE_PRESENT && UNITY_STANDALONE
         [SerializeField]
         private TextMeshProUGUI orientationText;
         private LeapMotionDeviceManagerProfile managerProfile;
