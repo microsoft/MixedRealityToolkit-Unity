@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            if(constraintList.Count == 0 || comparer.Compare(constraintList[constraintList.Count-1], constraint) < 0)
+            if (constraintList.Count == 0 || comparer.Compare(constraintList[constraintList.Count-1], constraint) < 0)
             {
                 constraintList.Add(constraint);
                 return;
