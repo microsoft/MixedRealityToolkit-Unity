@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="comparer">ConstraintExecOrderComparer for comparing two constraint priorities</param>
         internal static void AddWithPriority(ref List<TransformConstraint> constraintList, TransformConstraint constraint, ConstraintExecOrderComparer comparer)
         {
-            if(constraintList.Contains(constraint))
+            if (constraintList.Contains(constraint))
             {
                 return;
             }
