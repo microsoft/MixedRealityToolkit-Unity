@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,41 +27,38 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public abstract class DataCollectionItemPlacerGOBase : MonoBehaviour, IDataCollectionItemPlacer
     {
         [SerializeField]
-        internal int firstItemToPlace = 0;
+        protected int maximumVisibleItems = 999999;
 
         [SerializeField]
-        internal int maximumItemsToPlace = 999999;
-
-        [SerializeField]
-        internal string requestId = "";
+        protected string requestId = "";
 
 
-        internal int _firstVisiblItem = 0;
-        internal int _visibleItemCount = 0;
+        protected int m_firstVisibelItem = 0;
+        protected int m_numVisibleItems = 0;
 
-        internal IDataConsumerCollection _dataConsumerCollection;
+        protected IDataConsumerCollection _dataConsumerCollection;
 
-        internal Dictionary<int, GameObject> _gameObjectsByIndex = new Dictionary<int, GameObject>();
+        protected Dictionary<int, GameObject> _gameObjectsByIndex = new Dictionary<int, GameObject>();
 
 
-        internal void AddGameObject( int index, GameObject go )
+        protected void AddGameObject( int index, GameObject go )
         {
             _gameObjectsByIndex[index] = go;
         }
 
-        internal void RemoveGameObject( int index )
+        protected void RemoveGameObject( int indexAsId )
         {            
-            _dataConsumerCollection.ReturnGameObjectForReuse(index, _gameObjectsByIndex[index]);
+            _dataConsumerCollection.ReturnGameObjectForReuse(indexAsId, _gameObjectsByIndex[indexAsId]);
 
-            _gameObjectsByIndex.Remove(index);
+            _gameObjectsByIndex.Remove(indexAsId);
         }
 
-        internal void RemoveVisibleGameObjects()
+        protected void RemoveVisibleGameObjects()
         {
-            int maxItem = firstItemToPlace + GetItemPlacementCount();
-            for( int index = firstItemToPlace; index < maxItem; index++ )
+            int maxItem = m_firstVisibelItem + m_numVisibleItems;
+            for( int indexAsId = m_firstVisibelItem; indexAsId < maxItem; indexAsId++ )
             {
-                RemoveGameObject(index);
+                RemoveGameObject(indexAsId);
             }
         }
 
@@ -73,58 +71,89 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public void ScrollNextPage ()
         {
-            int totalItems = _dataConsumerCollection?.GetCollectionItemCount() ?? 0;
-
-            if (firstItemToPlace < totalItems - GetItemPlacementCount())
+            if (m_firstVisibelItem < GetTotalItemCount() - GetAvailableItemCount())
             {
                 RemoveVisibleGameObjects();
 
-                firstItemToPlace += GetItemPlacementCount();
-                if (firstItemToPlace > totalItems - GetItemPlacementCount())
-                {
-                    firstItemToPlace = totalItems - GetItemPlacementCount();
-                }
-
-                _dataConsumerCollection?.RequestCollectionItems(this, firstItemToPlace, GetItemPlacementCount(), requestId);
-
+                m_firstVisibelItem += GetAvailableItemCount();
+                RequestVisibleItems();
             }
 
-        }
-
-        internal virtual int GetItemPlacementCount()
-        {
-            return maximumItemsToPlace;
         }
 
 
         public void ScrollPreviousPage()
         {
-            if (firstItemToPlace > 0)
+            if (m_firstVisibelItem > 0)
             {
                 RemoveVisibleGameObjects();
-                firstItemToPlace -= GetItemPlacementCount();
-                if (firstItemToPlace < 0) firstItemToPlace = 0;
-                _dataConsumerCollection?.RequestCollectionItems(this, firstItemToPlace, GetItemPlacementCount(), requestId);
+                m_firstVisibelItem -= GetVisibleItemCount();
+                if (m_firstVisibelItem < 0)
+                {
+                    m_firstVisibelItem = 0;
+                }
+
+                RequestVisibleItems();
             }
         }
 
+
+        protected void RequestVisibleItems()
+        {
+            m_numVisibleItems = Math.Min(GetAvailableItemCount(), GetTotalItemCount() - m_firstVisibelItem);
+
+            if (m_numVisibleItems > 0)
+            {
+                _dataConsumerCollection?.RequestCollectionItems(this, m_firstVisibelItem, m_numVisibleItems, requestId);
+            }
+        }
+
+
+        protected virtual int GetTotalItemCount()
+        {
+            return _dataConsumerCollection?.GetCollectionItemCount() ?? 0;
+        }
+
+        protected virtual int GetVisibleItemCount()
+        {
+            // override this to return the actual currently visible item count
+            return maximumVisibleItems;
+        }
+
+        protected virtual int GetAvailableItemCount()
+        {
+            return Math.Min(GetTotalItemCount(), GetVisibleItemCount());
+        }
+
+        
         public void ScrollNextItem()
         {
-            firstItemToPlace++;
+            if (m_firstVisibelItem < GetTotalItemCount() - GetAvailableItemCount() )
+            {
+                RemoveGameObject(m_firstVisibelItem);
+                m_firstVisibelItem++;
+                int newItemIndex = m_firstVisibelItem + m_numVisibleItems - 1;
+                _dataConsumerCollection?.RequestCollectionItems(this, newItemIndex, 1, requestId);
+            }
         }
 
         public void ScrollPreviousItem()
         {
-            if (firstItemToPlace > 0) firstItemToPlace--;
+            if (m_firstVisibelItem > 0)
+            {
+                RemoveGameObject(m_firstVisibelItem + m_numVisibleItems - 1);
+                m_firstVisibelItem--;
+                _dataConsumerCollection?.RequestCollectionItems(this, m_firstVisibelItem, 1, requestId);
+            }
         }
 
         public virtual void StartPlacement() {
-            maximumItemsToPlace = _dataConsumerCollection.GetCollectionItemCount();
+            maximumVisibleItems = _dataConsumerCollection.GetCollectionItemCount();
         }
 
         public virtual void PlaceItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
         {
-            if (itemIndex >= firstItemToPlace && itemIndex < firstItemToPlace + GetItemPlacementCount() )
+            if (itemIndex >= m_firstVisibelItem && itemIndex < m_firstVisibelItem + GetAvailableItemCount() )
             {
                 itemGO.SetActive(true);
                 AddGameObject(itemIndex, itemGO);
@@ -139,15 +168,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal virtual void PredictivelyLoadItems()
+        protected virtual void PredictivelyLoadItems()
         {
 
         }
 
 
-        public virtual void NotifyCollectionDataChanged() {
+        public virtual void NotifyCollectionDataChanged(DataChangeType dataChangeType) {
             // default behavior is to ask for all items in the collection with empty string as request ID.
-            _dataConsumerCollection?.RequestCollectionItems(this, firstItemToPlace, GetItemPlacementCount(), requestId);
+            if (dataChangeType == DataChangeType.CollectionItemAdded)
+            {
+                if (m_numVisibleItems < GetAvailableItemCount())
+                {
+                    // If adding items and num visible is not currently the maximum possible visible, then
+                    // let's add the new item to what's visible.
+                    int firstItem = m_firstVisibelItem + m_numVisibleItems;
+                    int numItems = GetAvailableItemCount() - m_numVisibleItems;
+                    m_numVisibleItems += numItems;
+                    _dataConsumerCollection?.RequestCollectionItems(this, firstItem, numItems, requestId);
+                }
+            }
+            else
+            {
+                // For misc mods or deletions, it's safer to just re-fetch all at current scroll position since we don't
+                // necessarily know where a deletion or modification occured.
+                RequestVisibleItems();
+            }
         }
 
     }

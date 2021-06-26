@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField] private MeshRenderer ImageQuadMeshRenderer;
 
 
-        internal override Type[] GetComponentTypes()
+        protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(MeshRenderer) };
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override void InitializeForComponent(Type componentType, Component component)
+        protected override void InitializeForComponent(Type componentType, Component component)
         {
             if (ImageQuadMeshRenderer == null)
             {
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
  
 
-        internal override void PlaceImageTexture(Texture2D imageTexture)
+        protected override void PlaceImageTexture(Texture2D imageTexture)
         {
             ImageQuadMeshRenderer.material.mainTexture = imageTexture;
 

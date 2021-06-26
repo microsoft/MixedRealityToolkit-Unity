@@ -42,10 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField] private ValueToSpriteInfo[] valueToSpriteLookup;
 
 
-        internal SpriteRenderer _spriteRenderer;
+        protected SpriteRenderer _spriteRenderer;
 
 
-        internal override Type[] GetComponentTypes()
+        protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(SpriteRenderer) };
@@ -53,22 +53,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override bool ManageChildren()
+        protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
 
-        internal override void AddVariableKeyPathsForComponent(Type componentType, Component component)
+        protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
             _spriteRenderer = component as SpriteRenderer;
-            AddKeyPath(this.keyPath);
+            AddKeyPath(keyPath);
         }
 
 
-        internal override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
         {
-            if (localKeyPath == this.keyPath)
+            if (localKeyPath == keyPath)
             {
                 string value = newValue.ToString();
 

@@ -31,14 +31,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public delegate void RequestSuccessDelegate(string jsonText, string requestId);
         public delegate void RequestFailureDelegate(string errorString, string requestId);
 
-        public DataSourceJson DataSource { get { return _dataSource as DataSourceJson; } }
+        public DataSourceJson DataSource { get { return m_dataSource as DataSourceJson; } }
 
-        internal Regex _callbackRegex = new Regex(  @"^([a-zA-Z0-9_]+)\(" );
+        protected Regex _callbackRegex = new Regex(  @"^([a-zA-Z0-9_]+)\(" );
 
 
-        internal override IDataSource AllocateDataSource()
+        public override IDataSource GetDataSource()
         {
-            return new DataSourceJson();
+            {
+                if (m_dataSource == null)
+                {
+                    m_dataSource = new DataSourceJson();
+                }
+
+                return m_dataSource;
+            }
         }
 
 
@@ -53,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     if (failureDelegate != null)
                     {
-                        failureDelegate(webRequest.error, requestId);
+                        failureDelegate?.Invoke(webRequest.error, requestId);
                     }
                 }
                 else
@@ -63,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     DataSource.UpdateFromJson(jsonText);
                     if (successDelegate != null)
                     {
-                        successDelegate(jsonText, requestId);
+                        successDelegate?.Invoke(jsonText, requestId);
                     }
                 }
             }
@@ -79,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             for(lastCharToIncludeIdx = jsonText.Length - 1; lastCharToIncludeIdx >= 0; lastCharToIncludeIdx-- )
             {
                 char lastChar = jsonText[lastCharToIncludeIdx];
-                if (!Char.IsWhiteSpace(lastChar))
+                if (!char.IsWhiteSpace(lastChar))
                 {
                     if (lastChar == ')')
                     {

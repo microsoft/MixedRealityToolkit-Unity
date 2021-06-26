@@ -20,59 +20,64 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     public class DataSourceDictionaryTest : DataSourceGOBase
     {
-        private float deltaSeconds;
-        private int _nextOneSecondTarget;
-        private int _nextFiveSecondTarget;
-        private bool _styleYellow;
-        private int _status = 0;
-        private int _score = 100;
+        private float m_deltaSeconds;
+        private int m_nextOneSecondTarget;
+        private int m_nextFiveSecondTarget;
+        private bool m_styleYellow;
+        private int m_status = 0;
+        private int m_score = 100;
 
-        internal override IDataSource AllocateDataSource()
+        public override IDataSource GetDataSource()
         {
-            return new DataSourceDictionary();
+            if (m_dataSource == null)
+            {
+                m_dataSource = new DataSourceDictionary();
+            }
+
+            return m_dataSource;
         }
 
-        internal override void InitializeDataSource()
+        protected override void InitializeDataSource()
         {
             InitializeData();
-            deltaSeconds = 0;
-            _nextOneSecondTarget = 0;
+            m_deltaSeconds = 0;
+            m_nextOneSecondTarget = 0;
         }
 
         // Update is called once per frame
-        void Update()
+        protected void Update()
         {
             string[] statusText = { "open", "pending", "cancelled", "inprogress", "completed" };
-            deltaSeconds += Time.deltaTime;
-            int tenthsOfSeconds = (int)(deltaSeconds * 10.0);
+            m_deltaSeconds += Time.deltaTime;
+            int tenthsOfSeconds = (int)(m_deltaSeconds * 10.0);
 
             DataChangeSetBegin();
 
 
-            if (tenthsOfSeconds > _nextFiveSecondTarget )
+            if (tenthsOfSeconds > m_nextFiveSecondTarget )
             {
-                if ( _styleYellow)
+                if ( m_styleYellow)
                 {
                     SetValue("stylesheet", "standard");
                 } else
                 {
                     SetValue("stylesheet", "yellow");
                 }
-                _styleYellow = !_styleYellow;
-                _nextFiveSecondTarget += 50;
+                m_styleYellow = !m_styleYellow;
+                m_nextFiveSecondTarget += 50;
             }
 
-            if ( tenthsOfSeconds > _nextOneSecondTarget)
+            if ( tenthsOfSeconds > m_nextOneSecondTarget)
             {
-                _nextOneSecondTarget += 10;
-                SetValue("score", ++_score);
+                m_nextOneSecondTarget += 10;
+                SetValue("score", ++m_score);
 
-                if ((++_status % statusText.Length) == 0)
+                if ((++m_status % statusText.Length) == 0)
                 {
-                    _status = 0;
+                    m_status = 0;
                 }
 
-                SetValue("status", statusText[_status]);
+                SetValue("status", statusText[m_status]);
             }
 
             DataChangeSetEnd();

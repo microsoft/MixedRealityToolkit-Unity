@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     public class DataKeyPathMapperDictionary : IDataKeyPathMapper
     {
-        internal Dictionary<string, string> _viewToDataKeyPathLookup = new Dictionary<string, string>();
-        internal Dictionary<string, string> _dataToViewKeyPathLookup = new Dictionary<string, string>();
+        protected Dictionary<string, string> _viewToDataKeyPathLookup = new Dictionary<string, string>();
+        protected Dictionary<string, string> _dataToViewKeyPathLookup = new Dictionary<string, string>();
 
         public void AddKeyMapping(string viewKeyPath, string dataKeyPath)
         {

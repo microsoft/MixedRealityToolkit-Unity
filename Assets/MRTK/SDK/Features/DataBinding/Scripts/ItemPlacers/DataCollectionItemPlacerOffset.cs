@@ -21,21 +21,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         [Tooltip("Place each item in a collection at successive offsets relative to parent gameobject, with the first item spawning at 0,0,0.")]
         [SerializeField]
-        internal Vector3 itemOffset;
+        protected Vector3 itemOffset;
 
         [Tooltip("How many items to show in the x dimension using the x item offset.")]
         [SerializeField]
-        internal int xCount = 4;
+        protected int xCount = 4;
 
         [Tooltip("How many items to show in the y dimension using the y item offset.")]
         [SerializeField]
-        internal int yCount = 3;
+        protected int yCount = 3;
 
         [Tooltip("How many items to show in the y dimension using the y item offset.")]
         [SerializeField]
-        internal int zCount = 1;
+        protected int zCount = 1;
 
-        internal Vector3 _itemPlacerPositionOffset;
+        protected Vector3 _itemPlacerPositionOffset;
 
 
 
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override int GetItemPlacementCount()
+        protected override int GetVisibleItemCount()
         {
             return xCount * yCount * zCount;
         }

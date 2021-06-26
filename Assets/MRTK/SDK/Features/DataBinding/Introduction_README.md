@@ -32,6 +32,11 @@ that can be used to populate data views via data consumers. The data managed by 
 can be static or dynamic. Any changes to data items will be reported to any data consumers
 that have registered to receive change notifications.
 
+### Data Source Provider
+
+A simple interface that has a single method to retrieve a data source. This is designed to allow a MonoBehavior scripting component to be auto-discovered in the game object hierarchy by data consumer components, but without the need to implement a data source directly on the game object itself.  This is useful when an existing MonoBehaviour must derive from another class and multiple inheritence prevents deriving from DataSourceGOBase. It also allows more code to have no Unity dependencies.
+
+
 ### Key Path (string)
 
 A key path is the key to uniquely identifying a piece of information in a data source.
@@ -70,13 +75,28 @@ subset of a larger dataset, such as one entry in a list of many entries.
 This makes it possible to treat a subset of the data in such a way that it does
 not matter where in a larger data set hierarchy it actually exists. The most critical
 use of this ability is to describe the data of a single entry in a list without worrying about which
-entry in that list the current instance is referencing.
+entry in that list the current instance is referencing. 
+
+Since a "fully resolved" Key path is always generated and consumed by a DataSource and should never (or at least rarely) be modified by a DataConsumer or other external component, it can have any structure that makes sense to the DataSource.  For example, if a prefab to show a list entry for a photo and it's title, date taken and other attributes, the local key path in the prefab might look like this:
+
+- "photo_url"
+- "title"
+- "date_taken"
+- "description"
+
+The fully resolved key paths for one prefab entry in a list might look like this:
+
+- "f3cb1906-d8b3-489d-9f74-725e5542b55d/photo_url"
+- "f3cb1906-d8b3-489d-9f74-725e5542b55d/title"
+- "f3cb1906-d8b3-489d-9f74-725e5542b55d/date_taken"
+- "f3cb1906-d8b3-489d-9f74-725e5542b55d/description"
+
 
 ### Key Path Mapper (IDataKeyPathMapper)
 
 A key path mapper allows data sources and data consumers to use different namespaces and conventions for key paths and still work together.
 
-A prefab for a commonly used element, such as a slate to show a persons contact information can cantain variable fields managed by data consumers.
+A prefab for a commonly used element, such as a slate to show a persons contact information, can cantain variable fields managed by data consumers. To make this possible , the identifier used for any variable aspect of the prefab needs a way to map to the identifier for the correct datum in the data source that will, in each use of the prefab, determine the contents of that variable element. The Key Path Mapper makes this possible.
 
 The prefab may be used with different data sources where the data is stored in a different organizationl structure and uses field names. To use a
 template prefab with each data source, a key path mapper can resolve any differences in how the data is organized.

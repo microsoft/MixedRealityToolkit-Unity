@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="keyPath">The resolved keyPath for the data that has changed.</param>
         /// <param name="newValue">The new value for the data represented by the keyPath.</param>
 
-        void NotifyDataChanged(IDataSource dataSource, string keyPath, object newValue);
+        void NotifyDataChanged(IDataSource dataSource, string keyPath, object newValue, DataChangeType changeType );
 
 
         /// <summary>

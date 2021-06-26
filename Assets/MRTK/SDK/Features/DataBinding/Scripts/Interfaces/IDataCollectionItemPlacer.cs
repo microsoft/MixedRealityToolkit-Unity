@@ -79,8 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// request all or a subset of the items being managed in the collection.  This back and forth
         /// allows for precise control of paging and virtualization to optimze the presentation of
         /// information.</remarks>
-        /// 
-        void NotifyCollectionDataChanged();
+        ///
+        /// <param name="dataChangeType">The nature of the data change, typically CollectionItemAdded, or CollectionItemRemoved.</param>
+        void NotifyCollectionDataChanged(DataChangeType dataChangeType);
 
     }
 }

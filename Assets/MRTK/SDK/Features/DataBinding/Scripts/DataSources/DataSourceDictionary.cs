@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     public class DataSourceDictionary : DataSourceBase
     {
-        internal Dictionary<string, object> _dataDictionary = new Dictionary<string, object>();
+        protected Dictionary<string, object> _dataDictionary = new Dictionary<string, object>();
 
         public void SetDataSourceDictionary(Dictionary<string, object> dataDictionary)
         {

@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField] private SpriteRenderer imageSpriteRenderer;
 
 
-        internal override Type[] GetComponentTypes()
+        protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(SpriteRenderer) };
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override void InitializeForComponent(Type componentType, Component component)
+        protected override void InitializeForComponent(Type componentType, Component component)
         {
             if (imageSpriteRenderer == null)
             {
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        internal override void PlaceImageTexture(Texture2D imageTexture)
+        protected override void PlaceImageTexture(Texture2D imageTexture)
         {
             float pixelsPerUnit = Math.Max(imageTexture.width, imageTexture.height);
             Sprite newSprite = Sprite.Create(imageTexture, new Rect(0, 0, imageTexture.width, imageTexture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);

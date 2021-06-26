@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField] private MaterialToTemplateLookup[] materialToTemplateLookup;
 
 
-        internal override Type[] GetComponentTypes()
+        protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(Material) };
@@ -67,14 +67,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override bool ManageChildren()
+        protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
 
 
-        internal override void AddVariableKeyPathsForComponent(Type componentType, Component component)
+        protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
             foreach( MaterialToTemplateLookup materialLookup in materialToTemplateLookup)
             {
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     {
                         string localKeyPath = match.Groups[1].Value;
 
-                        string resolvedKeyPath = DataSource.ResolveKeyPath(this.ResolvedKeyPathPrefix, localKeyPath);
+                        string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
                         AddKeyPath(localKeyPath);
 
@@ -96,9 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
         {
-            if (localKeyPath == this.keyPath)
+            if (localKeyPath == keyPath)
             {
                 string value = newValue.ToString();
 

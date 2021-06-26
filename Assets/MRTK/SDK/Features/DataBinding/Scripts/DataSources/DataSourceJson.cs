@@ -35,10 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         static readonly string _arrayTokenPattern = @"^\s*\[\s*([a-zA-Z0-9\-_]*?)\s*\]";
         static readonly string _keyTokenPattern = @"^\s*([a-zA-Z0-9\-_]+?)(?:[.\[]|$)";
 
-        internal readonly Regex _arrayTokenRegex = new Regex(_arrayTokenPattern);
-        internal readonly Regex _keyTokenRegex = new Regex(_keyTokenPattern);
+        protected readonly Regex _arrayTokenRegex = new Regex(_arrayTokenPattern);
+        protected readonly Regex _keyTokenRegex = new Regex(_keyTokenPattern);
 
-        internal Dictionary<string, JSONNode> _keyPathToJsonNodeLookup = new Dictionary<string, JSONNode>();
+        protected Dictionary<string, JSONNode> _keyPathToJsonNodeLookup = new Dictionary<string, JSONNode>();
  
 
         public override bool IsCollectionAtKeyPath(string resolvedKeyPath)
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-        internal IEnumerable<string> GetValueAsArrayKeyPaths(JSONNode arrayNode, string resolvedKeyPath, int rangeStart, int rangeCount)
+        protected IEnumerable<string> GetValueAsArrayKeyPaths(JSONNode arrayNode, string resolvedKeyPath, int rangeStart, int rangeCount)
         {
             // TODO: To optimize for large collections, this method should instantiate a class that can provide an IEnumerable<string> 
             //       but then only generates key paths as they are requested. This avoids creating large lists of key paths at once 
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-        internal IEnumerable<string> GetValueAsDictionaryKeyPaths(JSONNode dictNode, string resolvedKeyPath)
+        protected IEnumerable<string> GetValueAsDictionaryKeyPaths(JSONNode dictNode, string resolvedKeyPath)
         {
             // TODO: To optimize for large collections, this method should instantiate a class that can provide an IEnumerable<string> 
             //       but then only generates key paths as they are requested. This avoids creating large lists of key paths at once 
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        internal JSONNode KeyPathToNode(string resolvedKeyPath)
+        protected JSONNode KeyPathToNode(string resolvedKeyPath)
         {
             // walk down a simple path like:
             //      address.street
@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        internal void UpdateFromJson(string jsonString)
+        public void UpdateFromJson(string jsonString)
         {
             DataChangeSetBegin();
             _keyPathToJsonNodeLookup.Clear();
@@ -218,15 +218,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
             DataChangeSetEnd();
         }
 
-        internal void NotifyListeners()
+        protected void NotifyListeners()
         {
             foreach( string keyPath in _keyPathToDataConsumers.Keys )
             {
-                NotifyDataChanged(keyPath, GetValue(keyPath));
+                NotifyDataChanged(keyPath, GetValue(keyPath), DataChangeType.DatumModified, false);
             }
         }
 
-        internal override bool IsDataSourceAvailable()
+        protected override bool IsDataSourceAvailable()
         {
             return _jsonRootNode != null;
         }

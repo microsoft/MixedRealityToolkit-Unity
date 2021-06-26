@@ -7,6 +7,20 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
+    /// Specify the nature of the data change in notifications
+    /// </summary>
+ 
+    public enum DataChangeType
+    {
+        DatumAdded,                     // A new datum (of arbitrary complexity) came into being that did not exist prior to this
+        DatumModified,                  // An existing datum has been modified
+        DatumRemoved,                   // An existing datum has been removed
+        CollectionItemAdded,            // A new item (of arbitrary complexity) has been added to a collection
+        CollectionItemRemoved           // An item in a list has been removed from a collection
+    }
+
+
+    /// <summary>
     ///  Interface for all data sources. A data source is any managed set of data
     ///  that can be used to populate a data view via a data consumer. This data
     ///  can be static or dynamic, with any changes being reported to any data consumers
@@ -277,6 +291,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </remarks>
 
         void DataChangeSetEnd();
+
+        /// <summary>
+        /// Inform data source that its data has changed 
+        /// </summary>
+        /// <remarks>
+        /// This is used in situations where SetValue() is not being used to modify
+        /// the managed data, and the data source is not otherwise aware that the data
+        /// has changed. This directly propagates the notification to all data consumers
+        /// who are listening for this specific keyPath.
+        /// </remarks>
+        /// 
+        /// <param name="keyPath"></param>
+        /// <param name="newValue"></param>
+        /// <param name="changeType"></param>
+        /// <param name="isAtomicChange">Is this the only change notification in a set of related changes.</param>
+
+
+        void NotifyDataChanged(string keyPath, object newValue, DataChangeType changeType, bool isAtomicChange );
 
         /// <summary>
         /// Notify all listeners that data has changed. 

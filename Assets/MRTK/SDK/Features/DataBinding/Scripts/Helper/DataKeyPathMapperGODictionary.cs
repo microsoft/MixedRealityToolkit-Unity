@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public IDataKeyPathMapper DataKeyPathMapper { get { return _dataKeyPathMapperDictionary; } }
 
-        internal DataKeyPathMapperDictionary _dataKeyPathMapperDictionary = new DataKeyPathMapperDictionary();
+        protected DataKeyPathMapperDictionary _dataKeyPathMapperDictionary = new DataKeyPathMapperDictionary();
 
 
         void Awake()

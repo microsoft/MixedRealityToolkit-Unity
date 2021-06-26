@@ -20,13 +20,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
     {
 
         [SerializeField]
-        internal int _collectionSize = 200;
+        protected int _collectionSize = 200;
 
-        internal int _counter = 0;
+        protected int _counter = 0;
 
-        internal override IDataSource AllocateDataSource()
-        {
-            return new DataSourceObjects();
+        public override IDataSource GetDataSource()
+        { 
+            if (m_dataSource == null)
+            {
+                m_dataSource = new DataSourceObjects();
+            }
+
+            return m_dataSource;
         }
 
 
@@ -39,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-        internal void UpdateAllData()
+        protected void UpdateAllData()
         {
             DataChangeSetBegin();
 
@@ -48,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override void InitializeDataSource()
+        protected override void InitializeDataSource()
         {
             // Enable either the dynamic or static versions of 
             // the same data set structure.
@@ -58,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal void InitializeDataSourceDynamic()
+        protected void InitializeDataSourceDynamic()
         {
             int maxImageId = 101;
             string[] dates = { "February 26, 2020", "January 1, 2000", "March 1, 2018", "April 29, 2017", "May 5, 1999", "June 21, 1980" };
@@ -97,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-        internal void Randomize(string[] items)
+        protected void Randomize(string[] items)
         {
             System.Random rand = new System.Random();
 
@@ -117,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// randomly generated entries of InitializeDataSourceDynamic().
         /// </summary>
         /// 
-        internal void InitializeDataSourceStatic()
+        protected void InitializeDataSourceStatic()
         {
             /****
              *  Equivalent JSON to the programmatically generated data set.

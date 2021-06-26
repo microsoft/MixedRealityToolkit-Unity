@@ -32,33 +32,33 @@ namespace Microsoft.MixedReality.Toolkit.Data
     {
         [Tooltip("Path of collection in the originating data source. For collections within collections, this would be relative to outer collection.")]
         [SerializeField]
-        internal string collectionKeyPath;
+        protected string collectionKeyPath;
 
         [Tooltip("The prefab to instantiate for each member of this collection.")]
         [SerializeField]
-        internal GameObject itemPrefab;
+        protected GameObject itemPrefab;
 
         [Tooltip("If it exists, an optional key path for an id field that can be used to optimize data fetching.")]
         [SerializeField]
-        internal string uniqueIdKeyPath;
+        protected string uniqueIdKeyPath;
 
         [Tooltip("Replace all data when any data has changed. If all data is occassionally re-fetched, then it may be more efficient to just start over.")]
         [SerializeField]
-        internal bool replaceAllOnChange;
+        protected bool replaceAllOnChange;
 
         [Tooltip("Collection Item Placer that determines how to present the collection. The default item placer moves each item by the specified item offset.")]
         [SerializeField]
-        internal DataCollectionItemPlacerGOBase itemPlacer;
+        protected DataCollectionItemPlacerGOBase itemPlacer;
 
 
-        internal Dictionary<string, GameObject> _idToGameObjectLookup = new Dictionary<string, GameObject>();
-        internal IDataObjectPool _dataObjectPool = new DataObjectPool();
+        protected Dictionary<string, GameObject> _idToGameObjectLookup = new Dictionary<string, GameObject>();
+        protected IDataObjectPool _dataObjectPool = new DataObjectPool();
 
         /// <summary>
         /// Called by DataConsumerGOBase to initialize this data consumer at the optimal point 
         /// in the initialization sequence.
         /// </summary>
-        internal override void InitializeDataConsumer()
+        protected override void InitializeDataConsumer()
         {
             FindNearestCollectionItemPlacer();
 
@@ -69,11 +69,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// 
         /// <remarks>
-        /// This internal method is unique to collection related Data Consumers. An Item Placer is used to
+        /// This protected method is unique to collection related Data Consumers. An Item Placer is used to
         /// place game objects (usually a prefab), into the viewers experience when all or a subset
         /// of a collection are requested from the data source.  These are usually inserted into
         /// a managed collection that offers scrolling and other list related UX features.</remarks>
-        internal void FindNearestCollectionItemPlacer()
+        protected void FindNearestCollectionItemPlacer()
         {
             if (itemPlacer == null)
             {
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <remarks>
         /// Normally this returns Unity specific component types, but this one only needs to manage itself.</remarks>
         /// <returns></returns>
-        internal override Type[] GetComponentTypes()
+        protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(DataConsumerCollection) };
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// be overridden for handling more complex scenarios.
         /// </remarks>
         /// <returns>True = manage DataConsumerCollection objects in this GO's children game objects. False = only manage this one.</returns>
-        internal override bool ManageChildren()
+        protected override bool ManageChildren()
         {
             return false;
         }
@@ -150,11 +150,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="componentType">Which component type is being provided. Only a DataConsumerCollection in this case.</param>
         /// <param name="component">The component of that type, typically the game object on which this script exists.</param>
         /// 
-        internal override void AddVariableKeyPathsForComponent(Type componentType, Component component)
+        protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
-            if (this.collectionKeyPath != null)
+            if (collectionKeyPath != null)
             {
-                AddKeyPath(this.collectionKeyPath);
+                AddKeyPath(collectionKeyPath);
             }
             else
             {
@@ -176,13 +176,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="resolvedKeyPath">Fully resolved key path after key mapping and disambiguating any parent collections.</param>
         /// <param name="localKeyPath">the originally provided local key path, usually the one provided in the Unity inspector.</param>
         /// <param name="newValue">An object that represents the collection.</param>
-        internal override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue)
+        /// <param name="dataChangeType">The nature of the data change.</param>
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType )
         {
             if (itemPrefab != null)
             {
-                if (localKeyPath == this.collectionKeyPath)
+                if (localKeyPath == collectionKeyPath)
                 {
-                    itemPlacer?.NotifyCollectionDataChanged();
+                    itemPlacer?.NotifyCollectionDataChanged(dataChangeType);
                 }
             }
         }
@@ -221,9 +222,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="requestId">Arbitrary unique request id that will be provided to the item placer.</param>
         /// 
         /// <returns>IEnumerator required for a CoRoutine.</returns>
-        internal IEnumerator InstantiatePrefabs(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, string requestId)
+        protected IEnumerator InstantiatePrefabs(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, string requestId)
         {
-            IEnumerable<string> collectionItemsKeyPaths = this._dataSource.GetCollectionKeyPathRange(this.collectionKeyPath, indexRangeStart, indexRangeCount);
+            IEnumerable<string> collectionItemsKeyPaths = _dataSource.GetCollectionKeyPathRange(collectionKeyPath, indexRangeStart, indexRangeCount);
 
             yield return null;
 
@@ -238,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 yield return null;
 
-                itemPlacer.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex++, childPrefab);
+                itemPlacer?.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex++, childPrefab);
 
                 // TODO: add logic to yield after a specified # of milliseconds since some
                 //       items can be fabricated faster than others
@@ -260,17 +261,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <returns>Collection size.</returns>
         public int GetCollectionItemCount()
         {
-            return _dataSource.GetCollectionCount(this.collectionKeyPath);
+            return _dataSource.GetCollectionCount(collectionKeyPath);
         }
 
 
-        internal GameObject GetPrefabInstance()
+        protected GameObject GetPrefabInstance()
         {
             GameObject newObject;
 
             if (_dataObjectPool.IsEmpty())
             {
-                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, this.transform);
+                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, transform);
             } 
             else
             {
@@ -328,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// 
         /// <param name="prefab"></param>
         /// <param name="collectionItemKeyPathPrefix"></param>
-        internal void UpdatePrefabDataConsumers(GameObject prefab, string collectionItemKeyPathPrefix)
+        protected void UpdatePrefabDataConsumers(GameObject prefab, string collectionItemKeyPathPrefix)
         {
             Component[] dataConsumers = prefab.GetComponentsInChildren(typeof(DataConsumerGOBase));
 

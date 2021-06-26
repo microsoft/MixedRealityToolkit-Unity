@@ -19,8 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
     {
         const int DefaultPoolSize = 50;
 
-        internal Queue<object> _objectPoolObjects = new Queue<object>();
-        internal int _poolMaximumSize = DefaultPoolSize;
+        protected Queue<object> _objectPoolObjects = new Queue<object>();
+        protected int _poolMaximumSize = DefaultPoolSize;
 
         public DataObjectPool(int poolSize = DefaultPoolSize)
         {

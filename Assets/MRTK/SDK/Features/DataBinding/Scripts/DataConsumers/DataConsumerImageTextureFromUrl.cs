@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     /// There are 2 methods to implement:
     /// 
-    ///     internal abstract void InitializeForComponent(Type componentType, Component component);
-    ///     internal abstract void PlaceImageTexture(Texture imageTexture);
+    ///     protected abstract void InitializeForComponent(Type componentType, Component component);
+    ///     protected abstract void PlaceImageTexture(Texture imageTexture);
     /// </remarks>
     /// 
 
@@ -41,13 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField] private int maxRandomLoadBalancingDelayInMilliseconds = 0;
 
 
-        internal bool _fetchInProgress = false;
-        internal string _waitingUrlToFetch = null;
-        internal int _frameDelayCountdown = 0;
-        internal System.Random _random;
-        internal Material _imageMaterial;
+        protected bool _fetchInProgress = false;
+        protected string _waitingUrlToFetch = null;
+        protected int _frameDelayCountdown = 0;
+        protected System.Random _random;
+        protected Material _imageMaterial;
 
-        internal readonly float FramesPerMillisecond = 60.0f / 1000.0f; // 60 frames per 1000 milliscends
+        protected readonly float FramesPerMillisecond = 60.0f / 1000.0f; // 60 frames per 1000 milliscends
 
         void Update()
         {
@@ -55,33 +55,33 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-        internal override bool ManageChildren()
+        protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
-        internal override void InitializeDataConsumer()
+        protected override void InitializeDataConsumer()
         {
             _random = new System.Random();
         }
 
-        internal override void AddVariableKeyPathsForComponent(Type componentType, Component component)
+        protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
             InitializeForComponent(componentType, component);
 
-            AddKeyPath(this.keyPath);
+            AddKeyPath(keyPath);
         }
 
 
-        internal abstract void InitializeForComponent(Type componentType, Component component);
-        internal abstract void PlaceImageTexture(Texture2D imageTexture);
+        protected abstract void InitializeForComponent(Type componentType, Component component);
+        protected abstract void PlaceImageTexture(Texture2D imageTexture);
 
 
-        internal override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
         {
             // Debug.Log("ProcessDataChanged " + resolvedKeyPath + ",  local: " + localKeyPath);
 
-            if (localKeyPath == this.keyPath)
+            if (localKeyPath == keyPath)
             {
                 string newUrl = newValue.ToString();
                 _frameDelayCountdown = (int)((float)maxRandomLoadBalancingDelayInMilliseconds * FramesPerMillisecond);
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        internal void CheckForWaitingUrlToFetch()
+        protected void CheckForWaitingUrlToFetch()
         {
             if (_waitingUrlToFetch != null && _fetchInProgress == false && --_frameDelayCountdown <= 0)
             {
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal IEnumerator FetchImageTexture(string uri)
+        protected IEnumerator FetchImageTexture(string uri)
         {
             bool doneWithSuccess = false;
             const int kMaxRetries = 3;
@@ -132,14 +132,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                     else
                     {
+#if UNITY_2019_1_OR_NEWER
                         bool saveAllowThreaded = Texture.allowThreadedTextureCreation;
                         Texture.allowThreadedTextureCreation = true;
-
+#endif
                         Texture2D imageTexture = DownloadHandlerTexture.GetContent(webRequest);
 
                         PlaceImageTexture(imageTexture);
 
+#if UNITY_2019_1_OR_NEWER
                         Texture.allowThreadedTextureCreation = saveAllowThreaded;
+#endif
                         doneWithSuccess = true;
                     }
                     _fetchInProgress = false;

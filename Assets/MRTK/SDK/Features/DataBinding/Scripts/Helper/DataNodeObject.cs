@@ -17,9 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataNodeObject : IDataNode
     {
 
-        internal object _value;
+        protected object _value;
 
-        internal DataNodeType _type;
+        protected DataNodeType _type;
 
         public DataNodeObject()
         {
@@ -142,12 +142,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal Dictionary<string, IDataNode> GetMap()
+        protected Dictionary<string, IDataNode> GetMap()
         {
             return _value as Dictionary<string, IDataNode>;
         }
 
-        internal List<IDataNode> GetArray()
+        protected List<IDataNode> GetArray()
         {
             return _value as List<IDataNode>;
         }

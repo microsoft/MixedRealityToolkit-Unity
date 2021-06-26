@@ -36,22 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private bool manageChildren = true;
 
-        internal List<TextMeshProUGUI> _textComponents = new List<TextMeshProUGUI>();
+        protected List<TextMeshProUGUI> _textComponents = new List<TextMeshProUGUI>();
 
 
-        internal override void InitializeDataConsumer()
+        protected override void InitializeDataConsumer()
         {
         }
 
 
-        internal override Type[] GetComponentTypes()
+        protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(TextMeshProUGUI) };
             return types;
         }
 
-        internal override bool ManageChildren()
+        protected override bool ManageChildren()
         {
             return manageChildren;
         }
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType )
         {
 
             string stylesheetPath = "Stylesheets/" + newValue.ToString();
@@ -79,7 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 foreach (TextMeshProUGUI textMeshComponent in _textComponents)
                 {
+#if UNITY_2019_1_OR_NEWER
                     textMeshComponent.styleSheet = tmpStyleSheet;
+#else
+                    Debug.LogWarning("TextMeshPro stylesheets only work in Unity 2019 or later.");
+#endif
                 }
             }
 
@@ -87,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        internal override void AddVariableKeyPathsForComponent(Type componentType, Component component)
+        protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {   
             // We only asked for TextMeshProGUI components, so we can confidently cast here.
 

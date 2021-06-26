@@ -18,14 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     /// </summary>
 
-    public abstract class DataSourceBase : IDataSource
+    public class DataSourceBase : IDataSource
     {
 
-        internal IDataKeyPathMapper _dataKeyPathMapper = null;
+        protected IDataKeyPathMapper _dataKeyPathMapper = null;
 
-        internal Dictionary<string, List<IDataConsumer>> _keyPathToDataConsumers = new Dictionary<string, List<IDataConsumer>>();
-        internal HashSet<IDataConsumer> _dataConsumers = new HashSet<IDataConsumer>();
-        internal Regex _findArrayIndexRegex = new Regex( @"\[(\d+)\]" );
+        protected Dictionary<string, List<IDataConsumer>> _keyPathToDataConsumers = new Dictionary<string, List<IDataConsumer>>();
+        protected HashSet<IDataConsumer> _dataConsumers = new HashSet<IDataConsumer>();
+        protected Regex _findArrayIndexRegex = new Regex( @"\[(\d+)\]" );
 
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (IsDataSourceAvailable())
             {
                 SetValueInternal(resolvedKeyPath, newValue);
-                NotifyDataChanged(resolvedKeyPath, newValue);
+                NotifyDataChanged(resolvedKeyPath, newValue, DataChangeType.DatumModified, false);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if ( value != null)
             {
                 dataConsumer.DataChangeSetBegin(this);
-                dataConsumer.NotifyDataChanged(this, resolvedKeyPath, value);
+                dataConsumer.NotifyDataChanged(this, resolvedKeyPath, value, DataChangeType.DatumAdded);
                 dataConsumer.DataChangeSetEnd(this);
             }
 
@@ -204,41 +204,60 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        public abstract object GetValueInternal(string resolvedKeyPath);
-
+        public virtual object GetValueInternal(string resolvedKeyPath)
+        {
+            // override to return actual value from your custom data source
+            return null;
+        }
 
         public virtual void SetValueInternal(string resolvedKeyPath, object newValue)
         {
             // Default provided since not all data sources need to support setting of values
             //
             // NOTE: Remember to call NotifyDataChanged when overriding this method
-            // NotifyDataChanged(keyPath, newValue);
+            // NotifyDataChanged(keyPath, newValue, DataChangeType.DatumModified);
         }
 
 
-        internal void NotifyDataChanged(string resolvedKeyPath, object newValue)
+        public void NotifyDataChanged(string resolvedKeyPath, object newValue, DataChangeType changeType, bool isAtomicChange )
         {
             if (_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
             {
+                if ( isAtomicChange )
+                {
+                    DataChangeSetBegin();   // TODO: optimize to only send to consumers that will actually be notified
+                }
+
                 List<IDataConsumer> dataConsumers = _keyPathToDataConsumers[resolvedKeyPath];
                 foreach (IDataConsumer dataConsumer in dataConsumers)
                 {
-                    dataConsumer.NotifyDataChanged(this, resolvedKeyPath, newValue);
+                    dataConsumer.NotifyDataChanged(this, resolvedKeyPath, newValue, changeType);
+                }
+
+                if (isAtomicChange )
+                {
+                    DataChangeSetEnd();  // TODO: optimize to only send to consumers that will actually be notified
                 }
             }
         }
 
+
         public void NotifyAllChanged()
         {
-            foreach( KeyValuePair<string,List<IDataConsumer>> dataConsumersKeyValue in _keyPathToDataConsumers)
+            DataChangeSetBegin();
+
+            foreach ( KeyValuePair<string,List<IDataConsumer>> dataConsumersKeyValue in _keyPathToDataConsumers)
             {
                 List<IDataConsumer> dataConsumers = dataConsumersKeyValue.Value;
 
                 foreach (IDataConsumer dataConsumer in dataConsumers)
                 {
-                    dataConsumer.NotifyDataChanged(this, dataConsumersKeyValue.Key, GetValue(dataConsumersKeyValue.Key) );
+                    dataConsumer.NotifyDataChanged(this, dataConsumersKeyValue.Key, GetValue(dataConsumersKeyValue.Key), DataChangeType.DatumModified );
                 }
             }
+
+            DataChangeSetEnd();
+
         }
 
 
@@ -260,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
       
-        internal virtual bool IsDataSourceAvailable()
+        protected virtual bool IsDataSourceAvailable()
         {
             // override if an async datasource may not yet have finished loading
             return true;

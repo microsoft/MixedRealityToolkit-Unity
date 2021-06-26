@@ -21,117 +21,129 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     /// </remarks>
 
-    public abstract class DataSourceGOBase : MonoBehaviour, IDataSource
+    public abstract class DataSourceGOBase : MonoBehaviour, IDataSource, IDataSourceProvider
     {
         [Tooltip("Optional DataKeyPathMapper that translates between local view key paths and data source key paths. This is useful for re-using prefabs.")]
         [SerializeField]
         private DataKeyPathMapperGODictionary keyPathMapper;
 
-        internal IDataSource _dataSource;
+        protected IDataSource m_dataSource;
 
-        void Awake()
+        protected void Awake()
         {
-            _dataSource = AllocateDataSource();
+            m_dataSource = GetDataSource();
         }
 
-        void Start()
+        protected void Start()
         {
             if (keyPathMapper != null)
             {
-                _dataSource.SetDataKeyPathMapper(keyPathMapper as IDataKeyPathMapper);
+                m_dataSource?.SetDataKeyPathMapper(keyPathMapper as IDataKeyPathMapper);
             }
             InitializeDataSource();
         }
 
         public bool IsEnabled()
         {
-            return this.enabled;
+            return enabled;
         }
 
         /// <summary>
         /// Allocate the correct data source
         /// </summary>
         /// <remarks>
-        /// Allocate whatever data source is desired here in your derived class.  Further initialization can occur when InitializeDataSource() is called.
+        /// IDataSourceProvider method. 
+        /// 
+        /// Attach whatever data source is desired here in your derived class if not already allocated.  
+        /// Further initialization can occur when InitializeDataSource() is called.
         /// </remarks>
-        internal abstract IDataSource AllocateDataSource();
+        public virtual IDataSource GetDataSource()
+        {
+            // This should be overridden to allocate an appropriate data source if not already allocated.
+            return m_dataSource;
+        }
 
 
-        internal virtual void InitializeDataSource()
+        protected virtual void InitializeDataSource()
         {
             // override for additional initialization.
         }
 
         public string ResolveKeyPath(string resolvedKeyPathPrefix, string localKeyPath)
         {
-            return _dataSource?.ResolveKeyPath(resolvedKeyPathPrefix, localKeyPath);
+            return m_dataSource?.ResolveKeyPath(resolvedKeyPathPrefix, localKeyPath);
         }
 
         public void SetDataKeyPathMapper( IDataKeyPathMapper keyPathMapper )
         {
-             _dataSource?.SetDataKeyPathMapper(keyPathMapper);
+             m_dataSource?.SetDataKeyPathMapper(keyPathMapper);
 
         }
     
         public virtual object GetValue(string resolvedKeyPath)
         {
 
-            return _dataSource?.GetValue(resolvedKeyPath);
+            return m_dataSource?.GetValue(resolvedKeyPath);
         }
 
 
         public virtual void SetValue(string resolvedKeyPath, object newValue)
         {
-                _dataSource?.SetValue(resolvedKeyPath, newValue);
+                m_dataSource?.SetValue(resolvedKeyPath, newValue);
         }
 
 
         public void AddDataConsumerListener( string resolvedKeyPath, IDataConsumer dataConsumer)
         {
-            _dataSource?.AddDataConsumerListener(resolvedKeyPath, dataConsumer);
+            m_dataSource?.AddDataConsumerListener(resolvedKeyPath, dataConsumer);
         }
 
 
         public void RemoveDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
-                _dataSource?.RemoveDataConsumerListener(resolvedKeyPath, dataConsumer);
+                m_dataSource?.RemoveDataConsumerListener(resolvedKeyPath, dataConsumer);
         }
 
         public void DataChangeSetBegin()
         {
-            _dataSource?.DataChangeSetBegin();
+            m_dataSource?.DataChangeSetBegin();
         }
 
         public void DataChangeSetEnd()
         {
-             _dataSource?.DataChangeSetEnd();
+             m_dataSource?.DataChangeSetEnd();
         }
 
 
         // Dictionary data source does not support collections
         public virtual bool IsCollectionAtKeyPath(string resolvedKeyPath)
         {
-            return _dataSource?.IsCollectionAtKeyPath(resolvedKeyPath) ?? false;
+            return m_dataSource?.IsCollectionAtKeyPath(resolvedKeyPath) ?? false;
         }
 
         public virtual int GetCollectionCount(string resolvedKeyPath)
         {
-           return  _dataSource?.GetCollectionCount(resolvedKeyPath) ?? 0;
+           return  m_dataSource?.GetCollectionCount(resolvedKeyPath) ?? 0;
         }
 
         public virtual string GetNthCollectionKeyPathAt(string resolvedKeyPath, int n)
         {
-            return _dataSource?.GetNthCollectionKeyPathAt(resolvedKeyPath, n);
+            return m_dataSource?.GetNthCollectionKeyPathAt(resolvedKeyPath, n);
         }
 
         public IEnumerable<string> GetCollectionKeyPathRange(string resolvedKeyPath, int rangeStart, int rangeCount)
         {
-            return _dataSource?.GetCollectionKeyPathRange(resolvedKeyPath, rangeStart, rangeCount );
+            return m_dataSource?.GetCollectionKeyPathRange(resolvedKeyPath, rangeStart, rangeCount );
+        }
+
+        public void NotifyDataChanged( string resolvedKeyPath, object newValue, DataChangeType dataChangeType, bool isAtomicChange )
+        {
+            m_dataSource?.NotifyDataChanged(resolvedKeyPath, newValue, dataChangeType, isAtomicChange);
         }
 
         public void NotifyAllChanged()
         {
-            _dataSource?.NotifyAllChanged();
+            m_dataSource?.NotifyAllChanged();
         }
     }
 }

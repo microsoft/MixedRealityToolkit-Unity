@@ -12,17 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("The data source to use for setting the current theme.")]
 
         [SerializeField]
-        internal DataSourceGOBase dataSource;
+        protected DataSourceGOBase dataSource;
 
         [Tooltip("A list of valid theme names.")]
         [SerializeField]
-        internal string[] themeNames;
+        protected string[] themeNames;
 
         [Tooltip("Keypath for variable to receive theme name.")]
         [SerializeField]
-        internal string keyPathForTheme;
+        protected string keyPathForTheme;
 
-        internal int _currentTheme = 0;
+        protected int _currentTheme = 0;
 
 
         public void NextTheme()

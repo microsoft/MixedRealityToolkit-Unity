@@ -49,103 +49,29 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     public class DataSourceObjects : DataSourceBase
     {
-        static readonly string CollectionElementkeyPathPrefixFormat = "{0}[{1:d}]";
-        static readonly string DictionaryElementkeyPathPrefixFormat = "{0}[{1}]";
+        protected static readonly string CollectionElementkeyPathPrefixFormat = "{0}[{1:d}]";
+        protected static readonly string DictionaryElementkeyPathPrefixFormat = "{0}[{1}]";
 
 
-        static readonly string _arrayTokenPattern = @"^\s*\[\s*([a-zA-Z0-9\-_]*?)\s*\]";
-        static readonly string _keyTokenPattern = @"^\s*([a-zA-Z0-9\-_]+?)(?:[.\[]|$)";
+        protected static readonly string ArrayTokenPattern = @"^\s*\[\s*([a-zA-Z0-9\-_]*?)\s*\]";
+        protected static readonly string KeyTokenPattern = @"^\s*([a-zA-Z0-9\-_]+?)(?:[.\[]|$)";
 
-        internal readonly Regex _arrayTokenRegex = new Regex(_arrayTokenPattern);
-        internal readonly Regex _keyTokenRegex = new Regex(_keyTokenPattern);
+        protected readonly Regex m_arrayTokenRegex = new Regex(ArrayTokenPattern);
+        protected readonly Regex m_keyTokenRegex = new Regex(KeyTokenPattern);
 
-        internal DataNodeObject _rootNode;
+        protected DataNodeObject m_rootNode;
 
-        internal Dictionary<string, IDataNode> _keyPathToNodeLookup = new Dictionary<string, IDataNode>();
-
-
-        /// <summary>
-        /// Efficient enumerable for collections that only creates exactly what is requested.
-        /// </summary>
-        class KeyPathEnumerable : IEnumerable<string>, IEnumerator<string>
-        {
-            internal int _rangeStart;
-            internal int _rangeEnd;
-            internal int _currentIndex;
-            internal string _keyPathPrefix;
-
-            public KeyPathEnumerable(string keyPathPrefix, int rangeStart, int rangeCount)
-            {
-                _rangeStart = rangeStart;
-                _rangeEnd = rangeStart + rangeCount;
-                _keyPathPrefix = keyPathPrefix;
-
-                _currentIndex = _rangeStart;
-            }
-
-            public IEnumerator<string> GetEnumerator()
-            {
-                return this as IEnumerator<string>;
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return this.GetEnumerator();
-            }
-
-
-            public string Current
-            {
-                get
-                {
-                    if (_currentIndex <= _rangeEnd)
-                    {
-                        return GenerateKeyPath();
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException();
-                    }
-                }
-            }
-
-            object IEnumerator.Current { get { return Current; } }
-
-
-            public void Reset()
-            {
-                _currentIndex = _rangeStart;
-            }
-
-            public bool MoveNext()
-            {
-
-                if (_currentIndex <= _rangeEnd)
-                {
-                    _currentIndex++;
-                }
-
-                return _currentIndex <= _rangeEnd;
-            }
-
-            internal string GenerateKeyPath()
-            {
-                // minus 1 because a MoveNext is done before fetching first item.
-                return string.Format(CollectionElementkeyPathPrefixFormat, _keyPathPrefix, _currentIndex - 1);
-            }
-
-            void IDisposable.Dispose() { }
-        }
+        protected Dictionary<string, IDataNode> m_keyPathToNodeLookup = new Dictionary<string, IDataNode>();
 
 
         public DataSourceObjects()
         {
-            _rootNode = new DataNodeObject(DataNodeType.Map);
+            m_rootNode = new DataNodeObject(DataNodeType.Map);
         }
 
         public DataSourceObjects(DataNodeType rootNodeType, object value = null)
         {
-            _rootNode = new DataNodeObject(rootNodeType, value);
+            m_rootNode = new DataNodeObject(rootNodeType, value);
         }
 
 
@@ -224,13 +150,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal IEnumerable<string> GetValueAsArrayKeyPathsOptimized(IDataNode arrayNode, string resolvedKeyPath, int rangeStart, int rangeCount)
+        protected IEnumerable<string> GetValueAsArrayKeyPathsOptimized(IDataNode arrayNode, string resolvedKeyPath, int rangeStart, int rangeCount)
         {
             return new KeyPathEnumerable(resolvedKeyPath, rangeStart, rangeCount) as IEnumerable<string>;
         }
 
 
-        internal IEnumerable<string> GetValueAsArrayKeyPaths(IDataNode arrayNode, string resolvedKeyPath, int rangeStart, int rangeCount)
+        protected IEnumerable<string> GetValueAsArrayKeyPaths(IDataNode arrayNode, string resolvedKeyPath, int rangeStart, int rangeCount)
         {
             int rangeMax = rangeStart + rangeCount;
             int collectionCount = arrayNode.GetCollectionCount();
@@ -250,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-        internal IEnumerable<string> GetValueAsDictionaryKeyPaths(IDataNode mapNode, string resolvedKeyPath)
+        protected IEnumerable<string> GetValueAsDictionaryKeyPaths(IDataNode mapNode, string resolvedKeyPath)
         {
             List<string> keyPaths = new List<string>();
             foreach (string key in mapNode.GetMapKeys())
@@ -263,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        internal IDataNode KeyPathToNode(string resolvedKeyPath, bool createIfMissing = false)
+        protected IDataNode KeyPathToNode(string resolvedKeyPath, bool createIfMissing = false)
         {
             // walk down a simple path like:
             //      [1].name
@@ -272,20 +198,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
             //      contacts[2].email_addresses[2]
             //      matrix[1][2]
 
-            if (_keyPathToNodeLookup.ContainsKey(resolvedKeyPath))
+            if (m_keyPathToNodeLookup.ContainsKey(resolvedKeyPath))
             {
-                return _keyPathToNodeLookup[resolvedKeyPath];
+                return m_keyPathToNodeLookup[resolvedKeyPath];
             }
             else
             {
-                IDataNode currentNode = _rootNode;
+                IDataNode currentNode = m_rootNode;
 
                 string keyPath = resolvedKeyPath;
 
                 while (keyPath != null && keyPath != "")
                 {
                     int amountToSkip = 0;
-                    MatchCollection arrayMatches = _arrayTokenRegex.Matches(keyPath);
+                    MatchCollection arrayMatches = m_arrayTokenRegex.Matches(keyPath);
                     if (arrayMatches.Count > 0)
                     {
                         string arrayIndexText = arrayMatches[0].Groups[1].Value;
@@ -317,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                     else
                     {
-                        MatchCollection keyMatches = _keyTokenRegex.Matches(keyPath);
+                        MatchCollection keyMatches = m_keyTokenRegex.Matches(keyPath);
                         if (keyMatches.Count > 0)
                         {
                             string key = keyMatches[0].Groups[1].Value;
@@ -328,9 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                                 {
                                     currentNode.SetNodeType(DataNodeType.Map);
                                 }
-                    
+
                                 if (currentNode.GetNodeByKey(key) == null)
+                                {
                                     currentNode.AddToMap(key, new DataNodeObject());
+                                }
                             }
 
                             if (currentNode.IsMap())
@@ -363,15 +291,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (currentNode != null)
                 {
-                    _keyPathToNodeLookup[resolvedKeyPath] = currentNode;
+                    m_keyPathToNodeLookup[resolvedKeyPath] = currentNode;
                 }
                 return currentNode;
             }
         }
 
-        internal override bool IsDataSourceAvailable()
+        protected override bool IsDataSourceAvailable()
         {
-            return _rootNode != null;
+            return m_rootNode != null;
         }
     } // End of class DataSourceObjects
 

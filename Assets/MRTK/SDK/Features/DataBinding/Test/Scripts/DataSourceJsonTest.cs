@@ -26,10 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private float secondsBetweenFetches = 15.0f;
 
 
-        internal float _time = 0.0f;
+        protected float _time = 0.0f;
 
 
-        internal override void InitializeDataSource()
+        protected override void InitializeDataSource()
         {
             _time = secondsBetweenFetches;
         }

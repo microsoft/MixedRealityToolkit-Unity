@@ -29,10 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     public class DataConsumerText : DataConsumerGOBase
     {
-        internal class ComponentInformation
+        protected class ComponentInformation
         {
 
-            internal class TextVariableInformation
+            protected class TextVariableInformation
             {
                 public int Position { get; set; }
                 public string DataBindVariable { get; set; }
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
 
-            internal void ProcessDataChanged( IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue)
+            public void ProcessDataChanged( IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
             {
                 if (_keyPathToVariableInformation.ContainsKey(resolvedKeyPath))
                 {
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
 
-        } /* End of internal class ComponentInformation */
+        } /* End of protected class ComponentInformation */
 
 
 
@@ -161,22 +161,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /* Used to find all keypaths that influence a specific component to make sure all variable data is updated when any one element changes */
-        internal Dictionary<Component, ComponentInformation> _componentInfoLookup = new Dictionary<Component, ComponentInformation>();
+        protected Dictionary<Component, ComponentInformation> _componentInfoLookup = new Dictionary<Component, ComponentInformation>();
 
  
-        internal override void InitializeDataConsumer()
+        protected override void InitializeDataConsumer()
         {
         }
 
 
-        internal override Type[] GetComponentTypes()
+        protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(TextMeshProUGUI), typeof(UnityEngine.UI.Text) };
             return types;
         }
 
-        internal override bool ManageChildren()
+        protected override bool ManageChildren()
         {
             return manageChildren;
         }
@@ -193,11 +193,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType )
         {
             foreach (ComponentInformation componentInfo in _componentInfoLookup.Values)
             {
-                componentInfo.ProcessDataChanged(dataSource, resolvedKeyPath, localKeyPath, newValue);
+                componentInfo.ProcessDataChanged(dataSource, resolvedKeyPath, localKeyPath, newValue, dataChangeType);
             }
         }
 
@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        internal override void AddVariableKeyPathsForComponent(Type componentType, Component component)
+        protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
             ComponentInformation componentInfo;
 
@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 string localKeyPath = match.Groups[1].Value;
 
-                string resolvedKeyPath = DataSource.ResolveKeyPath(this.ResolvedKeyPathPrefix, localKeyPath);
+                string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
                 componentInfo.AddKeyPath(resolvedKeyPath, localKeyPath, match.Index, match.Value);
 

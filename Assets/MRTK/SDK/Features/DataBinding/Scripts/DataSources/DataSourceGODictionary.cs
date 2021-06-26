@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         [Tooltip("A list of key value pairs that comprise a simple data source.")]
         [SerializeField]
-        private KeyPathValue[] keyPathValues;
+        protected KeyPathValue[] keyPathValues;
 
 
 
@@ -45,21 +45,26 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        internal override IDataSource AllocateDataSource()
+        public override IDataSource GetDataSource()
         {
-            return new DataSourceDictionary();
+            if (m_dataSource == null)
+            {
+                m_dataSource = new DataSourceDictionary();
+            }
+
+            return m_dataSource;
         }
 
-        private void Start()
+        protected override void InitializeDataSource()
         {
-            _dataSource.DataChangeSetBegin();
+            m_dataSource.DataChangeSetBegin();
 
             foreach (KeyPathValue keyPathValue in keyPathValues)
             {
-                _dataSource.SetValue(keyPathValue.KeyPath, keyPathValue.Value);
+                m_dataSource.SetValue(keyPathValue.KeyPath, keyPathValue.Value);
             }
 
-            _dataSource.DataChangeSetEnd();
+            m_dataSource.DataChangeSetEnd();
         }
     }
 }
