@@ -736,8 +736,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void OnEnable()
         {
-            CreateRig();
+            DetermineTargetBounds();
             SetActivationFlags();
+            CreateRig();
             CaptureInitialState();
         }
 
