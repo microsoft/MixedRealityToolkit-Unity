@@ -255,9 +255,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             await webRequest.SendWebRequest();
 
             long responseCode = webRequest.responseCode;
-            byte[] downloadHandlerData = webRequest.downloadHandler?.data;
-            string downloadHandlerText = await Task
-                .Run(() => System.Text.Encoding.Default.GetString(downloadHandlerData));
+            Func<byte[]> downloadHandlerData = () => webRequest.downloadHandler?.data;
+            Func<byte[], Task<string>> downloadHandlerText = async (byteArray) => await Task.Run(() =>
+                 System.Text.Encoding.Default.GetString(byteArray)).ConfigureAwait(false);
 
 #if UNITY_2020_1_OR_NEWER
             if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (webRequest.isNetworkError || webRequest.isHttpError)
 #endif // UNITY_2020_1_OR_NEWER
             {
-                if (webRequest.responseCode == 401) { return new Response(false, "Invalid Credentials", null, responseCode); }
+                if (responseCode == 401) { return new Response(false, "Invalid Credentials", null, responseCode); }
 
                 if (webRequest.GetResponseHeaders() == null)
                 {
@@ -273,16 +273,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
-                Debug.LogError($"REST Error: {webRequest.responseCode}\n{downloadHandlerText}{responseHeaders}");
-                return new Response(false, $"{responseHeaders}\n{downloadHandlerText}", downloadHandlerData, responseCode);
+                Debug.LogError($"REST Error: {webRequest.responseCode}\n{await downloadHandlerText(downloadHandlerData.Invoke())}{responseHeaders}");
+                return new Response(false, $"{responseHeaders}\n{await downloadHandlerText(downloadHandlerData.Invoke())}", downloadHandlerData.Invoke(), responseCode);
             }
             if (readResponseData)
             {
-                return new Response(true, downloadHandlerText, downloadHandlerData, responseCode);
+                return new Response(true, await downloadHandlerText(downloadHandlerData.Invoke()), downloadHandlerData.Invoke(), responseCode);
             }
             else // This option can be used only if action will be triggered in the same scope as the webrequest
             {
-                return new Response(true, () => downloadHandlerText, () => downloadHandlerData, responseCode);
+                return new Response(true, () => downloadHandlerText(downloadHandlerData.Invoke()).Result, () => downloadHandlerData.Invoke(), responseCode);
             }
         }
     }
