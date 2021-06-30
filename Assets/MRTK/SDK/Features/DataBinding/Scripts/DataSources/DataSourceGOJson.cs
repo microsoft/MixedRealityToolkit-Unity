@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected Regex _callbackRegex = new Regex(  @"^([a-zA-Z0-9_]+)\(" );
 
 
-        public override IDataSource GetDataSource()
+        public override IDataSource AllocateDataSource()
         {
             {
                 if (m_dataSource == null)

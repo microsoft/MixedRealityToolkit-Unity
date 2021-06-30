@@ -72,7 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override void SetValueInternal(string resolvedKeyPath, object value)
         {
-            MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath);
+            object currentObject = null;
+            MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath, out currentObject);
             if (memberInfo != null)
             {
                 SetValueFromFieldOrProperty(m_dataSourceObject, memberInfo, value);
@@ -165,29 +166,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 return m_dataSourceObject;   // root object
             }
 
-            MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath);
-            if ( memberInfo != null)
+            object foundObject = null;
+            MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath, out foundObject );
+            if ( memberInfo != null && foundObject == null )
             {
                 return GetValueFromFieldOrProperty(m_dataSourceObject, memberInfo);
             }
             else
             {
-               return null;
+               return foundObject;
             }
         }
 
 
-        protected MemberInfo KeyPathToMemberInfo(string resolvedKeyPath)
+        protected MemberInfo KeyPathToMemberInfo(string resolvedKeyPath, out object currentObject )
         {
+            // TODO: Either figure out a way to always get member info, or remove lookup
+
             // look in MemberInfo cache for a hit to save search time
-            if (m_keyPathToMemberInfoLookup.ContainsKey(resolvedKeyPath))
-            {
-                return m_keyPathToMemberInfoLookup[resolvedKeyPath];
-            }
-            else
+            //if (m_keyPathToMemberInfoLookup.ContainsKey(resolvedKeyPath))
+            //{
+            //   return m_keyPathToMemberInfoLookup[resolvedKeyPath];
+            //}
+            //else
             {
                 MemberInfo foundMemberInfo = null;
-                object currentObject = m_dataSourceObject;
+                currentObject = m_dataSourceObject;
 
                 string keyPath = resolvedKeyPath;
 
@@ -199,6 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     {
                         string arrayIndexText = arrayMatches[0].Groups[1].Value;
                         int arrayIndex = int.Parse(arrayIndexText);
+
+                        foundMemberInfo = null;     // TODO: For efficiency, add logic to get MemberInfo for an array or list
 
                         if (IsList(currentObject) )
                         {
@@ -254,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (currentObject != null && foundMemberInfo != null )
                 {
-                    m_keyPathToMemberInfoLookup[resolvedKeyPath] = foundMemberInfo;
+                    //m_keyPathToMemberInfoLookup[resolvedKeyPath] = foundMemberInfo;
                 }
                 return foundMemberInfo;
             }

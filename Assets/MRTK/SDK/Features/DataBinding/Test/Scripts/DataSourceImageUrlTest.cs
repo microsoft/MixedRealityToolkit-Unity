@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected int m_versionCounter = 0;
 
 
-        public override IDataSource GetDataSource()
+        public override IDataSource AllocateDataSource()
         {
             if (m_dataSource == null)
             {

@@ -43,9 +43,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private DataSourceReflection _dataSource;
         private TestInfo _dataSourceObject = new TestInfo();
 
-        // IDataSourceProvider method
+        /// <summary>
+        /// IDataSourceProvider method used to provide the correct
+        /// datasource, which in this case is the DataSourceReflection instance with
+        /// the specified _dataSourceObject attached to it to provide the actual
+        /// data using reflection.
+        /// </summary>
+
+
         public IDataSource GetDataSource()
         {
+            
             if ( _dataSource == null )
             {
                 _dataSource = new DataSourceReflection(_dataSourceObject);
@@ -54,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _dataSource;
         }
 
-        void Awake()
+        private void Awake()
         {
             GetDataSource();
             InitializeData();
@@ -63,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             string[] statusText = { "open", "pending", "cancelled", "inprogress", "completed" };
             _deltaSeconds += Time.deltaTime;

@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private int m_status = 0;
         private int m_score = 100;
 
-        public override IDataSource GetDataSource()
+        public override IDataSource AllocateDataSource()
         {
             if (m_dataSource == null)
             {

@@ -1258,7 +1258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119a0d63a5ce41e4ba94cde02b7ccfbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumVisibleItems: 999999
+  firstItemToPlace: 0
+  maximumItemsToPlace: 10
   requestId: 
   itemOffset: {x: 0, y: -0.3, z: 0}
   xCount: 1
@@ -1605,7 +1606,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119a0d63a5ce41e4ba94cde02b7ccfbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumVisibleItems: 999999
+  firstItemToPlace: 0
+  maximumItemsToPlace: 12
   requestId: 
   itemOffset: {x: 1, y: -0.3, z: 1}
   xCount: 3

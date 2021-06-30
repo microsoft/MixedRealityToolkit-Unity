@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected void Awake()
         {
-            m_dataSource = GetDataSource();
+            m_dataSource = AllocateDataSource();
         }
 
         protected void Start()
@@ -51,16 +51,36 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Allocate the correct data source
         /// </summary>
-        /// <remarks>
-        /// IDataSourceProvider method. 
+        /// <remarks> 
         /// 
+        /// Attach whatever data source is desired here in your derived class if not already allocated.
+        /// This method passes most IDataSource calls directly to the IDataSource provided in your
+        /// overridden method.
+        /// 
+        /// Further initialization can occur when InitializeDataSource() is called.
+        /// </remarks>
+        public virtual IDataSource AllocateDataSource()
+        {
+            // Override this method to allocate an appropriate data source if not already allocated.
+            return null;
+        }
+
+
+        /// <summary>
+        /// IDataSourceProvider method to get this data source.
+        /// </summary>
+        /// <remarks>
+
         /// Attach whatever data source is desired here in your derived class if not already allocated.  
         /// Further initialization can occur when InitializeDataSource() is called.
+        ///
+        /// NOTE: This does not return m_dataSource because then any logic in the subclass of this class will
+        /// never execute for any methods that overrides an IDataSource interface method.
         /// </remarks>
         public virtual IDataSource GetDataSource()
         {
             // This should be overridden to allocate an appropriate data source if not already allocated.
-            return m_dataSource;
+            return this;
         }
 
 
