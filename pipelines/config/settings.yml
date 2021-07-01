@@ -2,6 +2,7 @@ variables:
   # Unity version on AIPMR build agents
   Unity2018Version: Unity2018.4.26f1
   Unity2019Version: Unity2019.4.8f1
+  Unity2020Version: Unity2020.3.5f1
   # Unity version on internal build agents (release builds)
   Unity2018VersionInternal: Unity2018.4.26f1
   Unity2019VersionInternal: Unity2019.4.17f1
