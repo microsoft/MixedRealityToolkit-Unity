@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Threading.Tasks;
+
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
@@ -16,16 +19,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Response body from the resource.
         /// </summary>
-        public string ResponseBody => responseBody ?? (responseBody = responseBodyAction?.Invoke());
+        public async Task<string> GetResponseBody()
+        {
+            if (responseBody != null)
+            {
+                return responseBody;
+            }
+            return await responseBodyTask;
+        }
         private string responseBody;
-        private System.Func<string> responseBodyAction;
+        private Task<string> responseBodyTask;
 
         /// <summary>
         /// Response data from the resource.
         /// </summary>
         public byte[] ResponseData => responseData ?? (responseData = responseDataAction?.Invoke());
         private byte[] responseData;
-        private System.Func<byte[]> responseDataAction;
+        private Func<byte[]> responseDataAction;
 
         /// <summary>
         /// Response code from the resource.
@@ -38,17 +48,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public Response(bool successful, string responseBody, byte[] responseData, long responseCode)
         {
             Successful = successful;
-            responseBodyAction = null;
+            responseBodyTask = null;
             this.responseBody = responseBody;
             responseDataAction = null;
             this.responseData = responseData;
             ResponseCode = responseCode;
         }
 
-        public Response(bool successful, System.Func<string> responseBodyAction, System.Func<byte[]> responseDataAction, long responseCode)
+        public Response(bool successful, Task<string> responseBodyTask, Func<byte[]> responseDataAction, long responseCode)
         {
             Successful = successful;
-            this.responseBodyAction = responseBodyAction;
+            this.responseBodyTask = responseBodyTask;
+            responseBody = null;
+            this.responseDataAction = responseDataAction;
+            responseData = null;
+            ResponseCode = responseCode;
+        }
+
+        public Response(bool successful, Func<byte[]> responseDataAction, long responseCode)
+        {
+            Successful = successful;
+            responseBodyTask = ResponseUtils.BytesToString(responseDataAction.Invoke());
             responseBody = null;
             this.responseDataAction = responseDataAction;
             responseData = null;

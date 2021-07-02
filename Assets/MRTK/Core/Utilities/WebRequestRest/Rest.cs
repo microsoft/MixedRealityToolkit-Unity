@@ -255,9 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             await webRequest.SendWebRequest();
 
             long responseCode = webRequest.responseCode;
-            Func<byte[]> downloadHandlerData = () => webRequest.downloadHandler?.data;
-            Func<byte[], Task<string>> downloadHandlerText = async (byteArray) => await Task.Run(() =>
-                 System.Text.Encoding.Default.GetString(byteArray)).ConfigureAwait(false);
+            Func<byte[]> downloadHandlerDataAction = () => webRequest.downloadHandler?.data;
 
 #if UNITY_2020_1_OR_NEWER
             if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
@@ -273,16 +271,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
-                Debug.LogError($"REST Error: {webRequest.responseCode}\n{await downloadHandlerText(downloadHandlerData.Invoke())}{responseHeaders}");
-                return new Response(false, $"{responseHeaders}\n{await downloadHandlerText(downloadHandlerData.Invoke())}", downloadHandlerData.Invoke(), responseCode);
+                string downloadHandlerText = await ResponseUtils.BytesToString(downloadHandlerDataAction.Invoke());
+
+                Debug.LogError($"REST Error: {responseCode}\n{downloadHandlerText}{responseHeaders}");
+                return new Response(false, $"{responseHeaders}\n{downloadHandlerText}", downloadHandlerDataAction.Invoke(), responseCode);
             }
             if (readResponseData)
             {
-                return new Response(true, await downloadHandlerText(downloadHandlerData.Invoke()), downloadHandlerData.Invoke(), responseCode);
+                return new Response(true, await ResponseUtils.BytesToString(downloadHandlerDataAction.Invoke()), downloadHandlerDataAction.Invoke(), responseCode);
             }
             else // This option can be used only if action will be triggered in the same scope as the webrequest
             {
-                return new Response(true, () => downloadHandlerText(downloadHandlerData.Invoke()).Result, () => downloadHandlerData.Invoke(), responseCode);
+                return new Response(true, downloadHandlerDataAction, responseCode);
             }
         }
     }
