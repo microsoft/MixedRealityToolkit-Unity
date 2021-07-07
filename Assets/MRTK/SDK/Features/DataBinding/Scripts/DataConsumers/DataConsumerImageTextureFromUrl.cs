@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected string _waitingUrlToFetch = null;
         protected int _frameDelayCountdown = 0;
         protected System.Random _random;
-        protected Material _imageMaterial;
+        private IEnumerator _coroutine;
 
         protected readonly float FramesPerMillisecond = 60.0f / 1000.0f; // 60 frames per 1000 milliscends
 
@@ -54,6 +54,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
             CheckForWaitingUrlToFetch();
 
         }
+
+        private void OnDisable()
+        {
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+                _coroutine = null;
+            }
+            _fetchInProgress = false;
+            _waitingUrlToFetch = null;
+        }
+
 
         protected override bool ManageChildren()
         {
@@ -96,8 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     else
                     {
                         _fetchInProgress = true;
-
-                        StartCoroutine(FetchImageTexture(newUrl));
+                        _coroutine = FetchImageTexture(newUrl);
+                        StartCoroutine(_coroutine);
                     }
                 }
             }
@@ -108,7 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (_waitingUrlToFetch != null && _fetchInProgress == false && --_frameDelayCountdown <= 0)
             {
                 _fetchInProgress = true;
-                StartCoroutine(FetchImageTexture(_waitingUrlToFetch));
+                _coroutine = FetchImageTexture(_waitingUrlToFetch);
+                StartCoroutine(_coroutine);
                 _waitingUrlToFetch = null;
             }
         }
@@ -148,6 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     _fetchInProgress = false;
                 }
             }
+            _coroutine = null;
         }
 
     }

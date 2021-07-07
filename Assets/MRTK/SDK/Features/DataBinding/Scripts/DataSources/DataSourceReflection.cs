@@ -34,20 +34,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected static readonly Regex ArrayTokenRegex = new Regex(ArrayTokenPattern);
         protected static readonly Regex KeyTokenRegex = new Regex(KeyTokenPattern);
 
-        protected object m_dataSourceObject = null;
+        protected object _dataSourceObject = null;
 
-        protected Dictionary<string, MemberInfo> m_keyPathToMemberInfoLookup = new Dictionary< string, MemberInfo >();
+        protected Dictionary<string, MemberInfo> _keyPathToMemberInfoLookup = new Dictionary< string, MemberInfo >();
 
         public DataSourceReflection() { }
 
         public DataSourceReflection( object dataSourceObject )
         {
-            m_dataSourceObject = dataSourceObject;
+            _dataSourceObject = dataSourceObject;
         }
 
         public void SetDataSourceObject( object dataSourceObject )
         {
-            m_dataSourceObject = dataSourceObject;
+            _dataSourceObject = dataSourceObject;
         }
 
 
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath, out currentObject);
             if (memberInfo != null)
             {
-                SetValueFromFieldOrProperty(m_dataSourceObject, memberInfo, value);
+                SetValueFromFieldOrProperty(_dataSourceObject, memberInfo, value);
             }
         }
 
@@ -163,14 +163,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             if ( resolvedKeyPath == "")
             {
-                return m_dataSourceObject;   // root object
+                return _dataSourceObject;   // root object
             }
 
             object foundObject = null;
             MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath, out foundObject );
             if ( memberInfo != null && foundObject == null )
             {
-                return GetValueFromFieldOrProperty(m_dataSourceObject, memberInfo);
+                return GetValueFromFieldOrProperty(_dataSourceObject, memberInfo);
             }
             else
             {
@@ -184,14 +184,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // TODO: Either figure out a way to always get member info, or remove lookup
 
             // look in MemberInfo cache for a hit to save search time
-            //if (m_keyPathToMemberInfoLookup.ContainsKey(resolvedKeyPath))
+            //if (_keyPathToMemberInfoLookup.ContainsKey(resolvedKeyPath))
             //{
-            //   return m_keyPathToMemberInfoLookup[resolvedKeyPath];
+            //   return _keyPathToMemberInfoLookup[resolvedKeyPath];
             //}
             //else
             {
                 MemberInfo foundMemberInfo = null;
-                currentObject = m_dataSourceObject;
+                currentObject = _dataSourceObject;
 
                 string keyPath = resolvedKeyPath;
 
@@ -260,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (currentObject != null && foundMemberInfo != null )
                 {
-                    //m_keyPathToMemberInfoLookup[resolvedKeyPath] = foundMemberInfo;
+                    //_keyPathToMemberInfoLookup[resolvedKeyPath] = foundMemberInfo;
                 }
                 return foundMemberInfo;
             }
@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override bool IsDataSourceAvailable()
         {
-            return m_dataSourceObject != null;
+            return _dataSourceObject != null;
         }
     } // End of class DataSourceObjects
 

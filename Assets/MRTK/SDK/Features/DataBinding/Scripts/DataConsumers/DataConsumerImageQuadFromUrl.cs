@@ -20,8 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataConsumerImageQuadFromUrl : DataConsumerImageTextureFromUrl
     {
         [Tooltip("(Optional) Specific mesh renderer to populate with a retrieved image. If not specified, first MeshRenderer found in this or children will be used.")]
-        [SerializeField] private MeshRenderer ImageQuadMeshRenderer;
+        [SerializeField] 
+        private MeshRenderer imageQuadMeshRenderer;
 
+        [Tooltip("(Optional) Default material to use for showing image as a texture.")]
+        [SerializeField]
+        private Material defaultMaterial;
 
         protected override Type[] GetComponentTypes()
         {
@@ -33,20 +37,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override void InitializeForComponent(Type componentType, Component component)
         {
-            if (ImageQuadMeshRenderer == null)
+            if (imageQuadMeshRenderer == null)
             {
                 // No specific MeshRenderer specified, so assign the one that was found for us.
 
-                ImageQuadMeshRenderer = component as MeshRenderer;
+                imageQuadMeshRenderer = component as MeshRenderer;
             }
-            ImageQuadMeshRenderer.material = new Material(Shader.Find("Unlit/Texture")); ;
+
+            if (defaultMaterial != null )
+            {
+                imageQuadMeshRenderer.material = defaultMaterial;
+            }
         }
 
  
 
         protected override void PlaceImageTexture(Texture2D imageTexture)
         {
-            ImageQuadMeshRenderer.material.mainTexture = imageTexture;
+            imageQuadMeshRenderer.material.mainTexture = imageTexture;
 
         }
 

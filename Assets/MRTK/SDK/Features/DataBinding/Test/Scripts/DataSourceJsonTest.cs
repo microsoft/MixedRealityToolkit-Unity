@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     {
         [Tooltip("URL for a json data source")]
         [SerializeField]
-        private string url = "https://official-joke-api.appspot.com/random_joke";
+        private string url = "https://official-joke-api.appspot.com/rando_joke";
 
         [Tooltip("How many seconds between fetching the data source and notifying all consumer of changes.")]
         [SerializeField]

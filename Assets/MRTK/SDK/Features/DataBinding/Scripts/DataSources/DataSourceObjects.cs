@@ -56,22 +56,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected static readonly string ArrayTokenPattern = @"^\s*\[\s*([a-zA-Z0-9\-_]*?)\s*\]";
         protected static readonly string KeyTokenPattern = @"^\s*([a-zA-Z0-9\-_]+?)(?:[.\[]|$)";
 
-        protected readonly Regex m_arrayTokenRegex = new Regex(ArrayTokenPattern);
-        protected readonly Regex m_keyTokenRegex = new Regex(KeyTokenPattern);
+        protected readonly Regex _arrayTokenRegex = new Regex(ArrayTokenPattern);
+        protected readonly Regex _keyTokenRegex = new Regex(KeyTokenPattern);
 
-        protected DataNodeObject m_rootNode;
+        protected DataNodeObject _rootNode;
 
-        protected Dictionary<string, IDataNode> m_keyPathToNodeLookup = new Dictionary<string, IDataNode>();
+        protected Dictionary<string, IDataNode> _keyPathToNodeLookup = new Dictionary<string, IDataNode>();
 
 
         public DataSourceObjects()
         {
-            m_rootNode = new DataNodeObject(DataNodeType.Map);
+            _rootNode = new DataNodeObject(DataNodeType.Map);
         }
 
         public DataSourceObjects(DataNodeType rootNodeType, object value = null)
         {
-            m_rootNode = new DataNodeObject(rootNodeType, value);
+            _rootNode = new DataNodeObject(rootNodeType, value);
         }
 
 
@@ -198,20 +198,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
             //      contacts[2].email_addresses[2]
             //      matrix[1][2]
 
-            if (m_keyPathToNodeLookup.ContainsKey(resolvedKeyPath))
+            if (_keyPathToNodeLookup.ContainsKey(resolvedKeyPath))
             {
-                return m_keyPathToNodeLookup[resolvedKeyPath];
+                return _keyPathToNodeLookup[resolvedKeyPath];
             }
             else
             {
-                IDataNode currentNode = m_rootNode;
+                IDataNode currentNode = _rootNode;
 
                 string keyPath = resolvedKeyPath;
 
                 while (keyPath != null && keyPath != "")
                 {
                     int amountToSkip = 0;
-                    MatchCollection arrayMatches = m_arrayTokenRegex.Matches(keyPath);
+                    MatchCollection arrayMatches = _arrayTokenRegex.Matches(keyPath);
                     if (arrayMatches.Count > 0)
                     {
                         string arrayIndexText = arrayMatches[0].Groups[1].Value;
@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                     else
                     {
-                        MatchCollection keyMatches = m_keyTokenRegex.Matches(keyPath);
+                        MatchCollection keyMatches = _keyTokenRegex.Matches(keyPath);
                         if (keyMatches.Count > 0)
                         {
                             string key = keyMatches[0].Groups[1].Value;
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (currentNode != null)
                 {
-                    m_keyPathToNodeLookup[resolvedKeyPath] = currentNode;
+                    _keyPathToNodeLookup[resolvedKeyPath] = currentNode;
                 }
                 return currentNode;
             }
@@ -299,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override bool IsDataSourceAvailable()
         {
-            return m_rootNode != null;
+            return _rootNode != null;
         }
     } // End of class DataSourceObjects
 

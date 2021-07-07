@@ -47,17 +47,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override void PlaceVisibleItem( string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
         {
-            itemIndex -= indexRangeStart;
+            itemIndex -= GetFirstVisibleItem();
 
             _itemPlacerPositionOffset.x = itemOffset.x * (itemIndex % xCount);
             _itemPlacerPositionOffset.y = itemOffset.y * ((itemIndex / xCount) % yCount);
             _itemPlacerPositionOffset.z = itemOffset.z * (itemIndex / (xCount * yCount));
 
-            itemGO.transform.position = itemGO.transform.position + _itemPlacerPositionOffset;
+            // itemGO.transform.position += _itemPlacerPositionOffset;
+
+            itemGO.transform.position = itemGO.transform.parent.transform.position + _itemPlacerPositionOffset;
         }
 
 
-        protected override int GetVisibleItemCount()
+        public override int GetItemCountPerPage()
         {
             return xCount * yCount * zCount;
         }

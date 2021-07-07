@@ -647,4 +647,5 @@ MonoBehaviour:
   manageChildren: 0
   keyPath: imageUrl
   maxRandomLoadBalancingDelayInMilliseconds: 500
-  ImageQuadMeshRenderer: {fileID: 0}
+  imageQuadMeshRenderer: {fileID: 0}
+  defaultMaterial: {fileID: 2100000, guid: 2ec4b2b0e6fe60745adfac760604e1e2, type: 2}

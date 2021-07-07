@@ -34,37 +34,37 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private string keyPath = "imageUrl";
 
-        protected float m_time = 0.0f;
-        protected int m_versionCounter = 0;
+        protected float _time = 0.0f;
+        protected int _versionCounter = 0;
 
 
         public override IDataSource AllocateDataSource()
         {
-            if (m_dataSource == null)
+            if (_dataSource == null)
             {
-                m_dataSource = new DataSourceDictionary();
+                _dataSource = new DataSourceDictionary();
             }
 
-            return m_dataSource;
+            return _dataSource;
         }
 
         protected override void InitializeDataSource()
         {
-            m_time = secondsBetweenFetches;
+            _time = secondsBetweenFetches;
         }
 
 
         // Update is called once per frame
         protected void Update()
         {
-            m_time += Time.deltaTime;
+            _time += Time.deltaTime;
 
-            if (m_time >= secondsBetweenFetches)
+            if (_time >= secondsBetweenFetches)
             {
-                m_time -= secondsBetweenFetches;
+                _time -= secondsBetweenFetches;
 
                 // ensure we don't cause a local cache hit by changing an ignored fake version
-                SetValue(keyPath, url + "?v=" + (++m_versionCounter).ToString());
+                SetValue(keyPath, url + "?v=" + (++_versionCounter).ToString());
             }
         }
     }

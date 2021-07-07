@@ -47,24 +47,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override IDataSource AllocateDataSource()
         {
-            if (m_dataSource == null)
+            if (_dataSource == null)
             {
-                m_dataSource = new DataSourceDictionary();
+                _dataSource = new DataSourceDictionary();
             }
 
-            return m_dataSource;
+            return _dataSource;
         }
 
         protected override void InitializeDataSource()
         {
-            m_dataSource.DataChangeSetBegin();
+            _dataSource.DataChangeSetBegin();
 
             foreach (KeyPathValue keyPathValue in keyPathValues)
             {
-                m_dataSource.SetValue(keyPathValue.KeyPath, keyPathValue.Value);
+                _dataSource.SetValue(keyPathValue.KeyPath, keyPathValue.Value);
             }
 
-            m_dataSource.DataChangeSetEnd();
+            _dataSource.DataChangeSetEnd();
         }
     }
 }
