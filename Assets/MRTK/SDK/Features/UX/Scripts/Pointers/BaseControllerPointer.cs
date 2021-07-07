@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 foreach (var renderer in renderers)
                 {
-                    renderer.enabled = false;
+                    //renderer.enabled = false;
                 }
             }
 

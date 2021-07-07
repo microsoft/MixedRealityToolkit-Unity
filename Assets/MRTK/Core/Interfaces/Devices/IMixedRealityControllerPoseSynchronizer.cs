@@ -39,6 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool UseSourcePoseData { get; set; }
 
         /// <summary>
+        /// Should the Transform's position use the source pose by default until the input handler events are received?
+        /// </summary>
+        bool UseSourcePoseAsFallback { get; set; }
+
+        /// <summary>
         /// The input action that will drive the Transform's pose, position, or rotation.
         /// </summary>
         MixedRealityInputAction PoseAction { get; set; }

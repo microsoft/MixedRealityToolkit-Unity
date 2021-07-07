@@ -14,7 +14,6 @@ using Unity.XR.Oculus;
 
 #if OCULUSINTEGRATION_PRESENT
 using System.Collections.Generic;
-using UnityEngine;
 #endif // OCULUSINTEGRATION_PRESENT
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
