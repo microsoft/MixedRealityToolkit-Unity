@@ -236,12 +236,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             PokePointer pokePointer = PointerUtils.GetPointer<PokePointer>(Handedness.Right);
             Assert.IsNotNull(pokePointer);
-            pokePointer.UseSourcePoseData = true;
-
             SpherePointer grabPointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
             Assert.IsNotNull(grabPointer);
+
+            pokePointer.UseSourcePoseData = true;
             grabPointer.UseSourcePoseData = true;
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            yield return rightHand.Hide();
+            yield return rightHand.Show(Vector3.zero);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
 
             // The source pose is centered on the palm
             MixedRealityPose palmPose;
@@ -274,6 +279,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // This makes it so it will have to use the source pose data as a fallback
             pokePointer.PoseAction = new MixedRealityInputAction();
             grabPointer.PoseAction = new MixedRealityInputAction();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            yield return rightHand.Hide();
+            yield return rightHand.Show(Vector3.zero);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // The source pose is centered on the palm
