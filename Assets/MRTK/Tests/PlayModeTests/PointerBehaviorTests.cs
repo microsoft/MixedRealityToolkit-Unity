@@ -227,7 +227,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that when source pose data is used the poke pointer and grab pointer are aligned in approximately the correct positions
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestUseSourcePoseData()
         {
@@ -256,7 +255,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that when the source pose data is used as a fallback when the normal pose action is not raised
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestUseSourcePoseDataAsFallback()
         {
