@@ -41,8 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 public object CurrentValue { get; set; }
             }
 
-            private TextMeshProUGUI _textMeshProComponent = null;
+            private TextMeshProUGUI _textMeshProUGUIComponent = null;
             private UnityEngine.UI.Text _textComponent = null;
+            private TextMeshPro _textMeshProComponent = null;
             private string _originalTemplateValue;
             private bool _hasChanged;
 
@@ -53,11 +54,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 if (typeof(TextMeshProUGUI).IsAssignableFrom(theComponent.GetType()))
                 {
-                    _textMeshProComponent = theComponent as TextMeshProUGUI;
+                    _textMeshProUGUIComponent = theComponent as TextMeshProUGUI;
                 }
                 else if (typeof(UnityEngine.UI.Text).IsAssignableFrom(theComponent.GetType()))
                 {
                     _textComponent = theComponent as UnityEngine.UI.Text;
+                }
+                else if (typeof(TextMeshPro).IsAssignableFrom(theComponent.GetType()))
+                {
+                    _textMeshProComponent = theComponent as TextMeshPro;
                 }
 
                 _originalTemplateValue = GetValue();
@@ -74,14 +79,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             public string GetValue()
             {
-                if (_textMeshProComponent != null)
+                if (_textMeshProUGUIComponent != null)
                 {
-                    return _textMeshProComponent.text;
+                    return _textMeshProUGUIComponent.text;
                 }
                 else if (_textComponent != null)
                 {
                     return _textComponent.text;
-                } else
+                }
+                else if (_textMeshProComponent != null)
+                {
+                    return _textMeshProComponent.text;
+                }
+                else
                 {
                     return null;
                 }
@@ -91,18 +101,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
             public void SetValue(string newValue)
             {
 
-                if (_textMeshProComponent != null)
+                if (_textMeshProUGUIComponent != null)
                 {
-                    _textMeshProComponent.text = newValue;
+                    _textMeshProUGUIComponent.text = newValue;
                 }
                 else if (_textComponent != null)
                 {
                     _textComponent.text = newValue;
                 }
+                else if (_textMeshProComponent != null)
+                {
+                    _textMeshProComponent.text = newValue;
+                }
             }
 
 
-            public void ProcessDataChanged( IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
+            public void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
             {
                 if (_keyPathToVariableInformation.ContainsKey(resolvedKeyPath))
                 {
@@ -172,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected override Type[] GetComponentTypes()
         {
 
-            Type[] types = { typeof(TextMeshProUGUI), typeof(UnityEngine.UI.Text) };
+            Type[] types = { typeof(TextMeshProUGUI), typeof(UnityEngine.UI.Text), typeof(TextMeshPro) };
             return types;
         }
 
