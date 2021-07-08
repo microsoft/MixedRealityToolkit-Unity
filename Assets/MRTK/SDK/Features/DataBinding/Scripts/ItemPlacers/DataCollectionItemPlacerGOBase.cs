@@ -38,8 +38,116 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected IDataConsumerCollection _dataConsumerCollection;
 
-        protected Dictionary<int, GameObject> _visibleGameObjectsByIndex = new Dictionary<int, GameObject>();
-        protected Dictionary<int, GameObject> _removableGameObjectsByIndex = new Dictionary<int, GameObject>();
+        protected enum State {
+            Requested = 0,
+            Visible,
+            Prefetched,
+            Removable,
+            StashRemovable          // Temporarily stash removables that are still being fetched
+        };
+
+
+        protected class ItemInfo
+        {
+            public int itemIndex;
+            public State state;
+            public GameObject gameObject;
+
+            public ItemInfo(int index, State theState, GameObject go)
+            {
+                itemIndex = index;
+                state = theState;
+                gameObject = go;
+            }
+        };
+
+
+        protected Dictionary<State, Dictionary<int, ItemInfo>> _itemsByState = new Dictionary<State, Dictionary<int, ItemInfo>>();
+        protected Dictionary<int, State> _itemStateByIndex = new Dictionary<int, State>();
+
+        private void Awake()
+        {
+            foreach( State state in Enum.GetValues(typeof(State))) {
+                _itemsByState[state] = new Dictionary<int, ItemInfo>();
+            }
+        }
+
+
+        protected void QueueGameObjectsForRemoval(int firstItemIdx, int numItems)
+        {
+            int maxItem = firstItemIdx + numItems;
+            for (int indexAsId = firstItemIdx; indexAsId < maxItem; indexAsId++)
+            {
+                ChangeItemState(indexAsId, State.Removable);
+            }
+        }
+
+        protected ItemInfo FindItem( int indexAsId )
+        {
+            if (_itemStateByIndex.ContainsKey(indexAsId) )
+            {
+                State state = _itemStateByIndex[indexAsId];
+                return _itemsByState[state][indexAsId];
+            }
+
+            return null;
+        }
+
+
+        protected void AddItem( State state, int indexAsId, GameObject go )
+        {
+            RemoveItem(indexAsId);
+
+            _itemStateByIndex[indexAsId] = state;
+
+            if (_itemsByState[state].ContainsKey(indexAsId) == false)
+            {
+                ItemInfo itemInfo = new ItemInfo(indexAsId, state, go);
+                _itemsByState[state][indexAsId] = itemInfo;
+            } 
+            else
+            {
+                Debug.LogWarning("Item " + indexAsId + " is already in dictionary for CollectionItemPlacer.");
+            }
+        }
+
+        protected void RemoveItem( int indexAsId)
+        {
+            if (_itemStateByIndex.ContainsKey(indexAsId))
+            {
+                State state = _itemStateByIndex[indexAsId];
+                 
+                _itemsByState[state].Remove(indexAsId);
+                _itemStateByIndex.Remove(indexAsId);
+            }
+        }
+
+        protected void UpdateItem( int indexAsId, State newState, GameObject newGO )
+        {
+            ItemInfo itemInfo = FindItem(indexAsId);
+            if ( itemInfo != null)
+            {
+                itemInfo.gameObject = newGO;
+                ChangeItemState(indexAsId, newState);
+            }
+
+        }
+
+        protected void ChangeItemState( int indexAsId, State newState )
+        {
+            if (_itemStateByIndex.ContainsKey(indexAsId))
+            {
+                State oldState = _itemStateByIndex[indexAsId];
+                ItemInfo itemInfo = _itemsByState[oldState][indexAsId];
+
+                itemInfo.state = newState;
+                _itemsByState[oldState].Remove(indexAsId);
+                _itemsByState[newState][indexAsId] = itemInfo;
+
+                _itemStateByIndex[indexAsId] = newState;
+            }
+
+        }
 
         /// <summary>
         /// Purge all game objects that have been queued for removal.
@@ -59,14 +167,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemCount">Number of items to purge.</param>
         public void PurgeAllRemovableGameObjects()
         {
-            foreach (KeyValuePair<int, GameObject> entry in _removableGameObjectsByIndex)
+            if ( _itemsByState.ContainsKey(State.Removable) )
             {
-                _dataConsumerCollection.ReturnGameObjectForReuse(entry.Key, entry.Value);
+                Dictionary<int, ItemInfo> removableItems = _itemsByState[State.Removable];
+
+                foreach (KeyValuePair<int, ItemInfo> entry in removableItems)
+                {
+                    ItemInfo itemInfo = entry.Value;
+                    if (StashOrReturnItem(itemInfo))
+                    {
+                        _itemStateByIndex.Remove(itemInfo.itemIndex);
+                    }
+                }
+
+                removableItems.Clear();
             }
-            _removableGameObjectsByIndex.Clear();
         }
 
-        /// <summary>
+         /// <summary>
         /// Purge a range of game objects that have been queued for removal.
         /// </summary>
         /// <remarks>
@@ -84,15 +202,38 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemCount">Number of items to purge.</param>
         public void PurgeRemovableGameObjectRange(int firstItemIdx, int itemCount)
         {
-            int maxItemIdx = firstItemIdx + itemCount;
-            for (int idx = firstItemIdx; idx < maxItemIdx; idx++)
+            if ( _itemsByState.ContainsKey(State.Removable))
             {
-                if (_removableGameObjectsByIndex.ContainsKey(idx))
-                {
-                    _dataConsumerCollection.ReturnGameObjectForReuse(idx, _removableGameObjectsByIndex[idx]);
+                int maxItemIdx = firstItemIdx + itemCount;
+                Dictionary<int, ItemInfo> removableStateItems = _itemsByState[State.Removable];
 
-                    _removableGameObjectsByIndex.Remove(idx);
+                for (int idx = firstItemIdx; idx < maxItemIdx; idx++)
+                {
+                    if (removableStateItems.ContainsKey(idx))
+                    {
+                        ItemInfo itemInfo = removableStateItems[idx];
+
+                        if (StashOrReturnItem(itemInfo))
+                        {
+                            RemoveItem(idx);
+                        }
+                    }
                 }
+            }
+
+        }
+
+        protected bool StashOrReturnItem(ItemInfo itemInfo)
+        {
+            if (itemInfo.state == State.Requested || itemInfo.gameObject == null)
+            {
+                ChangeItemState(itemInfo.itemIndex, State.StashRemovable);
+                return false;
+            }
+            else
+            {
+                _dataConsumerCollection.ReturnGameObjectForReuse(itemInfo.itemIndex, itemInfo.gameObject);
+                return true;
             }
         }
 
@@ -155,12 +296,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <returns>Actual number of items scrolled. Note: Always positive for previous or next.</returns>
         public int Scroll(int itemCount, bool removeExitingObjectsNow = true)
         {
-            int actualScrollAmount = 0;
+            int actualScrollAmount;
             int firstItemToRequest;
             int newFirstVisibleItem = _firstVisibleItem;
             int firstItemToRemove;
-            int firstItemToReposition = _firstVisibleItem;
-            int numItemsToReposition = _numVisibleItems;
+            int firstItemToReposition;
+            int numItemsToReposition;
 
 
             if (itemCount < 0)
@@ -171,6 +312,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 newFirstVisibleItem -= actualScrollAmount;
                 firstItemToRequest = _firstVisibleItem - actualScrollAmount;
                 firstItemToRemove = _firstVisibleItem + _numVisibleItems - actualScrollAmount;
+
+                firstItemToReposition = _firstVisibleItem;
+                numItemsToReposition = Math.Max(0, _numVisibleItems - actualScrollAmount);
             } 
             else
             {
@@ -181,38 +325,33 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 actualScrollAmount = Math.Min(itemCount, maxFirstVisibleItem - _firstVisibleItem);
 
                 firstItemToRemove = _firstVisibleItem;
-                firstItemToRequest = _firstVisibleItem + _numVisibleItems;
+                firstItemToRequest = _firstVisibleItem + Math.Max(_numVisibleItems, itemCount);
                 newFirstVisibleItem += actualScrollAmount;
+
+                firstItemToReposition = _firstVisibleItem + actualScrollAmount;
+                numItemsToReposition = Math.Max(0, _numVisibleItems - actualScrollAmount);
             }
 
             if (actualScrollAmount > 0)
             {
                 QueueGameObjectsForRemoval(firstItemToRemove, actualScrollAmount);
                 _firstVisibleItem = newFirstVisibleItem;
-                _dataConsumerCollection?.RequestCollectionItems(this, firstItemToRequest, actualScrollAmount, requestId);
+                RequestItems( firstItemToRequest, actualScrollAmount);
 
                 if (removeExitingObjectsNow )
                 {
                     PurgeRemovableGameObjectRange(firstItemToRemove, actualScrollAmount);
                 }
+
+
+                // for a partial scroll, we need to reposition the ones that are still visible, but are now
+                // potentially in a new location
+                if (numItemsToReposition > 0)
+                {
+                    RepositionItems(firstItemToReposition, numItemsToReposition);
+                }
             }
 
-            // for a partial scroll, we need to reposition the ones that are still visible, but are now
-            // potentially in a new location
-
-            if ( firstItemToReposition < firstItemToRemove)
-            {
-                numItemsToReposition = Math.Min(numItemsToReposition, firstItemToRemove - firstItemToReposition);
-            } 
-            else
-            {
-                numItemsToReposition -= actualScrollAmount;
-                firstItemToReposition = firstItemToRemove + actualScrollAmount;
-            }
-            if ( numItemsToReposition > 0)
-            {
-                RepositionItems(firstItemToReposition, numItemsToReposition);
-            }
 
             return actualScrollAmount;
         }
@@ -263,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <returns>The page number (zero based)</returns>
         public int GetPageNumber()
         {
-            return _firstVisibleItem / maximumVisibleItems;
+            return _firstVisibleItem / GetItemCountPerPage();
         }
 
 
@@ -299,20 +438,50 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void PlaceItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
         {
-            if (itemIndex >= _firstVisibleItem && itemIndex < _firstVisibleItem + GetMaxVisibleItemCount() )
+            ItemInfo itemInfo = FindItem(itemIndex);
+
+            State currentState;
+
+            if (itemIndex >= _firstVisibleItem && itemIndex < _firstVisibleItem + GetMaxVisibleItemCount())
             {
-                itemGO.SetActive(true);
-                AddGameObject(itemIndex, itemGO);
+                currentState = State.Visible;
+            }
+            else if (itemInfo.state == State.StashRemovable || itemInfo.state == State.Removable)
+            {
+                currentState = State.Removable;
+            }
+            else
+            {
+                currentState = State.Prefetched;
+            }
+
+            UpdateItem(itemIndex, currentState, itemGO);
+
+            if (currentState == State.Visible) {
                 PlaceVisibleItem( requestId, indexRangeStart, indexRangeCount, itemIndex, itemGO);
+                itemGO.SetActive(true);
+            }
+            else if (currentState == State.Removable)
+            {
+                PurgeRemovableGameObjectRange(itemIndex, 1);
             }
         }
 
 
         protected virtual void RepositionItems(int firstIndexToReposition, int numItems )
         {
+            Dictionary<int, ItemInfo> visibleStateItems = _itemsByState[State.Visible];
             for( int itemIndex = firstIndexToReposition; itemIndex < firstIndexToReposition + numItems; itemIndex++ )
             {
-                PlaceVisibleItem(requestId, firstIndexToReposition, numItems, itemIndex, _visibleGameObjectsByIndex[itemIndex]);
+                if ( visibleStateItems.ContainsKey(itemIndex) )
+                {
+                    PlaceVisibleItem(requestId, firstIndexToReposition, numItems, itemIndex, visibleStateItems[itemIndex].gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("Item to reposition is not marked visible. Item #" + itemIndex);
+                }
+
             }
         }
 
@@ -334,7 +503,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     int firstItem = _firstVisibleItem + _numVisibleItems;
                     int numItems = GetMaxVisibleItemCount() - _numVisibleItems;
                     _numVisibleItems += numItems;
-                    _dataConsumerCollection?.RequestCollectionItems(this, firstItem, numItems, requestId);
+
+                    RequestItems(firstItem, numItems);
                 }
             }
             else
@@ -374,40 +544,26 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (_numVisibleItems > 0)
             {
-                _dataConsumerCollection?.RequestCollectionItems(this, _firstVisibleItem, _numVisibleItems, requestId);
+                RequestItems( _firstVisibleItem, _numVisibleItems);
             }
         }
+
+
+        protected void RequestItems( int firstIdx, int count )
+        {
+            for(int idx = firstIdx; idx < firstIdx + count; idx++ )
+            {
+                AddItem(State.Requested, idx, null);
+            }
+
+            _dataConsumerCollection?.RequestCollectionItems(this, firstIdx, count, requestId);
+        }
+
 
 
         protected virtual void PredictivelyLoadItems()
         {
 
-        }
-
-        protected void AddGameObject(int indexAsId, GameObject go)
-        {
-            if (_removableGameObjectsByIndex.ContainsKey(indexAsId))
-            {
-                _removableGameObjectsByIndex.Remove(indexAsId);
-            }
-
-            _visibleGameObjectsByIndex[indexAsId] = go;
-        }
-
-
-        protected void QueueGameObjectsForRemoval(int firstItemIdx, int numItems)
-        {
-            int maxItem = firstItemIdx + numItems;
-            for (int indexAsId = firstItemIdx; indexAsId < maxItem; indexAsId++)
-            {
-                if (_visibleGameObjectsByIndex.ContainsKey(indexAsId) )
-                {
-                    GameObject objectToRemove = _visibleGameObjectsByIndex[indexAsId];
-
-                    _visibleGameObjectsByIndex.Remove(indexAsId);
-                    _removableGameObjectsByIndex[indexAsId] = objectToRemove;
-                }
-            }
         }
 
 

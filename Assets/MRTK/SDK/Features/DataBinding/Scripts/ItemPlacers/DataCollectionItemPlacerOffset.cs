@@ -53,7 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _itemPlacerPositionOffset.y = itemOffset.y * ((itemIndex / xCount) % yCount);
             _itemPlacerPositionOffset.z = itemOffset.z * (itemIndex / (xCount * yCount));
 
-            // itemGO.transform.position += _itemPlacerPositionOffset;
+            // When items are reused from the object pool, it's important to update in a way that does not
+            // result in cumulative additive offsets. To ensure this, it uses parent's position, but this
+            // does assume this prefab defaults to the correct local offset relative to the parent container.
 
             itemGO.transform.position = itemGO.transform.parent.transform.position + _itemPlacerPositionOffset;
         }

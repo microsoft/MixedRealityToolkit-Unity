@@ -278,7 +278,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 newObject = _dataObjectPool.GetObjectFromPool() as GameObject;
             }
 
+            newObject.transform.parent = transform;
             newObject.transform.localPosition = Vector3.zero;
+            newObject.transform.localRotation = Quaternion.identity;
             newObject.SetActive(true);
             return newObject;
         }
@@ -297,6 +299,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemGO">The game object itself.</param>
         public void ReturnGameObjectForReuse(int itemIndex, GameObject itemGO )
         {
+            itemGO.transform.localPosition = Vector3.zero;
+            itemGO.transform.localRotation = Quaternion.identity;
             itemGO.SetActive(false);
 
             Component[] dataConsumers = itemGO.GetComponentsInChildren(typeof(DataConsumerGOBase));
@@ -309,7 +313,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 dataConsumer.Detach();
             }
 
-            if (!_dataObjectPool.ReturnObjectToPool(itemGO))
+            if (_dataObjectPool.ReturnObjectToPool(itemGO))
+            {
+                itemGO.transform.parent = null;
+            }
+            else
             {
                 Destroy(itemGO);
             }
