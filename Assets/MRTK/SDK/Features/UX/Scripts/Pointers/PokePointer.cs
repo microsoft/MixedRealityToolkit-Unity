@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The offset that the poke pointer has from the source pose when the index finger pose is not available.
         /// This value puts the pointer slightly in front of the source pose's origin, oriented according to the source pose's rotation
         /// </summary>
-        private const float sourcePoseOffset = 0.1f;
+        private const float sourcePoseOffset = 0.075f;
 
         [SerializeField]
         [Tooltip("Maximum distance a which a touchable surface can be interacted with.")]
