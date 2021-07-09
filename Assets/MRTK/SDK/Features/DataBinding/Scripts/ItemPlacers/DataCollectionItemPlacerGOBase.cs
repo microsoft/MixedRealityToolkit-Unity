@@ -26,12 +26,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
     
     public abstract class DataCollectionItemPlacerGOBase : MonoBehaviour, IDataCollectionItemPlacer
     {
+        [Tooltip("This specifies the default page size unless GetItemCountPerPage() method is overridden.")]
         [SerializeField]
-        protected int maximumVisibleItems = 999999;
+        protected int maximumVisibleItems = 50;
 
+        [Tooltip("Optional request ID that is provided with every request for collection items to correlate the PlaceItem calls to the original request.")]
         [SerializeField]
         protected string requestId = "";
 
+        [Tooltip("Enable this for placement strategies that depend on the order of child game objects instead of the index of the item.")]
+        [SerializeField]
+        protected bool keepGameObjectsInIndexOrder = true;
+
+        [Tooltip("Enable this to advance full page count items even if this causes last page to be partially empty. ")]
+        [SerializeField]
+        protected bool lastPageCanBePartial =  true;
 
         protected int _firstVisibleItem = 0;
         protected int _numVisibleItems = 0;
@@ -65,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected Dictionary<State, Dictionary<int, ItemInfo>> _itemsByState = new Dictionary<State, Dictionary<int, ItemInfo>>();
         protected Dictionary<int, State> _itemStateByIndex = new Dictionary<int, State>();
 
-        private void Awake()
+        private void OnEnable()
         {
             foreach( State state in Enum.GetValues(typeof(State))) {
                 _itemsByState[state] = new Dictionary<int, ItemInfo>();
@@ -320,7 +329,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 // scroll next
 
-                int maxFirstVisibleItem = GetTotalItemCount() - GetMaxVisibleItemCount();
+                int maxFirstVisibleItem;
+                int totalItemCount = GetTotalItemCount();
+
+                if (lastPageCanBePartial)
+                {
+                    maxFirstVisibleItem = totalItemCount - (totalItemCount % GetItemCountPerPage());
+                }
+                else
+                {
+                    maxFirstVisibleItem = totalItemCount - GetMaxVisibleItemCount();
+                }
 
                 actualScrollAmount = Math.Min(itemCount, maxFirstVisibleItem - _firstVisibleItem);
 
@@ -433,12 +452,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         #region IDataCollectionItemPlacer method implementations
 
         public virtual void StartPlacement() {
-            maximumVisibleItems = _dataConsumerCollection.GetCollectionItemCount();
         }
 
         public virtual void PlaceItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
         {
             ItemInfo itemInfo = FindItem(itemIndex);
+
+            if (keepGameObjectsInIndexOrder)
+            {
+                itemGO.transform.SetSiblingIndex(itemIndex - _firstVisibleItem);
+            }
 
             State currentState;
 
@@ -517,25 +540,30 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         #endregion IDataCollectionItemPlacer method implementations
 
-        #region Abstract methods
+        #region Methods typically overridden
 
         /// <summary>
         /// Place a visible item into the experience
         /// </summary>
         /// <remarks>
-        /// This class must be overridden to actually do the insertion of the specified game object into the scene.
+        /// Except in situations where the mere addition of a game object to the collection invokes another
+        /// script to manage placement, this class will normally be overridden in a subclass to actually do
+        /// the insertion of the specified game object into the scene at the correct transform.  
         /// 
         /// The index range is provided in case this is useful for determining the relative location of this item
-        /// to the total number of items requested.
+        /// to the total number of items requested.  Note that this is the requested items, which generally is not
+        /// the entire collection.
         /// </remarks>
         /// <param name="requestId">Request ID provided at the time of the request.</param>
         /// <param name="indexRangeStart">The start of the index range of items requested in this batch.</param>
         /// <param name="indexRangeCount">The number of items requested in this batch</param>
         /// <param name="itemIndex">The index of this item.</param>
         /// <param name="itemGO">The game object (usually a prefab) of the item to place.</param>
-        public abstract void PlaceVisibleItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO);
+        public virtual void PlaceVisibleItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO) 
+        {         
+        }
 
-        #endregion Abstract methods
+        #endregion Methods typically overridden
 
 
         protected void RequestVisibleItems()
@@ -563,7 +591,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected virtual void PredictivelyLoadItems()
         {
-
         }
 
 
