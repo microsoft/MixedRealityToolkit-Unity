@@ -78,7 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Should the Transform's position use the source pose by default until the input handler events are received?")]
         private bool useSourcePoseAsFallback = true;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Should the Transform's position use the source pose by default until the input handler events are received?
+        /// </summary>
         public bool UseSourcePoseAsFallback
         {
             get => useSourcePoseAsFallback;
