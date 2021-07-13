@@ -1628,7 +1628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyPathMapper: {fileID: 0}
-  _collectionSize: 130
+  _collectionSize: 1000
 --- !u!114 &874612864
 MonoBehaviour:
   m_ObjectHideFlags: 0
