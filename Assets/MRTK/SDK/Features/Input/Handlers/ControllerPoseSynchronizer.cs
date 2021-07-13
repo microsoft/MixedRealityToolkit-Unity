@@ -206,9 +206,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (InputEventDataUsable(eventData))
             {
-                    poseActionDetected = true;
-                    TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData;
+                poseActionDetected = true;
+                TrackingState = TrackingState.Tracked;
+                transform.position = eventData.InputData;
             }
         }
 
