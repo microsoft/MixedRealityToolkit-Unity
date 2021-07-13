@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                         string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
-                        AddKeyPath(localKeyPath);
+                        AddKeyPathListener(localKeyPath);
 
                     }
                 }

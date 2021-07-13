@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             if (collectionKeyPath != null)
             {
-                AddKeyPath(collectionKeyPath);
+                AddKeyPathListener(collectionKeyPath);
             }
             else
             {
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 DataConsumerGOBase dataConsumer = component as DataConsumerGOBase;
 
-                dataConsumer.Attach(DataSource, collectionItemKeyPathPrefix);
+                dataConsumer.Attach(DataSource, DataController, collectionItemKeyPathPrefix);
             }
 
         }

@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
 
-            public void AddKeyPath(string resolvedKeyPath, string localKeyPath, int position, string entireVariable)
+            public void AddKeyPathListener(string resolvedKeyPath, string localKeyPath, int position, string entireVariable)
             {
 
                 TextVariableInformation textVariableInfo = new TextVariableInformation();
@@ -246,9 +246,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
-                componentInfo.AddKeyPath(resolvedKeyPath, localKeyPath, match.Index, match.Value);
+                componentInfo.AddKeyPathListener(resolvedKeyPath, localKeyPath, match.Index, match.Value);
 
-                AddKeyPath(localKeyPath);
+                AddKeyPathListener(localKeyPath);
 
             }
         }

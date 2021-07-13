@@ -307,6 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             int actualScrollAmount;
             int firstItemToRequest;
+            int numItemsToRequest;
             int newFirstVisibleItem = _firstVisibleItem;
             int firstItemToRemove;
             int firstItemToReposition;
@@ -320,6 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 actualScrollAmount = Math.Min(-itemCount, _firstVisibleItem);
                 newFirstVisibleItem -= actualScrollAmount;
                 firstItemToRequest = _firstVisibleItem - actualScrollAmount;
+                numItemsToRequest = actualScrollAmount;
                 firstItemToRemove = _firstVisibleItem + _numVisibleItems - actualScrollAmount;
 
                 firstItemToReposition = _firstVisibleItem;
@@ -347,6 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 firstItemToRequest = _firstVisibleItem + Math.Max(_numVisibleItems, itemCount);
                 newFirstVisibleItem += actualScrollAmount;
 
+                numItemsToRequest = Math.Min(actualScrollAmount, totalItemCount - newFirstVisibleItem);
                 firstItemToReposition = _firstVisibleItem + actualScrollAmount;
                 numItemsToReposition = Math.Max(0, _numVisibleItems - actualScrollAmount);
             }
@@ -355,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 QueueGameObjectsForRemoval(firstItemToRemove, actualScrollAmount);
                 _firstVisibleItem = newFirstVisibleItem;
-                RequestItems( firstItemToRequest, actualScrollAmount);
+                RequestItems( firstItemToRequest, numItemsToRequest);
 
                 if (removeExitingObjectsNow )
                 {

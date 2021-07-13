@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
             _spriteRenderer = component as SpriteRenderer;
-            AddKeyPath(keyPath);
+            AddKeyPathListener(keyPath);
         }
 
 

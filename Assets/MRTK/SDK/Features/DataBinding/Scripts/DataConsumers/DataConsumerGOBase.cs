@@ -28,11 +28,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [Serializable]
     public abstract class DataConsumerGOBase : MonoBehaviour, IDataConsumer
     {
+        [Tooltip("Optional data source. If not provided, the nearest data source in parent hierarchy will be used.")]
+        [SerializeField]
+        protected IDataSource optionalDataSource;
+
+        [Tooltip("Optional data controller. If not provided, the nearest data source in parent hierarchy will be used.")]
+        [SerializeField]
+        protected IDataController optionalDataController;
+
+
         public string ResolvedKeyPathPrefix { get; set; } = "";
 
 
         protected Dictionary<string, string> _resolvedToLocalKeyPathLookup = new Dictionary<string, string>();
         protected IDataSource _dataSource;
+        protected IDataController _dataController;
 
         protected const string _dataBindSpecifierBegin = @"{{";
         protected const string _dataBindSpecifierEnd = @"}}";
@@ -46,12 +56,27 @@ namespace Microsoft.MixedReality.Toolkit.Data
             set { _dataSource = value; }
         }
 
+        public IDataController DataController
+        {
+            get { return _dataController; }
+            set { _dataController = value; }
+        }
 
-        public virtual void Attach( IDataSource dataSource, string resolvedKeyPathPrefix )
+        #region Abstract methods
+
+
+        protected abstract void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType);
+
+
+        #endregion Abstract methods
+
+        #region IDataConsumer interface methods
+
+        public virtual void Attach( IDataSource dataSource, IDataController dataController, string resolvedKeyPathPrefix )
         {
             ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
             DataSource = dataSource;
-
+            DataController = dataController;
             InitializeDataConsumer();
             FindVariablesToManage();
         }
@@ -66,6 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             _resolvedToLocalKeyPathLookup.Clear();
             ResolvedKeyPathPrefix = "";
+            DataSource = null;
+            DataController = null;
         }
 
 
@@ -81,6 +108,52 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // no default behavior. Override if needed.
         }
 
+        /// <summary>
+        /// Called by the associaed DataSource to report data changes.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// See NotifyDataChanged on the IDataConsumer interface for more detailed information.
+        /// </remarks>
+
+        public void NotifyDataChanged(IDataSource dataSource, string resolvedKeyPath, object newValue, DataChangeType dataChangeType)
+        {
+            if (_resolvedToLocalKeyPathLookup.ContainsKey(resolvedKeyPath))
+            {
+                ProcessDataChanged(dataSource, resolvedKeyPath, _resolvedToLocalKeyPathLookup[resolvedKeyPath], newValue, dataChangeType);
+            }
+        }
+
+        /// <summary>
+        /// Get all registered keyPaths
+        /// </summary>
+        /// <remarks>
+        /// Get all key paths this data consumer wishes to process. A key path is a specifier of a unique data item (of arbitrary type and complexity) in a data source.
+        /// </remarks>
+        ///
+        /// <returns>IEnumerable for iterating through the returned string keyPaths.</returns>
+
+        public IEnumerable<string> GetDataKeyPaths()
+        {
+            return _resolvedToLocalKeyPathLookup.Values;
+        }
+
+        #endregion IDataConsumer interface methods
+
+        #region protected methods
+
+
+        protected virtual void AddVariableKeyPathsForComponent(Type componentType, Component component)
+        {
+            //no default behavoir, but also not needed if not a component based binding
+        }
+
+        protected virtual Type[] GetComponentTypes()
+        {
+            Type[] types = { };
+            return types;
+        }
+
 
         /// <summary>
         /// Unity's Awake() method.
@@ -90,10 +163,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Note that this should rarely be overridden but is declared virtual for circumnstances 
         /// where this is required. If overridden, make sure to call this default behavior.
         /// </remarks>
-        
+
         protected virtual void Awake()
         {
             FindNearestDataSource();
+            FindNearestDataController();
             InitializeDataConsumer();
         }
 
@@ -112,30 +186,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             FindVariablesToManage();
         }
 
-
-        protected abstract Type[] GetComponentTypes();
-
-        protected abstract void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType);
-
-
-        /// <summary>
-        /// Called by the associaed DataSource to report data changes.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// See NotifyDataChanged on the IDataConsumer interface for more detailed information.
-        /// </remarks>
-        
-        public void NotifyDataChanged(IDataSource dataSource, string resolvedKeyPath, object newValue, DataChangeType dataChangeType )
-        {
-            if (_resolvedToLocalKeyPathLookup.ContainsKey(resolvedKeyPath))
-            {
-                ProcessDataChanged(dataSource, resolvedKeyPath, _resolvedToLocalKeyPathLookup[resolvedKeyPath], newValue, dataChangeType);
-            }
-        }
-
-        protected abstract void AddVariableKeyPathsForComponent(Type componentType, Component component);
-
+  
+ 
 
         protected virtual void InitializeDataConsumer()
         {
@@ -153,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <param name="localKeyPath">Local key path prior to any key path mapping or resolving.</param>
         /// <returns></returns>
-        protected string AddKeyPath(string localKeyPath)
+        protected string AddKeyPathListener(string localKeyPath)
         {
 
             if (_dataSource != null)
@@ -171,19 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// <summary>
-        /// Get all registered keyPaths
-        /// </summary>
-        /// <remarks>
-        /// Get all key paths this data consumer wishes to process. A key path is a specifier of a unique data item (of arbitrary type and complexity) in a data source.
-        /// </remarks>
-        ///
-        /// <returns>IEnumerable for iterating through the returned string keyPaths.</returns>
-
-        public IEnumerable<string> GetDataKeyPaths()
-        {
-            return _resolvedToLocalKeyPathLookup.Values;
-        }
+  
 
 
         /// <summary>
@@ -215,33 +255,77 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /// <summary>
-        /// Search through this object and its parents in game object heirarchy for the data source to use with this data consumer.
+        /// If no data source is provided directly, search through this object and its parents in game object 
+        /// heirarchy for the data source to use with this data consumer.
         /// </summary>
         protected void FindNearestDataSource()
         {
             if (DataSource == null)
             {
-                IDataSource dataSource = null;
-                GameObject currentGO = gameObject;
-
-                while (currentGO != null && dataSource == null)
+                if (optionalDataSource != null)
                 {
-                    Component[] dataSourceComponents = currentGO.GetComponents(typeof(IDataSourceProvider));
-                    foreach (Component dataSourceComponent in dataSourceComponents)
-                    {
-                        if ((dataSourceComponent as MonoBehaviour).enabled)
-                        {
-                            IDataSourceProvider dataSourceProvider = dataSourceComponent as IDataSourceProvider;
-                            dataSource = dataSourceProvider.GetDataSource();
-                            break;
-                        }
-                    }
-                    currentGO = currentGO.transform.parent?.gameObject;
+                    DataSource = optionalDataSource;
                 }
-                DataSource = dataSource;
+                else
+                {
+                    IDataSource dataSource = null;
+                    GameObject currentGO = gameObject;
 
+                    while (currentGO != null && dataSource == null)
+                    {
+                        Component[] dataSourceComponents = currentGO.GetComponents(typeof(IDataSourceProvider));
+                        foreach (Component dataSourceComponent in dataSourceComponents)
+                        {
+                            if ((dataSourceComponent as MonoBehaviour).enabled)
+                            {
+                                IDataSourceProvider dataSourceProvider = dataSourceComponent as IDataSourceProvider;
+                                dataSource = dataSourceProvider.GetDataSource();
+                                break;
+                            }
+                        }
+                        currentGO = currentGO.transform.parent?.gameObject;
+                    }
+                    DataSource = dataSource;
+                }
             }
         }
+
+
+        /// <summary>
+        /// If no data source is provided directly, search through this object and its parents in game object 
+        /// heirarchy for the data source to use with this data consumer.
+        /// </summary>
+        protected void FindNearestDataController()
+        {
+            if (DataController == null)
+            {
+                if (optionalDataController != null)
+                {
+                    DataController = optionalDataController;
+                }
+                else
+                {
+                    IDataController dataController = null;
+                    GameObject currentGO = gameObject;
+
+                    while (currentGO != null && dataController == null)
+                    {
+                        Component[] dataControllerComponents = currentGO.GetComponents(typeof(IDataController));
+                        foreach (Component dataControllerComponent in dataControllerComponents)
+                        {
+                            if ((dataControllerComponent as MonoBehaviour).enabled)
+                            {
+                                dataController = dataControllerComponent as IDataController;
+                                break;
+                            }
+                        }
+                        currentGO = currentGO.transform.parent?.gameObject;
+                    }
+                    DataController = dataController;
+                }
+            }
+        }
+
 
 
         /// <summary>
@@ -255,5 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return _variableRegex;
         }
+
+        #endregion protected methods
     }
 }

@@ -1260,6 +1260,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maximumVisibleItems: 999999
   requestId: 
+  keepGameObjectsInIndexOrder: 0
+  lastPageCanBePartial: 0
   itemOffset: {x: 0, y: -0.3, z: 0}
   xCount: 1
   yCount: 10
@@ -1605,8 +1607,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119a0d63a5ce41e4ba94cde02b7ccfbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumVisibleItems: 999999
+  maximumVisibleItems: 50
   requestId: 
+  keepGameObjectsInIndexOrder: 1
+  lastPageCanBePartial: 1
   itemOffset: {x: 1, y: -0.3, z: 1}
   xCount: 3
   yCount: 2
@@ -1624,7 +1628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyPathMapper: {fileID: 0}
-  _collectionSize: 1000
+  _collectionSize: 130
 --- !u!114 &874612864
 MonoBehaviour:
   m_ObjectHideFlags: 0

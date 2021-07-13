@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System;
 using TMPro;
 using UnityEngine;
@@ -39,10 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected List<TextMeshProUGUI> _textComponents = new List<TextMeshProUGUI>();
 
 
-        protected override void InitializeDataConsumer()
-        {
-        }
-
 
         protected override Type[] GetComponentTypes()
         {
@@ -56,12 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return manageChildren;
         }
 
-
-   
-
-        public override void DataChangeSetEnd(IDataSource dataSource)
-        {
-        }
 
 
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType )
@@ -96,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // We only asked for TextMeshProGUI components, so we can confidently cast here.
 
             _textComponents.Add(component as TextMeshProUGUI);
-            AddKeyPath(styleSheetKeyPath);
+            AddKeyPathListener(styleSheetKeyPath);
         }
 
     }

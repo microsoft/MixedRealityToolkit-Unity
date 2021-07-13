@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// <summary>
     /// A simple data key path mapper that can be assigned to a data source in the Unity inspector.
     /// 
-    /// TODO: refactor using SerializableDictionary class
+    /// TODO: consider refactoring using SerializableDictionary class once core utilities are separable.
     /// 
     /// </summary>
     /// 

@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             InitializeForComponent(componentType, component);
 
-            AddKeyPath(keyPath);
+            AddKeyPathListener(keyPath);
         }
 
 
