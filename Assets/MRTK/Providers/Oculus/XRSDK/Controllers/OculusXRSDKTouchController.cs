@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             : base(trackingState, controllerHandedness, inputSource, interactions, new OculusTouchControllerDefinition(controllerHandedness))
         { }
 
-        public GameObject OculusControllerVisualization;
+        internal GameObject OculusControllerVisualization;
 
         private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] OculusXRSDKController.UpdateButtonData");
 

@@ -97,27 +97,21 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         {
             GenericXRSDKController controller = base.GetOrAddController(inputDevice);
 
-            if (controller is OculusXRSDKTouchController oculusTouchController)
+            if (!cameraRig.IsNull() && controller is OculusXRSDKTouchController oculusTouchController && oculusTouchController.OculusControllerVisualization == null)
             {
-                if (!cameraRig.IsNull())
+                GameObject platformVisualization = null; 
+                if (oculusTouchController.ControllerHandedness == Handedness.Left)
                 {
-                    if(oculusTouchController.OculusControllerVisualization == null)
-                    {
-                        GameObject platformVisualization = null; 
-                        if (oculusTouchController.ControllerHandedness == Handedness.Left)
-                        {
-                            platformVisualization = leftControllerHelper.gameObject;
-                        }
-                        if (oculusTouchController.ControllerHandedness == Handedness.Right)
-                        {
-                            platformVisualization = rightControllerHelper.gameObject;
-                        }
+                    platformVisualization = leftControllerHelper.gameObject;
+                }
+                if (oculusTouchController.ControllerHandedness == Handedness.Right)
+                {
+                    platformVisualization = rightControllerHelper.gameObject;
+                }
 
-                        if(platformVisualization != null)
-                        {
-                            oculusTouchController.RegisterControllerVisualization(platformVisualization);
-                        }
-                    }
+                if(platformVisualization != null)
+                {
+                    oculusTouchController.RegisterControllerVisualization(platformVisualization);
                 }
             }
 
