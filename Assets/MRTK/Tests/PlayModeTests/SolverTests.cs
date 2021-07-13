@@ -288,8 +288,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Make sure that the target's right vector has not flip-flopped
             Assert.IsTrue(Mathf.Sign(targetTransform.transform.right.x) == Mathf.Sign(rightVector.x));
-
-
         }
 
         /// <summary>

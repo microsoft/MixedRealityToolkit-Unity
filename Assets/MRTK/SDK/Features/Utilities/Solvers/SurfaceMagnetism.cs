@@ -388,7 +388,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns>Quaternion, the orientation to use for the object</returns>
         private Quaternion CalculateMagnetismOrientation(Vector3 direction, Vector3 surfaceNormal)
         {
-            
             // Compute the up vector of our current working rotation,
             // to avoid gimbal lock instability when normal is also pointing upwards.
             // This "current" up vector is used in the LookRotation, which causes
