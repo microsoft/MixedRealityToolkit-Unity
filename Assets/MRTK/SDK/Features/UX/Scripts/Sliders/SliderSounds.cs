@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [AddComponentMenu("Scripts/MRTK/SDK/SliderSounds")]
     public class SliderSounds : MonoBehaviour
     {
+        [SerializeField]
+        private bool playSoundsOnlyOnInteract = false;
+
         [Header("Audio Clips")]
         [SerializeField]
         [Tooltip("Sound to play when interaction with slider starts")]
@@ -48,9 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private float minSecondsBetweenTicks = 0.01f;
 
-
         #region Private members
         private PinchSlider slider;
+
+        // Check to see if the slider is being interacted with
+        private bool isInteracting;
 
         // Play sound when passing through slider notches
         private float accumulatedDeltaSliderValue = 0;
@@ -83,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnValueUpdated(SliderEventData eventData)
         {
-            if (playTickSounds && passNotchAudioSource != null && passNotchSound != null)
+            if (!(playSoundsOnlyOnInteract && !isInteracting) && playTickSounds && passNotchAudioSource != null && passNotchSound != null)
             {
                 float delta = eventData.NewValue - eventData.OldValue;
                 accumulatedDeltaSliderValue += Mathf.Abs(delta);
@@ -104,6 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnInteractionEnded(SliderEventData arg0)
         {
+            isInteracting = false;
             if (interactionEndSound != null && grabReleaseAudioSource != null && grabReleaseAudioSource.isActiveAndEnabled)
             {
                 grabReleaseAudioSource.PlayOneShot(interactionEndSound);
@@ -112,6 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnInteractionStarted(SliderEventData arg0)
         {
+            isInteracting = true;
             if (interactionStartSound != null && grabReleaseAudioSource != null && grabReleaseAudioSource.isActiveAndEnabled)
             {
                 grabReleaseAudioSource.PlayOneShot(interactionStartSound);
