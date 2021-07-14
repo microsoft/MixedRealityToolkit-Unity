@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Interface for dispatching commands related to the bound data.
+    /// Interface for processing dispatched commands related to the bound data.
     /// </summary>
     /// <remarks>
     /// When an interactable object is instantiated, particularly those in a data bound collection, there is generally a 
@@ -17,11 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public interface IDataController
     {
         /// <summary>
-        /// Send the specified command with the specified bound datum and optional parameters.
+        /// Process the specified command with the specified bound datum and optional parameters.
         /// </summary>
         /// <param name="command">Which command to issue, as a string.</param>
         /// <param name="data">A data reference specifying the data to be acted upon, usually a unique identifier.</param>
         /// <param name="optionalParameters">Optional parameters, or null if none.</param>
-        void SendCommand(string command, object data, Dictionary<string, object> optionalParameters);
+        void ProcessCommand(string command, object data, Dictionary<string, object> optionalParameters);
     }
 }

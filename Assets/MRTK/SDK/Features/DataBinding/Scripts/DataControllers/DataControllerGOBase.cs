@@ -22,6 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="command">Which command to issue, as a string.</param>
         /// <param name="data">A data reference specifying the data to be acted upon, usually a unique identifier.</param>
         /// <param name="optionalParameters">Optional parameters, or null if none.</param>
-        public abstract void SendCommand(string command, object data, Dictionary<string, object> optionalParameters);
+        public abstract void ProcessCommand(string command, object data, Dictionary<string, object> optionalParameters);
     }
 }
