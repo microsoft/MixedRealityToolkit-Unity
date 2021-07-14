@@ -28,15 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [Serializable]
     public abstract class DataConsumerGOBase : MonoBehaviour, IDataConsumer
     {
-        [Tooltip("Optional data source. If not provided, the nearest data source in parent hierarchy will be used.")]
-        [SerializeField]
-        protected IDataSource optionalDataSource;
-
-        [Tooltip("Optional data controller. If not provided, the nearest data source in parent hierarchy will be used.")]
-        [SerializeField]
-        protected IDataController optionalDataController;
-
-
         public string ResolvedKeyPathPrefix { get; set; } = "";
 
 
@@ -262,31 +253,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             if (DataSource == null)
             {
-                if (optionalDataSource != null)
-                {
-                    DataSource = optionalDataSource;
-                }
-                else
-                {
-                    IDataSource dataSource = null;
-                    GameObject currentGO = gameObject;
+                IDataSource dataSource = null;
+                GameObject currentGO = gameObject;
 
-                    while (currentGO != null && dataSource == null)
+                while (currentGO != null && dataSource == null)
+                {
+                    Component[] dataSourceComponents = currentGO.GetComponents(typeof(IDataSourceProvider));
+                    foreach (Component dataSourceComponent in dataSourceComponents)
                     {
-                        Component[] dataSourceComponents = currentGO.GetComponents(typeof(IDataSourceProvider));
-                        foreach (Component dataSourceComponent in dataSourceComponents)
+                        if ((dataSourceComponent as MonoBehaviour).enabled)
                         {
-                            if ((dataSourceComponent as MonoBehaviour).enabled)
-                            {
-                                IDataSourceProvider dataSourceProvider = dataSourceComponent as IDataSourceProvider;
-                                dataSource = dataSourceProvider.GetDataSource();
-                                break;
-                            }
+                            IDataSourceProvider dataSourceProvider = dataSourceComponent as IDataSourceProvider;
+                            dataSource = dataSourceProvider.GetDataSource();
+                            break;
                         }
-                        currentGO = currentGO.transform.parent?.gameObject;
                     }
-                    DataSource = dataSource;
+                    currentGO = currentGO.transform.parent?.gameObject;
                 }
+                DataSource = dataSource;
             }
         }
 
@@ -299,32 +283,25 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             if (DataController == null)
             {
-                if (optionalDataController != null)
-                {
-                    DataController = optionalDataController;
-                }
-                else
-                {
-                    IDataController dataController = null;
-                    GameObject currentGO = gameObject;
+                IDataController dataController = null;
+                GameObject currentGO = gameObject;
 
-                    while (currentGO != null && dataController == null)
+                while (currentGO != null && dataController == null)
+                {
+                    Component[] dataControllerComponents = currentGO.GetComponents(typeof(IDataController));
+                    foreach (Component dataControllerComponent in dataControllerComponents)
                     {
-                        Component[] dataControllerComponents = currentGO.GetComponents(typeof(IDataController));
-                        foreach (Component dataControllerComponent in dataControllerComponents)
+                        if ((dataControllerComponent as MonoBehaviour).enabled)
                         {
-                            if ((dataControllerComponent as MonoBehaviour).enabled)
-                            {
-                                dataController = dataControllerComponent as IDataController;
-                                break;
-                            }
+                            dataController = dataControllerComponent as IDataController;
+                            break;
                         }
-                        currentGO = currentGO.transform.parent?.gameObject;
                     }
-                    DataController = dataController;
+                    currentGO = currentGO.transform.parent?.gameObject;
                 }
+                DataController = dataController;
             }
-        }
+        } 
 
 
 
