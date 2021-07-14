@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class SliderSounds : MonoBehaviour
     {
         [SerializeField]
-        private bool playSoundsOnlyOnInteract = true;
+        private bool playSoundsOnlyOnInteract = false;
 
         [Header("Audio Clips")]
         [SerializeField]
