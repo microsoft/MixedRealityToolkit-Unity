@@ -51,11 +51,11 @@ Shader "Mixed Reality Toolkit/TextMeshPro/Sprite"
 			#pragma fragment frag
 
 			#pragma multi_compile __ UNITY_UI_CLIP_RECT
-            #pragma multi_compile __ UNITY_UI_ALPHACLIP
+                        #pragma multi_compile __ UNITY_UI_ALPHACLIP
 
-            #pragma multi_compile __ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
+                        #pragma multi_compile __ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
-            #include "UnityCG.cginc"
+                        #include "UnityCG.cginc"
 			#include "UnityUI.cginc"
 			#include "MixedRealityShaderUtils.cginc"
 
