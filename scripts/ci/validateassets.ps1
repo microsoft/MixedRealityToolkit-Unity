@@ -392,6 +392,8 @@ function GetPackageName {
 # ####################
 $fileGuids = GatherFileGuids
 
+[string]$newEventSystemGuid = "76c392e42b5098c458856cdf6ecaaaa1"
+
 [int]$errorCount = 0;
 
 # todo - https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8944 - support scoped validation here (GatherScopedDependencyGuids)
@@ -415,6 +417,10 @@ foreach ($item in $dependencyGuids.GetEnumerator()) {
         foreach ($guid in $dependencies.GetEnumerator()) {
             $dependencyFile = $fileGuids[$guid]
             if ($null -eq $dependencyFile) {
+                if ($guid -eq $newEventSystemGuid) {
+                    Write-Host "`nERROR: A package-based event system is included in $file. For Unity 2018 compatibility, please replace this with the built-in event system."
+                    $numInvalid++
+                }
                 continue;
             }
             Write-Host " @ $dependencyFile"
