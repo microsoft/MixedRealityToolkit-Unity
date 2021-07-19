@@ -1,4 +1,4 @@
-Shader "Mixed Reality Toolkit/TextMeshPro/Sprite"
+Shader "Mixed Reality Toolkit/TextMeshProSprite"
 {
 	Properties
 	{
@@ -177,7 +177,5 @@ Shader "Mixed Reality Toolkit/TextMeshPro/Sprite"
 		ENDCG
 		}
 	}
-
-    CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityTextMeshProSpriteShader"
 
 }
