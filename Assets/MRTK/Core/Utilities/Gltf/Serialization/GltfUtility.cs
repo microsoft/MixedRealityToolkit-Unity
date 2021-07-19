@@ -170,21 +170,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (gltfObject.extensionsRequired?.Length > 0)
             {
-                Debug.LogError("One or more unsupported glTF extensions required. Unable to load the model.");
+                StringBuilder logMessage = new StringBuilder("One or more unsupported glTF extensions required. Unable to load the model:");
                 for (int i = 0; i < gltfObject.extensionsRequired.Length; ++i)
                 {
-                    Debug.Log($"Extension: {gltfObject.extensionsRequired[i]}");
+                    logMessage.Append($"\nExtension: {gltfObject.extensionsRequired[i]}");
                 }
+                Debug.LogError(logMessage);
                 return null;
             }
 
             if (gltfObject.extensionsUsed?.Length > 0)
             {
-                Debug.Log("One or more unsupported glTF extensions in use, ignoring them.");
+                StringBuilder logMessage = new StringBuilder("One or more unsupported glTF extensions in use. Ignoring the following:");
                 for (int i = 0; i < gltfObject.extensionsUsed.Length; ++i)
                 {
-                    Debug.Log($"Extension: {gltfObject.extensionsUsed[i]}");
+                    logMessage.Append($"\nExtension: {gltfObject.extensionsUsed[i]}");
                 }
+                Debug.Log(logMessage);
             }
 
             var meshPrimitiveAttributes = GetGltfMeshPrimitiveAttributes(jsonString);
