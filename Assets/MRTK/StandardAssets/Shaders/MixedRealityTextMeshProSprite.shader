@@ -1,3 +1,16 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// NOTE: MRTK Shaders are versioned via the MRTK.Shaders.sentinel file.
+// When making changes to any shader's source file, the value in the sentinel _must_ be incremented.
+
+// Text Mesh Pro Sprite shader with MRTK Additions
+
+// MRTK Additions
+// - Single Pass Instanced Stereo Rendering Support
+// - Support for Clipping Primitives (Plane, Sphere, Box)
+// - Added to MRTK namespace
+
 Shader "Mixed Reality Toolkit/TextMeshProSprite"
 {
 	Properties
