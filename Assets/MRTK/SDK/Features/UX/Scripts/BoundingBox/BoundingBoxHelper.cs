@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Calculates the untransformed corner points of the given collider bounds
         /// </summary>
         /// <param name="colliderBounds">The collider bounds the corner points are calculated from.</param>
-        internal void GetRawBoundsCorners(BoxCollider colliderBounds)
+        public void GetRawBoundsCorners(BoxCollider colliderBounds)
         {
             targetBounds = colliderBounds;
             rawBoundingCorners.Clear();
