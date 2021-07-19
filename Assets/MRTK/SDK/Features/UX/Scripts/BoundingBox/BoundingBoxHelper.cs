@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// This function calculates the untransformed bounding box corner points of a GameObject.
         /// </summary>
-        [Obsolete("Use GetRawBBCorners and pass in TargetBounds")]
+        [Obsolete("Use GetRawBoundsCorners and pass in boundingBox.TargetBounds")]
         public void GetRawBBCorners(BoundingBox boundingBox)
         {
             GetRawBoundsCorners(boundingBox.TargetBounds);
