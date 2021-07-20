@@ -104,11 +104,8 @@ SubShader {
         float4 vertex   : SV_POSITION;
         fixed4 color    : COLOR;
         half2 texcoord  : TEXCOORD0;				
-#if defined(_CLIPPING_PRIMITIVE)
         float3 worldPosition    : TEXCOORD1;
-#else
-        float4 worldPosition : TEXCOORD1;
-#endif
+
         UNITY_VERTEX_INPUT_INSTANCE_ID
         UNITY_VERTEX_OUTPUT_STEREO     
         };
