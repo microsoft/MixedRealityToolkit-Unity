@@ -23,7 +23,8 @@ Properties {
     _StencilWriteMask ("Stencil Write Mask", Float) = 255
     _StencilReadMask ("Stencil Read Mask", Float) = 255
 
-    _ColorMask ("Color Mask", Float) = 15
+    _CullMode ("Cull Mode", Float) = 0
+	_ColorMask ("Color Mask", Float) = 15
     _ClipRect ("Clip Rect", vector) = (-32767, -32767, 32767, 32767)
 
     [Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
@@ -47,7 +48,7 @@ SubShader {
         WriteMask [_StencilWriteMask]
     }
 
-    Cull Off
+    Cull [_CullMode]
     Lighting Off
     ZWrite Off
     ZTest [unity_GUIZTestMode]
@@ -93,6 +94,7 @@ SubShader {
         uniform float        _VertexOffsetY;
 
         struct appdata_t {
+
         float4 vertex   : POSITION;
         float4 color    : COLOR;
         float2 texcoord : TEXCOORD0;
@@ -104,7 +106,7 @@ SubShader {
         float4 vertex   : SV_POSITION;
         fixed4 color    : COLOR;
         half2 texcoord  : TEXCOORD0;				
-        float3 worldPosition    : TEXCOORD1;
+        float3 worldPosition : TEXCOORD1;
 
         UNITY_VERTEX_INPUT_INSTANCE_ID
         UNITY_VERTEX_OUTPUT_STEREO     
@@ -150,10 +152,7 @@ SubShader {
         {
             half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
 				
-#if UNITY_VERSION < 530
-            if (_UseClipRect)
-            color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
-#else
+#if UNITY_UI_CLIP_RECT
             color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
 #endif
 
