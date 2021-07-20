@@ -107,9 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        public virtual void SetValue(string resolvedKeyPath, object newValue)
+        public virtual void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
-                _dataSource?.SetValue(resolvedKeyPath, newValue);
+                _dataSource?.SetValue(resolvedKeyPath, newValue, isAtomicChange );
         }
 
 

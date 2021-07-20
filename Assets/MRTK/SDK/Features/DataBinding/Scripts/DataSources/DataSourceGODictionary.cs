@@ -31,9 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        public override void SetValue(string resolvedKeyPath, object newValue)
+        public override void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
-            base.SetValue(resolvedKeyPath, newValue);
+            base.SetValue(resolvedKeyPath, newValue, isAtomicChange);
             foreach( KeyPathValue kpv in keyPathValues)
             {
                 if ( kpv.KeyPath == resolvedKeyPath )

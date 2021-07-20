@@ -150,6 +150,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// 
         /// <remarks>
+        /// CAUTION: If isAtomicChange is omitted or passed as false, there MUST be a DataChangeSetBegin() and DataChangeSetEnd() method 
+        /// calls bracketing this. If not done, certain DataConsumers that only process as a batch (like TMPro) will not update
+        /// the presented information.
+        ///
         /// This is currently useful when the data embedding is being used for local, realtime changes of presented information.
         /// 
         /// The fullyQualifiedPrefix is provided for lists (or collection of lists) to find the correct instance of a specific local keypath.
@@ -158,11 +162,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// This means that the path may not be recognizeable on casual observation relative to the keyPath variables
         /// embedded in views and subviews.
         /// 
-        /// Although not implemented yet, it could also be used to persist changes to a back-end data store of some kind,
+        /// Although not fully implemented yet, it could also be used to persist changes to a back-end data store of some kind,
         /// such as might be useful for a data entry form.
+        /// 
         /// </remarks>
+        /// <param name="resolvedKeyPath">The fully resolved key path for the variable to change.</param>
+        /// <param name="value">The new value to set at that key path.</param>
+        /// <param name="isAtomicChange">Whether this is the only change and should be automatically be bracketed by DataChangeSetBegin/End().</param>
 
-        void SetValue(string resolvedKeyPath, object value);
+        void SetValue(string resolvedKeyPath, object value, bool isAtomicChange = false);
 
 
         /// <summary>

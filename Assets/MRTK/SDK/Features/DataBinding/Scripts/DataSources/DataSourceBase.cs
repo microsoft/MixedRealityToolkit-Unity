@@ -88,12 +88,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
 
-        public void SetValue(string resolvedKeyPath, object newValue)
+        public void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             if (IsDataSourceAvailable())
             {
                 SetValueInternal(resolvedKeyPath, newValue);
-                NotifyDataChanged(resolvedKeyPath, newValue, DataChangeType.DatumModified, false);
+                NotifyDataChanged(resolvedKeyPath, newValue, DataChangeType.DatumModified, isAtomicChange);
             }
         }
 
