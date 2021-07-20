@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataSourceDynamicList : DataSourceGOBase
     {
 
+        [Tooltip("The number of random image entries to generate for image collection.")]
         [SerializeField]
         protected int _collectionSize = 200;
 

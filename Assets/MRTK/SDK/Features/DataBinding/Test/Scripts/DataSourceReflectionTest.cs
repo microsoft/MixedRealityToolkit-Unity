@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
@@ -20,10 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     public class DataSourceReflectionTest : MonoBehaviour, IDataSourceProvider
     {
+
+
         /// <summary>
         /// A class to contain data that is to be used as a data source. This is akin to a view model
         /// that will be used to populate a view.
         /// </summary>
+  
+
         private class TestInfo
         {
             public string firstname;
@@ -32,6 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             public string status;
             public int score;
         }
+
 
         private float _deltaSeconds;
         private int _nextOneSecondTarget;
@@ -105,6 +113,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 // Two different ways to set values in the provided object
                 _dataSource.SetValue("status", statusText[_status]);
+
+                // Note: This does not notify of the changed state, hence
+                // requiring a manual notification.
                 // _dataSourceObject.status = statusText[_status];
             }
 
@@ -126,5 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _dataSource.NotifyAllChanged();
             _dataSource.DataChangeSetEnd();
         }
-    }
+
+
+
+}
 }

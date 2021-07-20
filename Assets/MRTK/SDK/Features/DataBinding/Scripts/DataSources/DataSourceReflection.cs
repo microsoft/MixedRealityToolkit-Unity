@@ -25,7 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
     {
         protected static readonly string CollectionElementkeyPathPrefixFormat = "{0}[{1:d}]";
         protected static readonly string DictionaryElementkeyPathPrefixFormat = "{0}[{1}]";
+
+#if UNITY_EDITOR || ENABLE_IL2CPP
         protected static readonly MemberFilter FieldOrPropertyByNameMemberFilter = new MemberFilter(FieldOrPropertyNameCompare);
+#endif
 
 
         protected static readonly string ArrayTokenPattern = @"^\s*\[\s*([a-zA-Z0-9\-_]*?)\s*\]";
@@ -274,18 +277,28 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             try
             {
+                MemberInfo foundMember = null;
+
+#if UNITY_EDITOR || ENABLE_IL2CPP
                 Type objType = containingObject.GetType();
 
                 members = objType.FindMembers(
                     MemberTypes.Field | MemberTypes.Property,
                     BindingFlags.Public | BindingFlags.Instance,
                     FieldOrPropertyByNameMemberFilter,
-                    key );
+                    key);
 
-               if (members.Length > 0)
+                if (members.Length > 0)
+                {
+                    foundMember = members[0];
+                }
+#else
+                foundMember = TryFindMemberInfo(containingObject, key);
+#endif
+                if (foundMember != null)
                 {
                     // We can assume there is only one item with the exact name we searched for.
-                    foundMemberInfoOut = members[0];
+                    foundMemberInfoOut = foundMember;
                     return GetValueFromFieldOrProperty(containingObject, foundMemberInfoOut);
                 } 
             }
@@ -295,7 +308,39 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             return null;
         }
-        
+
+#if !UNITY_EDITOR && !ENABLE_IL2CPP
+        private MemberInfo TryFindMemberInfo(object obj, string keyToFind)
+        {
+            var objType = obj.GetType();
+            var objTypeInfo = objType.GetTypeInfo();
+            try
+            {
+                var propertyInfos = objTypeInfo.DeclaredProperties;
+                foreach (var propertyInfo in propertyInfos)
+                {
+                    if (propertyInfo.Name == keyToFind && !propertyInfo.GetMethod.IsStatic && propertyInfo.GetMethod.IsPublic)
+                    {
+                        return propertyInfo;
+                    }
+                }
+
+                var fieldInfos = objTypeInfo.DeclaredFields;
+                foreach (var fieldInfo in fieldInfos)
+                {
+                    if (fieldInfo.Name == keyToFind && !fieldInfo.IsStatic && fieldInfo.IsPublic)
+                    {
+                        return fieldInfo;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
+        }
+#endif
         protected object GetValueFromFieldOrProperty( object containingObject, MemberInfo memberInfo )
         {
             if (memberInfo is PropertyInfo)
@@ -354,8 +399,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public bool IsStructOrClass(object source)
         {
             Type type = source.GetType();
-
+#if UNITY_EDITOR || ENABLE_IL2CPP
             return type.IsClass || (type.IsValueType && !type.IsPrimitive && !type.IsEnum);
+#else
+            var TypeInfo = type.GetTypeInfo();
+            return TypeInfo.IsPrimitive || (TypeInfo.IsValueType && !TypeInfo.IsPrimitive && !TypeInfo.IsEnum);
+#endif
         }
 
 
