@@ -10,6 +10,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     public class DataControllerTest : DataControllerGOBase
     {
+        private void Awake()
+        {
+            _dataSource = GetComponentInParent(typeof(IDataSource)) as IDataSource;
+        }
+
+        private IDataSource _dataSource;
+
         /// <summary>
         /// Process the specified command with the specified bound datum and optional parameters.
         /// </summary>
@@ -18,7 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="optionalParameters">Optional parameters, or null if none.</param>
         public override void ProcessCommand(string command, object data, Dictionary<string, object> optionalParameters)
         {
-            Debug.Log("DataController received command '" + command + "' for object " + data.ToString());
+            string message = "DataController received command '" + command + "' for object " + data.ToString();
+            _dataSource?.DataChangeSetBegin();
+            _dataSource?.SetValue("message", message);
+            _dataSource?.DataChangeSetEnd();
+            Debug.Log(message);
         }
     }
 }

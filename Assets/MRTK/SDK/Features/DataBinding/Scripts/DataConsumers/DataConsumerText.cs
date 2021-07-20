@@ -227,15 +227,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
-            ComponentInformation componentInfo;
+            ComponentInformation componentInfo = null;
 
-            if (!_componentInfoLookup.ContainsKey(component))
+            if (_componentInfoLookup.ContainsKey(component))
+            {
+                componentInfo = _componentInfoLookup[component];
+            } 
+            else
             {
                 componentInfo = new ComponentInformation(component);
                 _componentInfoLookup[component] = componentInfo;
-            } else
-            {
-                componentInfo = _componentInfoLookup[component];
             }
 
             MatchCollection matches = GetVariableMatchingRegex().Matches(componentInfo.GetTemplate());

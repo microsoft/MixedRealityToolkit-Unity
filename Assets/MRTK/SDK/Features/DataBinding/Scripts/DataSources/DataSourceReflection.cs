@@ -272,7 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected object GetNamedFieldOrProperty( object containingObject, string key, out MemberInfo foundMemberInfoOut ) {
 
-            MemberInfo[] members;
             foundMemberInfoOut = null;
 
             try
@@ -282,7 +281,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 #if UNITY_EDITOR || ENABLE_IL2CPP
                 Type objType = containingObject.GetType();
 
-                members = objType.FindMembers(
+               MemberInfo[] members;
+               members = objType.FindMembers(
                     MemberTypes.Field | MemberTypes.Property,
                     BindingFlags.Public | BindingFlags.Instance,
                     FieldOrPropertyByNameMemberFilter,
@@ -309,7 +309,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-#if !UNITY_EDITOR && !ENABLE_IL2CPP
         private MemberInfo TryFindMemberInfo(object obj, string keyToFind)
         {
             var objType = obj.GetType();
@@ -340,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             return null;
         }
-#endif
+
         protected object GetValueFromFieldOrProperty( object containingObject, MemberInfo memberInfo )
         {
             if (memberInfo is PropertyInfo)
@@ -399,12 +398,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public bool IsStructOrClass(object source)
         {
             Type type = source.GetType();
-#if UNITY_EDITOR || ENABLE_IL2CPP
-            return type.IsClass || (type.IsValueType && !type.IsPrimitive && !type.IsEnum);
-#else
-            var TypeInfo = type.GetTypeInfo();
-            return TypeInfo.IsPrimitive || (TypeInfo.IsValueType && !TypeInfo.IsPrimitive && !TypeInfo.IsEnum);
-#endif
+
+            // NOTE: using TypeInfo for backwards compatibility with .NET (pre IL2CPP)
+            TypeInfo typeInfo = type.GetTypeInfo();
+
+            return typeInfo.IsClass || (typeInfo.IsValueType && !typeInfo.IsPrimitive && !typeInfo.IsEnum);
         }
 
 

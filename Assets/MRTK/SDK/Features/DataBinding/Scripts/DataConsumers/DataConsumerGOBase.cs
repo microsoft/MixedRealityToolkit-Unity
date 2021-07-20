@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected const string _dataBindSpecifierBegin = @"{{";
         protected const string _dataBindSpecifierEnd = @"}}";
         protected Regex _variableRegex = new Regex(_dataBindSpecifierBegin + @"\s*([a-zA-Z0-9\-_]+)\s*" + _dataBindSpecifierEnd);
-
+        protected bool _attached = false;
 
 
         public IDataSource DataSource
@@ -65,25 +65,35 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void Attach( IDataSource dataSource, IDataController dataController, string resolvedKeyPathPrefix )
         {
-            ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
-            DataSource = dataSource;
-            DataController = dataController;
-            InitializeDataConsumer();
-            FindVariablesToManage();
+            if (!_attached)
+            {
+                _attached = true;
+                ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
+                DataSource = dataSource;
+                DataController = dataController;
+                InitializeDataConsumer();
+                FindVariablesToManage();
+            }
+
         }
 
 
         public virtual void Detach()
         {
-            foreach ( string resolvedKeyPath in _resolvedToLocalKeyPathLookup.Keys )
+            if (_attached)
             {
-                _dataSource.RemoveDataConsumerListener(resolvedKeyPath, this as IDataConsumer);
+                _attached = false;
+                foreach (string resolvedKeyPath in _resolvedToLocalKeyPathLookup.Keys)
+                {
+                    _dataSource.RemoveDataConsumerListener(resolvedKeyPath, this as IDataConsumer);
+                }
+
+                _resolvedToLocalKeyPathLookup.Clear();
+                ResolvedKeyPathPrefix = "";
+                DataSource = null;
+                DataController = null;
             }
 
-            _resolvedToLocalKeyPathLookup.Clear();
-            ResolvedKeyPathPrefix = "";
-            DataSource = null;
-            DataController = null;
         }
 
 
@@ -175,6 +185,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected virtual void Start()
         {
             FindVariablesToManage();
+
+            // avoid double initialize if not a detached object in a collection.
+            if (DataSource != null && _resolvedToLocalKeyPathLookup.Count > 0)
+            {
+                _attached = true;
+            }
         }
 
   
