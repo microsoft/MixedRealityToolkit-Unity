@@ -7,20 +7,59 @@ visual elements that can be populated dynamically at runtime with data being pro
 data source, and also dynamically update as the supplied data changes.
 It enables the following functionality:
 
-1. Use dynamic data to alter visual elements. Currently supported:
-  - TextMeshPro text
-  - TextMesh text
-  - Sprite - via sprite lookup
-  - Sprite - via image replacement
-  - Lists - dynamically populated prefabs containing the above variable elements
+1. Visualize variable data via data consumers. Currently supported:
+  * TextMeshPro text
+  * TextMesh text
+  * Text style selector (for theming)
+  * Sprite - via sprite lookup
+  * Sprite/Quad - via image fetch and replace
+  * Lists - prefabs populated with variable data
+  * Any other consumer that supports the IDataConsumer interface
 2. Provide variable data via a variety of data sources:
-  - JSON text
-  - Dictionary of variable data elements
-  - Programmatically altered data
-  - Node based structured data
-3. Map differing variable name spaces between views and data sources
-4. List paging - data is only fetched when visible
-5. List prefab pooling - prefabs are reused with new varaible data to reduce GC and instantiation time.
+  * JSON text (directly or via URL fetch)
+  * Dictionary of variable data elements
+  * Object - Node based structured data
+  * Reflection of any C# object
+  * Programmatically altered data
+  * Any other method that supports the IDataSource interface
+3. List item placer to manage the visual manifestation of a list
+4. List paging, scrolling and virtualization
+  * Data is only fetched when visible or in process
+  * Supports arbitrarily large back-end data sets
+  * Fetching is load balanced across multiple frames
+5. List prefab pooling
+  * Prefabs are reused and repopulated to reduce GC and instantiation time.
+
+Functionality on the roadmap:
+
+1. Data Manipulator
+  * Conversion
+  * Localization
+  * Formatting
+  * Validation
+2. Predictive list item prefetch for faster/smoother scrolling/paging
+3. More Data Consumers
+  * Checkboxes
+  * Sliders
+  * Radio Buttons
+  * Menus
+  * Material properties
+
+## Design Objectives
+
+This framework is designed to solve for the following objectives:
+
+* Fully independent with no external dependencies on other MRTK subsystems
+* Easy to integrate into existing or greenfield code bases
+* Open ended support for multiple dynamic data sources
+* Open ended support for multiple data consumers / visualizers
+* Support for arbitrarily large lists
+* Nested lists
+* Low garbage collection footprint
+* Low impact on frame rate
+* Low RAM footprint for list objects
+* Cross platform
+* Reusability of data visualization prefabs. Eg: Contact Info slate prefab, standard list entries)
 
 ## Key Concepts
 
@@ -28,13 +67,12 @@ It enables the following functionality:
 
 A data source is any managed set of data of arbitrary type(s) and complexity
 that can be used to populate data views via data consumers. The data managed by a data source
-
 can be static or dynamic. Any changes to data items will be reported to any data consumers
 that have registered to receive change notifications.
 
 ### Data Source Provider
 
-A simple interface that has a single method to retrieve a data source. This is designed to allow a MonoBehavior scripting component to be auto-discovered in the game object hierarchy by data consumer components, but without the need to implement a data source directly on the game object itself.  This is useful when an existing MonoBehaviour must derive from another class and multiple inheritence prevents deriving from DataSourceGOBase. It also allows more code to have no Unity dependencies.
+A simple interface that has a single method to retrieve a data source. This is designed to allow a MonoBehavior scripting component to be auto*discovered in the game object hierarchy by data consumer components, but without the need to implement a data source directly on the game object itself.  This is useful when an existing MonoBehaviour must derive from another class and multiple inheritence prevents deriving from DataSourceGOBase. It also allows more code to have no Unity dependencies.
 
 
 ### Key Path (string)
@@ -48,16 +86,16 @@ relative to the entire structured data set. It is modelled on javascript's conce
 lists, dictionaries and primitives, such that key paths are syntactically correct javascript
 statements for accessing data that can be represented in JSON. The advantage 
 of this approach is that it correlates very well with both JSON and XML, 
-which are the two most prevalent means of transfering information from back-end services.
+which are the two most prevalent means of transfering information from back*end services.
 
 Example key paths:
 
-- temperature
-- contacts[10].firstName
-- contacts
-- contacts[10].addresses[3].city
-- [10].title
-- kingdom.animal.mammal.aardvark.diet.foodtypes.termites
+* temperature
+* contacts[10].firstName
+* contacts
+* contacts[10].addresses[3].city
+* [10].title
+* kingdom.animal.mammal.aardvark.diet.foodtypes.termites
 
 Given that a key path is an arbitrary string with no required taxonomy, the actual
 data specifiers could be any method of describing what data to retrieve. XML's XPath is an
@@ -79,17 +117,17 @@ entry in that list the current instance is referencing.
 
 Since a "fully resolved" Key path is always generated and consumed by a DataSource and should never (or at least rarely) be modified by a DataConsumer or other external component, it can have any structure that makes sense to the DataSource.  For example, if a prefab to show a list entry for a photo and it's title, date taken and other attributes, the local key path in the prefab might look like this:
 
-- "photo_url"
-- "title"
-- "date_taken"
-- "description"
+* "photo_url"
+* "title"
+* "date_taken"
+* "description"
 
 The fully resolved key paths for one prefab entry in a list might look like this:
 
-- "f3cb1906-d8b3-489d-9f74-725e5542b55d/photo_url"
-- "f3cb1906-d8b3-489d-9f74-725e5542b55d/title"
-- "f3cb1906-d8b3-489d-9f74-725e5542b55d/date_taken"
-- "f3cb1906-d8b3-489d-9f74-725e5542b55d/description"
+* "f3cb1906-d8b3-489d-9f74-725e5542b55d/photo_url"
+* "f3cb1906-d8b3-489d-9f74-725e5542b55d/title"
+* "f3cb1906-d8b3-489d-9f74-725e5542b55d/date_taken"
+* "f3cb1906-d8b3-489d-9f74-725e5542b55d/description"
 
 
 ### Key Path Mapper (IDataKeyPathMapper)
