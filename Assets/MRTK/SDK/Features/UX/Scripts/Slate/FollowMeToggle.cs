@@ -214,19 +214,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     visualizationObject.SetActive(follow);
                 }
 
-                if (ButtonBehavior != FollowMeBehaviorToInteractablesToggleState.Manual)
+                switch (ButtonBehavior)
                 {
-                    bool buttonToggledState = follow;
-
-                    if (buttonBehavior == FollowMeBehaviorToInteractablesToggleState.UntoggledWhenFollowing)
-                    {
-                        buttonToggledState = !buttonToggledState;
-                    }
-
-                    if (interactableObject != null)
-                    {
-                        interactableObject.IsToggled = buttonToggledState;
-                    }
+                    case FollowMeBehaviorToInteractablesToggleState.ToggledWhenFollowing:
+                        interactableObject.IsToggled = follow;
+                        break;
+                    case FollowMeBehaviorToInteractablesToggleState.UntoggledWhenFollowing:
+                        interactableObject.IsToggled = !follow;
+                        break;
+                    case FollowMeBehaviorToInteractablesToggleState.Manual:
+                        break;
                 }
             }
         }
