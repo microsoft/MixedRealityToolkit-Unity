@@ -281,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             newObject.transform.parent = transform;
             newObject.transform.localPosition = Vector3.zero;
             newObject.transform.localRotation = Quaternion.identity;
-            newObject.SetActive(true);
+            // newObject.SetActive(true);
             return newObject;
         }
 
