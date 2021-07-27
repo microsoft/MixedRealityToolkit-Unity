@@ -235,11 +235,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 GameObject childPrefab = GetPrefabInstance();
 
-                UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
-
-                yield return null;
-
                 itemPlacer?.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex++, childPrefab);
+
+                // After PlaceItem because prefab is likely to be not Active until this point and initializing
+                // prior to being Active adds complexity and/or causes exceptions.
+                UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
 
                 // TODO: add logic to yield after a specified # of milliseconds since some
                 //       items can be fabricated faster than others
@@ -313,11 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 dataConsumer.Detach();
             }
 
-            if (_dataObjectPool.ReturnObjectToPool(itemGO))
-            {
-                itemGO.transform.parent = null;
-            }
-            else
+            if (!_dataObjectPool.ReturnObjectToPool(itemGO))
             {
                 Destroy(itemGO);
             }
