@@ -278,10 +278,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 newObject = _dataObjectPool.GetObjectFromPool() as GameObject;
             }
 
+            newObject.SetActive(false);
             newObject.transform.parent = transform;
             newObject.transform.localPosition = Vector3.zero;
             newObject.transform.localRotation = Quaternion.identity;
-            // newObject.SetActive(true);
             return newObject;
         }
 
