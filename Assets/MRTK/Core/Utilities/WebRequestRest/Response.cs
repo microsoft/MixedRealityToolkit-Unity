@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         [Obsolete("This property is obsolete. " +
         "Use the GetResponseBody() method instead.", false)]
-        public string ResponseBody => responseBody ?? (responseBody = responseBodyTask.Result);
+        public string ResponseBody => responseBody ?? (responseBody = responseBodyTask?.Result);
 
         /// <summary>
         /// Response body from the resource.
