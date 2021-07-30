@@ -30,12 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private const int maximumTouchableVolumeSize = 1000;
 
-        /// <summary>
-        /// The offset that the poke pointer has from the source pose when the index finger pose is not available.
-        /// This value puts the pointer slightly in front of the source pose's origin, oriented according to the source pose's rotation
-        /// </summary>
-        private const float sourcePoseOffset = 0.075f;
-
         [SerializeField]
         [Tooltip("Maximum distance a which a touchable surface can be interacted with.")]
         protected float touchableDistance = 0.2f;
@@ -43,6 +37,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Maximum distance a which a touchable surface can be interacted with.
         /// </summary>
         public float TouchableDistance => touchableDistance;
+
+        /// <summary>
+        /// The offset that the poke pointer has from the source pose when the index finger pose is not available.
+        /// This value puts the pointer slightly in front of the source pose's origin, oriented according to the source pose's rotation
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The offset that the poke pointer has from the source pose when the index finger pose is not available.")]
+        private float sourcePoseOffset = 0.075f;
 
         [SerializeField]
         [Tooltip("Maximum number of colliders that can be detected in a scene query.")]
