@@ -8,6 +8,8 @@ using UnityEngine;
 
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
+#else
+using UnityEngine.XR;
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
@@ -30,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private readonly List<Bone> fingerBones = new List<Bone>();
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
-        public void UpdateHandJoints(Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
+        public void UpdateHandJoints(InputDevice inputDevice, Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
         {
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             if (handTracker != null && handTracker.TryLocateHandJoints(FrameTime.OnUpdate, locations))
@@ -51,17 +53,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             {
                 foreach (HandFinger finger in HandFingers)
                 {
-                    if (hand.TryGetRootBone(out Bone rootBone))
+                    if (hand.TryGetRootBone(out Bone rootBone) && TryReadHandJoint(rootBone, out MixedRealityPose rootPose))
                     {
-                        jointPoses[TrackedHandJoint.Palm] = ReadHandJoint(TrackedHandJoint.Palm, rootBone);
+                        jointPoses[TrackedHandJoint.Palm] = rootPose;
                     }
 
                     if (hand.TryGetFingerBones(finger, fingerBones))
                     {
                         for (int i = 0; i < fingerBones.Count; i++)
                         {
-                            TrackedHandJoint handJoint = ConvertToTrackedHandJoint(finger, i);
-                            jointPoses[handJoint] = ReadHandJoint(handJoint, fingerBones[i]);
+                            if (TryReadHandJoint(fingerBones[i], out MixedRealityPose pose))
+                            {
+                                jointPoses[ConvertToTrackedHandJoint(finger, i)] = pose;
+                            }
                         }
                     }
                 }
@@ -110,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
         }
 #else
-        private MixedRealityPose ReadHandJoint(TrackedHandJoint trackedHandJoint, Bone bone)
+        private bool TryReadHandJoint(Bone bone, out MixedRealityPose pose)
         {
             bool positionAvailable = bone.TryGetPosition(out Vector3 position);
             bool rotationAvailable = bone.TryGetRotation(out Quaternion rotation);
@@ -122,8 +126,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 position = MixedRealityPlayspace.TransformPoint(position);
                 rotation = MixedRealityPlayspace.Rotation * rotation;
 
-                return new MixedRealityPose(position, rotation);
+                pose = new MixedRealityPose(position, rotation);
+                return true;
             }
+
+            pose = MixedRealityPose.ZeroIdentity;
+            return false;
         }
 
         /// <summary>

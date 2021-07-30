@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             using (UpdateHandDataPerfMarker.Auto())
             {
                 handMeshProvider?.UpdateHandMesh();
-                handJointProvider?.UpdateHandJoints(unityJointPoses);
+                handJointProvider?.UpdateHandJoints(inputDevice, unityJointPoses);
                 handDefinition?.UpdateHandJoints(unityJointPoses);
             }
         }
