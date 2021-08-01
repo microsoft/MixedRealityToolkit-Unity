@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Helper function used to determine whether or not the controller pose synchronizer is configured to make use of the SourcePoseEventData
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="eventData"></param>
-        /// <returns></returns>
         protected bool SourcePoseDataUsable<T>(SourcePoseEventData<T> eventData)
         {
             return ((UseSourcePoseAsFallback && !poseActionDetected) || UseSourcePoseData) && eventData.SourceId == Controller?.InputSource.SourceId;
@@ -27,9 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Helper function used to determine whether or not the controller pose synchronizer is configured to make use of the InputEventData
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="eventData"></param>
-        /// <returns></returns>
         protected bool InputEventDataUsable<T>(InputEventData<T> eventData)
         {
             return !UseSourcePoseData && eventData.SourceId == Controller?.InputSource.SourceId && PoseAction == eventData.MixedRealityInputAction;
