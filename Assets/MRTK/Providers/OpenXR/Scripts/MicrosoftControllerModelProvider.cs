@@ -4,11 +4,11 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System.Collections.Generic;
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -19,15 +19,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     {
         public MicrosoftControllerModelProvider(Utilities.Handedness handedness)
         {
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             controllerModelProvider = handedness == Utilities.Handedness.Left ? ControllerModel.Left : ControllerModel.Right;
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
         }
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
         private static readonly Dictionary<ulong, GameObject> ControllerModelDictionary = new Dictionary<ulong, GameObject>(2);
         private readonly ControllerModel controllerModelProvider;
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
         // Disables "This async method lacks 'await' operators and will run synchronously." when the correct OpenXR package isn't installed
 #pragma warning disable CS1998
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             GameObject gltfGameObject = null;
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
                 Debug.LogError("Failed to obtain controller model key from platform.");
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     ControllerModelDictionary.Add(modelKey, gltfGameObject);
                 }
             }
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
             return gltfGameObject;
         }

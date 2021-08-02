@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => selectedConstraints;
         }
 
-        private HashSet<TransformConstraint> constraints = new HashSet<TransformConstraint>();
+        private List<TransformConstraint> constraints = new List<TransformConstraint>();
         private MixedRealityTransform initialWorldPose;
 
         /// <summary>	
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var existingConstraint = selectedConstraints.Find(t => t == constraint);
             if (existingConstraint == null)
             {
-                selectedConstraints.Add(constraint);
+                ConstraintUtils.AddWithPriority(ref selectedConstraints, constraint, new ConstraintExecOrderComparer());
             }
 
             return existingConstraint == null;
@@ -96,6 +96,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Re-sort list of constraints. Triggered by constraints
+        /// when their execution order is modified at runtime.
+        /// </summary>
+        internal void RefreshPriorities()
+        {
+            constraints.Sort(new ConstraintExecOrderComparer());
+        }
+
+        /// <summary>
         /// Registering of a constraint during runtime. This method gets called by the constraint
         /// components to auto register in their OnEnable method.
         /// </summary>
@@ -105,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // add to auto component list
             if (constraint.isActiveAndEnabled)
             {
-                constraints.Add(constraint);
+                ConstraintUtils.AddWithPriority(ref constraints, constraint, new ConstraintExecOrderComparer());
                 constraint.Initialize(initialWorldPose);
             }
         }
@@ -127,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (constraint.isActiveAndEnabled)
                 {
-                    constraints.Add(constraint);
+                    ConstraintUtils.AddWithPriority(ref constraints, constraint, new ConstraintExecOrderComparer());
                 }
             }
         }
@@ -137,30 +146,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ManipulationHandFlags handMode = isOneHanded ? ManipulationHandFlags.OneHanded : ManipulationHandFlags.TwoHanded;
             ManipulationProximityFlags proximityMode = isNear ? ManipulationProximityFlags.Near : ManipulationProximityFlags.Far;
 
-            if (autoConstraintSelection)
+            foreach (var constraint in constraints)
             {
-                foreach (var constraint in constraints)
+                // If on manual mode, filter executed constraints by which have been manually selected
+                if (!autoConstraintSelection && !selectedConstraints.Contains(constraint))
                 {
-                    if (constraint.isActiveAndEnabled &&
-                        constraint.ConstraintType == transformType &&
-                        constraint.HandType.HasFlag(handMode) &&
-                        constraint.ProximityType.HasFlag(proximityMode))
-                    {
-                        constraint.ApplyConstraint(ref transform);
-                    }
+                    continue;
                 }
-            }
-            else
-            {
-                foreach (var constraint in selectedConstraints)
+                
+                if (constraint.isActiveAndEnabled &&
+                    constraint.ConstraintType == transformType &&
+                    constraint.HandType.HasFlag(handMode) &&
+                    constraint.ProximityType.HasFlag(proximityMode))
                 {
-                    if (constraint.isActiveAndEnabled &&
-                        constraint.ConstraintType == transformType &&
-                        constraint.HandType.HasFlag(handMode) &&
-                        constraint.ProximityType.HasFlag(proximityMode))
-                    {
-                        constraint.ApplyConstraint(ref transform);
-                    }
+                    constraint.ApplyConstraint(ref transform);
                 }
             }
         }

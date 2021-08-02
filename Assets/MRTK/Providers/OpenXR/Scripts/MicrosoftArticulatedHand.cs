@@ -9,24 +9,10 @@ using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
+using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
 
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
-#if MSFT_OPENXR_0_1_3_OR_NEWER
-using FrameTime = Microsoft.MixedReality.OpenXR.FrameTime;
-#else
-using FrameTime = Microsoft.MixedReality.OpenXR.Preview.FrameTime;
-#endif // MSFT_OPENXR_0_1_3_OR_NEWER
-
-#if MSFT_OPENXR_0_2_0_OR_NEWER
-using HandJoint = Microsoft.MixedReality.OpenXR.HandJoint;
-using HandJointLocation = Microsoft.MixedReality.OpenXR.HandJointLocation;
-using HandTracker = Microsoft.MixedReality.OpenXR.HandTracker;
-#else
-using HandJoint = Microsoft.MixedReality.OpenXR.Preview.HandJoint;
-using HandJointLocation = Microsoft.MixedReality.OpenXR.Preview.HandJointLocation;
-using HandTracker = Microsoft.MixedReality.OpenXR.Preview.HandTracker;
-using Preview = Microsoft.MixedReality.OpenXR.Preview;
-#endif // MSFT_OPENXR_0_2_0_OR_NEWER
+using Microsoft.MixedReality.OpenXR;
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
@@ -52,11 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             handMeshProvider?.SetInputSource(inputSource);
 
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
-#if MSFT_OPENXR_0_2_0_OR_NEWER
             handTracker = controllerHandedness == Handedness.Left ? HandTracker.Left : HandTracker.Right;
-#else
-            handTracker = new HandTracker(controllerHandedness == Handedness.Left ? Preview.Handedness.Left : Preview.Handedness.Right, Preview.HandPoseType.Tracked);
-#endif
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
         }
 
@@ -266,14 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
                         // We want input sources to follow the playspace, so fold in the playspace transform here to
                         // put the pose into world space.
-#if MSFT_OPENXR_0_2_0_OR_NEWER
                         Vector3 position = MixedRealityPlayspace.TransformPoint(handJointLocation.Pose.position);
                         Quaternion rotation = MixedRealityPlayspace.Rotation * handJointLocation.Pose.rotation;
-
-#else
-                        Vector3 position = MixedRealityPlayspace.TransformPoint(handJointLocation.Position);
-                        Quaternion rotation = MixedRealityPlayspace.Rotation * handJointLocation.Rotation;
-#endif // MSFT_OPENXR_0_2_0_OR_NEWER
 
                         unityJointPoses[ConvertToTrackedHandJoint(handJoint)] = new MixedRealityPose(position, rotation);
                     }

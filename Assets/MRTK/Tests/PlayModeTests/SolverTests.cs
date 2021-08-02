@@ -220,6 +220,77 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test Surface Magnetism against vertical normal and ensure no temporal instability (gimbal lock)
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestSurfaceMagnetismGimbalLock()
+        {
+            Vector3 floorCenter = Vector3.forward * 10.0f + Vector3.up * -2.0f;
+
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(floorCenter);
+            });
+
+            // Build floor to collide against
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor.transform.localScale = new Vector3(25.0f, 0.2f, 25.0f);
+            floor.transform.position = floorCenter;
+
+            // Give the floor a very small tilt
+            floor.transform.rotation = Quaternion.Euler(10, 0, 0);
+            
+            yield return WaitForFrames(2);
+
+            // Instantiate our test GameObject with solver. 
+            // Set layer to ignore raycast so solver doesn't raycast itself (i.e BoxCollider)
+            var testObjects = InstantiateTestSolver<SurfaceMagnetism>();
+            testObjects.target.layer = LayerMask.NameToLayer("Ignore Raycast");
+            SurfaceMagnetism surfaceMag = testObjects.solver as SurfaceMagnetism;
+
+            var targetTransform = testObjects.target.transform;
+            var cameraTransform = CameraCache.Main.transform;
+
+            yield return WaitForFrames(2);
+
+            // Change default orientation mode to surface normal
+            surfaceMag.CurrentOrientationMode = SurfaceMagnetism.OrientationMode.SurfaceNormal;
+            surfaceMag.KeepOrientationVertical = false;
+
+            yield return WaitForFrames(2);
+
+            // Test object should now be facing the floor
+            Assert.IsTrue(Mathf.Approximately(1.0f, Vector3.Dot(-targetTransform.forward.normalized, floor.transform.up)));
+
+            // Cache test object's current right vector
+            Vector3 rightVector = testObjects.target.transform.right;
+
+            floor.transform.Rotate(new Vector3(-20, 0, 0));
+            yield return WaitForFrames(2);
+
+            // Make sure that the target's right vector has not flip-flopped
+            Assert.IsTrue(Mathf.Sign(targetTransform.transform.right.x) == Mathf.Sign(rightVector.x));
+
+            // Do the same, but with KeepOrientationVertical = true
+            surfaceMag.KeepOrientationVertical = true;
+
+            // Cache test object's current right vector
+            rightVector = testObjects.target.transform.right;
+
+            yield return WaitForFrames(2);
+
+            // Test object should now have proper upright orientation
+            Assert.IsTrue(Mathf.Approximately(1.0f, Vector3.Dot(targetTransform.up.normalized, Vector3.up)));
+            floor.transform.Rotate(new Vector3(20, 0, 0));
+            yield return WaitForFrames(2);
+
+            // Make sure that the target's right vector has not flip-flopped
+            Assert.IsTrue(Mathf.Sign(targetTransform.transform.right.x) == Mathf.Sign(rightVector.x));
+        }
+
+        /// <summary>
         /// Test solver system's ability to change target types at runtime
         /// </summary>
         [UnityTest]

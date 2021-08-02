@@ -1237,7 +1237,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 outCurveX.AddKey(curveX[curveX.length - 1]);
                 outCurveY.AddKey(curveY[curveY.length - 1]);
                 outCurveZ.AddKey(curveZ[curveZ.length - 1]);
-                outCurveW.AddKey(curveZ[curveW.length - 1]);
+                outCurveW.AddKey(curveW[curveW.length - 1]);
             }
             else
             {
@@ -1247,7 +1247,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     outCurveX.AddKey(curveX[j]);
                     outCurveY.AddKey(curveY[j]);
                     outCurveZ.AddKey(curveZ[j]);
-                    outCurveZ.AddKey(curveW[j]);
+                    outCurveW.AddKey(curveW[j]);
                 }
             }
 
@@ -1292,6 +1292,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 outCurveX.AddKey(inCurveX[bestIndex]);
                 outCurveY.AddKey(inCurveY[bestIndex]);
                 outCurveZ.AddKey(inCurveZ[bestIndex]);
+                outCurveW.AddKey(inCurveW[bestIndex]);
                 Recurse(start, bestIndex);
                 Recurse(bestIndex, end);
             }

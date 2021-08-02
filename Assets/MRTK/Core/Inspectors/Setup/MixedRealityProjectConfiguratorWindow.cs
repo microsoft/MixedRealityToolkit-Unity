@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string XRSDKUnityDocsUrl = "https://docs.unity3d.com/Manual/configuring-project-for-xr.html";
         private const string MSOpenXRPluginUrl = "https://aka.ms/openxr-unity-install";
         private const string MRTKConfiguratorLogPrefix = "[MRTK Configurator]";
-        private const string XRPipelineIntro = "To build applications for AR/VR headsets you need to enable an XR pipeline. ";
+        private const string XRPipelineIntro = "To build applications for AR/VR devices you need to enable an XR pipeline. Please make sure you are targeting the desired build target before proceeding. ";
         private const string AlternativePipelineText = "\n\nFor more information on alternative pipelines, please click on the Learn More button.";
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
         private readonly GUIContent SkipButtonContent = new GUIContent("Skip This Step", "Skip to the next step");
@@ -284,12 +284,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private void RenderMicrosoftOpenXRPipelineDetected()
         {
             EditorGUILayout.LabelField("XR Pipeline Setting - XR SDK with Unity + Microsoft OpenXR plugins in use", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField(XRPipelineIntro
-                + $"\n\nThe XR SDK pipeline with Unity and Microsoft OpenXR plugins are detected in the project. You are good to go."
-                + AlternativePipelineText, EditorStyles.wordWrappedLabel);
+            EditorGUILayout.LabelField(XRPipelineIntro + $"\n\nThe XR SDK pipeline with Unity and Microsoft OpenXR plugins are detected in the project. You are good to go.", EditorStyles.wordWrappedLabel);
             CreateSpace(15);
+            GUIStyle richTextLabelStyle = new GUIStyle(EditorStyles.helpBox)
+            {
+                richText = true,
+                wordWrap = true,
+                fontSize = 12
+            };
+            EditorGUILayout.LabelField("<size=18><b>Important - for first time setup only</b></size>\n\nIf you are setting up OpenXR <b>for the first time and are targeting HoloLens 2</b>, " +
+                "click on the Apply Settings button below to apply recommended project settings <b>before clicking Next</b>. You can safely proceed (click Next) if there is no error message or only one regarding Holographic Remoting for Play Mode.\n" +
+                "If you are targeting Windows Mixed Reality headset or prefer setting up manually, click on the Learn More button and refer to the manual setup section.", richTextLabelStyle);
+            CreateSpace(30);
             using (new EditorGUILayout.HorizontalScope())
             {
+                if (GUILayout.Button("Apply Settings"))
+                {
+                    Debug.Log(MRTKConfiguratorLogPrefix + " Applying recommended project settings for HoloLens 2. Operation performed is equivalent to clicking on Mixed Reality -> Project -> Apply recommended project settings for HoloLens 2.");
+                    EditorApplication.ExecuteMenuItem("Mixed Reality/Project/Apply recommended project settings for HoloLens 2");
+                }
                 if (GUILayout.Button("Next"))
                 {
                     CurrentStage = ConfigurationStage.ProjectConfiguration;
@@ -297,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
                 if (GUILayout.Button("Learn More"))
                 {
-                    Application.OpenURL(XRPipelineDocsUrl);
+                    Application.OpenURL(MSOpenXRPluginUrl);
                 }
 
             }
