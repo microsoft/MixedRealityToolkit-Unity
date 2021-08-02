@@ -38,13 +38,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public float TouchableDistance => touchableDistance;
 
+
+        [SerializeField]
+        [Tooltip("The offset that the poke pointer has from the source pose when the index finger pose is not available.")]
+        protected float sourcePoseOffset = 0.075f;
         /// <summary>
         /// The offset that the poke pointer has from the source pose when the index finger pose is not available.
         /// This value puts the pointer slightly in front of the source pose's origin, oriented according to the source pose's rotation
         /// </summary>
-        [SerializeField]
-        [Tooltip("The offset that the poke pointer has from the source pose when the index finger pose is not available.")]
-        protected float sourcePoseOffset = 0.075f;
+        public float SourcePoseOffset => sourcePoseOffset;
+
 
         [SerializeField]
         [Tooltip("Maximum number of colliders that can be detected in a scene query.")]
