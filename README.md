@@ -1,4 +1,4 @@
-![Mixed Reality Toolkit](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/Logo_MRTK_Unity_Banner.png)
+![Mixed Reality Toolkit](https://user-images.githubusercontent.com/13754172/122838732-89ea3400-d2ab-11eb-8c79-32dd84944989.png)
 
 # What is the Mixed Reality Toolkit
 
@@ -11,7 +11,7 @@ MRTK-Unity is a Microsoft-driven project that provides a set of components and f
 
 | Platform | Supported Devices |
 |:---|:---|
-| OpenXR (Unity 2020.3) | Microsoft HoloLens 2 <br> Windows Mixed Reality headsets |
+| OpenXR (Unity 2020.3.8+) | Microsoft HoloLens 2 <br> Windows Mixed Reality headsets |
 | Windows Mixed Reality | Microsoft HoloLens <br> Microsoft HoloLens 2 <br> Windows Mixed Reality headsets  |
 | Oculus (Unity 2019.3 or newer) | Oculus Quest |
 | OpenVR |  Windows Mixed Reality headsets <br> HTC Vive <br> Oculus Rift |
@@ -22,7 +22,7 @@ MRTK-Unity is a Microsoft-driven project that provides a set of components and f
 
 If you're new to MRTK or Mixed Reality development in Unity, **we recommend you start at the beginning of our** [Unity development journey](https://docs.microsoft.com/windows/mixed-reality/unity-development-overview?tabs=mrtk%2Chl2) in the Microsoft Docs. The Unity development journey is specifically tailored to walk new developers through the installation, core concepts, and usage of MRTK.
 
-| IMPORTANT: The Unity development journey currently uses **MRTK version 2.7.0** and **Unity 2020.3**. |
+| IMPORTANT: The Unity development journey currently uses **MRTK version 2.7.2**, **Mixed Reality OpenXR plugin version 1.0.0** and **Unity 2020.3.8+**. |
 | --- |
 
 If you're an experienced Mixed Reality or MRTK developer, check the links in the next section for the newest packages and release notes.
@@ -42,9 +42,10 @@ If you're an experienced Mixed Reality or MRTK developer, check the links in the
 
 # Required software
 
- | [![Windows SDK 18362+](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_17.png)](https://developer.microsoft.com/windows/downloads/windows-10-sdk) [Windows SDK 18362+](https://developer.microsoft.com/windows/downloads/windows-10-sdk)| [![Unity](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2019](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2019](http://dev.windows.com/downloads)| [![Emulators (optional)](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_20.png)](https://docs.microsoft.com/windows/mixed-reality/using-the-hololens-emulator) [Emulators (optional)](https://docs.microsoft.com/windows/mixed-reality/using-the-hololens-emulator)|
+ | [![Windows SDK](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_17.png)](https://developer.microsoft.com/windows/downloads/windows-10-sdk) [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk)| [![Unity](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018/2019/2020 LTS](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2019](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2019](http://dev.windows.com/downloads)| [![Emulators (optional)](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRTK170802_Short_20.png)](https://docs.microsoft.com/windows/mixed-reality/using-the-hololens-emulator) [Emulators (optional)](https://docs.microsoft.com/windows/mixed-reality/using-the-hololens-emulator)|
 | :--- | :--- | :--- | :--- |
-| To build apps with MRTK v2, you need the Windows 10 May 2019 Update SDK. <br> To run apps for immersive headsets, you need the Windows 10 Fall Creators Update. | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you to test your app without the device in a simulated environment |
+
+Please refer to the [Install the tools](https://docs.microsoft.com/en-us/windows/mixed-reality/develop/install-the-tools) page for more detailed information.
 
 # Feature areas
 

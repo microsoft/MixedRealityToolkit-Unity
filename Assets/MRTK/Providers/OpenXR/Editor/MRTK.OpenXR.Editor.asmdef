@@ -1,5 +1,5 @@
 {
-    "name": "MRTK.OpenXR.Editor",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.OpenXR.Editor",
     "rootNamespace": "Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",

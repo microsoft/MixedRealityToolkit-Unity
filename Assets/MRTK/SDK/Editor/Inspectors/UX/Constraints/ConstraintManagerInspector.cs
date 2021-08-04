@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField(constraint.GetType().Name, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField($"Priority {(constraint as TransformConstraint).ExecutionPriority}: {constraint.GetType().Name}", GUILayout.ExpandWidth(true));
 
                 if (canRemove)
                 {
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     string constraintName = constraint.GetType().Name;
-                    EditorGUILayout.LabelField(constraintName);
+                    EditorGUILayout.LabelField($"Priority {(constraint as TransformConstraint).ExecutionPriority}: {constraint.GetType().Name}");
                     if (GUILayout.Button("Go to component"))
                     {
                         Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");

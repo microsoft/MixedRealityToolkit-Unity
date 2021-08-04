@@ -41,6 +41,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => proximityType = value;
         }
 
+        [SerializeField]
+        [Tooltip("Execution order priority of this constraint. Lower numbers will be executed before higher numbers.")]
+        private int executionOrder = 0;
+
+        /// <summary>
+        /// Execution order priority of this constraint. Lower numbers will be executed before higher numbers.
+        /// </summary>
+        public int ExecutionPriority
+        {
+            get => executionOrder;
+            set {
+                executionOrder = value;
+
+                // Notify all ConstraintManagers to re-sort these priorities.
+                foreach(var mgr in gameObject.GetComponents<ConstraintManager>())
+                {
+                    mgr.RefreshPriorities();
+                }
+            }
+        }
+
         protected MixedRealityTransform worldPoseOnManipulationStart;
 
         public abstract TransformFlags ConstraintType { get; }
