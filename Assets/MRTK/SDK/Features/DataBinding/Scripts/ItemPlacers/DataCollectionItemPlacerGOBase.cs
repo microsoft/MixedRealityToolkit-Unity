@@ -42,6 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected bool lastPageCanBePartial = true;
 
+        [Tooltip("Event object to receive a variety of events when collection state changes. ")]
+        [SerializeField]
+        protected DataCollectionEventsGOBase collectionEvents;
+
         protected int _firstVisibleItem = 0;
         protected int _numVisibleItems = 0;
 
@@ -80,6 +84,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
             foreach (State state in Enum.GetValues(typeof(State)))
             {
                 _itemsByState[state] = new Dictionary<int, ItemInfo>();
+            }
+
+            if (IsAtStart())
+            {
+                collectionEvents?.OnCollectionAtStart();
+            }
+            if (IsAtEnd())
+            {
+                collectionEvents?.OnCollectionAtEnd();
+            }
+
+            if (!IsAtStart() && !IsAtEnd())
+            {
+                collectionEvents?.OnCollectionInMiddle();
             }
         }
 
@@ -276,6 +294,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollNextPage()
         {
             Scroll(GetMaxVisibleItemCount());
+            collectionEvents.OnCollectionPagedForward();
+
         }
 
         /// <summary>
@@ -284,6 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollPreviousPage()
         {
             Scroll(-GetMaxVisibleItemCount());
+            collectionEvents.OnCollectionPagedBackward();
         }
 
 
@@ -293,6 +314,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollNextItem()
         {
             Scroll(1);
+            collectionEvents.OnCollectionScrolledForward();
+
         }
 
         /// <summary>
@@ -301,6 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollPreviousItem()
         {
             Scroll(-1);
+            collectionEvents.OnCollectionPagedBackward();
         }
 
 
@@ -323,7 +347,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             int firstItemToRemove;
             int firstItemToReposition;
             int numItemsToReposition;
-
+            bool wasAtStart = IsAtStart();
+            bool wasAtEnd = IsAtEnd();
 
             if (itemCount < 0)
             {
@@ -385,6 +410,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
 
+            if (!wasAtEnd && IsAtEnd())
+            {
+                collectionEvents.OnCollectionAtEnd();
+            }
+
+            if (!wasAtStart && IsAtStart() )
+            {
+                collectionEvents.OnCollectionAtStart();
+            }
 
             return actualScrollAmount;
         }
