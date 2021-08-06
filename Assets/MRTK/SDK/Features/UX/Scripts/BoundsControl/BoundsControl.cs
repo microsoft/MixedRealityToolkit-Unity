@@ -1242,8 +1242,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     else // non-uniform scaling
                     {
                         // get diff from center point of box
-                        Vector3 initialDist = (initialGrabPoint - oppositeCorner);
-                        Vector3 currentDist = (currentGrabPoint - oppositeCorner);
+                        Vector3 initialDist = Target.transform.InverseTransformVector(initialGrabPoint - oppositeCorner);
+                        Vector3 currentDist = Target.transform.InverseTransformVector(currentGrabPoint - oppositeCorner);
                         Vector3 grabDiff = (currentDist - initialDist);
                         scaleFactor = Vector3.one + grabDiff.Div(initialDist);
                     }
@@ -1284,8 +1284,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                             clampedTransform.Scale;
                     }
 
-                    var originalRelativePosition = initialPositionOnGrabStart - oppositeCorner;
-                    var newPosition = originalRelativePosition.Div(initialScaleOnGrabStart).Mul(Target.transform.localScale) + oppositeCorner;
+                    var originalRelativePosition = Target.transform.InverseTransformDirection(initialPositionOnGrabStart - oppositeCorner);
+                    var newPosition = Target.transform.TransformDirection(originalRelativePosition.Mul(scaleFactor)) + oppositeCorner;
                     Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                 }
                 else if (transformType == HandleType.Translation)
