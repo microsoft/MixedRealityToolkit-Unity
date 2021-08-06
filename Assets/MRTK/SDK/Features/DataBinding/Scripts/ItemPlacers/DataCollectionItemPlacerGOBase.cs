@@ -46,8 +46,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected DataCollectionEventsGOBase collectionEvents;
 
+        protected int _totalItemCount = 0;
+
         protected int _firstVisibleItem = 0;
         protected int _numVisibleItems = 0;
+
+        // Track last state to ensure events are always fired correctly.
+        // middle and not empty could be gleaned from the other 3, but
+        // this ensures they are fired correctly every time this
+        // component is enabled.
+
+        protected bool _lastEventStateAtStart = false;
+        protected bool _lastEventStateAtEnd = false;
+        protected bool _lastEventStateInMiddle = false;
+        protected bool _lastEventCollectionEmpty = false;
+        protected bool _lastEventCollectionNotEmpty = false;
+
+        protected bool _lastEventStateCanGoBackward = false;
+        protected bool _lastEventStateCanGoForward = false;
 
         protected IDataConsumerCollection _dataConsumerCollection;
 
@@ -81,23 +97,92 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private void OnEnable()
         {
+            _totalItemCount = 0;
+
+            _firstVisibleItem = 0;
+            _numVisibleItems = 0;
+
+            _lastEventStateAtStart = false;
+            _lastEventStateAtEnd = false;
+            _lastEventStateInMiddle = false;
+            _lastEventCollectionEmpty = false;
+            _lastEventCollectionNotEmpty = false;
+            _lastEventStateCanGoBackward = false;
+            _lastEventStateCanGoForward = false;
+
+            FindNearestCollectionEvents();
+
             foreach (State state in Enum.GetValues(typeof(State)))
             {
                 _itemsByState[state] = new Dictionary<int, ItemInfo>();
             }
+        }
 
-            if (IsAtStart())
+        private void OnDisable()
+        {
+            // deallocate to save memory when not in use.
+            foreach (State state in Enum.GetValues(typeof(State)))
             {
-                collectionEvents?.OnCollectionAtStart();
-            }
-            if (IsAtEnd())
-            {
-                collectionEvents?.OnCollectionAtEnd();
+                _itemsByState[state] = null;
             }
 
-            if (!IsAtStart() && !IsAtEnd())
+        }
+
+        protected void CheckForEventsToTrigger()
+        {
+            if (collectionEvents != null)
             {
-                collectionEvents?.OnCollectionInMiddle();
+                bool newAtStart = IsAtStart();
+                bool newAtEnd = IsAtEnd();
+                bool newInMiddle = !newAtStart && !newAtEnd;
+                bool newEmpty = GetTotalItemCount() == 0;
+                bool newCanGoBackward = !newAtStart;
+                bool newCanGoForward = !newAtEnd;
+
+                if (!_lastEventStateAtStart && newAtStart)
+                {
+                    collectionEvents.OnCollectionAtStart();
+                }
+                if (!_lastEventStateAtEnd && newAtEnd)
+                {
+                    collectionEvents.OnCollectionAtEnd();
+                }
+
+                // no in middle, and previously not in middle
+                if (newInMiddle && !_lastEventStateInMiddle)
+                {
+                    collectionEvents.OnCollectionInMiddle();
+                }
+
+                // can go backward in list
+                if (newCanGoBackward && !_lastEventStateCanGoBackward)
+                {
+                    collectionEvents.OnCollectionCanGoBackward();
+                }
+
+                // can go forward in list
+                if (newCanGoForward && !_lastEventStateCanGoForward)
+                {
+                    collectionEvents.OnCollectionCanGoForward();
+                }
+
+                if (newEmpty && !_lastEventCollectionEmpty)
+                {
+                    collectionEvents.OnCollectionEmpty();
+                } 
+
+                if (!newEmpty && !_lastEventCollectionNotEmpty)
+                {
+                    collectionEvents.OnCollectionNotEmpty();
+                }
+
+                _lastEventStateAtStart = newAtStart;
+                _lastEventStateAtEnd = newAtEnd;
+                _lastEventStateInMiddle = newInMiddle;
+                _lastEventCollectionEmpty = newEmpty;
+                _lastEventCollectionNotEmpty = !newEmpty;
+                _lastEventStateCanGoBackward = newCanGoBackward;
+                _lastEventStateCanGoForward = newCanGoForward;
             }
         }
 
@@ -108,6 +193,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 QueueGameObjectsForRemoval(_firstVisibleItem, _numVisibleItems);
                 PurgeAllRemovableGameObjects();
                 _numVisibleItems = 0;
+                if (collectionEvents != null)
+                {
+                    collectionEvents.OnCollectionChanged();
+                }
             }
         }
 
@@ -294,8 +383,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollNextPage()
         {
             Scroll(GetMaxVisibleItemCount());
-            collectionEvents.OnCollectionPagedForward();
-
+            if (collectionEvents != null)
+            {
+                collectionEvents.OnCollectionPagedForward();
+            }
         }
 
         /// <summary>
@@ -304,7 +395,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollPreviousPage()
         {
             Scroll(-GetMaxVisibleItemCount());
-            collectionEvents.OnCollectionPagedBackward();
+            if (collectionEvents != null)
+            {
+                collectionEvents.OnCollectionPagedBackward();
+            }
         }
 
 
@@ -314,8 +408,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollNextItem()
         {
             Scroll(1);
-            collectionEvents.OnCollectionScrolledForward();
-
+            if (collectionEvents != null)
+            {
+                collectionEvents.OnCollectionScrolledForward();
+            }
         }
 
         /// <summary>
@@ -324,9 +420,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void ScrollPreviousItem()
         {
             Scroll(-1);
-            collectionEvents.OnCollectionPagedBackward();
+            if (collectionEvents != null)
+            {
+                collectionEvents.OnCollectionPagedBackward();
+            }
         }
-
 
 
         /// <summary>
@@ -347,8 +445,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             int firstItemToRemove;
             int firstItemToReposition;
             int numItemsToReposition;
-            bool wasAtStart = IsAtStart();
-            bool wasAtEnd = IsAtEnd();
 
             if (itemCount < 0)
             {
@@ -410,15 +506,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
 
-            if (!wasAtEnd && IsAtEnd())
-            {
-                collectionEvents.OnCollectionAtEnd();
-            }
-
-            if (!wasAtStart && IsAtStart() )
-            {
-                collectionEvents.OnCollectionAtStart();
-            }
+            CheckForEventsToTrigger();
 
             return actualScrollAmount;
         }
@@ -493,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <returns>Number of items in the collection.</returns>
         public virtual int GetTotalItemCount()
         {
-            return _dataConsumerCollection?.GetCollectionItemCount() ?? 0;
+            return _totalItemCount;
         }
 
 
@@ -501,6 +589,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void StartPlacement()
         {
+            _totalItemCount = _dataConsumerCollection?.GetCollectionItemCount() ?? 0;
+            CheckForEventsToTrigger();
         }
 
         public virtual void PlaceItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
@@ -568,6 +658,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void NotifyCollectionDataChanged(DataChangeType dataChangeType)
         {
+            _totalItemCount = _dataConsumerCollection?.GetCollectionItemCount() ?? 0;
+
             // default behavior is to ask for all items in the collection with empty string as request ID.
             if (dataChangeType == DataChangeType.CollectionItemAdded)
             {
@@ -586,7 +678,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 // necessarily know where a deletion or modification occured.
                 RemoveAllItems();
                 RequestAnyMissingVisibleItems();
+                if ( collectionEvents != null )
+                {
+                    collectionEvents.OnCollectionContextSwitch();
+                }
             }
+
+            if ( collectionEvents != null)
+            {
+                collectionEvents.OnCollectionChanged();
+            }
+
+            // Check to see if any of the other events should be triggered as well.
+            CheckForEventsToTrigger();
         }
 
         #endregion IDataCollectionItemPlacer method implementations
@@ -656,5 +760,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // override this to return the actual currently visible item count
             return Math.Min(GetTotalItemCount(), GetItemCountPerPage());
         }
+
+        /// <summary>
+        /// Search through game object hierarchy for the nearest IDataCollectionEvents implementation.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// This protected method is unique to collection related Data Consumers. A CollectionEvents is used to
+        /// notify other systems that various changes in the state have occured. This is useful for
+        /// changing the state of paging and scrolling UX elements and for triggering transition effects.
+        /// </remarks>
+        protected void FindNearestCollectionEvents()
+        {
+            if (collectionEvents == null)
+            {
+                collectionEvents = GetComponentInParent(typeof(IDataCollectionEvents)) as DataCollectionEventsGOBase;
+            }
+        }
+
+
     }
 }

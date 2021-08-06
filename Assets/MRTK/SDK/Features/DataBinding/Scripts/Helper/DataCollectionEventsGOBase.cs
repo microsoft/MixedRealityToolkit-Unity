@@ -25,6 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public abstract void OnCollectionInMiddle();
 
+        public abstract void OnCollectionCanGoBackward();
+
+        public abstract void OnCollectionCanGoForward();
+
+
         /// <summary>
         /// Collection contents completely replaced
         /// </summary>

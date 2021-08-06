@@ -22,13 +22,40 @@ namespace Microsoft.MixedReality.Toolkit.Data
         void OnCollectionAtEnd();
 
         /// <summary>
+        /// Collection entered state of being in the middle.
+        /// </summary>
+        /// <remarks>
+        /// This means not at the start or the end.
+        /// 
+        /// Not that on a small list that is same or smaller 
+        /// than the available space, this will never get
+        /// triggered.
+        /// </remarks>
+        void OnCollectionInMiddle();
+
+        /// <summary>
+        /// Collection transitioned to a state where you can scroll or page backward
+        /// </summary>
+        /// <remarks>
+        /// This is triggered when the list is not at the start and
+        /// the list is large enough to even require scrolling.
+        /// </remarks>
+        void OnCollectionCanGoBackward();
+
+
+        /// <summary>
+        /// Collection transitioned to a state where you can scroll or page forward
+        /// </summary>
+        /// <remarks>
+        /// This is triggered when the list is not at the end and
+        /// the list is large enough to even require scrolling.
+        /// </remarks>
+        void OnCollectionCanGoForward();
+
+        /// <summary>
         /// Collection contents completely replaced
         /// </summary>
         /// 
-
-        /// <summary>
-        /// Collection in middle (ie. not at start or at end)
-        /// </summary>
         void OnCollectionContextSwitch();
 
         /// <summary>

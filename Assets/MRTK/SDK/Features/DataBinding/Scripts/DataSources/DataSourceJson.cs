@@ -155,7 +155,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if ( _keyPathToJsonNodeLookup.ContainsKey( resolvedKeyPath) )
             {
                 return _keyPathToJsonNodeLookup[resolvedKeyPath];
-            } else
+            } else if (_jsonRootNode == null )
+            {
+                return null;
+            }
+            else
             {
                 JSONNode jsonNode = _jsonRootNode;
 

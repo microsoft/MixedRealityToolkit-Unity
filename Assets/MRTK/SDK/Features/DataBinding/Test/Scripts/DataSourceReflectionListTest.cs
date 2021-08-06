@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private class TestInfo
         {
-            public List<ImageInfo> images;
+            public List<ImageInfo> images = new List<ImageInfo>();
         }
 
 
@@ -98,7 +98,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             string[] dates = { "February 26, 2020", "January 1, 2000", "March 1, 2018", "April 29, 2017", "May 5, 1999", "June 21, 1980" };
             string[] words = { "mixed reality", "MRTK", "HoloLens", "Unity", "Visual Studio", "Middleware", "Microsoft", "XR", "VR", "AR", "MR", "C#", "Azure" };
 
-            _dataSourceObject.images = new List<ImageInfo>();
+            if (_dataSourceObject.images == null)
+            {
+                _dataSourceObject.images = new List<ImageInfo>();
+            }
 
             System.Random r = new System.Random();
 

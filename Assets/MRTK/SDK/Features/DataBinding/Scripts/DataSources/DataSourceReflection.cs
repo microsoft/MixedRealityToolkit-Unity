@@ -382,12 +382,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public bool IsList(object source)
         {
-            return source is IList;
+            return source != null && source is IList;
         }
 
         public bool IsArray(object source)
         {
-            return source.GetType().IsArray;
+            return source?.GetType().IsArray ?? false;
         }
 
         public bool IsArrayOrList(object source)
@@ -397,12 +397,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public bool IsStructOrClass(object source)
         {
-            Type type = source.GetType();
+            if (source != null)
+            {
 
-            // NOTE: using TypeInfo for backwards compatibility with .NET (pre IL2CPP)
-            TypeInfo typeInfo = type.GetTypeInfo();
+                Type type = source.GetType();
 
-            return typeInfo.IsClass || (typeInfo.IsValueType && !typeInfo.IsPrimitive && !typeInfo.IsEnum);
+                // NOTE: using TypeInfo for backwards compatibility with .NET (pre IL2CPP)
+                TypeInfo typeInfo = type.GetTypeInfo();
+
+                return typeInfo.IsClass || (typeInfo.IsValueType && !typeInfo.IsPrimitive && !typeInfo.IsEnum);
+            }
+            else
+            {
+                return false;
+            }
         }
 
 

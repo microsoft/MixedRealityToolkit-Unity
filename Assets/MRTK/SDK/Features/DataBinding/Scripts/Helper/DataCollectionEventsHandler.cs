@@ -17,6 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected UnityEvent CollectionInMiddle = new UnityEvent();
 
         [SerializeField]
+        protected UnityEvent CollectionCanGoBackward = new UnityEvent();
+
+        [SerializeField]
+        protected UnityEvent CollectionCanGoForward= new UnityEvent();
+
+        [SerializeField]
         protected UnityEvent CollectionContextSwitch = new UnityEvent();
 
         [SerializeField]
@@ -61,6 +67,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public override void OnCollectionInMiddle()
         {
             CollectionInMiddle.Invoke();
+        }
+
+        public override void OnCollectionCanGoBackward()
+        {
+            CollectionCanGoBackward.Invoke();
+        }
+
+        public override void OnCollectionCanGoForward()
+        {
+            CollectionCanGoForward.Invoke();
         }
 
         /// <summary>
