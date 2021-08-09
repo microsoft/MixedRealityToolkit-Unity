@@ -216,13 +216,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         // First update queryBufferNearObjectRadius to see if there is a grabbable in the near interaction range
                         queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition - pointerAxis * PullbackDistance, triggerInteraction);
-                        if (queryBufferNearObjectRadius.HasValidGrabbable(pointerPosition - pointerAxis * PullbackDistance, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
+                        if (queryBufferNearObjectRadius.HasValidGrabbable(pointerPosition - pointerAxis * PullbackDistance, pointerAxis, ignoreCollidersNotInFOV))
                         {
                             break;
                         }
                     }
-
-
 
                     hitObject = null;
                     hitPoint = Vector3.zero;
@@ -231,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         // Then update queryBufferInteractionRadius to see if there is a grabbable that can be interacted with
                         queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction);
-                        if (queryBufferInteractionRadius.HasValidGrabbable(pointerPosition, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
+                        if (queryBufferInteractionRadius.HasValidGrabbable(pointerPosition, pointerAxis, ignoreCollidersNotInFOV))
                         {
                             hitObject = queryBufferInteractionRadius.GetClosestValidGrabbable(pointerPosition, pointerAxis, IgnoreCollidersNotInFOV, out hitPoint);
                             if (hitObject != null)
@@ -436,17 +434,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ignoreBoundsHandlesForQuery = ignoreBoundsHandles;
             }
 
-            public bool HasValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
+            public bool HasValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV)
             {
                 Vector3 grabbablePosition = pointerPosition;
+                NearInteractionGrabbable currentGrabbable = null;
 
                 for (int i = 0; i < numColliders; i++)
                 {
                     Collider collider = queryBuffer[i];
-                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out grabbable)
+                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable)
                         && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out grabbablePosition))
                     {
-                        return true;
+                        if (currentGrabbable != null)
+                        {
+                            grabbable = currentGrabbable;
+                            return true;
+                        }
                     }
                 }
 
