@@ -593,7 +593,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Returns true if any of the objects inside QueryBuffer contain a grabbable that is not a bounds handle
             /// </summary>
-            public bool NearObjectDetected => ContainsGrabbable && (ignoreBoundsHandlesForQuery && grabbable.IsBoundsHandles);
+            public bool NearObjectDetected => ContainsGrabbable && !(ignoreBoundsHandlesForQuery && grabbable.IsBoundsHandles);
         }
 
 #if UNITY_EDITOR
