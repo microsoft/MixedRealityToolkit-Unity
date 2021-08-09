@@ -1218,9 +1218,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Physics Raycasting
 
-        // Colliders used to store sphere overlap results
-        private static Collider[] colliders = null;
-
         private static readonly ProfilerMarker QueryScenePerfMarker = new ProfilerMarker("[MRTK] FocusProvider.QueryScene");
 
         /// <summary>
@@ -1268,73 +1265,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             if (pointer.SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance))
                             {
                                 hit.Set(hitObject, hitPoint, Vector3.zero, pointer.Rays[i], 0, hitDistance);
-                            }
-
-                            // Set up our results array
-                            if (colliders == null)
-                            {
-                                colliders = new Collider[maxQuerySceneResults];
-                            }
-                            else if (colliders.Length != maxQuerySceneResults)
-                            {
-                                Array.Resize(ref colliders, maxQuerySceneResults);
-                            }
-
-                            Vector3 testPoint = pointer.Rays[i].Origin;
-                            Vector3 objectHitPoint = testPoint;
-                            GameObject closest = null;
-                            float closestDistance = Mathf.Infinity;
-
-                            // Go through each layerMask and ensure perform the appropriate OverlapSphereCalculation
-                            // Since this is usually done when a pointer passes a IsInteractionEnabled, maybe we can cache the selected colliders inside the pointer?
-                            foreach (LayerMask layerMask in prioritizedLayerMasks)
-                            {
-                                int numColliders = UnityPhysics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, layerMask);
-                                if (numColliders > 0)
-                                {
-                                    if (numColliders >= maxQuerySceneResults)
-                                    {
-                                        Debug.LogWarning($"Maximum number of {numColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
-                                    }
-                                    for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
-                                    {
-                                        Collider collider = colliders[colliderIndex];
-
-                                        // Policy: in order for an collider to be near interactable it must have
-                                        // a NearInteractionGrabbable component on it.
-                                        // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
-                                        //        but there may be other pointers using the same query type which have different semantics.
-                                        //        See github issue https://github.com/microsoft/MixedRealityToolkit-Unity/issues/3758 
-                                        if (collider.GetComponent<NearInteractionGrabbable>() == null)
-                                        {
-                                            continue;
-                                        }
-
-                                        // From https://docs.unity3d.com/ScriptReference/Collider.ClosestPoint.html
-                                        // If location is in the collider the closestPoint will be inside.
-                                        // FIXME: this implementation is heavily flawed for determining the closest collider
-                                        // because the distance to the closest point is always 0 when the point is inside
-                                        // the collider (the closest point from x to the collider is x itself.) 
-                                        // This breaks cases like when 2 overlapping objects are selectable. We need to 
-                                        // address these cases with a smarter approach in the future.
-                                        //        See github issue https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7629
-                                        Vector3 closestPointToCollider = collider.ClosestPoint(testPoint);
-
-                                        // Keep track of the object closest to the test point.
-                                        float distance = (testPoint - closestPointToCollider).sqrMagnitude;
-                                        if (distance < closestDistance)
-                                        {
-                                            closestDistance = distance;
-                                            closest = collider.gameObject;
-                                            objectHitPoint = closestPointToCollider;
-                                        }
-                                    }
-                                }
-                                if (closest != null)
-                                {
-                                    hit.Set(closest, objectHitPoint, Vector3.zero, pointer.Rays[i], 0, closestDistance);
-                                    return;
-                                }
+                                return;
                             }
                             break;
                         default:
