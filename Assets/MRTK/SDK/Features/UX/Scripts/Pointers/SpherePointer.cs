@@ -188,6 +188,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
 
 
+        // Values ultimately returned by SceneQuery
+        private GameObject hitObject;
+        private Vector3 hitPoint;
+        private float hitDistance;
+
         /// <inheritdoc />
         /// PreSceneQuery here is only concerned with updating the IsNearObject flag by updating queryBufferNearObjectRadius
         public override void OnPreSceneQuery()
@@ -217,59 +222,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
 
+
+
+                    hitObject = null;
+                    hitPoint = Vector3.zero;
+                    hitDistance = Mathf.Infinity;
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
                         // Then update queryBufferInteractionRadius to see if there is a grabbable that can be interacted with
                         queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction);
                         if (queryBufferInteractionRadius.HasValidGrabbable(pointerPosition, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
                         {
-                            break;
+                            hitObject = queryBufferInteractionRadius.GetClosestValidGrabbable(pointerPosition, pointerAxis, IgnoreCollidersNotInFOV, out hitPoint);
+                            if (hitObject != null)
+                            {
+                                hitDistance = (pointerPosition - hitPoint).magnitude;
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
 
+        // Returns the hit values cached by the queryBuffer during the prescene query step
         public override bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
-            switch (SceneQueryType)
-            {
-                case SceneQueryType.SphereOverlap:
-                    if (Rays == null)
-                    {
-                        Rays = new RayStep[1];
-                    }
-
-                    Vector3 pointerPosition;
-                    Vector3 pointerAxis;
-                    if (TryGetNearGraspPoint(out pointerPosition) && TryGetNearGraspAxis(out pointerAxis))
-                    {
-                        Vector3 endPoint = Vector3.forward * SphereCastRadius;
-                        Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
-
-                        // Do a sphere overlap and see if there is anything to interact with
-                        for (int i = 0; i < prioritizedLayerMasks.Length; i++)
-                        {
-                            // Then do a query for the closest grabble object within the Interaction Radius
-                            queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(prioritizedLayerMasks[i], pointerPosition, triggerInteraction);
-                            hitObject = queryBufferInteractionRadius.GetClosestValidGrabbable(pointerPosition, pointerAxis, IgnoreCollidersNotInFOV, out hitPoint);
-                            if(hitObject != null)
-                            {
-                                hitDistance = (pointerPosition - hitPoint).magnitude;
-                                return true;
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    Debug.LogError($"Invalid raycast mode {SceneQueryType} for {PointerName} pointer.");
-                    break;
-            }
-
-            hitObject = null;
-            hitPoint = Position;
-            hitDistance = Mathf.Infinity;
-            return false;
+            hitObject = this.hitObject;
+            hitPoint = this.hitPoint;
+            hitDistance = this.hitDistance;
+            return hitObject != null;
         }
 
         private static readonly ProfilerMarker TryGetNearGraspPointPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetNearGraspPoint");
