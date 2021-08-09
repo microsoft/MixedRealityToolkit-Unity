@@ -518,9 +518,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.Assert(uiRaycastCamera == null);
                 FindOrCreateUiRaycastCamera();
-
-                //var globalPointerMediator = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.GlobalPointerMediator;
-                //GameObject.Instantiate(globalPointerMediator);
             }
 
             var primaryPointerSelectorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
