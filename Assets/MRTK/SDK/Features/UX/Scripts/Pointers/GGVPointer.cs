@@ -103,7 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsInteractionEnabled => IsActive;
 
         /// <inheritdoc />
+        public bool IsHover => gazeProvider.GazeTarget != null;
+
+        /// <inheritdoc />
         public bool IsActive { get; set; }
+
+        /// <inheritdoc />
+        public bool IsUsable { get { return IsActive; } set { IsActive = value; } }
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
@@ -116,6 +122,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
         public IMixedRealityFocusHandler FocusTarget { get; set; }
+
+        /// <inheritdoc />
+        public GameObject HoverTarget { get => Result.IsNull() ? Result.CurrentPointerTarget : null; }
 
         /// <inheritdoc />
         public IPointerResult Result { get; set; }
@@ -174,6 +183,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPreSceneQuery");
+
+        /// <inheritdoc />
+        public void OnPreSceneQuery()
+        {
+            using (OnPreSceneQueryPerfMarker.Auto())
+            {
+                Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
+                Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * CoreServices.InputSystem.FocusProvider.GlobalPointingExtent);
+                Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
+            }
+        }
+
         private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPostSceneQuery");
 
         /// <inheritdoc />
@@ -185,19 +207,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
                 }
-            }
-        }
-
-        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPreSceneQuery");
-
-        /// <inheritdoc />
-        public void OnPreSceneQuery()
-        {
-            using (OnPreSceneQueryPerfMarker.Auto())
-            {
-                Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
-                Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * CoreServices.InputSystem.FocusProvider.GlobalPointingExtent);
-                Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
             }
         }
 
@@ -412,6 +421,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     sourcePosition = eventData.InputData.Position;
                 }
             }
+        }
+
+        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        {
+            switch (SceneQueryType)
+            {
+                case SceneQueryType.SimpleRaycast:
+                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
+                        if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                default:
+                    throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
+            }
+            hitInfo = new MixedRealityRaycastHit();
+            return false;
+        }
+
+        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+        {
+            MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
+            bool querySuccessful = SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+
+            hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
+            hitPoint = hitInfo.point;
+            hitDistance = hitInfo.distance;
+
+            return querySuccessful;
         }
 
         #endregion IMixedRealityInputHandler<MixedRealityPose>

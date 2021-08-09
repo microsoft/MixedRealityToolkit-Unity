@@ -33,6 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public IMixedRealityTeleportHotspot TeleportHotspot { get; set; }
 
+        /// <inheritdoc />
+        public override bool IsUsable { get { return !TeleportSurfaceResult.Equals(TeleportSurfaceResult.None); } set { IsActive = value; } }
+
         [SerializeField]
         [Tooltip("Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction")]
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;

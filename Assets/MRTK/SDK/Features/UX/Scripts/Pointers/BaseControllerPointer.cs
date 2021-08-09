@@ -311,7 +311,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
+        public virtual bool IsHover { get; }
+
+        /// <inheritdoc />
         public virtual bool IsActive { get; set; }
+
+        /// <inheritdoc />
+        public virtual bool IsUsable { get { return IsActive; } set { IsActive = value; } }
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
@@ -376,6 +382,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IMixedRealityFocusHandler FocusTarget { get; set; }
 
         /// <inheritdoc />
+        public GameObject HoverTarget { get => Result.IsNull() ? Result.CurrentPointerTarget : null; }
+
+        /// <inheritdoc />
         public IPointerResult Result { get; set; }
 
         /// <summary>
@@ -405,6 +414,48 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public virtual void OnPreSceneQuery() { }
+
+        public virtual bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        {
+            var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+            switch (SceneQueryType)
+            {
+                case SceneQueryType.SimpleRaycast:
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
+                        if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                case SceneQueryType.SphereCast:
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
+                        if (raycastProvider.SphereCast(Rays[i], SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                default:
+                    throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
+            }
+            hitInfo = new MixedRealityRaycastHit();
+            return false;
+        }
+
+        public virtual bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+        {
+            MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
+            bool querySuccessful = SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+
+            hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
+            hitPoint = hitInfo.point;
+            hitDistance = hitInfo.distance;
+
+            return querySuccessful;
+        }
 
         private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnPostSceneQuery");
 

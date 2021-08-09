@@ -518,6 +518,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.Assert(uiRaycastCamera == null);
                 FindOrCreateUiRaycastCamera();
+
+                //var globalPointerMediator = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.GlobalPointerMediator;
+                //GameObject.Instantiate(globalPointerMediator);
             }
 
             var primaryPointerSelectorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
@@ -959,6 +962,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 foreach (var pointerMediator in pointerMediators)
                 {
+                    // This will be handled by the new pointer mediator ideally....
                     pointerMediator.Value.UpdatePointers();
                 }
 
@@ -1227,7 +1231,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (QueryScenePerfMarker.Auto())
             {
                 float rayStartDistance = 0;
-                MixedRealityRaycastHit hitInfo;
+                MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
                 RayStep[] pointerRays = pointer.Rays;
 
                 if (pointerRays == null)
@@ -1248,23 +1252,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     switch (pointer.SceneQueryType)
                     {
                         case SceneQueryType.SimpleRaycast:
-                            if (raycastProvider.Raycast(pointerRays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        case SceneQueryType.SphereCast:
+                            if (pointer.SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
                             {
                                 hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
-                                return;
                             }
                             break;
                         case SceneQueryType.BoxRaycast:
                             Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
                             break;
-                        case SceneQueryType.SphereCast:
-                            if (raycastProvider.SphereCast(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
-                            {
-                                hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
-                                return;
-                            }
-                            break;
                         case SceneQueryType.SphereOverlap:
+                            GameObject hitObject = null;
+                            Vector3 hitPoint = pointer.Rays[i].Origin;
+                            float hitDistance = Mathf.Infinity;
+                            if (pointer.SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance))
+                            {
+                                hit.Set(hitObject, hitPoint, Vector3.zero, pointer.Rays[i], 0, hitDistance);
+                            }
+
                             // Set up our results array
                             if (colliders == null)
                             {

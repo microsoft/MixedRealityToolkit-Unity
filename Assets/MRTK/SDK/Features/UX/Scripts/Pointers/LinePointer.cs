@@ -55,6 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // so remain disabled until we know where to appear (not just at the origin).
                 IsFocusLocked || (IsTracked && Controller.IsInPointingPose && base.IsInteractionEnabled);
 
+        public override bool IsHover => Result?.CurrentPointerTarget != null && IsInteractionEnabled;
+
         private Vector3 lineStartPoint;
         private Vector3 lineEndPoint;
 

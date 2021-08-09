@@ -46,11 +46,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Is the pointer active and have the conditions for the interaction been satisfied to enable the interaction?
         /// </summary>
         bool IsInteractionEnabled { get; }
-
+       
         /// <summary>
         /// Controls whether the pointer dispatches input.
         /// </summary>
         bool IsActive { get; set; }
+
+        /// <summary>
+        /// Controls whether the pointer is in a state where it's visuals will can be displayed
+        /// </summary>
+        bool IsUsable { get; set; }
+
+        /// <summary>
+        /// Is the pointer currently highlighting an object which can receive input events dispatched by the pointer
+        /// Used during pointer mediation to determine if a pointer's state can be affected by outside sources.
+        /// </summary>
+        bool IsHover { get; }
 
         /// <summary>
         /// Is the focus for this pointer currently locked?
@@ -80,6 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// ]]></code>
         /// </example>
         LayerMask[] PrioritizedLayerMasksOverride { get; set; }
+
+        /// <summary>
+        /// The currently hovered target.
+        /// </summary>
+        GameObject HoverTarget { get; }
 
         /// <summary>
         /// The currently focused target.
@@ -115,6 +131,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Called before performing the scene query.
         /// </summary>
         void OnPreSceneQuery();
+
+        /// <summary>
+        /// Called after performing the scene query. Updates hitinfo
+        /// </summary>
+        bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo);
+
+        /// <summary>
+        /// Called after performing the scene query. Updates hitObject, hitPoint, and hitDistance
+        /// </summary>
+        bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance);
 
         /// <summary>
         /// Called after performing the scene query.

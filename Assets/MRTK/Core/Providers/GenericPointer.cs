@@ -80,7 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        public bool IsHover { get; set; }
+
+        /// <inheritdoc />
         public bool IsActive { get; set; }
+
+        /// <inheritdoc />
+        public bool IsUsable { get { return IsActive; } set { IsActive = value; } }
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
@@ -101,6 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }
+
+        /// <inheritdoc />
+        public GameObject HoverTarget { get; set; }
 
         /// <inheritdoc />
         public IPointerResult Result { get; set; }
@@ -176,6 +186,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 hashCode = (hashCode * 397) ^ (PointerName != null ? PointerName.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        {
+            switch (SceneQueryType)
+            {
+                case SceneQueryType.SimpleRaycast:
+                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
+                        if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                default:
+                    Debug.LogError("The Base Controller Pointer does not handle non-raycast scene queries");
+                    break;
+            }
+            hitInfo = new MixedRealityRaycastHit();
+            return false;
+        }
+
+        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+        {
+            MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
+            bool querySuccessful = SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+
+            hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
+            hitPoint = hitInfo.point;
+            hitDistance = hitInfo.distance;
+
+            return querySuccessful;
         }
 
         #endregion IEquality Implementation
