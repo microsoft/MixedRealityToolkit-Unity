@@ -43,15 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 
         /// <inheritdoc />
         public bool IsInteractionEnabled { get; set; }
-
-        /// <inheritdoc />
-        public bool IsHover { get => throw new NotImplementedException(); }
-
+        
         /// <inheritdoc />
         public bool IsActive { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        /// <inheritdoc />
-        public bool IsUsable { get { return IsActive; } set { IsActive = value; } }
 
         /// <inheritdoc />
         public bool IsFocusLocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -67,9 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 
         /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        /// <inheritdoc />
-        public GameObject HoverTarget { get => throw new NotImplementedException(); }
 
         /// <inheritdoc />
         public IPointerResult Result { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

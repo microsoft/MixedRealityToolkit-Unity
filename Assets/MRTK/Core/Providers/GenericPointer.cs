@@ -81,13 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public bool IsHover { get; set; }
-
-        /// <inheritdoc />
         public bool IsActive { get; set; }
-
-        /// <inheritdoc />
-        public bool IsUsable { get { return IsActive; } set { IsActive = value; } }
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
@@ -108,9 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }
-
-        /// <inheritdoc />
-        public GameObject HoverTarget { get; set; }
 
         /// <inheritdoc />
         public IPointerResult Result { get; set; }

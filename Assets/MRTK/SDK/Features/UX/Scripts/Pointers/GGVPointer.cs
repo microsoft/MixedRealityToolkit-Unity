@@ -101,16 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public bool IsInteractionEnabled => IsActive;
-
-        /// <inheritdoc />
-        public bool IsHover => gazeProvider.GazeTarget != null;
-
+        
         /// <inheritdoc />
         public bool IsActive { get; set; }
-
-        /// <inheritdoc />
-        public bool IsUsable { get { return IsActive; } set { IsActive = value; } }
-
+        
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
@@ -122,9 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
         public IMixedRealityFocusHandler FocusTarget { get; set; }
-
-        /// <inheritdoc />
-        public GameObject HoverTarget { get => Result.IsNull() ? Result.CurrentPointerTarget : null; }
 
         /// <inheritdoc />
         public IPointerResult Result { get; set; }
