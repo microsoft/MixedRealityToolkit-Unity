@@ -370,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         /// <inheritdoc />
-        public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
+        public virtual LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
         /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }

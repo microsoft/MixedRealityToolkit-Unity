@@ -122,7 +122,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Only [NearInteractionGrabbables](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) in one of the LayerMasks will raise events.
         /// This really shouldn't be in the sphere pointer, since it should serve as an tool to query for data, rather than actively having a say in what it's querying against
         /// </remarks>
+        [System.Obsolete("Use PrioritizedLayerMasksOverrideInstead")]
         public LayerMask[] GrabLayerMasks => grabLayerMasks;
+
+        /// <inheritdoc />
+        public override LayerMask[] PrioritizedLayerMasksOverride
+        {
+            get { return grabLayerMasks; }
+            set { grabLayerMasks = value; }
+        }
 
         [SerializeField]
         [Tooltip("Specify whether queries for grabbable objects hit triggers.")]
@@ -210,7 +218,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Vector3 endPoint = Vector3.forward * SphereCastRadius;
                     Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
-                    PrioritizedLayerMasksOverride = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
 
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
@@ -246,6 +253,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Returns the hit values cached by the queryBuffer during the prescene query step
         public override bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
+            PrioritizedLayerMasksOverride = prioritizedLayerMasks;
+
             hitObject = this.hitObject;
             hitPoint = this.hitPoint;
             hitDistance = this.hitDistance;

@@ -75,7 +75,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Only [BaseNearInteractionTouchables](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable) in one of the LayerMasks will raise touch events.
         /// </remarks>
+        [System.Obsolete("Use PrioritizedLayerMasksOverrideInstead")]
         public LayerMask[] PokeLayerMasks => pokeLayerMasks;
+
+        /// <inheritdoc />
+        public override LayerMask[] PrioritizedLayerMasksOverride
+        {
+            get { return pokeLayerMasks; }
+            set { pokeLayerMasks = value; }
+        }
+
 
         [SerializeField]
         [Tooltip("Specify whether queries for touchable surfaces hit triggers.")]
@@ -148,11 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 closestNormal = Rotation * Vector3.forward;
 
-                var layerMasks = PrioritizedLayerMasksOverride ?? PokeLayerMasks;
-
                 // Find closest touchable
                 BaseNearInteractionTouchable newClosestTouchable = null;
-                foreach (var layerMask in layerMasks)
+                foreach (var layerMask in PrioritizedLayerMasksOverride)
                 {
                     if (FindClosestTouchableForLayerMask(layerMask, out newClosestTouchable, out closestDistance, out closestNormal))
                     {
