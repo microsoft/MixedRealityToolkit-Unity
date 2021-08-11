@@ -1238,71 +1238,72 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                if(pointer is IMixedRealityQueryablePointer queryPointer)
+                if (pointer is IMixedRealityQueryablePointer queryPointer)
                 {
-                    float rayStartDistance = 0;
-                    MixedRealityRaycastHit hitInfo;
-
-                    // Perform query for each step in the pointing source
-                    for (int i = 0; i < pointerRays.Length; i++)
-                    {
-                        switch (pointer.SceneQueryType)
-                        {
-                            case SceneQueryType.SimpleRaycast:
-                            case SceneQueryType.SphereCast:
-                                if (queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
-                                {
-                                    hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
-                                }
-                                break;
-                            case SceneQueryType.BoxRaycast:
-                                Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
-                                break;
-                            case SceneQueryType.SphereOverlap:
-                                GameObject hitObject = null;
-                                Vector3 hitPoint = pointerRays[i].Origin;
-                                float hitDistance = Mathf.Infinity;
-                                if (queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance))
-                                {
-                                    hit.Set(hitObject, hitPoint, Vector3.zero, pointerRays[i], 0, hitDistance);
-                                    return;
-                                }
-                                break;
-                            default:
-                                Debug.LogError($"Invalid raycast mode {pointer.SceneQueryType} for {pointer.PointerName} pointer.");
-                                break;
-                        }
-                        rayStartDistance += pointer.Rays[i].Length;
-                    }
+                    // Query the scene using the query pointer's OnSceneQuery function
+                    QuerySceneWithPointers(queryPointer, pointerRays, raycastProvider, prioritizedLayerMasks, hit, maxQuerySceneResults, focusIndividualCompoundCollider);
                 }
                 else
                 {
                     // old implementaion
-                    QuerySceneInternal(pointer, raycastProvider, prioritizedLayerMasks, hit, maxQuerySceneResults, focusIndividualCompoundCollider);
+                    QuerySceneInternal(pointer, pointerRays, raycastProvider, prioritizedLayerMasks, hit, maxQuerySceneResults, focusIndividualCompoundCollider);
                 }
+            }
+        }
+
+        // This function is only callable when the pointer also implements IMixedRealityQueryablePointer
+        private static void QuerySceneWithPointers(IMixedRealityQueryablePointer queryPointer, RayStep[] pointerRays, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
+        {
+            float rayStartDistance = 0;
+            MixedRealityRaycastHit hitInfo;
+            IMixedRealityPointer pointer = queryPointer as IMixedRealityPointer;
+
+            if (pointer == null)
+            {
+                Debug.LogError($"The pointer provided is not an IMixedRealityPointer, ensure that the correct scene query method was selected");
+            }
+
+            // Perform query for each step in the pointing source
+            for (int i = 0; i < pointerRays.Length; i++)
+            {
+                switch (pointer.SceneQueryType)
+                {
+                    case SceneQueryType.SimpleRaycast:
+                    case SceneQueryType.SphereCast:
+                        if (queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        {
+                            hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
+                        }
+                        break;
+                    case SceneQueryType.BoxRaycast:
+                        Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
+                        break;
+                    case SceneQueryType.SphereOverlap:
+                        GameObject hitObject = null;
+                        Vector3 hitPoint = pointerRays[i].Origin;
+                        float hitDistance = Mathf.Infinity;
+                        if (queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance))
+                        {
+                            hit.Set(hitObject, hitPoint, Vector3.zero, pointerRays[i], 0, hitDistance);
+                            return;
+                        }
+                        break;
+                    default:
+                        Debug.LogError($"Invalid raycast mode {pointer.SceneQueryType} for {pointer.PointerName} pointer.");
+                        break;
+                }
+                rayStartDistance += pointerRays[i].Length;
             }
         }
 
         // Colliders used to store sphere overlap results
         private static Collider[] colliders = null;
 
-        private static void QuerySceneInternal(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
+        private static void QuerySceneInternal(IMixedRealityPointer pointer, RayStep[] pointerRays, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
         {
             float rayStartDistance = 0;
             MixedRealityRaycastHit hitInfo;
-            RayStep[] pointerRays = pointer.Rays;
 
-            if (pointerRays == null)
-            {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
-                return;
-            }
-
-            if (pointerRays.Length <= 0)
-            {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer");
-                return;
-            }
 
             // Perform query for each step in the pointing source
             for (int i = 0; i < pointerRays.Length; i++)
@@ -1399,7 +1400,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                 }
 
-                rayStartDistance += pointer.Rays[i].Length;
+                rayStartDistance += pointerRays[i].Length;
             }
         }
         #endregion Physics Raycasting
