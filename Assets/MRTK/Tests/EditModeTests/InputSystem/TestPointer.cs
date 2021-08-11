@@ -43,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 
         /// <inheritdoc />
         public bool IsInteractionEnabled { get; set; }
-        
         /// <inheritdoc />
         public bool IsActive { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
