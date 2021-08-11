@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [DisallowMultipleComponent]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/pointers")]
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealityQueryablePointer
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityQueryablePointer
     {
         [SerializeField]
         private GameObject cursorPrefab = null;

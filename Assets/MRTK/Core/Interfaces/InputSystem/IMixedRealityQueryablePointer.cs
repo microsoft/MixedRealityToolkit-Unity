@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Interface for handling pointers.
     /// </summary>
-    public interface IMixedRealityQueryablePointer : IEqualityComparer
+    public interface IMixedRealityQueryablePointer : IMixedRealityPointer
     {
         /// <summary>
         /// Called to have the pointer query the scene to determine which objects it is hitting. Updates hitinfo. 

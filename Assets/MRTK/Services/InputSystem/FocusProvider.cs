@@ -1251,22 +1251,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        // This function is only callable when the pointer also implements IMixedRealityQueryablePointer
+        // This function is only callable when the pointer implements IMixedRealityQueryablePointer
         private static void QuerySceneWithPointers(IMixedRealityQueryablePointer queryPointer, RayStep[] pointerRays, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
         {
             float rayStartDistance = 0;
             MixedRealityRaycastHit hitInfo;
-            IMixedRealityPointer pointer = queryPointer as IMixedRealityPointer;
-
-            if (pointer == null)
-            {
-                Debug.LogError($"The pointer provided is not an IMixedRealityPointer, ensure that the correct scene query method was selected");
-            }
 
             // Perform query for each step in the pointing source
             for (int i = 0; i < pointerRays.Length; i++)
             {
-                switch (pointer.SceneQueryType)
+                switch (queryPointer.SceneQueryType)
                 {
                     case SceneQueryType.SimpleRaycast:
                     case SceneQueryType.SphereCast:
@@ -1289,7 +1283,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     default:
-                        Debug.LogError($"Invalid raycast mode {pointer.SceneQueryType} for {pointer.PointerName} pointer.");
+                        Debug.LogError($"Invalid raycast mode {queryPointer.SceneQueryType} for {queryPointer.PointerName} pointer.");
                         break;
                 }
                 rayStartDistance += pointerRays[i].Length;
