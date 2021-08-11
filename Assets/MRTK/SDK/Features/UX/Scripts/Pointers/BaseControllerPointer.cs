@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [DisallowMultipleComponent]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/pointers")]
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealityQueryablePointer
     {
         [SerializeField]
         private GameObject cursorPrefab = null;
@@ -406,7 +406,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPreSceneQuery() { }
 
-        public virtual bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
             var raycastProvider = CoreServices.InputSystem.RaycastProvider;
             switch (SceneQueryType)
@@ -436,10 +436,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
-        public virtual bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
             MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
-            bool querySuccessful = SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+            bool querySuccessful = OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
 
             hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
             hitPoint = hitInfo.point;

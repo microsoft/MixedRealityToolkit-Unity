@@ -1240,37 +1240,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                // Perform query for each step in the pointing source
-                for (int i = 0; i < pointerRays.Length; i++)
+                if(pointer is IMixedRealityQueryablePointer queryPointer)
                 {
-                    switch (pointer.SceneQueryType)
+                    // Perform query for each step in the pointing source
+                    for (int i = 0; i < pointerRays.Length; i++)
                     {
-                        case SceneQueryType.SimpleRaycast:
-                        case SceneQueryType.SphereCast:
-                            if (pointer.SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
-                            {
-                                hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
-                            }
-                            break;
-                        case SceneQueryType.BoxRaycast:
-                            Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
-                            break;
-                        case SceneQueryType.SphereOverlap:
-                            GameObject hitObject = null;
-                            Vector3 hitPoint = pointer.Rays[i].Origin;
-                            float hitDistance = Mathf.Infinity;
-                            if (pointer.SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance))
-                            {
-                                hit.Set(hitObject, hitPoint, Vector3.zero, pointer.Rays[i], 0, hitDistance);
-                                return;
-                            }
-                            break;
-                        default:
-                            Debug.LogError($"Invalid raycast mode {pointer.SceneQueryType} for {pointer.PointerName} pointer.");
-                            break;
+                        switch (pointer.SceneQueryType)
+                        {
+                            case SceneQueryType.SimpleRaycast:
+                            case SceneQueryType.SphereCast:
+                                if (queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                                {
+                                    hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
+                                }
+                                break;
+                            case SceneQueryType.BoxRaycast:
+                                Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
+                                break;
+                            case SceneQueryType.SphereOverlap:
+                                GameObject hitObject = null;
+                                Vector3 hitPoint = pointer.Rays[i].Origin;
+                                float hitDistance = Mathf.Infinity;
+                                if (queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance))
+                                {
+                                    hit.Set(hitObject, hitPoint, Vector3.zero, pointer.Rays[i], 0, hitDistance);
+                                    return;
+                                }
+                                break;
+                            default:
+                                Debug.LogError($"Invalid raycast mode {pointer.SceneQueryType} for {pointer.PointerName} pointer.");
+                                break;
+                        }
+                        rayStartDistance += pointer.Rays[i].Length;
                     }
-
-                    rayStartDistance += pointer.Rays[i].Length;
+                }
+                else
+                {
+                    // Do old implementaion here;
                 }
             }
         }

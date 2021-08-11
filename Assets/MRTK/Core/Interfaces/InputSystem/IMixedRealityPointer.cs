@@ -117,16 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void OnPreSceneQuery();
 
         /// <summary>
-        /// Called after performing the scene query. Updates hitinfo
-        /// </summary>
-        bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo);
-
-        /// <summary>
-        /// Called after performing the scene query. Updates hitObject, hitPoint, and hitDistance
-        /// </summary>
-        bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance);
-
-        /// <summary>
         /// Called after performing the scene query.
         /// </summary>
         void OnPostSceneQuery();

@@ -179,40 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
-        {
-            switch (SceneQueryType)
-            {
-                case SceneQueryType.SimpleRaycast:
-                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-                    for (int i = 0; i < Rays.Length; i++)
-                    {
-                        if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
-                        {
-                            return true;
-                        }
-                    }
-                    break;
-                default:
-                    Debug.LogError("The Base Controller Pointer does not handle non-raycast scene queries");
-                    break;
-            }
-            hitInfo = new MixedRealityRaycastHit();
-            return false;
-        }
-
-        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
-        {
-            MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
-            bool querySuccessful = SceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
-
-            hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
-            hitPoint = hitInfo.point;
-            hitDistance = hitInfo.distance;
-
-            return querySuccessful;
-        }
-
         #endregion IEquality Implementation
     }
 }

@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         // Returns the hit values cached by the queryBuffer during the prescene query step
-        public override bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+        public override bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
             hitObject = this.hitObject;
             hitPoint = this.hitPoint;

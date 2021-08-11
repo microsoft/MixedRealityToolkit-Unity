@@ -108,16 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
             throw new NotImplementedException();
         }
 
-        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <inheritdoc />
         public void Reset()
         {
