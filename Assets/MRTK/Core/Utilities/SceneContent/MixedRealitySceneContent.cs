@@ -143,9 +143,7 @@ namespace Microsoft.MixedReality.Toolkit
         public void ReorientContent()
         {
             contentPosition.x = CameraCache.Main.transform.localPosition.x;
-            contentPosition.y = CameraCache.Main.transform.localPosition.y;
             contentPosition.z = CameraCache.Main.transform.localPosition.z;
-//            contentPosition.z = CameraCache.Main.transform.localPosition.z + 0.5f;
 
             contentOrientation.y = CameraCache.Main.transform.rotation.y;
             contentOrientation.w = CameraCache.Main.transform.rotation.w;
