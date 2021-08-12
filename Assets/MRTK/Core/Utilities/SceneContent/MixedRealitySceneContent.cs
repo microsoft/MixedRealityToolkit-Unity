@@ -22,7 +22,8 @@ namespace Microsoft.MixedReality.Toolkit
         private enum AlignmentType
         {
             AlignWithExperienceScale,
-            AlignWithHeadHeight
+            AlignWithHeadHeight,
+            AlignWithHeadPose
         }
 
         [SerializeField]
@@ -97,9 +98,10 @@ namespace Microsoft.MixedReality.Toolkit
 
             MixedRealityExperienceSettingsProfile experienceSettingsProfile = MixedRealityToolkit.Instance.ActiveProfile.ExperienceSettingsProfile;
 
-            if (alignmentType == AlignmentType.AlignWithExperienceScale)
+            switch (alignmentType)
             {
-                bool experienceAdjustedByXRDevice =
+                case AlignmentType.AlignWithExperienceScale:
+                    bool experienceAdjustedByXRDevice =
 #if UNITY_2020_1_OR_NEWER
                     XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode().HasFlag(TrackingOriginModeFlags.Floor);
 #elif UNITY_2019_1_OR_NEWER
@@ -111,27 +113,29 @@ namespace Microsoft.MixedReality.Toolkit
                     XRDevice.isPresent && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale;
 #endif // UNITY_2020_1_OR_NEWER
 
-                // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
-                // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
-                if ((experienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
-                    experienceSettingsProfile.TargetExperienceScale == ExperienceScale.World) &&
-                    (!DeviceUtility.IsPresent || experienceAdjustedByXRDevice))
-                {
+                    // The scene content will be adjusted upwards if the target experience scale is set to room or world scale
+                    // AND if we are either in editor (!XRDevicePresent) or we are on an XR device that will adjust the camera's height
+                    if ((experienceSettingsProfile.TargetExperienceScale == ExperienceScale.Room ||
+                        experienceSettingsProfile.TargetExperienceScale == ExperienceScale.World) &&
+                        (!DeviceUtility.IsPresent || experienceAdjustedByXRDevice))
+                    {
+                        contentPosition.x = containerObject.position.x;
+                        contentPosition.y = containerObject.position.y + experienceSettingsProfile.ContentOffset;
+                        contentPosition.z = containerObject.position.z;
+
+                        containerObject.position = contentPosition;
+                    }
+                    break;
+                case AlignmentType.AlignWithHeadHeight:
                     contentPosition.x = containerObject.position.x;
-                    contentPosition.y = containerObject.position.y + experienceSettingsProfile.ContentOffset;
+                    contentPosition.y = containerObject.position.y + CameraCache.Main.transform.position.y;
                     contentPosition.z = containerObject.position.z;
 
                     containerObject.position = contentPosition;
-                }
-            }
-
-            if (alignmentType == AlignmentType.AlignWithHeadHeight)
-            {
-                contentPosition.x = containerObject.position.x;
-                contentPosition.y = containerObject.position.y + CameraCache.Main.transform.position.y;
-                contentPosition.z = containerObject.position.z;
-
-                containerObject.position = contentPosition;
+                    break;
+                case AlignmentType.AlignWithHeadPose:
+                    ReorientContent();
+                    break;
             }
 
             contentInitialized = true;
@@ -143,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit
         public void ReorientContent()
         {
             contentPosition.x = CameraCache.Main.transform.localPosition.x;
+            contentPosition.y = CameraCache.Main.transform.localPosition.y;
             contentPosition.z = CameraCache.Main.transform.localPosition.z;
 
             contentOrientation.y = CameraCache.Main.transform.rotation.y;
