@@ -83,5 +83,37 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="dataChangeType">The nature of the data change, typically CollectionItemAdded, or CollectionItemRemoved.</param>
         void NotifyCollectionDataChanged(DataChangeType dataChangeType);
 
+
+
+        /// <summary>
+        /// Scroll forward one visible page of items, if possible, or to end of collection if partial page.
+        /// </summary>
+        void PageForward();
+
+        /// <summary>
+        /// Scroll back one page of visible items, if possible, or to beginning if partial page.
+        /// </summary>
+        void PageBackward();
+
+        /// <summary>
+        /// Scroll forward one item if possible.
+        /// </summary>
+        void MoveToNextItem();
+
+        /// <summary>
+        /// Scroll back one item if possible.
+        /// </summary>
+        void MoveToPreviousItem();
+
+        /// <summary>
+        /// Move visible data window by itemCount items forward or backward
+        /// </summary>
+        /// <remarks>
+        /// Note if objects are not removed immediately, they must be removed later (such as after a transition effect)
+        /// using PurgeAllRemovableGameObjects() or PurgeRemovableGameObjectRange()</remarks>
+        /// <param name="itemCount">THe number of items to scroll. Negative=previous. Positive=next.</param>
+        /// <param name="removeExitingObjectsNow">Remove no longer visible objects immediately and return back to object pool.</param>
+        /// <returns>Actual number of items scrolled. Note: Always positive for previous or next.</returns>
+        int MoveRelative(int itemCount, bool removeExitingObjectsNow = true);
     }
 }

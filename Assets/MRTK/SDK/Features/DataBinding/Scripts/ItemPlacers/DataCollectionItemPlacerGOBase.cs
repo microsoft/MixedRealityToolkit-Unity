@@ -380,9 +380,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Scroll forward one page if possible, or to end of list if partial page.
         /// </summary>
-        public void ScrollNextPage()
+        public void PageForward()
         {
-            Scroll(GetMaxVisibleItemCount());
+            MoveRelative(GetMaxVisibleItemCount());
             if (collectionEvents != null)
             {
                 collectionEvents.OnCollectionPagedForward();
@@ -392,9 +392,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Scroll back one page if possible, or to beginning if partial page.
         /// </summary>
-        public void ScrollPreviousPage()
+        public void PageBackward()
         {
-            Scroll(-GetMaxVisibleItemCount());
+            MoveRelative(-GetMaxVisibleItemCount());
             if (collectionEvents != null)
             {
                 collectionEvents.OnCollectionPagedBackward();
@@ -405,9 +405,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Scroll forward one item if possible.
         /// </summary>
-        public void ScrollNextItem()
+        public void MoveToNextItem()
         {
-            Scroll(1);
+            MoveRelative(1);
             if (collectionEvents != null)
             {
                 collectionEvents.OnCollectionScrolledForward();
@@ -417,9 +417,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Scroll back one item if possible.
         /// </summary>
-        public void ScrollPreviousItem()
+        public void MoveToPreviousItem()
         {
-            Scroll(-1);
+            MoveRelative(-1);
             if (collectionEvents != null)
             {
                 collectionEvents.OnCollectionPagedBackward();
@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /// <summary>
-        /// Scroll by itemCount items forward or backward
+        /// Scroll visible data window by itemCount items forward or backward
         /// </summary>
         /// <remarks>
         /// Note if objects are not removed immediately, they must be removed later (such as after a transition effect)
@@ -436,7 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemCount">THe number of items to scroll. Negative=previous. Positive=next.</param>
         /// <param name="removeExitingObjectsNow">Remove no longer visible objects immediately and return back to object pool.</param>
         /// <returns>Actual number of items scrolled. Note: Always positive for previous or next.</returns>
-        public int Scroll(int itemCount, bool removeExitingObjectsNow = true)
+        public int MoveRelative(int itemCount, bool removeExitingObjectsNow = true)
         {
             int actualScrollAmount;
             int firstItemToRequest;
