@@ -101,10 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public bool IsInteractionEnabled => IsActive;
-
+        
         /// <inheritdoc />
         public bool IsActive { get; set; }
-
+        
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
@@ -174,6 +174,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPreSceneQuery");
+
+        /// <inheritdoc />
+        public void OnPreSceneQuery()
+        {
+            using (OnPreSceneQueryPerfMarker.Auto())
+            {
+                Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
+                Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * CoreServices.InputSystem.FocusProvider.GlobalPointingExtent);
+                Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
+            }
+        }
+
         private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPostSceneQuery");
 
         /// <inheritdoc />
@@ -185,19 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
                 }
-            }
-        }
-
-        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPreSceneQuery");
-
-        /// <inheritdoc />
-        public void OnPreSceneQuery()
-        {
-            using (OnPreSceneQueryPerfMarker.Auto())
-            {
-                Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
-                Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * CoreServices.InputSystem.FocusProvider.GlobalPointingExtent);
-                Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
             }
         }
 
