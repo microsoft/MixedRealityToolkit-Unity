@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void Awake()
         {
             queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, Mathf.Max(NearObjectRadius, SphereCastRadius), NearObjectSectorAngle, PullbackDistance, nearObjectSmoothingFactor, true);
-            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f, 0.0f, true);
+            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f, 0.0f);
         }
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
@@ -601,8 +601,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <summary>
             /// Returns true if any of the objects inside QueryBuffer contain a grabbable that is not a bounds handle (if we choose to ignore bounds handles for the query)
+            /// Bounds handles are ignored for this check specifically to avoid scenarios where "near interaction" mode is activated over-aggressively
+            /// However, ignoreBoundsHandlesForQuery does not need to be set to true, as the query may still call for bound handles to be interactable.
             /// </summary>
-            public bool NearObjectDetected => ContainsGrabbable && !(ignoreBoundsHandlesForQuery && grabbable.IsBoundsHandles);
+            public bool NearObjectDetected => ContainsGrabbable && !grabbable.IsBoundsHandles;
         }
 
 #if UNITY_EDITOR
