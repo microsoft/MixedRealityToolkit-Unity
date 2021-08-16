@@ -437,6 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
+        /// <inheritdoc />
         public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
             MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
