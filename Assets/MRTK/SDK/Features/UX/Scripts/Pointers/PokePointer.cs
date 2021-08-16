@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Only [BaseNearInteractionTouchables](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable) in one of the LayerMasks will raise touch events.
         /// </remarks>
-        [System.Obsolete("Use PrioritizedLayerMasksOverrideInstead")]
+        [System.Obsolete("Use PrioritizedLayerMasksOverride instead")]
         public LayerMask[] PokeLayerMasks => pokeLayerMasks;
 
         /// <inheritdoc />
