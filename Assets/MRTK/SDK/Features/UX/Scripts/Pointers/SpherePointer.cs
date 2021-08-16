@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Only [NearInteractionGrabbables](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) in one of the LayerMasks will raise events.
         /// This really shouldn't be in the sphere pointer, since it should serve as an tool to query for data, rather than actively having a say in what it's querying against
         /// </remarks>
-        [System.Obsolete("Use PrioritizedLayerMasksOverrideInstead")]
+        [System.Obsolete("Use PrioritizedLayerMasksOverride instead")]
         public LayerMask[] GrabLayerMasks => grabLayerMasks;
 
         /// <inheritdoc />
