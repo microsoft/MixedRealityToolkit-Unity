@@ -406,6 +406,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPreSceneQuery() { }
 
+        /// <inheritdoc />
         public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
             var raycastProvider = CoreServices.InputSystem.RaycastProvider;
