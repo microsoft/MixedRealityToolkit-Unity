@@ -191,7 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
             IsLookedAt = false;
-            //LookedAtTarget = null;
             LookedAtEyeTarget = null;
         }
 
@@ -252,31 +251,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     lastEyeSignalUpdateTimeFromET = (CoreServices.InputSystem?.EyeGazeProvider?.Timestamp).Value;
                     lastEyeSignalUpdateTimeLocal = DateTime.UtcNow;
 
-                    // ToDo: Handle raycasting layers
-                    var lookRay = new Ray(
-                        CoreServices.InputSystem.EyeGazeProvider.GazeOrigin,
-                        CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized);
-                    bool isHit = UnityEngine.Physics.Raycast(lookRay, out RaycastHit hitInfo);
-
-                    if (isHit)
+                    if(LookedAtTarget != null)
                     {
-                        LookedAtEyeTarget = hitInfo.collider.transform.GetComponent<EyeTrackingTarget>();
-                        if(LookedAtEyeTarget != null)
-                        {
-                            LookedAtTarget = hitInfo.collider.transform.gameObject;
-                        }
-                        LookedAtPoint = hitInfo.point;
-                    }
-                    else
-                    {
-                        //LookedAtTarget = null;
-                        LookedAtEyeTarget = null;
+                        LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
                     }
                 }
             }
             else if ((DateTime.UtcNow - lastEyeSignalUpdateTimeLocal).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
             {
-                //LookedAtTarget = null;
                 LookedAtEyeTarget = null;
             }
         }
