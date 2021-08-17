@@ -576,13 +576,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdateGazeProviderPerfMarker.Auto())
             {
-                IMixedRealityPointer gazePointer = CoreServices.InputSystem.GazeProvider.GazePointer;
-
                 // The gaze hit result may be populated from the UpdatePointers call. If it has not, then perform
                 // another raycast if it's not populated
                 if (gazeHitResult == null)
                 {
-                    if (gazePointer != null)
+                    IMixedRealityPointer gazePointer = CoreServices.InputSystem.GazeProvider?.GazePointer;
+                    // Check that the gazePointer isn't null and that it has been properly registered as a pointer.
+                    if (gazePointer != null && gazeProviderPointingData != null)
                     {
                         // get 3d hit
                         // This is unneccessary since the gaze pointer has been registered normally along with the other pointers(?)
@@ -608,7 +608,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+                if (!CoreServices.InputSystem.GazeProvider.IsNull())
+                {
+                    CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+                }
 
                 // Zero out value after every use to ensure the hit result is updated every frame.
                 gazeHitResult = null;
@@ -838,7 +841,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RegisterPointer(inputSource.Pointers[i]);
 
                     // Special Registration for Gaze
-                    // We only need to maintain a copy of the pointing event data. CoreServices.InputSystem.GazeProvider will keep track of the gaze pointer itself
+                    // Refreshes gazeProviderPointingData to a new reference to the current EventSystem 
                     if (!CoreServices.InputSystem.GazeProvider.IsNull()
                         && inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId
                         && gazeProviderPointingData == null)
@@ -1167,7 +1170,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (ReconcilePointersPerfMarker.Auto())
             {
-                var gazePointer = CoreServices.InputSystem.GazeProvider.GazePointer as GenericPointer;
+                var gazePointer = CoreServices.InputSystem.GazeProvider?.GazePointer as GenericPointer;
                 NumFarPointersActive = 0;
                 NumNearPointersActive = 0;
                 int numFarPointersWithoutCursorActive = 0;
@@ -1623,10 +1626,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
                 {
                     var gazePointer = CoreServices.InputSystem.GazeProvider?.GazePointer;
-                    // If the source lost is not the gaze input source, don't unregister the gaze pointer, since the gaze input source is still active.
-                    if (gazePointer != null && eventData.InputSource.Pointers[i].PointerId == gazePointer.PointerId && eventData.InputSource.SourceId != CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
+                    // Special unregistration for Gaze
+                    if (gazePointer != null && eventData.InputSource.Pointers[i].PointerId == gazePointer.PointerId)
                     {
-                        continue;
+                        // If the source lost is the gaze input source, clear gazeProviderPointingData.
+                        if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
+                        {
+                            gazeProviderPointingData = null;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
 
                     UnregisterPointer(eventData.InputSource.Pointers[i]);
