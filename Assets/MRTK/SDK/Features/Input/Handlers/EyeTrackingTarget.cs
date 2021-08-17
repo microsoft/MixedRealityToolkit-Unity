@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         LookedAtEyeTarget = hitInfo.collider.transform.GetComponent<EyeTrackingTarget>();
                         if(LookedAtEyeTarget != null)
                         {
-                            //LookedAtTarget = LookedAtEyeTarget.gameObject;
+                            LookedAtTarget = hitInfo.collider.transform.gameObject;
                         }
                         LookedAtPoint = hitInfo.point;
                     }

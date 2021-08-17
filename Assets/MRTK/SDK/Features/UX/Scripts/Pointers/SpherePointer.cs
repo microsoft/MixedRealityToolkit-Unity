@@ -120,8 +120,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>
         /// Only [NearInteractionGrabbables](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) in one of the LayerMasks will raise events.
+        /// This really shouldn't be in the sphere pointer, since it should serve as an tool to query for data, rather than actively having a say in what it's querying against
         /// </remarks>
+        [System.Obsolete("Use PrioritizedLayerMasksOverride instead")]
         public LayerMask[] GrabLayerMasks => grabLayerMasks;
+
+        /// <inheritdoc />
+        public override LayerMask[] PrioritizedLayerMasksOverride
+        {
+            get { return grabLayerMasks; }
+            set { grabLayerMasks = value; }
+        }
 
         [SerializeField]
         [Tooltip("Specify whether queries for grabbable objects hit triggers.")]
@@ -186,7 +195,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
 
+
+        // Values ultimately returned by SceneQuery
+        private GameObject hitObject;
+        private Vector3 hitPoint;
+        private float hitDistance;
+
         /// <inheritdoc />
+        /// PreSceneQuery here is only concerned with updating the IsNearObject flag by updating queryBufferNearObjectRadius
         public override void OnPreSceneQuery()
         {
             using (OnPreSceneQueryPerfMarker.Auto())
@@ -202,25 +218,47 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Vector3 endPoint = Vector3.forward * SphereCastRadius;
                     Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
-                    PrioritizedLayerMasksOverride = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
 
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
-                        if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition - pointerAxis * PullbackDistance, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
+                        // First update queryBufferNearObjectRadius to see if there is a grabbable in the near interaction range
+                        queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition - pointerAxis * PullbackDistance, triggerInteraction);
+                        if (queryBufferNearObjectRadius.HasValidGrabbable(pointerPosition - pointerAxis * PullbackDistance, pointerAxis, ignoreCollidersNotInFOV))
                         {
                             break;
                         }
                     }
 
+                    hitObject = null;
+                    hitPoint = Vector3.zero;
+                    hitDistance = Mathf.Infinity;
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
-                        if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
+                        // Then update queryBufferInteractionRadius to see if there is a grabbable that can be interacted with
+                        queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction);
+                        if (queryBufferInteractionRadius.HasValidGrabbable(pointerPosition, pointerAxis, ignoreCollidersNotInFOV))
                         {
-                            break;
+                            hitObject = queryBufferInteractionRadius.GetClosestValidGrabbable(pointerPosition, pointerAxis, IgnoreCollidersNotInFOV, out hitPoint);
+                            if (hitObject != null)
+                            {
+                                hitDistance = (pointerPosition - hitPoint).magnitude;
+                                break;
+                            }
                         }
                     }
                 }
             }
+        }
+
+        // Returns the hit values cached by the queryBuffer during the prescene query step
+        public override bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+        {
+            PrioritizedLayerMasksOverride = prioritizedLayerMasks;
+
+            hitObject = this.hitObject;
+            hitPoint = this.hitPoint;
+            hitDistance = this.hitDistance;
+            return hitObject != null;
         }
 
         private static readonly ProfilerMarker TryGetNearGraspPointPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetNearGraspPoint");
@@ -384,7 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// The grabbable near the QueryRadius. 
             /// </summary>
-            private NearInteractionGrabbable grabbable;
+            public NearInteractionGrabbable grabbable;
 
             /// <summary>
             /// Constructor for a sphere overlap query
@@ -405,6 +443,67 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ignoreBoundsHandlesForQuery = ignoreBoundsHandles;
             }
 
+            public bool HasValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV)
+            {
+                Vector3 grabbablePosition = pointerPosition;
+                NearInteractionGrabbable currentGrabbable = null;
+
+                for (int i = 0; i < numColliders; i++)
+                {
+                    Collider collider = queryBuffer[i];
+                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable)
+                        && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out grabbablePosition))
+                    {
+                        if (currentGrabbable != null)
+                        {
+                            grabbable = currentGrabbable;
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            /// <param name="pointerPosition">The position of the pointer to query against.</param>
+            /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
+            public GameObject GetClosestValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV, out Vector3 hitPosition)
+            {
+                Vector3 colliderHitPoint = pointerPosition; ;
+                NearInteractionGrabbable currentGrabbable = null;
+
+                NearInteractionGrabbable closestGrabbable = null;
+                Vector3 closestColliderHitPosition = pointerPosition;
+                float closestDistance = Mathf.Infinity;
+
+                for (int i = 0; i < numColliders; i++)
+                {
+                    Collider collider = queryBuffer[i];
+                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable)
+                        && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out colliderHitPoint))
+                    {
+                        float distance = (pointerPosition - colliderHitPoint).sqrMagnitude;
+                        if (distance < closestDistance)
+                        {
+                            closestDistance = distance;
+                            closestGrabbable = currentGrabbable;
+                            closestColliderHitPosition = colliderHitPoint;
+                        }
+                    }
+                }
+                hitPosition = closestColliderHitPosition;
+
+                if(closestGrabbable != null)
+                {
+                    grabbable = closestGrabbable;
+                    return closestGrabbable.gameObject;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
             private static readonly ProfilerMarker TryUpdateQueryBufferForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] SpherePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
 
             /// <summary>
@@ -417,8 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="layerMask">Filter to only perform sphere cast on these layers.</param>
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call.</param>
-            /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
-            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, Vector3 pointerAxis, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
+            public void TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
             {
                 using (TryUpdateQueryBufferForLayerMaskPerfMarker.Auto())
                 {
@@ -444,59 +542,56 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         Debug.LogWarning($"Maximum number of {numColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
                     }
+                }
+            }
 
-                    Camera mainCam = CameraCache.Main;
-                    for (int i = 0; i < numColliders; i++)
-                    {
-                        Collider collider = queryBuffer[i];
-                        MeshCollider meshCollider = collider as MeshCollider;
-                        if (meshCollider != null && meshCollider.convex == false)
-                        {
-                            // Physics.ClosestPoint is only allowed on a convex collider.
-                            continue;
-                        }
-                        
-                        grabbable = collider.GetComponent<NearInteractionGrabbable>();
-                        if (grabbable != null)
-                        {
-                            if (ignoreCollidersNotInFOV)
-                            {
-                                if (!mainCam.IsInFOVCached(collider))
-                                {
-                                    // Additional check: is grabbable in the camera frustum
-                                    // We do this so that if grabbable is not visible it is not accidentally grabbed
-                                    // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
-                                    grabbable = null;
-                                }
-                            }
-                        }
-
-                        Vector3 closestPointToCollider = collider.ClosestPoint(pointerPosition);
-                        Vector3 relativeColliderPosition = closestPointToCollider - pointerPosition;
-
-                        // Check if the collider is within the activation cone
-                        float queryAngleRadians = queryAngle * Mathf.Deg2Rad;
-                        bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) >= Mathf.Cos(queryAngleRadians) || queryAngle >= 180.0f;
-
-                        // Check to ensure the object is beyond the minimum distance
-                        bool pastMinDistance = relativeColliderPosition.sqrMagnitude >= queryMinDistance * queryMinDistance;
-
-                        bool isBoundHandles = ignoreBoundsHandlesForQuery && grabbable != null && grabbable.IsBoundsHandles;
-
-                        if (!pastMinDistance || !inAngle || isBoundHandles)
-                        {
-                            grabbable = null;
-                            continue;
-                        }
-
-                        if (grabbable != null)
-                        {
-                            return true;
-                        }
-                    }
-
+            public bool IsColliderValidGrabbable(Collider collider, bool ignoreCollidersNotInFOV, out NearInteractionGrabbable currentGrabbable)
+            {
+                // Check if the collider has a grabbable component which is valid
+                currentGrabbable = collider.GetComponent<NearInteractionGrabbable>();
+                bool isValidGrabbable =  (currentGrabbable != null) && !(ignoreBoundsHandlesForQuery && currentGrabbable.IsBoundsHandles);
+                if (!isValidGrabbable)
+                {
                     return false;
                 }
+
+                MeshCollider meshCollider = collider as MeshCollider;
+                if (meshCollider != null && meshCollider.convex == false)
+                {
+                    // Physics.ClosestPoint is only allowed on a convex collider.
+                    return false;
+                }
+
+                Camera mainCam = CameraCache.Main;
+                // Additional check: is grabbable in the camera frustum
+                // We do this so that if grabbable is not visible it is not accidentally grabbed
+                // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
+                if (ignoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public bool IsColliderPositionValid(Collider collider, Vector3 pointerPosition, Vector3 pointerAxis, float queryAngle, float queryDistance, out Vector3 closestPointToCollider)
+            {
+                closestPointToCollider = collider.ClosestPoint(pointerPosition);
+                Vector3 relativeColliderPosition = closestPointToCollider - pointerPosition;
+
+                // Check if the collider is within the activation cone
+                float queryAngleRadians = queryAngle * Mathf.Deg2Rad;
+                bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) >= Mathf.Cos(queryAngleRadians) || queryAngle >= 180.0f;
+
+                // Check to ensure the object is beyond the minimum distance
+                bool pastMinDistance = relativeColliderPosition.sqrMagnitude >= queryMinDistance * queryMinDistance;
+
+                if (!pastMinDistance || !inAngle)
+                {
+                    return false;
+                }
+
+                return true;
             }
 
             /// <summary>
@@ -505,7 +600,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public bool ContainsGrabbable => grabbable != null;
 
             /// <summary>
-            /// Returns true if any of the objects inside QueryBuffer contain a grabbable that is not a bounds handle
+            /// Returns true if any of the objects inside QueryBuffer contain a grabbable that is not a bounds handle (if we choose to ignore bounds handles for the query)
+            /// Bounds handles are ignored for this check specifically to avoid scenarios where "near interaction" mode is activated over-aggressively
+            /// However, ignoreBoundsHandlesForQuery does not need to be set to true, as the query may still call for bound handles to be interactable.
             /// </summary>
             public bool NearObjectDetected => ContainsGrabbable && !grabbable.IsBoundsHandles;
         }
@@ -516,6 +613,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void OnDrawGizmos()
         {
+            if (!IsActive)
+                return;
+
             bool NearObjectCheck = queryBufferNearObjectRadius != null && IsNearObject;
             bool IsInteractionEnabledCheck = queryBufferInteractionRadius != null && IsInteractionEnabled;
 
