@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void OnEyeFocusDwell()
         {
             IsDwelledOn = true;
-            OnDwell.Invoke();
+            OnDwell?.Invoke();
         }
 
         protected void OnEyeFocusStop()

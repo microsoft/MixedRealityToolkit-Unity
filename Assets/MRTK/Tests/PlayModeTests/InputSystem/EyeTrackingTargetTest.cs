@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             var isEyeGazeActive = InputRayUtils.TryGetEyeGazeRay(out var eyegazeRay);
             Assert.True(isEyeGazeActive);
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.True(EyeTrackingTarget.LookedAtTarget != null);
             Assert.True(EyeTrackingTarget.LookedAtEyeTarget.name == targetName);
         }
