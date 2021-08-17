@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// GameObject eye gaze is currently targeting, updated once per frame.
         /// null if no object with collider is currently being looked at.
         /// </summary>
-        public static GameObject LookedAtTarget => ((CoreServices.InputSystem != null) && (CoreServices.InputSystem.EyeGazeProvider != null)) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null; //{ get; private set; }
+        public static GameObject LookedAtTarget => ((CoreServices.InputSystem != null) && (CoreServices.InputSystem.EyeGazeProvider != null)) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null;
 
         /// <summary>
         /// EyeTrackingTarget eye gaze is currently looking at.
