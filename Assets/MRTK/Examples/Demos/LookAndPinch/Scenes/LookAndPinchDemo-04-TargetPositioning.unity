@@ -5289,7 +5289,7 @@ GameObject:
   - component: {fileID: 258604223}
   - component: {fileID: 258604222}
   - component: {fileID: 258604221}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ground collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7057,7 +7057,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16582,7 +16581,7 @@ GameObject:
   - component: {fileID: 901149097}
   - component: {fileID: 901149096}
   - component: {fileID: 901149095}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ground collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18029,7 +18028,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23699,7 +23697,7 @@ GameObject:
   - component: {fileID: 1621960419}
   - component: {fileID: 1621960418}
   - component: {fileID: 1621960417}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ground collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
