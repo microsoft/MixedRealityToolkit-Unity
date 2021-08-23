@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
@@ -147,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.AndroidMinSdkVersion, new ConfigGetter(() =>  PlayerSettings.Android.minSdkVersion >= MinAndroidSdk, BuildTarget.Android) },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, out float version) && version >= iOSMinOsVersion, BuildTarget.iOS) },
+            { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out float version) && version >= iOSMinOsVersion, BuildTarget.iOS) },
             { Configurations.IOSArchitecture, new ConfigGetter(() => PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
             { Configurations.IOSCameraUsageDescription, new ConfigGetter(() => !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription), BuildTarget.iOS) },
 
@@ -204,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.AndroidMinSdkVersion, () => PlayerSettings.Android.minSdkVersion = MinAndroidSdk },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, () => PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString("n1") },
+            { Configurations.IOSMinOSVersion, () => PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString("n1", CultureInfo.InvariantCulture) },
             { Configurations.IOSArchitecture, () => PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture) },
             { Configurations.IOSCameraUsageDescription, () => PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription },
 
