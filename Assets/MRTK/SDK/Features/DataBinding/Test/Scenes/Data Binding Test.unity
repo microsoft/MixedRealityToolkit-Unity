@@ -1560,6 +1560,8 @@ MonoBehaviour:
   uniqueIdKeyPath: link
   replaceAllOnChange: 0
   itemPlacer: {fileID: 734963962}
+  itemPrefabPoolSize: 20
+  preAllocateItemPrefabsOnAwake: 0
 --- !u!114 &734963960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2101,6 +2103,8 @@ MonoBehaviour:
   uniqueIdKeyPath: id
   replaceAllOnChange: 0
   itemPlacer: {fileID: 874612862}
+  itemPrefabPoolSize: 60
+  preAllocateItemPrefabsOnAwake: 1
 --- !u!114 &874612860
 MonoBehaviour:
   m_ObjectHideFlags: 0

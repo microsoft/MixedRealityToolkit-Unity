@@ -50,9 +50,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected DataCollectionItemPlacerGOBase itemPlacer;
 
+        [Tooltip("Maximum size of GameObject re-use pool. This generally should be at least 2 times the number of items visible at any one time to allow for scrolling and paging.")]
+        [SerializeField]
+        protected int itemPrefabPoolSize = 20;
+
+        [Tooltip("If set, the item prefab pool will be pre-allocated with instantiated prefabs to reduce run-time impact on frame rate.")]
+        [SerializeField]
+        protected bool preAllocateItemPrefabsOnAwake = false;
+
 
         protected Dictionary<string, GameObject> _idToGameObjectLookup = new Dictionary<string, GameObject>();
         protected IDataObjectPool _dataObjectPool = new DataObjectPool();
+
 
         /// <summary>
         /// Called by DataConsumerGOBase to initialize this data consumer at the optimal point 
@@ -61,6 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected override void InitializeDataConsumer()
         {
             FindNearestCollectionItemPlacer();
+
+            if (_dataObjectPool != null)
+            {
+                _dataObjectPool.SetMaximumPoolSize(itemPrefabPoolSize, true);
+                PreAllocateObjectPool();
+            }
 
         }
 
@@ -278,11 +293,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 newObject = _dataObjectPool.GetObjectFromPool() as GameObject;
             }
 
-            newObject.SetActive(false);
-            newObject.transform.parent = transform;
-            newObject.transform.localPosition = Vector3.zero;
-            newObject.transform.localRotation = Quaternion.identity;
+            InitializePrefabInstance(newObject);
+
             return newObject;
+        }
+
+        protected void InitializePrefabInstance( GameObject go )
+        {
+            go.SetActive(false);
+            go.transform.parent = transform;
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+
+        }
+
+        protected void PreAllocateObjectPool()
+        {
+            for(int count = 0; count < itemPrefabPoolSize; count++ )
+            {
+                GameObject go = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, transform);
+                InitializePrefabInstance(go);
+                if (!_dataObjectPool.ReturnObjectToPool(go))
+                {
+                    Debug.LogWarning("GameObject Pool is unexpectedly full during preallocation.");
+                    Destroy(go);
+                }
+            }
         }
 
 

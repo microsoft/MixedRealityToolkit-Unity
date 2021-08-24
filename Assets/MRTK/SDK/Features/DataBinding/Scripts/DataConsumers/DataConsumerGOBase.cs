@@ -219,9 +219,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 string resolvedKeyPath = _dataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
+                if (resolvedKeyPath != null)
+                {
+                    _resolvedToLocalKeyPathLookup[resolvedKeyPath] = localKeyPath;
+                    _dataSource.AddDataConsumerListener(resolvedKeyPath, this as IDataConsumer);
+                }
 
-                _resolvedToLocalKeyPathLookup[resolvedKeyPath] = localKeyPath;
-                _dataSource.AddDataConsumerListener(resolvedKeyPath, this as IDataConsumer);
                 return resolvedKeyPath;
             }
             else
