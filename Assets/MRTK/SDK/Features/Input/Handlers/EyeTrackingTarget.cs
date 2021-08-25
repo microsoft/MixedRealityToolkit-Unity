@@ -176,12 +176,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null;
 
         /// <summary>
+        /// The point in space where the eye gaze hit. 
+        /// set to the origin if the EyeGazeProvider is not currently enabled
+        /// </summary>
+        public static Vector3 LookedAtPoint =>
+            (CoreServices.InputSystem != null &&
+            CoreServices.InputSystem.EyeGazeProvider != null &&
+            CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.HitPosition : Vector3.zero;
+
+        /// <summary>
         /// EyeTrackingTarget eye gaze is currently looking at.
         /// null if currently gazed at object has no EyeTrackingTarget, or if
         /// no object with collider is being looked at.
         /// </summary>
         public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
-        public static Vector3 LookedAtPoint { get; private set; }
 
         /// <summary>
         /// Most recently selected target, selected either using pointer
