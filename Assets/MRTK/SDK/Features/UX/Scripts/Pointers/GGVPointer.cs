@@ -189,19 +189,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPostSceneQuery");
 
-         // Returns the hit values from the gaze provider. Gaze provider queries the scene using the perferred method.
+        // Returns the hit values from the gaze provider. Gaze provider queries the scene using the perferred method.
         public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
             if (gazeProvider.GazePointer is IMixedRealityQueryablePointer p)
             {
                 return p.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
             }
-			else
-			{
-				hitInfo = new MixedRealityRaycastHit();
-				return false;
-			}
-		}
+            else
+            {
+                hitInfo = new MixedRealityRaycastHit();
+                return false;
+            }
+        }
 
         public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
