@@ -78,7 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             if (poseVertices.Length == 0)
             {
-                Debug.LogError("Loaded 0 verts for poseVertices");
+                Debug.LogError("Loaded 0 vertices for poseVertices");
+                handMeshUVsUnity = Array.Empty<Vector2>();
+                return;
             }
 
             float minY = poseVertices[0].y;

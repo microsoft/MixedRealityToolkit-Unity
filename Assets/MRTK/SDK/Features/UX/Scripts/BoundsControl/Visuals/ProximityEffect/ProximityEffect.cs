@@ -276,8 +276,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     weight = lerp ? config.CloseGrowRate : 1.0f;
                     break;
             }
-
-            float newLocalScale = (scaleVisual.localScale.x * (1.0f - weight)) + (objectSize * targetScale * weight);
+            
+            float maxScaleAxis = VisualUtils.GetMaxComponent(scaleVisual.localScale);
+            float newLocalScale = (maxScaleAxis * (1.0f - weight)) + (objectSize * targetScale * weight);
             scaleVisual.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
         }
 

@@ -312,11 +312,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             dependencyGraph.Clear();
 
-            // Get all meta files from the assets and package cache directories. 
+            // Get all meta files from the assets and package cache directories.
             const string metaExtension = ".meta";
             var metaFiles = new List<string>();
             metaFiles.AddRange(Directory.GetFiles(Application.dataPath, "*" + metaExtension, SearchOption.AllDirectories));
             metaFiles.AddRange(Directory.GetFiles(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library\\PackageCache"), "*" + metaExtension, SearchOption.AllDirectories));
+            metaFiles.AddRange(Directory.GetFiles(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Packages"), "*" + metaExtension, SearchOption.AllDirectories));
 
             for (int i = 0; i < metaFiles.Count; ++i)
             {

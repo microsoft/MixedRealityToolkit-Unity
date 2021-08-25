@@ -184,8 +184,6 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _ENVIRONMENT_COLORING
             #pragma shader_feature _IGNORE_Z_SCALE
 
-            #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
-
             #include "UnityCG.cginc"
             #include "UnityUI.cginc"
             #include "UnityStandardConfig.cginc"
@@ -473,7 +471,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT)
-            fixed _EdgeSmoothingValue;
+            float _EdgeSmoothingValue;
 #endif
 
 #if defined(_INNER_GLOW)
@@ -530,7 +528,7 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 float proximityLightDistance = dot(proximityLight.xyz - worldPosition, worldNormal);
 #if defined(_PROXIMITY_LIGHT_TWO_SIDED)
-                worldNormal = IF(proximityLightDistance < 0.0, -worldNormal, worldNormal);
+                worldNormal = proximityLightDistance < 0.0 ? -worldNormal : worldNormal;
                 proximityLightDistance = abs(proximityLightDistance);
 #endif
                 float normalizedProximityLightDistance = saturate(proximityLightDistance * proximityLightParams.y);
@@ -556,12 +554,12 @@ Shader "Mixed Reality Toolkit/Standard"
                 return length(max(abs(position) - cornerCircleDistance, 0.0)) - cornerCircleRadius;
             }
 
-            inline fixed RoundCornersSmooth(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
+            inline float RoundCornersSmooth(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
             {
                 return smoothstep(1.0, 0.0, PointVsRoundedBox(position, cornerCircleDistance, cornerCircleRadius) / _EdgeSmoothingValue);
             }
 
-            inline fixed RoundCorners(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
+            inline float RoundCorners(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
             {
 #if defined(_TRANSPARENT)
                 return RoundCornersSmooth(position, cornerCircleDistance, cornerCircleRadius);
@@ -723,8 +721,8 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_BORDER_LIGHT) 
                 float scaleRatio = min(o.scale.x, o.scale.y) / max(o.scale.x, o.scale.y);
-                o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
-                o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
+                o.uv.z = o.scale.x > o.scale.y ? 1.0 - (borderWidth * scaleRatio) : 1.0 - borderWidth;
+                o.uv.w = o.scale.x > o.scale.y ? 1.0 - borderWidth : 1.0 - (borderWidth * scaleRatio);
 #endif
 #elif defined(_UV)
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
@@ -860,7 +858,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #if defined(_CLIPPING_BORDER)
                 fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
-                albedo.rgb += primitiveBorderColor * IF((primitiveDistance < _ClippingBorderWidth), 1.0, 0.0);
+                albedo.rgb += primitiveBorderColor * (primitiveDistance < _ClippingBorderWidth ? 1.0 : 0.0);
 #endif
 #endif
 

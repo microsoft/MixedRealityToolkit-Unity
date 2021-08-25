@@ -132,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Call the post-build action, if any
             buildInfo.PostBuildAction?.Invoke(buildInfo, buildReport);
 
+            EditorUtility.ClearProgressBar();
+
             return buildReport;
         }
 

@@ -387,6 +387,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(iconSetProp);
+
+            EditorGUILayout.Space();
             if (iconSet == null)
             {
                 EditorGUILayout.HelpBox("No icon set assigned. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);

@@ -517,9 +517,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+#if UNITY_EDITOR
         private void Awake()
         {
-#if UNITY_EDITOR
             if (!EditorApplication.isPlaying)
             {
                 if (assetVersion != CurrentAssetVersion)
@@ -528,8 +528,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     PerformVersionPatching();
                 }
             }
-#endif
         }
+#endif
 
         #region asset version migration
         private const int CurrentAssetVersion = 1;

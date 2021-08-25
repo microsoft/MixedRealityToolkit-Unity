@@ -13,7 +13,7 @@
     - Scriptable Assets (.asset)
     - Materials (.mat)
     - Animations (.anim)
-    - Controllers (.controller) 
+    - Controllers (.controller)
     - Playables (.playable)
 
     Returns 0 if there are no issues, non-zero if there are.
@@ -24,7 +24,7 @@ param(
     # The directory containing the assets to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the asset validation
@@ -70,7 +70,7 @@ $packages = [ordered]@{
     );     
     "Examples" =      @(
         "MRTK/Examples"
-    );     
+    );
 }
 
 # This table contains the collection of allowed package dependencies.
@@ -102,7 +102,7 @@ $allowedPackageDependencies = [ordered]@{
         "Foundation",
         "Extensions",
         "Examples"
-    );      
+    );
 }
 
 # This list contains the extensions of the asset files that will be validated.
@@ -113,7 +113,7 @@ $assetExtensions = @(
     "*.mat",
     "*.anim",
     "*.controller",
-    "*.playable"    
+    "*.playable"
 )
 
 <#
@@ -125,7 +125,7 @@ $assetExtensions = @(
     enumerate the results, use this function to determine if the object type is
     an array.
 #>
-function IsArray { 
+function IsArray {
     [CmdletBinding()]
     param(
         $objectType
@@ -137,7 +137,7 @@ function IsArray {
 
 <#
 .SYNOPSIS
-    Creates a System.IO.FileInfo for the file the associated with the specified .meta file. 
+    Creates a System.IO.FileInfo for the file the associated with the specified .meta file.
 .DESCRIPTION
     Creates a FileInfo object.
     Ex: For "ActionScript.cs.meta" return a FileInfo object for "ActionScript.cs".
@@ -151,7 +151,7 @@ function GetFileFromMeta {
         $assetPath = $asset.FullName
         [int]$idx = $assetPath.IndexOf(".meta")
         $assetPath = $assetPath.Substring(0, $idx)
-        
+
         $file = New-Object -TypeName System.IO.FileInfo -ArgumentList $assetPath
 
         $file
@@ -198,7 +198,7 @@ function ExtractGuid {
         [int] $guidStringLength = 32
 
         $guid = ""
-        
+
         if ($text.Contains($tag)) {
             [int]$idx = $line.IndexOf($tag)
             $guid = $text.Substring($idx + $tagLength, $guidStringLength)
@@ -208,7 +208,7 @@ function ExtractGuid {
             }
         }
 
-        $guid        
+        $guid
     }
 }
 
@@ -218,15 +218,15 @@ function ExtractGuid {
 .DESCRIPTION
     This function returns the first GUID, when formatted as "guid: <32-digits>", found in the file.
 #>
-function ReadSingleGuid { 
+function ReadSingleGuid {
     [CmdletBinding()]
     param(
         $file
     )
-    process {      
+    process {
         $guid = ""
         $fileContents = [System.IO.File]::ReadAllLines($file.FullName)
-        foreach ($line in $fileContents.GetEnumerator()) {          
+        foreach ($line in $fileContents.GetEnumerator()) {
             $guid = ExtractGuid($line)
             if ($guid -ne "") {
                 break
@@ -242,7 +242,7 @@ function ReadSingleGuid {
 .DESCRIPTION
     This method returns all of the GUIDs, when formatted as "guid: <32-digits>", contained within the file.
 #>
-function ReadGuids { 
+function ReadGuids {
     [CmdletBinding()]
     param(
         $file
@@ -256,7 +256,7 @@ function ReadGuids {
                 if (-not $guids.Contains($guid)) {
                     $guids.Add($guid) | Out-Null
                 }
-            }      
+            }
         }
 
         $guids
@@ -267,10 +267,10 @@ function ReadGuids {
 .SYNOPSIS
     Obtain all MRTK file GUIDs.
 .DESCRIPTION
-    Gather the GUID for every source and asset file (from the associated .meta files). We will use this 
+    Gather the GUID for every source and asset file (from the associated .meta files). We will use this
     data to validate the dependencies.
 #>
-function GatherFileGuids { 
+function GatherFileGuids {
     [CmdletBinding()]
     param()
     process {
@@ -283,13 +283,13 @@ function GatherFileGuids {
 
             foreach ($folder in $package.value.GetEnumerator()) {
                 $packageFolder = Join-Path $Directory $folder
-                
+
                 $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.meta" -File -Recurse
                 if (-not $assetFiles) {
                     continue
                 }
-                
-                if (IsArray($assetFiles.GetType())){
+
+                if (IsArray($assetFiles.GetType())) {
                     foreach ($asset in $assetFiles.GetEnumerator()) {
                         $guid = ReadSingleGuid($asset)
                         $file = GetFileFromMeta($asset)
@@ -298,9 +298,9 @@ function GatherFileGuids {
                 }
                 else {
                     $guid = ReadSingleGuid($assetFiles)
-                        $file = GetFileFromMeta($asseFiles)
-                        $guidTable.Add($guid, $file)
-                }     
+                    $file = GetFileFromMeta($asseFiles)
+                    $guidTable.Add($guid, $file)
+                }
             }
         }
 
@@ -314,16 +314,16 @@ function GatherFileGuids {
 .DESCRIPTION
     Reads the target assets and collects the dependency GUIDs.
 #>
-function GatherDependencyGuids { 
+function GatherDependencyGuids {
     [CmdletBinding()]
     param()
-    process {  
+    process {
         $guidTable = @{}
 
         foreach ($package in $packages.GetEnumerator()) {
             $packageName = $package.name
             Write-Host "Collecting dependency GUIDs from $packageName"
-            
+
             foreach ($folder in $package.value.GetEnumerator()) {
                 $packageFolder = Join-Path $Directory $folder
 
@@ -333,7 +333,7 @@ function GatherDependencyGuids {
                         continue
                     }
 
-                    if (IsArray($assetFiles.GetType())){        
+                    if (IsArray($assetFiles.GetType())) {
                         foreach ($asset in $assetFiles.GetEnumerator()) {
                             $guids = ReadGuids($asset)
                             $guidTable.Add($asset, $guids)
@@ -357,7 +357,7 @@ function GatherDependencyGuids {
 .DESCRIPTION
     Compares the name of the file with the folders included in each package. Returns the package name or the empty string.
 #>
-function GetPackageName { 
+function GetPackageName {
     [CmdletBinding()]
     param(
         $file
@@ -365,14 +365,14 @@ function GetPackageName {
     process {
         [string]$packageName = ""
 
-        foreach($item in $packages.GetEnumerator()) {
+        foreach ($item in $packages.GetEnumerator()) {
             $name = $item.key
             $folders = $item.value
 
             $fileName = $file.FullName
             $filename = $fileName.Replace('\', '/')
-            
-            foreach($folder in $folders.GetEnumerator()) {
+
+            foreach ($folder in $folders.GetEnumerator()) {
                 [int]$index = $fileName.IndexOf($folder)
                 if ($index -ge 0) {
                     $packageName = $name
@@ -382,7 +382,7 @@ function GetPackageName {
         }
 
         Write-Host "$packageName : $fileName"
-        
+
         $packageName
     }
 }
@@ -391,6 +391,8 @@ function GetPackageName {
 # Start of main script
 # ####################
 $fileGuids = GatherFileGuids
+
+[string]$newEventSystemGuid = "76c392e42b5098c458856cdf6ecaaaa1"
 
 [int]$errorCount = 0;
 
@@ -415,6 +417,10 @@ foreach ($item in $dependencyGuids.GetEnumerator()) {
         foreach ($guid in $dependencies.GetEnumerator()) {
             $dependencyFile = $fileGuids[$guid]
             if ($null -eq $dependencyFile) {
+                if ($guid -eq $newEventSystemGuid) {
+                    Write-Host "`nERROR: A package-based event system is included in $file. For Unity 2018 compatibility, please replace this with the built-in event system."
+                    $numInvalid++
+                }
                 continue;
             }
             Write-Host " @ $dependencyFile"

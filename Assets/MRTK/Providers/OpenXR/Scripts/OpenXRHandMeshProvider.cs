@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#if MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
 using System.Collections.Generic;
 using UnityEngine;
-#endif // MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Unity.Profiling;
@@ -21,23 +21,23 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// The user's left hand.
         /// </summary>
         public static OpenXRHandMeshProvider Left { get; } =
-#if MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             new OpenXRHandMeshProvider(HandMeshTracker.Left, Utilities.Handedness.Left);
 #else
             null;
-#endif // MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
         /// <summary>
         /// The user's right hand.
         /// </summary>
         public static OpenXRHandMeshProvider Right { get; } =
-#if MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             new OpenXRHandMeshProvider(HandMeshTracker.Right, Utilities.Handedness.Right);
 #else
             null;
-#endif // MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
-#if MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
         private OpenXRHandMeshProvider(HandMeshTracker handMeshTracker, Utilities.Handedness handedness)
         {
             this.handMeshTracker = handMeshTracker;
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private readonly List<int> triangles = new List<int>();
 
         private Vector2[] handMeshUVs = null;
-#endif // MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
         private IMixedRealityInputSource inputSource = null;
 
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// </summary>
         public void UpdateHandMesh()
         {
-#if MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             using (UpdateHandMeshPerfMarker.Auto())
             {
                 MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
@@ -122,7 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             if (neutralPoseVertices.Length == 0)
             {
-                Debug.LogError("Loaded 0 verts for neutralPoseVertices");
+                Debug.LogError("Loaded 0 vertices for neutralPoseVertices");
+                return System.Array.Empty<Vector2>();
             }
 
             float minY = neutralPoseVertices[0].y;
@@ -154,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             return uvs;
-#endif // MSFT_OPENXR_0_2_0_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
         }
     }
 }

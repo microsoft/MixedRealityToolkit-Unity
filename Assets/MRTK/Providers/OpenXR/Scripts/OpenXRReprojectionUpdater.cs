@@ -3,10 +3,10 @@
 
 using UnityEngine;
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
 using System.Linq;
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// </summary>
         public HolographicReprojectionMethod ReprojectionMethod { get; set; }
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
         private ReprojectionSettings reprojectionSettings = default;
 
         private void OnPostRender()
@@ -54,6 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     return ReprojectionMode.NoReprojection;
             }
         }
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
     }
 }

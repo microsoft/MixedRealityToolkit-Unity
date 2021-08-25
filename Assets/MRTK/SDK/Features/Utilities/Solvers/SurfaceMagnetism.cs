@@ -388,14 +388,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns>Quaternion, the orientation to use for the object</returns>
         private Quaternion CalculateMagnetismOrientation(Vector3 direction, Vector3 surfaceNormal)
         {
+            // Compute the up vector of our current working rotation,
+            // to avoid gimbal lock instability when normal is also pointing upwards.
+            // This "current" up vector is used in the LookRotation, which causes
+            // the derived rotation to fit "closest" to the current up vector.
+            Vector3 currentUpVector = WorkingRotation * Vector3.up;
+
+            Quaternion trackedReferenceRotation = Quaternion.LookRotation(-direction, currentUpVector);
+            Quaternion surfaceReferenceRotation = Quaternion.LookRotation(-surfaceNormal, currentUpVector);
+
+            // If requested, compute FromTo from the current computed Up to global Up,
+            // and apply to the computed quat; this will ensure object stays globally vertical.
             if (KeepOrientationVertical)
             {
-                direction.y = 0;
-                surfaceNormal.y = 0;
+                Vector3 trackedReferenceUp = trackedReferenceRotation * Vector3.up;
+                trackedReferenceRotation = Quaternion.FromToRotation(trackedReferenceUp, Vector3.up) * trackedReferenceRotation;
+                Vector3 surfaceReferenceUp = surfaceReferenceRotation * Vector3.up;
+                surfaceReferenceRotation = Quaternion.FromToRotation(surfaceReferenceUp, Vector3.up) * surfaceReferenceRotation;
             }
-
-            var trackedReferenceRotation = Quaternion.LookRotation(-direction, Vector3.up);
-            var surfaceReferenceRotation = Quaternion.LookRotation(-surfaceNormal, Vector3.up);
 
             switch (CurrentOrientationMode)
             {

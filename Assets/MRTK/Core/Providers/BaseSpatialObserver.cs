@@ -40,6 +40,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         [System.Obsolete("Call Service instead.")]
         protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => Service;
 
+        private GameObject observedObjectParent = null;
+        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent(Name));
+
+        /// <summary>
+        /// The parent GameObject for all observed meshes to be placed under.
+        /// </summary>
+        public GameObject ObservationParent => ObservedObjectParent;
+
         /// <summary>
         /// Creates the spatial observer and handles the desired startup behavior.
         /// </summary>

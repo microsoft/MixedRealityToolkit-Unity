@@ -3,6 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -12,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/sliders")]
     [AddComponentMenu("Scripts/MRTK/SDK/PinchSlider")]
-    public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
+    public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler, IMixedRealityTouchHandler
     {
         #region Serialized Fields and Public Properties
         [Tooltip("The gameObject that contains the slider thumb.")]
@@ -31,7 +33,64 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [Range(0, 1)]
+
+        [SerializeField]
+        [Tooltip("Whether or not this slider is controllable via touch events")]
+        private bool isTouchable;
+
+        /// <summary>
+        /// Property accessor of isTouchable. Determines whether or not this slider is controllable via touch events
+        /// </summary>
+        public bool IsTouchable
+        {
+            get { return isTouchable; }
+            set { isTouchable = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Whether or not this slider snaps to the designated position on the slider")]
+        private bool snapToPosition;
+
+        /// <summary>
+        /// Property accessor of snapToPosition. Determines whether or not this slider snaps to the designated position on the slider
+        /// </summary>
+        public bool SnapToPosition
+        {
+            get { return snapToPosition; }
+            set { snapToPosition = value; touchCollider.enabled = value; thumbCollider.enabled = !value; }
+        }
+
+        [SerializeField]
+        /// <summary>
+        /// Used to control the slider on the track when snapToPosition is false
+        /// </summary>
+        private Collider thumbCollider = null;
+
+        /// <summary>
+        /// Property accessor of thumbCollider. Used to control the slider on the track when snapToPosition is false
+        /// </summary>
+        public Collider ThumbCollider
+        {
+            get { return thumbCollider; }
+            set { thumbCollider = value; }
+        }
+
+        [SerializeField]
+        /// <summary>
+        /// Used to determine the position we snap the slider do when snapToPosition is true
+        /// </summary>
+        private Collider touchCollider = null;
+
+        /// <summary>
+        /// Property accessor of touchCollider. Used to determine the position we snap the slider do when snapToPosition is true
+        /// </summary>
+        public Collider TouchCollider
+        {
+            get { return touchCollider; }
+            set { touchCollider = value; }
+        }
+
+        [Range(minVal, maxVal)]
         [SerializeField]
         private float sliderValue = 0.5f;
         public float SliderValue
@@ -44,6 +103,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateUI();
                 OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, ActivePointer, this));
             }
+        }
+
+        [SerializeField]
+        [Tooltip("Controls whether this slider is increments in steps or continuously")]
+        private bool useSliderStepDivisions;
+
+        /// <summary>
+        /// Property accessor of useSliderStepDivisions, it determines whether the slider steps according to subdivisions
+        /// </summary>
+        public bool UseSliderStepDivisions
+        {
+            get { return useSliderStepDivisions; }
+            set { useSliderStepDivisions = value; }
+        }
+
+        [SerializeField]
+        [Min(1)]
+        [Tooltip("Number of subdivisions the slider is split into.")]
+        private int sliderStepDivisions = 1;
+
+        /// <summary>
+        /// Property accessor of sliderStepDivisions, it holds the number of subdivisions the slider is split into.
+        /// </summary>
+        public int SliderStepDivisions
+        {
+            get { return sliderStepDivisions; }
+            set { sliderStepDivisions = value; }
         }
 
         [Header("Slider Axis Visuals")]
@@ -220,6 +306,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private Vector3 sliderThumbOffset = Vector3.zero;
 
+
+        /// <summary>
+        /// Private member used to adjust slider values
+        /// </summary>
+        private float sliderStepVal => (maxVal - minVal) / sliderStepDivisions;
+
         #endregion
 
         #region Protected Properties
@@ -247,15 +339,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Minimum distance between start and end of slider, in world space
         /// </summary>
         private const float MinSliderLength = 0.001f;
+
+        /// <summary>
+        /// The minimum value that the slider can take on
+        /// </summary>
+        private const float minVal = 0.0f;
+
+        /// <summary>
+        /// The maximum value that the slider can take on
+        /// </summary>
+        private const float maxVal = 1.0f;
+
         #endregion  
 
         #region Unity methods
         protected virtual void Start()
         {
+            if (useSliderStepDivisions)
+            {
+                InitializeStepDivisions();
+            }
+
             if (thumbRoot == null)
             {
                 throw new Exception($"Slider thumb on gameObject {gameObject.name} is not specified. Did you forget to set it?");
             }
+
+            SnapToPosition = snapToPosition;
             InitializeSliderThumb();
             OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, null, this));
         }
@@ -283,6 +393,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
 
             UpdateUI();
+        }
+
+        /// <summary> 
+        /// Private method used to adjust initial slider value to stepwise values
+        /// </summary>
+        private void InitializeStepDivisions()
+        {
+            SliderValue = SnapSliderToStepPositions(SliderValue);
         }
 
         /// <summary>
@@ -412,6 +530,41 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ActivePointer = null;
         }
 
+
+        private float SnapSliderToStepPositions(float value)
+        {
+            var stepCount = value / sliderStepVal;
+            var snappedValue = sliderStepVal * Mathf.RoundToInt(stepCount);
+            Mathf.Clamp(snappedValue, minVal, maxVal);
+            return snappedValue;
+        }
+
+        private void CalculateSliderValueBasedOnTouchPoint(Vector3 touchPoint)
+        {
+            var sliderTouchPoint = touchPoint - SliderStartPosition;
+            var sliderVector = SliderEndPosition - SliderStartPosition;
+
+            // If our touch point goes off the start side of the slider, set it's value to minVal and return immediately
+            // Explanation of the math here: https://www.quora.com/Can-scalar-projection-be-negative
+            if (Vector3.Dot(sliderTouchPoint, sliderVector) < 0)
+            {
+                SliderValue = minVal;
+                return;
+            }
+
+            float sliderProgress = Vector3.Project(sliderTouchPoint, sliderVector).magnitude;
+            float result = sliderProgress / sliderVector.magnitude;
+            float clampedResult = result;
+            if (UseSliderStepDivisions)
+            {
+                clampedResult = SnapSliderToStepPositions(result);
+            }
+            clampedResult = Mathf.Clamp(clampedResult, minVal, maxVal);
+
+            SliderValue = clampedResult;
+        }
+
+
         #endregion
 
         #region IMixedRealityFocusHandler
@@ -444,12 +597,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (ActivePointer == null && !eventData.used)
             {
                 ActivePointer = eventData.Pointer;
-                StartSliderValue = sliderValue;
                 StartPointerPosition = ActivePointer.Position;
+
+                if (SnapToPosition)
+                {
+                    CalculateSliderValueBasedOnTouchPoint(ActivePointer.Result.Details.Point);
+                }
+
                 if (OnInteractionStarted != null)
                 {
                     OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, ActivePointer, this));
                 }
+
+                StartSliderValue = sliderValue;
 
                 // Mark the pointer data as used to prevent other behaviors from handling input events
                 eventData.Use();
@@ -463,7 +623,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var delta = ActivePointer.Position - StartPointerPosition;
                 var handDelta = Vector3.Dot(SliderTrackDirection.normalized, delta);
 
-                SliderValue = Mathf.Clamp(StartSliderValue + handDelta / SliderTrackDirection.magnitude, 0, 1);
+                if (useSliderStepDivisions)
+                {
+                    var stepVal = (handDelta / SliderTrackDirection.magnitude > 0) ? sliderStepVal : (sliderStepVal * -1);
+                    var stepMag = Mathf.Floor(Mathf.Abs(handDelta / SliderTrackDirection.magnitude) / sliderStepVal);
+                    SliderValue = Mathf.Clamp(StartSliderValue + (stepVal * stepMag), 0, 1);
+                }
+                else
+                {
+                    SliderValue = Mathf.Clamp(StartSliderValue + handDelta / SliderTrackDirection.magnitude, 0, 1);
+                }
 
                 // Mark the pointer data as used to prevent other behaviors from handling input events
                 eventData.Use();
@@ -473,5 +642,47 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         #endregion
+
+
+        #region IMixedRealityTouchHandler
+        public void OnTouchStarted(HandTrackingInputEventData eventData)
+        {
+            if (isTouchable)
+            {
+                if (OnInteractionStarted != null)
+                {
+                    OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, ActivePointer, this));
+                }
+                eventData.Use();
+            }
+        }
+
+
+        public void OnTouchCompleted(HandTrackingInputEventData eventData)
+        {
+            if (isTouchable)
+            {
+                if (!eventData.used)
+                {
+                    EndInteraction();
+
+                    // Mark the pointer data as used to prevent other behaviors from handling input events
+                    eventData.Use();
+                }
+            }
+        }
+
+        /// <summary>b  
+        /// When the collider is touched, use the touch point to Calculate the Slider value
+        /// </summary>
+        public void OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            if(isTouchable)
+            {
+                CalculateSliderValueBasedOnTouchPoint(eventData.InputData);
+            }
+        }
+
+        #endregion IMixedRealityTouchHandler
     }
 }
