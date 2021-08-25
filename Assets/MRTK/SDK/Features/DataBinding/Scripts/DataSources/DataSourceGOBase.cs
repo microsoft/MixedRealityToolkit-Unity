@@ -36,9 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected void Start()
         {
-            if (keyPathMapper != null)
+            if (keyPathMapper != null && _dataSource != null)
             {
-                _dataSource?.SetDataKeyPathMapper(keyPathMapper as IDataKeyPathMapper);
+                _dataSource.SetDataKeyPathMapper(keyPathMapper as IDataKeyPathMapper);
             }
             InitializeDataSource();
         }
@@ -91,79 +91,144 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public string ResolveKeyPath(string resolvedKeyPathPrefix, string localKeyPath)
         {
-            return _dataSource?.ResolveKeyPath(resolvedKeyPathPrefix, localKeyPath);
+            if (_dataSource != null)
+            {
+                return _dataSource.ResolveKeyPath(resolvedKeyPathPrefix, localKeyPath);
+
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void SetDataKeyPathMapper( IDataKeyPathMapper keyPathMapper )
         {
-             _dataSource?.SetDataKeyPathMapper(keyPathMapper);
-
+            if (_dataSource != null)
+            {
+                _dataSource.SetDataKeyPathMapper(keyPathMapper);
+            }
         }
     
         public virtual object GetValue(string resolvedKeyPath)
         {
-
-            return _dataSource?.GetValue(resolvedKeyPath);
+            if ( _dataSource != null )
+            {
+                return _dataSource.GetValue(resolvedKeyPath);
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
         public virtual void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
-                _dataSource?.SetValue(resolvedKeyPath, newValue, isAtomicChange );
+            if (_dataSource != null)
+            {
+                _dataSource.SetValue(resolvedKeyPath, newValue, isAtomicChange);
+            }
         }
 
 
         public void AddDataConsumerListener( string resolvedKeyPath, IDataConsumer dataConsumer)
         {
-            _dataSource?.AddDataConsumerListener(resolvedKeyPath, dataConsumer);
+            if (_dataSource != null)
+            {
+                _dataSource.AddDataConsumerListener(resolvedKeyPath, dataConsumer);
+            }
         }
 
 
         public void RemoveDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
-                _dataSource?.RemoveDataConsumerListener(resolvedKeyPath, dataConsumer);
+            if (_dataSource != null)
+            {
+                _dataSource.RemoveDataConsumerListener(resolvedKeyPath, dataConsumer);
+            }
         }
 
         public void DataChangeSetBegin()
         {
-            _dataSource?.DataChangeSetBegin();
+            if (_dataSource != null)
+            {
+                _dataSource.DataChangeSetBegin();
+            }
         }
 
         public void DataChangeSetEnd()
         {
-             _dataSource?.DataChangeSetEnd();
+            if (_dataSource != null)
+            {
+                _dataSource.DataChangeSetEnd();
+            }
         }
 
 
         // Dictionary data source does not support collections
         public virtual bool IsCollectionAtKeyPath(string resolvedKeyPath)
         {
-            return _dataSource?.IsCollectionAtKeyPath(resolvedKeyPath) ?? false;
+            if (_dataSource != null)
+            {
+                return _dataSource.IsCollectionAtKeyPath(resolvedKeyPath);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public virtual int GetCollectionCount(string resolvedKeyPath)
         {
-           return  _dataSource?.GetCollectionCount(resolvedKeyPath) ?? 0;
+            if (_dataSource != null)
+            {
+                return _dataSource.GetCollectionCount(resolvedKeyPath);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public virtual string GetNthCollectionKeyPathAt(string resolvedKeyPath, int n)
         {
-            return _dataSource?.GetNthCollectionKeyPathAt(resolvedKeyPath, n);
+            if (_dataSource != null)
+            {
+                return _dataSource.GetNthCollectionKeyPathAt(resolvedKeyPath, n);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public IEnumerable<string> GetCollectionKeyPathRange(string resolvedKeyPath, int rangeStart, int rangeCount)
         {
-            return _dataSource?.GetCollectionKeyPathRange(resolvedKeyPath, rangeStart, rangeCount );
+            if (_dataSource != null)
+            {
+                return _dataSource.GetCollectionKeyPathRange(resolvedKeyPath, rangeStart, rangeCount);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void NotifyDataChanged( string resolvedKeyPath, object newValue, DataChangeType dataChangeType, bool isAtomicChange )
         {
-            _dataSource?.NotifyDataChanged(resolvedKeyPath, newValue, dataChangeType, isAtomicChange);
+            if (_dataSource != null)
+            {
+                _dataSource.NotifyDataChanged(resolvedKeyPath, newValue, dataChangeType, isAtomicChange);
+            }
         }
 
         public void NotifyAllChanged()
         {
-            _dataSource?.NotifyAllChanged();
+            if (_dataSource != null)
+            {
+                _dataSource.NotifyAllChanged();
+            }
         }
     }
 }

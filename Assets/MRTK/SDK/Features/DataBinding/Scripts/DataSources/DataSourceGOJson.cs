@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     if (failureDelegate != null)
                     {
-                        failureDelegate?.Invoke(webRequest.error, requestId);
+                        failureDelegate.Invoke(webRequest.error, requestId);
                     }
                 }
                 else
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     DataSource.UpdateFromJson(jsonText);
                     if (successDelegate != null)
                     {
-                        successDelegate?.Invoke(jsonText, requestId);
+                        successDelegate.Invoke(jsonText, requestId);
                     }
                 }
             }

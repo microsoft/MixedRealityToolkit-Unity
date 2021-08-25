@@ -94,7 +94,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 itemPlacer = GetComponentInParent(typeof(IDataCollectionItemPlacer)) as DataCollectionItemPlacerGOBase;
             }
-            itemPlacer?.SetDataConsumerCollection(this);
+
+            if (itemPlacer != null)
+            {
+                itemPlacer.SetDataConsumerCollection(this);
+            }
         }
 
 
@@ -196,9 +200,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             if (itemPrefab != null)
             {
-                if (localKeyPath == collectionKeyPath)
+                if (localKeyPath == collectionKeyPath && itemPlacer != null)
                 {
-                    itemPlacer?.NotifyCollectionDataChanged(dataChangeType);
+                    itemPlacer.NotifyCollectionDataChanged(dataChangeType);
                 }
             }
         }
@@ -250,7 +254,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 GameObject childPrefab = GetPrefabInstance();
 
-                itemPlacer?.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex++, childPrefab);
+                if (itemPlacer != null)
+                {
+                    itemPlacer.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex++, childPrefab);
+                }
 
                 // After PlaceItem because prefab is likely to be not Active until this point and initializing
                 // prior to being Active adds complexity and/or causes exceptions.

@@ -589,7 +589,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void StartPlacement()
         {
-            _totalItemCount = _dataConsumerCollection?.GetCollectionItemCount() ?? 0;
+            if (_dataConsumerCollection != null )
+            {
+                _totalItemCount = _dataConsumerCollection.GetCollectionItemCount();
+            }
+            else
+            {
+                _totalItemCount = 0;
+            }
+
             CheckForEventsToTrigger();
         }
 
@@ -658,7 +666,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void NotifyCollectionDataChanged(DataChangeType dataChangeType)
         {
-            _totalItemCount = _dataConsumerCollection?.GetCollectionItemCount() ?? 0;
+            if (_dataConsumerCollection != null) 
+            { 
+                _totalItemCount = _dataConsumerCollection.GetCollectionItemCount();
+            } 
+            else
+            {
+                _totalItemCount = 0;
+            }
 
             // default behavior is to ask for all items in the collection with empty string as request ID.
             if (dataChangeType == DataChangeType.CollectionItemAdded)
@@ -745,7 +760,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 AddItem(State.Requested, idx, null);
             }
 
-            _dataConsumerCollection?.RequestCollectionItems(this, firstIdx, count, requestId);
+            if (_dataConsumerCollection != null)
+            {
+                _dataConsumerCollection.RequestCollectionItems(this, firstIdx, count, requestId);
+            }
         }
 
 

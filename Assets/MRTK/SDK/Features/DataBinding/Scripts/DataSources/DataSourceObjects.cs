@@ -77,18 +77,34 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
          public override bool IsCollectionAtKeyPath(string resolvedKeyPath)
         {
-            return KeyPathToNode(resolvedKeyPath)?.IsArray() ?? false;
+            IDataNode node = KeyPathToNode(resolvedKeyPath);
+            if (node != null)
+            {
+                return node.IsArray();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override int GetCollectionCount(string resolvedKeyPath)
         {
-            return KeyPathToNode(resolvedKeyPath)?.GetCollectionCount() ?? 0;
+            IDataNode node = KeyPathToNode(resolvedKeyPath);
+            if (node != null)
+            {
+                return node.GetCollectionCount();
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public override string GetNthCollectionKeyPathAt(string resolvedKeyPath, int n)
         {
             IDataNode dataNode = KeyPathToNode(resolvedKeyPath);
-            if (dataNode?.IsArray() ?? false && n < dataNode?.GetCollectionCount())
+            if (dataNode != null && dataNode.IsArray() && n < dataNode.GetCollectionCount())
             {
                 return string.Format(CollectionElementkeyPathPrefixFormat, resolvedKeyPath, 0, int.MaxValue);
             }

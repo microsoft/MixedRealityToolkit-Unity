@@ -69,7 +69,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 _dataObject = DataSource.GetValue(resolvedKeyPath);
             }
 
-            DataController?.ProcessCommand(command, _dataObject, optionalParameters);
+            if (DataController != null)
+            {
+                DataController.ProcessCommand(command, _dataObject, optionalParameters);
+            }
+
         }
 
         public override void Detach()

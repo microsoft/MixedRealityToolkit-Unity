@@ -287,7 +287,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
                             break;
                         }
                     }
-                    currentGO = currentGO.transform.parent?.gameObject;
+
+                    if (currentGO.transform.parent != null)
+                    {
+                        currentGO = currentGO.transform.parent.gameObject;
+                    } 
+                    else
+                    {
+                        currentGO = null;
+                    }
                 }
                 DataSource = dataSource;
             }
@@ -316,7 +324,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
                             break;
                         }
                     }
-                    currentGO = currentGO.transform.parent?.gameObject;
+                    if (currentGO.transform.parent != null)
+                    {
+                        currentGO = currentGO.transform.parent.gameObject;
+                    }
+                    else
+                    {
+                        currentGO = null;
+                    }
                 }
                 DataController = dataController;
             }

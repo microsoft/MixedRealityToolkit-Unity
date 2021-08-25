@@ -26,7 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public override void ProcessCommand(string command, object data, Dictionary<string, object> optionalParameters)
         {
             string message = "DataController received command '" + command + "' for object " + data.ToString();
-            _dataSource?.SetValue("message", message, true);
+            if (_dataSource != null)
+            {
+                _dataSource.SetValue("message", message, true);
+
+            }
             Debug.Log(message);
         }
     }

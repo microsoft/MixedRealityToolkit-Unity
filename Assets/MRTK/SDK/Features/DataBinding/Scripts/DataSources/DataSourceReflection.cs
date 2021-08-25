@@ -387,7 +387,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public bool IsArray(object source)
         {
-            return source?.GetType().IsArray ?? false;
+            if (source != null )
+            {
+                return source.GetType().IsArray;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool IsArrayOrList(object source)

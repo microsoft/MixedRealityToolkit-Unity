@@ -66,7 +66,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual IDataNode GetNodeByIndex(int n)
         {
-            return GetArray()?[n] ?? null;
+            List<IDataNode> nodeArray = GetArray();
+
+            if (nodeArray != null )
+            {
+                return nodeArray[n];
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
@@ -102,7 +111,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public IEnumerable<string> GetMapKeys()
         {
-            return GetMap()?.Keys ?? null;
+            Dictionary<string, IDataNode> map;
+
+            map = GetMap();
+            if (map != null)
+            {
+                return map.Keys;
+            } 
+            else
+            {
+                return null;
+            }
         }
 
 

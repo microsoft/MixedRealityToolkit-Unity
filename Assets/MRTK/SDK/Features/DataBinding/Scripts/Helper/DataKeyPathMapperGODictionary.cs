@@ -44,12 +44,26 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public string GetDataKeyPathFromViewKeyPath(string viewKeyPath)
         {
-            return _dataKeyPathMapperDictionary?.GetDataKeyPathFromViewKeyPath(viewKeyPath);
+            if (_dataKeyPathMapperDictionary != null)
+            {
+                return _dataKeyPathMapperDictionary.GetDataKeyPathFromViewKeyPath(viewKeyPath);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public string GetViewKeyPathFromDataKeyPath(string dataKeyPath)
         {
-            return _dataKeyPathMapperDictionary?.GetViewKeyPathFromDataKeyPath(dataKeyPath);
+            if (_dataKeyPathMapperDictionary != null)
+            {
+                return _dataKeyPathMapperDictionary.GetViewKeyPathFromDataKeyPath(dataKeyPath);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
