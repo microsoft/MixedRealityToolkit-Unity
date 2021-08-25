@@ -614,6 +614,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
             HitInfo = raycastHit;
+
+            if (IsEyeTrackingEnabledAndValid)
+            {
+                UpdateEyeGaze(null, GazePointer.Rays[0], DateTime.UtcNow);
+            }
+
             if (raycastHit.transform != null)
             {
                 GazeTarget = raycastHit.transform.gameObject;

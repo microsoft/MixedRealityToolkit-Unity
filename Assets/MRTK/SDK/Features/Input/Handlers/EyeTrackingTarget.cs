@@ -170,15 +170,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// GameObject eye gaze is currently targeting, updated once per frame.
         /// null if no object with collider is currently being looked at.
         /// </summary>
-        public static GameObject LookedAtTarget => ((CoreServices.InputSystem != null) && (CoreServices.InputSystem.EyeGazeProvider != null)) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null; //{ get; private set; }
-
+        public static GameObject LookedAtTarget =>
+            (CoreServices.InputSystem != null &&
+            CoreServices.InputSystem.EyeGazeProvider != null &&
+            CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null;
         /// <summary>
         /// EyeTrackingTarget eye gaze is currently looking at.
         /// null if currently gazed at object has no EyeTrackingTarget, or if
         /// no object with collider is being looked at.
         /// </summary>
         public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
-        public static Vector3 LookedAtPoint { get; private set; }
+        public static Vector3 LookedAtPoint =>
+            (CoreServices.InputSystem != null &&
+            CoreServices.InputSystem.EyeGazeProvider != null &&
+            CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.HitPosition : Vector3.zero;
 
         /// <summary>
         /// Most recently selected target, selected either using pointer
@@ -252,26 +257,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     lastEyeSignalUpdateTimeFromET = (CoreServices.InputSystem?.EyeGazeProvider?.Timestamp).Value;
                     lastEyeSignalUpdateTimeLocal = DateTime.UtcNow;
 
-                    // ToDo: Handle raycasting layers
-                    var lookRay = new Ray(
-                        CoreServices.InputSystem.EyeGazeProvider.GazeOrigin,
-                        CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized);
-                    bool isHit = UnityEngine.Physics.Raycast(lookRay, out RaycastHit hitInfo);
+                    if (LookedAtEyeTarget != null)
+                    {
+                        LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
+                    }
 
-                    if (isHit)
-                    {
-                        LookedAtEyeTarget = hitInfo.collider.transform.GetComponent<EyeTrackingTarget>();
-                        if(LookedAtEyeTarget != null)
-                        {
-                            //LookedAtTarget = LookedAtEyeTarget.gameObject;
-                        }
-                        LookedAtPoint = hitInfo.point;
-                    }
-                    else
-                    {
-                        //LookedAtTarget = null;
-                        LookedAtEyeTarget = null;
-                    }
                 }
             }
             else if ((DateTime.UtcNow - lastEyeSignalUpdateTimeLocal).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
