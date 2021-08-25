@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// GameObject eye gaze is currently targeting, updated once per frame.
         /// null if no object with collider is currently being looked at.
         /// </summary>
-        public static GameObject LookedAtTarget { get; private set; }
+        public static GameObject LookedAtTarget => ((CoreServices.InputSystem != null) && (CoreServices.InputSystem.EyeGazeProvider != null)) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null; //{ get; private set; }
 
         /// <summary>
         /// EyeTrackingTarget eye gaze is currently looking at.
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
             IsLookedAt = false;
-            LookedAtTarget = null;
+            //LookedAtTarget = null;
             LookedAtEyeTarget = null;
         }
 
@@ -261,19 +261,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (isHit)
                     {
                         LookedAtEyeTarget = hitInfo.collider.transform.GetComponent<EyeTrackingTarget>();
-                        LookedAtTarget = hitInfo.collider.transform.gameObject;
+                        if(LookedAtEyeTarget != null)
+                        {
+                            //LookedAtTarget = LookedAtEyeTarget.gameObject;
+                        }
                         LookedAtPoint = hitInfo.point;
                     }
                     else
                     {
-                        LookedAtTarget = null;
+                        //LookedAtTarget = null;
                         LookedAtEyeTarget = null;
                     }
                 }
             }
             else if ((DateTime.UtcNow - lastEyeSignalUpdateTimeLocal).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
             {
-                LookedAtTarget = null;
+                //LookedAtTarget = null;
                 LookedAtEyeTarget = null;
             }
         }
