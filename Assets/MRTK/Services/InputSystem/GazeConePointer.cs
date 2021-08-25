@@ -109,7 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
 
                 coneCastHit = ConeCastExtension.ConeCastBest(newGazeOrigin, Vector3.Normalize(newGazeNormal), coneCastSphereRadius, coneCastRange, coneCastAngle, PrioritizedLayerMasksOverride[0], coneCastDistanceWeight, coneCastAngleWeight, coneCastDistanceToCenterWeight, coneCastAngleToCenterWeight);
-                Debug.Log(coneCastHit.collider?.name);
             }
         }
 
