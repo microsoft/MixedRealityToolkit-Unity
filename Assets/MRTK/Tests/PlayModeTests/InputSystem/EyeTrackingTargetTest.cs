@@ -33,7 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         // do any kind of setup here that can't be done in playmode
         public override IEnumerator Setup()
         {
-            yield return base.Setup();
+            var eyeTrackingProfile = AssetDatabase.LoadAssetAtPath(eyeTrackingConfigurationProfilePath, typeof(MixedRealityToolkitConfigurationProfile)) as MixedRealityToolkitConfigurationProfile;
+            PlayModeTestUtilities.Setup(eyeTrackingProfile);
             TestUtilities.PlayspaceToOriginLookingForward();
             yield return null;
         }
@@ -46,17 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         [UnityTest]
         public IEnumerator TestEyeTrackingTarget()
         {
-            // Eye tracking configuration profile should set eye based gaze
-            var profile = AssetDatabase.LoadAssetAtPath(eyeTrackingConfigurationProfilePath, typeof(MixedRealityToolkitConfigurationProfile)) as MixedRealityToolkitConfigurationProfile;
-            MixedRealityToolkit.Instance.ResetConfiguration(profile);
-
-            // Reset view to origin
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
-
             string targetName = "eyetrackingTargetObject";
 
             var eyetrackingTargetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -74,8 +64,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             var isEyeGazeActive = InputRayUtils.TryGetEyeGazeRay(out var eyegazeRay);
             Assert.True(isEyeGazeActive);
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.True(EyeTrackingTarget.LookedAtTarget != null);
+            Assert.True(EyeTrackingTarget.LookedAtEyeTarget != null);
             Assert.True(EyeTrackingTarget.LookedAtEyeTarget.name == targetName);
         }
         #endregion
