@@ -114,10 +114,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeInputSource == null)
                 {
                     gazeInputSource = new BaseGenericInputSource("Gaze", sourceType: InputSourceType.Head);
-                    //internalPointer.SetGazeInputSourceParent(gazeInputSource);
-                    coneCastPointer.SetGazeInputSourceParent(gazeInputSource);
+                    switch (castType)
+                    {
+                        case CastType.ConeCast:
+                            coneCastPointer.SetGazeInputSourceParent(gazeInputSource);
+                            break;
+                        case CastType.Raycast:
+                            internalPointer.SetGazeInputSourceParent(gazeInputSource);
+                            break;
+                        default:
+                            break;
+                    }                    
                 }
-
                 return gazeInputSource;
             }
         }
@@ -125,34 +133,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private BaseGenericInputSource gazeInputSource;
 
 
-        //[SerializeField]
-        //CastType castType = CastType.Raycast;
-        /// <inheritdoc />
-        public IMixedRealityPointer GazePointer
+		[SerializeField]
+		private CastType castType = CastType.ConeCast;
+		/// <inheritdoc />
+		public IMixedRealityPointer GazePointer
         {
             get
             {
-                //if (castType == CastType.Raycast)
-                //{
-                //    if (internalPointer == null)
-                //    {
-                //        InitializeGazePointer();
-                //    }
-                //    return internalPointer;
+				if (castType == CastType.Raycast)
+				{
+					if (internalPointer == null)
+					{
+						InitializeGazePointer(castType);
+					}
+					return internalPointer;
 
-                //}
-                //else
-                //{
-                if (coneCastPointer == null)
-                {
-                    InitializeGazePointer();
-                }
-                return coneCastPointer;
-                //}
-            }
+				}
+				else
+				{
+					if (coneCastPointer == null)
+					{
+						InitializeGazePointer(castType);
+					}
+					return coneCastPointer;
+				}
+			}
         }
-        //private InternalGazePointer internalPointer = null;
-        private GazeConePointer coneCastPointer = null;
+		private InternalGazePointer internalPointer = null;
+		private GazeConePointer coneCastPointer = null;
 
         /// <inheritdoc />
         public GameObject GazeCursorPrefab { private get; set; }
@@ -435,10 +443,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
                 // but don't touch the visibility when not active or not flagged.
-                if (setCursorInvisibleWhenFocusLocked && coneCastPointer != null &&
-                coneCastPointer.IsInteractionEnabled && GazeCursor != null && coneCastPointer.IsFocusLocked == GazeCursor.IsVisible)
+                if (setCursorInvisibleWhenFocusLocked && GazePointer != null &&
+                GazePointer.IsInteractionEnabled && GazeCursor != null && GazePointer.IsFocusLocked == GazeCursor.IsVisible)
                 {
-                    GazeCursor.SetVisibility(!coneCastPointer.IsFocusLocked);
+                    GazeCursor.SetVisibility(!GazePointer.IsFocusLocked);
                 }
             }
         }
@@ -535,8 +543,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    //internalPointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
-                    coneCastPointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                    switch (castType)
+                    {
+                        case CastType.ConeCast:
+                            coneCastPointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                            break;
+                        case CastType.Raycast:
+                            internalPointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                            break;
+                        default:
+                            break;
+                    }
                     return;
                 }
             }
@@ -548,8 +565,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    //internalPointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
-                    coneCastPointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                    switch (castType)
+                    {
+                        case CastType.ConeCast:
+                            coneCastPointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                            break;
+                        case CastType.Raycast:
+                            internalPointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                            break;
+                        default:
+                            break;
+                    }
                     return;
                 }
             }
@@ -561,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker InitializeGazePointerPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.InitializeGazePointer");
 
-        private void InitializeGazePointer()
+        private void InitializeGazePointer(CastType cast)
         {
             using (InitializeGazePointerPerfMarker.Auto())
             {
@@ -572,9 +598,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
 
-                //internalPointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
-                coneCastPointer = new GazeConePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
-
+                switch(cast)
+        		{
+                    case CastType.ConeCast:
+                        coneCastPointer = new GazeConePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+                        coneCastPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
+                        break;
+                    case CastType.Raycast:
+                    default:
+                        internalPointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+                        internalPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
+                        break;
+				}
 
                 if ((GazeCursor == null) &&
                     (GazeCursorPrefab != null))
@@ -583,11 +618,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     MixedRealityPlayspace.AddChild(cursor.transform);
                     SetGazeCursor(cursor);
                 }
-
-
-                // Initialize gaze pointer
-                //internalPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
-                coneCastPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
             }
         }
 
