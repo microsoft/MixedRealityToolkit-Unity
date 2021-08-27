@@ -173,6 +173,44 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Verifies that SpherePointer grabs the smaller of two overlapping objects
+        /// </summary>
+        [UnityTest]
+        public IEnumerator GrabVolumesWithOverlap()
+        {
+            // Initialize overlapRect and cube
+            overlapRect.SetActive(true);
+            overlapRect.transform.localScale = Vector3.one * 2;
+            overlapRect.transform.position = Vector3.zero;
+
+            cube.transform.localScale = Vector3.one;
+            cube.transform.position = Vector3.zero;
+
+            // Initialize hand
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+
+            var pointer = rightHand.GetPointer<SpherePointer>();
+            Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
+
+            Assert.True(CoreServices.InputSystem.FocusProvider.GetFocusedObject(pointer) == cube, " the cube was not in focus");
+            Assert.True(pointer.IsNearObject);
+            Assert.True(pointer.IsInteractionEnabled);
+
+            // Switch the scale of the cube and rect
+            overlapRect.transform.localScale = Vector3.one;
+            cube.transform.localScale = Vector3.one * 2;
+
+            // Wait for the input system to process the changes
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.True(CoreServices.InputSystem.FocusProvider.GetFocusedObject(pointer) == overlapRect, " the overlapping rectangle was not in focus");
+
+            // Reinitialize the overlapRect
+            overlapRect.SetActive(false);
+        }
+
+        /// <summary>
         /// Verifies that the IsNearObject and IsInteractionEnabled get set 
         /// at the correct times as a hand approaches a grabbable object
         /// </summary>
