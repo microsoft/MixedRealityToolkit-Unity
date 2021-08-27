@@ -314,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion InternalGazePointer Classgaze
+        #endregion InternalGazePointer Class
 
         #region MonoBehaviour Implementation
 
@@ -372,16 +372,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
                 }
 
-				// If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
-				// but don't touch the visibility when not active or not flagged.
-				if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
+                // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
+                // but don't touch the visibility when not active or not flagged.
+                if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
                     gazePointer.IsInteractionEnabled && GazeCursor != null && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
-				{
-					GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
-				}
+                {
+                    GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
+                }
 
-				// Handle toggling the input source's SourceType based on the current eyetracking mode 
-				if (IsEyeTrackingEnabledAndValid)
+                // Handle toggling the input source's SourceType based on the current eyetracking mode 
+                if (IsEyeTrackingEnabledAndValid)
                 {
                     gazeInputSource.SourceType = InputSourceType.Eyes;
                 }
