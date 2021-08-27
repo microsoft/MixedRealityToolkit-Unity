@@ -475,6 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 NearInteractionGrabbable closestGrabbable = null;
                 Vector3 closestColliderHitPosition = pointerPosition;
                 float closestDistance = Mathf.Infinity;
+                float closestVolume = Mathf.Infinity;
 
                 for (int i = 0; i < numColliders; i++)
                 {
@@ -483,9 +484,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out colliderHitPoint))
                     {
                         float distance = (pointerPosition - colliderHitPoint).sqrMagnitude;
-                        if (distance < closestDistance)
+                        float volume = collider.bounds.Transform(collider.transform.localToWorldMatrix).Volume();
+
+                        float distanceDiff = distance - closestDistance;
+                        if (distance < closestDistance || (Mathf.Abs(distanceDiff) < 1.0e-5f && volume < closestVolume))
                         {
                             closestDistance = distance;
+                            closestVolume = volume;
                             closestGrabbable = currentGrabbable;
                             closestColliderHitPosition = colliderHitPoint;
                         }
