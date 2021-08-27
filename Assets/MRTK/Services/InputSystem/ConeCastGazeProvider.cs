@@ -9,18 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
 	public class ConeCastGazeProvider : GazeProvider
 	{
-        public override IMixedRealityPointer GazePointer
-        {
-            get
-            {
-                if (coneCastPointer == null)
-                {
-                    InitializeGazePointer();
-                }
-                return coneCastPointer;
-            }
-        }
-
+        public override IMixedRealityPointer GazePointer => coneCastPointer ?? InitializeGazePointer();
         private GazeConePointer coneCastPointer = null;
 
         public override IMixedRealityInputSource GazeInputSource
@@ -69,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private static readonly ProfilerMarker InitializeConeCastGazePointerPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.InitializeGazePointer");
-        internal override void InitializeGazePointer()
+        internal override IMixedRealityPointer InitializeGazePointer()
         {
             using (InitializeConeCastGazePointerPerfMarker.Auto())
             {
@@ -81,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
 
                 coneCastPointer = new GazeConePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
-                coneCastPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
 
 				if ((GazeCursor == null) &&
 					(GazeCursorPrefab != null))
@@ -89,8 +77,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 					GameObject cursor = Instantiate(GazeCursorPrefab);
 					MixedRealityPlayspace.AddChild(cursor.transform);
 					SetGazeCursor(cursor);
-				}
-			}
+                }
+
+                coneCastPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
+
+                return coneCastPointer;
+            }
         }
 
         public override void OnInputUp(InputEventData eventData)
