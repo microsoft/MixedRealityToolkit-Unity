@@ -1634,6 +1634,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             gazeProviderPointingData = null;
                         }
+                        // Otherwise, don't clear gazeProviderPointingData, since the gaze input source is still active.
                         else
                         {
                             continue;
