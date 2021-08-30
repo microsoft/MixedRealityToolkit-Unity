@@ -487,7 +487,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         float volume = collider.bounds.Transform(collider.transform.localToWorldMatrix).Volume();
 
                         float distanceDiff = distance - closestDistance;
-                        if (distance < closestDistance || (Mathf.Abs(distanceDiff) < 1.0e-5f && volume < closestVolume))
+                        if (distanceDiff < -1.0e-5f || (Mathf.Abs(distanceDiff) < 1.0e-5f && volume < closestVolume))
                         {
                             closestDistance = distance;
                             closestVolume = volume;
