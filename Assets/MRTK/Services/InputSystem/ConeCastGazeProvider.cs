@@ -86,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+/// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
