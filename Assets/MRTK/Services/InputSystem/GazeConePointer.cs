@@ -128,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+/// <inheritdoc />
         public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
             PrioritizedLayerMasksOverride = prioritizedLayerMasks;
