@@ -81,7 +81,7 @@ public static class ConeCastExtension
             Vector3 directionToCenter = hit.collider.transform.position - origin;
             float angleToCenter = Vector3.Angle(direction, directionToCenter);
 
-            //Additional work to see if there is a better point slightly further ahead on the direction line. This is only allowed if the collider isn't a mesh collider.
+            // Additional work to see if there is a better point slightly further ahead on the direction line. This is only allowed if the collider isn't a mesh collider.
             if (hit.collider.GetType() != typeof(MeshCollider))
             {
                 Vector3 pointFurtherAlongGazePath = (maxRadius * 0.5f * direction.normalized) + FindNearestPointOnLine(origin, direction, hitPoint);
