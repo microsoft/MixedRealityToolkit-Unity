@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override IMixedRealityPointer GazePointer => coneCastPointer ?? InitializeGazePointer();
         private GazeConePointer coneCastPointer = null;
 
+/// <inheritdoc />
         public override IMixedRealityInputSource GazeInputSource
         {
             get
