@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using Unity.Profiling;
 using UnityEngine;
-using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -108,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 endPoint = newGazeOrigin + (newGazeNormal * pointerExtent);
                 Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
 
-                coneCastHit = ConeCastExtension.ConeCastBest(newGazeOrigin, Vector3.Normalize(newGazeNormal), coneCastSphereRadius, coneCastRange, coneCastAngle, PrioritizedLayerMasksOverride[0], coneCastDistanceWeight, coneCastAngleWeight, coneCastDistanceToCenterWeight, coneCastAngleToCenterWeight);
+                coneCastHit = ConeCastUtility.ConeCastBest(newGazeOrigin, Vector3.Normalize(newGazeNormal), coneCastSphereRadius, coneCastRange, coneCastAngle, PrioritizedLayerMasksOverride[0], coneCastDistanceWeight, coneCastAngleWeight, coneCastDistanceToCenterWeight, coneCastAngleToCenterWeight);
             }
         }
 
@@ -128,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-/// <inheritdoc />
+        /// <inheritdoc />
         public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
             PrioritizedLayerMasksOverride = prioritizedLayerMasks;

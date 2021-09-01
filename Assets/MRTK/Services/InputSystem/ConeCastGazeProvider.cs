@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override IMixedRealityPointer GazePointer => coneCastPointer ?? InitializeGazePointer();
         private GazeConePointer coneCastPointer = null;
 
-/// <inheritdoc />
+        /// <inheritdoc />
         public override IMixedRealityInputSource GazeInputSource
         {
             get
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-/// <inheritdoc />
+        /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-/// <inheritdoc />
+        /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
