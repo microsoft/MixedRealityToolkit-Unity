@@ -171,20 +171,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// GameObject eye gaze is currently targeting, updated once per frame.
         /// null if no object with collider is currently being looked at.
         /// </summary>
-        public static GameObject LookedAtTarget =>
+        public static GameObject LookedAtTarget => 
+            (CoreServices.InputSystem != null && 
+            CoreServices.InputSystem.EyeGazeProvider != null && 
+            CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null;
+
+        /// <summary>
+        /// The point in space where the eye gaze hit. 
+        /// set to the origin if the EyeGazeProvider is not currently enabled
+        /// </summary>
+        public static Vector3 LookedAtPoint =>
             (CoreServices.InputSystem != null &&
             CoreServices.InputSystem.EyeGazeProvider != null &&
-            CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null;
+            CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.HitPosition : Vector3.zero;
+
         /// <summary>
         /// EyeTrackingTarget eye gaze is currently looking at.
         /// null if currently gazed at object has no EyeTrackingTarget, or if
         /// no object with collider is being looked at.
         /// </summary>
         public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
-        public static Vector3 LookedAtPoint =>
-            (CoreServices.InputSystem != null &&
-            CoreServices.InputSystem.EyeGazeProvider != null &&
-            CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.HitPosition : Vector3.zero;
 
         /// <summary>
         /// Most recently selected target, selected either using pointer
@@ -197,7 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Start();
             IsLookedAt = false;
-            //LookedAtTarget = null;
             LookedAtEyeTarget = null;
         }
 
@@ -258,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     lastEyeSignalUpdateTimeFromET = (CoreServices.InputSystem?.EyeGazeProvider?.Timestamp).Value;
                     lastEyeSignalUpdateTimeLocal = DateTime.UtcNow;
 
-                    if (LookedAtEyeTarget != null)
+                    if(LookedAtTarget != null)
                     {
                         LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
                     }
@@ -267,7 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else if ((DateTime.UtcNow - lastEyeSignalUpdateTimeLocal).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
             {
-                //LookedAtTarget = null;
                 LookedAtEyeTarget = null;
             }
         }
@@ -292,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void OnEyeFocusDwell()
         {
             IsDwelledOn = true;
-            OnDwell.Invoke();
+            OnDwell?.Invoke();
         }
 
         protected void OnEyeFocusStop()

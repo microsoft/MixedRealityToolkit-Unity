@@ -5,11 +5,10 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
-#else
-using UnityEngine.XR;
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
