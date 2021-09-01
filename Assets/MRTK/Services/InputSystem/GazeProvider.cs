@@ -1,4 +1,4 @@
-﻿// Cospyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeInputSource == null)
                 {
                     gazeInputSource = new BaseGenericInputSource("Gaze", sourceType: InputSourceType.Head);
-                    internalPointer.SetGazeInputSourceParent(gazeInputSource);
+                    gazePointer.SetGazeInputSourceParent(gazeInputSource);
                 }
                 return gazeInputSource;
             }
@@ -107,19 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         internal BaseGenericInputSource gazeInputSource;
 
-		/// <inheritdoc />
-		public virtual IMixedRealityPointer GazePointer
-        {
-            get
-            {
-                if (internalPointer == null)
-                {
-                    InitializeGazePointer();
-                }
-                return internalPointer;
-            }
-        }
-		private InternalGazePointer internalPointer = null;
+        /// <inheritdoc />
+        public virtual IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
+        private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
         public GameObject GazeCursorPrefab { internal get; set; }
@@ -323,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion InternalGazePointer Classgaze
+        #endregion InternalGazePointer Class
 
         #region MonoBehaviour Implementation
 
@@ -381,16 +371,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
                 }
 
-				// If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
-				// but don't touch the visibility when not active or not flagged.
-				if (setCursorInvisibleWhenFocusLocked && internalPointer != null &&
-					internalPointer.IsInteractionEnabled && GazeCursor != null && internalPointer.IsFocusLocked == GazeCursor.IsVisible)
-				{
-					GazeCursor.SetVisibility(!internalPointer.IsFocusLocked);
-				}
+                // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
+                // but don't touch the visibility when not active or not flagged.
+                if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
+                    gazePointer.IsInteractionEnabled && GazeCursor != null && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
+                {
+                    GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
+                }
 
-				// Handle toggling the input source's SourceType based on the current eyetracking mode 
-				if (IsEyeTrackingEnabledAndValid)
+                // Handle toggling the input source's SourceType based on the current eyetracking mode 
+                if (IsEyeTrackingEnabledAndValid)
                 {
                     gazeInputSource.SourceType = InputSourceType.Eyes;
                 }
@@ -493,7 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    internalPointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                    gazePointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
                     return;
                 }
             }
@@ -505,7 +495,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    internalPointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
+                    gazePointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness, eventData.InputSource);
                     return;
                 }
             }
@@ -517,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker InitializeGazePointerPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.InitializeGazePointer");
 
-        internal virtual void InitializeGazePointer()
+        internal virtual IMixedRealityPointer InitializeGazePointer()
         {
             using (InitializeGazePointerPerfMarker.Auto())
             {
@@ -528,7 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
 
-                internalPointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+                gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
                 
                 if ((GazeCursor == null) &&
                     (GazeCursorPrefab != null))
@@ -538,7 +528,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     SetGazeCursor(cursor);
                 }
 
-                internalPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
+                gazePointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
+
+                return gazePointer;
             }
         }
 
@@ -557,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 CoreServices.InputSystem?.RaiseSourceDetected(GazeInputSource);
-                GazePointer.BaseCursor?.SetVisibility(true);             
+                GazePointer.BaseCursor?.SetVisibility(true);
             }
         }
 

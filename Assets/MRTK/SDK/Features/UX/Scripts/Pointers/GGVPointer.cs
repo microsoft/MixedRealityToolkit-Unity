@@ -189,37 +189,49 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] GGVPointer.OnPostSceneQuery");
 
-        // Returns the hit values from the gaze provider. Gaze provider queries the scene using the perferred method.
-        public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
-        {
-            if (gazeProvider.GazePointer is IMixedRealityQueryablePointer p)
-            {
-                return p.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
-            }
-            else
-            {
-                hitInfo = new MixedRealityRaycastHit();
-                return false;
-            }
-        }
+		// Returns the hit values from the gaze provider. Gaze provider queries the scene using the perferred method.
+		public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+		{
+			if (gazeProvider.GazePointer is IMixedRealityQueryablePointer p)
+			{
+				return p.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+			}
+			else
+			{
+                bool didHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(Rays[0], Rays[0].Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
+                hitInfo = new MixedRealityRaycastHit(didHit, physicsHit);
+                return didHit;
+			}
+		}
 
-        public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
-        {
-            if (gazeProvider.GazePointer is IMixedRealityQueryablePointer p)
-            {
-                return p.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance);
-            }
-            else
-            {
-                hitObject = null;
-                hitPoint = Vector3.zero;
-                hitDistance = Mathf.Infinity;
-                return false;
-            }
-        }
+		public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+		{
+			if (gazeProvider.GazePointer is IMixedRealityQueryablePointer p)
+			{
+				return p.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitObject, out hitPoint, out hitDistance);
+			}
+			else
+			{
+                bool didHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(Rays[0], Rays[0].Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
+                if(didHit)
+				{
+                    hitObject = physicsHit.collider.gameObject;
+                    hitPoint = physicsHit.point;
+                    hitDistance = physicsHit.distance;
+                    return didHit;
+                }
+                else
+				{
+                    hitObject = null;
+                    hitPoint = Vector3.zero;
+                    hitDistance = Mathf.Infinity;
+                    return false;
+                }
+			}
+		}
 
-        /// <inheritdoc />
-        public void OnPostSceneQuery()
+		/// <inheritdoc />
+		public void OnPostSceneQuery()
         {
             using (OnPostSceneQueryPerfMarker.Auto())
             {
