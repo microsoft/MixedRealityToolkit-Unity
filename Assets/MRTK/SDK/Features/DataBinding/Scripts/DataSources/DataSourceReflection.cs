@@ -39,8 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected object _dataSourceObject = null;
 
-        protected Dictionary<string, MemberInfo> _keyPathToMemberInfoLookup = new Dictionary< string, MemberInfo >();
-
         public DataSourceReflection() { }
 
         public DataSourceReflection( object dataSourceObject )
@@ -75,11 +73,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override void SetValueInternal(string resolvedKeyPath, object value)
         {
-            object currentObject = null;
-            MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath, out currentObject);
-            if (memberInfo != null)
+            MemberInfo memberInfo;
+            object containingObject;
+
+            object currentValue = KeyPathToValueWithMemberInfo(resolvedKeyPath, out memberInfo, out containingObject);
+            if (memberInfo != null && containingObject != null)
             {
-                SetValueFromFieldOrProperty(_dataSourceObject, memberInfo, value);
+                SetValueFromFieldOrProperty(containingObject, memberInfo, value);
             }
         }
 
@@ -164,113 +164,86 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected object KeyPathToObject(string resolvedKeyPath)
         {
-            if ( resolvedKeyPath == "")
-            {
-                return _dataSourceObject;   // root object
-            }
-
-            object foundObject = null;
-            MemberInfo memberInfo = KeyPathToMemberInfo(resolvedKeyPath, out foundObject );
-            if ( memberInfo != null && foundObject == null )
-            {
-                return GetValueFromFieldOrProperty(_dataSourceObject, memberInfo);
-            }
-            else
-            {
-               return foundObject;
-            }
+            return KeyPathToValueWithMemberInfo(resolvedKeyPath, out _, out _ );
         }
 
 
-        protected MemberInfo KeyPathToMemberInfo(string resolvedKeyPath, out object currentObject )
+        protected object KeyPathToValueWithMemberInfo(string resolvedKeyPath, out MemberInfo memberInfoOut, out object containingObjectOut )
         {
-            // TODO: Either figure out a way to always get member info, or remove lookup
+            object currentObject = _dataSourceObject;
+            string keyPath = resolvedKeyPath;
 
-            // look in MemberInfo cache for a hit to save search time
-            //if (_keyPathToMemberInfoLookup.ContainsKey(resolvedKeyPath))
-            //{
-            //   return _keyPathToMemberInfoLookup[resolvedKeyPath];
-            //}
-            //else
+            containingObjectOut = null;
+            memberInfoOut = null;
+
+            while (currentObject != null && keyPath != null && keyPath != "")
             {
-                MemberInfo foundMemberInfo = null;
-                currentObject = _dataSourceObject;
-
-                string keyPath = resolvedKeyPath;
-
-                while (currentObject != null && keyPath != null && keyPath != "")
+                int amountToSkip = 0;
+                MatchCollection arrayMatches = ArrayTokenRegex.Matches(keyPath);
+                if (arrayMatches.Count > 0)
                 {
-                    int amountToSkip = 0;
-                    MatchCollection arrayMatches = ArrayTokenRegex.Matches(keyPath);
-                    if (arrayMatches.Count > 0)
+                    string arrayIndexText = arrayMatches[0].Groups[1].Value;
+                    int arrayIndex = int.Parse(arrayIndexText);
+
+                    memberInfoOut = null;
+
+                    if (IsList(currentObject))
                     {
-                        string arrayIndexText = arrayMatches[0].Groups[1].Value;
-                        int arrayIndex = int.Parse(arrayIndexText);
-
-                        foundMemberInfo = null;     // TODO: For efficiency, add logic to get MemberInfo for an array or list
-
-                        if (IsList(currentObject) )
-                        {
-                            IList list = currentObject as IList;
-                            currentObject = list[arrayIndex];
-                        }
-                        else if (IsArray(currentObject))
-                        {
-                            Array array = currentObject as Array;
-                            currentObject = array.GetValue(arrayIndex);
-                        } 
-                        else
-                        {
-                            currentObject = null;
-                        }
-                        amountToSkip = arrayMatches[0].Value.Length;
-
+                        IList list = currentObject as IList;
+                        currentObject = list[arrayIndex];
                     }
-                    else
+                    else if (IsArray(currentObject))
                     {
-                        MatchCollection keyMatches = KeyTokenRegex.Matches(keyPath);
-                        if (keyMatches.Count > 0)
-                        {
-                            string key = keyMatches[0].Groups[1].Value;
-
-                            if (IsStructOrClass( currentObject ) )
-                            {
-                                currentObject = GetNamedFieldOrProperty(currentObject, key, out foundMemberInfo);
-                            }
-                            else
-                            {
-                                currentObject = null;
-                            }
-
-                            amountToSkip = key.Length;
-                        }
-                    }
-
-                    if (keyPath.Length > amountToSkip && keyPath[amountToSkip] == '.')
-                    {
-                        amountToSkip++;
-                    }
-                    if (amountToSkip > 0)
-                    {
-                        keyPath = keyPath.Substring(amountToSkip);
+                        Array array = currentObject as Array;
+                        currentObject = array.GetValue(arrayIndex);
                     }
                     else
                     {
                         currentObject = null;
-                        break;      // was not a valid path piece
+                    }
+                    amountToSkip = arrayMatches[0].Value.Length;
+
+                }
+                else
+                {
+                    MatchCollection keyMatches = KeyTokenRegex.Matches(keyPath);
+                    if (keyMatches.Count > 0)
+                    {
+                        string key = keyMatches[0].Groups[1].Value;
+
+                        if (IsStructOrClass(currentObject))
+                        {
+                            containingObjectOut = currentObject;
+                            currentObject = GetNamedFieldOrPropertyValue(containingObjectOut, key, out memberInfoOut);
+                        }
+
+                        amountToSkip = key.Length;
                     }
                 }
 
-                if (currentObject != null && foundMemberInfo != null )
+                if (keyPath.Length > amountToSkip && keyPath[amountToSkip] == '.')
                 {
-                    //_keyPathToMemberInfoLookup[resolvedKeyPath] = foundMemberInfo;
+                    amountToSkip++;
                 }
-                return foundMemberInfo;
+                if (amountToSkip > 0)
+                {
+                    keyPath = keyPath.Substring(amountToSkip);
+                }
+                else
+                {
+                    memberInfoOut = null;
+                    currentObject = null;
+                    containingObjectOut = null;
+                    break;      // was not a valid path piece
+                }
+
             }
+           
+            return currentObject;
         }
 
 
-        protected object GetNamedFieldOrProperty( object containingObject, string key, out MemberInfo foundMemberInfoOut ) {
+        protected object GetNamedFieldOrPropertyValue( object containingObject, string key, out MemberInfo foundMemberInfoOut ) {
 
             foundMemberInfoOut = null;
 
