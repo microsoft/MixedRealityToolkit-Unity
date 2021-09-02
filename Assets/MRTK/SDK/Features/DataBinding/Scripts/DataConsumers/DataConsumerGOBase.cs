@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected const string _dataBindSpecifierBegin = @"{{";
         protected const string _dataBindSpecifierEnd = @"}}";
-        protected Regex _variableRegex = new Regex(_dataBindSpecifierBegin + @"\s*([a-zA-Z0-9\-_]+)\s*" + _dataBindSpecifierEnd);
+        protected Regex _variableRegex = new Regex(_dataBindSpecifierBegin + @"\s*([a-zA-Z0-9\[\]\-._]+)\s*" + _dataBindSpecifierEnd);
         protected bool _attached = false;
 
 
