@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string[] ProfileTabTooltips = {
             "Settings that are global to the entire application. This includes desired room scale and coordinate offset.",
             "Settings for choosing the camera provider, clipping, default background color and other camera specific behaviors.",
-            "Settings for Input Providers, including pointers, input actions, controllers, gestures and speech.",
+            "Settings for input providers, including pointers, input actions, controllers, gestures and speech.",
             "Settings for the visualization of the boundary floor, celing, walls, play area and tracked area.",
             "Settings for the teleportation system.",
             "Settings for the spatial mesh observer, including refresh rate, level of detail, material and physics related to the mesh.",
