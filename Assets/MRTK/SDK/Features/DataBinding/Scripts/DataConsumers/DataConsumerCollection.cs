@@ -54,6 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected int itemPrefabPoolSize = 20;
 
+        [Tooltip("Optional parent object to hold game objects in the object pool. Default is the GameObject of this component.")]
+        [SerializeField]
+        protected GameObject prefabPoolParent;
+
+
         [Tooltip("If set, the item prefab pool will be pre-allocated with instantiated prefabs to reduce run-time impact on frame rate.")]
         [SerializeField]
         protected bool preAllocateItemPrefabsOnAwake = false;
@@ -293,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (_dataObjectPool.IsEmpty())
             {
-                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, transform);
+                newObject = Instantiate(itemPrefab);
             } 
             else
             {
@@ -301,25 +306,23 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
             InitializePrefabInstance(newObject);
+            newObject.transform.parent = GetPrefabInUseParent();
 
             return newObject;
         }
 
-        protected void InitializePrefabInstance( GameObject go )
-        {
-            go.SetActive(false);
-            go.transform.parent = transform;
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
 
-        }
 
         protected void PreAllocateObjectPool()
         {
+            Transform prefabObjectPoolParent = GetPrefabObjectPoolParent();
+
             for(int count = 0; count < itemPrefabPoolSize; count++ )
             {
                 GameObject go = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, transform);
                 InitializePrefabInstance(go);
+                go.transform.parent = prefabObjectPoolParent;
+
                 if (!_dataObjectPool.ReturnObjectToPool(go))
                 {
                     Debug.LogWarning("GameObject Pool is unexpectedly full during preallocation.");
@@ -328,6 +331,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+
+        protected void InitializePrefabInstance(GameObject go)
+        {
+            // Set to not active until the ItemPlacer can properly position this object.
+            go.SetActive(false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+        }
 
         /// <summary>
         /// Report that the specified game object (prefab) is no longer visible and can be recycled.
@@ -342,9 +353,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemGO">The game object itself.</param>
         public void ReturnGameObjectForReuse(int itemIndex, GameObject itemGO )
         {
-            itemGO.transform.localPosition = Vector3.zero;
-            itemGO.transform.localRotation = Quaternion.identity;
-            itemGO.SetActive(false);
+            itemGO.transform.parent = GetPrefabObjectPoolParent();
+            InitializePrefabInstance(itemGO);
 
             Component[] dataConsumers = itemGO.GetComponentsInChildren(typeof(DataConsumerGOBase));
 
@@ -360,6 +370,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 Destroy(itemGO);
             }
+        }
+
+        protected Transform GetPrefabObjectPoolParent()
+        {
+            return prefabPoolParent != null ? prefabPoolParent.transform : this.transform;
+        }
+
+        protected Transform GetPrefabInUseParent()
+        {
+           return transform;
         }
 
 
