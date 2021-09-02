@@ -199,6 +199,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 36609875}
   m_CullTransparentMesh: 0
+--- !u!1 &159510389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 159510390}
+  m_Layer: 0
+  m_Name: Collection Prefab Object Pool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &159510390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159510389}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 297520964}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &210668892 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
@@ -417,6 +447,7 @@ Transform:
   - {fileID: 352594404}
   - {fileID: 1536783579}
   - {fileID: 1128428905}
+  - {fileID: 159510390}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -676,6 +707,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyPathMapper: {fileID: 0}
+  statusSpriteOpen: {fileID: 21300000, guid: 2284501f08ba46e49bb8737adc6b2dfb, type: 3}
+  statusSpritePending: {fileID: 21300000, guid: 5d880fb4003747c4288360bc7a2514cc,
+    type: 3}
+  statusSpriteCancelled: {fileID: 21300000, guid: fd554714f3acc6f4682da740049bf99f,
+    type: 3}
+  statusSpriteInProgress: {fileID: 21300000, guid: 0a9f7d6806415a04ea311d5bd2d756ff,
+    type: 3}
+  statusSpriteCompleted: {fileID: 21300000, guid: e64a6ae8e1931ab41991605286f763ce,
+    type: 3}
 --- !u!114 &352594407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -688,6 +728,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89306b2b6785fb4c9aeae1b05e23a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyPathMapper: {fileID: 0}
+  statusSpriteOpen: {fileID: 21300000, guid: 2284501f08ba46e49bb8737adc6b2dfb, type: 3}
+  statusSpritePending: {fileID: 21300000, guid: 5d880fb4003747c4288360bc7a2514cc,
+    type: 3}
+  statusSpriteCancelled: {fileID: 21300000, guid: fd554714f3acc6f4682da740049bf99f,
+    type: 3}
+  statusSpriteInProgress: {fileID: 21300000, guid: 0a9f7d6806415a04ea311d5bd2d756ff,
+    type: 3}
+  statusSpriteCompleted: {fileID: 21300000, guid: e64a6ae8e1931ab41991605286f763ce,
+    type: 3}
 --- !u!1 &373540876
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +781,7 @@ GameObject:
   - component: {fileID: 375654160}
   - component: {fileID: 375654162}
   - component: {fileID: 375654161}
+  - component: {fileID: 375654163}
   m_Layer: 5
   m_Name: Status Icon via integer lookup (cycling)
   m_TagString: Untagged
@@ -770,7 +821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manageChildren: 1
-  keyPath: status
+  keyPath: status.name
   valueToSpriteLookup:
   - Value: cancelled
     Sprite: {fileID: 21300000, guid: fd554714f3acc6f4682da740049bf99f, type: 3}
@@ -832,6 +883,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &375654163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375654159}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2bc599ec382b8249803a6f61a99232a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manageChildren: 1
+  keyPath: status.icon
 --- !u!1 &385493490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1561,6 +1626,7 @@ MonoBehaviour:
   replaceAllOnChange: 0
   itemPlacer: {fileID: 734963962}
   itemPrefabPoolSize: 20
+  prefabPoolParent: {fileID: 159510389}
   preAllocateItemPrefabsOnAwake: 0
 --- !u!114 &734963960
 MonoBehaviour:
@@ -2104,6 +2170,7 @@ MonoBehaviour:
   replaceAllOnChange: 0
   itemPlacer: {fileID: 874612862}
   itemPrefabPoolSize: 60
+  prefabPoolParent: {fileID: 159510389}
   preAllocateItemPrefabsOnAwake: 1
 --- !u!114 &874612860
 MonoBehaviour:
@@ -2112,7 +2179,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874612858}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce5c0f6f51be80242bae2df042c92d11, type: 3}
   m_Name: 

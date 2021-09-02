@@ -21,34 +21,30 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// external information.
     /// </remarks>
 
-    public class DataSourceReflectionTest : MonoBehaviour, IDataSourceProvider
+    public class DataSourceReflectionTest : DataSourceTest
     {
 
+        public class StatusInfo
+        {
+            public string name;
+            public Sprite icon;
+        }
 
         /// <summary>
         /// A class to contain data that is to be used as a data source. This is akin to a view model
         /// that will be used to populate a view.
         /// </summary>
-  
 
-        private class TestInfo
+
+        public class TestInfo
         {
             public string firstname;
             public string lastname;
             public string stylesheet;
-            public string status;
+            public StatusInfo status = new StatusInfo();
             public int score;
         }
 
-
-        private float _deltaSeconds;
-        private int _nextOneSecondTarget;
-        private int _nextFiveSecondTarget;
-        private bool _styleYellow;
-        private int _status = 0;
-        private int _score = 100;
-
-        private DataSourceReflection _dataSource;
         private TestInfo _dataSourceObject = new TestInfo();
 
         /// <summary>
@@ -59,86 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
 
 
-        public IDataSource GetDataSource()
+        public override IDataSource AllocateDataSource()
         {
-            
-            if ( _dataSource == null )
-            {
-                _dataSource = new DataSourceReflection(_dataSourceObject);
-            }
-
-            return _dataSource;
+            return new DataSourceReflection(_dataSourceObject);
         }
 
-        private void Awake()
-        {
-            GetDataSource();
-            InitializeData();
-            _deltaSeconds = 0;
-            _nextOneSecondTarget = 0;
-        }
-
-        // Update is called once per frame
-        private void Update()
-        {
-            string[] statusText = { "open", "pending", "cancelled", "inprogress", "completed" };
-            _deltaSeconds += Time.deltaTime;
-            int tenthsOfSeconds = (int)(_deltaSeconds * 10.0);
-
-            _dataSource.DataChangeSetBegin();
-
-            if (tenthsOfSeconds > _nextFiveSecondTarget)
-            {
-                if (_styleYellow)
-                {
-                    _dataSourceObject.stylesheet = "standard";
-                }
-                else
-                {
-                    _dataSourceObject.stylesheet = "yellow";
-                }
-                _styleYellow = !_styleYellow;
-                _nextFiveSecondTarget += 50;
-            }
-
-            if (tenthsOfSeconds > _nextOneSecondTarget)
-            {
-                _nextOneSecondTarget += 10;
-                _dataSourceObject.score = ++_score;
-
-                if ((++_status % statusText.Length) == 0)
-                {
-                    _status = 0;
-                }
-
-                // Two different ways to set values in the provided object
-                _dataSource.SetValue("status", statusText[_status]);
-
-                // Note: This does not notify of the changed state, hence
-                // requiring a manual notification.
-                // _dataSourceObject.status = statusText[_status];
-            }
-
-            _dataSource.NotifyAllChanged();
-            _dataSource.DataChangeSetEnd();
-
-        }
-
-        private void InitializeData()
-        {
-            _dataSource.DataChangeSetBegin();
-
-            _dataSourceObject.firstname = "Michael";
-            _dataSourceObject.lastname = "Hoffman";
-            _dataSourceObject.score = 123;
-            _dataSourceObject.status = "open";
-            _dataSourceObject.stylesheet = "standard";
-
-            _dataSource.NotifyAllChanged();
-            _dataSource.DataChangeSetEnd();
-        }
-
-
-
-}
+    }
 }

@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         [Tooltip("The number of random image entries to generate for image collection.")]
         [SerializeField]
-        protected int _collectionSize = 200;
+        protected int _collectionSize = 1000;
 
         protected int _counter = 0;
 
@@ -69,8 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             int maxImageId = 101;
             string[] dates = { "February 26, 2020", "January 1, 2000", "March 1, 2018", "April 29, 2017", "May 5, 1999", "June 21, 1980" };
             string[] words = { "mixed reality", "MRTK", "HoloLens", "Unity", "Visual Studio", "Middleware", "Microsoft", "XR", "VR", "AR", "MR", "C#", "Azure" };
-
-            System.Random r = new System.Random();
 
             DataChangeSetBegin();
 
