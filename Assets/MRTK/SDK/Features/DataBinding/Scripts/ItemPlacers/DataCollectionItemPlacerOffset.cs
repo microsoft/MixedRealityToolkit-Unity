@@ -58,6 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // does assume this prefab defaults to the correct local offset relative to the parent container.
 
             itemGO.transform.position = itemGO.transform.parent.transform.position + _itemPlacerPositionOffset;
+            itemGO.SetActive(true);
+
         }
 
 

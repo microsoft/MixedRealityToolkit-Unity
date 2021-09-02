@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        protected void RemoveAllItems()
+        protected void PurgeAllVisibleAndRemovableItems()
         {
             if (_numVisibleItems > 0)
             {
@@ -426,17 +426,33 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        /// <summary>
+        /// Scroll visible data window to the specified first visible item
+        /// </summary>
+        /// <remarks>
+        /// Note if objects are not removed immediately, they must be removed later (such as after a transition effect)
+        /// using PurgeAllRemovableGameObjects() or PurgeRemovableGameObjectRange()
+        /// </remarks>
+        /// <param name="firstItem">The first visible item to navigate to.</param>
+        /// <param name="purgeExitingObjectsNow">Purge no longer visible objects immediately and return back to object pool.</param>
+        /// <returns>Actual distance moved from current position.</returns>
+
+        public int MoveAbsolute(int firstItem, bool purgeExitingObjectsNow = true)
+        {
+            return MoveRelative(firstItem - _firstVisibleItem, purgeExitingObjectsNow);
+        }
 
         /// <summary>
         /// Scroll visible data window by itemCount items forward or backward
         /// </summary>
         /// <remarks>
         /// Note if objects are not removed immediately, they must be removed later (such as after a transition effect)
-        /// using PurgeAllRemovableGameObjects() or PurgeRemovableGameObjectRange()</remarks>
+        /// using PurgeAllRemovableGameObjects() or PurgeRemovableGameObjectRange()
+        /// </remarks>
         /// <param name="itemCount">THe number of items to scroll. Negative=previous. Positive=next.</param>
-        /// <param name="removeExitingObjectsNow">Remove no longer visible objects immediately and return back to object pool.</param>
+        /// <param name="purgeExitingObjectsNow">Purge no longer visible objects immediately and return back to object pool.</param>
         /// <returns>Actual number of items scrolled. Note: Always positive for previous or next.</returns>
-        public int MoveRelative(int itemCount, bool removeExitingObjectsNow = true)
+        public int MoveRelative(int itemCount, bool purgeExitingObjectsNow = true )
         {
             int actualScrollAmount;
             int firstItemToRequest;
@@ -445,6 +461,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             int firstItemToRemove;
             int firstItemToReposition;
             int numItemsToReposition;
+
+            if (itemCount == 0 )
+            {
+                return 0;
+            }
 
             if (itemCount < 0)
             {
@@ -492,7 +513,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 _firstVisibleItem = newFirstVisibleItem;
                 RequestItems(firstItemToRequest, numItemsToRequest);
 
-                if (removeExitingObjectsNow)
+                if (purgeExitingObjectsNow)
                 {
                     PurgeRemovableGameObjectRange(firstItemToRemove, actualScrollAmount);
                 }
@@ -584,6 +605,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _totalItemCount;
         }
 
+        /// <summary>
+        /// Get the total number of pages in the collection based on current page size.
+        /// </summary>
+        /// <returns>Number of items in the collection.</returns>
+        public virtual int GetTotalPageCount()
+        {
+            int itemsPerPage = GetItemCountPerPage();
+
+            return (GetTotalItemCount() + itemsPerPage - 1) / itemsPerPage;
+        }
 
         #region IDataCollectionItemPlacer method implementations
 
@@ -630,7 +661,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (currentState == State.Visible)
             {
                 PlaceVisibleItem(requestId, indexRangeStart, indexRangeCount, itemIndex, itemGO);
-                itemGO.SetActive(true);
             }
             else if (currentState == State.Removable)
             {
@@ -685,13 +715,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else if (dataChangeType == DataChangeType.CollectionItemRemoved)
             {
-                RemoveAllItems();
+                PurgeAllVisibleAndRemovableItems();
             }
             else
             {
                 // For misc mods or deletions, it's safer to just re-fetch all at current scroll position since we don't
                 // necessarily know where a deletion or modification occured.
-                RemoveAllItems();
+                PurgeAllVisibleAndRemovableItems();
                 RequestAnyMissingVisibleItems();
                 if ( collectionEvents != null )
                 {

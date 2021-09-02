@@ -83,6 +83,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="dataChangeType">The nature of the data change, typically CollectionItemAdded, or CollectionItemRemoved.</param>
         void NotifyCollectionDataChanged(DataChangeType dataChangeType);
 
+        /// <summary>
+        /// Get current page number for first visible item.
+        /// </summary>
+        /// <returns>The page number (zero based)</returns>
+        int GetPageNumber();
+
+        /// <summary>
+        /// Get the total number of pages in the collection based on current page size.
+        /// </summary>
+        /// <returns>Number of items in the collection.</returns>
+        int GetTotalPageCount();
 
 
         /// <summary>
@@ -115,5 +126,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="removeExitingObjectsNow">Remove no longer visible objects immediately and return back to object pool.</param>
         /// <returns>Actual number of items scrolled. Note: Always positive for previous or next.</returns>
         int MoveRelative(int itemCount, bool removeExitingObjectsNow = true);
+
+
+        /// <summary>
+        /// Scroll visible data window to the specified first visible item
+        /// </summary>
+        /// <remarks>
+        /// Note if objects are not removed immediately, they must be removed later (such as after a transition effect)
+        /// using PurgeAllRemovableGameObjects() or PurgeRemovableGameObjectRange()
+        /// </remarks>
+        /// <param name="firstItem">The first visible item to navigate to.</param>
+        /// <param name="purgeExitingObjectsNow">Purge no longer visible objects immediately and return back to object pool.</param>
+        /// <returns>Actual distance moved from current position.</returns>
+
+        int MoveAbsolute(int firstItem, bool purgeExitingObjectsNow = true);
+
     }
 }
