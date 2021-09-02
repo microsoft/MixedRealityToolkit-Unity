@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Settings for the spatial mesh observer, including refresh rate, level of detail, material and physics related to the mesh.",
             "Settings for the diagnostics heads up display.",
             "Settings for the Scene System.",
-            "Settings for extensions, including the registry for adding new Service Providers.",
+            "Settings for extensions, including the registry for adding new service providers.",
             "Settings that affect the editor experience but do not impact application at run-time."
         };
 
