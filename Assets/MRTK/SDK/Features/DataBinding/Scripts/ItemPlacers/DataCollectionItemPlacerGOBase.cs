@@ -638,7 +638,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (keepGameObjectsInIndexOrder)
             {
-                itemGO.transform.SetSiblingIndex(itemIndex - _firstVisibleItem);
+
+                itemGO.transform.SetSiblingIndex(FindOrderedInsertPoint(itemIndex));
             }
 
             State currentState;
@@ -666,6 +667,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 PurgeRemovableGameObjectRange(itemIndex, 1);
             }
+        }
+
+
+        protected int FindOrderedInsertPoint(int newItemIndex)
+        {
+            Transform containerObject = transform;
+            int minSlot = 0;
+            int maxSlot = containerObject.childCount - 1;
+            while( minSlot <= maxSlot)
+            {
+                int midSlot = (minSlot + maxSlot) / 2;
+                string nameAsIndex = containerObject.GetChild(midSlot).name;
+
+                int valueAtSlot = Int32.Parse(nameAsIndex);
+
+                if (newItemIndex < valueAtSlot )
+                {
+                    maxSlot = midSlot - 1;
+                }
+                else
+                {
+                    minSlot = midSlot + 1;
+                }
+            }
+
+            return maxSlot;
         }
 
 

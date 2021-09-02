@@ -259,14 +259,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 GameObject childPrefab = GetPrefabInstance();
 
+                childPrefab.name = itemIndex.ToString();
+
                 if (itemPlacer != null)
                 {
-                    itemPlacer.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex++, childPrefab);
+                    itemPlacer.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex, childPrefab);
                 }
 
                 // After PlaceItem because prefab is likely to be not Active until this point and initializing
                 // prior to being Active adds complexity and/or causes exceptions.
                 UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
+
+                itemIndex++;
 
                 // TODO: add logic to yield after a specified # of milliseconds since some
                 //       items can be fabricated faster than others
@@ -399,8 +403,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected void UpdatePrefabDataConsumers(GameObject prefab, string collectionItemKeyPathPrefix)
         {
             Component[] dataConsumers = prefab.GetComponentsInChildren(typeof(DataConsumerGOBase));
-
-            prefab.name = collectionItemKeyPathPrefix;
 
             // DataConsumerGOBase[] dataConsumers = prefab.GetComponentsInChildren(typeof(DataConsumerGOBase)) as DataConsumerGOBase[];
             foreach (Component component in dataConsumers)

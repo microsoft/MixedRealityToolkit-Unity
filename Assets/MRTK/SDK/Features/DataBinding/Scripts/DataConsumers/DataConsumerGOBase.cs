@@ -144,11 +144,31 @@ namespace Microsoft.MixedReality.Toolkit.Data
         #region protected methods
 
 
+        /// <summary>
+        /// For consumers that manage one or more components for modifcation based on data received,
+        /// this is a convenience method that is called once per component of the specified types
+        /// declared in GetComponentTypes().
+        /// 
+        /// Note that if you do not need any components, 
+        /// </summary>
+        /// <param name="componentType"></param>
+        /// <param name="component"></param>
         protected virtual void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
             //no default behavoir, but also not needed if not a component based binding
         }
 
+
+        /// <summary>
+        /// If your data consumer modifies components, particularly all components found of a
+        /// certain type, then declaring them here will result in AddVariableKeyPathsForComponent
+        /// to be called for each found component in this or is specified in child objects.
+        /// 
+        /// If you do not operate on components, then no need to override this method. Instead
+        /// simply override InitializeDataConsumer and call AddKeyPathListener() for any keypaths
+        /// that should cause this data consumer to be notified.
+        /// </summary>
+        /// <returns>List of Component types.</returns>
         protected virtual Type[] GetComponentTypes()
         {
             Type[] types = { };
@@ -163,6 +183,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <remarks>
         /// Note that this should rarely be overridden but is declared virtual for circumnstances 
         /// where this is required. If overridden, make sure to call this default behavior.
+        /// 
+        /// Any initialization should be accomplished by overriding IniitalizeDataConsumer().
         /// </remarks>
 
         protected virtual void Awake()
