@@ -342,6 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             go.SetActive(false);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
+            go.name = "-1"; // initially mark with an item index of -1 until set otherwise.
         }
 
         /// <summary>
