@@ -44,8 +44,17 @@
           "Version": "1.1",
           "DownloadUrl": "https://developer.oculus.com/downloads/package/oculus-controller-art/"
         }
+     }
+   },
+  {
+      "Component": {
+        "Type": "other",
+        "Other": {
+          "Name": "Unity Text Mesh Pro",
+          "DownloadUrl": "https://unity3d.com/legal/licenses/Unity_Companion_License"
+        }
       }
-    }
+    } 
   ],
   "Version": 1
 }
