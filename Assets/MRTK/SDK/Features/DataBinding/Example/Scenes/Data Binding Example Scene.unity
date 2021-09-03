@@ -209,7 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 159510390}
   m_Layer: 0
-  m_Name: Collection Prefab Object Pool
+  m_Name: Collection Reusable Prefab Pool Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 257290605}
   - component: {fileID: 257290604}
   m_Layer: 5
-  m_Name: 'Text (TMP) -  joke and punchline '
+  m_Name: 'Text (TMP) -  Display joke and punchline '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1492,7 +1492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Dynamically generated text => Text Mesh and TMPro
+  m_text: Dynamically Generated Text => Text Mesh and TMPro
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1584,7 +1584,7 @@ GameObject:
   - component: {fileID: 734963962}
   - component: {fileID: 734963963}
   m_Layer: 0
-  m_Name: Photo List - Actual Flickr Feed
+  m_Name: Flickr Photo Collection Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2046,7 +2046,7 @@ GameObject:
   - component: {fileID: 839038756}
   - component: {fileID: 839038755}
   m_Layer: 0
-  m_Name: Text Backplate (2)
+  m_Name: Text Backplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2145,7 +2145,7 @@ GameObject:
   - component: {fileID: 874612864}
   - component: {fileID: 874612866}
   m_Layer: 0
-  m_Name: Photo List - Dynamic list with Photo Urls
+  m_Name: Photo Collection Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2433,7 +2433,7 @@ GameObject:
   - component: {fileID: 890619018}
   - component: {fileID: 890619016}
   m_Layer: 5
-  m_Name: Dynamic image - Random image service
+  m_Name: Random Photo Fetcher and Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2908,7 +2908,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1012916092}
   m_Layer: 5
-  m_Name: Photo
+  m_Name: Random Photo Fetcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3373,7 +3373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1128428905}
   m_Layer: 0
-  m_Name: Nature Feed
+  m_Name: Nature Photos Feed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3422,7 +3422,7 @@ GameObject:
   - component: {fileID: 1227885127}
   - component: {fileID: 1227885126}
   m_Layer: 5
-  m_Name: Text (TMP) - Random joke and punchline service (1)
+  m_Name: Text (TMP) - Slate Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3466,7 +3466,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Random Joke RESTful service => JSON
+  m_text: Random Joke RESTful Service => JSON
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
   m_sharedMaterial: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
@@ -4255,7 +4255,7 @@ GameObject:
   - component: {fileID: 1442970313}
   - component: {fileID: 1442970314}
   m_Layer: 5
-  m_Name: canvas
+  m_Name: Random Joke and Photo Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4595,7 +4595,7 @@ GameObject:
   - component: {fileID: 1542411430}
   - component: {fileID: 1542411429}
   m_Layer: 5
-  m_Name: Text  Canvas (1)
+  m_Name: Text  Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4811,7 +4811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1585743117}
   m_Layer: 5
-  m_Name: Joke
+  m_Name: Random Joke Fetcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5229,7 +5229,7 @@ GameObject:
   - component: {fileID: 1762317306}
   - component: {fileID: 1762317305}
   m_Layer: 5
-  m_Name: Text (TMP) -  image title
+  m_Name: Text (TMP) -  Slate Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5273,7 +5273,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Random Photo \nRESTful service"
+  m_text: "Random Photo \nRESTful Service"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
   m_sharedMaterial: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
@@ -5823,7 +5823,7 @@ GameObject:
   - component: {fileID: 1844783672}
   - component: {fileID: 1844783671}
   m_Layer: 0
-  m_Name: Text Backplate (1)
+  m_Name: Text Backplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5919,7 +5919,7 @@ GameObject:
   - component: {fileID: 1871362607}
   - component: {fileID: 1871362606}
   m_Layer: 5
-  m_Name: Text  Canvas (1)
+  m_Name: Text  Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
