@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 availableKeywords = availableKeywords.Except(keywordsInUse.Select(keyword => keyword)).ToArray();
             }
 
-            bool validSpeechKeywords = availableKeywords != null;
+            bool validSpeechKeywords = availableKeywords != null && availableKeywords.Count() > 0;
 
             if (rect == default(Rect))
             {
