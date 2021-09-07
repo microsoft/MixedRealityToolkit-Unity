@@ -55,6 +55,26 @@
           "DownloadUrl": "https://unity3d.com/legal/licenses/Unity_Companion_License"
         }
       }
+    },
+    {
+      "Component": {
+        "Type": "pip",
+        "Pip": {
+          "Name": "pygithub",
+          "Version": "1.55"
+        }
+      },
+      "DevelopmentDependency": true
+    },
+    {
+      "Component": {
+        "Type": "pip",
+        "Pip": {
+          "Name": "gitpython",
+          "Version": "3.1.18"
+        }
+      },
+      "DevelopmentDependency": true
     }
   ],
   "Version": 1
