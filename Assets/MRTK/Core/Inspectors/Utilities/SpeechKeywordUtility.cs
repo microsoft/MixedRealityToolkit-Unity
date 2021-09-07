@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
+    /// <summary>
+    /// Provides helpers for rendering speech keyword dropdowns populated from the MRTK speech profile.
+    /// </summary>
     public static class SpeechKeywordUtility
     {
         private static readonly GUIContent SpeechCommandsLabel = new GUIContent("Speech Command", "Speech keyword to use, pulled from MRTK/Input/Speech Commands Profile");
@@ -29,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (keywordsInUse != null && availableKeywords != null)
             {
-                availableKeywords = availableKeywords.Except(keywordsInUse.Select(keyword => keyword)).ToArray();
+                availableKeywords = availableKeywords.Except(keywordsInUse.Select(keyword => keyword));
             }
 
             bool validSpeechKeywords = availableKeywords != null && availableKeywords.Count() > 0;
