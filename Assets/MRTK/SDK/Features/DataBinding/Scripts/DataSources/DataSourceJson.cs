@@ -240,7 +240,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected void NotifyListeners()
         {
-            foreach( string keyPath in _keyPathToDataConsumers.Keys )
+            List<string> keys = new List<string>(_keyPathToDataConsumers.Keys);
+
+            foreach ( string keyPath in keys )
             {
                 NotifyDataChanged(keyPath, GetValue(keyPath), DataChangeType.DatumModified, false);
             }

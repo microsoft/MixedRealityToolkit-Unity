@@ -8,6 +8,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataCollectionEventsHandler : DataCollectionEventsGOBase
     {
         [SerializeField]
+        protected UnityEvent StartPlacement = new UnityEvent();
+
+        [SerializeField]
+        protected UnityEvent EndPlacement = new UnityEvent();
+
+        [SerializeField]
+        protected UnityEvent ItemPlaced = new UnityEvent();
+
+        [SerializeField]
         protected UnityEvent CollectionAtStart = new UnityEvent();
 
         [SerializeField]
@@ -47,6 +56,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected UnityEvent CollectionPagedBackward = new UnityEvent();
 
 
+        /// <summmary>
+        /// A placement set is starting. Zero or more items
+        /// will be placed.
+        /// </summmary>
+        public override void OnStartPlacement()
+        {
+            StartPlacement.Invoke();
+        }
+        /// <summary>
+        /// A set of item placements has ended. 
+        /// </summary>
+        /// <remarks>
+        /// Note that it is possible that no items were actually placed.
+        /// </remarks>
+        public override void OnEndPlacement()
+        {
+            EndPlacement.Invoke();
+        }
+
+        /// <summary>
+        /// One item placement has just occured.
+        /// </summary>
+        public override void OnItemPlaced()
+        {
+            ItemPlaced.Invoke();
+        }
 
         /// <summary>
         /// Collection scrolled/paged to start of list

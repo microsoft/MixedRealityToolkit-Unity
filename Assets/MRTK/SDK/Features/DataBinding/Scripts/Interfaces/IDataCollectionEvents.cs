@@ -11,6 +11,26 @@ namespace Microsoft.MixedReality.Toolkit.Data
  
     public interface IDataCollectionEvents
     {
+        /// <summmary>
+        /// A placement set is starting. Zero or more items
+        /// will be placed.
+        /// </summmary>
+
+        void OnStartPlacement();
+
+        /// <summary>
+        /// A set of item placements has ended. 
+        /// </summary>
+        /// <remarks>
+        /// Note that it is possible that no items were actually placed.
+        /// </remarks>
+        void OnEndPlacement();
+
+        /// <summary>
+        /// One item placement has just occured.
+        /// </summary>
+        void OnItemPlaced();
+
         /// <summary>
         /// Collection scrolled/paged to start of list
         /// </summary>

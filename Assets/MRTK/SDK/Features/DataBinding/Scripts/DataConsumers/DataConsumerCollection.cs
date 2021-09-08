@@ -254,7 +254,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             foreach (string itemKeyPath in collectionItemsKeyPaths)
             {
-
                 GameObject childPrefab = GetPrefabInstance();
 
                 childPrefab.name = itemIndex.ToString();

@@ -620,6 +620,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void StartPlacement()
         {
+            collectionEvents.OnStartPlacement();
+
             if (_dataConsumerCollection != null )
             {
                 _totalItemCount = _dataConsumerCollection.GetCollectionItemCount();
@@ -667,6 +669,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 PurgeRemovableGameObjectRange(itemIndex, 1);
             }
+
+            collectionEvents.OnItemPlaced();
         }
 
 
@@ -716,6 +720,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void EndPlacement()
         {
+            collectionEvents.OnEndPlacement();
             PredictivelyLoadItems();
         }
 

@@ -5,69 +5,85 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Abstract base GameObject class that makes it possible to create subclasses that are
+    /// virtual base GameObject class that makes it possible to create subclasses that are
     /// "drag and droppable" via the Unity Editor inspector and can be added as a component to other
     /// game objects.
     /// </summary>
-    public abstract class DataCollectionEventsGOBase : MonoBehaviour, IDataCollectionEvents
+    public class DataCollectionEventsGOBase : MonoBehaviour, IDataCollectionEvents
     {
+        /// <summmary>
+        /// A placement set is starting. Zero or more items
+        /// will be placed.
+        /// </summmary>
+        public virtual void OnStartPlacement() {}
+        /// <summary>
+        /// A set of item placements has ended. 
+        /// </summary>
+        /// <remarks>
+        /// Note that it is possible that no items were actually placed.
+        /// </remarks>
+        public virtual void OnEndPlacement() {}
+
+        /// <summary>
+        /// One item placement has just occured.
+        /// </summary>
+        public virtual void OnItemPlaced() {}
 
         /// <summary>
         /// Collection scrolled/paged to start of list
         /// </summary>
-        public abstract void OnCollectionAtStart();
+        public virtual void OnCollectionAtStart() {}
 
         /// <summary>
         /// Collection scrolled/paged to end of list
         /// </summary>
-        public abstract void OnCollectionAtEnd();
+        public virtual void OnCollectionAtEnd() {}
 
 
-        public abstract void OnCollectionInMiddle();
+        public virtual void OnCollectionInMiddle() {}
 
-        public abstract void OnCollectionCanGoBackward();
+        public virtual void OnCollectionCanGoBackward() {}
 
-        public abstract void OnCollectionCanGoForward();
-
+        public virtual void OnCollectionCanGoForward() {}
 
         /// <summary>
         /// Collection contents completely replaced
         /// </summary>
-        public abstract void OnCollectionContextSwitch();
+        public virtual void OnCollectionContextSwitch() {}
 
         /// <summary>
         /// Collection contents has changed
         /// </summary>
-        public abstract void OnCollectionChanged();
+        public virtual void OnCollectionChanged() {}
 
         /// <summary>
         /// Collection contents transitioned to empty set
         /// </summary>
-        public abstract void OnCollectionEmpty();
+        public virtual void OnCollectionEmpty() {}
 
         /// <summary>
         /// Collection contents transitioned from empty to not empty
         /// </summary>
-        public abstract void OnCollectionNotEmpty();
+        public virtual void OnCollectionNotEmpty() {}
 
         /// <summary>
         /// Collection was scrolled forward towards end of list
         /// </summary>
-        public abstract void OnCollectionScrolledForward();
+        public virtual void OnCollectionScrolledForward() {}
 
         /// <summary>
         /// Collection was scrolled backwards towards start of list
         /// </summary>
-        public abstract void OnCollectionScrolledBackward();
+        public virtual void OnCollectionScrolledBackward() {}
 
         /// <summary>
         /// Collection was paged forward towards end of list
         /// </summary>
-        public abstract void OnCollectionPagedForward();
+        public virtual void OnCollectionPagedForward() {}
 
         /// <summary>
         /// Collection was paged backward towards start of list
         /// </summary>
-        public abstract void OnCollectionPagedBackward();
+        public virtual void OnCollectionPagedBackward() {}
     }
 }
