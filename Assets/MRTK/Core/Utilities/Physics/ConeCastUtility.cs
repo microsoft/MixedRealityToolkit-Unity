@@ -22,6 +22,16 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         static List<ConeCastHit> coneCastHitList = new List<ConeCastHit>();
 
+        /// <summary>
+        /// Function casts a sphere along a ray and checks if the hitpoint is within the angle of the cone and returns detailed information.
+        /// </summary>
+        /// <param name="origin">The vertex of the cone and the at the start of the sweep.</param>
+        /// <param name="direction">The direction into which to sweep the sphere..</param>
+        /// <param name="maxRadius">The radius of the sweep.</param>
+        /// <param name="maxDistance">The max length of the cast.</param>
+        /// <param name="coneAngle">The angle used to define the cone.</param>
+        /// <param name="layerMask">A Layer mask that is used to selectively ignore colliders when casting a capsule.</param>
+        /// <returns>An array of structs that contain RaycastHit, distance to hit, and the angle of all the objects that were hit.</returns>
         public static ConeCastHit[] ConeCastAll(Vector3 origin, Vector3 direction, float maxRadius, float maxDistance, float coneAngle, LayerMask layerMask)
         {
             coneCastHitList.Clear();
@@ -52,6 +62,20 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         private static int sphereCastMaxHitCount = 10;
         private const int sphereCastLimit = 100;
 
+        /// <summary>
+        /// Function casts a sphere along a ray and checks if the hitpoint is within the angle of the cone and returns the best target determined by the weights provided.
+        /// </summary>
+        /// <param name="origin">The vertex of the cone and the at the start of the sweep.</param>
+        /// <param name="direction">The direction into which to sweep the sphere..</param>
+        /// <param name="maxRadius">The radius of the sweep.</param>
+        /// <param name="maxDistance">The max length of the cast.</param>
+        /// <param name="coneAngle">The angle used to define the cone.</param>
+        /// <param name="layerMask">A Layer mask that is used to selectively ignore colliders when casting a capsule.</param>
+        /// <param name="distanceWeight">The importance of distance between the hitpoint and the origin in selecting the best target.</param>
+        /// <param name="angleWeight">The importance of angle between the hitpoint and the origin in selecting the best target.</param>
+        /// <param name="distanceToCenterWeight">The importance of distance between the hitpoint and the center of the object in selecting the best target.</param>
+        /// <param name="angleToCenterWeight">The importance of angle between the hitpoint and the center of the object in selecting the best target.</param>
+        /// <returns>The RaycastHit of the best object.</returns>
         public static RaycastHit ConeCastBest(Vector3 origin, Vector3 direction, float maxRadius, float maxDistance, float coneAngle, LayerMask layerMask, float distanceWeight, float angleWeight, float distanceToCenterWeight, float angleToCenterWeight)
         {
             if (sphereCastHits == null || sphereCastHits.Length < sphereCastMaxHitCount)
