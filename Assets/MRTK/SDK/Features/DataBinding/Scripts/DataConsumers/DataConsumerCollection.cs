@@ -250,8 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             IEnumerable<string> collectionItemsKeyPaths = _dataSource.GetCollectionKeyPathRange(collectionKeyPath, indexRangeStart, indexRangeCount);
 
-            yield return null;
-
             int itemIndex = indexRangeStart;
 
             foreach (string itemKeyPath in collectionItemsKeyPaths)
