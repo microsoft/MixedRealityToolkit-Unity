@@ -8,6 +8,12 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    public enum GraspPointPlacement
+    {
+        BetweenFingerAndThumb,
+        Fingertip,
+    }
+
     [AddComponentMenu("Scripts/MRTK/SDK/SpherePointer")]
     public class SpherePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
@@ -155,10 +161,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV. This can prevent accidental grabs, and will allow hand rays to turn on when you may be near a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, radius equal to half display height.")]
         private bool ignoreCollidersNotInFOV = true;
 
+        [SerializeField]
+        [Tooltip("Location on the hand where a grasp is triggered (apllies to IMixedRealityHand only)")]
+        private GraspPointPlacement graspPointPlacement = GraspPointPlacement.BetweenFingerAndThumb;
+
+        /// <summary>
+        /// Location on the hand where a grasp is triggered (apllies to IMixedRealityHand only)
+        /// </summary>
+        public GraspPointPlacement GraspPointPlacement => graspPointPlacement;
+
         /// <summary>
         /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
-        /// This can prevent accidental grabs, and will allow hand rays to turn on when you may be near 
-        /// a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, 
+        /// This can prevent accidental grabs, and will allow hand rays to turn on when you may be near
+        /// a grabbable but cannot see it. Visual FOV is defined by cone centered about display center,
         /// radius equal to half display height.
         /// </summary>
         public bool IgnoreCollidersNotInFOV
@@ -265,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Gets the position of where grasp happens
-        /// For IMixedRealityHand it's the average of index and thumb.
+        /// For IMixedRealityHand it's determined by <see cref="GraspPointPlacement"/> (either the average of index and thumb or the fingertip).
         /// For any other IMixedRealityController, return just the pointer origin
         /// </summary>
         public bool TryGetNearGraspPoint(out Vector3 result)
@@ -279,10 +294,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
                         {
-                            if (hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb) && thumb != null)
+                            switch (GraspPointPlacement)
                             {
-                                result = 0.5f * (index.Position + thumb.Position);
-                                return true;
+                                case GraspPointPlacement.BetweenFingerAndThumb:
+                                    if (hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb) && thumb != null)
+                                    {
+                                        result = 0.5f * (index.Position + thumb.Position);
+                                        return true;
+                                    }
+                                    break;
+
+                                case GraspPointPlacement.Fingertip:
+                                    result = index.Position;
+                                    return true;
                             }
                         }
                     }
@@ -305,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Because pointers shouldn't be able to interact with objects that are "behind" it, it is necessary to determine the forward axis of the pointer when making interaction checks.
-        /// 
+        ///
         /// For example, a grab pointer's axis should is the result of Vector3.Lerp(palm forward axis, palm to index finger axis).
         ///
         /// This method provides a mechanism to get this normalized forward axis.
@@ -385,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private class SpherePointerQueryInfo
         {
             /// <summary>
-            /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask 
+            /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask
             /// </summary>
             private int numColliders;
 
@@ -420,7 +444,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public bool ignoreBoundsHandlesForQuery = false;
 
             /// <summary>
-            /// The grabbable near the QueryRadius. 
+            /// The grabbable near the QueryRadius.
             /// </summary>
             public NearInteractionGrabbable grabbable;
 
