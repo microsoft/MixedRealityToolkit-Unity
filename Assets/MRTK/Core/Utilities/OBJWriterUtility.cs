@@ -105,20 +105,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             foreach (Vector3 vertex in mesh.vertices)
             {
                 Vector3 v = transform.TransformPoint(vertex);
-                buffer.Append($"v {-1 * v.x} {v.y} {v.z}\n");
+                buffer.Append(FormattableString.Invariant($"v {-1 * v.x} {v.y} {v.z}\n"));
             }
             buffer.AppendNewLine();
 
             foreach (Vector3 normal in mesh.normals)
             {
                 Vector3 vn = transform.TransformDirection(normal);
-                buffer.Append($"vn {-1 * vn.x} {vn.y} {vn.z}\n");
+                buffer.Append(FormattableString.Invariant($"vn {-1 * vn.x} {vn.y} {vn.z}\n"));
             }
 
             buffer.AppendNewLine();
             foreach (Vector3 uv in mesh.uv)
             {
-                buffer.Append($"vt {uv.x} {uv.y}\n");
+                buffer.Append(FormattableString.Invariant($"vt {uv.x} {uv.y}\n"));
             }
 
             for (int idx = 0; idx < mesh.subMeshCount; idx++)
