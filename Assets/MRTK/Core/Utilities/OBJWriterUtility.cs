@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             objBuffer.Append($"# {target.name}").AppendNewLine();
             var dt = DateTime.Now;
-            objBuffer.Append($"# {dt.ToString(CultureInfo.InvariantCulture)}").AppendNewLine().AppendNewLine();
+            objBuffer.Append($"# {dt.ToString(CultureInfo.InvariantCulture)}").AppendNewLine();
 
             Stack<Transform> processStack = new Stack<Transform>();
             processStack.Push(target.transform);
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             var transform = meshFilter.transform;
 
-            buffer.Append("g ").Append(transform.name).AppendNewLine();
+            buffer.AppendNewLine().Append("g ").Append(transform.name).AppendNewLine();
 
             foreach (Vector3 vertex in mesh.vertices)
             {
