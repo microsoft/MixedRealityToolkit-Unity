@@ -360,7 +360,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
 
-            material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
+            if (gltfMaterial.pbrMetallicRoughness?.baseColorFactor != null)
+            {
+                material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
+            }
 
             if (gltfMaterial.alphaMode == "MASK")
             {
