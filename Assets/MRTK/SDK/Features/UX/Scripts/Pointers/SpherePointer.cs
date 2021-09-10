@@ -409,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private class SpherePointerQueryInfo
         {
             /// <summary>
-            /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask
+            /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask.
             /// </summary>
             private int numColliders;
 
