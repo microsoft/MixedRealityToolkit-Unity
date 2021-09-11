@@ -468,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Minimum differences in distance for one grabbable to be considered closer than the other
             /// </summary>
-            private const float MIN_DIST_DIFF = 1.0e-5f
+            private const float MIN_DIST_DIFF = 1.0e-5f;
 
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
@@ -491,7 +491,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         float currentDistance = (pointerPosition - colliderHitPoint).sqrMagnitude;
                         float currentVolume = collider.bounds.Transform(collider.transform.localToWorldMatrix).Volume();
 
-                        float distanceDiff = closestDistance - distance;
+                        float distanceDiff = closestDistance - currentDistance;
                         // set current grabbable to be the closest grabbable if it is significantly closer than the previously recorded
                         // closest grabbable, or if it's volume is smaller than the previous closest grabbable's volume.
                         if (distanceDiff > MIN_DIST_DIFF || (Mathf.Abs(distanceDiff) < MIN_DIST_DIFF && currentVolume < closestVolume))
