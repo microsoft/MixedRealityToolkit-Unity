@@ -465,6 +465,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
+            /// <summary>
+            /// Minimum differences in distance for one grabbable to be considered closer than the other
+            /// </summary>
+            private const float MIN_DIST_DIFF = 1.0e-5f;
+
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
             public GameObject GetClosestValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV, out Vector3 hitPosition)
@@ -475,6 +480,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 NearInteractionGrabbable closestGrabbable = null;
                 Vector3 closestColliderHitPosition = pointerPosition;
                 float closestDistance = Mathf.Infinity;
+                float closestVolume = Mathf.Infinity;
 
                 for (int i = 0; i < numColliders; i++)
                 {
@@ -482,10 +488,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable)
                         && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out colliderHitPoint))
                     {
-                        float distance = (pointerPosition - colliderHitPoint).sqrMagnitude;
-                        if (distance < closestDistance)
+                        float currentDistance = (pointerPosition - colliderHitPoint).sqrMagnitude;
+                        float currentVolume = collider.bounds.Transform(collider.transform.localToWorldMatrix).Volume();
+
+                        float distanceDiff = closestDistance - currentDistance;
+                        // set current grabbable to be the closest grabbable if it is significantly closer than the previously recorded
+                        // closest grabbable, or if it's volume is smaller than the previous closest grabbable's volume.
+                        if (distanceDiff > MIN_DIST_DIFF || (Mathf.Abs(distanceDiff) < MIN_DIST_DIFF && currentVolume < closestVolume))
                         {
-                            closestDistance = distance;
+                            closestDistance = currentDistance;
+                            closestVolume = currentVolume;
                             closestGrabbable = currentGrabbable;
                             closestColliderHitPosition = colliderHitPoint;
                         }
