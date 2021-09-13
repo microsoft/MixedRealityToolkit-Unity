@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                                     if (interactableProp.objectReferenceValue != null)
                                     {
                                         SerializedObject interactableObject = new SerializedObject(interactableProp.objectReferenceValue);
-                                        SerializedProperty voiceCommandProperty = interactableObject.FindProperty("VoiceCommand");
+                                        SerializedProperty voiceCommandProperty = interactableObject.FindProperty("voiceCommand");
 
                                         if(string.IsNullOrEmpty(voiceCommandProperty.stringValue))
                                         {
