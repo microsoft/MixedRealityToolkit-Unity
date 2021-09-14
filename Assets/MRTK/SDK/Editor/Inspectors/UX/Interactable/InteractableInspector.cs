@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected SerializedProperty profileList;
         protected SerializedProperty statesProperty;
         protected SerializedProperty enabledProperty;
-        protected SerializedProperty voiceCommands;
+        protected SerializedProperty voiceCommand;
         protected SerializedProperty actionId;
         protected SerializedProperty isGlobal;
         protected SerializedProperty canSelect;
@@ -35,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected bool enabled = false;
 
         protected string[] inputActionOptions = null;
-        protected string[] speechKeywordOptions = null;
 
         private static readonly GUIContent InputActionsLabel = new GUIContent("Input Actions");
         private static readonly GUIContent selectionModeLabel = new GUIContent("Selection Mode", "The selection mode of the Interactable is based on the number of dimensions available.");
@@ -43,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private static readonly GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimensionIndex value to set on start.");
         private static readonly GUIContent isToggledLabel = new GUIContent("Is Toggled", "Should this Interactable be toggled on or off by default on start.");
         private static readonly GUIContent CreateThemeLabel = new GUIContent("Create and Assign New Theme", "Create a new theme");
-        private static readonly GUIContent SpeechComamndsLabel = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
         private static readonly GUIContent OnClickEventLabel = new GUIContent("OnClick", "Fired when this Interactable is triggered by a click.");
         private static readonly GUIContent AddEventReceiverLabel = new GUIContent("Add Event", "Add event receiver to this Interactable for special event handling.");
         private static readonly GUIContent VoiceRequiresFocusLabel = new GUIContent("Requires Focus");
@@ -55,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             profileList = serializedObject.FindProperty("profiles");
             statesProperty = serializedObject.FindProperty("states");
             enabledProperty = serializedObject.FindProperty("enabledOnStart");
-            voiceCommands = serializedObject.FindProperty("VoiceCommand");
+            voiceCommand = serializedObject.FindProperty("voiceCommand");
             actionId = serializedObject.FindProperty("InputActionId");
             isGlobal = serializedObject.FindProperty("isGlobal");
             canSelect = serializedObject.FindProperty("CanSelect");
@@ -79,8 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// </remarks>
         public sealed override void OnInspectorGUI()
         {
-            if ((inputActionOptions == null && !TryGetInputActions(out inputActionOptions))
-                || (speechKeywordOptions == null && !TryGetSpeechKeywords(out speechKeywordOptions)))
+            if (!MixedRealityToolkit.ConfirmInitialized() || (inputActionOptions == null && !TryGetInputActions(out inputActionOptions)))
             {
                 EditorGUILayout.HelpBox("Mixed Reality Toolkit is missing, configure it by invoking the 'Mixed Reality Toolkit > Add to Scene and Configure...' menu", MessageType.Error);
             }
@@ -181,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     {
                                         using (new EditorGUI.IndentLevelScope())
                                         {
-                                            UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(themeItem.objectReferenceValue);
+                                            UnityEditor.Editor themeEditor = CreateEditor(themeItem.objectReferenceValue);
                                             themeEditor.OnInspectorGUI();
                                         }
                                     }
@@ -293,27 +290,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global"));
                 }
 
-                // Speech keywords
-                bool validSpeechKeywords = speechKeywordOptions != null;
-                using (new EditorGUI.DisabledScope(!validSpeechKeywords))
-                {
-                    string[] keywordOptions = validSpeechKeywords ? speechKeywordOptions : new string[] { "Missing Speech Commands" };
-                    int currentIndex = validSpeechKeywords ? SpeechKeywordLookup(voiceCommands.stringValue, speechKeywordOptions) : 0;
-                    position = EditorGUILayout.GetControlRect();
-
-                    // BeginProperty allows tracking of serialized properties for bolding prefab changes etc
-                    using (new EditorGUI.PropertyScope(position, SpeechComamndsLabel, voiceCommands))
-                    {
-                        currentIndex = EditorGUI.Popup(position, SpeechComamndsLabel.text, currentIndex, keywordOptions);
-                        if (validSpeechKeywords)
-                        {
-                            voiceCommands.stringValue = currentIndex > 0 ? speechKeywordOptions[currentIndex] : string.Empty;
-                        }
-                    }
-                }
+                // Speech keyword
+                EditorGUILayout.PropertyField(voiceCommand);
 
                 // show requires gaze because voice command has a value
-                if (!string.IsNullOrEmpty(voiceCommands.stringValue))
+                if (!string.IsNullOrEmpty(voiceCommand.stringValue))
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
@@ -516,6 +497,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// Skips the first item in the array (internal added blank value to turn feature off)
         /// and returns a 0 if no match is found for the blank value
         /// </summary>
+        [System.Obsolete("Use SpeechKeywordUtility for rendering a keyword dropdown.")]
         protected int SpeechKeywordLookup(string option, string[] options)
         {
             // starting on 1 to skip the blank value
@@ -614,6 +596,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// Look for speech commands in the MRTK Speech Command profile
         /// Adds a blank value at index zero so the developer can turn the feature off.
         /// </summary>
+        [System.Obsolete("Use SpeechKeywordUtility.GetDistinctRegisteredKeywords() instead.")]
         public static bool TryGetSpeechKeywords(out string[] keywords)
         {
             SpeechCommands[] commands;

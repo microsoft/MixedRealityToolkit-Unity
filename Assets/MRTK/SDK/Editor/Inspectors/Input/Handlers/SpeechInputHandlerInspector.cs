@@ -14,10 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
-        private static readonly GUIContent KeywordContent = new GUIContent("Keyword", "Speech keyword item");
         private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
 
-        private string[] distinctRegisteredKeywords;
+        private IEnumerable<string> distinctRegisteredKeywords;
 
         private SerializedProperty keywordsProperty;
         private SerializedProperty persistentKeywordsProperty;
@@ -33,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
-                distinctRegisteredKeywords = GetDistinctRegisteredKeywords();
+                distinctRegisteredKeywords = SpeechKeywordUtility.GetDistinctRegisteredKeywords();
             }
         }
 
@@ -61,12 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             }
 
-            bool validKeywords = distinctRegisteredKeywords != null && distinctRegisteredKeywords.Length != 0;
+            bool validKeywords = distinctRegisteredKeywords != null && distinctRegisteredKeywords.Count() != 0;
 
             // If we should be enabled but there are no valid keywords, alert developer
             if (enabled && !validKeywords)
             {
-                distinctRegisteredKeywords = GetDistinctRegisteredKeywords();
+                distinctRegisteredKeywords = SpeechKeywordUtility.GetDistinctRegisteredKeywords();
                 EditorGUILayout.HelpBox("No keywords registered. Some properties may not be editable.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Toolkit's Configuration Profile.", MessageType.Error);
             }
             enabled = enabled && validKeywords;
@@ -108,27 +107,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             using (new EditorGUI.IndentLevelScope())
             {
-                // remove the keywords already assigned from the registered list
-                var handler = (SpeechInputHandler)target;
-                var availableKeywords = System.Array.Empty<string>();
-
-                if (handler.Keywords != null && distinctRegisteredKeywords != null)
-                {
-                    availableKeywords = distinctRegisteredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
-                }
-
                 // keyword rows
                 for (int index = 0; index < list.arraySize; index++)
                 {
                     // the element
                     SerializedProperty speechCommandProperty = list.GetArrayElementAtIndex(index);
-                    GUILayout.BeginHorizontal();
-                    bool elementExpanded = EditorGUILayout.PropertyField(speechCommandProperty);
-                    GUILayout.FlexibleSpace();
-                    // the remove element button
-                    bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
 
-                    GUILayout.EndHorizontal();
+                    bool elementExpanded = false;
+                    bool elementRemoved = false;
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        elementExpanded = EditorGUILayout.PropertyField(speechCommandProperty, false);
+                        GUILayout.FlexibleSpace();
+                        // the remove element button
+                        elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
+                    }
 
                     if (elementRemoved)
                     {
@@ -136,45 +129,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                         if (index == list.arraySize)
                         {
-                            EditorGUI.indentLevel--;
                             return;
                         }
                     }
 
                     SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
 
-                    bool invalidKeyword = true;
-                    if (distinctRegisteredKeywords != null)
-                    {
-                        foreach (string keyword in distinctRegisteredKeywords)
-                        {
-                            if (keyword == keywordProperty.stringValue)
-                            {
-                                invalidKeyword = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (invalidKeyword)
+                    if (!distinctRegisteredKeywords?.Contains(keywordProperty.stringValue) ?? true)
                     {
                         EditorGUILayout.HelpBox("Registered keyword is not recognized in the speech command profile!", MessageType.Error);
                     }
 
                     if (!elementRemoved && elementExpanded)
                     {
-                        Rect position = EditorGUILayout.GetControlRect();
-                        using (new EditorGUI.PropertyScope(position, KeywordContent, keywordProperty))
-                        {
-                            string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
-                            int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
-                            int currentSelection = EditorGUILayout.Popup(KeywordContent, previousSelection, keywords);
-
-                            if (currentSelection != previousSelection)
-                            {
-                                keywordProperty.stringValue = keywords[currentSelection];
-                            }
-                        }
+                        // remove the keywords already assigned from the registered list
+                        SpeechInputHandler handler = (SpeechInputHandler)target;
+                        SpeechKeywordUtility.RenderKeywordsExcept(handler.Keywords?.Select(keywordAndResponse => keywordAndResponse.Keyword)?.ToArray(), keywordProperty);
 
                         SerializedProperty responseProperty = speechCommandProperty.FindPropertyRelative("response");
                         EditorGUILayout.PropertyField(responseProperty, true);
@@ -197,27 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     }
                 }
             }
-        }
-
-        private static string[] GetDistinctRegisteredKeywords()
-        {
-            if (!MixedRealityToolkit.IsInitialized ||
-                !MixedRealityToolkit.Instance.HasActiveProfile ||
-                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null ||
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
-            {
-                return null;
-            }
-
-            List<string> keywords = new List<string>();
-            var speechCommands = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
-            for (var i = 0; i < speechCommands.Length; i++)
-            {
-                keywords.Add(speechCommands[i].Keyword);
-            }
-
-            return keywords.Distinct().ToArray();
         }
     }
 }

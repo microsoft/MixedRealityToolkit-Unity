@@ -1,5 +1,6 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+// TextMesh Pro copyright © 2021 Unity Technologies ApS
+// Licensed under the Unity Companion License for Unity-dependent projects--see http://www.unity3d.com/legal/licenses/Unity_Companion_License.
+// Unless expressly provided otherwise, the Software under this license is made available strictly on an “AS IS” BASIS WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Please review the license for details on these and other terms and conditions.
 
 // NOTE: MRTK Shaders are versioned via the MRTK.Shaders.sentinel file.
 // When making changes to any shader's source file, the value in the sentinel _must_ be incremented.
