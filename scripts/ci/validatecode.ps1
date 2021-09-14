@@ -249,12 +249,12 @@ function CheckHardcodedPath {
     )
     process {
         # Some files have total exceptions (i.e. ones that deal with profile cloning or for tests)
-        if ($FileName -match "Assets.MixedRealityToolkit\.Tests" -or
+        if ($FileName -match "Assets.MRTK.Tests" -or
             $FileName -match "MixedRealityProfileCloneWindow\.cs") {
             return $false
         }
 
-        $results = Select-String -Pattern "Assets.MixedRealityToolkit" $FileName -AllMatches
+        $results = Select-String -Pattern "Assets.(MixedRealityToolkit|MRTK)" $FileName -AllMatches
         $containsIssue = $false
         $relativeFileName = Split-Path $FileName -leaf
 
