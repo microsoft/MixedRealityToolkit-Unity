@@ -50,54 +50,54 @@ $Directory = Resolve-Path -Path $Directory
 #
 # The folders are relative to the RepoRoot.
 $packages = [ordered]@{
-    "StandardAssets" =  @(
+    "StandardAssets" = @(
         "MRTK/StandardAssets"
     );
-    "Foundation" =      @(
+    "Foundation"     = @(
         "MRTK/Core",
         "MRTK/Providers",
         "MRTK/SDK",
         "MRTK/Services"
     );
-    "Extensions" =      @(
+    "Extensions"     = @(
         "MRTK/Extensions"
-    );       
-    "Tools" =           @(
+    );
+    "Tools"          = @(
         "MRTK/Tools"
-    );     
-    "TestUtilities" =   @(
+    );
+    "TestUtilities"  = @(
         "MRTK/Tests/TestUtilities"
-    );     
-    "Examples" =      @(
+    );
+    "Examples"       = @(
         "MRTK/Examples"
     );
 }
 
 # This table contains the collection of allowed package dependencies.
 $allowedPackageDependencies = [ordered]@{
-    "StandardAssets" =  @(
+    "StandardAssets" = @(
         "StandardAssets"
     );
-    "Foundation" =      @(
+    "Foundation"     = @(
         "StandardAssets",
         "Foundation"
     );
-    "Extensions" =      @(
+    "Extensions"     = @(
         "StandardAssets",
         "Foundation",
         "Extensions"
-    );       
-    "Tools" =           @(
+    );
+    "Tools"          = @(
         "StandardAssets",
         "Foundation",
         "Tools"
-    );    
-    "TestUtilities" =   @(
+    );
+    "TestUtilities"  = @(
         "StandardAssets",
         "Foundation",
         "TestUtilities"
-    );      
-    "Examples" =      @(
+    );
+    "Examples"       = @(
         "StandardAssets",
         "Foundation",
         "Extensions",
