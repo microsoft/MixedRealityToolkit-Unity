@@ -96,11 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)
             {
-                string value = newValue.ToString();
+                string value = value.ToString();
 
                 foreach (ValueToMaterialInfo v2si in valueToMaterialLookup)
                 {

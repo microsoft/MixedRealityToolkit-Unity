@@ -199,15 +199,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="dataSource">The data source reporting a data change in the collection.</param>
         /// <param name="resolvedKeyPath">Fully resolved key path after key mapping and disambiguating any parent collections.</param>
         /// <param name="localKeyPath">the originally provided local key path, usually the one provided in the Unity inspector.</param>
-        /// <param name="newValue">An object that represents the collection.</param>
-        /// <param name="dataChangeType">The nature of the data change.</param>
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType )
+        /// <param name="value">An object that represents the changed collection or item in the collection, typically its index.</param>
+        /// <param name="dataChangeType">The nature of the data change, either at collection level or individual item level.</param>
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType )
         {
             if (itemPrefab != null)
             {
                 if (localKeyPath == collectionKeyPath && itemPlacer != null)
                 {
-                    itemPlacer.NotifyCollectionDataChanged(dataChangeType);
+                    itemPlacer.NotifyCollectionDataChanged(dataChangeType, localKeyPath, value);
                 }
             }
         }
@@ -220,11 +220,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// See RequestCollectionItems() method of IDataConsumer interface.
         /// </remarks>
 
-        public void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, string requestId)
+        public void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, object requestRef)
         {
             itemPlacer.StartPlacement();
-            StartCoroutine(InstantiatePrefabs(itemPlacer, indexRangeStart, indexRangeCount, requestId));
-            itemPlacer.EndPlacement();
+            StartCoroutine(InstantiatePrefabs(itemPlacer, indexRangeStart, indexRangeCount, requestRef));
         }
 
 
@@ -243,10 +242,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemPlacer">Item placer to receive the specified range of prefabs.</param>
         /// <param name="indexRangeStart">Zero based start of the range to instantiate.</param>
         /// <param name="indexRangeCount">Number of list items to instantiate.</param>
-        /// <param name="requestId">Arbitrary unique request id that will be provided to the item placer.</param>
+        /// <param name="requestRef">Arbitrary private request object that will be provided to the item placer.</param>
         /// 
         /// <returns>IEnumerator required for a CoRoutine.</returns>
-        protected IEnumerator InstantiatePrefabs(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, string requestId)
+        protected IEnumerator InstantiatePrefabs(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, object requestRef)
         {
             IEnumerable<string> collectionItemsKeyPaths = _dataSource.GetCollectionKeyPathRange(collectionKeyPath, indexRangeStart, indexRangeCount);
 
@@ -260,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (itemPlacer != null)
                 {
-                    itemPlacer.PlaceItem(requestId, indexRangeStart, indexRangeCount, itemIndex, childPrefab);
+                    itemPlacer.PlaceItem(requestRef, itemIndex, itemKeyPath, childPrefab);
                 }
 
                 // After PlaceItem because prefab is likely to be not Active until this point and initializing
@@ -273,6 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 //       items can be fabricated faster than others
                 yield return null;
             }
+            itemPlacer.EndPlacement();
 
         }
 

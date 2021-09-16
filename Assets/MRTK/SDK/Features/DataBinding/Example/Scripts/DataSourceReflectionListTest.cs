@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 
@@ -26,8 +27,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         [Tooltip("The number of random image entries to generate for image collection.")]
         [SerializeField]
-        protected int _collectionSize = 200;
+        protected int _staticCollectionSize = 200;
 
+        [Tooltip("The maximum number of entries for the fuctuating image collection.")]
+        [SerializeField]
+        protected int _fluxCollectionSize = 20;
+
+
+        protected int _fluxImageIndex = 0;
+        protected bool _fluxImageAdding = true;
+        private float _deltaSeconds;
+        private int _nextUpdateTarget;
 
         /// <summary>
         /// A class to contain data that is to be used as a data source. This is akin to a view model
@@ -43,7 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private class TestInfo
         {
-            public List<ImageInfo> images = new List<ImageInfo>();
+            public ObservableCollection<ImageInfo> staticImages = new ObservableCollection<ImageInfo>();
+            public ObservableCollection<ImageInfo> fluxImages = new ObservableCollection<ImageInfo>();
+
         }
 
 
@@ -78,15 +90,45 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private void Update()
         {
-           //do nothing, but allow script to be disabled. Important to turn on/off discoverability.
+            if (_fluxCollectionSize > 0)
+            {
+                _deltaSeconds += Time.deltaTime;
+
+                int tenthsOfSeconds = (int)(_deltaSeconds * 10.0);
+
+                if (tenthsOfSeconds > _nextUpdateTarget)
+                {
+                    _nextUpdateTarget += 5;
+                    if (_fluxImageAdding)
+                    {
+                        _dataSourceObject.fluxImages.Add(_dataSourceObject.staticImages[_fluxImageIndex++]);
+                        if (_fluxImageIndex >= _fluxCollectionSize)
+                        {
+                            _fluxImageIndex = _fluxCollectionSize;
+                            _fluxImageAdding = false;
+                        }
+                    }
+                    else
+                    {
+                        _dataSourceObject.fluxImages.RemoveAt(--_fluxImageIndex);
+                        if (_fluxImageIndex <= 0)
+                        {
+                            _fluxImageIndex = 0;
+                            _fluxImageAdding = true;
+                        }
+                    }
+                }
+            }
+
         }
+
 
         private void InitializeData()
         {
             _dataSource.DataChangeSetBegin();
 
             InitializeImageList();
-            _dataSource.NotifyAllChanged();
+           // _dataSource.NotifyAllChanged();
             _dataSource.DataChangeSetEnd();
         }
 
@@ -98,14 +140,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
             string[] dates = { "February 26, 2020", "January 1, 2000", "March 1, 2018", "April 29, 2017", "May 5, 1999", "June 21, 1980" };
             string[] words = { "mixed reality", "MRTK", "HoloLens", "Unity", "Visual Studio", "Middleware", "Microsoft", "XR", "VR", "AR", "MR", "C#", "Azure" };
 
-            if (_dataSourceObject.images == null)
+            if (_dataSourceObject.staticImages == null)
             {
-                _dataSourceObject.images = new List<ImageInfo>();
+                _dataSourceObject.staticImages = new ObservableCollection<ImageInfo>();
             }
 
             System.Random r = new System.Random();
 
-            for (int i = 0; i < _collectionSize; i++)
+            for (int i = 0; i < _staticCollectionSize; i++)
             {
                 ImageInfo imageInfo = new ImageInfo();
 
@@ -122,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     imageInfo.description = imageInfo.description + words[w] + " ";
                 }
 
-                _dataSourceObject.images.Add(imageInfo);
+                _dataSourceObject.staticImages.Add(imageInfo);
             }
         }
 

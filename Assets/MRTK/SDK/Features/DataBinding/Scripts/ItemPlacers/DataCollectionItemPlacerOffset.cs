@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// <summary>
     /// A simple data collection item placer that will place each item at a specific
     /// offset from the previous object, first in the x, then y, then z directions, 
-    /// using the offsets provided in the inspector.  The starting point is reset
+    /// using the offsets provided in the inspector.  The starting point is resetFReq
     /// each time a new placement session is started using StartPlacement().
     /// 
     /// </summary>
@@ -45,23 +45,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _itemPlacerPositionOffset = new Vector3(0, 0, 0);
         }
 
-        public override void PlaceVisibleItem( string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
+        public override void ProcessReceivedItem(object requestRef, int itemIndex, string itemKeyPath, GameObject itemGO, bool isVisible)
         {
-            itemIndex -= GetFirstVisibleItem();
+            if (isVisible)
+            {
+                itemIndex -= GetFirstVisibleItem();
 
-            _itemPlacerPositionOffset.x = itemOffset.x * (itemIndex % xCount);
-            _itemPlacerPositionOffset.y = itemOffset.y * ((itemIndex / xCount) % yCount);
-            _itemPlacerPositionOffset.z = itemOffset.z * (itemIndex / (xCount * yCount));
+                _itemPlacerPositionOffset.x = itemOffset.x * (itemIndex % xCount);
+                _itemPlacerPositionOffset.y = itemOffset.y * ((itemIndex / xCount) % yCount);
+                _itemPlacerPositionOffset.z = itemOffset.z * (itemIndex / (xCount * yCount));
 
-            // When items are reused from the object pool, it's important to update in a way that does not
-            // result in cumulative additive offsets. To ensure this, it uses parent's position, but this
-            // does assume this prefab defaults to the correct local offset relative to the parent container.
+                // When items are reused from the object pool, it's important to update in a way that does not
+                // result in cumulative additive offsets. To ensure this, it uses parent's position, but this
+                // does assume this prefab defaults to the correct local offset relative to the parent container.
 
-            itemGO.transform.position = itemGO.transform.parent.transform.position + _itemPlacerPositionOffset;
-            itemGO.SetActive(true);
+                itemGO.transform.position = itemGO.transform.parent.transform.position + _itemPlacerPositionOffset;
+                itemGO.SetActive(true);
+            }
 
         }
 
+        public override void ProcessRemovedItem(object requestRef, int itemIndex, string itemKeyPath, GameObject itemGO, bool isVisible)
+        {
+            itemGO.SetActive(false);
+            _dataConsumerCollection.ReturnGameObjectForReuse(itemIndex, itemGO);
+            
+        }
 
         public override int GetItemCountPerPage()
         {

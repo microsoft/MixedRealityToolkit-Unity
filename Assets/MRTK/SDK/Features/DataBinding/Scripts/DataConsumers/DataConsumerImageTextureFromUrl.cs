@@ -89,13 +89,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected abstract void PlaceImageTexture(Texture2D imageTexture);
 
 
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             // Debug.Log("ProcessDataChanged " + resolvedKeyPath + ",  local: " + localKeyPath);
 
             if (localKeyPath == keyPath)
             {
-                string newUrl = newValue.ToString();
+                string newUrl = value.ToString();
                 _frameDelayCountdown = (int)((float)maxRandomLoadBalancingDelayInMilliseconds * FramesPerMillisecond);
                 _frameDelayCountdown = _random.Next(0, _frameDelayCountdown);
 

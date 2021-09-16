@@ -51,11 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)
             {
-                 _spriteRenderer.sprite = newValue as Sprite;
+                 _spriteRenderer.sprite = value as Sprite;
             }
         }
 

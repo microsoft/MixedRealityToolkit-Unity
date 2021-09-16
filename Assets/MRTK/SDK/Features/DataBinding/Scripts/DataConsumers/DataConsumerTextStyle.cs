@@ -53,10 +53,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType )
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType )
         {
 
-            string stylesheetPath = "Stylesheets/" + newValue.ToString();
+            string stylesheetPath = "Stylesheets/" + value.ToString();
 
             TMP_StyleSheet tmpStyleSheet = Resources.Load<TMP_StyleSheet>(stylesheetPath);
 

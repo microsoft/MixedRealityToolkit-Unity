@@ -82,11 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _dataObject = null;
         }
 
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == dataReferenceKeyPath )
             {
-                _dataObject = newValue;
+                _dataObject = value;
             }
         }
 

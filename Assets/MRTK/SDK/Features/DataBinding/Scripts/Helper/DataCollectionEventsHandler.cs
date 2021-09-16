@@ -8,52 +8,52 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataCollectionEventsHandler : DataCollectionEventsGOBase
     {
         [SerializeField]
-        protected UnityEvent StartPlacement = new UnityEvent();
+        public UnityEvent StartPlacement = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent EndPlacement = new UnityEvent();
+        public UnityEvent EndPlacement = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent ItemPlaced = new UnityEvent();
+        public UnityEvent ItemPlaced = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionAtStart = new UnityEvent();
+        public UnityEvent CollectionAtStart = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionAtEnd = new UnityEvent();
+        public UnityEvent CollectionAtEnd = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionInMiddle = new UnityEvent();
+        public UnityEvent CollectionInMiddle = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionCanGoBackward = new UnityEvent();
+        public UnityEvent CollectionCanGoBackward = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionCanGoForward= new UnityEvent();
+        public UnityEvent CollectionCanGoForward= new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionContextSwitch = new UnityEvent();
+        public UnityEvent CollectionContextSwitch = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionChanged = new UnityEvent();
+        public UnityEvent CollectionChanged = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionEmpty = new UnityEvent();
+        public UnityEvent CollectionEmpty = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionNotEmpty = new UnityEvent();
+        public UnityEvent CollectionNotEmpty = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionScrolledForward = new UnityEvent();
+        public UnityEvent CollectionScrolledForward = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionScrolledBackward = new UnityEvent();
+        public UnityEvent CollectionScrolledBackward = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionPagedForward = new UnityEvent();
+        public UnityEvent CollectionPagedForward = new UnityEvent();
 
         [SerializeField]
-        protected UnityEvent CollectionPagedBackward = new UnityEvent();
+        public UnityEvent CollectionPagedBackward = new UnityEvent();
 
 
         /// <summmary>

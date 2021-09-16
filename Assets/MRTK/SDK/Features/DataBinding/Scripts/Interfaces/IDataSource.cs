@@ -12,9 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
  
     public enum DataChangeType
     {
-        DatumAdded,                     // A new datum (of arbitrary complexity) came into being that did not exist prior to this
+        DatumAdded,                     // A new datum (of arbitrary complexity such as a collection) came into being that did not exist prior to this
+                                        // When a listener is assigned to a particular object, this event allows for initial observation of that object
         DatumModified,                  // An existing datum has been modified
         DatumRemoved,                   // An existing datum has been removed
+        CollectionReset,                // A collection is reset to 0 items
         CollectionItemAdded,            // A new item (of arbitrary complexity) has been added to a collection
         CollectionItemRemoved           // An item in a list has been removed from a collection
     }
@@ -310,13 +312,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// who are listening for this specific keyPath.
         /// </remarks>
         /// 
-        /// <param name="keyPath"></param>
-        /// <param name="newValue"></param>
-        /// <param name="changeType"></param>
+        /// <param name="keyPath">The resolved keypath of the data that has changed.</param>
+        /// <param name="value">The value of the changed item</param>
+        /// <param name="changeType">The type of change that has occured.</param>
         /// <param name="isAtomicChange">Is this the only change notification in a set of related changes.</param>
 
 
-        void NotifyDataChanged(string keyPath, object newValue, DataChangeType changeType, bool isAtomicChange );
+        void NotifyDataChanged(string keyPath, object value, DataChangeType changeType, bool isAtomicChange );
 
         /// <summary>
         /// Notify all listeners that data has changed. 

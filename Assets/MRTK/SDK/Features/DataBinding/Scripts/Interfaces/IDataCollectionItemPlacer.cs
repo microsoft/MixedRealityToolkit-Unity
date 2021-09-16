@@ -55,15 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// complex scenario where there may be more than one data consumer associated with this item placer.
         /// 
         /// Note that the range start and range count could have been provided via state data associated with the
-        /// requestId, but to simplify the most common uses, it is provided explicitly.
+        /// requestRef, but to simplify the most common uses, it is provided explicitly.
         /// </remarks>
         /// 
-        /// <param name="requestId">The request id provided to RequestCollectionItems() </param>
-        /// <param name="indexRangeStart">The start of the range previously requested.</param>
-        /// <param name="indexRangeCount">The range count previously requested.</param>
+        /// <param name="requestRef">Any desired private object, initially provided to RequestCollectionItems() </param>
         /// <param name="itemIndex">The absolute item index in the data source array.</param>
+        /// <param name="itemKeyPath">The localKeypath identifier for the item at the received index.</param>
         /// <param name="itemGO">The game object created using  the data at the specified item index.</param>
-        void PlaceItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO);
+        void PlaceItem(object requestRef, int itemIndex, string itemKeyPath, GameObject itemGO);
 
 
         /// <summary>
@@ -81,7 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// information.</remarks>
         ///
         /// <param name="dataChangeType">The nature of the data change, typically CollectionItemAdded, or CollectionItemRemoved.</param>
-        void NotifyCollectionDataChanged(DataChangeType dataChangeType);
+        /// <param name="localKeypath">The keypath of the collection.</param>
+        /// <param name="value">A value relevant to the type of change. For a collection item change, this is the index of the item.</param>
+        void NotifyCollectionDataChanged(DataChangeType dataChangeType, string localKeypath, object value);
 
         /// <summary>
         /// Get current page number for first visible item.

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -138,17 +139,36 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _keyPathToDataConsumers[resolvedKeyPath].Add(dataConsumer);
             _dataConsumers.Add(dataConsumer);
 
+
             // TODO: This is for dynamically added collection items, but could cause
             //       unintented side effects. Need better solution.
             object value = GetValue(resolvedKeyPath);
+
             if ( value != null)
             {
+                if (IsCollectionAtKeyPath(resolvedKeyPath))
+                {
+                    OnCollectionListenerAdded(resolvedKeyPath, value);
+                }
+
                 dataConsumer.DataChangeSetBegin(this);
                 dataConsumer.NotifyDataChanged(this, resolvedKeyPath, value, DataChangeType.DatumAdded);
                 dataConsumer.DataChangeSetEnd(this);
             }
 
         }
+
+
+        public virtual void OnCollectionListenerAdded(string resolvedKeyPath, object collection)
+        {
+            // no default action. Override for further collection listener setup.
+        }
+
+        public virtual void OnCollectionListenerRemoved(string resolvedKeyPath)
+        {
+            // no default action. Override for further collection listener setup.
+        }
+
 
 
         /// <summary>
@@ -160,11 +180,23 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
             {
                 _keyPathToDataConsumers[resolvedKeyPath].Remove(dataConsumer);
+
+                try
+                {
+                    if (IsCollectionAtKeyPath(resolvedKeyPath))
+                    {
+                        OnCollectionListenerRemoved(resolvedKeyPath);
+                    }
+
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    // ObservableCollection only reports a removed item after it's been removed, which
+                    // so any attempt to access that object like to check if it's a collection will
+                    // cause an exception.
+                }
             }
-
-            //TODO: remove dataconsumer from _dataConsumeer if no more listeners left
         }
-
 
 
         /// <summary>
@@ -219,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        public void NotifyDataChanged(string resolvedKeyPath, object newValue, DataChangeType changeType, bool isAtomicChange )
+        public void NotifyDataChanged(string resolvedKeyPath, object value, DataChangeType changeType, bool isAtomicChange )
         {
             if (_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
             {
@@ -231,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 List<IDataConsumer> dataConsumers = _keyPathToDataConsumers[resolvedKeyPath];
                 foreach (IDataConsumer dataConsumer in dataConsumers)
                 {
-                    dataConsumer.NotifyDataChanged(this, resolvedKeyPath, newValue, changeType);
+                    dataConsumer.NotifyDataChanged(this, resolvedKeyPath, value, changeType);
                 }
 
                 if (isAtomicChange )

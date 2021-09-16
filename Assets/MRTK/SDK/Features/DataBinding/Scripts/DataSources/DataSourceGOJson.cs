@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     public class DataSourceGOJsonBase : DataSourceGOBase
     {
-        public delegate void RequestSuccessDelegate(string jsonText, string requestId);
-        public delegate void RequestFailureDelegate(string errorString, string requestId);
+        public delegate void RequestSuccessDelegate(string jsonText, object requestRef);
+        public delegate void RequestFailureDelegate(string errorString, object requestRef);
 
         public DataSourceJson DataSource { get { return _dataSource as DataSourceJson; } }
 
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        public IEnumerator StartJsonRequest(string uri, RequestSuccessDelegate successDelegate = null, RequestFailureDelegate failureDelegate = null, string requestId = null)
+        public IEnumerator StartJsonRequest(string uri, RequestSuccessDelegate successDelegate = null, RequestFailureDelegate failureDelegate = null, object requestRef = null)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
             {
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     if (failureDelegate != null)
                     {
-                        failureDelegate.Invoke(webRequest.error, requestId);
+                        failureDelegate.Invoke(webRequest.error, requestRef);
                     }
                 }
                 else
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     DataSource.UpdateFromJson(jsonText);
                     if (successDelegate != null)
                     {
-                        successDelegate.Invoke(jsonText, requestId);
+                        successDelegate.Invoke(jsonText, requestRef);
                     }
                 }
             }

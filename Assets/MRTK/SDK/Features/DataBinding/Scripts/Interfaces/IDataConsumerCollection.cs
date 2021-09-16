@@ -26,11 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemPlacer">The Item Placer making this request.</param>
         /// <param name="rangeStart">The zero-based start index of the range to retrieve.</param>
         /// <param name="rangeCount">The number of items to retrieve. If end of collection is reached, fewer items may be provided.</param>
-        /// <param name="requestId">A request id that will be passed to the PlaceItem method.</param>
+        /// <param name="requestRef">A request reference object that will be passed to the PlaceItem method.</param>
         ///
         /// TODO: Consider breaking out these Collection specific methods into separate interface and dealing wih Unity's lack of multiple inheritance
 
-        void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int rangeStart, int rangeCount, string requestId);
+        void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int rangeStart, int rangeCount, object requestRef);
 
 
         int GetCollectionItemCount();

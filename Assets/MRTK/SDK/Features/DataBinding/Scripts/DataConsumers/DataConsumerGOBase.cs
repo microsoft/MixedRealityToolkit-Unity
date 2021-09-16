@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         #region Abstract methods
 
 
-        protected abstract void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType);
+        protected abstract void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType);
 
 
         #endregion Abstract methods
@@ -117,11 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// See NotifyDataChanged on the IDataConsumer interface for more detailed information.
         /// </remarks>
 
-        public void NotifyDataChanged(IDataSource dataSource, string resolvedKeyPath, object newValue, DataChangeType dataChangeType)
+        public void NotifyDataChanged(IDataSource dataSource, string resolvedKeyPath, object value, DataChangeType dataChangeType)
         {
             if (_resolvedToLocalKeyPathLookup.ContainsKey(resolvedKeyPath))
             {
-                ProcessDataChanged(dataSource, resolvedKeyPath, _resolvedToLocalKeyPathLookup[resolvedKeyPath], newValue, dataChangeType);
+                ProcessDataChanged(dataSource, resolvedKeyPath, _resolvedToLocalKeyPathLookup[resolvedKeyPath], value, dataChangeType);
             }
         }
 
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Any initialization should be accomplished by overriding IniitalizeDataConsumer().
         /// </remarks>
 
-        protected virtual void Awake()
+        public virtual void Awake()
         {
             FindNearestDataSource();
             FindNearestDataController();

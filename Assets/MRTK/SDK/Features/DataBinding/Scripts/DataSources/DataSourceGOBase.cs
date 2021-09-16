@@ -215,11 +215,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        public void NotifyDataChanged( string resolvedKeyPath, object newValue, DataChangeType dataChangeType, bool isAtomicChange )
+        public void NotifyDataChanged( string resolvedKeyPath, object value, DataChangeType dataChangeType, bool isAtomicChange )
         {
             if (_dataSource != null)
             {
-                _dataSource.NotifyDataChanged(resolvedKeyPath, newValue, dataChangeType, isAtomicChange);
+                _dataSource.NotifyDataChanged(resolvedKeyPath, value, dataChangeType, isAtomicChange);
             }
         }
 

@@ -116,11 +116,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
 
-            public void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
+            public void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
             {
                 if (_keyPathToVariableInformation.ContainsKey(resolvedKeyPath))
                 {
-                    _keyPathToVariableInformation[resolvedKeyPath].CurrentValue = newValue;
+                    _keyPathToVariableInformation[resolvedKeyPath].CurrentValue = value;
                     _hasChanged = true;
                 }
             }
@@ -207,11 +207,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType )
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType )
         {
             foreach (ComponentInformation componentInfo in _componentInfoLookup.Values)
             {
-                componentInfo.ProcessDataChanged(dataSource, resolvedKeyPath, localKeyPath, newValue, dataChangeType);
+                componentInfo.ProcessDataChanged(dataSource, resolvedKeyPath, localKeyPath, value, dataChangeType);
             }
         }
 

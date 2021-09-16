@@ -30,9 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected int maximumVisibleItems = 50;
 
-        [Tooltip("Optional request ID that is provided with every request for collection items to correlate the PlaceItem calls to the original request.")]
+        [Tooltip("Optional request reference or ID that is provided with every request for collection items to correlate the PlaceItem calls to the original request.")]
         [SerializeField]
-        protected string requestId = "";
+        protected string requestRef = "";
 
         [Tooltip("Enable this for placement strategies that depend on the order of child game objects instead of the index of the item.")]
         [SerializeField]
@@ -45,6 +45,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("Event object to receive a variety of events when collection state changes. ")]
         [SerializeField]
         protected DataCollectionEventsGOBase collectionEvents;
+
+        [Tooltip("Turn on debug messages. ")]
+        [SerializeField]
+        protected bool debugMode = false;
+
 
         protected int _totalItemCount = 0;
 
@@ -69,10 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected enum State
         {
-            Requested = 0,
-            Visible,
-            Prefetched,
-            Removable,
+            Requested = 0,          // Requested but not yet received
+            Visible,                // Currently visible
+            Prefetched,             // Prefetched but not yet visible
+            Removable,              // Removable
             StashRemovable          // Temporarily stash removables that are still being fetched
         };
 
@@ -80,13 +85,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected class ItemInfo
         {
             public int itemIndex;
+            public string itemKeypath;
             public State state;
             public GameObject gameObject;
 
-            public ItemInfo(int index, State theState, GameObject go)
+            public ItemInfo(int index, State theState, string keyPath, GameObject go)
             {
                 itemIndex = index;
                 state = theState;
+                itemKeypath = keyPath;
                 gameObject = go;
             }
         };
@@ -141,38 +148,48 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (!_lastEventStateAtStart && newAtStart)
                 {
+                    if (debugMode) Debug.Log("Collection is at start.");
+
                     collectionEvents.OnCollectionAtStart();
                 }
                 if (!_lastEventStateAtEnd && newAtEnd)
                 {
+                    if (debugMode) Debug.Log("Collection is  at end.");
                     collectionEvents.OnCollectionAtEnd();
                 }
 
                 // no in middle, and previously not in middle
                 if (newInMiddle && !_lastEventStateInMiddle)
                 {
+                    if (debugMode) Debug.Log("Collection is in middle.");
                     collectionEvents.OnCollectionInMiddle();
                 }
 
                 // can go backward in list
                 if (newCanGoBackward && !_lastEventStateCanGoBackward)
                 {
+                    if (debugMode) Debug.Log("Collection can go backward.");
+
                     collectionEvents.OnCollectionCanGoBackward();
                 }
 
                 // can go forward in list
                 if (newCanGoForward && !_lastEventStateCanGoForward)
                 {
+                    if (debugMode) Debug.Log("Collection can go forward.");
+              
                     collectionEvents.OnCollectionCanGoForward();
                 }
 
                 if (newEmpty && !_lastEventCollectionEmpty)
                 {
+                    if (debugMode) Debug.Log("CCollection is Empty.");
                     collectionEvents.OnCollectionEmpty();
                 } 
 
                 if (!newEmpty && !_lastEventCollectionNotEmpty)
                 {
+                    if (debugMode) Debug.Log("Collection is not empty.");
                     collectionEvents.OnCollectionNotEmpty();
                 }
 
@@ -209,6 +226,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+
+        protected bool ItemExists(int indexAsId)
+        {
+            return _itemStateByIndex.ContainsKey(indexAsId);
+        }
+
+
         protected ItemInfo FindItem(int indexAsId)
         {
             if (_itemStateByIndex.ContainsKey(indexAsId))
@@ -221,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected void AddItem(State state, int indexAsId, GameObject go)
+        protected void AddItem(State state, int indexAsId, string keypath, GameObject go)
         {
             RemoveItem(indexAsId);
 
@@ -229,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (_itemsByState[state].ContainsKey(indexAsId) == false)
             {
-                ItemInfo itemInfo = new ItemInfo(indexAsId, state, go);
+                ItemInfo itemInfo = new ItemInfo(indexAsId, state, keypath, go);
                 _itemsByState[state][indexAsId] = itemInfo;
             }
             else
@@ -249,11 +273,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        protected void UpdateItem(int indexAsId, State newState, GameObject newGO)
+        protected void UpdateItem(int indexAsId, State newState, string itemKeyPath, GameObject newGO)
         {
             ItemInfo itemInfo = FindItem(indexAsId);
             if (itemInfo != null)
             {
+                itemInfo.itemKeypath = itemKeyPath;
                 itemInfo.gameObject = newGO;
                 ChangeItemState(indexAsId, newState);
             }
@@ -532,6 +557,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return actualScrollAmount;
         }
 
+        public bool IsVisible(int itemIndex )
+        {
+            return itemIndex >= _firstVisibleItem && itemIndex < _firstVisibleItem + _numVisibleItems;
+        }
 
         /// <summary>
         /// Are visible items at beginning of list
@@ -634,7 +663,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             CheckForEventsToTrigger();
         }
 
-        public virtual void PlaceItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
+        public virtual void PlaceItem(object requestRef, int itemIndex, string itemKeypath, GameObject itemGO)
         {
             ItemInfo itemInfo = FindItem(itemIndex);
 
@@ -659,11 +688,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 currentState = State.Prefetched;
             }
 
-            UpdateItem(itemIndex, currentState, itemGO);
+            UpdateItem(itemIndex, currentState, itemKeypath, itemGO);
 
-            if (currentState == State.Visible)
+            if (currentState == State.Visible || currentState == State.Prefetched)
             {
-                PlaceVisibleItem(requestId, indexRangeStart, indexRangeCount, itemIndex, itemGO);
+                ProcessReceivedItem(requestRef, itemIndex,itemKeypath, itemGO, currentState == State.Visible);
             }
             else if (currentState == State.Removable)
             {
@@ -707,7 +736,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 if (visibleStateItems.ContainsKey(itemIndex))
                 {
-                    PlaceVisibleItem(requestId, firstIndexToReposition, numItems, itemIndex, visibleStateItems[itemIndex].gameObject);
+                    ItemInfo itemInfo = visibleStateItems[itemIndex];
+                    ProcessReceivedItem(requestRef, itemIndex, itemInfo.itemKeypath, itemInfo.gameObject, true );
                 }
                 else
                 {
@@ -726,7 +756,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        public virtual void NotifyCollectionDataChanged(DataChangeType dataChangeType)
+        public virtual void NotifyCollectionDataChanged(DataChangeType dataChangeType, string localKeypath, object value)
         {
             if (_dataConsumerCollection != null) 
             { 
@@ -737,6 +767,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 _totalItemCount = 0;
             }
 
+ 
             // default behavior is to ask for all items in the collection with empty string as request ID.
             if (dataChangeType == DataChangeType.CollectionItemAdded)
             {
@@ -747,7 +778,37 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else if (dataChangeType == DataChangeType.CollectionItemRemoved)
             {
+                if (value != null && IsInteger(value))
+                {
+                    int itemIndex = (int)value;
+
+                    ItemInfo itemInfo = FindItem(itemIndex);
+                    if (itemInfo != null)
+                    {
+                        ProcessRemovedItem(requestRef, itemIndex, itemInfo.itemKeypath, itemInfo.gameObject, IsVisible(itemIndex));
+                        RemoveItem(itemIndex);
+                        if (_numVisibleItems > _totalItemCount - _firstVisibleItem)
+                        {
+                            _numVisibleItems = _totalItemCount - _firstVisibleItem;
+                        }
+                        if (_firstVisibleItem >= _totalItemCount)
+                        {
+                            PageBackward();
+                        }
+                    }
+                 }
+                else
+                {
+                    Debug.LogWarning("Attempting to remove a collection item without specifying an integer value representing the item's index in the collection. Can't properly remove item from view.");
+                }
+            }
+            else if (dataChangeType == DataChangeType.CollectionReset)
+            {
                 PurgeAllVisibleAndRemovableItems();
+                if (collectionEvents != null)
+                {
+                    collectionEvents.OnCollectionContextSwitch();
+                }
             }
             else
             {
@@ -786,14 +847,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// to the total number of items requested.  Note that this is the requested items, which generally is not
         /// the entire collection.
         /// </remarks>
-        /// <param name="requestId">Request ID provided at the time of the request.</param>
-        /// <param name="indexRangeStart">The start of the index range of items requested in this batch.</param>
-        /// <param name="indexRangeCount">The number of items requested in this batch</param>
+        /// <param name="requestRef">Private request reference object provided at the time of the request.</param>
         /// <param name="itemIndex">The index of this item.</param>
+        /// <param name="itemKeypath">The keypath of the item at this index.</param>
         /// <param name="itemGO">The game object (usually a prefab) of the item to place.</param>
-        public virtual void PlaceVisibleItem(string requestId, int indexRangeStart, int indexRangeCount, int itemIndex, GameObject itemGO)
+        /// <param name="isVisible">Is the received item currently within the visible set?</param>
+        public virtual void ProcessReceivedItem(object requestRef, int itemIndex, string itemKeypath, GameObject itemGO, bool isVisible)
         {
         }
+
+        /// <summary>
+        /// Process the removal of an item that is no longer in the collection
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="requestRef">Private request reference object provided at the time of the request.</param>
+        /// <param name="itemIndex">The index of this item.</param>
+        /// <param name="itemKeypath">The keypath of the item at this index.</param>
+        /// <param name="itemGO">The game object (usually a prefab) of the item.</param>
+        /// <param name="isVisible">Is the received item currently within the visible set?</param>
+
+        public virtual void ProcessRemovedItem(object requestRef, int itemIndex, string itemKeypath, GameObject itemGO, bool isVisible)
+        {
+
+        }
+
 
         #endregion Methods typically overridden
 
@@ -810,21 +889,62 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 int numItems = _desiredVisibleItems - _numVisibleItems;
                 _numVisibleItems = _desiredVisibleItems;
 
-                RequestItems(_firstVisibleItem, _numVisibleItems);
+                RequestItems(firstItem, numItems);
             }
         }
 
 
         protected void RequestItems(int firstIdx, int count)
         {
+            bool someDoNotNeedFetching = false;
+
             for (int idx = firstIdx; idx < firstIdx + count; idx++)
             {
-                AddItem(State.Requested, idx, null);
+                ItemInfo itemInfo = FindItem(idx);
+                if (itemInfo != null)
+                {
+                    someDoNotNeedFetching = true;
+
+                    switch (itemInfo.state)
+                    {
+                        case State.Visible:
+                        case State.Requested:
+                        case State.Prefetched:
+                            break;
+                        case State.Removable:
+                        case State.StashRemovable:
+                            ChangeItemState(idx, IsVisible(idx) ? State.Visible : State.Prefetched);
+                            break;
+
+                    }
+                }
+                 else
+                {
+                    AddItem(State.Requested, idx, null, null);
+                }
             }
 
             if (_dataConsumerCollection != null)
             {
-                _dataConsumerCollection.RequestCollectionItems(this, firstIdx, count, requestId);
+                if (someDoNotNeedFetching)
+                {
+                    for (int idx = firstIdx; idx < firstIdx + count; idx++)
+                    {
+                        if (!ItemExists(idx))
+                        {
+                            _dataConsumerCollection.RequestCollectionItems(this, idx, 1, requestRef);
+                        }
+                        else
+                        {
+                            RepositionItems(idx, 1);
+                        }
+
+                    }
+                }
+                else
+                {
+                    _dataConsumerCollection.RequestCollectionItems(this, firstIdx, count, requestRef);
+                }
             }
         }
 
@@ -858,6 +978,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
+        public bool IsInteger(object value)
+        {
+            return value is short
+                    || value is ushort
+                    || value is int
+                    || value is uint
+                    || value is long
+                    || value is ulong;
+        }
     }
 }

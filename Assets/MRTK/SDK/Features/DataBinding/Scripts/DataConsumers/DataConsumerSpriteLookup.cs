@@ -66,15 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object newValue, DataChangeType dataChangeType)
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)
             {
-                string value = newValue.ToString();
+                string strValue = value.ToString();
 
                 foreach ( ValueToSpriteInfo v2si in valueToSpriteLookup)
                 {
-                    if ( value == v2si.Value )
+                    if (strValue == v2si.Value )
                     {
                         _spriteRenderer.sprite = v2si.Sprite;
                         break;

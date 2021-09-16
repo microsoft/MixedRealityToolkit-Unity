@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
@@ -23,6 +24,65 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     public class DataSourceReflection : DataSourceBase
     {
+        protected class CollectionObserver
+        {
+            private readonly object collectionToObserve;
+            private readonly string collectionKeyPath;
+            private readonly DataSourceReflection dataSourceToNotify;
+
+            public CollectionObserver( DataSourceReflection dataSource, string keyPath, object collection)
+            {
+                dataSourceToNotify = dataSource;
+                collectionKeyPath = keyPath;
+                collectionToObserve = collection;
+
+
+                Delegate collectionChangedHandler = (NotifyCollectionChangedEventHandler)CollectionChangedHandler;
+                Type collectionType = collection.GetType();
+                TypeInfo collectionTypeInfo = collectionType.GetTypeInfo();
+
+                EventInfo collectionChangedEventInfo = collectionType.GetEvent("CollectionChanged");
+
+                collectionChangedEventInfo.AddEventHandler(collection, collectionChangedHandler);
+
+            }
+
+            void CollectionChangedHandler(Object sender, NotifyCollectionChangedEventArgs eventArgs)
+            {
+                switch (eventArgs.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
+                        for(int idx = 0; idx < eventArgs.NewItems.Count; idx++ )
+                        {
+                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, eventArgs.NewStartingIndex+idx, DataChangeType.CollectionItemAdded, true);
+                        }
+                        break;
+
+                    case NotifyCollectionChangedAction.Move:
+                        break;
+
+                    case NotifyCollectionChangedAction.Remove:
+                        for( int idx = eventArgs.OldItems.Count - 1; idx >= 0; idx-- )
+                        {
+                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, eventArgs.OldStartingIndex + idx, DataChangeType.CollectionItemRemoved, true);
+                        }
+                        break;
+
+                    case NotifyCollectionChangedAction.Replace:
+                        break;
+
+                    case NotifyCollectionChangedAction.Reset:
+                        dataSourceToNotify.NotifyDataChanged(collectionKeyPath, collectionToObserve, DataChangeType.CollectionReset, true);
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+        }
+
+
         protected static readonly string CollectionElementkeyPathPrefixFormat = "{0}[{1:d}]";
         protected static readonly string DictionaryElementkeyPathPrefixFormat = "{0}[{1}]";
 
@@ -38,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected static readonly Regex KeyTokenRegex = new Regex(KeyTokenPattern);
 
         protected object _dataSourceObject = null;
+        protected Dictionary<string, CollectionObserver> _collectionObservers = new Dictionary<string, CollectionObserver>();
 
         public DataSourceReflection() { }
 
@@ -108,8 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     if (objectAtKeyPath is IList)
                     {
+                        /****
                         IList collection = objectAtKeyPath as IList;
                         return GetValueAsArrayKeyPaths(collection, resolvedKeyPath, 0, collection.Count);
+                        *****/
+                        return objectAtKeyPath;
                     }
                     else if (objectAtKeyPath is IDictionary)
                     {
@@ -124,6 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             return null;
         }
+
 
 
         protected IEnumerable<string> GetValueAsArrayKeyPathsOptimized(object arrayOrList, string resolvedKeyPath, int rangeStart, int rangeCount)
@@ -190,6 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     if (IsList(currentObject))
                     {
                         IList list = currentObject as IList;
+
                         currentObject = list[arrayIndex];
                     }
                     else if (IsArray(currentObject))
@@ -398,6 +464,26 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return _dataSourceObject != null;
         }
+
+
+        public override void OnCollectionListenerAdded(string resolvedKeyPath, object collection)
+        {
+            Type collectionType = collection.GetType();
+
+            if (typeof(INotifyCollectionChanged).IsAssignableFrom(collectionType))
+            {
+                CollectionObserver collectionObserver = new CollectionObserver(this, resolvedKeyPath, collection);
+                _collectionObservers[resolvedKeyPath] = collectionObserver;
+            }
+        }
+
+        public override void OnCollectionListenerRemoved(string resolvedKeyPath)
+        {
+            _collectionObservers.Remove(resolvedKeyPath);
+        }
+
+
+
     } // End of class DataSourceObjects
 
 } // End of namespace Microsoft.MixedReality.Toolkit.Data
