@@ -31,15 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [Tooltip("If true, initializes the gaze cursor to stay locked on the object when the cursor's focus is locked, otherwise it will continue following the head's direction")]
-        private bool lockCursorWhenFocusLocked = true;
+        internal bool lockCursorWhenFocusLocked = true;
 
         [SerializeField]
         [Tooltip("If true, the gaze cursor will disappear when the pointer's focus is locked, to prevent the cursor from floating idly in the world.")]
-        private bool setCursorInvisibleWhenFocusLocked = false;
+        internal bool setCursorInvisibleWhenFocusLocked = false;
 
         [SerializeField]
         [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
-        private float maxGazeCollisionDistance = 10.0f;
+        internal float maxGazeCollisionDistance = 10.0f;
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
-        private LayerMask[] raycastLayerMasks = { UnityPhysics.DefaultRaycastLayers };
+        internal LayerMask[] raycastLayerMasks = { UnityPhysics.DefaultRaycastLayers };
 
         /// <summary>
         /// Current stabilization method, used to smooth out the gaze ray data.
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [Tooltip("Stabilizer, if any, used to smooth out the gaze ray data.")]
-        private GazeStabilizer stabilizer = null;
+        internal GazeStabilizer stabilizer = null;
 
         /// <summary>
         /// Transform that should be used as the source of the gaze position and rotation.
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to CameraCache.Main")]
-        private Transform gazeTransform = null;
+        internal Transform gazeTransform = null;
 
         [SerializeField]
         [Range(0.01f, 1f)]
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource GazeInputSource
+        public virtual IMixedRealityInputSource GazeInputSource
         {
             get
             {
@@ -101,19 +101,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     gazeInputSource = new BaseGenericInputSource("Gaze", sourceType: InputSourceType.Head);
                     gazePointer.SetGazeInputSourceParent(gazeInputSource);
                 }
-
                 return gazeInputSource;
             }
         }
 
-        private BaseGenericInputSource gazeInputSource;
+        internal BaseGenericInputSource gazeInputSource;
 
         /// <inheritdoc />
-        public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
+        public virtual IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
         private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
-        public GameObject GazeCursorPrefab { private get; set; }
+        public GameObject GazeCursorPrefab { internal get; set; }
 
         /// <inheritdoc />
         public IMixedRealityCursor GazeCursor => GazePointer.BaseCursor;
@@ -151,8 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool delayInitialization = true;
         private Vector3 lastHeadPosition = Vector3.zero;
 
-        private Vector3? overrideHeadPosition = null;
-        private Vector3? overrideHeadForward = null;
+        public Vector3? overrideHeadPosition { get; private set; }
+        public Vector3? overrideHeadForward { get; private set; }
 
         #region InternalGazePointer Class
 
@@ -379,6 +378,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
                 }
+
+                // Handle toggling the input source's SourceType based on the current eyetracking mode 
+                if (IsEyeTrackingEnabledAndValid)
+                {
+                    gazeInputSource.SourceType = InputSourceType.Eyes;
+                }
+                else
+                {
+                    gazeInputSource.SourceType = InputSourceType.Head;
+                }
             }
         }
 
@@ -468,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealityInputHandler Implementation
 
-        public void OnInputUp(InputEventData eventData)
+        public virtual void OnInputUp(InputEventData eventData)
         {
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
@@ -480,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public void OnInputDown(InputEventData eventData)
+        public virtual void OnInputDown(InputEventData eventData)
         {
             for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
@@ -498,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker InitializeGazePointerPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.InitializeGazePointer");
 
-        private IMixedRealityPointer InitializeGazePointer()
+        internal virtual IMixedRealityPointer InitializeGazePointer()
         {
             using (InitializeGazePointerPerfMarker.Auto())
             {
@@ -510,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
 
                 gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
-
+                
                 if ((GazeCursor == null) &&
                     (GazeCursorPrefab != null))
                 {
@@ -519,7 +528,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     SetGazeCursor(cursor);
                 }
 
-                // Initialize gaze pointer
                 gazePointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
 
                 return gazePointer;
