@@ -706,7 +706,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             int maxSlot = containerObject.childCount - 1;
             while( minSlot <= maxSlot)
             {
-                int midSlot = (minSlot + maxSlot) / 2;
+                int midSlot = (minSlot + maxSlot + 1) / 2;
                 string nameAsIndex = containerObject.GetChild(midSlot).name;
 
                 int valueAtSlot = Int32.Parse(nameAsIndex);
@@ -721,7 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
 
-            return maxSlot;
+            return maxSlot + 1;
         }
 
 
@@ -890,7 +890,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected void RequestItems(int firstIdx, int count)
+        public void RequestItems(int firstIdx, int count)
         {
             bool someDoNotNeedFetching = false;
 
