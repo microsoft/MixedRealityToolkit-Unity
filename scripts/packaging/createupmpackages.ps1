@@ -188,12 +188,12 @@ foreach ($entry in $packages.GetEnumerator()) {
         
         if ($packageName -eq "foundation") {
             # The foundation package MOVES some content around. This restores the moved files.
-            Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
+            Start-Process -FilePath "git" -ArgumentList "checkout */Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
         }
         elseif ($packageName -eq "standardassets") {
             # The standard assets package RENAMES and DELETES some content. This restores the original files.
             Rename-Item -Path "$packagePath/Shaders~" -NewName "$packagePath/Shaders"
-            Start-Process -FilePath "git" -ArgumentList "checkout Shaders.meta" -NoNewWindow -Wait
+            Start-Process -FilePath "git" -ArgumentList "checkout */Shaders.meta" -NoNewWindow -Wait
         }
 
         # Delete the files copied in previously
@@ -210,6 +210,6 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path "$packagePath/package.json.meta"
 
         # Restore original files
-        Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
+        Start-Process -FilePath "git" -ArgumentList "checkout */packagetemplate.*" -NoNewWindow -Wait
     }
 }
