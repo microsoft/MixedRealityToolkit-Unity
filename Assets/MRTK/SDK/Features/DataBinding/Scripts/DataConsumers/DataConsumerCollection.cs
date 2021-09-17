@@ -323,6 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             for(int count = 0; count < itemPrefabPoolSize; count++ )
             {
                 GameObject go = GetPrefabInstance(false);
+                go.transform.parent = prefabObjectPoolParent;
 
                 if (!_dataObjectPool.ReturnObjectToPool(go))
                 {
