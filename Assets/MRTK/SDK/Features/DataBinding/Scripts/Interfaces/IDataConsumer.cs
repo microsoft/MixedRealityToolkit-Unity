@@ -33,6 +33,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Prepare this data consumer for use in active, visible state, typically associated with one prefab in a list. Called when re-using a prefab that's in an object pool.
         /// </summary>
+        /// <remarks>
+        /// This is typically not called from application level code or derived classes. It is public to allow DataConsumerCollection and similar
+        /// aggregate consumers to attach any spawned child data consumers. 
+        /// 
+        /// AttachDataConsumer allows derived classes to perform additional attach tasks.
+        /// </remarks>
         /// <param name="dataSource">Which data source to attach to for this re-use of the object</param>
         /// <param name="resolvedKeyPathPrefix">The path prefix for this object to be appended to front of all local keypaths.</param>
         void Attach(IDataSource dataSource, IDataController controller, string resolvedKeyPathPrefix);
@@ -42,7 +48,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Detach this data consumer and prepare to return to object pool
         /// </summary>
 
-
+        /// <summary>
+        /// Detach from external resources before it is disabled.
+        /// </summary>
+        /// <remarks>
+        /// This is typically not called by application level code. It is public to allow DataConsumerCollection and similar
+        /// aggregate consumers to clean up any spawned child data consumers.
+        /// 
+        /// AttachDataConsumer allows derived classes to perform additional detach tasks.
+        /// </remarks>
         void Detach();
 
 

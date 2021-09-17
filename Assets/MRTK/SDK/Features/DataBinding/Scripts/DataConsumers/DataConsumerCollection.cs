@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         [Tooltip("If set, the item prefab pool will be pre-allocated with instantiated prefabs to reduce run-time impact on frame rate.")]
         [SerializeField]
-        protected bool preAllocateItemPrefabsOnAwake = false;
+        protected bool preAllocateItemPrefabsOnEnable = false;
 
 
         protected Dictionary<string, GameObject> _idToGameObjectLookup = new Dictionary<string, GameObject>();
@@ -69,9 +69,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /// <summary>
-        /// Called by DataConsumerGOBase to initialize this data consumer at the optimal point 
-        /// in the initialization sequence.
+        /// One time initialization of this data consumer.         /// in the initialization sequence.
         /// </summary>
+        /// <remarks>
+        /// Called by DataConsumerGOBase to initialize this data consumer at the optimal point 
+        /// </remarks>
         protected override void InitializeDataConsumer()
         {
             FindNearestCollectionItemPlacer();

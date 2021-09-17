@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             IDataNode dataNode = KeyPathToNode(resolvedKeyPath);
             if (dataNode != null && dataNode.IsArray() && n < dataNode.GetCollectionCount())
             {
-                return string.Format(CollectionElementkeyPathPrefixFormat, resolvedKeyPath, 0, int.MaxValue);
+                return string.Format(CollectionElementkeyPathPrefixFormat, resolvedKeyPath, n, int.MaxValue);
             }
             else
             {

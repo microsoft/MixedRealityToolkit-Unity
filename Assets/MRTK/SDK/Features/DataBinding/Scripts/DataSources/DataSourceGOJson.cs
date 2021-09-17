@@ -26,26 +26,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// </summary>
     /// 
 
-    public class DataSourceGOJsonBase : DataSourceGOBase
+    public class DataSourceGOJson : DataSourceGOBase
     {
         public delegate void RequestSuccessDelegate(string jsonText, object requestRef);
         public delegate void RequestFailureDelegate(string errorString, object requestRef);
 
-        public DataSourceJson DataSource { get { return _dataSource as DataSourceJson; } }
+        public DataSourceJson DataSourceJson { get { return DataSource as DataSourceJson; } }
 
         protected Regex _callbackRegex = new Regex(  @"^([a-zA-Z0-9_]+)\(" );
 
 
         public override IDataSource AllocateDataSource()
         {
-            {
-                if (_dataSource == null)
-                {
-                    _dataSource = new DataSourceJson();
-                }
-
-                return _dataSource;
-            }
+           return new DataSourceJson();
         }
 
 
@@ -67,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     string jsonText = RemoveCallbackWrapper(webRequest.downloadHandler.text);
 
-                    DataSource.UpdateFromJson(jsonText);
+                    DataSourceJson.UpdateFromJson(jsonText);
                     if (successDelegate != null)
                     {
                         successDelegate.Invoke(jsonText, requestRef);

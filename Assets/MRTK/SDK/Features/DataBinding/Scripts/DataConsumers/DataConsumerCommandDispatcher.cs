@@ -28,7 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected object _dataObject = null;
 
-        protected override void InitializeDataConsumer()
+
+        protected override void AttachDataConsumer()
         {
             if ( dataReferenceKeyPath != null && dataReferenceKeyPath != "")
             {
@@ -76,9 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-        public override void Detach()
+        protected override void DetachDataConsumer()
         {
-            base.Detach();
             _dataObject = null;
         }
 

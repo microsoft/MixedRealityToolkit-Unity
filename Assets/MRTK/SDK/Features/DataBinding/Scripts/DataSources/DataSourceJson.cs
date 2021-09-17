@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             JSONNode jsonNode = KeyPathToNode(resolvedKeyPath);
             if (jsonNode != null && jsonNode.IsArray && n < jsonNode.Value.Length)
             {
-                return String.Format(DataSourceJson.CollectionElementkeyPathPrefixFormat, resolvedKeyPath, 0, int.MaxValue);  
+                return String.Format(DataSourceJson.CollectionElementkeyPathPrefixFormat, resolvedKeyPath, n, int.MaxValue);  
             }
             else
             {

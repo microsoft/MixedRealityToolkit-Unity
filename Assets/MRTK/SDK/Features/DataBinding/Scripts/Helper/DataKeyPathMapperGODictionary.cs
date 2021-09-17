@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected DataKeyPathMapperDictionary _dataKeyPathMapperDictionary = new DataKeyPathMapperDictionary();
 
 
-        void Awake()
+        void OnEnable()
         {
             foreach(ViewToDataKeypathMap v2dKeyPath in viewKeypathToDataKeypathMapper )
             {

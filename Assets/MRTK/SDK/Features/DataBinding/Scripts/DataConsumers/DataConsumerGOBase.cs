@@ -61,28 +61,96 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         #endregion Abstract methods
 
-        #region IDataConsumer interface methods
 
-        public virtual void Attach( IDataSource dataSource, IDataController dataController, string resolvedKeyPathPrefix )
+
+        /// <summary>
+        /// Unity's OnEnable() method.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Note that this should rarely be overridden but is declared virtual for circumnstances 
+        /// where this is required. If overridden, make sure to call this default behavior.
+        /// 
+        /// Any initialization should be accomplished by overriding IniitalizeDataConsumer().
+        /// </remarks>
+
+        public virtual void OnEnable()
         {
-            if (!_attached)
-            {
-                _attached = true;
-                ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
-                DataSource = dataSource;
-                DataController = dataController;
-                InitializeDataConsumer();
-                FindVariablesToManage();
-            }
+            IDataSource dataSource = FindNearestDataSource( DataSource );
+            IDataController dataController = FindNearestDataController( DataController );
+            Attach(dataSource, dataController, ResolvedKeyPathPrefix);
+        }
 
+        public virtual void OnDisable()
+        {
+            Detach();
+        }
+
+        /// <summary>
+        /// Unity's Start() method.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Override InitializeDataConsumer for any needed one-time initialization.
+        /// </remarks>
+
+        private void Start()
+        {
+            // One time initialization of data consumer
+            InitializeDataConsumer();
         }
 
 
-        public virtual void Detach()
+
+
+        protected virtual void InitializeDataConsumer()
+        {
+            // override if any additional onetime initialization required such as setting delegates.
+        }
+
+
+        #region IDataConsumer interface methods
+
+        /// <summary>
+        /// When object is enabled, attach to external resoources
+        /// </summary>
+        /// <remarks>
+        /// NOTE: When you override this, use AttachDataConsumer for additional
+        /// attach tasks.
+        /// </remarks>
+        public void Attach( IDataSource dataSource, IDataController dataController, string resolvedKeyPathPrefix )
+        {
+            _attached = false; // DEBUG  TODO  This is because of the initialization order. Needs to be fixed.
+
+            if (!_attached)
+            {
+                _attached = true;
+                DataSource = dataSource;
+                DataController = dataController;
+                ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
+                AttachDataConsumer();
+                FindVariablesToManage();
+            }
+
+            if (DataSource == null)
+            {
+                Debug.LogError("DataSource is required. If null, may be caused by initialization order issues.");
+            }
+        }
+
+        /// <summary>
+        /// When object is disabled, detach from external resoources
+        /// </summary>
+        /// <remarks>
+        /// Note: When you override this, use DetachDataConsumer for additional
+        /// detach tasks.
+        /// </remarks>
+        public void Detach()
         {
             if (_attached)
             {
                 _attached = false;
+                DetachDataConsumer();
                 foreach (string resolvedKeyPath in _resolvedToLocalKeyPathLookup.Keys)
                 {
                     _dataSource.RemoveDataConsumerListener(resolvedKeyPath, this as IDataConsumer);
@@ -96,6 +164,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
+        protected virtual void AttachDataConsumer()
+        {
+            // meant to be overridden
+        }
+
+        protected virtual void DetachDataConsumer()
+        {
+
+        }
 
         public virtual void DataChangeSetBegin(IDataSource dataSource)
         {
@@ -165,62 +242,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// to be called for each found component in this or is specified in child objects.
         /// 
         /// If you do not operate on components, then no need to override this method. Instead
-        /// simply override InitializeDataConsumer and call AddKeyPathListener() for any keypaths
-        /// that should cause this data consumer to be notified.
+        /// simply override InitializeDataConsumer for one-time initialization and 
+        /// override AttachDataConsumer for any setup that should occur each time
+        /// your class is enabled, in which you should call AddKeyPathListener() for any keypaths
+        /// that you want the datasource to notify of any changes.
         /// </summary>
         /// <returns>List of Component types.</returns>
         protected virtual Type[] GetComponentTypes()
         {
             Type[] types = { };
             return types;
-        }
-
-
-        /// <summary>
-        /// Unity's Awake() method.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Note that this should rarely be overridden but is declared virtual for circumnstances 
-        /// where this is required. If overridden, make sure to call this default behavior.
-        /// 
-        /// Any initialization should be accomplished by overriding IniitalizeDataConsumer().
-        /// </remarks>
-
-        public virtual void Awake()
-        {
-            FindNearestDataSource();
-            FindNearestDataController();
-            InitializeDataConsumer();
-        }
-
-
-        /// <summary>
-        /// Unity's Start() method.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Note that this should rarely be overridden but is declared virtual for circumnstances 
-        /// where this is required. If overridden, make sure to call this default behavior.
-        /// </remarks>
-      
-        protected virtual void Start()
-        {
-            FindVariablesToManage();
-
-            // avoid double initialize if not a detached object in a collection.
-            if (DataSource != null && _resolvedToLocalKeyPathLookup.Count > 0)
-            {
-                _attached = true;
-            }
-        }
-
-  
- 
-
-        protected virtual void InitializeDataConsumer()
-        {
-            // override if any additional onetime initialization required such as setting delegates.
         }
 
 
@@ -290,14 +321,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// If no data source is provided directly, search through this object and its parents in game object 
         /// heirarchy for the data source to use with this data consumer.
         /// </summary>
-        protected void FindNearestDataSource()
+        protected IDataSource FindNearestDataSource( IDataSource defaultDataSource = null)
         {
-            if (DataSource == null)
+            if (defaultDataSource == null)
             {
-                IDataSource dataSource = null;
                 GameObject currentGO = gameObject;
 
-                while (currentGO != null && dataSource == null)
+                while (currentGO != null && defaultDataSource == null)
                 {
                     Component[] dataSourceComponents = currentGO.GetComponents(typeof(IDataSourceProvider));
                     foreach (Component dataSourceComponent in dataSourceComponents)
@@ -305,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         if ((dataSourceComponent as MonoBehaviour).enabled)
                         {
                             IDataSourceProvider dataSourceProvider = dataSourceComponent as IDataSourceProvider;
-                            dataSource = dataSourceProvider.GetDataSource();
+                            defaultDataSource = dataSourceProvider.GetDataSource();
                             break;
                         }
                     }
@@ -319,8 +349,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         currentGO = null;
                     }
                 }
-                DataSource = dataSource;
             }
+            return defaultDataSource;
         }
 
 
@@ -328,21 +358,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// If no data source is provided directly, search through this object and its parents in game object 
         /// heirarchy for the data source to use with this data consumer.
         /// </summary>
-        protected void FindNearestDataController()
+        protected IDataController FindNearestDataController( IDataController defaultDataController = null)
         {
-            if (DataController == null)
+            if (defaultDataController == null)
             {
-                IDataController dataController = null;
                 GameObject currentGO = gameObject;
 
-                while (currentGO != null && dataController == null)
+                while (currentGO != null && defaultDataController == null)
                 {
                     Component[] dataControllerComponents = currentGO.GetComponents(typeof(IDataController));
                     foreach (Component dataControllerComponent in dataControllerComponents)
                     {
                         if ((dataControllerComponent as MonoBehaviour).enabled)
                         {
-                            dataController = dataControllerComponent as IDataController;
+                            defaultDataController = dataControllerComponent as IDataController;
                             break;
                         }
                     }
@@ -355,8 +384,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         currentGO = null;
                     }
                 }
-                DataController = dataController;
             }
+            return defaultDataController;
         } 
 
 

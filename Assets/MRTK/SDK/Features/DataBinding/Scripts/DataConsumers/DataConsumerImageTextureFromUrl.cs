@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected bool _fetchInProgress = false;
         protected string _waitingUrlToFetch = null;
         protected int _frameDelayCountdown = 0;
-        protected System.Random _random;
+        protected System.Random _random = new System.Random();
         private IEnumerator _coroutine;
 
         protected readonly float FramesPerMillisecond = 60.0f / 1000.0f; // 60 frames per 1000 milliscends
@@ -55,7 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-        private void OnDisable()
+        protected override bool ManageChildren()
+        {
+            return manageChildren;
+        }
+
+
+        protected override void DetachDataConsumer()
         {
             if (_coroutine != null)
             {
@@ -66,16 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _waitingUrlToFetch = null;
         }
 
-
-        protected override bool ManageChildren()
-        {
-            return manageChildren;
-        }
-
-        protected override void InitializeDataConsumer()
-        {
-            _random = new System.Random();
-        }
 
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
@@ -95,6 +91,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (localKeyPath == keyPath)
             {
+                if (value == null)
+                {
+                    UnityEngine.Debug.LogError("Value should be null for resolvedKeyPath " + resolvedKeyPath);
+                }
                 string newUrl = value.ToString();
                 _frameDelayCountdown = (int)((float)maxRandomLoadBalancingDelayInMilliseconds * FramesPerMillisecond);
                 _frameDelayCountdown = _random.Next(0, _frameDelayCountdown);

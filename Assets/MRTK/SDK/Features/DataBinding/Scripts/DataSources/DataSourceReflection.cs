@@ -54,7 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     case NotifyCollectionChangedAction.Add:
                         for(int idx = 0; idx < eventArgs.NewItems.Count; idx++ )
                         {
-                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, eventArgs.NewStartingIndex+idx, DataChangeType.CollectionItemAdded, true);
+                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
+                            dataSourceToNotify.NotifyDataChanged(itemKeyPath, eventArgs.NewStartingIndex+idx, DataChangeType.CollectionItemAdded, true);
                         }
                         break;
 
@@ -64,7 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     case NotifyCollectionChangedAction.Remove:
                         for( int idx = eventArgs.OldItems.Count - 1; idx >= 0; idx-- )
                         {
-                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, eventArgs.OldStartingIndex + idx, DataChangeType.CollectionItemRemoved, true);
+                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
+                            dataSourceToNotify.NotifyDataChanged(itemKeyPath, eventArgs.OldStartingIndex + idx, DataChangeType.CollectionItemRemoved, true);
                         }
                         break;
 
@@ -130,6 +132,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 return 0;
             }
         }
+
+
+        public override string GetNthCollectionKeyPathAt(string resolvedKeyPath, int n)
+        {
+            object value = KeyPathToObject(resolvedKeyPath);
+            if (IsArray(value) || IsList(value))
+            {
+                return string.Format(CollectionElementkeyPathPrefixFormat, resolvedKeyPath, n, int.MaxValue);
+            }
+            else
+            {
+                return null;
+            }
+         }
 
 
         public override void SetValueInternal(string resolvedKeyPath, object value)
@@ -210,11 +226,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
             List<string> keyPaths = new List<string>();
             for (int idx = rangeStart; idx < rangeMax; idx++)
             {
-                keyPaths.Add(string.Format(CollectionElementkeyPathPrefixFormat, resolvedKeyPath, idx));
+                keyPaths.Add(GetNthCollectionKeyPathAt(resolvedKeyPath, idx));
             }
             return keyPaths as IEnumerable<string>;
 
         }
+
 
         protected IEnumerable<string> GetValueAsDictionaryKeyPaths(IDictionary dict, string resolvedKeyPath)
         {

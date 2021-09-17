@@ -177,10 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /* Used to find all keypaths that influence a specific component to make sure all variable data is updated when any one element changes */
         protected Dictionary<Component, ComponentInformation> _componentInfoLookup = new Dictionary<Component, ComponentInformation>();
 
- 
-        protected override void InitializeDataConsumer()
-        {
-        }
 
 
         protected override Type[] GetComponentTypes()
@@ -216,9 +212,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        public override void Detach()
+        protected override void DetachDataConsumer()
         {
-            base.Detach();
             foreach( ComponentInformation ci in _componentInfoLookup.Values )
             {
                 ci.ClearKeyPaths();
@@ -244,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             foreach (Match match in matches)
             {
                 string localKeyPath = match.Groups[1].Value;
-
+ 
                 string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
                 componentInfo.AddKeyPathListener(resolvedKeyPath, localKeyPath, match.Index, match.Value);
