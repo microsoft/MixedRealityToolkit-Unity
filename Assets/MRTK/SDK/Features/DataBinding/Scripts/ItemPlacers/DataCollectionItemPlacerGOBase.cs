@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected Dictionary<State, Dictionary<int, ItemInfo>> _itemsByState = new Dictionary<State, Dictionary<int, ItemInfo>>();
         protected Dictionary<int, State> _itemStateByIndex = new Dictionary<int, State>();
 
-        private void OnEnable()
+        public void Attach()
         {
             _totalItemCount = 0;
 
@@ -125,14 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        private void OnDisable()
+        public void Detach()
         {
-            // deallocate to save memory when not in use.
-            foreach (State state in Enum.GetValues(typeof(State)))
-            {
-                _itemsByState[state] = null;
-            }
-
+            // TODO: need to add logic to deal with items that are stil being fetched.
+            PurgeAllVisibleAndRemovableItems();
         }
 
         protected void CheckForEventsToTrigger()

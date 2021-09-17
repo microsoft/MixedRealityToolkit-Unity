@@ -355,7 +355,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="itemGO">The game object itself.</param>
         public void ReturnGameObjectForReuse(int itemIndex, GameObject itemGO )
         {
-            itemGO.transform.parent = GetPrefabObjectPoolParent();
+            if (isActiveAndEnabled)
+            {
+                itemGO.transform.parent = GetPrefabObjectPoolParent();
+            }
+            else
+            {
+                Debug.LogWarning("Visible objects in a collection should be emptied at application level prior to deactivating a DataConsumerCollection. ");
+            }
+
             InitializePrefabInstance(itemGO);
 
             Component[] dataConsumers = itemGO.GetComponentsInChildren(typeof(DataConsumerGOBase));
@@ -410,6 +418,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 dataConsumer.Attach(DataSource, DataController, collectionItemKeyPathPrefix);
             }
 
+        }
+
+
+        protected override void AttachDataConsumer()
+        {
+            if (itemPlacer != null)
+            {
+                itemPlacer.Attach();
+            }
+        }
+
+
+        protected override void DetachDataConsumer()
+        {
+            if (itemPlacer != null)
+            {
+                itemPlacer.Detach();
+            }
         }
 
     }

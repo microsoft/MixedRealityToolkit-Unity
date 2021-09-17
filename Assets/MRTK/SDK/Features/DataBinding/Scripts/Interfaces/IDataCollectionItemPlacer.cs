@@ -25,6 +25,25 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// </remarks>
     public interface IDataCollectionItemPlacer
     {
+        /// <summary>
+        /// Attach item placer and prepare for use
+        /// </summary>
+        /// <remarks>
+        /// Item placers may be attached / detached at any time and this
+        /// is an opportunity to allocate any needed resources
+        /// </remarks>
+        void Attach();
+
+        /// <summary>
+        /// Detach item placer and remove any visible items
+        /// </summary>
+        /// <remarks>
+        /// Item placers may be attached / detached at any time and this
+        /// is where any remaining visible items should be removed and
+        /// returned for re-use.
+        /// </remarks>
+        void Detach();
+
 
         /// <summary>
         /// set the data consumer for a collection that can provide gameobjects to be placed. This will normally be set by the data consumer
