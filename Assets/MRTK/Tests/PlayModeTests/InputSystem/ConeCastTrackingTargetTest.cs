@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         {
             string targetName = "eyetrackingTargetObject";
 
-            //Create another target cone cast will hit and will prefer
+            // Create another target cone cast will hit and will prefer
             var eyetrackingTargetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             eyetrackingTargetObject.name = targetName;
             var eyeTrackingTargetComponent = eyetrackingTargetObject.AddComponent<EyeTrackingTarget>();
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         {
             string targetName = "eyetrackingTargetObject";
 
-            //Create another target cone cast will not hit 
+            // Create another target cone cast will not hit 
             var eyetrackingTargetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             eyetrackingTargetObject.name = targetName;
             var eyeTrackingTargetComponent = eyetrackingTargetObject.AddComponent<EyeTrackingTarget>();
@@ -109,14 +109,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             string targetNameHit = "eyetrackingTargetObject-Hit";
             string targetNameMiss = "eyetrackingTargetObject-Miss";
 
-            //Create another target cone cast will hit and will prefer
+            // Create another target cone cast will hit and will prefer
             var eyetrackingTargetObjectHit = GameObject.CreatePrimitive(PrimitiveType.Cube);
             eyetrackingTargetObjectHit.name = targetNameHit;
             _ = eyetrackingTargetObjectHit.AddComponent<EyeTrackingTarget>();
             eyetrackingTargetObjectHit.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             eyetrackingTargetObjectHit.transform.position = Vector3.forward + (Vector3.right * 0.01f);
 
-            //Create another target cone cast will hit but not prefer
+            // Create another target cone cast will hit but not prefer
             var eyetrackingTargetObjectMiss = GameObject.CreatePrimitive(PrimitiveType.Cube);
             eyetrackingTargetObjectMiss.name = targetNameMiss;
             _ = eyetrackingTargetObjectMiss.AddComponent<EyeTrackingTarget>();
