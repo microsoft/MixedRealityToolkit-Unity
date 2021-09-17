@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// This will trigger notification changes by the base class once the data has been
     /// parsed.
     /// </summary>
-    public class DataSourceJsonTest : DataSourceGOJsonBase
+    public class DataSourceJsonTest : DataSourceGOJson
     {
         [Tooltip("URL for a json data source")]
         [SerializeField]

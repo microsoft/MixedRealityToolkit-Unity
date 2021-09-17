@@ -40,12 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override IDataSource AllocateDataSource()
         {
-            if (_dataSource == null)
-            {
-                _dataSource = new DataSourceDictionary();
-            }
-
-            return _dataSource;
+            return new DataSourceDictionary();
         }
 
         protected override void InitializeDataSource()

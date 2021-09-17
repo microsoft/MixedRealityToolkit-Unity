@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _dataSource;
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             GetDataSource();
             InitializeData();

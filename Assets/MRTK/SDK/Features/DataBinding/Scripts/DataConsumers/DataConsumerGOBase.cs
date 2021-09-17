@@ -81,6 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             Attach(dataSource, dataController, ResolvedKeyPathPrefix);
         }
 
+
+        private void Awake()
+        {
+            InitializeDataConsumer();
+        }
+
+
         public virtual void OnDisable()
         {
             Detach();
@@ -97,7 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private void Start()
         {
             // One time initialization of data consumer
-            InitializeDataConsumer();
         }
 
 
@@ -115,6 +121,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// When object is enabled, attach to external resoources
         /// </summary>
         /// <remarks>
+        /// This is key to both first time initialization and going back
+        /// and forth between gameobject data pool and placement in a collection.
+        /// 
         /// NOTE: When you override this, use AttachDataConsumer for additional
         /// attach tasks.
         /// </remarks>

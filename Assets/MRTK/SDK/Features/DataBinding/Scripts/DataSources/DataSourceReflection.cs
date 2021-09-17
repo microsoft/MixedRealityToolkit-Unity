@@ -54,8 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     case NotifyCollectionChangedAction.Add:
                         for(int idx = 0; idx < eventArgs.NewItems.Count; idx++ )
                         {
-                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
-                            dataSourceToNotify.NotifyDataChanged(itemKeyPath, eventArgs.NewStartingIndex+idx, DataChangeType.CollectionItemAdded, true);
+                            // TODO: This should be refactored to be a CollectionItemIdentifer struct
+
+                            //string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
+                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, idx, DataChangeType.CollectionItemAdded, true);
                         }
                         break;
 
@@ -65,8 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     case NotifyCollectionChangedAction.Remove:
                         for( int idx = eventArgs.OldItems.Count - 1; idx >= 0; idx-- )
                         {
-                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
-                            dataSourceToNotify.NotifyDataChanged(itemKeyPath, eventArgs.OldStartingIndex + idx, DataChangeType.CollectionItemRemoved, true);
+                            // TODO: This should be refactored to be a CollectionItemIdentifer struct
+                            // string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
+                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, idx, DataChangeType.CollectionItemRemoved, true);
                         }
                         break;
 

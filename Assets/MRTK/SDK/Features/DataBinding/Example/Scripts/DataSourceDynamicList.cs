@@ -26,13 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected int _counter = 0;
 
         public override IDataSource AllocateDataSource()
-        { 
-            if (_dataSource == null)
-            {
-                _dataSource = new DataSourceObjects();
-            }
-
-            return _dataSource;
+        {
+            return new DataSourceObjects();
         }
 
 

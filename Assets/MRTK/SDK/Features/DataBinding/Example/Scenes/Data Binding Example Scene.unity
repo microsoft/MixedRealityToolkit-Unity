@@ -937,7 +937,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &352594404
 Transform:
   m_ObjectHideFlags: 0
@@ -2034,7 +2034,7 @@ MonoBehaviour:
   itemPlacer: {fileID: 734963962}
   itemPrefabPoolSize: 20
   prefabPoolParent: {fileID: 159510389}
-  preAllocateItemPrefabsOnAwake: 0
+  preAllocateItemPrefabsOnEnable: 0
 --- !u!114 &734963960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2586,9 +2586,9 @@ MonoBehaviour:
   uniqueIdKeyPath: id
   replaceAllOnChange: 0
   itemPlacer: {fileID: 874612862}
-  itemPrefabPoolSize: 60
+  itemPrefabPoolSize: 0
   prefabPoolParent: {fileID: 159510389}
-  preAllocateItemPrefabsOnAwake: 1
+  preAllocateItemPrefabsOnEnable: 1
 --- !u!114 &874612860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2647,7 +2647,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874612858}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 107520042d1da5f4391c7d701012a0af, type: 3}
   m_Name: 
@@ -2841,7 +2841,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874612858}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a6f518abc45e04498de17974ae9f762, type: 3}
   m_Name: 
@@ -4388,7 +4388,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1322284028
 Transform:
   m_ObjectHideFlags: 0
@@ -5378,7 +5378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1536783579
 Transform:
   m_ObjectHideFlags: 0
@@ -6896,7 +6896,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1913743196
 Transform:
   m_ObjectHideFlags: 0
@@ -7566,7 +7566,7 @@ MonoBehaviour:
   itemPlacer: {fileID: 1987298539}
   itemPrefabPoolSize: 20
   prefabPoolParent: {fileID: 159510389}
-  preAllocateItemPrefabsOnAwake: 1
+  preAllocateItemPrefabsOnEnable: 1
 --- !u!114 &1987298544
 MonoBehaviour:
   m_ObjectHideFlags: 0

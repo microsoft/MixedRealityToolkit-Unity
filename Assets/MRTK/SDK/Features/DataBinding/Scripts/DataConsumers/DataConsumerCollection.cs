@@ -200,16 +200,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// 
         /// <param name="dataSource">The data source reporting a data change in the collection.</param>
         /// <param name="resolvedKeyPath">Fully resolved key path after key mapping and disambiguating any parent collections.</param>
-        /// <param name="localKeyPath">the originally provided local key path, usually the one provided in the Unity inspector.</param>
-        /// <param name="value">An object that represents the changed collection or item in the collection, typically its index.</param>
+        /// <param name="collectionLocalKeypath">the originally provided local key path, usually the one provided in the Unity inspector.</param>
+        /// <param name="itemKeypath">An object that represents the changed collection or item in the collection, typically its index.</param>
         /// <param name="dataChangeType">The nature of the data change, either at collection level or individual item level.</param>
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType )
+        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string collectionLocalKeypath, object itemIdentifier, DataChangeType dataChangeType )
         {
             if (itemPrefab != null)
             {
-                if (localKeyPath == collectionKeyPath && itemPlacer != null)
+                if (collectionLocalKeypath == collectionKeyPath && itemPlacer != null)
                 {
-                    itemPlacer.NotifyCollectionDataChanged(dataChangeType, localKeyPath, value);
+                    itemPlacer.NotifyCollectionDataChanged(dataChangeType, collectionLocalKeypath, itemIdentifier);
                 }
             }
         }
@@ -295,13 +295,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected GameObject GetPrefabInstance()
+        protected GameObject GetPrefabInstance( bool useObjectPool = true )
         {
             GameObject newObject;
 
-            if (_dataObjectPool.IsEmpty())
+            if (!useObjectPool || _dataObjectPool.IsEmpty())
             {
-                newObject = Instantiate(itemPrefab);
+                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, transform);
             } 
             else
             {
@@ -322,9 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             for(int count = 0; count < itemPrefabPoolSize; count++ )
             {
-                GameObject go = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, transform);
-                InitializePrefabInstance(go);
-                go.transform.parent = prefabObjectPoolParent;
+                GameObject go = GetPrefabInstance(false);
 
                 if (!_dataObjectPool.ReturnObjectToPool(go))
                 {

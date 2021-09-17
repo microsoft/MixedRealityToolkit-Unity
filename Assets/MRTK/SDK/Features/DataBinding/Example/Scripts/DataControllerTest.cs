@@ -10,8 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 
     public class DataControllerTest : DataControllerGOBase
     {
-        private void Awake()
+        private void OnEnable()
         {
+            // There is no base OnEnable()
             _dataSource = GetComponentInParent(typeof(IDataSource)) as IDataSource;
         }
 
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="command">Which command to issue, as a string.</param>
         /// <param name="data">A data reference specifying the data to be acted upon, usually a unique identifier.</param>
         /// <param name="optionalParameters">Optional parameters, or null if none.</param>
-        public override void ProcessCommand(string command, object data, Dictionary<string, object> optionalParameters)
+        public override void ProcessCommand(string command, object data, Dictionary<string, object> optionalParameters = null)
         {
             string message = "DataController received command '" + command + "' for object " + data.ToString();
             if (_dataSource != null)
