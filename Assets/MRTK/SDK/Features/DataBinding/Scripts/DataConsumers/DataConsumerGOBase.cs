@@ -103,7 +103,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private void Start()
         {
-            // One time initialization of data consumer
         }
 
 
@@ -129,7 +128,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </remarks>
         public void Attach( IDataSource dataSource, IDataController dataController, string resolvedKeyPathPrefix )
         {
-            _attached = false; // DEBUG  TODO  This is because of the initialization order. Needs to be fixed.
+            if (_attached)
+            {
+                Detach();
+            }
 
             if (!_attached)
             {

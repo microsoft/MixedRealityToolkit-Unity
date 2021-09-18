@@ -5,9 +5,15 @@
 namespace Microsoft.MixedReality.Toolkit.Data
 { 
 
-    public struct CollectionItemIdentifier
+    public class CollectionItemIdentifier
     {
         public string fullyResolvedKeypath;
         public int indexPosition;
+
+        public CollectionItemIdentifier( string keyPath, int position )
+        {
+            fullyResolvedKeypath = keyPath;
+            indexPosition = position;
+        }
     }
 }

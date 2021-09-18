@@ -774,15 +774,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else if (dataChangeType == DataChangeType.CollectionItemRemoved)
             {
-                if (value != null && IsInteger(value))
+                if (value != null)
                 {
-                    int itemIndex = (int)value;
+                    CollectionItemIdentifier itemIdentifier = value as CollectionItemIdentifier;
 
-                    ItemInfo itemInfo = FindItem(itemIndex);
+                    ItemInfo itemInfo = FindItem(itemIdentifier.indexPosition);
                     if (itemInfo != null)
                     {
-                        ProcessRemovedItem(requestRef, itemIndex, itemInfo.itemKeypath, itemInfo.gameObject, IsVisible(itemIndex));
-                        RemoveItem(itemIndex);
+                        ProcessRemovedItem(requestRef, itemIdentifier.indexPosition, itemInfo.itemKeypath, itemInfo.gameObject, IsVisible(itemIdentifier.indexPosition));
+                        RemoveItem(itemIdentifier.indexPosition);
                         if (_numVisibleItems > _totalItemCount - _firstVisibleItem)
                         {
                             _numVisibleItems = _totalItemCount - _firstVisibleItem;

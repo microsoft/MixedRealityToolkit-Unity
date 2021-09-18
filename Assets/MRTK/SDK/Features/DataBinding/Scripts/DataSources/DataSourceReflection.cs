@@ -54,10 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     case NotifyCollectionChangedAction.Add:
                         for(int idx = 0; idx < eventArgs.NewItems.Count; idx++ )
                         {
-                            // TODO: This should be refactored to be a CollectionItemIdentifer struct
+                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
+                            CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, idx);
 
-                            //string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
-                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, idx, DataChangeType.CollectionItemAdded, true);
+                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, itemIdentifier, DataChangeType.CollectionItemAdded, true);
                         }
                         break;
 
@@ -67,9 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     case NotifyCollectionChangedAction.Remove:
                         for( int idx = eventArgs.OldItems.Count - 1; idx >= 0; idx-- )
                         {
-                            // TODO: This should be refactored to be a CollectionItemIdentifer struct
-                            // string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
-                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, idx, DataChangeType.CollectionItemRemoved, true);
+                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
+                            CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, idx);
+                            dataSourceToNotify.NotifyDataChanged(itemKeyPath, itemIdentifier, DataChangeType.CollectionItemRemoved, true);
                         }
                         break;
 
