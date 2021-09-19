@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         {
                             string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
                             CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, idx);
-                            dataSourceToNotify.NotifyDataChanged(itemKeyPath, itemIdentifier, DataChangeType.CollectionItemRemoved, true);
+                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, itemIdentifier, DataChangeType.CollectionItemRemoved, true);
                         }
                         break;
 
