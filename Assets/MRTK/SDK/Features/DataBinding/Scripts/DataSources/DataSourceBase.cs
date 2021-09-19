@@ -292,7 +292,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
-
+        /// <summary>
+        /// Get a path where all array indices have been removed.
+        /// </summary>
+        /// <remarks>
+        /// This can be used to identify a list regardless of 
+        /// which entery in one or nested lists it may have come from.
+        /// </remarks>
+        /// <param name="resolvedKeyPath">The keypath to modify.</param>
+        /// <returns></returns>
         public string GetDeindexedKeyPath(string resolvedKeyPath)
         {
             if (resolvedKeyPath != "")
