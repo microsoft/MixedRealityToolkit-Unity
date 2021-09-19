@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -76,17 +77,25 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void OnEnable()
         {
-            IDataSource dataSource = FindNearestDataSource( DataSource );
-            IDataController dataController = FindNearestDataController( DataController );
-            Attach(dataSource, dataController, ResolvedKeyPathPrefix);
+            StartCoroutine(DelayAttach());
         }
 
+        /// <summary>
+        /// TODO: Clean this up -- just for testing but need delay to allow Source to be enabled prior.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator DelayAttach()
+        {
+            yield return new WaitForSeconds(.1f);
+            IDataSource dataSource = FindNearestDataSource(DataSource);
+            IDataController dataController = FindNearestDataController(DataController);
+            Attach(dataSource, dataController, ResolvedKeyPathPrefix);
+        }
 
         private void Awake()
         {
             InitializeDataConsumer();
         }
-
 
         public virtual void OnDisable()
         {
@@ -141,11 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
                 AttachDataConsumer();
                 FindVariablesToManage();
-            }
-
-            if (DataSource == null)
-            {
-                Debug.LogError("DataSource is required. If null, may be caused by initialization order issues.");
             }
         }
 
