@@ -52,10 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 switch (eventArgs.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
-                        for(int idx = 0; idx < eventArgs.NewItems.Count; idx++ )
+                        for(int n = 0; n < eventArgs.NewItems.Count; n++ )
                         {
-                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
-                            CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, idx);
+                            int itemIdx = eventArgs.NewStartingIndex + n;
+                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, itemIdx);
+                            CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, itemIdx);
 
                             dataSourceToNotify.NotifyDataChanged(collectionKeyPath, itemIdentifier, DataChangeType.CollectionItemAdded, true);
                         }
@@ -65,10 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         break;
 
                     case NotifyCollectionChangedAction.Remove:
-                        for( int idx = eventArgs.OldItems.Count - 1; idx >= 0; idx-- )
+                        for( int n = eventArgs.OldItems.Count - 1; n >= 0; n-- )
                         {
-                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, idx);
-                            CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, idx);
+                            int itemIdx = eventArgs.OldStartingIndex + n;
+                            string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, itemIdx);
+                            CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, itemIdx);
                             dataSourceToNotify.NotifyDataChanged(collectionKeyPath, itemIdentifier, DataChangeType.CollectionItemRemoved, true);
                         }
                         break;

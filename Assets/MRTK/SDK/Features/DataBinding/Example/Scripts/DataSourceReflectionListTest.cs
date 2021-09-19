@@ -38,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected bool _fluxImageAdding = true;
         private float _deltaSeconds;
         private int _nextUpdateTarget;
+        private bool _useListClear = false;
+
 
         /// <summary>
         /// A class to contain data that is to be used as a data source. This is akin to a view model
@@ -110,11 +112,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                     else
                     {
-                        _dataSourceObject.fluxImages.RemoveAt(--_fluxImageIndex);
+                        if ( _useListClear )
+                        {
+                            _dataSourceObject.fluxImages.Clear();
+                            _fluxImageIndex = 0;
+                        }
+                        else
+                        {
+                            _dataSourceObject.fluxImages.RemoveAt(--_fluxImageIndex);
+                        }
+                      
                         if (_fluxImageIndex <= 0)
                         {
                             _fluxImageIndex = 0;
                             _fluxImageAdding = true;
+                            _useListClear = !_useListClear;
                         }
                     }
                 }
