@@ -12,17 +12,17 @@ steps:
 - ${{ if eq(parameters.scopedValidation, true) }}:
   - template: tasks/githubchanges.yml
     parameters:
-      changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
+      changesFile: '$(Agent.TempDirectory)\build\changedfiles.txt'
 
 # Validate that the code doesn't contain common issues
 - template: tasks/validatecode.yml
   parameters:
     scopedValidation: ${{ parameters.scopedValidation }}
-    changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
+    changesFile: '$(Agent.TempDirectory)\build\changedfiles.txt'
 
 # Validate that no assets take dependencies on files that are not in the appropriate package.
 # For example, files in the Extensions package are not to take a dependency on a file in the Examples package.
 - template: tasks/validateassets.yml
   parameters:
     scopedValidation: ${{ parameters.scopedValidation }}
-    changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
+    changesFile: '$(Agent.TempDirectory)\build\changedfiles.txt'
