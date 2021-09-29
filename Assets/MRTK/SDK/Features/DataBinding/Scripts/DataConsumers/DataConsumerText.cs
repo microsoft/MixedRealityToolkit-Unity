@@ -34,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             protected class TextVariableInformation
             {
-                public int Position { get; set; }
                 public string DataBindVariable { get; set; }
                 public string ResolvedKeyPath { get; set; }
                 public string LocalKeyPath { get; set; }
@@ -152,18 +151,25 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
 
-            public void AddKeyPathListener(string resolvedKeyPath, string localKeyPath, int position, string entireVariable)
+            public bool AddKeyPathListener(string resolvedKeyPath, string localKeyPath, string entireVariable)
             {
+                if (!_keyPathToVariableInformation.ContainsKey(resolvedKeyPath))
+                {
+                    TextVariableInformation textVariableInfo = new TextVariableInformation();
 
-                TextVariableInformation textVariableInfo = new TextVariableInformation();
+                    textVariableInfo.DataBindVariable = entireVariable;
+                    textVariableInfo.CurrentValue = localKeyPath;
+                    textVariableInfo.ResolvedKeyPath = resolvedKeyPath;
+                    textVariableInfo.LocalKeyPath = localKeyPath;
 
-                textVariableInfo.Position = position;
-                textVariableInfo.DataBindVariable = entireVariable;
-                textVariableInfo.CurrentValue = localKeyPath;
-                textVariableInfo.ResolvedKeyPath = resolvedKeyPath;
-                textVariableInfo.LocalKeyPath = localKeyPath;
-
-                _keyPathToVariableInformation[resolvedKeyPath] = textVariableInfo;
+                    _keyPathToVariableInformation[resolvedKeyPath] = textVariableInfo;
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+ 
             }
 
 
@@ -178,6 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         /* Used to find all keypaths that influence a specific component to make sure all variable data is updated when any one element changes */
         protected Dictionary<Component, ComponentInformation> _componentInfoLookup = new Dictionary<Component, ComponentInformation>();
+        private HashSet<string> _localKeypaths = new HashSet<string>();
 
 
 
@@ -220,34 +227,35 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 ci.Detach();
             }
+            _localKeypaths.Clear();
+
         }
 
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
             ComponentInformation componentInfo = null;
 
-            if (_componentInfoLookup.ContainsKey(component))
-            {
-                componentInfo = _componentInfoLookup[component];
-            } 
-            else
+            if (!_componentInfoLookup.ContainsKey(component))
             {
                 componentInfo = new ComponentInformation(component);
                 _componentInfoLookup[component] = componentInfo;
-            }
 
-            MatchCollection matches = GetVariableMatchingRegex().Matches(componentInfo.GetTemplate());
+                MatchCollection matches = GetVariableMatchingRegex().Matches(componentInfo.GetTemplate());
 
-            foreach (Match match in matches)
-            {
-                string localKeyPath = match.Groups[1].Value;
- 
-                string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
+                foreach (Match match in matches)
+                {
+                    string localKeyPath = match.Groups[1].Value;
 
-                componentInfo.AddKeyPathListener(resolvedKeyPath, localKeyPath, match.Index, match.Value);
+                    string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
-                AddKeyPathListener(localKeyPath);
+                    componentInfo.AddKeyPathListener(resolvedKeyPath, localKeyPath, match.Value);
 
+                    if (_localKeypaths.Add(localKeyPath)) 
+                    {
+                        // if first occurance, then add keypath listener on data source
+                        AddKeyPathListener(localKeyPath);
+                    }
+                }
             }
         }
 
