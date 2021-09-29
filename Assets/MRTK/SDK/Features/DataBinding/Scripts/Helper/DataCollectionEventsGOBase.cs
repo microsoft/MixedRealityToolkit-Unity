@@ -12,6 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataCollectionEventsGOBase : MonoBehaviour, IDataCollectionEvents
     {
         /// <summmary>
+        /// Item placer has just been attached after initialization or dormant state
+        /// </summmary>
+
+        public virtual void OnAttach() { }
+
+        /// <summmary>
+        /// Item placer is being detached and put in dormant state or prior to destroy.
+        /// </summmary>
+        public virtual void OnDetach() { }
+
+        /// <summmary>
         /// A placement set is starting. Zero or more items
         /// will be placed.
         /// </summmary>

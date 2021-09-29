@@ -5,11 +5,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
@@ -47,11 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             }
 
-            void CollectionChangedHandler(Object sender, NotifyCollectionChangedEventArgs eventArgs)
+            void CollectionChangedHandler(object sender, NotifyCollectionChangedEventArgs eventArgs)
             {
                 switch (eventArgs.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
+
                         for(int n = 0; n < eventArgs.NewItems.Count; n++ )
                         {
                             int itemIdx = eventArgs.NewStartingIndex + n;
@@ -66,13 +66,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         break;
 
                     case NotifyCollectionChangedAction.Remove:
-                        for( int n = eventArgs.OldItems.Count - 1; n >= 0; n-- )
+
+                        // TODO @Hoff: this is to compensate for situation where items are removed from 1st to last which causes index IDs to shift.
+                        if (eventArgs.OldStartingIndex == 0)
+                        {
+                            dataSourceToNotify.NotifyDataChanged(collectionKeyPath, collectionToObserve, DataChangeType.CollectionReset, true);
+                        }
+
+                        for ( int n = eventArgs.OldItems.Count - 1; n >= 0; n-- )
                         {
                             int itemIdx = eventArgs.OldStartingIndex + n;
                             string itemKeyPath = dataSourceToNotify.GetNthCollectionKeyPathAt(collectionKeyPath, itemIdx);
                             CollectionItemIdentifier itemIdentifier = new CollectionItemIdentifier(itemKeyPath, itemIdx);
                             dataSourceToNotify.NotifyDataChanged(collectionKeyPath, itemIdentifier, DataChangeType.CollectionItemRemoved, true);
                         }
+
                         break;
 
                     case NotifyCollectionChangedAction.Replace:
@@ -435,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected static bool FieldOrPropertyNameCompare(MemberInfo objMemberInfo, Object key)
+        protected static bool FieldOrPropertyNameCompare(MemberInfo objMemberInfo, object key)
         {
             return objMemberInfo.Name.ToString() == key.ToString();
         }
@@ -492,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             Type collectionType = collection.GetType();
 
-            if (typeof(INotifyCollectionChanged).IsAssignableFrom(collectionType))
+            if (typeof(INotifyPropertyChanged).IsAssignableFrom(collectionType))
             {
                 CollectionObserver collectionObserver = new CollectionObserver(this, resolvedKeyPath, collection);
                 _collectionObservers[resolvedKeyPath] = collectionObserver;

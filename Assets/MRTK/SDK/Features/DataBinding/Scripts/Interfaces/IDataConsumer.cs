@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </remarks>
         /// <param name="dataSource">Which data source to attach to for this re-use of the object</param>
         /// <param name="resolvedKeyPathPrefix">The path prefix for this object to be appended to front of all local keypaths.</param>
-        void Attach(IDataSource dataSource, IDataController controller, string resolvedKeyPathPrefix);
+        void Attach(IDataSource dataSource, IDataController controller, string resolvedKeyPathPrefix = null);
 
 
         /// <summary>

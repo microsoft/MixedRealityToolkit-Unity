@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
@@ -47,14 +48,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public bool ReturnObjectToPool(object objectToReturn)
         {
-            if (_objectPoolObjects.Count <= _poolMaximumSize)
+            if (objectToReturn == null)
             {
-                _objectPoolObjects.Enqueue(objectToReturn);
-                return true;
-            } else
-            {
-                return false;
+                Debug.LogError("Returning a null object to the object pool.");
             }
+            else
+            {
+                if (_objectPoolObjects.Count < _poolMaximumSize)
+                {
+                    _objectPoolObjects.Enqueue(objectToReturn);
+                    return true;
+                }
+
+            }
+            return false;
         }
 
         public object GetObjectFromPool()

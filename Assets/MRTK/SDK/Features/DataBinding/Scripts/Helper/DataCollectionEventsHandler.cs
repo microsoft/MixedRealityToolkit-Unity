@@ -8,6 +8,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataCollectionEventsHandler : DataCollectionEventsGOBase
     {
         [SerializeField]
+        public UnityEvent Attach = new UnityEvent();
+
+        [SerializeField]
+        public UnityEvent Detach = new UnityEvent();
+
+        [SerializeField]
         public UnityEvent StartPlacement = new UnityEvent();
 
         [SerializeField]
@@ -55,6 +61,23 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         public UnityEvent CollectionPagedBackward = new UnityEvent();
 
+
+        /// <summmary>
+        /// Item placer has just been attached after initialization or dormant state
+        /// </summmary>
+        public override void OnAttach()
+        {
+            Attach.Invoke();
+        }
+
+
+        /// <summmary>
+        /// Item placer is being detached and put in dormant state or prior to destroy.
+        /// </summmary>
+        public override void OnDetach()
+        {
+            Detach.Invoke();
+        }
 
         /// <summmary>
         /// A placement set is starting. Zero or more items

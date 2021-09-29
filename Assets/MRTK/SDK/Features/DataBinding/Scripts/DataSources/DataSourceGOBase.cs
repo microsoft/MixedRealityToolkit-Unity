@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     {
         [Tooltip("Optional DataKeyPathMapper that translates between local view key paths and data source key paths. This is useful for re-using prefabs.")]
         [SerializeField]
-        private DataKeyPathMapperGODictionary keyPathMapper;
+        private DataKeyPathMapperGODictionary keyPathMapper = null;
 
         protected IDataSource DataSource
         {
@@ -39,7 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        public IDataController CachedDataController { get => _cachedDataController; set => _cachedDataController = value; }
+
         private IDataSource _dataSource;
+        private IDataController _cachedDataController;
 
         private void Awake()
         {

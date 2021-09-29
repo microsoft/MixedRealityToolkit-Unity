@@ -49,7 +49,7 @@ public class KeyPathEnumerable : IEnumerable<string>, IEnumerator<string>
     {
         get
         {
-            if (_currentIndex <= _rangeEnd)
+            if (_currentIndex > _rangeStart && _currentIndex <= _rangeEnd)
             {
                 return GenerateKeyPath();
             }

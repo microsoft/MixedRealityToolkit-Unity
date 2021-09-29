@@ -58,13 +58,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected GameObject prefabPoolParent;
 
+        [Tooltip("Optional parent object to hold the collection prefabs. Default is the GameObject of this component. NOTE: If collection is on this object and object pool is elsewhere, objects won't be properly recycled if SetActive=false is executed before a Detach(). ")]
+        [SerializeField]
+        protected GameObject collectionParent;
+
+
 
         [Tooltip("If set, the item prefab pool will be pre-allocated with instantiated prefabs to reduce run-time impact on frame rate.")]
         [SerializeField]
         protected bool preAllocateItemPrefabsOnEnable = false;
 
 
-        protected Dictionary<string, GameObject> _idToGameObjectLookup = new Dictionary<string, GameObject>();
         protected IDataObjectPool _dataObjectPool = new DataObjectPool();
 
 
@@ -225,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, object requestRef)
         {
             itemPlacer.StartPlacement();
-            StartCoroutine(InstantiatePrefabs(itemPlacer, indexRangeStart, indexRangeCount, requestRef));
+            InstantiatePrefabs(itemPlacer, indexRangeStart, indexRangeCount, requestRef);
         }
 
 
@@ -234,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// 
         /// <remarks>
-        /// For the specified range, instantiate prefabs as a CoRoutine and provide them one at a time to the specified item placer.
+        /// For the specified range, instantiate prefabs and provide them to the specified item placer.
         /// 
         /// Any prefab data consumers in the prefab are automatically connected to the same data source as the collection itself, and
         /// its key path prefix is set to the full resolve prefix for this collection combined with the array index position of the item in the
@@ -246,8 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="indexRangeCount">Number of list items to instantiate.</param>
         /// <param name="requestRef">Arbitrary private request object that will be provided to the item placer.</param>
         /// 
-        /// <returns>IEnumerator required for a CoRoutine.</returns>
-        protected IEnumerator InstantiatePrefabs(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, object requestRef)
+        protected void InstantiatePrefabs(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, object requestRef)
         {
             IEnumerable<string> collectionItemsKeyPaths = _dataSource.GetCollectionKeyPathRange(collectionKeyPath, indexRangeStart, indexRangeCount);
 
@@ -269,10 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
 
                 itemIndex++;
-
-                // TODO: add logic to yield after a specified # of milliseconds since some
-                //       items can be fabricated faster than others
-                yield return null;
             }
             itemPlacer.EndPlacement();
 
@@ -295,21 +294,27 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
+
         protected GameObject GetPrefabInstance( bool useObjectPool = true )
         {
             GameObject newObject;
 
             if (!useObjectPool || _dataObjectPool.IsEmpty())
             {
-                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, transform);
+                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, GetPrefabCollectionParent());
             } 
             else
             {
                 newObject = _dataObjectPool.GetObjectFromPool() as GameObject;
             }
 
+            if (newObject == null)
+            {
+                Debug.LogError("Prefab was not properly allocated.");
+            }
+
             InitializePrefabInstance(newObject);
-            newObject.transform.parent = GetPrefabInUseParent();
+            newObject.transform.parent = GetPrefabCollectionParent();
 
             return newObject;
         }
@@ -328,7 +333,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 if (!_dataObjectPool.ReturnObjectToPool(go))
                 {
                     Debug.LogWarning("GameObject Pool is unexpectedly full during preallocation.");
-                    Destroy(go);
+                    if (go != null)
+                    {
+                        Destroy(go);
+                    }
                 }
             }
         }
@@ -379,7 +387,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (!_dataObjectPool.ReturnObjectToPool(itemGO))
             {
-                Destroy(itemGO);
+                if (itemGO != null)
+                {
+                    Destroy(itemGO);
+                }
             }
         }
 
@@ -388,9 +399,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return prefabPoolParent != null ? prefabPoolParent.transform : this.transform;
         }
 
-        protected Transform GetPrefabInUseParent()
+        protected Transform GetPrefabCollectionParent()
         {
-           return transform;
+            if (collectionParent == null)
+            {
+                return this.transform;
+            }
+            else
+            {
+                return collectionParent.transform;
+            } 
         }
 
 

@@ -143,8 +143,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
 
-            public void ClearKeyPaths()
+            public void Detach()
             {
+                SetValue(_originalTemplateValue);
+
                 // clear old keypaths when object is going back to re-use pool.
                 _keyPathToVariableInformation.Clear();
             }
@@ -216,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             foreach( ComponentInformation ci in _componentInfoLookup.Values )
             {
-                ci.ClearKeyPaths();
+                ci.Detach();
             }
         }
 

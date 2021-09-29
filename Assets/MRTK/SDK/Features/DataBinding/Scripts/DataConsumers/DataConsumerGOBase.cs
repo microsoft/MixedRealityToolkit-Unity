@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected const string _dataBindSpecifierEnd = @"}}";
         protected Regex _variableRegex = new Regex(_dataBindSpecifierBegin + @"\s*([a-zA-Z0-9\[\]\-._]+)\s*" + _dataBindSpecifierEnd);
         protected bool _attached = false;
-
+        protected bool _externalAttached = false;
 
         public IDataSource DataSource
         {
@@ -77,19 +78,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void OnEnable()
         {
-            StartCoroutine(DelayAttach());
+            StartCoroutine(DelaySelfAttach());
         }
 
         /// <summary>
         /// TODO: Clean this up -- just for testing but need delay to allow Source to be enabled prior.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator DelayAttach()
+        private IEnumerator DelaySelfAttach()
         {
-            yield return new WaitForSeconds(.1f);
-            IDataSource dataSource = FindNearestDataSource(DataSource);
-            IDataController dataController = FindNearestDataController(DataController);
-            Attach(dataSource, dataController, ResolvedKeyPathPrefix);
+           yield return new WaitForEndOfFrame();
+           SelfAttach();
         }
 
         private void Awake()
@@ -126,32 +125,92 @@ namespace Microsoft.MixedReality.Toolkit.Data
         #region IDataConsumer interface methods
 
         /// <summary>
-        /// When object is enabled, attach to external resoources
+        /// Attach to same resources as an associated dataconsumer such as a DataConsumerCOllection
         /// </summary>
         /// <remarks>
-        /// This is key to both first time initialization and going back
-        /// and forth between gameobject data pool and placement in a collection.
+        /// This is key to both first time initialization and being attached
+        /// by another dataconsumer, typically that has created this one at run
+        /// time and also for going back and forth between gameobject data pool and
+        /// placement in a collection.
         /// 
         /// NOTE: When you override this, use AttachDataConsumer for additional
         /// attach tasks.
         /// </remarks>
-        public void Attach( IDataSource dataSource, IDataController dataController, string resolvedKeyPathPrefix )
+        public void Attach(IDataSource dataSource, IDataController dataController, string resolvedKeyPathPrefix = null)
         {
             if (_attached)
             {
+                if (resolvedKeyPathPrefix == null)
+                {
+                    // preserve through the Detach()
+                    resolvedKeyPathPrefix = ResolvedKeyPathPrefix;
+                }
+
+                if (_externalAttached)
+                {
+                    DebugUtilities.LogVerbose("Already attached externally and attaching again before detaching.  Will automatically detach to correct.");
+                }
+
                 Detach();
             }
 
             if (!_attached)
             {
                 _attached = true;
+                _externalAttached = true; // Note: immediately disabled again in SelfAttach()
+
                 DataSource = dataSource;
                 DataController = dataController;
-                ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
+
+               if (resolvedKeyPathPrefix != null)
+               {
+                    ResolvedKeyPathPrefix = resolvedKeyPathPrefix;
+               }
+
                 AttachDataConsumer();
                 FindVariablesToManage();
             }
         }
+
+
+        /// <summary>
+        /// Self attach is used when this Component is not being attached by another
+        /// DataConsumer as would happen when DataConsumerCollection is instantiating
+        /// prefabs and adding them to its collection.
+        /// </summary>
+
+        protected void SelfAttach()
+        {
+            if (!_attached)
+            {
+                IDataSource dataSource = FindNearestDataSource(DataSource);
+                IDataController dataController = null;
+                if (dataSource != null)
+                {
+                    dataController = dataSource.CachedDataController;
+                }
+                if (dataController == null)
+                {
+                    dataController = FindNearestDataController(DataController);
+                }
+
+                Attach(dataSource, dataController);
+                _externalAttached = false;
+            }
+            else
+            {
+                if (_externalAttached)
+                {
+                    DebugUtilities.LogVerbose("Attempting to self attach when already externally attached.");
+
+                }
+                else
+                {
+                    DebugUtilities.LogVerbose("Attempting to self attach when already self attached.");
+                }
+            }
+        }
+
 
         /// <summary>
         /// When object is disabled, detach from external resoources
@@ -165,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (_attached)
             {
                 _attached = false;
+                _externalAttached = false;
+
                 DetachDataConsumer();
                 foreach (string resolvedKeyPath in _resolvedToLocalKeyPathLookup.Keys)
                 {
@@ -175,6 +236,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 ResolvedKeyPathPrefix = "";
                 DataSource = null;
                 DataController = null;
+            }
+            else
+            {
+                DebugUtilities.LogVerbose("Attempting to detach while not attached.");
             }
 
         }
@@ -301,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-  
+
 
 
         /// <summary>
@@ -336,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// If no data source is provided directly, search through this object and its parents in game object 
         /// heirarchy for the data source to use with this data consumer.
         /// </summary>
-        protected IDataSource FindNearestDataSource( IDataSource defaultDataSource = null)
+        protected IDataSource FindNearestDataSource(IDataSource defaultDataSource = null)
         {
             if (defaultDataSource == null)
             {
@@ -358,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     if (currentGO.transform.parent != null)
                     {
                         currentGO = currentGO.transform.parent.gameObject;
-                    } 
+                    }
                     else
                     {
                         currentGO = null;
@@ -373,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// If no data source is provided directly, search through this object and its parents in game object 
         /// heirarchy for the data source to use with this data consumer.
         /// </summary>
-        protected IDataController FindNearestDataController( IDataController defaultDataController = null)
+        protected IDataController FindNearestDataController(IDataController defaultDataController = null)
         {
             if (defaultDataController == null)
             {
@@ -401,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
             return defaultDataController;
-        } 
+        }
 
 
 

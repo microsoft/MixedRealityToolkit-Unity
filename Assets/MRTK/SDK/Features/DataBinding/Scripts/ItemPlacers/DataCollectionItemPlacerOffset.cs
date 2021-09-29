@@ -67,9 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override void ProcessRemovedItem(object requestRef, int itemIndex, string itemKeyPath, GameObject itemGO, bool isVisible)
         {
-            itemGO.SetActive(false);
-            _dataConsumerCollection.ReturnGameObjectForReuse(itemIndex, itemGO);
-            
+            if (itemGO != null)
+            {
+                // depending on the state of the itemGO, such as still being fetched, it may not exist
+                _dataConsumerCollection.ReturnGameObjectForReuse(itemIndex, itemGO);
+                itemGO.SetActive(false);
+            }
         }
 
         public override int GetItemCountPerPage()

@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField] private bool manageChildren = true;
 
         [Tooltip("Key path within the data source for the Sprite object.")]
-        [SerializeField] private string keyPath;
+        [SerializeField] private string keyPath = "";
 
         protected SpriteRenderer _spriteRenderer;
 

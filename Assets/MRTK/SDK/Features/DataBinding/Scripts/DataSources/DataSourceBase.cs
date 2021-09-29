@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+// Included only to log error message during debug
+using UnityEngine;
 
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -27,6 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected Dictionary<string, List<IDataConsumer>> _keyPathToDataConsumers = new Dictionary<string, List<IDataConsumer>>();
         protected HashSet<IDataConsumer> _dataConsumers = new HashSet<IDataConsumer>();
         protected Regex _findArrayIndexRegex = new Regex( @"\[(\d+)\]" );
+
+        public IDataController CachedDataController { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 
         /// <summary>
@@ -136,8 +142,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 _keyPathToDataConsumers[resolvedKeyPath] = new List<IDataConsumer>();
             }
 
-            _keyPathToDataConsumers[resolvedKeyPath].Add(dataConsumer);
-            _dataConsumers.Add(dataConsumer);
+            if (_keyPathToDataConsumers[resolvedKeyPath].Contains(dataConsumer))
+            {
+                DebugUtilities.LogVerbose("Attempting to add the same consumer listener to the same keypath:" + resolvedKeyPath);
+            }
+            else
+            {
+                _keyPathToDataConsumers[resolvedKeyPath].Add(dataConsumer);
+                _dataConsumers.Add(dataConsumer);
+            }
+
 
 
             // TODO: This is for dynamically added collection items, but could cause
