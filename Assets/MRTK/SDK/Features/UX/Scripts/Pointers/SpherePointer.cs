@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public enum GraspPointPlacement
-    {
-        BetweenFingerAndThumb,
-        Fingertip,
-    }
-
     [AddComponentMenu("Scripts/MRTK/SDK/SpherePointer")]
     public class SpherePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
+        private enum GraspPointPlacement
+        {
+            BetweenIndexFingerAndThumb,
+            IndexFingertip,
+        }
+
         private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;
 
         /// <inheritdoc />
@@ -163,12 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Location on the hand where a grasp is triggered (apllies to IMixedRealityHand only)")]
-        private GraspPointPlacement graspPointPlacement = GraspPointPlacement.BetweenFingerAndThumb;
-
-        /// <summary>
-        /// Location on the hand where a grasp is triggered (apllies to IMixedRealityHand only)
-        /// </summary>
-        public GraspPointPlacement GraspPointPlacement => graspPointPlacement;
+        private GraspPointPlacement graspPointPlacement = GraspPointPlacement.BetweenIndexFingerAndThumb;
 
         /// <summary>
         /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
@@ -280,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Gets the position of where grasp happens
-        /// For IMixedRealityHand it's determined by <see cref="GraspPointPlacement"/> (either the average of index and thumb or the fingertip).
+        /// For IMixedRealityHand it's determined by <see cref="graspPointPlacement"/> (either the average of index and thumb or the fingertip).
         /// For any other IMixedRealityController, return just the pointer origin
         /// </summary>
         public bool TryGetNearGraspPoint(out Vector3 result)
@@ -294,9 +289,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
                         {
-                            switch (GraspPointPlacement)
+                            switch (graspPointPlacement)
                             {
-                                case GraspPointPlacement.BetweenFingerAndThumb:
+                                case GraspPointPlacement.BetweenIndexFingerAndThumb:
                                     if (hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb) && thumb != null)
                                     {
                                         result = 0.5f * (index.Position + thumb.Position);
@@ -304,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                     }
                                     break;
 
-                                case GraspPointPlacement.Fingertip:
+                                case GraspPointPlacement.IndexFingertip:
                                     result = index.Position;
                                     return true;
                             }
