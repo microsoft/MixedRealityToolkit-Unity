@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
@@ -78,7 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void OnEnable()
         {
-            StartCoroutine(DelaySelfAttach());
+            //StartCoroutine(DelaySelfAttach());
+            SelfAttach();
         }
 
         /// <summary>
@@ -187,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 IDataController dataController = null;
                 if (dataSource != null)
                 {
-                    dataController = dataSource.CachedDataController;
+                    dataController = dataSource.DataController;
                 }
                 if (dataController == null)
                 {
