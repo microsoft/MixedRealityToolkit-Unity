@@ -347,6 +347,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Allows the DataSource to cache a data controller for rebinding purposes.
         /// </summary>
-        IDataController CachedDataController { get; set; }
+        IDataController DataController { get; set; }
     }
 }
