@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 // Included only to log error message during debug
 using UnityEngine;
@@ -32,7 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected HashSet<IDataConsumer> _dataConsumers = new HashSet<IDataConsumer>();
         protected Regex _findArrayIndexRegex = new Regex( @"\[(\d+)\]" );
 
-        public IDataController CachedDataController { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IDataController DataController { get => _dataController; set => _dataController = value; }
+        private IDataController _dataController;
 
 
         /// <summary>
@@ -144,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (_keyPathToDataConsumers[resolvedKeyPath].Contains(dataConsumer))
             {
-                DebugUtilities.LogVerbose("Attempting to add the same consumer listener to the same keypath:" + resolvedKeyPath);
+                DebugUtilities.LogVerbose("Attempting to add the same consumer listener to the same keypath: " + resolvedKeyPath);
             }
             else
             {
