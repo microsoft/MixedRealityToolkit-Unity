@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (!_dataObjectPool.ReturnObjectToPool(go))
                 {
-                    DebugUtilities.LogWarning("GameObject Pool is unexpectedly full during preallocation.");
+                    DebugUtilities.LogVerbose("GameObject Pool is unexpectedly full during preallocation.");
                     if (go != null)
                     {
                         Destroy(go);
@@ -385,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else
             {
-                DebugUtilities.LogWarning("Visible objects in a collection should be emptied at application level prior to deactivating a DataConsumerCollection. ");
+                DebugUtilities.LogVerbose("Visible objects in a collection should be emptied at application level prior to deactivating a DataConsumerCollection. ");
             }
 
             InitializePrefabInstance(itemGO);
