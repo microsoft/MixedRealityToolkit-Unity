@@ -39,10 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        public IDataController CachedDataController { get => _cachedDataController; set => _cachedDataController = value; }
+        public IDataController DataController { get => _dataController; set => _dataController = value; }
 
         private IDataSource _dataSource;
-        private IDataController _cachedDataController;
+        private IDataController _dataController;
 
         private void Awake()
         {
