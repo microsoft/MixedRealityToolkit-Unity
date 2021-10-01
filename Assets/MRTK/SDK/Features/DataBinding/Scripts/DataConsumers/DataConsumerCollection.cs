@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 
 
@@ -69,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected bool preAllocateItemPrefabsOnEnable = false;
 
 
-        protected IDataObjectPool _dataObjectPool = new DataObjectPool();
+        protected IDataObjectPool _dataObjectPool;
 
 
         /// <summary>
@@ -82,10 +83,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             FindNearestCollectionItemPlacer();
 
+            if (_dataObjectPool == null && itemPrefabPoolSize > 0)
+            {
+                _dataObjectPool = new DataObjectPool();
+            }
+
             if (_dataObjectPool != null)
             {
                 _dataObjectPool.SetMaximumPoolSize(itemPrefabPoolSize, true);
-                PreAllocateObjectPool();
+                if (preAllocateItemPrefabsOnEnable)
+                {
+                    PreAllocateObjectPool();
+                }
             }
 
         }
@@ -298,15 +307,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected GameObject GetPrefabInstance( bool useObjectPool = true )
         {
             GameObject newObject;
-
-            if (!useObjectPool || _dataObjectPool.IsEmpty())
-            {
-                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, GetPrefabCollectionParent());
-            } 
-            else
+            if (useObjectPool && HasObjectPool() && !_dataObjectPool.IsEmpty())
             {
                 newObject = _dataObjectPool.GetObjectFromPool() as GameObject;
             }
+            else
+            {
+                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, GetPrefabCollectionParent());
+                if (newObject != null && newObject.activeSelf)
+                {
+                    // Set to not active until the ItemPlacer can properly position this object.
+                    newObject.SetActive(false);
+                }
+            } 
 
             if (newObject == null)
             {
@@ -320,6 +333,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
+        private bool HasObjectPool()
+        {
+            return itemPrefabPoolSize > 0 && _dataObjectPool != null;
+        }
 
         protected void PreAllocateObjectPool()
         {
@@ -332,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (!_dataObjectPool.ReturnObjectToPool(go))
                 {
-                    Debug.LogWarning("GameObject Pool is unexpectedly full during preallocation.");
+                    DebugUtilities.LogWarning("GameObject Pool is unexpectedly full during preallocation.");
                     if (go != null)
                     {
                         Destroy(go);
@@ -344,8 +361,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected void InitializePrefabInstance(GameObject go)
         {
-            // Set to not active until the ItemPlacer can properly position this object.
-            go.SetActive(false);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
             go.name = "-1"; // initially mark with an item index of -1 until set otherwise.
@@ -370,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else
             {
-                Debug.LogWarning("Visible objects in a collection should be emptied at application level prior to deactivating a DataConsumerCollection. ");
+                DebugUtilities.LogWarning("Visible objects in a collection should be emptied at application level prior to deactivating a DataConsumerCollection. ");
             }
 
             InitializePrefabInstance(itemGO);
@@ -385,17 +400,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 dataConsumer.Detach();
             }
 
-            if (!_dataObjectPool.ReturnObjectToPool(itemGO))
+            itemGO.SetActive(false);
+
+            if (HasObjectPool() && _dataObjectPool.ReturnObjectToPool(itemGO))
             {
-                if (itemGO != null)
-                {
-                    Destroy(itemGO);
-                }
+                // returned to object pool, so don't destroy
+                itemGO = null;
+            }
+
+            if (itemGO != null)
+            {
+                // no object pool or was not accepted by object pool
+                Destroy(itemGO);
             }
         }
 
         protected Transform GetPrefabObjectPoolParent()
         {
+            if ( prefabPoolParent == null)
+            {
+                if ( (prefabPoolParent = new GameObject()) != null )
+                {
+                    //make sibling of the collection itself
+                    prefabPoolParent.transform.parent = GetPrefabCollectionParent().parent;
+                }
+            }
+
             return prefabPoolParent != null ? prefabPoolParent.transform : this.transform;
         }
 
