@@ -422,6 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 if ( (prefabPoolParent = new GameObject()) != null )
                 {
                     //make sibling of the collection itself
+                    prefabPoolParent.name = "Collection Prefab Object Pool";
                     prefabPoolParent.transform.parent = GetPrefabCollectionParent().parent;
                 }
             }
