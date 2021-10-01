@@ -228,7 +228,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 ci.Detach();
             }
             _localKeypaths.Clear();
-
         }
 
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
@@ -238,24 +237,28 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (!_componentInfoLookup.ContainsKey(component))
             {
                 componentInfo = new ComponentInformation(component);
-                _componentInfoLookup[component] = componentInfo;
 
                 MatchCollection matches = GetVariableMatchingRegex().Matches(componentInfo.GetTemplate());
-
-                foreach (Match match in matches)
+                if (matches.Count > 0)
                 {
-                    string localKeyPath = match.Groups[1].Value;
+                    _componentInfoLookup[component] = componentInfo;
 
-                    string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
-
-                    componentInfo.AddKeyPathListener(resolvedKeyPath, localKeyPath, match.Value);
-
-                    if (_localKeypaths.Add(localKeyPath)) 
+                    foreach (Match match in matches)
                     {
-                        // if first occurance, then add keypath listener on data source
-                        AddKeyPathListener(localKeyPath);
+                        string localKeyPath = match.Groups[1].Value;
+
+                        string resolvedKeyPath = DataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
+
+                        componentInfo.AddKeyPathListener(resolvedKeyPath, localKeyPath, match.Value);
+
+                        if (_localKeypaths.Add(localKeyPath))
+                        {
+                            // if first occurance, then add keypath listener on data source
+                            AddKeyPathListener(localKeyPath);
+                        }
                     }
                 }
+ 
             }
         }
 
