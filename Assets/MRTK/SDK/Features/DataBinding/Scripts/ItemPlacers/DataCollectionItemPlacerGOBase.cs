@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -271,7 +270,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else
             {
-                DebugUtilities.LogVerbose("Item " + indexAsId + " is already in dictionary for CollectionItemPlacer.");
+                DebugUtilities.LogWarning("Item " + indexAsId + " is already in dictionary for CollectionItemPlacer." );
+
             }
         }
 
@@ -775,7 +775,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (keepGameObjectsInIndexOrder)
             {
-                itemGO.transform.SetSiblingIndex(FindOrderedInsertPoint(itemIndex) );
+                itemGO.transform.SetSiblingIndex(FindOrderedInsertPoint(itemGO.transform.parent, itemIndex) );
             }
 
             State currentState;
@@ -811,26 +811,28 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         
-        protected int FindOrderedInsertPoint(int newItemIndex )
+        protected int FindOrderedInsertPoint(Transform parentTransform, int newItemIndex )
         {
-            Transform containerObject = this.transform;
+            int midSlot = 0;
             int minSlot = 0;
-            int maxSlot = containerObject.childCount - 2;
+            int maxSlot = parentTransform.childCount - 1;
+            int cmp = 0;
 
-            while (minSlot <= maxSlot)
+            while (minSlot < maxSlot)
             {
-                int midSlot = (minSlot + maxSlot) / 2;
-                Transform transformAtSlot = containerObject.GetChild(midSlot);
+                midSlot = (minSlot + maxSlot) / 2;
+                Transform transformAtSlot = parentTransform.GetChild(midSlot);
 
-                int valueAtSlot = Int32.Parse(transformAtSlot.gameObject.name);
+                int valueAtMidSlot = Int32.Parse(transformAtSlot.gameObject.name);
+                cmp = valueAtMidSlot - newItemIndex;
 
-                if ( valueAtSlot < newItemIndex)
+                if (cmp < 0)
                 {
                     minSlot = midSlot + 1;
                 }
-                else if (valueAtSlot > newItemIndex)
+                else if (cmp > 0)
                 {
-                    maxSlot = midSlot - 1;
+                    maxSlot = midSlot;
                 }
                 else
                 {
@@ -838,7 +840,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
 
-            return maxSlot + 1;
+            if (cmp > 0)
+                midSlot++;
+
+            return midSlot + 1;
         }
 
 
@@ -909,7 +914,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
                 else
                 {
-                    DebugUtilities.LogVerbose("Attempting to remove a collection item without specifying an integer value representing the item's index in the collection. Can't properly remove item from view.");
+                    DebugUtilities.LogWarning("Attempting to remove a collection item without specifying an integer value representing the item's index in the collection. Can't properly remove item from view.");
                 }
             }
             else if (dataChangeType == DataChangeType.CollectionReset)
