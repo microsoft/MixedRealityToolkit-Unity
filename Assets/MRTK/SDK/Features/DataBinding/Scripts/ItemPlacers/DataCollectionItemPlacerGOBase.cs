@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else
             {
-                DebugUtilities.LogWarning("Item " + indexAsId + " is already in dictionary for CollectionItemPlacer." );
+                DebugUtilities.LogVerbose("Item " + indexAsId + " is already in dictionary for CollectionItemPlacer." );
 
             }
         }
@@ -914,7 +914,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
                 else
                 {
-                    DebugUtilities.LogWarning("Attempting to remove a collection item without specifying an integer value representing the item's index in the collection. Can't properly remove item from view.");
+                    DebugUtilities.LogVerbose("Attempting to remove a collection item without specifying an integer value representing the item's index in the collection. Can't properly remove item from view.");
                 }
             }
             else if (dataChangeType == DataChangeType.CollectionReset)
