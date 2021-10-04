@@ -342,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// option more efficient.
         /// </remarks>
 
-        void NotifyAllChanged();
+        void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified );
 
         /// <summary>
         /// Allows the DataSource to cache a data controller for rebinding purposes.

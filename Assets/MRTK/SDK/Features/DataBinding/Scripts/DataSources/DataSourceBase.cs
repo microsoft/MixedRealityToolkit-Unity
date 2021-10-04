@@ -153,8 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 _dataConsumers.Add(dataConsumer);
             }
 
-
-
             // TODO: This is for dynamically added collection items, but could cause
             //       unintented side effects. Need better solution.
             object value = GetValue(resolvedKeyPath);
@@ -166,9 +164,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     OnCollectionListenerAdded(resolvedKeyPath, value);
                 }
 
+                /****
+                 * Now down at end of Attach in DataConsumer
+                 
                 dataConsumer.DataChangeSetBegin(this);
                 dataConsumer.NotifyDataChanged(this, resolvedKeyPath, value, DataChangeType.DatumAdded);
                 dataConsumer.DataChangeSetEnd(this);
+                */
             }
 
         }
@@ -289,22 +291,30 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        public void NotifyAllChanged()
+        public void NotifyAllChanged( DataChangeType dataChangeType = DataChangeType.DatumModified)
         {
-            DataChangeSetBegin();
-
-            foreach ( KeyValuePair<string,List<IDataConsumer>> dataConsumersKeyValue in _keyPathToDataConsumers)
+            if (IsDataSourceAvailable())
             {
-                List<IDataConsumer> dataConsumers = dataConsumersKeyValue.Value;
+                DataChangeSetBegin();
+                List< KeyValuePair<string, List<IDataConsumer>>> dataConsumersKeyValuesCopy = new List<KeyValuePair<string, List<IDataConsumer>>>();
 
-                foreach (IDataConsumer dataConsumer in dataConsumers)
+                foreach (KeyValuePair<string, List<IDataConsumer>> dataConsumersKeyValue in _keyPathToDataConsumers)
                 {
-                    dataConsumer.NotifyDataChanged(this, dataConsumersKeyValue.Key, GetValue(dataConsumersKeyValue.Key), DataChangeType.DatumModified );
+                    dataConsumersKeyValuesCopy.Add(dataConsumersKeyValue);
                 }
+
+                    foreach (KeyValuePair<string, List<IDataConsumer>> dataConsumersKeyValue in dataConsumersKeyValuesCopy)
+                {
+                    List<IDataConsumer> dataConsumers = dataConsumersKeyValue.Value;
+
+                    foreach (IDataConsumer dataConsumer in dataConsumers)
+                    {
+                        dataConsumer.NotifyDataChanged(this, dataConsumersKeyValue.Key, GetValue(dataConsumersKeyValue.Key), dataChangeType);
+                    }
+                }
+
+                DataChangeSetEnd();
             }
-
-            DataChangeSetEnd();
-
         }
 
         /// <summary>

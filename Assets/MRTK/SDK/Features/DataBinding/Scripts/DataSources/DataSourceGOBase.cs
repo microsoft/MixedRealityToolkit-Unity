@@ -247,11 +247,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        public void NotifyAllChanged()
+        public void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified)
         {
             if (DataSource != null)
             {
-                DataSource.NotifyAllChanged();
+                DataSource.NotifyAllChanged(dataChangeType);
             }
         }
     }
