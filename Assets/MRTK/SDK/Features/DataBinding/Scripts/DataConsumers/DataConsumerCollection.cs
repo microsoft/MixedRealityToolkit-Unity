@@ -252,6 +252,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Any prefab data consumers in the prefab are automatically connected to the same data source as the collection itself, and
         /// its key path prefix is set to the full resolve prefix for this collection combined with the array index position of the item in the
         /// array.
+        /// 
+        /// NOTE: If you need to know that an item has been created, override ItemAdded().
         /// </remarks>
         /// 
         /// <param name="itemPlacer">Item placer to receive the specified range of prefabs.</param>
@@ -279,12 +281,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 // After PlaceItem because prefab is likely to be not Active until this point and initializing
                 // prior to being Active adds complexity and/or causes exceptions.
                 UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
-
+                ItemAdded(itemIndex, childPrefab);
                 itemIndex++;
             }
             itemPlacer.EndPlacement();
 
         }
+
+        public virtual void ItemAdded(int itemIndex, GameObject itemPrefab )
+        {
+            //No default behavior. Provided to override if useful.
+        }
+
+        public virtual void ItemRemoved(int itemIndex, GameObject itemPrefab)
+        {
+            //No default behavior. Provided to override if useful.
+        }
+
+
 
 
         /// <summary>
@@ -373,12 +387,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <remarks>
         /// This is the mechanism for returning a prefab to a pool of availabe prefabs so that they
         /// can be repopulated with new embedded data, but otherwise are ready-to-go.
+        /// 
+        /// Note: If you need to know when an item has been removed, override ItemRemoved().
         /// </remarks>
         /// 
         /// <param name="itemIndex">Index of the game object being returned.</param>
         /// <param name="itemGO">The game object itself.</param>
         public void ReturnGameObjectForReuse(int itemIndex, GameObject itemGO )
         {
+            ItemRemoved(itemIndex, itemGO);
+
             if (isActiveAndEnabled)
             {
                 itemGO.transform.parent = GetPrefabObjectPoolParent();
