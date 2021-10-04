@@ -78,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void OnEnable()
         {
-            //StartCoroutine(DelaySelfAttach());
-            SelfAttach();
+            StartCoroutine(DelaySelfAttach());
+            //SelfAttach();
         }
 
         /// <summary>
@@ -170,6 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 AttachDataConsumer();
                 FindVariablesToManage();
+                DataSource.NotifyAllChanged( DataChangeType.DatumAdded );
             }
         }
 
