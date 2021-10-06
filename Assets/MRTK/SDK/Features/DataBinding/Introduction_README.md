@@ -29,6 +29,8 @@ It enables the following functionality:
   * Fetching is load balanced across multiple frames
 5. List prefab pooling
   * Prefabs are reused and repopulated to reduce GC and instantiation time.
+6. Static or dynamic elements can be themed at runtime.
+
 
 Functionality on the roadmap:
 
@@ -169,12 +171,60 @@ list of products, photos, or contacts.
 This is accomplished by assigning an item placer to the collection data consumer. This item placer is the logic tha knows how to request list items, accept prefabs 
 that have been populated with variable data, and then present them to the user, typically by inserting them into a list managed by a ux layout component for lists.
 
+### Data Consumer Theming
+
+Theming is accomplished by Data Consumers that inherit from DataConsumerThemeBase\<T\>, DataConsumerTextStyle and custom DataConsumer classes that any developer can implement to enhance the theming support. 
+
+The DataConsumerThemeBase\<T\> base class provides logic to use an integer or key datum from a primary data source to then look up the desired final value from a secondary theme database. This is accomplished by mapping the input data to a theme keypath, and then using that theme keypath to retrieve the final value.
+
+Swapping themes at runtime is accomplished by replacing the data at the theme data source with a new data set laid out in the same data object model topology. DataSourceReflection can be used with ScriptableObjects where each profile represents a theme.
+
+When both runtime theming and dynamic data binding are used together, a DataConsumerThemeHelper class can be specified in any DataConsumerThemeBase derived class to notify when a theme has changed.
+
+The method of applying a theme to dynamic data can be automatically detect in most cases, or it can be explicitly specified. 
+
+When the datum is used to select the correct item from the theme data source, the process is:
+- a datum from the primary data source is used to select or construct the correct _theme keypath_
+- the theme keypath is used to retrieve a value from the theme data source specified on the DataConsumerThemeHelper
+- the retrieved theme value is analyzed to auto-detect correct retrieval method
+- the final data item of correct type (eg. Material, Sprite, Image) is then retrieved using the auto-detected method.
+
+
+#### Data Types
+
+The expected data type of the datum used to retrieve the desired object can be one of the following:
+
+Data Type | Description
+:---: | ---
+AutoDetect | The datum is analyzed and the correct interpretation is automatically detected. See "Auto-detect Data Type" below for more information.
+DirectValue | The datum is expected to be of desired type T (eg. Material, Sprite, Image) and used directly
+DirectLookup | An integral index or string key used to look up the desired value from a local lookup table
+StaticThemedValue | Static themed object of the correct type is retrieved from the theme data source at specified theme keypath.
+ThemeKeypathLookup |  An integral index or string key is used to look up the desired theme keypath
+ThemeKeypathProperty | A string property name that will be appended to the theme base keypath provided in the Theme 
+ResourcePath | A resource path for retrieving the value from a Unity resource. (May begin with "reesource://")
+FilePath | A file path for retrieving a Unity streaming asset. (May begin with "file://")
+
+#### Auto-detect Data Type
+Autodetect analyzes the data received and decides the retrieval method as follows (where T is the desired type such as Material, Sprite, Image). Autodetect can happen in two places in the process: On the primary datum or on the themed value.
+
+Datum Type | Considerations | Has Theme Helper | Behavior
+:---:|---|:---:|---
+T | n/a | Y/N | Used directly with no theming
+int | any integral primitive or Int32 parsable string | No | Passed as index to derived GetObjectByIndex(n) to retrieve Nth object of type T.
+int | any integral primitive or Int32 parsable string | Yes | Index to fetch Nth theme keypath from local lookup and then retrieve themed object via auto-detect.
+string | Format: "resource://{resourcePath}" | Y/N | resourcePath is used to retrieve Unity Resource
+string | Format: "file://{filePath} | Y/N | filePath is used to retrieve a streaming asset
+string | Other | No | Passed as key to derived GetObjectByKey() to retrieve matching object of type T.
+string | Other | Yes | Key to fetch matching theme keypath from local lookup and then retrieve themed object via auto-detect.
+
+
 ## Getting Started
 
 ### Requirements
 
-- Unity 2019.4
-- TextMeshPro 2.1.4 or greater
+- Unity 2019.4 or later
+- TextMeshPro 2.1.4 or later
 
 
 ### Sample Scene
