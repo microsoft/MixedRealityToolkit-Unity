@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -10,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     public class DataSourceGODictionary : DataSourceGOBase
     {
+        public delegate void NotifyKeypathValueChangedDelegate(string keyPath, string value);
 
         [Serializable]
         public class KeyPathValue
@@ -21,7 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
             [Tooltip("A value accessible via its key path.")]
-            [SerializeField] public string Value;
+            [SerializeField]
+            public string Value;
 
         }
 
@@ -29,9 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected KeyPathValue[] keyPathValues;
 
+        private bool pendingUpdate = false;
 
-
-        public override void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
+          public override void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             base.SetValue(resolvedKeyPath, newValue, isAtomicChange);
             foreach( KeyPathValue kpv in keyPathValues)
@@ -60,6 +63,35 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
             DataSource.DataChangeSetEnd();
+        }
+
+        private void Update()
+        {
+            if ( pendingUpdate )
+            {
+                UpdateChangedInspectorValues();
+                pendingUpdate = false;
+            }
+        }
+
+
+        private void UpdateChangedInspectorValues()
+        {
+            DataSource.DataChangeSetBegin();
+            foreach (KeyPathValue keyPathValue in keyPathValues)
+            {
+                string oldValue = DataSource.GetValue(keyPathValue.KeyPath) as string;
+                if ( !oldValue.Equals( keyPathValue.Value ) ) {
+                    DataSource.SetValue(keyPathValue.KeyPath, keyPathValue.Value);
+                }
+            }
+            DataSource.DataChangeSetEnd();
+        }
+
+
+        void OnValidate()
+        {
+            pendingUpdate = true;
         }
     }
 }

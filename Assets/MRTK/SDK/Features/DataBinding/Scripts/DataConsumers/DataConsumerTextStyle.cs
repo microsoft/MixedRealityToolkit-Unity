@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using TMPro;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -31,18 +32,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private string styleSheetKeyPath = "stylesheet";
 
-        [Tooltip("Manage sprites in child game objects as well as this one.")]
+        [Tooltip("Resource name prefix for constructing the correct resource name.")]
+        [SerializeField]
+        private string resourcePrefix = "Stylesheets/";
+
+        [Tooltip("Manage stylesheets for TMPro Components in child game objects as well as this one.")]
         [SerializeField]
         private bool manageChildren = true;
 
-        protected List<TextMeshProUGUI> _textComponents = new List<TextMeshProUGUI>();
+        protected List<Component> _textComponents = new List<Component>();
 
 
 
         protected override Type[] GetComponentTypes()
         {
 
-            Type[] types = { typeof(TextMeshProUGUI) };
+            Type[] types = { typeof(TextMeshProUGUI), typeof(TextMeshPro) };
             return types;
         }
 
@@ -51,12 +56,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return manageChildren;
         }
 
-
+        protected override void AttachDataConsumer()
+        {
+            AddKeyPathListener(styleSheetKeyPath);
+        }
 
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType )
         {
 
-            string stylesheetPath = "Stylesheets/" + value.ToString();
+            string stylesheetPath = resourcePrefix + value.ToString();
 
             TMP_StyleSheet tmpStyleSheet = Resources.Load<TMP_StyleSheet>(stylesheetPath);
 
@@ -66,12 +74,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else
             {
-                foreach (TextMeshProUGUI textMeshComponent in _textComponents)
+                foreach (Component textMeshComponent in _textComponents)
                 {
 #if UNITY_2019_1_OR_NEWER
-                    textMeshComponent.styleSheet = tmpStyleSheet;
+                    if ( textMeshComponent is TextMeshPro)
+                    {
+                        TextMeshPro tmp = textMeshComponent as TextMeshPro;
+
+                        tmp.styleSheet = tmpStyleSheet;
+                    } else if ( textMeshComponent is TextMeshProUGUI)
+                    {
+                        TextMeshProUGUI tmpUGUI = textMeshComponent as TextMeshProUGUI;
+
+                        tmpUGUI.styleSheet = tmpStyleSheet;
+                    }
 #else
-                    Debug.LogWarning("TextMeshPro stylesheets only work in Unity 2019 or later.");
+                    DebugUtilities.LogWarning("TextMeshPro stylesheets only work in Unity 2019 or later.");
 #endif
                 }
             }
@@ -84,8 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {   
             // We only asked for TextMeshProGUI components, so we can confidently cast here.
 
-            _textComponents.Add(component as TextMeshProUGUI);
-            AddKeyPathListener(styleSheetKeyPath);
+            _textComponents.Add(component);
         }
 
     }

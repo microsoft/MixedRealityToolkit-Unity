@@ -20,15 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// </remarks>
     /// 
     [Serializable]
-    public class DataConsumerSprite : DataConsumerGOBase
+    public class DataConsumerSprite : DataConsumerThemableBase<Sprite>
     {
-        [Tooltip("Manage a sprite in either this or a child game object.")]
-        [SerializeField] private bool manageChildren = true;
 
-        [Tooltip("Key path within the data source for the Sprite object.")]
-        [SerializeField] private string keyPath = "";
-
-        protected SpriteRenderer _spriteRenderer;
 
         protected override Type[] GetComponentTypes()
         {
@@ -38,26 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected override bool ManageChildren()
+        protected override void SetObject(Component component, object inValue, Sprite sprite)
         {
-            return manageChildren;
+            SpriteRenderer renderer = component as SpriteRenderer;
+
+            renderer.sprite = sprite;
         }
-
-
-        protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
-        {
-            _spriteRenderer = component as SpriteRenderer;
-            AddKeyPathListener(keyPath);
-        }
-
-
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
-        {
-            if (localKeyPath == keyPath)
-            {
-                 _spriteRenderer.sprite = value as Sprite;
-            }
-        }
-
     }
 }

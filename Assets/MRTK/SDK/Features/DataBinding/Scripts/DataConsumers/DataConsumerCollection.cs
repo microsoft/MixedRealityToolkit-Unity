@@ -55,11 +55,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected int itemPrefabPoolSize = 20;
 
-        [Tooltip("Optional parent object to hold game objects in the object pool. Default is the GameObject of this component.")]
+        [Tooltip("*Optional) Parent object used to hold reusable prefabs in the object pool. Default is the GameObject of this component.")]
         [SerializeField]
         protected GameObject prefabPoolParent;
 
-        [Tooltip("Optional parent object to hold the collection prefabs. Default is the GameObject of this component. NOTE: If collection is on this object and object pool is elsewhere, objects won't be properly recycled if SetActive=false is executed before a Detach(). ")]
+        [Tooltip("(Optional) Parent object used to hold active collection prefabs. Default is the GameObject of this component. NOTE: If collection is on this object and object pool is elsewhere, objects can't be properly recycled if SetActive=false is executed before a Detach(). ")]
         [SerializeField]
         protected GameObject collectionParent;
 

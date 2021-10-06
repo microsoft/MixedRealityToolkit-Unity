@@ -23,9 +23,29 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     public abstract class DataSourceGOBase : MonoBehaviour, IDataSource, IDataSourceProvider
     {
-        [Tooltip("Optional DataKeyPathMapper that translates between local view key paths and data source key paths. This is useful for re-using prefabs.")]
+        [Tooltip("(Optional) Data source type. Can be used by data consumers to automatically find and attach to the correct data source. Eg. This is useful for differentiating between 'data' and 'theme' data sources.")]
+        [SerializeField]
+        protected string dataSourceType;
+
+
+        [Tooltip("(Optional) DataKeyPathMapper that translates between local view key paths and data source key paths. This is useful for re-using prefabs.")]
         [SerializeField]
         private DataKeyPathMapperGODictionary keyPathMapper = null;
+
+
+        public string DataSourceType
+        {
+            get
+            {
+                return DataSource.DataSourceType;
+            }
+
+            set
+            {
+                DataSource.DataSourceType = value;
+                dataSourceType = value;
+            }
+        }
 
         protected IDataSource DataSource
         {
@@ -58,6 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     _dataSource.SetDataKeyPathMapper(keyPathMapper as IDataKeyPathMapper);
                 }
+
+                _dataSource.DataSourceType = dataSourceType;
 
                 // one time initialization of a data source
                 InitializeDataSource();

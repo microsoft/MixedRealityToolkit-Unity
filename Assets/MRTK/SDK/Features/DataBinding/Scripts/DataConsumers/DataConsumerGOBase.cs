@@ -30,6 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [Serializable]
     public abstract class DataConsumerGOBase : MonoBehaviour, IDataConsumer
     {
+        [Tooltip("(Optional) Data source type to identify an appropriate data source for automatic attachment. If no type is provided, the first data source found in parents will be used.")]
+        [SerializeField]
+        protected string dataSourceType;
+
+
         public string ResolvedKeyPathPrefix { get; set; } = "";
 
 
@@ -417,8 +422,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         if ((dataSourceComponent as MonoBehaviour).enabled)
                         {
                             IDataSourceProvider dataSourceProvider = dataSourceComponent as IDataSourceProvider;
-                            defaultDataSource = dataSourceProvider.GetDataSource();
-                            break;
+                            string dataSourceTypeToCheck = dataSourceProvider.GetDataSource().DataSourceType;
+                            // null or empty is '*' wildcard
+                            if (String.IsNullOrEmpty(dataSourceType) || dataSourceType.Equals(dataSourceTypeToCheck)) {
+                                defaultDataSource = dataSourceProvider.GetDataSource();
+                                break;
+                            }
                         }
                     }
 

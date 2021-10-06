@@ -84,6 +84,31 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// </summary>
     public interface IDataSource
     {
+        /// <summary>
+        /// Get the data source type
+        /// </summary>
+        /// <remarks>
+        /// The data source type is an arbitrary string type that can be used
+        /// by data consumers to find the correct data source to listen to.
+        /// 
+        /// The value is arbitrary. In a simple use case, it can be used to differentiate
+        /// between a "data" and a "theme" data source when theming is in use.
+        /// In more sophisticated applications, there can be any 
+        /// variety of types to ensure data consumers can find and are attached to the correct
+        /// data source.
+        /// 
+        /// CAUTION: Changing the type while attached to data consumers may create unintended 
+        /// behavior. The setter is provided for setting the type during initialization
+        /// prior to attachment by data consumers.
+        /// </remarks>
+        string DataSourceType { get; set; }
+
+        /// <summary>
+        /// An optional data controller
+        /// </summary>
+        /// <remarks>
+        /// This data controller will be bound to any DataConsumers that are attached to this data source.</remarks>
+        IDataController DataController { get; set; }
 
         /// <summary>
         /// Set a keyPath mapper
@@ -344,9 +369,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified );
 
-        /// <summary>
-        /// Allows the DataSource to cache a data controller for rebinding purposes.
-        /// </summary>
-        IDataController DataController { get; set; }
+
     }
 }

@@ -39,6 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
+
+        public string DataSourceType { get; set; }
+
+
+        /// <summary>
+        /// Implements IDataSource method. See IDataSource.cs for more information
+        /// </summary>
         public void SetDataKeyPathMapper(IDataKeyPathMapper keyPathMapper)
         {
             _dataKeyPathMapper = keyPathMapper;
