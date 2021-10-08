@@ -97,6 +97,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             gameObject.SetActive(false);
         }
 
+        public void CloseImmediate()
+        {
+            if (state != ProgressIndicatorState.Open)
+            {
+                throw new System.Exception("Can't close in state " + state);
+            }
+
+            state = ProgressIndicatorState.Closed;
+            gameObject.SetActive(false);
+        }
+
         /// <inheritdoc/>
         public async Task AwaitTransitionAsync()
         {

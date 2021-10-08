@@ -95,6 +95,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             gameObject.SetActive(false);
         }
 
+        public void CloseImmediate()
+        {
+            if (state != ProgressIndicatorState.Open)
+            {
+                throw new System.Exception("Can't close in state " + state);
+            }
+
+            StopOrbsImmediately();
+            state = ProgressIndicatorState.Closed;
+            gameObject.SetActive(false);
+        }
+
         /// <inheritdoc/>
         public async Task AwaitTransitionAsync()
         {
@@ -140,6 +152,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             stopRequested = true;
             rotationWhenStopped = angles[0];
+        }
+
+        private void StopOrbsImmediately()
+        {
+            for (int i = 0; i < orbs.Length; ++i)
+            {
+                propertyBlocks[i].SetColor("_Color", new Color(1, 1, 1, 0));
+                dots[i].SetPropertyBlock(propertyBlocks[i]);
+                orbs[i].transform.localRotation = Quaternion.identity;
+            }
+
+            hasAnimationFinished = true;
         }
 
         private void Awake()
