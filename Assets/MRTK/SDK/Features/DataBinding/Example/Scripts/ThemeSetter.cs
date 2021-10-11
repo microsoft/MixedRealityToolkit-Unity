@@ -22,6 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected string keyPathForTheme;
 
+        [SerializeField]
+        protected DataSourceThemeTest themes;
+
+
         protected int _currentTheme = 0;
 
 
@@ -33,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
             UpdateThemeName();
+            themes.ChangeTheme(_currentTheme);
         }
 
         public void SetTheme( int themeIdx )
@@ -44,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _currentTheme = themeIdx;
 
             UpdateThemeName();
+            themes.ChangeTheme(_currentTheme);
         }
 
 
@@ -53,6 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 dataSource.SetValue(keyPathForTheme, themeNames[_currentTheme]);
             }
+        }
+
+        public void Update()
+        {
         }
     }
 }

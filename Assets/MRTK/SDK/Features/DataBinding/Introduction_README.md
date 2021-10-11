@@ -197,16 +197,20 @@ The expected data type of the datum used to retrieve the desired object can be o
 Data Type | Description
 :---: | ---
 AutoDetect | The datum is analyzed and the correct interpretation is automatically detected. See "Auto-detect Data Type" below for more information.
-DirectValue | The datum is expected to be of desired type T (eg. Material, Sprite, Image) and used directly
-DirectLookup | An integral index or string key used to look up the desired value from a local lookup table
+DirectValue | The datum is expected to be of desired type T (eg. Material, Sprite, Image) and used directly.
+DirectLookup | An integral index or string key used to look up the desired value from a local lookup table.
 StaticThemedValue | Static themed object of the correct type is retrieved from the theme data source at specified theme keypath.
-ThemeKeypathLookup |  An integral index or string key is used to look up the desired theme keypath
-ThemeKeypathProperty | A string property name that will be appended to the theme base keypath provided in the Theme 
+ThemeKeypathLookup |  An integral index or string key is used to look up the desired theme keypath.
+ThemeKeypathProperty | A string property name that will be appended to the theme base keypath provided in the Theme .
 ResourcePath | A resource path for retrieving the value from a Unity resource. (May begin with "reesource://")
 FilePath | A file path for retrieving a Unity streaming asset. (May begin with "file://")
 
 #### Auto-detect Data Type
-Autodetect analyzes the data received and decides the retrieval method as follows (where T is the desired type such as Material, Sprite, Image). Autodetect can happen in two places in the process: On the primary datum or on the themed value.
+Autodetect analyzes the data received and decides the retrieval method automatically. In the table below, T represeents the desired type such as Material, Sprite, Image. Autodetect can occur at two places in the process: 
+
+- On the primary datum value itself.
+- On the themed value retrieved via the primary datum.
+
 
 Datum Type | Considerations | Has Theme Helper | Behavior
 :---:|---|:---:|---
@@ -217,6 +221,15 @@ string | Format: "resource://{resourcePath}" | Y/N | resourcePath is used to ret
 string | Format: "file://{filePath} | Y/N | filePath is used to retrieve a streaming asset
 string | Other | No | Passed as key to derived GetObjectByKey() to retrieve matching object of type T.
 string | Other | Yes | Key to fetch matching theme keypath from local lookup and then retrieve themed object via auto-detect.
+
+An example for retrieving a themed status icon from a database containing a numeric status value:
+
+1. The keypath for a status icon in the database is status.sprite_index. 
+2. The retrieved value for status.sprite_index is 2 which means "cancelled" status.  
+3. The N=2 (ie. 3rd) entry in DataConsumerSprite lookup is set to "Status.Icons.Cancelled". 
+4. This is the keypath used to retrieve a value from the "theme" data source. 
+5. The value for the "Status.Icons.Cancelled" keypath is "resource://Sprites/sprite_cancelled".  
+6. Auto-detect determines that it should retrieve the icon via a resource located at "Resources/Sprites/sprite_cancelled"
 
 
 ## Getting Started
