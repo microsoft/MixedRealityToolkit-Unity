@@ -64,6 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected DataType expectedDataType;
 
+
+
         [Tooltip("(Optional) Data Consumer Theme Helper is used to manage communication with the theme-focused data source in situations where an element is both dynamic and themed.")]
         [SerializeField]
         protected DataConsumerThemeHelper dataConsumerThemeHelper;
@@ -81,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("(Optional) List of <optionalKey, themeKeypath> pairs, where either an index or a key data source is used to lookup a theme keypath.")]
         [SerializeField]
         protected ValueToKeypath[] valueToThemeKeypathLookup;
+
 
         public abstract void ProcessThemeDataChanged(IDataConsumer themeHelper, string resolvedKeyPath, string localKeyPath, object inValue, DataChangeType dataChangeType);
     }
@@ -185,6 +188,40 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public const string StreamingAssetPrefix = "file://";
 
         protected List<Component> componentsToManage = new List<Component>();
+        protected bool manageComponentsInChildren = true;
+
+        protected override bool ManageChildren()
+        {
+            return manageComponentsInChildren;
+        }
+
+
+        protected void Awake()
+        {
+            manageComponentsInChildren = true;
+
+            if (DoesManageSpecificComponents())
+            {
+                manageComponentsInChildren = false;
+            }
+            else
+            {
+                Type[] types = GetComponentTypes();
+                foreach (Type componentType in types)
+                {
+                    if (GetComponents(componentType).Length > 0)
+                    {
+                        manageComponentsInChildren = false;
+                    }
+                }
+            }
+        }
+
+        protected virtual bool DoesManageSpecificComponents()
+        {
+            return false;
+        }
+
 
         /// <summary>
         /// Given an int N, get the nth object of type T
@@ -211,13 +248,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-
-  
+        /// <summary>
+        /// Add a component to manage by this data consumer
+        /// </summary>
+        /// <param name="component"></param>
+        protected void AddComponentToManage( Component component )
+        {
+            if (!componentsToManage.Contains(component))
+            {
+                componentsToManage.Add(component);
+            }
+        }
 
 
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
-            componentsToManage.Add(component);
+            AddComponentToManage(component);
         }
 
         protected override void AttachDataConsumer()

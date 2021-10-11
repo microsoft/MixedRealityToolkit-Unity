@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         const int DefaultPoolSize = 50;
 
         protected Queue<object> _objectPoolObjects = new Queue<object>();
+        protected Dictionary<int, object> _prefetchedObjects = new Dictionary<int, object>();
+
         protected int _poolMaximumSize = DefaultPoolSize;
 
         public DataObjectPool(int poolSize = DefaultPoolSize)
@@ -42,10 +44,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public bool IsEmpty()
         {
-            return _objectPoolObjects.Count == 0;
+            return _objectPoolObjects.Count == 0 && _prefetchedObjects.Count == 0;
         }
 
 
+        public bool AddPrefetchedObjectToPool( int id, object objectToReturn)
+        {
+            if (_objectPoolObjects.Count + _prefetchedObjects.Count < _poolMaximumSize)
+            {
+                _prefetchedObjects[id] = objectToReturn;
+                return true;
+            }
+            return false;
+        }
+
+ 
         public bool ReturnObjectToPool(object objectToReturn)
         {
             if (objectToReturn == null)
@@ -54,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             else
             {
-                if (_objectPoolObjects.Count < _poolMaximumSize)
+                if (_objectPoolObjects.Count + _prefetchedObjects.Count < _poolMaximumSize)
                 {
                     _objectPoolObjects.Enqueue(objectToReturn);
                     return true;
@@ -64,16 +77,47 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return false;
         }
 
+        public bool TryGetPrefetchedObject(int id, out object returnedObject)
+        {
+            if (_prefetchedObjects.ContainsKey(id))
+            {
+                returnedObject = _prefetchedObjects[id];
+                _prefetchedObjects.Remove(id);
+                return true;
+            }
+            else if (_objectPoolObjects.Count > 0)
+            {
+                returnedObject = _objectPoolObjects.Dequeue();
+                return false;
+            }
+            else
+            {
+                returnedObject = null;
+                return false;
+            }
+        }
+
         public object GetObjectFromPool()
         {
             if (_objectPoolObjects.Count > 0)
             {
                 return _objectPoolObjects.Dequeue();
             }
-            else
+            else if (_prefetchedObjects.Count > 0 )
             {
-                return null;
+                //TODO: add a least recently used strategy
+                Dictionary<int, object>.Enumerator enumerator = _prefetchedObjects.GetEnumerator();
+
+                if (enumerator.MoveNext())
+                {
+                    KeyValuePair<int, object> kvPair = enumerator.Current;
+                    _prefetchedObjects.Remove(kvPair.Key);
+                    return kvPair.Value;
+                }
+
             }
+
+            return null;
         }
     }
 }

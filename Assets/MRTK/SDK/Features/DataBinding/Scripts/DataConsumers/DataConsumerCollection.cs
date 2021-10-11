@@ -64,14 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected GameObject collectionParent;
 
 
-
         [Tooltip("If set, the item prefab pool will be pre-allocated with instantiated prefabs to reduce run-time impact on frame rate.")]
         [SerializeField]
         protected bool preAllocateItemPrefabsOnEnable = false;
 
 
         protected IDataObjectPool _dataObjectPool;
-
+        protected Vector3 _offscreenPosition = new Vector3(Int32.MinValue, Int32.MinValue, Int32.MinValue);
 
         /// <summary>
         /// One time initialization of this data consumer.         /// in the initialization sequence.
@@ -227,6 +226,44 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+
+        public void PrefetchCollectionItems(int indexRangeStart, int indexRangeCount)
+        {
+            // TODO: Not enabled until OnEnable/OnDisable issues can be resolved.
+            // OnDisable is tightly coupled to SetActive(false) which effectively
+            // undoes any of the prefetch work.
+            StartCoroutine(FetchPrefabs(indexRangeStart, indexRangeCount));
+        }
+
+
+        protected IEnumerator FetchPrefabs(int indexRangeStart, int indexRangeCount)
+        {
+            IEnumerable<string> collectionItemsKeyPaths = _dataSource.GetCollectionKeyPathRange(collectionKeyPath, indexRangeStart, indexRangeCount);
+
+            int itemIndex = indexRangeStart;
+            bool isPrefetched;
+            Transform poolParent = GetPrefabObjectPoolParent();
+
+            foreach (string itemKeyPath in collectionItemsKeyPaths)
+            {
+                yield return null;
+                GameObject childPrefab = GetPrefabInstance(itemIndex, poolParent, true, out isPrefetched);
+
+                if (!isPrefetched)
+                {
+                    childPrefab.transform.position = _offscreenPosition;
+                    childPrefab.SetActive(true);
+                    UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
+                    // childPrefab.SetActive(false);
+                }
+
+                _dataObjectPool.AddPrefetchedObjectToPool(itemIndex, childPrefab);
+                itemIndex++;
+            }
+            
+            // Debug.Log("Prefetched " + indexRangeStart + " to " + (indexRangeStart + indexRangeCount - 1));
+        }
+
         /// <summary>
         /// Request the specified range of items and provide them to the item placer.
         /// </summary>
@@ -266,21 +303,24 @@ namespace Microsoft.MixedReality.Toolkit.Data
             IEnumerable<string> collectionItemsKeyPaths = _dataSource.GetCollectionKeyPathRange(collectionKeyPath, indexRangeStart, indexRangeCount);
 
             int itemIndex = indexRangeStart;
+            Transform collectionParent = GetPrefabCollectionParent();
 
             foreach (string itemKeyPath in collectionItemsKeyPaths)
             {
-                GameObject childPrefab = GetPrefabInstance();
-
-                childPrefab.name = itemIndex.ToString();
+                bool isPrefetched;
+                GameObject childPrefab = GetPrefabInstance(itemIndex, collectionParent, true, out isPrefetched);
 
                 if (itemPlacer != null)
                 {
                     itemPlacer.PlaceItem(requestRef, itemIndex, itemKeyPath, childPrefab);
                 }
 
-                // After PlaceItem because prefab is likely to be not Active until this point and initializing
-                // prior to being Active adds complexity and/or causes exceptions.
-                UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
+                if ( !isPrefetched)
+                {
+                    // After PlaceItem because prefab is likely to be not Active until this point and initializing
+                    // prior to being Active adds complexity and/or causes exceptions.
+                    UpdatePrefabDataConsumers(childPrefab, itemKeyPath);
+                }
                 ItemAdded(itemIndex, childPrefab);
                 itemIndex++;
             }
@@ -318,32 +358,41 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
 
-        protected GameObject GetPrefabInstance( bool useObjectPool = true )
+        protected GameObject GetPrefabInstance( int itemIndex, Transform containingParent, bool useObjectPool, out bool isPrefetched )
         {
-            GameObject newObject;
+            isPrefetched = false;
+
+            GameObject newGameObject = null;
+
             if (useObjectPool && HasObjectPool() && !_dataObjectPool.IsEmpty())
             {
-                newObject = _dataObjectPool.GetObjectFromPool() as GameObject;
+                object newObject;
+                isPrefetched = _dataObjectPool.TryGetPrefetchedObject(itemIndex, out newObject);
+                newGameObject = newObject as GameObject;
             }
-            else
+
+            if (newGameObject == null)
             {
-                newObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, GetPrefabCollectionParent());
-                if (newObject != null && newObject.activeSelf)
+                newGameObject = Instantiate(itemPrefab, Vector3.zero, Quaternion.identity, GetPrefabCollectionParent());
+
+                if (newGameObject != null && newGameObject.activeSelf)
                 {
                     // Set to not active until the ItemPlacer can properly position this object.
-                    newObject.SetActive(false);
+                    newGameObject.SetActive(false);
                 }
             } 
 
-            if (newObject == null)
+            if (newGameObject == null)
             {
-                Debug.LogError("Prefab was not properly allocated.");
+                Debug.LogError("Prefab was not properly allocated for itemIndex " + itemIndex);
             }
 
-            InitializePrefabInstance(newObject);
-            newObject.transform.parent = GetPrefabCollectionParent();
 
-            return newObject;
+            InitializePrefabInstance(itemIndex, newGameObject);
+
+            newGameObject.transform.parent = containingParent;
+
+            return newGameObject;
         }
 
 
@@ -358,8 +407,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             for(int count = 0; count < itemPrefabPoolSize; count++ )
             {
-                GameObject go = GetPrefabInstance(false);
-                go.transform.parent = prefabObjectPoolParent;
+                bool isPrefetched;
+
+                GameObject go = GetPrefabInstance(-1, prefabObjectPoolParent, false, out isPrefetched);
 
                 if (!_dataObjectPool.ReturnObjectToPool(go))
                 {
@@ -373,11 +423,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        protected void InitializePrefabInstance(GameObject go)
+        protected void InitializePrefabInstance(int itemIndex, GameObject go)
         {
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
-            go.name = "-1"; // initially mark with an item index of -1 until set otherwise.
+            go.name = itemIndex.ToString();
         }
 
         /// <summary>
@@ -406,19 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 DebugUtilities.LogVerbose("Visible objects in a collection should be emptied at application level prior to deactivating a DataConsumerCollection. ");
             }
 
-            InitializePrefabInstance(itemGO);
-
-            Component[] dataConsumers = itemGO.GetComponentsInChildren(typeof(DataConsumerGOBase));
-
-            // DataConsumerGOBase[] dataConsumers = prefab.GetComponentsInChildren(typeof(DataConsumerGOBase)) as DataConsumerGOBase[];
-            foreach (Component component in dataConsumers)
-            {
-                DataConsumerGOBase dataConsumer = component as DataConsumerGOBase;
-
-                dataConsumer.Detach();
-            }
-
-            itemGO.SetActive(false);
+            DetachGameObject(itemGO);
 
             if (HasObjectPool() && _dataObjectPool.ReturnObjectToPool(itemGO))
             {
@@ -431,6 +469,35 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 // no object pool or was not accepted by object pool
                 Destroy(itemGO);
             }
+        }
+
+        protected void DetachAndDestroyAllGameObjectsInPool()
+        {
+            while( !_dataObjectPool.IsEmpty())
+            {
+                GameObject itemGO = _dataObjectPool.GetObjectFromPool() as GameObject;
+                DetachGameObject(itemGO);
+                Destroy(itemGO);
+            }
+        }
+
+
+
+        protected void DetachGameObject(GameObject itemGO)
+        {
+            InitializePrefabInstance(-1, itemGO);
+
+            Component[] dataConsumers = itemGO.GetComponentsInChildren(typeof(DataConsumerGOBase));
+
+            // DataConsumerGOBase[] dataConsumers = prefab.GetComponentsInChildren(typeof(DataConsumerGOBase)) as DataConsumerGOBase[];
+            foreach (Component component in dataConsumers)
+            {
+                DataConsumerGOBase dataConsumer = component as DataConsumerGOBase;
+
+                dataConsumer.Detach();
+            }
+
+            itemGO.SetActive(false);
         }
 
         protected Transform GetPrefabObjectPoolParent()
@@ -504,6 +571,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 itemPlacer.Detach();
             }
+
+            DetachAndDestroyAllGameObjectsInPool();
         }
 
     }

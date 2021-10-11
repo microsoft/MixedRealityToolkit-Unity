@@ -28,5 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         object GetObjectFromPool();
+
+        bool AddPrefetchedObjectToPool(int id, object objectToReturn);
+
+        bool TryGetPrefetchedObject(int id, out object returnedObject);
+
     }
 }

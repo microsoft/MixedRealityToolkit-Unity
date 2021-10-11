@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// option more efficient.
         /// </remarks>
 
-        void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified );
+        void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified, IDataConsumer whichConsumer = null );
 
 
     }

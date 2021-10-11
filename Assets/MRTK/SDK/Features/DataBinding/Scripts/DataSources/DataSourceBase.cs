@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        public void NotifyAllChanged( DataChangeType dataChangeType = DataChangeType.DatumModified)
+        public void NotifyAllChanged( DataChangeType dataChangeType = DataChangeType.DatumModified, IDataConsumer whichDataConsumer = null )
         {
             if (IsDataSourceAvailable())
             {
@@ -316,7 +316,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                     foreach (IDataConsumer dataConsumer in dataConsumers)
                     {
-                        dataConsumer.NotifyDataChanged(this, dataConsumersKeyValue.Key, GetValue(dataConsumersKeyValue.Key), dataChangeType);
+                        if (whichDataConsumer == null || whichDataConsumer == dataConsumer )
+                        {
+                            dataConsumer.NotifyDataChanged(this, dataConsumersKeyValue.Key, GetValue(dataConsumersKeyValue.Key), dataChangeType);
+                        }
                     }
                 }
 

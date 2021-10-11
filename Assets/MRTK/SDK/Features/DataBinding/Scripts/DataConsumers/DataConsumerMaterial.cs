@@ -17,10 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             [SerializeField] public Material material;
         }
 
-        [Tooltip("(Optional) List of <key,value> mappings where a string key is provided by the data source.")]
+        [Tooltip("(Optional) List of <key,Material> mappings where a list index or a string key can be used to identify the desired Material to use. Note: The key can be left blank or used as a description if only a list index will be used.")]
         [SerializeField]
         private ValueToMaterial[] materialLookup;
 
+        [Tooltip("(Optional) Explicit list of Renderer Components that should be modified.")]
+        [SerializeField]
+        private Renderer[] renderersToModify;
 
         protected override Type[] GetComponentTypes()
         {
@@ -39,8 +42,25 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 return null;
             }
-
         }
+
+
+        protected override bool DoesManageSpecificComponents()
+        {
+            return renderersToModify.Length > 0;
+        }
+
+
+        protected override void AttachDataConsumer()
+        {
+            foreach ( Component component in renderersToModify )
+            {
+                AddComponentToManage(component);
+            }
+
+            base.AttachDataConsumer();
+        }
+
 
         protected override Material GetObjectByKey(string keyValue)
         {

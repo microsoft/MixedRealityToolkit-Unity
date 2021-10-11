@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 if (value == null)
                 {
-                    UnityEngine.Debug.LogError("Value should be null for resolvedKeyPath " + resolvedKeyPath);
+                    UnityEngine.Debug.LogError("Value should not be null for resolvedKeyPath " + resolvedKeyPath);
                 }
                 string newUrl = value.ToString();
                 _frameDelayCountdown = (int)((float)maxRandomLoadBalancingDelayInMilliseconds * FramesPerMillisecond);

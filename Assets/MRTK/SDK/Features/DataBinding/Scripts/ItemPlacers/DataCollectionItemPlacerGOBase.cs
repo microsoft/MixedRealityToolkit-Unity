@@ -51,6 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected int _firstVisibleItem = 0;
         protected int _numVisibleItems = 0;
 
+        // Stats for predictive prefetch
+        protected int _lastRequestRangeStart;
+        protected int _lastRequestRangeCount;
+        protected int _lastRequestDirection = 1;
+
         // Track last state to ensure events are always fired correctly.
         // middle and not empty could be gleaned from the other 3, but
         // this ensures they are fired correctly every time this
@@ -582,9 +587,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 return 0;
             }
 
+
             if (itemCount < 0)
             {
                 // scroll previous
+                _lastRequestDirection = -1;
 
                 actualScrollAmount = Math.Min(-itemCount, _firstVisibleItem);
                 newFirstVisibleItem -= actualScrollAmount;
@@ -601,6 +608,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 int maxFirstVisibleItem;
                 int totalItemCount = GetTotalItemCount();
+
+                _lastRequestDirection = 1;
 
                 if (lastPageCanBePartial)
                 {
@@ -626,6 +635,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 QueueGameObjectsForRemoval(firstItemToRemove, actualScrollAmount);
                 _firstVisibleItem = newFirstVisibleItem;
+               
                 RequestItems(firstItemToRequest, numItemsToRequest);
 
                 if (purgeExitingObjectsNow)
@@ -1040,6 +1050,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             bool someDoNotNeedFetching = false;
 
+            _lastRequestRangeStart = firstIdx;
+            _lastRequestRangeCount = count;
+
             for (int itemIndex = firstIdx; itemIndex < firstIdx + count; itemIndex++)
             {
                 ItemInfo itemInfo = FindItem(itemIndex);
@@ -1093,6 +1106,38 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected virtual void PredictivelyLoadItems()
         {
+            if ( _lastRequestRangeCount > 0)
+            {
+                int firstItem;
+                int itemCount;
+
+                if (_lastRequestDirection < 0)
+                {
+                    firstItem = _lastRequestRangeStart - _lastRequestRangeCount;
+                }
+                else
+                {
+                    firstItem = _lastRequestRangeStart + _lastRequestRangeCount;
+                }
+
+                itemCount = _lastRequestRangeCount;
+
+                if (firstItem < 0)
+                {
+                    firstItem += itemCount;
+                    itemCount = 0;
+                }
+
+                if (itemCount > GetTotalItemCount() - firstItem)
+                {
+                    itemCount = GetTotalItemCount() - firstItem;
+                }
+
+                if (itemCount > 0)
+                {
+                    _dataConsumerCollection.PrefetchCollectionItems(firstItem, itemCount);
+                }
+            }
         }
 
 

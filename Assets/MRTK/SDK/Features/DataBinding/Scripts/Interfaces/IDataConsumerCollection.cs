@@ -32,6 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int rangeStart, int rangeCount, object requestRef);
 
+        void PrefetchCollectionItems(int indexRangeStart, int indexRangeCount);
+
 
         int GetCollectionItemCount();
 

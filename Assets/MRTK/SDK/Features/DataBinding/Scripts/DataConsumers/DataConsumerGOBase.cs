@@ -175,8 +175,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 AttachDataConsumer();
                 FindVariablesToManage();
-                DataSource.NotifyAllChanged( DataChangeType.DatumAdded );
+                NotifyThisConsumerKeypathsAdded();
             }
+        }
+
+        protected void NotifyThisConsumerKeypathsAdded()
+        {
+            DataSource.DataChangeSetBegin();
+            foreach( string keyPath in _resolvedToLocalKeyPathLookup.Keys)
+            {
+                DataSource.NotifyDataChanged(keyPath, DataSource.GetValue(keyPath), DataChangeType.DatumAdded, false);
+            }
+            DataSource.DataChangeSetEnd();
         }
 
 

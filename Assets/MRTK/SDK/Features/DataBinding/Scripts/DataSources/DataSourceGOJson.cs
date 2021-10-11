@@ -36,6 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected Regex _callbackRegex = new Regex(  @"^([a-zA-Z0-9_]+)\(" );
 
 
+        public void SetJson( string jsonText )
+        {
+            DataSourceJson.UpdateFromJson(jsonText);
+        }
+
+
         public override IDataSource AllocateDataSource()
         {
            return new DataSourceJson();
