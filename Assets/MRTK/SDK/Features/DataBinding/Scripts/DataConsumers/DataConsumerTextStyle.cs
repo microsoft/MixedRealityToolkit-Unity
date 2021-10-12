@@ -64,36 +64,40 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType )
         {
 
-            string stylesheetPath = resourcePrefix + value.ToString();
-
-            TMP_StyleSheet tmpStyleSheet = Resources.Load<TMP_StyleSheet>(stylesheetPath);
-
-            if ( tmpStyleSheet == null )
+            if (value is string)
             {
-                UnityEngine.Debug.LogError("Stylesheet not found at resource path " + stylesheetPath);
-            }
-            else
-            {
-                foreach (Component textMeshComponent in _textComponents)
+
+                string stylesheetPath = resourcePrefix + value.ToString();
+
+                TMP_StyleSheet tmpStyleSheet = Resources.Load<TMP_StyleSheet>(stylesheetPath);
+
+                if (tmpStyleSheet == null)
                 {
+                    UnityEngine.Debug.LogError("Stylesheet not found at resource path " + stylesheetPath);
+                }
+                else
+                {
+                    foreach (Component textMeshComponent in _textComponents)
+                    {
 #if UNITY_2019_1_OR_NEWER
-                    if ( textMeshComponent is TextMeshPro)
-                    {
-                        TextMeshPro tmp = textMeshComponent as TextMeshPro;
+                        if (textMeshComponent is TextMeshPro)
+                        {
+                            TextMeshPro tmp = textMeshComponent as TextMeshPro;
 
-                        tmp.styleSheet = tmpStyleSheet;
-                    } else if ( textMeshComponent is TextMeshProUGUI)
-                    {
-                        TextMeshProUGUI tmpUGUI = textMeshComponent as TextMeshProUGUI;
+                            tmp.styleSheet = tmpStyleSheet;
+                        }
+                        else if (textMeshComponent is TextMeshProUGUI)
+                        {
+                            TextMeshProUGUI tmpUGUI = textMeshComponent as TextMeshProUGUI;
 
-                        tmpUGUI.styleSheet = tmpStyleSheet;
-                    }
+                            tmpUGUI.styleSheet = tmpStyleSheet;
+                        }
 #else
-                    DebugUtilities.LogWarning("TextMeshPro stylesheets only work in Unity 2019 or later.");
+                        DebugUtilities.LogWarning("TextMeshPro stylesheets only work in Unity 2019 or later.");
 #endif
+                    }
                 }
             }
-
         }
 
 

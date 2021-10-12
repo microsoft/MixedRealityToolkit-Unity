@@ -181,12 +181,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected void NotifyThisConsumerKeypathsAdded()
         {
-            DataSource.DataChangeSetBegin();
-            foreach( string keyPath in _resolvedToLocalKeyPathLookup.Keys)
+            if (DataSource.IsDataAvailable())
             {
-                DataSource.NotifyDataChanged(keyPath, DataSource.GetValue(keyPath), DataChangeType.DatumAdded, false);
+                DataSource.DataChangeSetBegin();
+                foreach (string keyPath in _resolvedToLocalKeyPathLookup.Keys)
+                {
+                    DataSource.NotifyDataChanged(keyPath, DataSource.GetValue(keyPath), DataChangeType.DatumAdded, false);
+                }
+                DataSource.DataChangeSetEnd();
             }
-            DataSource.DataChangeSetEnd();
+ 
         }
 
 

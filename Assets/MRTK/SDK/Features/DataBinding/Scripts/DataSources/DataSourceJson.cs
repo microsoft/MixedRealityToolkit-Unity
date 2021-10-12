@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override IEnumerable<string> GetCollectionKeyPathRange(string resolvedKeyPath, int rangeStart, int rangeCount)
         {
-            if (IsDataSourceAvailable())
+            if (IsDataAvailable())
             {
                 JSONNode jsonNode = KeyPathToNode(resolvedKeyPath);
                 if (jsonNode != null)
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public override object GetValueInternal(string resolvedKeyPath)
         {
-            if ( IsDataSourceAvailable() ) {
+            if ( IsDataAvailable() ) {
                 JSONNode jsonNode = KeyPathToNode(resolvedKeyPath);
                 if (jsonNode != null)
                 {
@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        protected override bool IsDataSourceAvailable()
+        public override bool IsDataAvailable()
         {
             return _jsonRootNode != null;
         }

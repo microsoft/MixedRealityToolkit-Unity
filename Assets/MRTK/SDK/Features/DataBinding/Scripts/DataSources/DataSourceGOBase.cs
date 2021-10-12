@@ -276,5 +276,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 DataSource.NotifyAllChanged(dataChangeType, whichDataConsumer);
             }
         }
+
+        public bool IsDataAvailable()
+        {
+            if (DataSource != null)
+            {
+                return DataSource.IsDataAvailable();
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

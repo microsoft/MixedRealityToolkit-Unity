@@ -370,5 +370,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
         void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified, IDataConsumer whichConsumer = null );
 
 
+
+        /// <summary>
+        /// Is data available in the data source.
+        /// </summary>
+        /// <remarks>
+        /// This is useful for data sources that may need time to fetch data and may not be able to provide data yet
+        /// for a GetValue() method call.
+        /// </remarks>
+
+        bool IsDataAvailable();
     }
 }

@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
-
-
     public class ThemeSetter : MonoBehaviour
     {
         [Tooltip("The data source to use for setting the current theme.")]

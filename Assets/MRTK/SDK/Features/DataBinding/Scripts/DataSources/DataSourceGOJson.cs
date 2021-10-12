@@ -55,7 +55,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 // Request and wait for the desired page.
                 yield return webRequest.SendWebRequest();
 
+#if UNITY_2020_2_OR_NEWER
+                if (webRequest.result == UnityWebRequest.Result.ProtocolError || webRequest.result == UnityWebRequest.Result.ConnectionError)       
+#else
                 if (webRequest.isHttpError || webRequest.isNetworkError)
+#endif
                 {
                     if (failureDelegate != null)
                     {

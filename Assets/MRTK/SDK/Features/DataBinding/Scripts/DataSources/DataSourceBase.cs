@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public object GetValue(string resolvedKeyPath)
         {
-            if (IsDataSourceAvailable())
+            if (IsDataAvailable())
             {
                 return GetValueInternal(resolvedKeyPath);
             } else
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
-            if (IsDataSourceAvailable())
+            if (IsDataAvailable())
             {
                 SetValueInternal(resolvedKeyPath, newValue);
                 NotifyDataChanged(resolvedKeyPath, newValue, DataChangeType.DatumModified, isAtomicChange);
@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public void NotifyAllChanged( DataChangeType dataChangeType = DataChangeType.DatumModified, IDataConsumer whichDataConsumer = null )
         {
-            if (IsDataSourceAvailable())
+            if (IsDataAvailable())
             {
                 DataChangeSetBegin();
                 List< KeyValuePair<string, List<IDataConsumer>>> dataConsumersKeyValuesCopy = new List<KeyValuePair<string, List<IDataConsumer>>>();
@@ -354,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
       
-        protected virtual bool IsDataSourceAvailable()
+        public virtual bool IsDataAvailable()
         {
             // override if an async datasource may not yet have finished loading
             return true;
