@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     [Serializable]
     // This helps get around issue when mixing generics, concrete classes and interfaces in the inheritance.
     public abstract class DataConsumerThemableBase : DataConsumerGOBase, IDataConsumerThemable
@@ -67,8 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected DataType expectedDataType;
 
-
-
         [Tooltip("(Optional) Data Consumer Theme Helper is used to manage communication with the theme-focused data source in situations where an element is both dynamic and themed.")]
         [SerializeField]
         protected DataConsumerThemeHelper dataConsumerThemeHelper;
@@ -87,7 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected ValueToKeypath[] valueToThemeKeypathLookup;
 
-
         public abstract void ProcessThemeDataChanged(IDataConsumer themeHelper, string resolvedKeyPath, string localKeyPath, object inValue, DataChangeType dataChangeType);
     }
 
@@ -96,16 +92,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// This class provides a way to load a resource via many different
     /// potential retrieval means based on the nature of the value received
     /// from the data source:
-    /// 
+    ///
     ///    Object of correct type provided directly
     ///    Numeeric index lookup
     ///    <key,value> pair lookup
     ///    Resource path to load a Unity resource ("resource://pathToUnityResource")
     ///    Streaming asset path to a file that can be loaded using any appropriate means ("file://pathToUnityStreamingAsset")
-    /// 
+    ///
     /// Generic type T is the type of object expected from the data source
     /// Generic type U is the Component type in the scene hierarchy where that object of type T will be modified.
-    /// 
+    ///
     /// </summary>
 
     /// <typeparam name="T">The type of the object expected such as Image, Material, Texture2D, Sprite, Mesh</typeparam>
@@ -113,8 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [Serializable]
     public abstract class DataConsumerThemableBase<T> : DataConsumerThemableBase where T : class
     {
- 
-
         /// <summary>
         /// Given an int N, get the nth entry in lookup as a theme keypath to retrieve theme value
         /// </summary>
@@ -124,24 +118,22 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// relative or absolute keypath. If not already present in the returned
         /// value, the keypath will be appended to the base keypath
         /// provided in the DataConsumerThemeHelper.
-        /// 
-        /// Example:  
-        /// 
+        ///
+        /// Example:
+        ///
         /// Given the stored value is an integer status where 0=new, 1=in progress and 2=done
         /// and it is desired to load a sprite for the correct status in the look and feel of
         /// the current theme.
-        /// 
+        ///
         ///  The local lookup in the derived class can be structured as an absolute keypath as follows:
         ///     0 : Status.Sprites.New
         ///     1 : Status.Sprites.InProgress
         ///     2 : Status.Sprites.Done
-        ///     
+        ///
         /// This keypath returned from this method will be used to retrieve its value via the
-        /// DataConsuemerThemeHelper.  Whatever value is stored in the matching field of the 
-        /// theme data source will then be used to autodetect the method of retrieving the 
+        /// DataConsuemerThemeHelper.  Whatever value is stored in the matching field of the
+        /// theme data source will then be used to autodetect the method of retrieving the
         /// final sprite and the sprite will be retrieved and returned.
-
-
         /// </remarks>
         /// <param name="n">Index for looking up object of type T</param>
         /// <returns>Found object of type T or null if not found</returns>
@@ -155,7 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 return null;
             }
-
         }
 
 
@@ -171,11 +162,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </remarks>
         /// <param name="keyValue">Key value provided by data source</param>
         /// <returns>Found object of type T or null if not found</returns>
- 
 
         protected virtual T GetObjectByThemeLookupKey(string keyValue)
         {
-
             foreach (ValueToKeypath valueToKeypath in valueToThemeKeypathLookup)
             {
                 if (keyValue == valueToKeypath.value)
@@ -250,7 +239,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-
         /// <summary>
         /// Add a component to manage by this data consumer
         /// </summary>
@@ -290,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Update the provided component using the objectToSet. 
+        /// Update the provided component using the objectToSet.
         /// </summary>
         /// <param name="component">Which component to update</param>
         /// <param name="inValue">Original value from IDataSource</param>
@@ -313,13 +301,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
         /// The object can be any of a number of types and loaded accordingly:
-        /// 
+        ///
         /// int                     Use as index to select Nth entry in ValueToObjectInfo
         /// T                       Directly use the value to replace the managed variable of that type
         /// "resource://<<path>>"   Use path to load a Unity Resource
         /// "file://<<path>>"       Use path to load a streaming asset
         /// other string            Use string value to find entry by value in ValueToObjectInfo
-        /// 
+        ///
         /// </remarks>
         /// <param name="dataSource"></param>
         /// <param name="resolvedKeyPath"></param>
@@ -385,7 +373,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     break;
             }
 
-
             foreach (Component component in componentsToManage)
             {
                 SetObject(component, dataValue, outputValue);
@@ -409,8 +396,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 return GetObjectByThemeLookupKey(dataValue.ToString());
             }
-
-
         }
 
         private T GetStreamingAsset(object dataValue)
@@ -473,7 +458,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     return GetObjectByThemeLookupIndex(valueAsInt);
                 }
-
             }
             else if (dataValue is string)
             {
@@ -506,14 +490,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-
-
         public bool IsIntegral(object value, out int outIntValue)
         {
             if ( value is string && Int32.TryParse(value as string, out outIntValue))
             {
                 return true;
-            } 
+            }
             else if (   value is sbyte
                     ||  value is byte
                     ||  value is short

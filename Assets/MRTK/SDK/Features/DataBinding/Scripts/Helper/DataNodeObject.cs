@@ -1,24 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// A data node that implements the IDataNode interface.
-    /// 
+    ///
     /// It's used by DataSourceObjects to implement a structured data set.
     /// </summary>
-
     public class DataNodeObject : IDataNode
     {
 
         protected object _value;
-
         protected DataNodeType _type;
 
         public DataNodeObject()
@@ -26,13 +21,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _type = DataNodeType.Unassigned;
         }
 
-
         public DataNodeObject(DataNodeType type, object value = null)
         {
             SetNodeType(type, value);
             _type = type;
         }
-
 
         public void SetNodeType(DataNodeType newNodeType, object value = null)
         {
@@ -46,12 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
         public bool IsArray()
         {
             return _type == DataNodeType.Array;
         }
-
 
         public bool IsMap()
         {
@@ -62,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return _type == DataNodeType.Unassigned;
         }
-
 
         public virtual IDataNode GetNodeByIndex(int n)
         {
@@ -78,7 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
         public virtual IDataNode GetNodeByKey(string key)
         {
             if (IsMap() && GetMap().ContainsKey(key))
@@ -90,7 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 return null;
             }
         }
-
 
         public virtual int GetCollectionCount()
         {
@@ -108,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
         public IEnumerable<string> GetMapKeys()
         {
             Dictionary<string, IDataNode> map;
@@ -117,31 +104,27 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (map != null)
             {
                 return map.Keys;
-            } 
+            }
             else
             {
                 return null;
             }
         }
 
-
         public object GetValue()
         {
             return _value;
         }
-
 
         public void SetValue(object newValue)
         {
             _value = newValue;
         }
 
-
         public DataNodeType GetNodeType()
         {
             return _type;
         }
-
 
         public void AddToArray(IDataNode dataNode)
         {
@@ -150,8 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 GetArray().Add(dataNode);
             }
         }
-
-
         public void AddToMap(string key, IDataNode dataNode)
         {
             if (IsMap())
@@ -159,7 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 GetMap()[key] = dataNode;
             }
         }
-
 
         protected Dictionary<string, IDataNode> GetMap()
         {

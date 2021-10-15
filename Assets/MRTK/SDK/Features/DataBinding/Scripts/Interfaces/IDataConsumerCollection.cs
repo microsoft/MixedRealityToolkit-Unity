@@ -1,26 +1,22 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Interface for all data consumers that manage collections.  
+    /// Interface for all data consumers that manage collections.
     /// </summary>
     public interface IDataConsumerCollection : IDataConsumer
     {
-
-
         /// <summary>
         /// Request the keyPaths for a range of collection items.
         /// </summary>
         /// <remarks>
         /// The individual items will be provided one at a time to PlaceItem() method of the calling itemPlacer. This allows data fetching and data presenting to occur
         /// in a psuedo parallel fashion.
-        /// 
+        ///
         /// This is used by an Item Placer to request only the subset of items in the collection that are currently relevant, usually those that are currently visible.
         /// </remarks>
         /// <param name="itemPlacer">The Item Placer making this request.</param>
@@ -29,16 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="requestRef">A request reference object that will be passed to the PlaceItem method.</param>
         ///
         /// TODO: Consider breaking out these Collection specific methods into separate interface and dealing wih Unity's lack of multiple inheritance
-
         void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int rangeStart, int rangeCount, object requestRef);
 
         void PrefetchCollectionItems(int indexRangeStart, int indexRangeCount);
 
-
         int GetCollectionItemCount();
 
-
         void ReturnGameObjectForReuse(int itemIndex, GameObject itemGO);
-
     }
 }

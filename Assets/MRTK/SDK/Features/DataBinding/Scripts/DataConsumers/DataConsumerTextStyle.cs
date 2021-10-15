@@ -5,29 +5,26 @@ using System.Collections.Generic;
 using System;
 using TMPro;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// A data consumer that can alter the style of a text
     /// component based on a style lookup.
-    /// 
+    ///
     /// Currently supported are:
     ///     TextMeshPro (via TextMeshProUGUI)
     ///     TextMesh (via UnityEngine.UI.Text)
-    /// 
+    ///
     /// One of these data consumer components can manage any number
     /// of text components so long as they are being populated by
     /// the same data source.
-    /// 
+    ///
     /// </summary>
-    /// 
+    ///
     public class DataConsumerTextStyle : DataConsumerGOBase
     {
-
         [Tooltip("Key path for style sheet name.")]
         [SerializeField]
         private string styleSheetKeyPath = "stylesheet";
@@ -42,11 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected List<Component> _textComponents = new List<Component>();
 
-
-
         protected override Type[] GetComponentTypes()
         {
-
             Type[] types = { typeof(TextMeshProUGUI), typeof(TextMeshPro) };
             return types;
         }
@@ -63,10 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType )
         {
-
             if (value is string)
             {
-
                 string stylesheetPath = resourcePrefix + value.ToString();
 
                 TMP_StyleSheet tmpStyleSheet = Resources.Load<TMP_StyleSheet>(stylesheetPath);
@@ -103,11 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
-        {   
+        {
             // We only asked for TextMeshProGUI components, so we can confidently cast here.
-
             _textComponents.Add(component);
         }
-
     }
 }

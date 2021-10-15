@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
@@ -11,10 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// Interface for processing dispatched commands related to the bound data.
     /// </summary>
     /// <remarks>
-    /// When an interactable object is instantiated, particularly those in a data bound collection, there is generally a 
-    /// need to invoke commands, such as those initiated by a user action, that must be tied to the specific data that is bound to 
+    /// When an interactable object is instantiated, particularly those in a data bound collection, there is generally a
+    /// need to invoke commands, such as those initiated by a user action, that must be tied to the specific data that is bound to
     /// that instantiated object. In particular, some form of unique identifier must be provided that differentiates each item in a list of items.
-    /// 
+    ///
     /// This interface provides such as mechanism.
     /// </remarks>
     public interface IDataController

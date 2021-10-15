@@ -6,17 +6,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
-
-
-
     /// <summary>
-    /// Simple test data source that programmatically changes variables in a data source. 
+    /// Simple test data source that programmatically changes variables in a data source.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// Using a simple <key,value> store, it's possible to separate data from view
     /// to simplify the integration of generic view prefabs that are populated from
@@ -34,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected int _fluxCollectionSize = 20;
 
+        [Tooltip("URL template for fetching images.")]
+        [SerializeField]
+        protected string imageUrlTemplate = "http://michaelinfo.centralus.cloudapp.azure.com/mrtk/api/version/MRTK/nature-photos/images/{0:D4}.jpg";
 
         protected int _fluxImageIndex = 0;
         protected bool _fluxImageAdding = true;
@@ -122,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         {
                             _dataSourceObject.fluxImages.RemoveAt(--_fluxImageIndex);
                         }
-                      
+
                         if (_fluxImageIndex <= 0)
                         {
                             _fluxImageIndex = 0;
@@ -168,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 string pathBase = String.Format("images[{0:d}]", i);
                 imageInfo.id = String.Format("{0:D6}", i);
                 imageInfo.title = String.Format("Image #{0:d}", i);
-                imageInfo.imageUrl = String.Format("http://michaelinfo.com/nature-photos/images/{0:D4}.jpg", imageId);
+                imageInfo.imageUrl = String.Format(imageUrlTemplate, imageId);
 
                 Randomize(words);
                 imageInfo.description = "";

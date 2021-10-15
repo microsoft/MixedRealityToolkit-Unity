@@ -1,24 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// A simple data collection item placer that will place each item at a specific
-    /// offset from the previous object, first in the x, then y, then z directions, 
+    /// offset from the previous object, first in the x, then y, then z directions,
     /// using the offsets provided in the inspector.  The starting point is resetFReq
     /// each time a new placement session is started using StartPlacement().
-    /// 
+    ///
     /// </summary>
     public class DataCollectionItemPlacerOffset : DataCollectionItemPlacerGOBase
     {
-
-
         [Tooltip("Place each item in a collection at successive offsets relative to parent gameobject, with the first item spawning at 0,0,0.")]
         [SerializeField]
         protected Vector3 itemOffset;
@@ -36,8 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected int zCount = 1;
 
         protected Vector3 _itemPlacerPositionOffset;
-
-
 
         public override void StartPlacement()
         {
@@ -62,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 itemGO.transform.position = itemGO.transform.parent.transform.position + _itemPlacerPositionOffset;
                 itemGO.SetActive(true);
             }
-
         }
 
         public override void ProcessRemovedItem(object requestRef, int itemIndex, string itemKeyPath, GameObject itemGO, bool isVisible)
@@ -79,8 +71,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return xCount * yCount * zCount;
         }
-
-
-
     }
 }

@@ -2,11 +2,9 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Diagnostics;
 using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
@@ -17,16 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// <remarks>
     /// This can be used as a base implementation for updating sprites, quads or any other element that
     /// expects an image texture
-    /// 
+    ///
     /// There are 2 methods to implement:
-    /// 
+    ///
     ///     protected abstract void InitializeForComponent(Type componentType, Component component);
     ///     protected abstract void PlaceImageTexture(Texture imageTexture);
     /// </remarks>
-    /// 
-
-
-    /// </summary>
 
     [Serializable]
     public abstract class DataConsumerImageTextureFromUrl : DataConsumerGOBase
@@ -40,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("(Optional) Random load delay to load balance when multiple sprites are requested at same time, such as during the instantiation of an entire list.")]
         [SerializeField] private int maxRandomLoadBalancingDelayInMilliseconds = 0;
 
-
         protected bool _fetchInProgress = false;
         protected string _waitingUrlToFetch = null;
         protected int _frameDelayCountdown = 0;
@@ -52,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         void Update()
         {
             CheckForWaitingUrlToFetch();
-
         }
 
         protected override bool ManageChildren()
@@ -140,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     yield return webRequest.SendWebRequest();
 
 #if UNITY_2020_2_OR_NEWER
-                    if (webRequest.result == UnityWebRequest.Result.ProtocolError || webRequest.result == UnityWebRequest.Result.ConnectionError)       
+                    if (webRequest.result == UnityWebRequest.Result.ProtocolError || webRequest.result == UnityWebRequest.Result.ConnectionError)
 #else
                     if (webRequest.isHttpError || webRequest.isNetworkError)
 #endif
@@ -167,6 +159,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             _coroutine = null;
         }
-
     }
 }

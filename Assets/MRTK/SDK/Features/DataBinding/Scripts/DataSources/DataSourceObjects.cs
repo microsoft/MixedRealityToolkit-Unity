@@ -1,57 +1,35 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
-
-
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
 
     /// <summary>
     /// A data source that manages structured data similar to what can be
-    /// represented in JSON or XML, in particulary collections, maps and primitives. 
-    /// 
+    /// represented in JSON or XML, in particulary collections, maps and primitives.
+    ///
     /// It can also manage arbitrary binary data or other complex data types, in the
     /// event that a data consumer exists that can consumer the data type, such as JPEG or WAV.
-    /// 
+    ///
     /// This is a standalone data set that can be populated directly via
     /// SetValue() instead of depending on an external data source like a JSON or XML
-    /// data stream. 
-    /// 
+    /// data stream.
+    ///
     /// Note that SetValue() will automatically fabricate any missing structure such
     /// that it can be the sole means of populating even the most complex data set.
-    /// Note that it is possible to inaadvertently create large lists, such as by only 
+    /// Note that it is possible to inaadvertently create large lists, such as by only
     /// creating the 1000th element of a collection.
-    /// 
-    /// 
-    ///         DataChangeSetBegin();
-
-    ///         SetValue("images[0].id", "0001");
-    ///         SetValue("images[0].title", "Stone Mountain and lone tree");
-    ///         SetValue("images[0].description", "Taken while rock climbing on Stone Mountain in NC.");
-    ///         SetValue("images[0].imageUrl", "http://michaelinfo.com/test/images/0001.jpeg");
-
-    ///         SetValue("images[1].id", "0002");
-    ///         SetValue("images[1].title", "Brain Celosia flower");
-    ///         SetValue("images[1].description", "Found this amazing flower in NC.");
-    ///         SetValue("images[1].imageUrl", "http://michaelinfo.com/test/images/0002.jpeg");
-    ///         DataChangeSetEnd();
-
+    ///
     /// TODO: Refactor DataSourceJson to use this as its base implementation.
-    /// 
+    ///
     /// </summary>
-    /// 
     public class DataSourceObjects : DataSourceBase
     {
         protected static readonly string CollectionElementkeyPathPrefixFormat = "{0}[{1:d}]";
         protected static readonly string DictionaryElementkeyPathPrefixFormat = "{0}[{1}]";
-
 
         protected static readonly string ArrayTokenPattern = @"^\s*\[\s*([a-zA-Z0-9\-_]*?)\s*\]";
         protected static readonly string KeyTokenPattern = @"^\s*([a-zA-Z0-9\-_]+?)(?:[.\[]|$)";
@@ -60,9 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected readonly Regex _keyTokenRegex = new Regex(KeyTokenPattern);
 
         protected DataNodeObject _rootNode;
-
         protected Dictionary<string, IDataNode> _keyPathToNodeLookup = new Dictionary<string, IDataNode>();
-
 
         public DataSourceObjects()
         {
@@ -189,7 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 keyPaths.Add(string.Format(CollectionElementkeyPathPrefixFormat, resolvedKeyPath, idx));
             }
             return keyPaths as IEnumerable<string>;
-
         }
 
         protected IEnumerable<string> GetValueAsDictionaryKeyPaths(IDataNode mapNode, string resolvedKeyPath)
@@ -255,7 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                             currentNode = null;
                         }
                         amountToSkip = arrayMatches[0].Value.Length;
-
                     }
                     else
                     {
@@ -318,7 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _rootNode != null;
         }
     } // End of class DataSourceObjects
-
 } // End of namespace Microsoft.MixedReality.Toolkit.Data
 
 

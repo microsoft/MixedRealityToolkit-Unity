@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -64,7 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         public UnityEvent CollectionPagedBackward = new UnityEvent();
 
-
         /// <summmary>
         /// Item placer has just been attached after initialization or dormant state
         /// </summmary>
@@ -72,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             Attach.Invoke();
         }
-
 
         /// <summmary>
         /// Item placer is being detached and put in dormant state or prior to destroy.
@@ -90,8 +86,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             StartPlacement.Invoke();
         }
+
         /// <summary>
-        /// A set of item placements has ended. 
+        /// A set of item placements has ended.
         /// </summary>
         /// <remarks>
         /// Note that it is possible that no items were actually placed.
@@ -148,7 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             CollectionContextSwitch.Invoke();
         }
 
-
         /// <summary>
         /// Collection contents has changed
         /// </summary>
@@ -156,7 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             CollectionChanged.Invoke();
         }
-
 
         /// <summary>
         /// Collection contents transitioned to empty set
@@ -166,7 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             CollectionEmpty.Invoke();
         }
 
-
         /// <summary>
         /// Collection contents transitioned from empty to not empty
         /// </summary>
@@ -174,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             CollectionNotEmpty.Invoke();
         }
-
 
         /// <summary>
         /// Collection was scrolled forward towards end of list
@@ -184,7 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             CollectionScrolledForward.Invoke();
         }
 
-
         /// <summary>
         /// Collection was scrolled backwards towards start of list
         /// </summary>
@@ -192,7 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             CollectionScrolledBackward.Invoke();
         }
-
 
         /// <summary>
         /// Collection was paged forward towards end of list
@@ -202,7 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             CollectionPagedForward.Invoke();
         }
 
-
         /// <summary>
         /// Collection was paged backward towards start of list
         /// </summary>
@@ -210,6 +200,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             CollectionPagedBackward.Invoke();
         }
-
     }
 }

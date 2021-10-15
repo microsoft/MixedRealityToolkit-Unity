@@ -4,27 +4,24 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
 using SimpleJSON;
-
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
     /// A data source that can parse a JSON text stream and notify any data consumers
     /// listening for changes.
-    /// 
+    ///
     /// This data source has on Unity specific dependencies.
-    /// 
+    ///
     /// TODO: refactor this to use DataSourceObjects.  Should be a fairly straight refactor since
     ///       DataSourceObjects was derived from this source code. See DataNodeJson
-    /// 
+    ///
     /// TODO: Add support for SetValue() and ability to report changes to a back-end
-    ///       services for persisting those changes. This would then allow for 
+    ///       services for persisting those changes. This would then allow for
     ///       data entry slates.
-    ///      
+    ///
     /// </summary>
-    /// 
 
     public class DataSourceJson : DataSourceBase
     {
@@ -39,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected readonly Regex _keyTokenRegex = new Regex(_keyTokenPattern);
 
         protected Dictionary<string, JSONNode> _keyPathToJsonNodeLookup = new Dictionary<string, JSONNode>();
- 
 
         public override bool IsCollectionAtKeyPath(string resolvedKeyPath)
         {
@@ -72,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             JSONNode jsonNode = KeyPathToNode(resolvedKeyPath);
             if (jsonNode != null && jsonNode.IsArray && n < jsonNode.Value.Length)
             {
-                return String.Format(DataSourceJson.CollectionElementkeyPathPrefixFormat, resolvedKeyPath, n, int.MaxValue);  
+                return String.Format(DataSourceJson.CollectionElementkeyPathPrefixFormat, resolvedKeyPath, n, int.MaxValue);
             }
             else
             {
@@ -116,14 +112,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                 }
             }
-
             return null;
         }
 
         protected IEnumerable<string> GetValueAsArrayKeyPaths(JSONNode arrayNode, string resolvedKeyPath, int rangeStart, int rangeCount)
         {
-            // TODO: To optimize for large collections, this method should instantiate a class that can provide an IEnumerable<string> 
-            //       but then only generates key paths as they are requested. This avoids creating large lists of key paths at once 
+            // TODO: To optimize for large collections, this method should instantiate a class that can provide an IEnumerable<string>
+            //       but then only generates key paths as they are requested. This avoids creating large lists of key paths at once
             //       that may never get used and will occupy an unnecessary amount of RAM.
 
             int rangeMax = rangeStart + rangeCount;
@@ -132,20 +127,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 rangeMax = arrayNode.Count;
             }
 
-
             List<string> keyPaths = new List<string>();
             for (int idx = rangeStart; idx < rangeMax; idx++)
             {
                 keyPaths.Add(String.Format(DataSourceJson.CollectionElementkeyPathPrefixFormat, resolvedKeyPath, idx));
             }
             return keyPaths as IEnumerable<string>;
-
         }
 
         protected IEnumerable<string> GetValueAsDictionaryKeyPaths(JSONNode dictNode, string resolvedKeyPath)
         {
-            // TODO: To optimize for large collections, this method should instantiate a class that can provide an IEnumerable<string> 
-            //       but then only generates key paths as they are requested. This avoids creating large lists of key paths at once 
+            // TODO: To optimize for large collections, this method should instantiate a class that can provide an IEnumerable<string>
+            //       but then only generates key paths as they are requested. This avoids creating large lists of key paths at once
             //       that may never get used and will occupy an unnecessary amount of RAM.
 
             List<string> keyPaths = new List<string>();
@@ -155,8 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             return keyPaths as IEnumerable<string>;
         }
-
-
 
         protected JSONNode KeyPathToNode(string resolvedKeyPath)
         {
@@ -178,7 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             else
             {
                 JSONNode jsonNode = _jsonRootNode;
-
                 string keyPath = resolvedKeyPath;
 
                 while (keyPath != null && keyPath != "")
@@ -192,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                         jsonNode = jsonNode[arrayIndex];
                         amountToSkip = arrayMatches[0].Value.Length;
-                     }
+                    }
                     else
                     {
                         MatchCollection keyMatches = _keyTokenRegex.Matches(keyPath);
@@ -252,7 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return _jsonRootNode != null;
         }
-
     }
 }
 

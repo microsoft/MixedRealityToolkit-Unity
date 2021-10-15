@@ -7,31 +7,28 @@ using System;
 using TMPro;
 using UnityEngine;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// A data consumer that can embed data into text components.
-    /// 
+    ///
     /// Currently supported are:
     ///     TextMeshPro (via TextMeshProUGUI)
     ///     TextMesh (via UnityEngine.UI.Text)
-    /// 
+    ///
     /// One of these data consumer components can manage any number
     /// of text components so long as they are being populated by
     /// the same data source.
-    /// 
+    ///
     /// Note that a single text message can support any number of variable phrases. To make this
     /// more efficient, all data changes within a single data set are cached and then applied
     /// at once at the DataSetEnd() method call.
     /// </summary>
-    /// 
+    ///
     public class DataConsumerText : DataConsumerGOBase
     {
         protected class ComponentInformation
         {
-
             protected class TextVariableInformation
             {
                 public string DataBindVariable { get; set; }
@@ -65,7 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
 
                 _originalTemplateValue = GetValue();
-
             }
 
 
@@ -99,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             public void SetValue(string newValue)
             {
-
                 if (_textMeshProUGUIComponent != null)
                 {
                     _textMeshProUGUIComponent.text = newValue;
@@ -169,10 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     return true;
                 }
- 
             }
-
-
         } /* End of protected class ComponentInformation */
 
 
@@ -181,16 +173,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private bool manageChildren = true;
 
-
         /* Used to find all keypaths that influence a specific component to make sure all variable data is updated when any one element changes */
         protected Dictionary<Component, ComponentInformation> _componentInfoLookup = new Dictionary<Component, ComponentInformation>();
         private HashSet<string> _localKeypaths = new HashSet<string>();
 
 
-
         protected override Type[] GetComponentTypes()
         {
-
             Type[] types = { typeof(TextMeshProUGUI), typeof(UnityEngine.UI.Text), typeof(TextMeshPro) };
             return types;
         }
@@ -200,8 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return manageChildren;
         }
 
-
-   
 
         public override void DataChangeSetEnd(IDataSource dataSource)
         {
@@ -258,9 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         }
                     }
                 }
- 
             }
         }
-
     }
 }

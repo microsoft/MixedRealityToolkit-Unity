@@ -8,11 +8,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
     /// A simple data key path mapper that can be assigned to a data source in the Unity inspector.
-    /// 
+    ///
     /// TODO: consider refactoring using SerializableDictionary class once core utilities are separable.
-    /// 
+    ///
     /// </summary>
-    /// 
     public class DataKeyPathMapperGODictionary : MonoBehaviour, IDataKeyPathMapper
     {
         [Serializable]
@@ -32,7 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public IDataKeyPathMapper DataKeyPathMapper { get { return _dataKeyPathMapperDictionary; } }
 
         protected DataKeyPathMapperDictionary _dataKeyPathMapperDictionary = new DataKeyPathMapperDictionary();
-
 
         void OnEnable()
         {

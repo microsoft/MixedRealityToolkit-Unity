@@ -5,23 +5,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Base class for Data Consumers that must derive from a Game Object MonoBehaviour. 
+    /// Base class for Data Consumers that must derive from a Game Object MonoBehaviour.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
-    /// 
-    /// This class encapsulates as much of the basic logic that is needed to serve as a Data Consumer, 
-    /// without getting into the specifics that might deviate based on the types of views being 
+    ///
+    /// This class encapsulates as much of the basic logic that is needed to serve as a Data Consumer,
+    /// without getting into the specifics that might deviate based on the types of views being
     /// managed.
-    /// 
-    /// Although this may change in future implementations, since an IDataConsumer does not currently 
+    ///
+    /// Although this may change in future implementations, since an IDataConsumer does not currently
     /// need to be discoverable by other game objects, this base class
     /// does not attempt to proxy a full IDataConsumer interface. It does however pass through many of the
     /// IDataConsumer methods to a non-Unity bsae class to reduce the mix of Unity and business logic.
@@ -34,9 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected string dataSourceType;
 
-
         public string ResolvedKeyPathPrefix { get; set; } = "";
-
 
         protected Dictionary<string, string> _resolvedToLocalKeyPathLookup = new Dictionary<string, string>();
         protected IDataSource _dataSource;
@@ -62,22 +59,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         #region Abstract methods
 
-
         protected abstract void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType);
 
-
         #endregion Abstract methods
-
-
 
         /// <summary>
         /// Unity's OnEnable() method.
         /// </summary>
-        /// 
+        ///
         /// <remarks>
-        /// Note that this should rarely be overridden but is declared virtual for circumnstances 
+        /// Note that this should rarely be overridden but is declared virtual for circumnstances
         /// where this is required. If overridden, make sure to call this default behavior.
-        /// 
+        ///
         /// Any initialization should be accomplished by overriding IniitalizeDataConsumer().
         /// </remarks>
 
@@ -110,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Unity's Start() method.
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Override InitializeDataConsumer for any needed one-time initialization.
         /// </remarks>
@@ -118,9 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private void Start()
         {
         }
-
-
-
 
         protected virtual void InitializeDataConsumer()
         {
@@ -138,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// by another dataconsumer, typically that has created this one at run
         /// time and also for going back and forth between gameobject data pool and
         /// placement in a collection.
-        /// 
+        ///
         /// NOTE: When you override this, use AttachDataConsumer for additional
         /// attach tasks.
         /// </remarks>
@@ -190,9 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
                 DataSource.DataChangeSetEnd();
             }
- 
         }
-
 
         /// <summary>
         /// Self attach is used when this Component is not being attached by another
@@ -262,7 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 DebugUtilities.LogVerbose("Attempting to detach while not attached.");
             }
-
         }
 
         protected virtual void AttachDataConsumer()
@@ -272,7 +259,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected virtual void DetachDataConsumer()
         {
-
         }
 
         public virtual void DataChangeSetBegin(IDataSource dataSource)
@@ -290,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Called by the associaed DataSource to report data changes.
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// See NotifyDataChanged on the IDataConsumer interface for more detailed information.
         /// </remarks>
@@ -326,8 +312,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// For consumers that manage one or more components for modifcation based on data received,
         /// this is a convenience method that is called once per component of the specified types
         /// declared in GetComponentTypes().
-        /// 
-        /// Note that if you do not need any components, 
+        ///
+        /// Note that if you do not need any components,
         /// </summary>
         /// <param name="componentType"></param>
         /// <param name="component"></param>
@@ -341,9 +327,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// If your data consumer modifies components, particularly all components found of a
         /// certain type, then declaring them here will result in AddVariableKeyPathsForComponent
         /// to be called for each found component in this or is specified in child objects.
-        /// 
+        ///
         /// If you do not operate on components, then no need to override this method. Instead
-        /// simply override InitializeDataConsumer for one-time initialization and 
+        /// simply override InitializeDataConsumer for one-time initialization and
         /// override AttachDataConsumer for any setup that should occur each time
         /// your class is enabled, in which you should call AddKeyPathListener() for any keypaths
         /// that you want the datasource to notify of any changes.
@@ -354,7 +340,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             Type[] types = { };
             return types;
         }
-
 
         protected virtual bool ManageChildren()
         {
@@ -388,12 +373,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-
-
         /// <summary>
         /// Internal method that finds all managed omponents and registers relevant key paths for each of them.
         /// </summary>
-        /// 
+        ///
         protected void FindVariablesToManage()
         {
             Type[] componentTypesToScan = GetComponentTypes();
@@ -419,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /// <summary>
-        /// If no data source is provided directly, search through this object and its parents in game object 
+        /// If no data source is provided directly, search through this object and its parents in game object
         /// heirarchy for the data source to use with this data consumer.
         /// </summary>
         protected IDataSource FindNearestDataSource(IDataSource defaultDataSource = null)
@@ -460,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /// <summary>
-        /// If no data source is provided directly, search through this object and its parents in game object 
+        /// If no data source is provided directly, search through this object and its parents in game object
         /// heirarchy for the data source to use with this data consumer.
         /// </summary>
         protected IDataController FindNearestDataController(IDataController defaultDataController = null)
@@ -494,11 +477,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-
         /// <summary>
         /// Returns a pre-allocaed regex object to use for identifying variable key paths in textual strings.
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// This is provided to reduce the number of identical regex objects when searching for data embedded variables.</remarks>
         /// <returns></returns>

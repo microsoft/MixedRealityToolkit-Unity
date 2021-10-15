@@ -7,12 +7,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
-    /// A theme data consumer used to help another primary data consumer derived from DataConsumeThemableBase<T> 
+    /// A theme data consumer used to help another primary data consumer derived from DataConsumeThemableBase<T>
     /// that is designed to manage both dynamically bound data received from a data-centric DataSource, and
     /// then theme that dynamic data. As an example, a numeric status can be used to look up an appropriate
-    /// status icon for the current status.  That icon can then be further themed to adopt the desired, branding or 
+    /// status icon for the current status.  That icon can then be further themed to adopt the desired, branding or
     /// other specific look and feel appropriate for the currently active theme.
     /// </summary>
     public class DataConsumerThemeHelper : DataConsumerGOBase
@@ -25,9 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected string themeKeyPath;
 
-
         public IDataConsumerThemable DataConsumerThemable { get; set; }
-
 
         protected override void InitializeDataConsumer()
         {
@@ -49,13 +46,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
         /// The object can be any of a number of types and loaded accordingly:
-        /// 
+        ///
         /// int                     Use as index to select Nth entry in ValueToObjectInfo
         /// T                       Directly use the value to replace the managed variable of that type
         /// "resource://<<path>>"   Use path to load a Unity Resource
         /// "file://<<path>>"       Use path to load a streaming asset
         /// other string            Use string value to find entry by value in ValueToObjectInfo
-        /// 
+        ///
         /// </remarks>
         /// <param name="dataSource"></param>
         /// <param name="resolvedKeyPath"></param>

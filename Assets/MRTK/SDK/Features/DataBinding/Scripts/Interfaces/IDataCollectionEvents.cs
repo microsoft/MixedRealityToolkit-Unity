@@ -1,28 +1,23 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
     /// An interface for receiving a variety of state change
     /// events that can be used to update a user experience
     /// </summary>
- 
+
     public interface IDataCollectionEvents
     {
         /// <summmary>
         /// A placement set is starting. Zero or more items
         /// will be placed.
         /// </summmary>
-
         void OnStartPlacement();
 
         /// <summary>
-        /// A set of item placements has ended. 
+        /// A set of item placements has ended.
         /// </summary>
         /// <remarks>
         /// Note that it is possible that no items were actually placed.
@@ -49,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
         /// This means not at the start or the end.
-        /// 
-        /// Not that on a small list that is same or smaller 
+        ///
+        /// Not that on a small list that is same or smaller
         /// than the available space, this will never get
         /// triggered.
         /// </remarks>
@@ -65,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </remarks>
         void OnCollectionCanGoBackward();
 
-
         /// <summary>
         /// Collection transitioned to a state where you can scroll or page forward
         /// </summary>
@@ -78,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Collection contents completely replaced
         /// </summary>
-        /// 
+        ///
         void OnCollectionContextSwitch();
 
         /// <summary>
@@ -115,7 +109,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Collection was paged backward towards start of list
         /// </summary>
         void OnCollectionPagedBackward();
-
     }
-
 }

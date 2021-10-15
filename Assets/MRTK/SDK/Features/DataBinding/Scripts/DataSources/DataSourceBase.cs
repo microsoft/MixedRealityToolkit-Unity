@@ -6,26 +6,21 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-// Included only to log error message during debug
-using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// Base implementation of the IDataSource interface. This base class
-    /// contains no Unity specific code and can be used as the base for 
+    /// contains no Unity specific code and can be used as the base for
     /// implementing other concrate data source classes.
-    /// 
+    ///
     /// To make any data source available as a MonoBehavior, see
     /// DataSourceGOBase.
-    /// 
+    ///
     /// </summary>
 
     public class DataSourceBase : IDataSource
     {
-
         protected IDataKeyPathMapper _dataKeyPathMapper = null;
 
         protected Dictionary<string, List<IDataConsumer>> _keyPathToDataConsumers = new Dictionary<string, List<IDataConsumer>>();
@@ -39,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
-
         public string DataSourceType { get; set; }
 
 
@@ -67,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 localKeyPath = _dataKeyPathMapper.GetDataKeyPathFromViewKeyPath(localKeyPath);
             }
 
-
             if (IsCollectionAtKeyPath(resolvedKeyPathPrefix))
             {
                 // TODO: How do we want to handle multidimentional arrays, eg. threedmodels[10].transform.position[1][2]
@@ -87,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
-
         public object GetValue(string resolvedKeyPath)
         {
             if (IsDataAvailable())
@@ -102,7 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
-
         public void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             if (IsDataAvailable())
@@ -112,11 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
- 
+
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
-
         public virtual void DataChangeSetBegin()
         {
             foreach (IDataConsumer dataConsumer in _dataConsumers)
@@ -129,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
-
         public virtual void DataChangeSetEnd()
         {
             foreach (IDataConsumer dataConsumer in _dataConsumers)
@@ -141,10 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
-
         public void AddDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
-
             if (!_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
             {
                 _keyPathToDataConsumers[resolvedKeyPath] = new List<IDataConsumer>();
@@ -173,13 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 /****
                  * Now down at end of Attach in DataConsumer
-                 
                 dataConsumer.DataChangeSetBegin(this);
                 dataConsumer.NotifyDataChanged(this, resolvedKeyPath, value, DataChangeType.DatumAdded);
                 dataConsumer.DataChangeSetEnd(this);
                 */
             }
-
         }
 
 
@@ -194,11 +179,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-
         /// <summary>
         /// Implements IDataSource method. See IDataSource.cs for more information
         /// </summary>
-
         public virtual void RemoveDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
             if (_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
@@ -331,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Get a path where all array indices have been removed.
         /// </summary>
         /// <remarks>
-        /// This can be used to identify a list regardless of 
+        /// This can be used to identify a list regardless of
         /// which entery in one or nested lists it may have come from.
         /// </remarks>
         /// <param name="resolvedKeyPath">The keypath to modify.</param>
@@ -353,12 +336,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return resolvedKeyPath;
         }
 
-      
         public virtual bool IsDataAvailable()
         {
             // override if an async datasource may not yet have finished loading
             return true;
         }
-
     }
 }

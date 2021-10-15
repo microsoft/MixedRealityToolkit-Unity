@@ -4,34 +4,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Base class for Data Sources that are accessible through a Game Object MonoBehaviour proxy 
+    /// Base class for Data Sources that are accessible through a Game Object MonoBehaviour proxy
     /// </summary>
-    /// 
+    ///
     /// <remarks>
-    /// 
+    ///
     /// This class encapsulates a Data Source object so that it can exist as a MonoBehaviour, which
     /// is important for using the inspector to connect Data Consumers to a Data Source.
-    /// 
+    ///
     /// By implementing this as a proxy, most of code for any Data Source concrete implmementation
     /// can exist as pure C# with no Unity dependencies.
-    /// 
+    ///
     /// </remarks>
-
     public abstract class DataSourceGOBase : MonoBehaviour, IDataSource, IDataSourceProvider
     {
         [Tooltip("(Optional) Data source type. Can be used by data consumers to automatically find and attach to the correct data source. Eg. This is useful for differentiating between 'data' and 'theme' data sources.")]
         [SerializeField]
         protected string dataSourceType;
 
-
         [Tooltip("(Optional) DataKeyPathMapper that translates between local view key paths and data source key paths. This is useful for re-using prefabs.")]
         [SerializeField]
         private DataKeyPathMapperGODictionary keyPathMapper = null;
-
 
         public string DataSourceType
         {
@@ -39,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 return DataSource.DataSourceType;
             }
-
             set
             {
                 DataSource.DataSourceType = value;
@@ -98,12 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Allocate the correct data source
         /// </summary>
-        /// <remarks> 
-        /// 
+        /// <remarks>
+        ///
         /// Attach whatever data source is desired here in your derived class if not already allocated.
         /// This method passes most IDataSource calls directly to the IDataSource provided in your
         /// overridden method.
-        /// 
+        ///
         /// Further initialization can occur when InitializeDataSource() is called.
         /// </remarks>
         public virtual IDataSource AllocateDataSource()
@@ -118,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
 
-        /// Attach whatever data source is desired here in your derived class if not already allocated.  
+        /// Attach whatever data source is desired here in your derived class if not already allocated.
         /// Further initialization can occur when InitializeDataSource() is called.
         ///
         /// NOTE: This does not return _dataSource because then any logic in the subclass of this class will
@@ -140,7 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (DataSource != null)
             {
                 return DataSource.ResolveKeyPath(resolvedKeyPathPrefix, localKeyPath);
-
             }
             else
             {
@@ -155,7 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 DataSource.SetDataKeyPathMapper(keyPathMapper);
             }
         }
-    
+
+
         public virtual object GetValue(string resolvedKeyPath)
         {
             if (DataSource != null )

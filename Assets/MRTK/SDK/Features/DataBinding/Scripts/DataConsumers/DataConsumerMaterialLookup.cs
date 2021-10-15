@@ -3,33 +3,31 @@
 
 using System;
 using System.Text.RegularExpressions;
-
 using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// This data consumer will swap any particular material of a specific name or name pattern, and 
+    /// This data consumer will swap any particular material of a specific name or name pattern, and
     /// replace it with a material that matches a name constructed from a combination of static and
     /// dynamic data.  Example:
-    /// 
+    ///
     /// materialNameRegex:      backplate.*     Match any material that starts with the name backplate
     /// materialVariableName:   backplate_{{company}}_{{brand}}_{{locale}}
-    /// 
+    ///
     /// In this example, given a datasource that provides a company, brand and locale, chose a
     /// material that has the name constructed from those values:
-    /// 
+    ///
     ///    company:  Nike
     ///    brand:    AirJordan
     ///    locale:   en-UK
-    ///    
+    ///
     /// Then the name will be "backplate_Nike_AirJordan_en-UK"
-    /// 
+    ///
     /// If a Materal Data Source is provided, then the name will be used as a key path to request
     /// the correct material from that data source. This is useful for fetching materials from a back-end
     /// CMS solution.
-    /// 
+    ///
     /// </summary>
 
 #if false
@@ -45,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             [Tooltip("Material name teamplate with embedded data {{ variables }} used to construct the name or key path of the desired material.")]
             [SerializeField] public string materialSelectorTemplate;
-
         }
 
         [Tooltip("Optional data source for fetching the material that matches the key path. If not specified, the calculated material name will be used to load a local resource.")]
@@ -61,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override Type[] GetComponentTypes()
         {
-
             Type[] types = { typeof(Material) };
             return types;
         }
@@ -71,8 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return manageChildren;
         }
-
-
 
         protected override void AddVariableKeyPathsForComponent(Type componentType, Component component)
         {
@@ -95,7 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)
@@ -116,4 +109,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 #endif
 
-} // End of namespace 
+} // End of namespace

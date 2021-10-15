@@ -6,24 +6,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// A data collection item placer base implementation that supports paging.
-    /// 
+    ///
     /// This is a base object that can be derived from to support more complex scenarios.
-    /// 
+    ///
     /// A typical item placer will populate a UX elemented designed to present lists or grids of
     /// items, and typically also supports paging and/or scrolling for larger lists.
-    /// 
+    ///
     /// TODO: Make a simpler GO base class that is used in DataConsumerCollection so that it is not
     /// assumed what functionality may be desired in an item placer.
-    /// 
+    ///
     /// </summary>
-
-
     public abstract class DataCollectionItemPlacerGOBase : MonoBehaviour, IDataCollectionItemPlacer
     {
         [Tooltip("(Optional) Private request reference or ID that is provided with every request for collection items to correlate the PlaceItem calls to the original request.")]
@@ -45,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("Turn on debug messages. ")]
         [SerializeField]
         protected bool debugMode = false;
-
 
         protected int _totalItemCount = 0;
         protected int _firstVisibleItem = 0;
@@ -81,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             StashRemovable          // Temporarily stash removables that are still being fetched
         };
 
-
         protected class ItemInfo
         {
             public int itemIndex;
@@ -109,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// NOTE: if derived class needs to do more Attach readiness logic, this can be done
         /// by overriding AttachItemPlacer
         /// </remarks>
-        /// 
+        ///
         public void Attach()
         {
             _totalItemCount = 0;
@@ -138,7 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
         /// <summary>
         /// Item placer is going into detached state either before returning in game object pool or destroy
         /// </summary>
@@ -164,7 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         }
 
- 
         /// <summary>
         /// Perform additional detach teardown in derived class
         /// </summary>
@@ -172,7 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
 
         }
-
 
         protected void CheckForEventsToTrigger()
         {
@@ -216,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 if (newCanGoForward && !_lastEventStateCanGoForward)
                 {
                     if (debugMode) { Debug.Log("Collection can go forward."); }
-              
+
                     collectionEvents.OnCollectionCanGoForward();
                 }
 
@@ -224,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     if (debugMode) { Debug.Log("CCollection is Empty."); }
                     collectionEvents.OnCollectionEmpty();
-                } 
+                }
 
                 if (!newEmpty && !_lastEventCollectionNotEmpty)
                 {
@@ -246,7 +237,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _itemStateByIndex.ContainsKey(indexAsId);
         }
 
-
         protected ItemInfo FindItem(int indexAsId)
         {
             if (_itemStateByIndex.ContainsKey(indexAsId))
@@ -257,10 +247,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     return _itemsByState[state][indexAsId];
                 }
             }
-
             return null;
         }
-
 
         protected void AddItem(State state, int indexAsId, string keypath, GameObject go)
         {
@@ -276,7 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             else
             {
                 DebugUtilities.LogVerbose("Item " + indexAsId + " is already in dictionary for CollectionItemPlacer." );
-
             }
         }
 
@@ -300,7 +287,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 itemInfo.gameObject = newGO;
                 ChangeItemState(indexAsId, newState);
             }
-
         }
 
         protected void ChangeItemState(int indexAsId, State newState)
@@ -316,7 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 _itemStateByIndex[indexAsId] = newState;
             }
-
         }
 
 
@@ -346,7 +331,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 prefetchedItems.Clear();
             }
         }
-    
 
         protected void PurgeAllVisibleAndRemovableItems()
         {
@@ -369,14 +353,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Normally items are removed as soon as they have been scrolled out of visibility, but
         /// to allow for transition effects, that default behavior for all scroll related methods
         /// can be delayed and the items can be manually purged with this method.
-        /// 
+        ///
         /// NOTE: if objects are not purged, they will indefinitely be referenced by this item placer,
         /// creating an effective memory leak.
-        /// 
+        ///
         /// This is useful for purging all previously visible items, such as
         /// after a transition effect, such as fade out, is done.
         /// </remarks>
-
         public void PurgeAllRemovableGameObjects()
         {
             if (_itemsByState.ContainsKey(State.Removable))
@@ -396,8 +379,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-  
-
         /// <summary>
         /// Purge a range of game objects that have been queued for removal.
         /// </summary>
@@ -405,10 +386,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Normally items are removed as soon as they have been scrolled out of visibility, but
         /// to allow for transition effects, that default behavior for all scroll related methods
         /// can be delayed and the items can be manually purged with this method.
-        /// 
+        ///
         /// NOTE: if objects are not purged, they will indefinitely be referenced by this item placer,
         /// creating an effective memory leak.
-        /// 
+        ///
         /// This is useful for purging a series of previously visible items, such as
         /// after a transition effect, such as fade out, is done.
         /// </remarks>
@@ -420,7 +401,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 int maxItemIdx = firstItemIdx + itemCount;
                 Dictionary<int, ItemInfo> removableStateItems = _itemsByState[State.Removable];
-
 
                 for (int idx = firstItemIdx; idx < maxItemIdx; idx++)
                 {
@@ -435,7 +415,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -457,8 +436,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return itemsForState;
         }
 
-
-
         public void QueueGameObjectsForRemoval(int firstItemIdx, int numItems)
         {
             int maxItem = firstItemIdx + numItems;
@@ -467,8 +444,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 ChangeItemState(indexAsId, State.Removable);
             }
         }
-
-
 
         protected bool StashOrReturnItem(ItemInfo itemInfo)
         {
@@ -484,8 +459,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
-
         /// <summary>
         /// Set the Data Consumer that is providing items for this item placer.
         /// </summary>
@@ -495,7 +468,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             _dataConsumerCollection = dataConsumerCollection;
         }
-
 
         /// <summary>
         /// Scroll forward one page if possible, or to end of list if partial page.
@@ -520,7 +492,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 collectionEvents.OnCollectionPagedBackward();
             }
         }
-
 
         /// <summary>
         /// Scroll forward one item if possible.
@@ -587,7 +558,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 return 0;
             }
 
-
             if (itemCount < 0)
             {
                 // scroll previous
@@ -635,14 +605,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 QueueGameObjectsForRemoval(firstItemToRemove, actualScrollAmount);
                 _firstVisibleItem = newFirstVisibleItem;
-               
+
                 RequestItems(firstItemToRequest, numItemsToRequest);
 
                 if (purgeExitingObjectsNow)
                 {
                     PurgeRemovableGameObjectRange(firstItemToRemove, actualScrollAmount);
                 }
-
 
                 // for a partial scroll, we need to reposition the ones that are still visible, but are now
                 // potentially in a new location
@@ -678,7 +647,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _firstVisibleItem == 0;
         }
 
-
         /// <summary>
         /// Are visible items at the end of list
         /// </summary>
@@ -690,8 +658,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return _firstVisibleItem >= GetTotalItemCount() - GetMaxVisibleItemCount();
         }
-
-
 
         /// <summary>
         /// Get the list index of the first visible item
@@ -714,7 +680,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return _firstVisibleItem / GetItemCountPerPage();
         }
-
 
         /// <summary>
         /// Get nominal number of items per logical page.
@@ -820,7 +785,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        
         protected int FindOrderedInsertPoint(Transform parentTransform, int newItemIndex )
         {
             int midSlot = 0;
@@ -856,7 +820,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return midSlot + 1;
         }
 
-
         protected virtual void RepositionItems(int firstIndexToReposition, int numItems)
         {
             Dictionary<int, ItemInfo> visibleStateItems = _itemsByState[State.Visible];
@@ -869,7 +832,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
         }
-
 
         public virtual void EndPlacement()
         {
@@ -891,7 +853,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 newTotalItemCount = _dataConsumerCollection.GetCollectionItemCount();
             }
 
- 
             // default behavior is to ask for all items in the collection with empty string as request ID.
             if (dataChangeType == DataChangeType.CollectionItemAdded)
             {
@@ -971,8 +932,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <remarks>
         /// Except in situations where the mere addition of a game object to the collection invokes another
         /// script to manage placement, this class will normally be overridden in a subclass to actually do
-        /// the insertion of the specified game object into the scene at the correct transform.  
-        /// 
+        /// the insertion of the specified game object into the scene at the correct transform.
+        ///
         /// The index range is provided in case this is useful for determining the relative location of this item
         /// to the total number of items requested.  Note that this is the requested items, which generally is not
         /// the entire collection.
@@ -990,7 +951,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Process the removal of an item that is no longer in the collection
         /// </summary>
         /// <remarks>
-        /// 
+        ///
         /// </remarks>
         /// <param name="requestRef">Private request reference object provided at the time of the request.</param>
         /// <param name="itemIndex">The index of this item.</param>
@@ -1000,7 +961,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         public virtual void ProcessRemovedItem(object requestRef, int itemIndex, string itemKeypath, GameObject itemGO, bool isVisible)
         {
-
         }
 
 
@@ -1073,7 +1033,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         case State.Prefetched:
                             PlaceItem(requestRef, itemIndex, itemInfo.itemKeypath, itemInfo.gameObject);
                             break;
-
                     }
                 }
             }
@@ -1101,8 +1060,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
         }
-
-
 
         protected virtual void PredictivelyLoadItems()
         {
@@ -1140,7 +1097,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
         protected virtual int GetMaxVisibleItemCount()
         {
             // override this to return the actual currently visible item count
@@ -1150,7 +1106,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Search through game object hierarchy for the nearest IDataCollectionEvents implementation.
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// This protected method is unique to collection related Data Consumers. A CollectionEvents is used to
         /// notify other systems that various changes in the state have occured. This is useful for

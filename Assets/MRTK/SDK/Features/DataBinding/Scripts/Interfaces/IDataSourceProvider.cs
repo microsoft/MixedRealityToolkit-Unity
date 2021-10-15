@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
@@ -15,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// it difficult to directly implement IDataSource in the object, but instead can
     /// lead to the correct data source that's managed externally.
     /// </remarks>
-    
     public interface IDataSourceProvider
     {
         IDataSource GetDataSource();

@@ -1,30 +1,25 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 
-using UnityEngine;
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// A data source Monobehaviour that manages a structured data set that was provided
-    /// by a JSON text stream. 
-    /// 
-    /// The JSON provided to this call will typically be the result of a RESTful 
+    /// by a JSON text stream.
+    ///
+    /// The JSON provided to this call will typically be the result of a RESTful
     /// call to a back-end service.  That JSON can be provided directly to this
     /// data source and will trigger changes to any data consumers listening for
     /// data changes to this source.
-    /// 
+    ///
     /// TODO: Compare deltas between JSON fetches to reduce the number of
     ///       data consumer notifications to only this keypaths that have actually
     ///       changed since the last data fetch.
     /// </summary>
-    /// 
 
     public class DataSourceGOJson : DataSourceGOBase
     {
@@ -34,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public DataSourceJson DataSourceJson { get { return DataSource as DataSourceJson; } }
 
         protected Regex _callbackRegex = new Regex(  @"^([a-zA-Z0-9_]+)\(" );
-
 
         public void SetJson( string jsonText )
         {
@@ -56,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 yield return webRequest.SendWebRequest();
 
 #if UNITY_2020_2_OR_NEWER
-                if (webRequest.result == UnityWebRequest.Result.ProtocolError || webRequest.result == UnityWebRequest.Result.ConnectionError)       
+                if (webRequest.result == UnityWebRequest.Result.ProtocolError || webRequest.result == UnityWebRequest.Result.ConnectionError)
 #else
                 if (webRequest.isHttpError || webRequest.isNetworkError)
 #endif
@@ -83,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             // Quick check to find a trailing parenthesis to validate that it is
             // wrapped in a callback and then also used for trimming that parens off.
-
             int lastCharToIncludeIdx;
 
             for(lastCharToIncludeIdx = jsonText.Length - 1; lastCharToIncludeIdx >= 0; lastCharToIncludeIdx-- )
@@ -105,11 +98,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     {
                         break;
                     }
-                }                  
+                }
             }
             return jsonText;
         }
-
     }
 }
 

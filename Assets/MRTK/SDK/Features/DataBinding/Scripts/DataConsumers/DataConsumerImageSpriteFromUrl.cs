@@ -7,7 +7,6 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
@@ -22,14 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("(Optional) Specific sprite renderer to populate with a retrieved image. If not specified, first SpriteRenderer found in this or children will be used.")]
         [SerializeField] private SpriteRenderer imageSpriteRenderer;
 
-
         protected override Type[] GetComponentTypes()
         {
 
             Type[] types = { typeof(SpriteRenderer) };
             return types;
         }
-
 
         protected override void InitializeForComponent(Type componentType, Component component)
         {
@@ -41,8 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
-
         protected override void PlaceImageTexture(Texture2D imageTexture)
         {
             float pixelsPerUnit = Math.Max(imageTexture.width, imageTexture.height);
@@ -50,6 +45,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             imageSpriteRenderer.sprite = newSprite;
         }
-
     }
 }

@@ -4,7 +4,6 @@
 using System;
 using UnityEngine;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
@@ -12,13 +11,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// specified in the Unity inspector list. That Sprite is then associated
     /// with any SpriteRenderer being managed by this object.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
-    /// 
+    ///
     /// TODO: Allow for a default sprite if no look up can be found.
-    /// 
+    ///
     /// </remarks>
-    /// 
+    ///
     [Serializable]
     public class DataConsumerSpriteLookup : DataConsumerGOBase
     {
@@ -41,13 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("List of value-to-sprite mappings.")]
         [SerializeField] private ValueToSpriteInfo[] valueToSpriteLookup;
 
-
         protected SpriteRenderer _spriteRenderer;
-
 
         protected override Type[] GetComponentTypes()
         {
-
             Type[] types = { typeof(SpriteRenderer) };
             return types;
         }
@@ -82,6 +78,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 }
             }
         }
-
     }
 }

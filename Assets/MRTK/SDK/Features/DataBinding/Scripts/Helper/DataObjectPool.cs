@@ -6,16 +6,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     /// <summary>
     /// A data pool of objects that can be used for object re-use.
-    /// 
+    ///
     /// This is designed to reduce memory allocations and hence
     /// the frequency and duration of garbage collections. It can
     /// also reduce the instantiation time of a prefab when populating
     /// large lists.
     /// </summary>
-    /// 
     public class DataObjectPool : IDataObjectPool
     {
         const int DefaultPoolSize = 50;
@@ -47,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _objectPoolObjects.Count == 0 && _prefetchedObjects.Count == 0;
         }
 
-
         public bool AddPrefetchedObjectToPool( int id, object objectToReturn)
         {
             if (_objectPoolObjects.Count + _prefetchedObjects.Count < _poolMaximumSize)
@@ -58,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return false;
         }
 
- 
         public bool ReturnObjectToPool(object objectToReturn)
         {
             if (objectToReturn == null)
@@ -114,9 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     _prefetchedObjects.Remove(kvPair.Key);
                     return kvPair.Value;
                 }
-
             }
-
             return null;
         }
     }

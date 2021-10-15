@@ -1,5 +1,4 @@
-﻿
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using UnityEngine;
@@ -17,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summmary>
         /// Item placer has just been attached after initialization or dormant state
         /// </summmary>
-
         public virtual void OnAttach() { }
 
         /// <summmary>
@@ -31,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summmary>
         public virtual void OnStartPlacement() {}
         /// <summary>
-        /// A set of item placements has ended. 
+        /// A set of item placements has ended.
         /// </summary>
         /// <remarks>
         /// Note that it is possible that no items were actually placed.

@@ -2,16 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
-
     public class DataSourceGODictionary : DataSourceGOBase
     {
         public delegate void NotifyKeypathValueChangedDelegate(string keyPath, string value);
@@ -19,16 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Serializable]
         public class KeyPathValue
         {
-
             [Tooltip("A keypath used to access this value.")]
             [SerializeField]
             public string KeyPath;
 
-
             [Tooltip("A value accessible via its key path.")]
             [SerializeField]
             public string Value;
-
         }
 
         [Tooltip("A list of key value pairs that comprise a simple data source.")]
@@ -37,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private bool pendingUpdate = false;
 
-          public override void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
+        public override void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             base.SetValue(resolvedKeyPath, newValue, isAtomicChange);
             foreach( KeyPathValue kpv in keyPathValues)
@@ -90,7 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             DataSource.DataChangeSetEnd();
         }
-
 
         void OnValidate()
         {

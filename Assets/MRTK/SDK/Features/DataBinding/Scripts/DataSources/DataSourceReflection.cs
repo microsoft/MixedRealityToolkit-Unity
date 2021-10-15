@@ -9,18 +9,16 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
 
     /// <summary>
-    /// A data source that uses reflection to determine the structure of an object, 
+    /// A data source that uses reflection to determine the structure of an object,
     /// either a struct, a class or a primitive, and makes objects in that structure
     /// available using a keypath structure similar to what is used for the DataSourceObjects
     /// and DataSourceJson classes.
-    /// 
+    ///
     /// </summary>
-    /// 
     public class DataSourceReflection : DataSourceBase
     {
         protected class CollectionObserver
@@ -35,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 collectionKeyPath = keyPath;
                 collectionToObserve = collection;
 
-
                 Delegate collectionChangedHandler = (NotifyCollectionChangedEventHandler)CollectionChangedHandler;
                 Type collectionType = collection.GetType();
                 TypeInfo collectionTypeInfo = collectionType.GetTypeInfo();
@@ -43,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 EventInfo collectionChangedEventInfo = collectionType.GetEvent("CollectionChanged");
 
                 collectionChangedEventInfo.AddEventHandler(collection, collectionChangedHandler);
-
             }
 
             void CollectionChangedHandler(object sender, NotifyCollectionChangedEventArgs eventArgs)
@@ -51,7 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 switch (eventArgs.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
-
                         for(int n = 0; n < eventArgs.NewItems.Count; n++ )
                         {
                             int itemIdx = eventArgs.NewStartingIndex + n;
@@ -66,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         break;
 
                     case NotifyCollectionChangedAction.Remove:
-
                         // TODO @Hoff: this is to compensate for situation where items are removed from 1st to last which causes index IDs to shift.
                         if (eventArgs.OldStartingIndex == 0)
                         {
@@ -94,7 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         throw new NotImplementedException();
                 }
             }
-
         }
 
 
@@ -104,8 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 #if UNITY_EDITOR || ENABLE_IL2CPP
         protected static readonly MemberFilter FieldOrPropertyByNameMemberFilter = new MemberFilter(FieldOrPropertyNameCompare);
 #endif
-
-
         protected static readonly string ArrayTokenPattern = @"^\s*\[\s*([a-zA-Z0-9\-_]*?)\s*\]";
         protected static readonly string KeyTokenPattern = @"^\s*([a-zA-Z0-9\-_]+?)(?:[.\[]|$)";
 
@@ -242,7 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 keyPaths.Add(GetNthCollectionKeyPathAt(resolvedKeyPath, idx));
             }
             return keyPaths as IEnumerable<string>;
-
         }
 
 
@@ -298,7 +288,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         currentObject = null;
                     }
                     amountToSkip = arrayMatches[0].Value.Length;
-
                 }
                 else
                 {
@@ -332,15 +321,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     containingObjectOut = null;
                     break;      // was not a valid path piece
                 }
-
             }
-           
             return currentObject;
         }
 
 
-        protected object GetNamedFieldOrPropertyValue( object containingObject, string key, out MemberInfo foundMemberInfoOut ) {
-
+        protected object GetNamedFieldOrPropertyValue( object containingObject, string key, out MemberInfo foundMemberInfoOut )
+        {
             foundMemberInfoOut = null;
 
             try
@@ -369,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     // We can assume there is only one item with the exact name we searched for.
                     foundMemberInfoOut = foundMember;
                     return GetValueFromFieldOrProperty(containingObject, foundMemberInfoOut);
-                } 
+                }
             }
             catch (Exception)
             {
@@ -424,7 +411,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 return null;
             }
-
         }
 
 
@@ -447,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             return objMemberInfo.Name.ToString() == key.ToString();
         }
-    
+
 
         public bool IsList(object source)
         {
@@ -511,11 +497,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             _collectionObservers.Remove(resolvedKeyPath);
         }
-
-
-
     } // End of class DataSourceObjects
-
 } // End of namespace Microsoft.MixedReality.Toolkit.Data
 
 

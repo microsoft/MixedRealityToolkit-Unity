@@ -6,8 +6,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
-
     public class DataConsumerMaterial : DataConsumerThemableBase<Material>
     {
         [Serializable]
@@ -30,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override Type[] GetComponentTypes()
         {
-
             Type[] types = { typeof(Renderer) };
             return types;
         }
@@ -86,6 +83,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             renderer.material = materialToSet as UnityEngine.Material;
         }
- 
     }
 }

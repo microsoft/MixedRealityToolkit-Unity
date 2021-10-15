@@ -3,8 +3,7 @@
 
 
 namespace Microsoft.MixedReality.Toolkit.Data
-{ 
-
+{
     public class CollectionItemIdentifier
     {
         public string fullyResolvedKeypath;

@@ -2,11 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Diagnostics;
-using System.Collections;
-using UnityEngine.Networking;
 using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
@@ -15,12 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// and associated with a Quad MeshRenderer component  being managed by this
     /// object.
     /// </summary>
-    
+
     [Serializable]
     public class DataConsumerImageQuadFromUrl : DataConsumerImageTextureFromUrl
     {
         [Tooltip("(Optional) Specific mesh renderer to populate with a retrieved image. If not specified, first MeshRenderer found in this or children will be used.")]
-        [SerializeField] 
+        [SerializeField]
         private MeshRenderer imageQuadMeshRenderer;
 
         [Tooltip("(Optional) Default material to use for showing image as a texture.")]
@@ -29,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected override Type[] GetComponentTypes()
         {
-
             Type[] types = { typeof(MeshRenderer) };
             return types;
         }
@@ -50,13 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
- 
 
         protected override void PlaceImageTexture(Texture2D imageTexture)
         {
             imageQuadMeshRenderer.material.mainTexture = imageTexture;
-
         }
-
     }
 }
