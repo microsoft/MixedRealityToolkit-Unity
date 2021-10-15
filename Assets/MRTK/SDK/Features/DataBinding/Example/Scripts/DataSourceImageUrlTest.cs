@@ -3,25 +3,20 @@
 
 using UnityEngine;
 
-
-
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
     /// Test data source which programmatically triggers an update of a url that changes
-    /// its reported content, in this case an image that populates a sprite. 
+    /// its reported content, in this case an image that populates a sprite.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// Using a simple <key,value> store, it's possible to separate data from view
     /// to simplify the integration of generic view prefabs that are populated from
     /// external information.
     /// </remarks>
-    
     public class DataSourceImageUrlTest : DataSourceGOBase
     {
-
         [Tooltip("A URL for a cloud service that provides a random URL in return, typically for an image.")]
         [SerializeField]
         private string url = "https://picsum.photos/800/600";
@@ -37,7 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected float _time = 0.0f;
         protected int _versionCounter = 0;
 
-
         public override IDataSource AllocateDataSource()
         {
             return new DataSourceDictionary();
@@ -47,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             _time = secondsBetweenFetches;
         }
-
 
         // Update is called once per frame
         protected void Update()

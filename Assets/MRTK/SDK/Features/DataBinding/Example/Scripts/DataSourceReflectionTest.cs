@@ -1,21 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
 
-
-
-
     /// <summary>
-    /// Simple test data source that programmatically changes variables in a data source. 
+    /// Simple test data source that programmatically changes variables in a data source.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// Using a simple <key,value> store, it's possible to separate data from view
     /// to simplify the integration of generic view prefabs that are populated from
@@ -24,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     public class DataSourceReflectionTest : DataSourceTest
     {
-
         public class StatusInfo
         {
             public string name;
@@ -35,8 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// A class to contain data that is to be used as a data source. This is akin to a view model
         /// that will be used to populate a view.
         /// </summary>
-
-
         public class TestInfo
         {
             public string firstname;
@@ -54,12 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// the specified _dataSourceObject attached to it to provide the actual
         /// data using reflection.
         /// </summary>
-
-
         public override IDataSource AllocateDataSource()
         {
             return new DataSourceReflection(_dataSourceObject);
         }
-
     }
 }

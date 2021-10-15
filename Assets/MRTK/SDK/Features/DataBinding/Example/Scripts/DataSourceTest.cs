@@ -1,25 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
-
-
-
     /// <summary>
-    /// Simple test data source that programmatically changes variables in a data source. 
+    /// Simple test data source that programmatically changes variables in a data source.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// Using a simple <key,value> store, it's possible to separate data from view
     /// to simplify the integration of generic view prefabs that are populated from
     /// external information.
     /// </remarks>
-
     public class DataSourceTest : DataSourceGOBase
     {
         private float _deltaSeconds;
@@ -57,8 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private string[] _lastNames = { "Hershberger", "Cagle", "Scanlon", "Dowdy", "McMurray", "Garber", "Robins", "Taggert", "Ammons",
                                     "Fajardo", "Mercutio", "Petrunich", "Guzenski", "Zatara"};
 
-
-
         protected override void InitializeDataSource()
         {
             InitializeData();
@@ -75,7 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             int tenthsOfSeconds = (int)(_deltaSeconds * 10.0);
 
             DataChangeSetBegin();
-
 
             if (tenthsOfSeconds > _nextFiveSecondTarget)
             {
@@ -109,7 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
             DataChangeSetEnd();
-
         }
 
         private void InitializeData()

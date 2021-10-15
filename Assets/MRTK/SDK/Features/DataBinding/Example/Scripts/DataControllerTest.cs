@@ -3,14 +3,12 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
     /// Test DataController that logs the event to the console
     /// </summary>
-    /// 
+    ///
     public class DataControllerTest : DataControllerGOBase
     {
         private void OnEnable()

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
@@ -17,10 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// to simplify the integration of generic view prefabs that are populated from
     /// external information.
     /// </remarks>
-
     public class DataSourceReflectionListTest : MonoBehaviour, IDataSourceProvider
     {
-
         [Tooltip("The number of random image entries to generate for image collection.")]
         [SerializeField]
         protected int _staticCollectionSize = 200;
@@ -31,14 +28,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         [Tooltip("URL template for fetching images.")]
         [SerializeField]
-        protected string imageUrlTemplate = "http://michaelinfo.centralus.cloudapp.azure.com/mrtk/api/version/MRTK/nature-photos/images/{0:D4}.jpg";
+        protected string imageUrlTemplate;
 
         protected int _fluxImageIndex = 0;
         protected bool _fluxImageAdding = true;
         private float _deltaSeconds;
         private int _nextUpdateTarget;
         private bool _useListClear = false;
-
 
         /// <summary>
         /// A class to contain data that is to be used as a data source. This is akin to a view model
@@ -56,9 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             public ObservableCollection<ImageInfo> images = new ObservableCollection<ImageInfo>();
             public ObservableCollection<ImageInfo> fluxImages = new ObservableCollection<ImageInfo>();
-
         }
-
 
         private DataSourceReflection _dataSource;
         private TestInfo _dataSourceObject = new TestInfo();
@@ -69,8 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// the specified _dataSourceObject attached to it to provide the actual
         /// data using reflection.
         /// </summary>
-
-
         public IDataSource GetDataSource()
         {
 
@@ -87,7 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             GetDataSource();
             InitializeData();
         }
-
 
         private void Update()
         {
@@ -130,7 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                 }
             }
-
         }
 
 
@@ -142,7 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
            // _dataSource.NotifyAllChanged();
             _dataSource.DataChangeSetEnd();
         }
-
 
         protected void InitializeImageList()
         {
@@ -157,6 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
 
             System.Random r = new System.Random();
+            imageUrlTemplate = imageUrlTemplate.Trim();
 
             for (int i = 0; i < _staticCollectionSize; i++)
             {

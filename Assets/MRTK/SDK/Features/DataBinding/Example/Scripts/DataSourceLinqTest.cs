@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
@@ -17,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// </summary>
     public class DataSourceLinqTest : DataSourceGOBase
     {
-
         protected override void InitializeDataSource()
         {
         }
@@ -25,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         // Update is called once per frame
         void Update()
         {
-          
         }
     }
 }

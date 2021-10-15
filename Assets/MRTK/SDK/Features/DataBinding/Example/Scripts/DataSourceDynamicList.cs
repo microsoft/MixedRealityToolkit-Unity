@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections.Generic;
-
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -12,20 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// Simple data data source that generates a large list of randomly generated entries.
     /// This can be used to test paging and virtualization.
     /// </summary>
-    ///
-    /// <remarks>
-    /// </remarks>
 
     public class DataSourceDynamicList : DataSourceGOBase
     {
-
         [Tooltip("The number of random image entries to generate for image collection.")]
         [SerializeField]
         protected int collectionSize = 1000;
 
         [Tooltip("URL template for fetching images.")]
         [SerializeField]
-        protected string imageUrlTemplate = "http://michaelinfo.centralus.cloudapp.azure.com/mrtk/api/version/MRTK/nature-photos/images/{0:D4}.jpg";
+        protected string imageUrlTemplate;
 
         protected int maxImageId = 101;     // # of images actually availabe from "001" to "101"
         protected int _counter = 0;
@@ -35,24 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return new DataSourceObjects();
         }
 
-
         // Update is called once per frame
         void Update()
         {
-            UpdateAllData();
-
             _counter++;
-
         }
-
-        protected void UpdateAllData()
-        {
-            DataChangeSetBegin();
-
-
-            DataChangeSetEnd();
-        }
-
 
         protected override void InitializeDataSource()
         {
@@ -64,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // Alternative method of populating the data source
             //InitializeDataSourceStatic();
         }
-
 
         protected void InitializeDataSourceDynamic()
         {
@@ -92,14 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 SetValue(pathBase + ".title", title);
                 SetValue(pathBase + ".description", description);
                 SetValue(pathBase + ".imageUrl", url);
-
             }
 
             DataChangeSetEnd();
-
-
             NotifyAllChanged();
-
         }
 
         protected void Randomize(string[] items)
@@ -128,32 +104,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
              *  Equivalent JSON to the programmatically generated data set.
              *
              * { "images" : [
-        { "id" : "0001", "imageUrl" : String.Format(imageUrlTemplate, 1 ),
-          "title" : "Stone Mountain and lone tree",
-            "description" : "Taken while rock climbing on Stone Mountain in NC."
-        },
-        { "id" : "0002", "imageUrl" : String.Format(imageUrlTemplate, 2 ),
-          "title" : "Brain Celosia flower",
-            "description" : "Found this amazing flower in NC."
-        },
-        { "id" : "0003", "imageUrl" :  String.Format(imageUrlTemplate, 3 ),
-          "title" : "Snow blown tree trunk",
-            "description" : "Hiking in Mt Hood, Oregon."
-        },
-        { "id" : "0008", "imageUrl" : String.Format(imageUrlTemplate, 4 ),
-          "title" : "Colorful tree trunk",
-            "description" : "Humans + nature becomes art in this cut tree trunk."
-        },
-        { "id" : "0010", "imageUrl" :  String.Format(imageUrlTemplate, 5 ),
-          "title" : "Geothermal steam through trees",
-            "description" : "Hiking in Costa Rica, ran into this ephemeral display of geothermal steam and sunlight."
-        },
-        { "id" : "0011", "imageUrl" : String.Format(imageUrlTemplate, 6 ),
-          "title" : "Crazy tree trunk",
-            "description" : "Encountered on hike at Rincón de la Vieja Volcano in Costa Rica."
-        }
-
-    ]}
+                    { "id" : "0001", "imageUrl" : String.Format(imageUrlTemplate, 1 ),
+                      "title" : "Stone Mountain and lone tree",
+                        "description" : "Taken while rock climbing on Stone Mountain in NC."
+                    },
+                    { "id" : "0002", "imageUrl" : String.Format(imageUrlTemplate, 2 ),
+                      "title" : "Brain Celosia flower",
+                        "description" : "Found this amazing flower in NC."
+                    }
+               ]}
             ****/
             DataChangeSetBegin();
 
@@ -168,9 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             SetValue("images[1].imageUrl", String.Format(imageUrlTemplate, 2));
 
             DataChangeSetEnd();
-
         }
-
     }
-
 }

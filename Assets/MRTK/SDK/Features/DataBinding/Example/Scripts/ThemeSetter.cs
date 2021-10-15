@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -25,9 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected DataSourceThemeTest themes;
 
-
         protected int _currentTheme = 0;
-
 
         public void NextTheme()
         {
@@ -51,8 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             UpdateThemeName();
             themes.ChangeTheme(_currentTheme);
         }
-
-
         public void UpdateThemeName()
         {
             if (themeNames.Length > 0)
@@ -60,7 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 dataSource.SetValue(keyPathForTheme, themeNames[_currentTheme]);
             }
         }
-
         public void Update()
         {
         }

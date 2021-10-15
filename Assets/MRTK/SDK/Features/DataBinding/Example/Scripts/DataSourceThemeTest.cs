@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     [Serializable]
     public class DataSourceThemeTest : DataSourceGOBase
     {
@@ -29,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _lastThemeCount = availableThemes.Length;
             ChangeTheme(currentTheme);
         }
-
 
         public void ChangeTheme(int themeIndex)
         {
@@ -80,9 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
-
-
         public override IDataSource AllocateDataSource()
         {
             if (availableThemes.Length > 0)
@@ -94,6 +89,5 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 return null;
             }
         }
-
     }
 }

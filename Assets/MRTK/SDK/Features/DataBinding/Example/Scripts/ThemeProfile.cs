@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-
     [CreateAssetMenu(fileName = "MRTK_Theme", menuName = "Mixed Reality Toolkit/Theme")]
     public class ThemeProfile : ScriptableObject
     {
@@ -42,8 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
             [SerializeField]
             public SpriteSet Sprites;
         }
-
-
 
         [SerializeField]
         public ButtonParameters ButtonStyle;

@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using System.Text.RegularExpressions;
-using UnityEngine.Networking;
-
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -25,9 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private float secondsBetweenFetches = 15.0f;
 
-
         protected float _time = 0.0f;
-
 
         protected override void InitializeDataSource()
         {
