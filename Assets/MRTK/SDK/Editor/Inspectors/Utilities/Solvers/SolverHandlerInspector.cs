@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
     public class SolverHandlerInspector : UnityEditor.Editor
     {
         private SerializedProperty trackedTargetProperty;
-        private SerializedProperty trackedHandnessProperty;
+        private SerializedProperty trackedHandednessProperty;
         private SerializedProperty trackedHandJointProperty;
         private SerializedProperty transformOverrideProperty;
         private SerializedProperty additionalOffsetProperty;
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         protected void OnEnable()
         {
             trackedTargetProperty = serializedObject.FindProperty("trackedTargetType");
-            trackedHandnessProperty = serializedObject.FindProperty("trackedHandness");
+            trackedHandednessProperty = serializedObject.FindProperty("trackedHandedness");
             trackedHandJointProperty = serializedObject.FindProperty("trackedHandJoint");
             transformOverrideProperty = serializedObject.FindProperty("transformOverride");
             additionalOffsetProperty = serializedObject.FindProperty("additionalOffset");
@@ -45,8 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                 InspectorUIUtility.RenderHelpURL(target.GetType());
             }
 
-            bool trackedObjectChanged = false;
-
             EditorGUI.BeginChangeCheck();
 
             InspectorUIUtility.DrawEnumSerializedProperty(trackedTargetProperty, TrackedTypeLabel, solverHandler.TrackedTargetType);
@@ -61,8 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint ||
                 trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.ControllerRay)
             {
-                EditorGUILayout.PropertyField(trackedHandnessProperty);
-                if (trackedHandnessProperty.enumValueIndex > (int)Handedness.Both)
+                EditorGUILayout.PropertyField(trackedHandednessProperty);
+                if (trackedHandednessProperty.enumValueIndex > (int)Handedness.Both)
                 {
                     InspectorUIUtility.DrawWarning("Only Handedness values of None, Left, Right, and Both are valid");
                 }
@@ -80,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(additionalOffsetProperty);
             EditorGUILayout.PropertyField(additionalRotationProperty);
 
-            trackedObjectChanged = EditorGUI.EndChangeCheck();
+            bool trackedObjectChanged = EditorGUI.EndChangeCheck();
 
             EditorGUILayout.PropertyField(updateSolversProperty);
 
