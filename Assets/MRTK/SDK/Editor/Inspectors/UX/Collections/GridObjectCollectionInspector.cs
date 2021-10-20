@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
 
 
-            LayoutOrder layoutTypeIndex = (LayoutOrder)layout.enumValueIndex;
+            LayoutOrder layoutTypeIndex = (LayoutOrder)layout.intValue;
             if (layoutTypeIndex == LayoutOrder.ColumnThenRow)
             {
                 EditorGUILayout.HelpBox("ColumnThenRow will lay out content first horizontally (by column), then vertically (by row). NumColumns specifies number of columns per row.", MessageType.Info);
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.PropertyField(cellHeight);
             }
 
-            ObjectOrientationSurfaceType surfaceTypeIndex = (ObjectOrientationSurfaceType)surfaceType.enumValueIndex;
+            ObjectOrientationSurfaceType surfaceTypeIndex = (ObjectOrientationSurfaceType)surfaceType.intValue;
             if (surfaceTypeIndex == ObjectOrientationSurfaceType.Plane)
             {
                 EditorGUILayout.PropertyField(distance, new GUIContent("Distance from parent", "Distance from parent object's origin"));
@@ -96,8 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.PropertyField(anchor);
             }
 
-            LayoutAnchor layoutAnchor = (LayoutAnchor)anchor.enumValueIndex;
-            if (layoutAnchor != LayoutAnchor.MiddleCenter)
+            if ((LayoutAnchor)anchor.intValue != LayoutAnchor.MiddleCenter)
             {
                 EditorGUILayout.PropertyField(anchorAlongAxis);
             }

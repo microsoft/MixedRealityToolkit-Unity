@@ -56,21 +56,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                     + "\" is obsolete. Select MotionController or HandJoint values instead");
             }
 
-            if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint ||
-                trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.ControllerRay)
+            if (trackedTargetProperty.intValue == (int)TrackedObjectType.HandJoint ||
+                trackedTargetProperty.intValue == (int)TrackedObjectType.ControllerRay)
             {
                 EditorGUILayout.PropertyField(trackedHandednessProperty);
-                if (trackedHandednessProperty.enumValueIndex > (int)Handedness.Both)
+                if (trackedHandednessProperty.intValue > (int)Handedness.Both)
                 {
                     InspectorUIUtility.DrawWarning("Only Handedness values of None, Left, Right, and Both are valid");
                 }
             }
 
-            if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint)
+            if (trackedTargetProperty.intValue == (int)TrackedObjectType.HandJoint)
             {
                 EditorGUILayout.PropertyField(trackedHandJointProperty);
             }
-            else if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.CustomOverride)
+            else if (trackedTargetProperty.intValue == (int)TrackedObjectType.CustomOverride)
             {
                 EditorGUILayout.PropertyField(transformOverrideProperty);
             }

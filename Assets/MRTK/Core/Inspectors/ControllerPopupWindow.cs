@@ -502,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         {
                             var inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                             actionDescription.stringValue = inputAction.Description;
-                            actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                            actionConstraint.intValue = (int)inputAction.AxisConstraint;
                         }
 
                         if ((AxisType)axisType.intValue == AxisType.Digital)
@@ -730,7 +730,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                             actionId.intValue = (int)inputAction.Id;
                             actionDescription.stringValue = inputAction.Description;
-                            actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                            actionConstraint.intValue = (int)inputAction.AxisConstraint;
                             interactionList.serializedObject.ApplyModifiedProperties();
                         }
                     }

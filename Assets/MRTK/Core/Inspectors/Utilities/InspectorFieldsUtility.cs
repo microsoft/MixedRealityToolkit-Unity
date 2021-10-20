@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 SerializedProperty options = settingItem.FindPropertyRelative("Options");
                 SerializedProperty name = settingItem.FindPropertyRelative("Name");
 
-                type.enumValueIndex = (int)data[i].Attributes.Type;
+                type.intValue = (int)data[i].Attributes.Type;
                 tooltip.stringValue = data[i].Attributes.Tooltip;
                 label.stringValue = data[i].Attributes.Label;
                 name.stringValue = data[i].Name;
