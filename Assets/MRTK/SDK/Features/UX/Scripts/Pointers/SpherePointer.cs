@@ -177,6 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => ignoreCollidersNotInFOV = value;
         }
 
+        [SerializeField]
+        private int nearInteractableCacheCapacity = 50;
+        private LRUCache<int, NearInteractionGrabbable> nearInteractionGrabbableCache;
+
         private SpherePointerQueryInfo queryBufferNearObjectRadius;
         private SpherePointerQueryInfo queryBufferInteractionRadius;
 
@@ -201,6 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, Mathf.Max(NearObjectRadius, SphereCastRadius), NearObjectSectorAngle, PullbackDistance, nearObjectSmoothingFactor, true);
             queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f, 0.0f);
+            nearInteractionGrabbableCache = new LRUCache<int, NearInteractionGrabbable>(nearInteractableCacheCapacity);
         }
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
@@ -233,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         // First update queryBufferNearObjectRadius to see if there is a grabbable in the near interaction range
                         queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition - pointerAxis * PullbackDistance, triggerInteraction);
-                        if (queryBufferNearObjectRadius.HasValidGrabbable(pointerPosition - pointerAxis * PullbackDistance, pointerAxis, ignoreCollidersNotInFOV))
+                        if (queryBufferNearObjectRadius.HasValidGrabbable(pointerPosition - pointerAxis * PullbackDistance, pointerAxis, ignoreCollidersNotInFOV, nearInteractionGrabbableCache))
                         {
                             break;
                         }
@@ -246,9 +251,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         // Then update queryBufferInteractionRadius to see if there is a grabbable that can be interacted with
                         queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction);
-                        if (queryBufferInteractionRadius.HasValidGrabbable(pointerPosition, pointerAxis, ignoreCollidersNotInFOV))
+                        if (queryBufferInteractionRadius.HasValidGrabbable(pointerPosition, pointerAxis, ignoreCollidersNotInFOV, nearInteractionGrabbableCache))
                         {
-                            hitObject = queryBufferInteractionRadius.GetClosestValidGrabbable(pointerPosition, pointerAxis, IgnoreCollidersNotInFOV, out hitPoint);
+                            hitObject = queryBufferInteractionRadius.GetClosestValidGrabbable(pointerPosition, pointerAxis, IgnoreCollidersNotInFOV, out hitPoint, nearInteractionGrabbableCache);
                             if (hitObject != null)
                             {
                                 hitDistance = (pointerPosition - hitPoint).magnitude;
@@ -462,7 +467,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ignoreBoundsHandlesForQuery = ignoreBoundsHandles;
             }
 
-            public bool HasValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV)
+            public bool HasValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV, LRUCache<int, NearInteractionGrabbable> componentCache)
             {
                 Vector3 grabbablePosition = pointerPosition;
                 NearInteractionGrabbable currentGrabbable = null;
@@ -470,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < numColliders; i++)
                 {
                     Collider collider = queryBuffer[i];
-                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable)
+                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable, componentCache)
                         && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out grabbablePosition))
                     {
                         if (currentGrabbable != null)
@@ -491,7 +496,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
-            public GameObject GetClosestValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV, out Vector3 hitPosition)
+            public GameObject GetClosestValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV, out Vector3 hitPosition, LRUCache<int, NearInteractionGrabbable> componentCache)
             {
                 Vector3 colliderHitPoint = pointerPosition; ;
                 NearInteractionGrabbable currentGrabbable = null;
@@ -504,7 +509,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < numColliders; i++)
                 {
                     Collider collider = queryBuffer[i];
-                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable)
+                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable, componentCache)
                         && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out colliderHitPoint))
                     {
                         float currentDistance = (pointerPosition - colliderHitPoint).sqrMagnitude;
@@ -576,10 +581,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            public bool IsColliderValidGrabbable(Collider collider, bool ignoreCollidersNotInFOV, out NearInteractionGrabbable currentGrabbable)
+            public bool IsColliderValidGrabbable(Collider collider, bool ignoreCollidersNotInFOV, out NearInteractionGrabbable currentGrabbable, LRUCache<int, NearInteractionGrabbable> componentCache)
             {
                 // Check if the collider has a grabbable component which is valid
-                currentGrabbable = collider.GetComponent<NearInteractionGrabbable>();
+                int instanceId = collider.gameObject.GetInstanceID();
+                if (!componentCache.TryGetValue(instanceId, out currentGrabbable))
+                {
+                    currentGrabbable = collider.GetComponent<NearInteractionGrabbable>();
+                    if (currentGrabbable != null)
+                    {
+                        componentCache.Add(instanceId, grabbable);
+                    }
+                }
+
                 bool isValidGrabbable =  (currentGrabbable != null) && !(ignoreBoundsHandlesForQuery && currentGrabbable.IsBoundsHandles);
                 if (!isValidGrabbable)
                 {
