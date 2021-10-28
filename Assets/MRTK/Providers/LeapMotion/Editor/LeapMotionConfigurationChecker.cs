@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         private static bool isLeapRecognizedByMRTK = false;
 
         // The current supported Leap Core Assets version numbers.
-        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0" };
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0", "4.9.1" };
 
         // The current Leap Core Assets version in this project
         private static string currentLeapCoreAssetsVersion = "";
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 {
                     if (currentLeapCoreAssetsVersion == "4.7.1")
                     {
-                        Debug.Log($"Integrating the Leap Motion Unity Modules Version {currentLeapCoreAssetsVersion} or 4.8.0 with MRTK");
+                        Debug.Log($"Integrating the Leap Motion Unity Modules Version {currentLeapCoreAssetsVersion}, 4.8.0 or 4.9.1 with MRTK");
                     }
                     else
                     {
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                             if (File.Exists(leap471Path))
                             {
-                                // The Leap Motion Unity modules Core package version 4.7.1 is identical to the version 4.8.0 
+                                // The Leap Motion Unity modules Core package version 4.7.1 is identical to the version 4.8.0 and 4.9.1
                                 // Core package. Due to the lack of differences between the two versions, the modules will be marked as 4.7.1 even
                                 // if they are version 4.8.0.
                                 currentLeapCoreAssetsVersion = "4.7.1";
