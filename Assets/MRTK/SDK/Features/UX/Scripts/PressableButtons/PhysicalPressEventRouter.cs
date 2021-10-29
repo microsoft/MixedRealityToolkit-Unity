@@ -25,11 +25,25 @@ namespace Microsoft.MixedReality.Toolkit
         }
         public PhysicalPressEventBehavior InteractableOnClick = PhysicalPressEventBehavior.EventOnClickCompletion;
 
+        private bool suppressClickEvent;
+        private bool holdEventRaised;
+
         private void Awake()
         {
             if (routingTarget == null)
             {
                 routingTarget = GetComponent<Interactable>();
+            }
+
+            //Check if the OnHold event is used and if it should suppress the OnClick event.
+            var onHoldReceiver = routingTarget.GetReceiver<InteractableOnHoldReceiver>();
+            if (onHoldReceiver != null && onHoldReceiver.OnHold.GetPersistentEventCount() > 0 && onHoldReceiver.SuppressClick)
+            {
+                onHoldReceiver.OnHold.AddListener(() => holdEventRaised = true);
+                suppressClickEvent = true;
+                
+                //Force the OnClick event to be triggered on completion to suppress the click event correctly.
+                InteractableOnClick = PhysicalPressEventBehavior.EventOnClickCompletion;
             }
         }
 
@@ -45,6 +59,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public void OnHandPressTouched()
         {
+            holdEventRaised = false;
+
             if (CanRouteInput())
             {
                 routingTarget.HasPhysicalTouch = true;
@@ -101,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (CanRouteInput())
             {
+                if (suppressClickEvent && holdEventRaised) return;
+                
                 routingTarget.HasPhysicalTouch = true;
                 routingTarget.HasPress = true;
                 if (InteractableOnClick == PhysicalPressEventBehavior.EventOnClickCompletion)

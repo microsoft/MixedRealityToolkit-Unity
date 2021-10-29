@@ -19,6 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [InspectorField(Type = InspectorField.FieldTypes.Float, Label = "Hold Time", Tooltip = "The amount of time to press before triggering event")]
         public float HoldTime = 1f;
 
+        /// <summary>
+        /// Should this event suppress the OnClick Event? Only relevant for touch interaction.
+        /// </summary>
+        [InspectorField(Type = InspectorField.FieldTypes.Bool, Label = "Suppress Click Event", Tooltip = "Should this event suppress the OnClick Event? Only relevant for touch interaction.")]
+        public bool SuppressClick = false;
+
         private float clickTimer = 0;
 
         private bool hasDown;
