@@ -35,14 +35,14 @@ namespace Microsoft.MixedReality.Toolkit
                 routingTarget = GetComponent<Interactable>();
             }
 
-            //Check if the OnHold event is used and if it should suppress the OnClick event.
+            // Check if the OnHold event is used and if it should suppress the OnClick event.
             var onHoldReceiver = routingTarget.GetReceiver<InteractableOnHoldReceiver>();
             if (onHoldReceiver != null && onHoldReceiver.OnHold.GetPersistentEventCount() > 0 && onHoldReceiver.SuppressClick)
             {
                 onHoldReceiver.OnHold.AddListener(() => holdEventRaised = true);
                 suppressClickEvent = true;
                 
-                //Force the OnClick event to be triggered on completion to suppress the click event correctly.
+                // Force the OnClick event to be triggered on completion to suppress the click event correctly.
                 InteractableOnClick = PhysicalPressEventBehavior.EventOnClickCompletion;
             }
         }
