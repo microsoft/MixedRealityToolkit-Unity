@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Test orbital around left hand line pointer
             {
                 testObjects.handler.TrackedTargetType = TrackedObjectType.ControllerRay;
-                testObjects.handler.TrackedHandness = Handedness.Left;
+                testObjects.handler.TrackedHandedness = Handedness.Left;
 
                 yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
             }
@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraint>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
@@ -380,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;
@@ -489,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             var manipHandler = testObjects.target.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObjects.target.transform;
@@ -1401,7 +1401,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;
