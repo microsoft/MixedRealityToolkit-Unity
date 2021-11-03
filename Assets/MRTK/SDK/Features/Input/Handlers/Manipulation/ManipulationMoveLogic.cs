@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         {
             if (isNearManipulation)
             {
-                return NearManipulationUpdate(pointerCentroidPose, currentTarget, isPointerAnchor);
+                return NearManipulationUpdate(pointerCentroidPose, currentTarget);
             }
             else
             {
@@ -81,18 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// </summary>
         /// <returns>A Vector3 describing the desired position during near manipulation</returns>
         /// <returns></returns>
-        private Vector3 NearManipulationUpdate(MixedRealityPose pointerCentroidPose, MixedRealityTransform currentTarget, bool isPointerAnchor)
+        private Vector3 NearManipulationUpdate(MixedRealityPose pointerCentroidPose, MixedRealityTransform currentTarget)
         {
-            if (isPointerAnchor)
-            {
-                Vector3 scaledLocalAttach = Vector3.Scale(objectLocalAttachPoint, currentTarget.Scale);
-                Vector3 worldAttachPoint = currentTarget.Rotation * scaledLocalAttach + currentTarget.Position;
-                return currentTarget.Position + (pointerCentroidPose.Position - worldAttachPoint);
-            }
-            else
-            {
-                return pointerCentroidPose.Position + attachToObject;
-            }
+            Vector3 scaledLocalAttach = Vector3.Scale(objectLocalAttachPoint, currentTarget.Scale);
+            Vector3 worldAttachPoint = currentTarget.Rotation * scaledLocalAttach + currentTarget.Position;
+            return currentTarget.Position + (pointerCentroidPose.Position - worldAttachPoint);
         }
 
         /// <summary>
