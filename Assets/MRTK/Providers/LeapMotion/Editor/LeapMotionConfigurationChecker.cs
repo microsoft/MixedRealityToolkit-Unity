@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         private static bool isLeapRecognizedByMRTK = false;
 
         // The current supported Leap Core Assets version numbers.
-        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0" };
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0", "4.9.1" };
 
         // The current Leap Core Assets version in this project
         private static string currentLeapCoreAssetsVersion = "";
@@ -179,30 +179,32 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                             // The Leap Motion Unity modules Version.txt has remained 4.5.1 across versions 4.6.0, 4.7.0, 4.7.1, and 4.8.0 check for the presence
                             // of certain paths to infer the version number.
-
-                            // This path is only present in 4.7.1
-                            string leap471Path = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath_471);
-
-                            // This path is present in versions 4.7.0 and 4.7.1
-                            string testDirectoryPath = Path.Combine(Application.dataPath, pathDifference, leapTestsPath_470);
-
-                            // This path is present in 4.6.0 and not 4.5.1
-                            string xrPath = Path.Combine(Application.dataPath, pathDifference, leapXRPath_460);
-
-                            if (File.Exists(leap471Path))
+                            if (currentLeapCoreAssetsVersion == "4.5.1")
                             {
-                                // The Leap Motion Unity modules Core package version 4.7.1 is identical to the version 4.8.0 
-                                // Core package. Due to the lack of differences between the two versions, the modules will be marked as 4.7.1 even
-                                // if they are version 4.8.0.
-                                currentLeapCoreAssetsVersion = "4.7.1";
-                            }
-                            else if (!File.Exists(leap471Path) && Directory.Exists(testDirectoryPath))
-                            {
-                                currentLeapCoreAssetsVersion = "4.7.0";
-                            }
-                            else if (!File.Exists(leap471Path) && !Directory.Exists(testDirectoryPath) && File.Exists(xrPath))
-                            {
-                                currentLeapCoreAssetsVersion = "4.6.0";
+                                // This path is only present in 4.7.1
+                                string leap471Path = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath_471);
+
+                                // This path is present in versions 4.7.0 and 4.7.1
+                                string testDirectoryPath = Path.Combine(Application.dataPath, pathDifference, leapTestsPath_470);
+
+                                // This path is present in 4.6.0 and not 4.5.1
+                                string xrPath = Path.Combine(Application.dataPath, pathDifference, leapXRPath_460);
+
+                                if (File.Exists(leap471Path))
+                                {
+                                    // The Leap Motion Unity modules Core package version 4.7.1 is identical to the version 4.8.0 
+                                    // Core package. Due to the lack of differences between the two versions, the modules will be marked as 4.7.1 even
+                                    // if they are version 4.8.0.
+                                    currentLeapCoreAssetsVersion = "4.7.1";
+                                }
+                                else if (!File.Exists(leap471Path) && Directory.Exists(testDirectoryPath))
+                                {
+                                    currentLeapCoreAssetsVersion = "4.7.0";
+                                }
+                                else if (!File.Exists(leap471Path) && !Directory.Exists(testDirectoryPath) && File.Exists(xrPath))
+                                {
+                                    currentLeapCoreAssetsVersion = "4.6.0";
+                                }
                             }
 
                             return true;
@@ -262,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             string leapCoreAsmDefPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "LeapMotion.asmdef");
 
             // If the Leap Unity Modules version is 4.7.1, the LeapMotion.asmdef file does not need to be created
-            if (currentLeapCoreAssetsVersion == "4.7.1")
+            if (currentLeapCoreAssetsVersion == "4.7.1" || currentLeapCoreAssetsVersion == "4.9.1")
             {
                 return;
             }
@@ -329,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         };
 
                         // Add the LeapMotion.LeapCSharp assembly definition to the leap motion tests assembly definition
-                        if ((currentLeapCoreAssetsVersion == "4.5.1" || currentLeapCoreAssetsVersion == "4.6.0" || currentLeapCoreAssetsVersion == "4.7.0" || currentLeapCoreAssetsVersion == "4.7.1") && (leapAsmDef.Key == "LeapMotion.Core.Tests.Editor" || leapAsmDef.Key == "LeapMotion.Core.Editor"))
+                        if ((currentLeapCoreAssetsVersion == "4.5.1" || currentLeapCoreAssetsVersion == "4.6.0" || currentLeapCoreAssetsVersion == "4.7.0" || currentLeapCoreAssetsVersion == "4.7.1" || currentLeapCoreAssetsVersion == "4.9.1") && (leapAsmDef.Key == "LeapMotion.Core.Tests.Editor" || leapAsmDef.Key == "LeapMotion.Core.Editor"))
                         {
                             leapEditorAsmDef.AddReference("LeapMotion.LeapCSharp");
                         }
