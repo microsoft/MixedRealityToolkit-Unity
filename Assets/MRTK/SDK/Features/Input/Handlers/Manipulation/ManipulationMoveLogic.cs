@@ -80,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Updates the position during near manipulation
         /// </summary>
         /// <returns>A Vector3 describing the desired position during near manipulation</returns>
-        /// <returns></returns>
         private Vector3 NearManipulationUpdate(MixedRealityPose pointerCentroidPose, MixedRealityTransform currentTarget)
         {
             Vector3 scaledLocalAttach = Vector3.Scale(objectLocalAttachPoint, currentTarget.Scale);
@@ -92,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Updates the position during far manipulation
         /// </summary>
         /// <returns>A Vector3 describing the desired position during far manipulation</returns>
-        /// <returns></returns>
         private Vector3 FarManipulationUpdate(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isPointerAnchor)
         {
             float distanceRatio = 1.0f;
