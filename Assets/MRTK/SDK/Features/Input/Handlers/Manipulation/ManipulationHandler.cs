@@ -684,7 +684,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // the initial pointer pose; if far manipulation, a more complex
                 // look-rotation-based pointer pose is used.
                 MixedRealityPose pose = IsNearManipulation() ? new MixedRealityPose(GetPointersCentroid()) : GetAveragePointerPose();
-                targetTransform.Position = moveLogic.UpdateTransform(pose, targetTransform, true, IsNearManipulation());
+
+                // The manipulation handler is not built to handle near manipulation properly, please use the object manipulator
+                targetTransform.Position = moveLogic.UpdateTransform(pose, targetTransform, true, false);
                 if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
                 {
                     moveConstraint.ApplyConstraint(ref targetTransform);
@@ -748,13 +750,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            targetTransform.Position = moveLogic.UpdateTransform(pointerPose, targetTransform, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, IsNearManipulation());
+
+            // The manipulation handler is not built to handle near manipulation properly, please use the object manipulator
+            targetTransform.Position = moveLogic.UpdateTransform(pointerPose, targetTransform, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, false);
             if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
             {
                 moveConstraint.ApplyConstraint(ref targetTransform);
             }
 
             float lerpAmount = GetLerpAmount();
+            Debug.Log(lerpAmount);
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetTransform.Rotation, lerpAmount);
             Vector3 smoothedPosition = Vector3.Lerp(hostTransform.position, targetTransform.Position, lerpAmount);
 

@@ -373,12 +373,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         {
                             // make sure that the offset between grab point and object pivot hasn't changed while rotating
                             Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
-                            Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
-                            TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
+                            Vector3 offsetRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
+                            TestUtilities.AssertAboutEqual(offsetRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
                         }
                     }
 
-                    //Move the object forward and back
+                    // Move the object forward and back
                     yield return hand.MoveTo(initialGrabPosition + Vector3.forward, numHandSteps);
                     // make sure that the offset between grab and object centre hasn't changed while rotating
                     Vector3 currentGrabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
