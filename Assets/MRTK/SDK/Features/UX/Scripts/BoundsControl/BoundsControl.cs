@@ -1090,6 +1090,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void DestroyRig()
         {
+            // If we have previously logged an initial bounds size,
+            // reset the boundsOverride BoxCollider to the initial size.
+            // This is because the CalculateBoxPadding
+            if (initialBoundsOverrideSize.HasValue)
+            {
+                boundsOverride.size = initialBoundsOverrideSize.Value;
+            }
+
             // todo: move this out?
             DestroyVisuals();
 
