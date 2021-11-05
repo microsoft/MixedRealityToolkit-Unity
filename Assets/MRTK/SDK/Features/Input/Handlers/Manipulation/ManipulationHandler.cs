@@ -759,7 +759,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             float lerpAmount = GetLerpAmount();
-            Debug.Log(lerpAmount);
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetTransform.Rotation, lerpAmount);
             Vector3 smoothedPosition = Vector3.Lerp(hostTransform.position, targetTransform.Position, lerpAmount);
 
