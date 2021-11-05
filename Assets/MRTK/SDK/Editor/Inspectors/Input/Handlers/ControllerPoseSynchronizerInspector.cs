@@ -62,9 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     var label = new GUIContent(handedness.displayName);
                     using (new EditorGUI.PropertyScope(position, label, handedness))
                     {
-                        var currentHandedness = (Handedness)handedness.enumValueIndex;
+                        var currentHandedness = (Handedness)handedness.intValue;
 
-                        handedness.enumValueIndex = (int)(Handedness)EditorGUI.EnumPopup(position, label, currentHandedness,
+                        handedness.intValue = (int)(Handedness)EditorGUI.EnumPopup(position, label, currentHandedness,
                             (value) => { return (Handedness)value == Handedness.Left || (Handedness)value == Handedness.Right; });
                     }
                 }
