@@ -329,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
             {
                 // Changing the DistanceSpaceMode requires updating the plane distance values so they stay in the same relative ratio positions
                 Undo.RecordObject(target, string.Concat("Trigger Plane Distance Conversion of ", button.name));
-                button.DistanceSpaceMode = (CompressableButton.SpaceMode)distanceSpaceMode.enumValueIndex;
+                button.DistanceSpaceMode = (CompressableButton.SpaceMode)distanceSpaceMode.intValue;
                 serializedObject.Update();
             }
 

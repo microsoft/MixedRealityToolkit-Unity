@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             showComponents = EditorGUILayout.Toggle("Show Component References", showComponents);
 
-            ButtonIconStyle oldStyle = (ButtonIconStyle)iconStyleProp.enumValueIndex;
+            ButtonIconStyle oldStyle = (ButtonIconStyle)iconStyleProp.intValue;
 
             using (new EditorGUI.IndentLevelScope(1))
             {
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             serializedObject.ApplyModifiedProperties();
 
-            if (oldStyle != (ButtonIconStyle)iconStyleProp.enumValueIndex)
+            if (oldStyle != (ButtonIconStyle)iconStyleProp.intValue)
             {
                 cb.ForceRefresh();
             }
