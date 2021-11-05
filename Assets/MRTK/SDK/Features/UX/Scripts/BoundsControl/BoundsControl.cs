@@ -856,8 +856,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
 
             TargetBounds.size += Vector3.Scale(boxPadding, scale);
-
-            TargetBounds.EnsureComponent<NearInteractionGrabbable>();
         }
 
         private readonly List<Transform> childTransforms = new List<Transform>();
