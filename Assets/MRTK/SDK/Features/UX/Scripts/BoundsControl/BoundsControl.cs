@@ -836,13 +836,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
             else
             {
-                // first remove old collider if there is any so we don't accumulate any 
-                // box padding on consecutive calls of this method
-                if (TargetBounds != null)
-                {
-                    Destroy(TargetBounds);
-                }
-                TargetBounds = Target.AddComponent<BoxCollider>();
+                TargetBounds = Target.EnsureComponent<BoxCollider>();
                 Bounds bounds = GetTargetBounds();
 
                 TargetBounds.center = bounds.center;
@@ -862,8 +856,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
 
             TargetBounds.size += Vector3.Scale(boxPadding, scale);
-
-            TargetBounds.EnsureComponent<NearInteractionGrabbable>();
         }
 
         private readonly List<Transform> childTransforms = new List<Transform>();
@@ -1096,27 +1088,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void DestroyRig()
         {
-            if (boundsOverride == null)
+            // If we have previously logged an initial bounds size,
+            // reset the boundsOverride BoxCollider to the initial size.
+            // This is because the CalculateBoxPadding
+            if (initialBoundsOverrideSize.HasValue)
             {
-                Destroy(TargetBounds);
-            }
-            else
-            {
-                // If we have previously logged an initial bounds size,
-                // reset the boundsOverride BoxCollider to the initial size.
-                // This is because the CalculateBoxPadding
-                if (initialBoundsOverrideSize.HasValue)
-                {
-                    boundsOverride.size = initialBoundsOverrideSize.Value;
-                }
-
-                if (TargetBounds != null)
-                {
-                    if (TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>())
-                    {
-                        Destroy(TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>());
-                    }
-                }
+                boundsOverride.size = initialBoundsOverrideSize.Value;
             }
 
             // todo: move this out?
@@ -1127,7 +1104,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 Destroy(rigRoot.gameObject);
                 rigRoot = null;
             }
-
         }
 
         private void UpdateRigVisibilityInInspector()
