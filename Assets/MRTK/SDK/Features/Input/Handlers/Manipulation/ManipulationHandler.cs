@@ -684,7 +684,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // the initial pointer pose; if far manipulation, a more complex
                 // look-rotation-based pointer pose is used.
                 MixedRealityPose pose = IsNearManipulation() ? new MixedRealityPose(GetPointersCentroid()) : GetAveragePointerPose();
-                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
+
+                // The manipulation handler is not built to handle near manipulation properly, please use the object manipulator
+                targetTransform.Position = moveLogic.UpdateTransform(pose, targetTransform, true, false);
                 if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
                 {
                     moveConstraint.ApplyConstraint(ref targetTransform);
@@ -748,7 +750,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
+
+            // The manipulation handler is not built to handle near manipulation properly, please use the object manipulator
+            targetTransform.Position = moveLogic.UpdateTransform(pointerPose, targetTransform, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, false);
             if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
             {
                 moveConstraint.ApplyConstraint(ref targetTransform);
