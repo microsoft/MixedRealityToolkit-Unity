@@ -119,16 +119,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            UnityEvent keywordResponse;
+            // early return if the script is already heading for destruction
+            if (this.IsNull())
+            {
+                return;
+            }
 
             // Check to make sure the recognized keyword exists in the methods dictionary, then invoke the corresponding method.
-            if (enabled && responses.TryGetValue(eventData.Command.Keyword.ToLower(), out keywordResponse))
+            if (enabled && responses.TryGetValue(eventData.Command.Keyword.ToLower(), out UnityEvent keywordResponse))
             {
                 keywordResponse.Invoke();
-                eventData.Use();
+            eventData.Use();
 
                 // Instantiate the Speech Confirmation Tooltip prefab if assigned
-                // Ignore "Select" keyword since OS will display the tooltip. 
+                // Ignore "Select" keyword since OS will display the tooltip.
                 if (SpeechConfirmationTooltipPrefab != null
                     && speechConfirmationTooltipPrefabInstance == null
                     && !eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))
@@ -141,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Trigger animation of the Speech Confirmation Tooltip prefab
                     speechConfirmationTooltipPrefabInstance.TriggerConfirmedAnimation();
 
-                    // Tooltip prefab instance will be destroyed on animation complete 
+                    // Tooltip prefab instance will be destroyed on animation complete
                     // by DestroyOnAnimationComplete.cs in the SpeechConfirmationTooltip.prefab
                 }
             }
