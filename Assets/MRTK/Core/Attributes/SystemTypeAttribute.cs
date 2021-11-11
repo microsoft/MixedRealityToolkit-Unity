@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit
         public bool AllowAbstract { get; protected set; } = false;
 
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         /// <param name="type">Initializes a new instance of the <see cref="SystemTypeAttribute"/> class.</param>
         /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
