@@ -39,24 +39,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="bypassIgnore">Causes the shader update code to disregard the ignore file.</param>
         private static void EnsureShaders(bool bypassIgnore)
         {
-            DirectoryInfo packageShaderFolder = FindShaderFolderInPackage();
+            string sentinelPath = AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid);
+            FileInfo ignoreFile = new FileInfo(Path.Combine(new FileInfo(sentinelPath).Directory.FullName, IgnoreFileName));
 
-            if (bypassIgnore)
+            if (!string.IsNullOrWhiteSpace(sentinelPath))
             {
-                // The customer is manually checking for updates, delete the ignore file
-                string sentinelPath = AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid);
-                if (!string.IsNullOrWhiteSpace(sentinelPath))
+                // Getting here indicates that the project's Assets folder contains the shader sentinel.
+                if (ignoreFile.Exists)
                 {
-                    FileInfo ignoreFile = new FileInfo(Path.Combine(new FileInfo(sentinelPath).Directory.FullName, IgnoreFileName));
-                    if (ignoreFile.Exists)
+                    if (bypassIgnore)
                     {
+                        // The user is manually checking for updates, delete the ignore file
                         ignoreFile.Delete();
+                        ignoreFile.Refresh();
                     }
-                    ignoreFile.Refresh();
+                    else
+                    {
+                        // Ignore importing shaders
+                        return;
+                    }
                 }
             }
 
-            if (!AssetsContainsShaders(packageShaderFolder))
+            DirectoryInfo packageShaderFolder = FindShaderFolderInPackage();
+
+            if (!AssetsContainsShaders(packageShaderFolder, sentinelPath, ignoreFile))
             {
                 ImportShaderFiles(packageShaderFolder);
             }
@@ -68,23 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>True if the shader sentinel file is found, otherwise false.</returns>
         private static bool AssetsContainsShaders(DirectoryInfo packageShaderFolder)
         {
-            string sentinelPath = AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid);
-
-            // If we do not find the sentinel, we need to import the shaders.
-            if (string.IsNullOrWhiteSpace(sentinelPath))
-            {
-                return false;
-            }
-
-            // Getting here indicates that the project's Assets folder contains the shader sentinel.
-
-            // Check for the "ignore this check" file, if present we do NOT import
-            FileInfo ignoreFile = new FileInfo(Path.Combine(new FileInfo(sentinelPath).Directory.FullName, IgnoreFileName));
-            if (ignoreFile.Exists)
-            {
-                return true;
-            }
-
             // If the package shader folder does not exist, there is nothing for us to do.
             if ((packageShaderFolder == null) || !packageShaderFolder.Exists)
             {

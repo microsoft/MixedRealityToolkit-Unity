@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-#if WINDOWS_UWP
+#if ENABLE_WINMD_SUPPORT
 using Windows.Storage;
 using Windows.Storage.Streams;
-#endif // WINDOWS_UWP
+#endif // ENABLE_WINMD_SUPPORT
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                     if (texture == null)
                     {
-#if WINDOWS_UWP
+#if ENABLE_WINMD_SUPPORT
                         if (gltfObject.UseBackgroundThread)
                         {
                             try

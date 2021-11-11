@@ -13,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit
     {
         public const uint DefaultPriority = 10;
 
+        public BaseService()
+        {
+            typeName = GetType().ToString();
+        }
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -68,12 +73,19 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool? isInitialized = null;
 
+        private readonly string typeName = null;
+
         /// <inheritdoc />
         public virtual bool IsInitialized
         {
             get
             {
-                Debug.Assert(isInitialized.HasValue, $"{GetType()} has not set a value for IsInitialized, returning false.");
+                if (!isInitialized.HasValue)
+                {
+                    // Calling this allocates a string, so test the condition before
+                    Debug.AssertFormat(isInitialized.HasValue, "{0} has not set a value for IsInitialized, returning false.", typeName);
+                }
+
                 return isInitialized ?? false;
             }
 
@@ -87,9 +99,14 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
-                Debug.Assert(isEnabled.HasValue, $"{GetType()} has not set a value for IsEnabled, returning false.");
+                if (!isEnabled.HasValue)
+                {
+                    // Calling this allocates a string, so test the condition before
+                    Debug.AssertFormat(isEnabled.HasValue, "{0} has not set a value for IsEnabled, returning false.", typeName);
+                }
                 return isEnabled ?? false;
             }
+
 
             protected set => isEnabled = value;
         }
@@ -101,7 +118,10 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
-                Debug.Assert(isMarkedDestroyed.HasValue, $"{GetType()} has not set a value for IsMarkedDestroyed, returning false.");
+                if (!isMarkedDestroyed.HasValue)
+                {
+                    Debug.AssertFormat(isMarkedDestroyed.HasValue, "{0} has not set a value for IsMarkedDestroyed, returning false.", typeName);
+                }
                 return isMarkedDestroyed ?? false;
             }
 

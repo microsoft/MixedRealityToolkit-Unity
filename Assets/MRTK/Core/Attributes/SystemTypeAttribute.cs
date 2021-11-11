@@ -39,7 +39,10 @@ namespace Microsoft.MixedReality.Toolkit
 #else
             bool isValid = type.IsClass || type.IsInterface || type.IsValueType && !type.IsEnum;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
-            Debug.Assert(isValid, $"Invalid Type {type} in attribute.");
+            if (!isValid)
+            {
+                Debug.Assert(isValid, $"Invalid Type {type} in attribute.");
+            }
             Grouping = grouping;
         }
 

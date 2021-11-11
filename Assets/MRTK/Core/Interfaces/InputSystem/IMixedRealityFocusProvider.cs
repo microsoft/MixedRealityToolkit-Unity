@@ -90,6 +90,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer;
 
         /// <summary>
+        /// Gets the first registered pointer that satisfies a specific condition.
+        /// </summary>
+        /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
+        /// <param name="predicate">A function that returns true when the parameter satisfies a condition.</param>
+        /// <returns>The first pointer in the collection that satisfies the specified condition.</returns>
+        T GetFirstPointerWhere<T>(System.Predicate<T> predicate) where T : class, IMixedRealityPointer;
+
+        /// <summary>
+        /// Gets the first registered pointer that matches a given handedness.
+        /// </summary>
+        /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
+        /// <param name="handedness">The first pointer in the collection that matches the specified handedness.</param>
+        /// <returns></returns>
+        T GetFirstPointerWithHandedness<T>(Utilities.Handedness handedness) where T : class, IMixedRealityPointer;
+
+        /// <summary>
         /// Subscribes to primary pointer changes.
         /// </summary>
         /// <param name="handler">Handler to be called when the primary pointer changes</param>

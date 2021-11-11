@@ -154,13 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
-                var spherePointers = focusProvider.GetPointers<SpherePointer>();
-                foreach (var spherePointer in spherePointers)
+                var spherePointer = focusProvider.GetFirstPointerWhere<SpherePointer>(p => p.Controller == Pointer.Controller);
+                if (spherePointer != null)
                 {
-                    if (spherePointer.Controller == Pointer.Controller)
-                    {
-                        return spherePointer.IsNearObject;
-                    }
+                    return spherePointer.IsNearObject;
                 }
             }
 

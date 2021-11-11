@@ -85,14 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
         {
-            foreach (var pointer in CoreServices.InputSystem.FocusProvider.GetPointers<T>())
+            if (handedness == Handedness.None)
             {
-                if (pointer.Controller?.ControllerHandedness.IsMatch(handedness) == true)
-                {
-                    return pointer;
-                }
+                return null;
             }
-            return null;
+
+            return CoreServices.InputSystem.FocusProvider.GetFirstPointerWithHandedness<T>(handedness);
         }
 
         /// <summary>

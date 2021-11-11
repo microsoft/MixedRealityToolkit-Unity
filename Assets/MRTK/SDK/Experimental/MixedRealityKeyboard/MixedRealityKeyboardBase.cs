@@ -186,6 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 switch (state)
                 {
                     case KeyboardState.Showing:
+                        if (TouchScreenKeyboard.visible == true)
                         {
                             UpdateText();
                         }

@@ -133,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private bool initialized = false;
         private bool materialsInstanced = false;
         private readonly HashSet<Object> materialOwners = new HashSet<Object>();
+        private readonly List<Material> sharedMaterials = new List<Material>();
 
         private const string instancePostfix = " (Instance)";
 
@@ -146,12 +147,12 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private void Update()
         {
             // If the materials get changed via outside of MaterialInstance.
-            var sharedMaterials = CachedRenderer.sharedMaterials;
+            CachedRenderer.GetSharedMaterials(sharedMaterials);
 
             if (!MaterialsMatch(sharedMaterials, instanceMaterials))
             {
                 // Re-create the material instances.
-                var newDefaultMaterials = new Material[sharedMaterials.Length];
+                var newDefaultMaterials = new Material[sharedMaterials.Count];
                 var min = Math.Min(newDefaultMaterials.Length, defaultMaterials.Length);
 
                 // Copy the old defaults.
@@ -222,7 +223,8 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (CachedRenderer != null)
             {
-                if (!MaterialsMatch(CachedRenderer.sharedMaterials, instanceMaterials))
+                CachedRenderer.GetSharedMaterials(sharedMaterials);
+                if (!MaterialsMatch(sharedMaterials, instanceMaterials))
                 {
                     CreateInstances();
                 }
@@ -245,14 +247,14 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             materialsInstanced = true;
         }
 
-        private static bool MaterialsMatch(Material[] a, Material[] b)
+        private static bool MaterialsMatch(List<Material> a, Material[] b)
         {
-            if (a?.Length != b?.Length)
+            if (a?.Count != b?.Length)
             {
                 return false;
             }
 
-            for (int i = 0; i < a?.Length; ++i)
+            for (int i = 0; i < a?.Count; ++i)
             {
                 if (a[i] != b[i])
                 {

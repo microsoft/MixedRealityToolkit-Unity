@@ -160,16 +160,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var newGlobalBounds = new Bounds(palmPose.Position, Vector3.zero);
                 var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
 
-                foreach (var kvp in eventData.InputData)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
                 {
-                    if (kvp.Key == TrackedHandJoint.None ||
-                        kvp.Key == TrackedHandJoint.Palm)
+                    if (i == (int)TrackedHandJoint.None || i == (int)TrackedHandJoint.Palm)
                     {
                         continue;
                     }
 
-                    newGlobalBounds.Encapsulate(kvp.Value.Position);
-                    newLocalBounds.Encapsulate(Quaternion.Inverse(palmPose.Rotation) * (kvp.Value.Position - palmPose.Position));
+                    if (eventData.InputData.TryGetValue((TrackedHandJoint)i, out var pose))
+                    {
+                        newGlobalBounds.Encapsulate(pose.Position);
+                        newLocalBounds.Encapsulate(Quaternion.Inverse(palmPose.Rotation) * (pose.Position - palmPose.Position));
+                    }
                 }
 
                 Bounds[eventData.Handedness] = newGlobalBounds;

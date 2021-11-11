@@ -114,6 +114,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public void OnProcessScene(Scene scene, BuildReport report)
         {
+            if (!MixedRealityToolkit.IsSceneSystemEnabled)
+            {
+                return;
+            }
+
             RefreshSceneInfoFieldsInScene(scene);
         }
 
@@ -214,12 +219,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [PostProcessSceneAttribute]
         public static void OnPostProcessScene()
         {
+            if (!MixedRealityToolkit.IsSceneSystemEnabled)
+            {
+                return;
+            }
+
             RefreshSceneInfoFieldsInOpenScenes();
         }
 
         [InitializeOnLoadMethod]
         private static void InitializeOnLoad()
         {
+            if (!MixedRealityToolkit.IsSceneSystemEnabled)
+            {
+                return;
+            }
+
             EditorBuildSettings.sceneListChanged += SceneListChanged;
             EditorSceneManager.sceneOpened += SceneOpened;
 
