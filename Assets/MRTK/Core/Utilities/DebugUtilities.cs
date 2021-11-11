@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Asserts a condition.
         /// </summary>
         /// <param name="condition">The condition that is expected to be true.</param>
-        /// <param name="message">The message to display if the condition evaluates to false.</param>      
+        /// <param name="message">The message to display if the condition evaluates to false.</param>
         public static void DebugAssert(bool condition, string message)
         {
             Debug.Assert(condition, message);
@@ -170,6 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Draws a point in the Scene window.
         /// </summary>
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public static void DrawPoint(Vector3 point, Color color, float size = 0.05f)
         {
             DrawPoint(point, Quaternion.identity, color, size);
@@ -194,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Draws the minimum and maximum points of the given bounds
         /// </summary>
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public static void DrawBounds(Bounds bounds, Color minColor, Color maxColor)
         {
             DrawPoint(bounds.min, minColor);
