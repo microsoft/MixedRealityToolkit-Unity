@@ -101,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Gets the first registered pointer that matches a given handedness.
         /// </summary>
         /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
-        /// <param name="handedness">The first pointer in the collection that matches the specified handedness.</param>
-        /// <returns></returns>
+        /// <param name="handedness">The handedness being requested.</param>
+        /// <returns>The first pointer in the collection that matches the specified handedness.</returns>
         T GetFirstPointerWithHandedness<T>(Utilities.Handedness handedness) where T : class, IMixedRealityPointer;
 
         /// <summary>
