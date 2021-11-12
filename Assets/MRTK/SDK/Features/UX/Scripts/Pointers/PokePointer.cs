@@ -224,9 +224,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Camera mainCam = CameraCache.Main;
                 for (int i = 0; i < numColliders; ++i)
                 {
-                    var collider = queryBuffer[i];
-                    var touchable = collider.GetComponent<BaseNearInteractionTouchable>();
-                    if (touchable)
+                    Collider collider = queryBuffer[i];
+#if UNITY_2019_4_OR_NEWER
+                    if (collider.TryGetComponent(out BaseNearInteractionTouchable touchable) && touchable != null)
+#else
+                    BaseNearInteractionTouchable touchable = collider.GetComponent<BaseNearInteractionTouchable>();
+                    if (touchable != null)
+#endif
                     {
                         if (IgnoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
                         {
