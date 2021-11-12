@@ -70,14 +70,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             List<Scene> additiveTestScenesList = new List<Scene>();
 
-            if (numScenesToCreate == 1)
-            {   // No need to save this scene, we're just creating one
-                primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-            }
-            else
+            // Make the first scene single so it blows away previously loaded scenes
+            primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+
+            if (numScenesToCreate != 1)
             {
-                // Make the first scene single so it blows away previously loaded scenes
-                primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
                 // Save the scene (temporarily) so we can load additively on top of it
                 EditorSceneManager.SaveScene(primaryTestScene, PrimaryTestSceneTemporarySavePath);
 
@@ -441,11 +438,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                     MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(scriptPath);
 
-                    Texture2D currentIcon = getIconForObject?.Invoke(null, new object[] { script }) as Texture2D;
+                    Texture2D currentIcon = GetIconForObject?.Invoke(null, new object[] { script }) as Texture2D;
                     if (currentIcon == null || !currentIcon.Equals(icon))
                     {
-                        setIconForObject?.Invoke(null, new object[] { script, icon });
-                        copyMonoScriptIconToImporters?.Invoke(null, new object[] { script });
+                        SetIconForObject?.Invoke(null, new object[] { script, icon });
+                        CopyMonoScriptIconToImporters?.Invoke(null, new object[] { script });
                     }
                 }
             }
@@ -453,9 +450,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EditorUtility.ClearProgressBar();
         }
 
-        private static readonly MethodInfo getIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
-        private static readonly MethodInfo setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
-        private static readonly MethodInfo copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo GetIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo SetIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo CopyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.Static | BindingFlags.NonPublic);
 #endif
     }
 }
