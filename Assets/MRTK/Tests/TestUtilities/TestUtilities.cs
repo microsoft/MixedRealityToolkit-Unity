@@ -1,21 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Editor;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-#endif
-
-#if WINDOWS_UWP
-using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -23,8 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public static class TestUtilities
     {
 #if UNITY_EDITOR
-        private const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
-        private const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
+        private const string PrimaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
+        private const string AdditiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         private static Scene primaryTestScene;
         private static Scene[] additiveTestScenes = System.Array.Empty<Scene>();
 #endif // UNITY_EDITOR
@@ -39,15 +35,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             if (!EditorApplication.isPlaying)
             {
                 // If any of our scenes were saved, tear down the assets
-                SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(primaryTestSceneTemporarySavePath);
+                SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(PrimaryTestSceneTemporarySavePath);
                 if (primaryTestSceneAsset != null)
                 {
-                    AssetDatabase.DeleteAsset(primaryTestSceneTemporarySavePath);
+                    AssetDatabase.DeleteAsset(PrimaryTestSceneTemporarySavePath);
                 }
 
                 for (int i = 0; i < additiveTestScenes.Length; i++)
                 {
-                    string path = additiveTestSceneTemporarySavePath.Replace("#", i.ToString());
+                    string path = AdditiveTestSceneTemporarySavePath.Replace("#", i.ToString());
                     SceneAsset additiveTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
                     if (additiveTestSceneAsset != null)
                     {
@@ -83,11 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // Make the first scene single so it blows away previously loaded scenes
                 primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
                 // Save the scene (temporarily) so we can load additively on top of it
-                EditorSceneManager.SaveScene(primaryTestScene, primaryTestSceneTemporarySavePath);
+                EditorSceneManager.SaveScene(primaryTestScene, PrimaryTestSceneTemporarySavePath);
 
                 for (int i = 1; i < numScenesToCreate; i++)
                 {
-                    string path = additiveTestSceneTemporarySavePath.Replace("#", additiveTestScenesList.Count.ToString());
+                    string path = AdditiveTestSceneTemporarySavePath.Replace("#", additiveTestScenesList.Count.ToString());
                     // Create subsequent scenes additively
                     Scene additiveScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
                     additiveTestScenesList.Add(additiveScene);
