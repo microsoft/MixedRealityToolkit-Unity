@@ -1198,7 +1198,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(constraintRotation, TransformFlags.Rotate);
                     }
-                    if (!transformUpdated.HasFlag(TransformFlags.Rotate))
+                    if (!transformUpdated.IsMaskSet(TransformFlags.Rotate))
                     {
                         Target.transform.rotation = smoothingActive ?
                             Smoothing.SmoothTo(Target.transform.rotation, constraintRotation.Rotation, rotateLerpTime, Time.deltaTime) :
@@ -1253,7 +1253,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(clampedTransform, TransformFlags.Scale);
                     }
-                    if (!transformUpdated.HasFlag(TransformFlags.Scale))
+                    if (!transformUpdated.IsMaskSet(TransformFlags.Scale))
                     {
                         Target.transform.localScale = smoothingActive ?
                             Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) :
@@ -1278,7 +1278,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(constraintTranslate, TransformFlags.Move);
                     }
-                    if (!transformUpdated.HasFlag(TransformFlags.Move))
+                    if (!transformUpdated.IsMaskSet(TransformFlags.Move))
                     {
                         Target.transform.position = smoothingActive ?
                             Smoothing.SmoothTo(Target.transform.position, constraintTranslate.Position, translateLerpTime, Time.deltaTime) :

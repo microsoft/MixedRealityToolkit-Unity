@@ -23,12 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
+
         public enum HandMovementType
         {
             OneHandedOnly = 0,
             TwoHandedOnly,
             OneAndTwoHanded
         }
+
         public enum TwoHandedManipulation
         {
             Scale,
@@ -37,7 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MoveRotate,
             RotateScale,
             MoveRotateScale
-        };
+        }
+
         public enum RotateInOneHandType
         {
             MaintainRotationToUser,
@@ -47,13 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MaintainOriginalRotation,
             RotateAboutObjectCenter,
             RotateAboutGrabPoint
-        };
-        [System.Flags]
+        }
+
+        [Flags]
         public enum ReleaseBehaviorType
         {
             KeepVelocity = 1 << 0,
             KeepAngularVelocity = 1 << 1
         }
+
         #endregion Public Enums
 
         #region Serialized Fields
@@ -954,12 +959,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 rigidBody.isKinematic = wasKinematic;
 
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                if (releaseBehavior.IsMaskSet(ReleaseBehaviorType.KeepVelocity))
                 {
                     rigidBody.velocity = GetPointersVelocity();
                 }
 
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                if (releaseBehavior.IsMaskSet(ReleaseBehaviorType.KeepAngularVelocity))
                 {
                     rigidBody.angularVelocity = GetPointersAngularVelocity();
                 }

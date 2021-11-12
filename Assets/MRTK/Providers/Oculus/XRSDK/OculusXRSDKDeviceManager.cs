@@ -150,17 +150,17 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking))
             {
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
-                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) ||
+                    inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))
                 {
                     // If it's a hand with a reported handedness, assume articulated hand
                     return SupportedControllerType.ArticulatedHand;
                 }
             }
 
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
                 return SupportedControllerType.OculusTouch;
             }

@@ -183,11 +183,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
 
-            if (proximity.HasFlag(ManipulationProximityFlags.Near))
+            if (proximity.IsMaskSet(ManipulationProximityFlags.Near))
             {
                 objManip.OneHandRotationModeNear = newMode;
             }
-            if (proximity.HasFlag(ManipulationProximityFlags.Far))
+            if (proximity.IsMaskSet(ManipulationProximityFlags.Far))
             {
                 objManip.OneHandRotationModeFar = newMode;
             }
