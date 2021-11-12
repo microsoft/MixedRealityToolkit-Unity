@@ -151,10 +151,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="dist">Out parameter gets the distance to the grabbable.</param>
         protected virtual bool IsNearGrabbableObject()
         {
-            var focusProvider = CoreServices.InputSystem?.FocusProvider;
+            IMixedRealityFocusProvider focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
-                var spherePointer = focusProvider.GetFirstPointerWhere<SpherePointer>(p => p.Controller == Pointer.Controller);
+                // We cache this statically here to ensure the call to GetFirstPointerWhere
+                // can use a static readonly Predicate to prevent allocations.
+                spherePointerStaticCache = Pointer;
+                SpherePointer spherePointer = focusProvider.GetFirstPointerWhere(MatchControllersPredicate);
+                spherePointerStaticCache = null;
                 if (spherePointer != null)
                 {
                     return spherePointer.IsNearObject;
@@ -163,6 +167,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return false;
         }
+
+        /// <summary>
+        /// Used to avoid GC alloc that would happen if passing <see cref="MatchControllers"/> directly
+        /// as an argument to <see cref="IMixedRealityFocusProvider.GetFirstPointerWhere{T}"/>.
+        /// </summary>
+        private static readonly System.Predicate<SpherePointer> MatchControllersPredicate = MatchControllers;
+        private static bool MatchControllers(SpherePointer spherePointer) => spherePointerStaticCache != null && spherePointer.Controller == spherePointerStaticCache.Controller;
+        private static IMixedRealityPointer spherePointerStaticCache;
 
         /// <summary>
         /// Tries and get's hand joints based on the current pointer.
