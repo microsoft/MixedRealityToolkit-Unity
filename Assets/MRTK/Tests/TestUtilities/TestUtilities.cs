@@ -21,8 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #if UNITY_EDITOR
         private const string PrimaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         private const string AdditiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
-        private static Scene primaryTestScene;
-        private static Scene[] additiveTestScenes = System.Array.Empty<Scene>();
+
+        public static Scene primaryTestScene;
+        public static Scene[] additiveTestScenes = System.Array.Empty<Scene>();
 #endif // UNITY_EDITOR
 
         /// <summary>
