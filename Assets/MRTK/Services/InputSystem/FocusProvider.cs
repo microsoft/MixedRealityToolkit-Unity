@@ -859,10 +859,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UnregisterPointerPerfMarker.Auto())
             {
-                Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
+                if (pointer.PointerId != 0)
+                {
+                    Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
+                }
 
-                PointerData pointerData;
-                if (!TryGetPointerData(pointer, out pointerData)) { return false; }
+                if (!TryGetPointerData(pointer, out PointerData pointerData)) { return false; }
 
                 // Raise focus events if needed.
                 if (pointerData.CurrentPointerTarget != null)
