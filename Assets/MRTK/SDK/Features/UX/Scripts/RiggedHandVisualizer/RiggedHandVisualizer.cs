@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
                 {
-                    TrackedHandJoint handJoint = ArticulatedHandPose.HandJoints[i];
+                    TrackedHandJoint handJoint = (TrackedHandJoint)i;
 
                     if (handJoint == TrackedHandJoint.None) { continue; }
 
@@ -401,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Apply updated TrackedHandJoint pose data to the assigned transforms
                 for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
                 {
-                    TrackedHandJoint handJoint = ArticulatedHandPose.HandJoints[i];
+                    TrackedHandJoint handJoint = (TrackedHandJoint)i;
 
                     if (handJoint == TrackedHandJoint.None) { continue; }
 

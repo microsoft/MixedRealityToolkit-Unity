@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
                 {
-                    TrackedHandJoint handJoint = ArticulatedHandPose.HandJoints[i];
+                    TrackedHandJoint handJoint = (TrackedHandJoint)i;
 
                     if (handJoint == TrackedHandJoint.None ||
                         handJoint == TrackedHandJoint.Palm)
