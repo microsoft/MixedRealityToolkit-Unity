@@ -119,10 +119,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (handJoint == TrackedHandJoint.None) { continue; }
 
+                    MixedRealityPose handJointPose = eventData.InputData[handJoint];
+
                     if (joints.TryGetValue(handJoint, out Transform jointTransform))
                     {
-                        jointTransform.position = eventData.InputData[handJoint].Position;
-                        jointTransform.rotation = eventData.InputData[handJoint].Rotation;
+                        jointTransform.position = handJointPose.Position;
+                        jointTransform.rotation = handJointPose.Rotation;
                     }
                     else
                     {
@@ -156,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         jointObject.name = handJoint.ToString() + " Proxy Transform";
-                        jointObject.transform.position = eventData.InputData[handJoint].Position;
-                        jointObject.transform.rotation = eventData.InputData[handJoint].Rotation;
+                        jointObject.transform.position = handJointPose.Position;
+                        jointObject.transform.rotation = handJointPose.Rotation;
                         jointObject.transform.parent = transform;
 
                         joints.Add(handJoint, jointObject.transform);
