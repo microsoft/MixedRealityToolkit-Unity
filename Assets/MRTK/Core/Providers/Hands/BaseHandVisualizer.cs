@@ -113,10 +113,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
+                foreach (TrackedHandJoint handJoint in ArticulatedHandPose.HandJoints)
                 {
-                    Transform jointTransform;
-                    if (joints.TryGetValue(handJoint, out jointTransform))
+                    if (handJoint == TrackedHandJoint.None) { continue; }
+
+                    if (joints.TryGetValue(handJoint, out Transform jointTransform))
                     {
                         jointTransform.position = eventData.InputData[handJoint].Position;
                         jointTransform.rotation = eventData.InputData[handJoint].Rotation;

@@ -316,22 +316,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc/>
         void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
-            var inputSystem = CoreServices.InputSystem;
-
             if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
             {
                 return;
             }
             Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
 
+            IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+
             // Only runs if render skeleton joints is true
             MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null && handTrackingProfile.EnableHandJointVisualization)
             {
-                foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
+                foreach (TrackedHandJoint handJoint in ArticulatedHandPose.HandJoints)
                 {
-                    Transform skeletonJointTransform;
-                    if (skeletonJoints.TryGetValue(handJoint, out skeletonJointTransform))
+                    if (handJoint == TrackedHandJoint.None) { continue; }
+
+                    if (skeletonJoints.TryGetValue(handJoint, out Transform skeletonJointTransform))
                     {
                         skeletonJointTransform.position = eventData.InputData[handJoint].Position;
                         skeletonJointTransform.rotation = eventData.InputData[handJoint].Rotation;
@@ -393,11 +394,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (renderHandmesh)
             {
                 // Render the rigged hand mesh itself
-                Transform jointTransform;
                 // Apply updated TrackedHandJoint pose data to the assigned transforms
-                foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
+                foreach (TrackedHandJoint handJoint in ArticulatedHandPose.HandJoints)
                 {
-                    if (joints.TryGetValue(handJoint, out jointTransform))
+                    if (handJoint == TrackedHandJoint.None) { continue; }
+
+                    if (joints.TryGetValue(handJoint, out Transform jointTransform))
                     {
                         if (jointTransform != null)
                         {
@@ -467,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        throw new Exception(String.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
+                        throw new Exception(string.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
                     }
                 }
             }
