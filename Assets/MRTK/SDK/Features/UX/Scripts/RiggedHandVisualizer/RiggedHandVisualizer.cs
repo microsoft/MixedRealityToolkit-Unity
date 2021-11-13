@@ -328,8 +328,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null && handTrackingProfile.EnableHandJointVisualization)
             {
-                foreach (TrackedHandJoint handJoint in ArticulatedHandPose.HandJoints)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
                 {
+                    TrackedHandJoint handJoint = ArticulatedHandPose.HandJoints[i];
+
                     if (handJoint == TrackedHandJoint.None) { continue; }
 
                     if (skeletonJoints.TryGetValue(handJoint, out Transform skeletonJointTransform))
@@ -395,8 +397,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Render the rigged hand mesh itself
                 // Apply updated TrackedHandJoint pose data to the assigned transforms
-                foreach (TrackedHandJoint handJoint in ArticulatedHandPose.HandJoints)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
                 {
+                    TrackedHandJoint handJoint = ArticulatedHandPose.HandJoints[i];
+
                     if (handJoint == TrackedHandJoint.None) { continue; }
 
                     if (joints.TryGetValue(handJoint, out Transform jointTransform))
