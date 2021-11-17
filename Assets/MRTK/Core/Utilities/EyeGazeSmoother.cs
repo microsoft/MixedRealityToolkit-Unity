@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     Vector2 hv2 = new Vector2(v2.x, 0);
                     if (OnSaccadeX != null && Vector2.Angle(hv1, hv2) > saccadeThreshInDegree)
                     {
-                        OnSaccade.Invoke();
+                        OnSaccadeX.Invoke();
                     }
 
                     Vector2 vv1 = new Vector2(0, v1.y);
