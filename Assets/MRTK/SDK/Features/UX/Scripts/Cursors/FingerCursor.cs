@@ -227,10 +227,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Lerping an angular measurement from 0 degrees (default cursor position at tip of finger) to
             // 90 degrees (a new position on the fingertip pad) around the fingertip's X axis.
-            Quaternion degreesRelative = Quaternion.AngleAxis((1f - t) * 90f * (1f - fingerSurfaceDot), indexFingerRingRenderer.transform.right);
+            Quaternion degreesRelative = Quaternion.AngleAxis((1f - t) * 90f * (1f - fingerSurfaceDot), target.right);
 
             Vector3 tipToPadPosition = fingerPosition + degreesRelative * tipOffset;
-            indexFingerRingRenderer.transform.position = tipToPadPosition;
+            target.position = tipToPadPosition;
         }
     }
 }
