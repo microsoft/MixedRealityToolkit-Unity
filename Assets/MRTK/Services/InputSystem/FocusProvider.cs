@@ -649,8 +649,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (TryGetFocusDetailsPerfMarker.Auto())
             {
-                PointerData pointerData;
-                if (TryGetPointerData(pointer, out pointerData))
+                if (TryGetPointerData(pointer, out PointerData pointerData))
                 {
                     focusDetails = pointerData.Details;
                     return true;
@@ -766,8 +765,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsPointerRegistered(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-            PointerData pointerData;
-            return TryGetPointerData(pointer, out pointerData);
+            return TryGetPointerData(pointer, out _);
         }
 
         private static readonly ProfilerMarker RegisterPointerPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.RegisterPointer");
@@ -861,8 +859,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
 
-                PointerData pointerData;
-                if (!TryGetPointerData(pointer, out pointerData)) { return false; }
+                if (!TryGetPointerData(pointer, out PointerData pointerData)) { return false; }
 
                 // Raise focus events if needed.
                 if (pointerData.CurrentPointerTarget != null)
