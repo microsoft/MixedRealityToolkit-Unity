@@ -124,16 +124,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     Vector2 hv1 = new Vector2(v1.x, 0);
                     Vector2 hv2 = new Vector2(v2.x, 0);
-                    if (Vector2.Angle(hv1, hv2) > saccadeThreshInDegree)
+                    if (OnSaccadeX != null && Vector2.Angle(hv1, hv2) > saccadeThreshInDegree)
                     {
-                        PostOnSaccadeHorizontally();
+                        OnSaccadeX.Invoke();
                     }
 
                     Vector2 vv1 = new Vector2(0, v1.y);
                     Vector2 vv2 = new Vector2(0, v2.y);
-                    if (Vector2.Angle(vv1, vv2) > saccadeThreshInDegree)
+                    if (OnSaccadeY != null && Vector2.Angle(vv1, vv2) > saccadeThreshInDegree)
                     {
-                        PostOnSaccadeVertically();
+                        OnSaccadeY.Invoke();
                     }
 
                     PostOnSaccade();
@@ -145,7 +145,5 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         private void PostOnSaccade() => OnSaccade?.Invoke();
-        private void PostOnSaccadeHorizontally() => OnSaccadeX?.Invoke();
-        private void PostOnSaccadeVertically() => OnSaccadeY?.Invoke();
     }
 }
