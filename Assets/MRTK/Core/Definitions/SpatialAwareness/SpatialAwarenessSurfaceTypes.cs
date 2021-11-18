@@ -63,4 +63,23 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         Inferred = 1 << 7
     }
+
+    /// <summary>
+    /// Extension methods specific to the <see cref="SpatialAwarenessSurfaceTypes"/> enum.
+    /// </summary>
+    public static class SpatialAwarenessSurfaceTypesExtensions
+    {
+        /// <summary>
+        /// Checks to determine if all bits in a provided mask are set.
+        /// </summary>
+        /// <param name="a"><see cref="SpatialAwarenessSurfaceTypes"/> value.</param>
+        /// <param name="b"><see cref="SpatialAwarenessSurfaceTypes"/> mask.</param>
+        /// <returns>
+        /// True if all of the bits in the specified mask are set in the current value.
+        /// </returns>
+        public static bool IsMaskSet(this SpatialAwarenessSurfaceTypes a, SpatialAwarenessSurfaceTypes b)
+        {
+            return (a & b) == b;
+        }
+    }
 }

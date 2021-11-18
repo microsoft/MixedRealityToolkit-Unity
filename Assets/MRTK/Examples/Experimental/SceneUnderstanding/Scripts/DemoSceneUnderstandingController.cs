@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// <returns>A dictionary with the scene objects of the requested type being the values and their ids being the keys.</returns>
         public IReadOnlyDictionary<int, SpatialAwarenessSceneObject> GetSceneObjectsOfType(SpatialAwarenessSurfaceTypes type)
         {
-            if (!observer.SurfaceTypes.HasFlag(type))
+            if (!observer.SurfaceTypes.IsMaskSet(type))
             {
                 Debug.LogErrorFormat("The Scene Objects of type {0} are not being observed. You should add {0} to the SurfaceTypes property of the observer in advance.", type);
             }
@@ -341,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         {
             ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.World);
 
-            if (observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World))
+            if (observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.World))
             {
                 // Ensure we requesting meshes
                 observer.RequestMeshData = true;
@@ -386,13 +386,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             inferRegionsToggle.IsToggled = observer.InferRegions;
 
             // Filter display
-            platformToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Platform);
-            wallToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Wall);
-            floorToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Floor);
-            ceilingToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Ceiling);
-            worldToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World);
-            completelyInferred.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Inferred);
-            backgroundToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Background);
+            platformToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Platform);
+            wallToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Wall);
+            floorToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Floor);
+            ceilingToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Ceiling);
+            worldToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.World);
+            completelyInferred.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Inferred);
+            backgroundToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Background);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
         private void ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes surfaceType)
         {
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
+            if (observer.SurfaceTypes.IsMaskSet(surfaceType))
             {
                 observer.SurfaceTypes &= ~surfaceType;
             }
