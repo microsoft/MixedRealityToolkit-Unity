@@ -864,7 +864,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                     EnableSceneObjectQuads = RequestPlaneData,
                     EnableSceneObjectMeshes = RequestMeshData,
                     EnableOnlyObservedSceneObjects = !InferRegions,
-                    EnableWorldMesh = SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World),
+                    EnableWorldMesh = SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.World),
                     RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
                 };
 
@@ -1014,7 +1014,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             for (int i = 0; i < count; ++i)
             {
-                if (!SurfaceTypes.HasFlag(SpatialAwarenessSurfaceType(newObjects[i].Kind)))
+                if (!SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceType(newObjects[i].Kind)))
                 {
                     continue;
                 }

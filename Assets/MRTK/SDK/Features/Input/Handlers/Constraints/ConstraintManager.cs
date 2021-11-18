@@ -156,8 +156,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     if (constraint.isActiveAndEnabled &&
                         constraint.ConstraintType == transformType &&
-                        constraint.HandType.HasFlag(handMode) &&
-                        constraint.ProximityType.HasFlag(proximityMode))
+                        constraint.HandType.IsMaskSet(handMode) &&
+                        constraint.ProximityType.IsMaskSet(proximityMode))
                     {
                         constraint.ApplyConstraint(ref transform);
                     }

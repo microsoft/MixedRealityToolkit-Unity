@@ -221,13 +221,11 @@ namespace Microsoft.MixedReality.Toolkit
                 SupportedUnityXRPipelines.LegacyXR;
 #endif
 
-            if (MixedRealityExtensionServiceAttribute.Find(concreteType) is MixedRealityDataProviderAttribute providerAttribute)
+            if (MixedRealityExtensionServiceAttribute.Find(concreteType) is MixedRealityDataProviderAttribute providerAttribute
+                && !providerAttribute.SupportedUnityXRPipelines.IsMaskSet(selectedPipeline))
             {
-                if (!providerAttribute.SupportedUnityXRPipelines.HasFlag(selectedPipeline))
-                {
-                    DebugUtilities.LogVerboseFormat("{0} not suitable for the current XR pipeline ({1})", concreteType.Name, selectedPipeline);
-                    return false;
-                }
+                DebugUtilities.LogVerboseFormat("{0} not suitable for the current XR pipeline ({1})", concreteType.Name, selectedPipeline);
+                return false;
             }
 
             if (!typeof(IMixedRealityDataProvider).IsAssignableFrom(concreteType))

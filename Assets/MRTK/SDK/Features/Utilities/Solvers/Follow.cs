@@ -634,15 +634,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (FaceUserDefinedTargetTransform)
             {
                 Vector3 directionToTarget = TargetToFace != null ? goalPosition - TargetToFace.position : Vector3.zero;
-                if (!PivotAxis.HasFlag(AxisFlags.XAxis))
+                if (!PivotAxis.IsMaskSet(AxisFlags.XAxis))
                 {
                     directionToTarget.x = 0;
                 }
-                if (!PivotAxis.HasFlag(AxisFlags.YAxis))
+                if (!PivotAxis.IsMaskSet(AxisFlags.YAxis))
                 {
                     directionToTarget.y = 0;
                 }
-                if (!PivotAxis.HasFlag(AxisFlags.ZAxis))
+                if (!PivotAxis.IsMaskSet(AxisFlags.ZAxis))
                 {
                     directionToTarget.z = 0;
                 }

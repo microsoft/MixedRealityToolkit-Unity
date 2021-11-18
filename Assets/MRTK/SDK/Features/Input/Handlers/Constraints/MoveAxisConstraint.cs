@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Quaternion inverseRotation = Quaternion.Inverse(worldPoseOnManipulationStart.Rotation);
             Vector3 position = transform.Position;
-            if (constraintOnMovement.HasFlag(AxisFlags.XAxis))
+            if (constraintOnMovement.IsMaskSet(AxisFlags.XAxis))
             {
                 if (useLocalSpaceForConstraint)
                 {
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     position.x = worldPoseOnManipulationStart.Position.x;
                 }
             }
-            if (constraintOnMovement.HasFlag(AxisFlags.YAxis))
+            if (constraintOnMovement.IsMaskSet(AxisFlags.YAxis))
             {
                 if (useLocalSpaceForConstraint)
                 {
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     position.y = worldPoseOnManipulationStart.Position.y;
                 }
             }
-            if (constraintOnMovement.HasFlag(AxisFlags.ZAxis))
+            if (constraintOnMovement.IsMaskSet(AxisFlags.ZAxis))
             {
                 if (useLocalSpaceForConstraint)
                 {
