@@ -145,6 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             gameObject.SetActive(false);
         }
 
+        /// <inheritdoc/>
         public void CloseImmediate()
         {
             if (closeCurve.length == 0)

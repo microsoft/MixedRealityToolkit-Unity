@@ -95,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             gameObject.SetActive(false);
         }
 
+        /// <inheritdoc/>
         public void CloseImmediate()
         {
             if (state != ProgressIndicatorState.Open)
