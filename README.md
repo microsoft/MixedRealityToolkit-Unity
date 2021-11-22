@@ -1,6 +1,6 @@
 ![Mixed Reality Toolkit](https://user-images.githubusercontent.com/13754172/122838732-89ea3400-d2ab-11eb-8c79-32dd84944989.png)
 
-[![MRTK_AWE_AuggieAwards_2021](https://user-images.githubusercontent.com/13754172/142921914-0517c086-32c8-4029-a6e7-b221e9b83877.png)](https://www.awexr.com/usa-2021/auggie-winners)
+[![MRTK_AWE_AuggieAwards_2021a](https://user-images.githubusercontent.com/13754172/142922601-f7c38745-aa50-4b50-8ad3-41992e543f5e.png)](https://www.awexr.com/usa-2021/auggie-winners)
 
 # What is the Mixed Reality Toolkit
 
