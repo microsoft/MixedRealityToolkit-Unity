@@ -133,7 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 #if MSFT_OPENXR
             isOpenXRLoaderActive = LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>() ?? false;
             isOpenXRRemotingConnected = AppRemoting.TryGetConnectionState(out ConnectionState state, out _) && state == ConnectionState.Connected;
-            Debug.LogWarning(isOpenXRRemotingConnected);
 #elif WINDOWS_UWP
             isOpenXRLoaderActive = false;
 #endif // MSFT_OPENXR
