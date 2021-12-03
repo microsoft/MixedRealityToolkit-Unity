@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             if (result != WindowsMicrophoneStreamErrorCode.Success)
             {
                 Debug.Log($"Failed to initialize the microphone stream. {result}");
-                return;
+                if (result != WindowsMicrophoneStreamErrorCode.ALREADY_RUNNING) return;
             }
 
             // Start the microphone stream.
