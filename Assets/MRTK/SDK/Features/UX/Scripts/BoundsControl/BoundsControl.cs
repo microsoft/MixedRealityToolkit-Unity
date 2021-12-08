@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -562,6 +563,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private static readonly List<Vector3> TotalBoundsCorners = new List<Vector3>();
 
         private Vector3[] boundsCorners = new Vector3[8];
+
+        /// <summary>
+        /// This property is unused and will be removed in a future release. It has not, and does not, return any information.
+        /// </summary>
+        [Obsolete("The BoundsCorners property is unused and will be removed in a future release. It has not, and does not, return any information.")]
+        public Vector3[] BoundsCorners { get; private set; }
 
         #endregion
 
