@@ -562,7 +562,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private static readonly List<Vector3> TotalBoundsCorners = new List<Vector3>();
 
         private Vector3[] boundsCorners = new Vector3[8];
-        public Vector3[] BoundsCorners { get; private set; }
 
         #endregion
 
@@ -575,6 +574,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
+
+        /// <summary>
+        /// Whether the bounds control is currently active and will respond to input.
+        /// </summary>
+        /// <remarks>
+        /// Setting this property will also set the entire gameObject's active state, as well as
+        /// resetting the visuals and proximity scale effects.
+        /// </remarks>
         public bool Active
         {
             get
@@ -621,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         #region Public Methods
 
         /// <summary>
-        /// Allows to manually enable wire (edge) highlighting (edges) of the bounds control.
+        /// Allows the manual enabling of the wireframe display of the bounds control.
         /// This is useful if connected to the Manipulation events of a
         /// <see cref="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator"/> 
         /// when used in conjunction with this MonoBehavior.
@@ -631,6 +638,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             SetHighlighted(null);
         }
 
+        /// <summary>
+        /// Allows the manual disabling of the wireframe display.
+        /// </summary>
         public void UnhighlightWires()
         {
             ResetVisuals();
