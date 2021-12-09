@@ -68,6 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc/>
         public override void Initialize()
         {
+            // Mark not initialized early so observers can use this state in their own initialization
+            IsInitialized = false;
             InitializeInternal();
             base.Initialize();
         }
