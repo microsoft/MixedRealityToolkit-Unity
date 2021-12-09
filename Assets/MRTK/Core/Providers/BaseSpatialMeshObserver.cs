@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             get { return levelOfDetail; }
             set
             {
-                if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
+                if (Application.isPlaying && value != SpatialAwarenessMeshLevelOfDetail.Custom)
                 {
                     TrianglesPerCubicMeter = LookupTriangleDensity(value);
                 }
