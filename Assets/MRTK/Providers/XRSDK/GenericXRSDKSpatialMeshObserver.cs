@@ -52,6 +52,24 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     && XRGeneralSettings.Instance.Manager != null
                     && XRGeneralSettings.Instance.Manager.activeLoader != null)
                 {
+                    if ((observersCache == null || observersCache.Count == 0)
+                        && Service is IMixedRealityDataProviderAccess spatialAwarenessDataProviderAccess
+                        && Service is IMixedRealityServiceState spatialAwarenessState
+                        && spatialAwarenessState.IsInitialized)
+                    {
+                        observersCache = spatialAwarenessDataProviderAccess.GetDataProviders<GenericXRSDKSpatialMeshObserver>();
+                    }
+
+                    // Don't report ourselves as active if another observer is handling this platform
+                    for (int i = 0; i < observersCache?.Count; i++)
+                    {
+                        GenericXRSDKSpatialMeshObserver observer = observersCache[i];
+                        if (observer != this && (observer.IsActiveLoader ?? false))
+                        {
+                            return false;
+                        }
+                    }
+
                     return true;
                 }
 
