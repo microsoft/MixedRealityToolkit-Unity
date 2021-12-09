@@ -564,6 +564,21 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
 
+        // Current actual flattening axis, derived from FlattenAuto, if set
+        private FlattenModeType ActualFlattenAxis {
+            get
+            {
+                if(FlattenAxis == FlattenModeType.FlattenAuto)
+                {
+                    return VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents);
+                }
+                else
+                {
+                    return FlattenAxis;
+                }
+            }
+        }
+
         #endregion
 
         #region public Properties
@@ -721,6 +736,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void OnEnable()
         {
+            DetermineTargetBounds();
             SetActivationFlags();
             CreateRig();
             CaptureInitialState();
@@ -820,13 +836,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
             else
             {
-                // first remove old collider if there is any so we don't accumulate any 
-                // box padding on consecutive calls of this method
-                if (TargetBounds != null)
-                {
-                    Destroy(TargetBounds);
-                }
-                TargetBounds = Target.AddComponent<BoxCollider>();
+                TargetBounds = Target.EnsureComponent<BoxCollider>();
                 Bounds bounds = GetTargetBounds();
 
                 TargetBounds.center = bounds.center;
@@ -846,8 +856,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
 
             TargetBounds.size += Vector3.Scale(boxPadding, scale);
-
-            TargetBounds.EnsureComponent<NearInteractionGrabbable>();
         }
 
         private readonly List<Transform> childTransforms = new List<Transform>();
@@ -902,8 +910,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void ExtractBoundsCorners(Transform childTransform, BoundsCalculationMethod boundsCalculationMethod)
         {
-            KeyValuePair<Transform, Collider> colliderByTransform;
-            KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
+            KeyValuePair<Transform, Collider> colliderByTransform = default;
+            KeyValuePair<Transform, Bounds> rendererBoundsByTransform = default;
 
             if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
             {
@@ -1080,27 +1088,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void DestroyRig()
         {
-            if (boundsOverride == null)
+            // If we have previously logged an initial bounds size,
+            // reset the boundsOverride BoxCollider to the initial size.
+            // This is because the CalculateBoxPadding
+            if (initialBoundsOverrideSize.HasValue)
             {
-                Destroy(TargetBounds);
-            }
-            else
-            {
-                // If we have previously logged an initial bounds size,
-                // reset the boundsOverride BoxCollider to the initial size.
-                // This is because the CalculateBoxPadding
-                if (initialBoundsOverrideSize.HasValue)
-                {
-                    boundsOverride.size = initialBoundsOverrideSize.Value;
-                }
-
-                if (TargetBounds != null)
-                {
-                    if (TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>())
-                    {
-                        Destroy(TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>());
-                    }
-                }
+                boundsOverride.size = initialBoundsOverrideSize.Value;
             }
 
             // todo: move this out?
@@ -1111,7 +1104,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 Destroy(rigRoot.gameObject);
                 rigRoot = null;
             }
-
         }
 
         private void UpdateRigVisibilityInInspector()
@@ -1206,7 +1198,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(constraintRotation, TransformFlags.Rotate);
                     }
-                    if (!transformUpdated.HasFlag(TransformFlags.Rotate))
+                    if (!transformUpdated.IsMaskSet(TransformFlags.Rotate))
                     {
                         Target.transform.rotation = smoothingActive ?
                             Smoothing.SmoothTo(Target.transform.rotation, constraintRotation.Rotation, rotateLerpTime, Time.deltaTime) :
@@ -1226,8 +1218,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     else // non-uniform scaling
                     {
                         // get diff from center point of box
-                        Vector3 initialDist = (initialGrabPoint - oppositeCorner);
-                        Vector3 currentDist = (currentGrabPoint - oppositeCorner);
+                        Vector3 initialDist = Target.transform.InverseTransformVector(initialGrabPoint - oppositeCorner);
+                        Vector3 currentDist = Target.transform.InverseTransformVector(currentGrabPoint - oppositeCorner);
                         Vector3 grabDiff = (currentDist - initialDist);
                         scaleFactor = Vector3.one + grabDiff.Div(initialDist);
                     }
@@ -1235,16 +1227,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     // If non-uniform scaling or uniform scaling only on the non-flattened axes
                     if (ScaleHandlesConfig.ScaleBehavior != HandleScaleMode.Uniform || !UniformScaleOnFlattenedAxis)
                     {
-                        FlattenModeType determinedType = FlattenAxis == FlattenModeType.FlattenAuto ? VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents) : FlattenAxis;
-                        if (determinedType == FlattenModeType.FlattenX)
+                        var currentActualFlattenAxis = ActualFlattenAxis; // Calculate flatten axis once
+                        if (currentActualFlattenAxis == FlattenModeType.FlattenX)
                         {
                             scaleFactor.x = 1;
                         }
-                        if (determinedType == FlattenModeType.FlattenY)
+                        else if (currentActualFlattenAxis == FlattenModeType.FlattenY)
                         {
                             scaleFactor.y = 1;
                         }
-                        if (determinedType == FlattenModeType.FlattenZ)
+                        else if (currentActualFlattenAxis == FlattenModeType.FlattenZ)
                         {
                             scaleFactor.z = 1;
                         }
@@ -1261,15 +1253,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(clampedTransform, TransformFlags.Scale);
                     }
-                    if (!transformUpdated.HasFlag(TransformFlags.Scale))
+                    if (!transformUpdated.IsMaskSet(TransformFlags.Scale))
                     {
                         Target.transform.localScale = smoothingActive ?
                             Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) :
                             clampedTransform.Scale;
                     }
 
-                    var originalRelativePosition = initialPositionOnGrabStart - oppositeCorner;
-                    var newPosition = originalRelativePosition.Div(initialScaleOnGrabStart).Mul(Target.transform.localScale) + oppositeCorner;
+                    var originalRelativePosition = Target.transform.InverseTransformDirection(initialPositionOnGrabStart - oppositeCorner);
+                    var newPosition = Target.transform.TransformDirection(originalRelativePosition.Mul(scaleFactor)) + oppositeCorner;
                     Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                 }
                 else if (transformType == HandleType.Translation)
@@ -1286,7 +1278,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(constraintTranslate, TransformFlags.Move);
                     }
-                    if (!transformUpdated.HasFlag(TransformFlags.Move))
+                    if (!transformUpdated.IsMaskSet(TransformFlags.Move))
                     {
                         Target.transform.position = smoothingActive ?
                             Smoothing.SmoothTo(Target.transform.position, constraintTranslate.Position, translateLerpTime, Time.deltaTime) :
@@ -1475,15 +1467,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 return;
             }
 
+            // Cache computed flatten axis for subsequent calls to Reset()
+            var actualAxis = ActualFlattenAxis;
+
             boxDisplay.Reset(active);
-            boxDisplay.UpdateFlattenAxis(flattenAxis);
+            boxDisplay.UpdateFlattenAxis(actualAxis);
 
             bool isVisible = (active == true && wireframeOnly == false);
 
-            rotationHandles.Reset(isVisible, flattenAxis);
-            links.Reset(active, flattenAxis);
-            scaleHandles.Reset(isVisible, flattenAxis);
-            translationHandles.Reset(isVisible, flattenAxis);
+            rotationHandles.Reset(isVisible, actualAxis);
+            links.Reset(active, actualAxis);
+            scaleHandles.Reset(isVisible, actualAxis);
+            translationHandles.Reset(isVisible, actualAxis);
         }
 
         private void CreateVisuals()
@@ -1541,9 +1536,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 links.UpdateLinkScales(currentBoundsExtents);
 
                 translationHandles.CalculateHandlePositions(ref boundsCorners);
-                scaleHandles.UpdateHandles(ref boundsCorners);
+                scaleHandles.CalculateHandlePositions(ref boundsCorners);
 
-                boxDisplay.UpdateDisplay(currentBoundsExtents, flattenAxis);
+                boxDisplay.UpdateDisplay(currentBoundsExtents, ActualFlattenAxis);
 
                 // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;

@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool IsInteractionEnabled =>
                 // If IsTracked is not true, then we don't have position data yet (or have stale data),
                 // so remain disabled until we know where to appear (not just at the origin).
-                IsFocusLocked || (IsTracked && Controller.IsInPointingPose && base.IsInteractionEnabled);
+                IsFocusLocked || (IsTracked && Controller != null && Controller.IsInPointingPose && base.IsInteractionEnabled);
 
         private Vector3 lineStartPoint;
         private Vector3 lineEndPoint;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: segoeuil SDF
+  m_Name: segoeuil SDF_zwrite_off
   m_EditorClassIdentifier: 
   hashCode: 413153786
   material: {fileID: 21184075213967186}
@@ -21,6 +21,7 @@ MonoBehaviour:
   m_SourceFontFile: {fileID: 0}
   m_AtlasPopulationMode: 0
   m_FaceInfo:
+    m_FaceIndex: 0
     m_FamilyName: Segoe UI
     m_StyleName: 
     m_PointSize: 78

@@ -170,14 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// GazeProvider is a little special, so we keep track of it even if it's not a registered pointer. For the sake
-        /// of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
-        /// to do a gaze raycast even if gaze isn't used for focus.
-        /// </summary>
-        private PointerData gazeProviderPointingData;
-        private PointerHitResult gazeHitResult;
-
-        /// <summary>
         /// Cached <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> reference to the new raycast position.
         /// </summary>
         /// <remarks>Only used to update UI raycast results.</remarks>
@@ -570,30 +562,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker UpdateGazeProviderPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdateGazeProvider");
 
         /// <summary>
+        /// GazeProvider is a little special, so we keep track of it even if it's not a registered pointer. For the sake
+        /// of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
+        /// to do a gaze raycast even if gaze isn't used for focus.
+        /// </summary>
+        private PointerEventData gazeProviderPointingData;
+        private PointerHitResult gazeHitResult;
+
+        /// <summary>
         /// Updates the gaze raycast provider even in scenarios where gaze isn't used for focus
         /// </summary>
         private void UpdateGazeProvider()
         {
             using (UpdateGazeProviderPerfMarker.Auto())
             {
-                // The gaze hit result may be populated from previous raycasts this frame, only recompute
+                // The gaze hit result may be populated from the UpdatePointers call. If it has not, then perform
                 // another raycast if it's not populated
                 if (gazeHitResult == null)
                 {
-                    if (gazeProviderPointingData?.Pointer != null)
+                    IMixedRealityPointer gazePointer = CoreServices.InputSystem.GazeProvider?.GazePointer;
+                    // Check that the gazePointer isn't null and that it has been properly registered as a pointer.
+                    if (gazePointer != null && gazeProviderPointingData != null)
                     {
                         // get 3d hit
+                        // This is unneccessary since the gaze pointer has been registered normally along with the other pointers(?)
                         hitResult3d.Clear();
                         var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-                        LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
-                        QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
+                        LayerMask[] prioritizedLayerMasks = (gazePointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+                        QueryScene(gazePointer, raycastProvider, prioritizedLayerMasks,
                             hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
                         if (shouldUseGraphicsRaycast)
                         {
                             // get ui hit
                             hitResultUi.Clear();
-                            RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                            RaycastGraphics(gazePointer, gazeProviderPointingData, prioritizedLayerMasks, hitResultUi);
                         }
 
                         // set gaze hit according to distance and prioritization layer mask
@@ -605,7 +608,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+                if (!CoreServices.InputSystem.GazeProvider.IsNull())
+                {
+                    CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+                }
 
                 // Zero out value after every use to ensure the hit result is updated every frame.
                 gazeHitResult = null;
@@ -643,8 +649,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (TryGetFocusDetailsPerfMarker.Auto())
             {
-                PointerData pointerData;
-                if (TryGetPointerData(pointer, out pointerData))
+                if (TryGetPointerData(pointer, out PointerData pointerData))
                 {
                     focusDetails = pointerData.Details;
                     return true;
@@ -760,8 +765,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsPointerRegistered(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-            PointerData pointerData;
-            return TryGetPointerData(pointer, out pointerData);
+            return TryGetPointerData(pointer, out _);
         }
 
         private static readonly ProfilerMarker RegisterPointerPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.RegisterPointer");
@@ -835,11 +839,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RegisterPointer(inputSource.Pointers[i]);
 
                     // Special Registration for Gaze
+                    // Refreshes gazeProviderPointingData to a new reference to the current EventSystem 
                     if (!CoreServices.InputSystem.GazeProvider.IsNull()
                         && inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId
                         && gazeProviderPointingData == null)
                     {
-                        gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
+                        gazeProviderPointingData = new PointerEventData(EventSystem.current);
                     }
                 }
             }
@@ -854,8 +859,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
 
-                PointerData pointerData;
-                if (!TryGetPointerData(pointer, out pointerData)) { return false; }
+                if (!TryGetPointerData(pointer, out PointerData pointerData)) { return false; }
 
                 // Raise focus events if needed.
                 if (pointerData.CurrentPointerTarget != null)
@@ -1084,7 +1088,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         pointerData.UpdateHit(hit);
 
                         // set gaze hit result - make sure to include unity ui hits
-                        if (gazeProviderPointingData?.Pointer != null && pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                        var gazePointer = CoreServices.InputSystem.GazeProvider.GazePointer;
+                        if (gazePointer != null && pointerData.Pointer.PointerId == gazePointer.PointerId)
                         {
                             gazeHitResult = hit;
                         }
@@ -1161,7 +1166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (ReconcilePointersPerfMarker.Auto())
             {
-                var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
+                var gazePointer = CoreServices.InputSystem.GazeProvider?.GazePointer as GenericPointer;
                 NumFarPointersActive = 0;
                 NumNearPointersActive = 0;
                 int numFarPointersWithoutCursorActive = 0;
@@ -1559,18 +1564,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 pointerMediators.Remove(eventData.SourceId);
 
+
                 for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
                 {
+                    var gazePointer = CoreServices.InputSystem.GazeProvider?.GazePointer;
                     // Special unregistration for Gaze
-                    if (gazeProviderPointingData?.Pointer != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if (gazePointer != null && eventData.InputSource.Pointers[i].PointerId == gazePointer.PointerId)
                     {
-                        // If the source lost is the gaze input source, then reset it.
+                        // If the source lost is the gaze input source, clear gazeProviderPointingData.
                         if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
                         {
-                            gazeProviderPointingData.ResetFocusedObjects();
                             gazeProviderPointingData = null;
                         }
-                        // Otherwise, don't unregister the gaze pointer, since the gaze input source is still active.
+                        // Otherwise, don't clear gazeProviderPointingData, since the gaze input source is still active.
                         else
                         {
                             continue;

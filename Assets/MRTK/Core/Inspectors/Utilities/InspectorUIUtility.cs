@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -536,7 +535,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUI.BeginProperty(position, label, prop);
             {
                 result = EditorGUI.EnumPopup(position, label, propValue);
-                prop.enumValueIndex = Convert.ToInt32(result);
+                prop.intValue = Convert.ToInt32(result);
             }
             EditorGUI.EndProperty();
 
@@ -650,7 +649,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     else
                     {
                         bool isNestedInCurrentPrefab = false;
-                        var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+#if UNITY_2021_2_OR_NEWER
+                        var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#else
+                        var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#endif
                         if (prefabStage != null)
                         {
                             var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);

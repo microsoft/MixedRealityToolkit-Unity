@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
                     EditorGUILayout.PropertyField(angularClampMode);
 
-                    switch ((Follow.AngularClampType)angularClampMode.enumValueIndex)
+                    switch ((Follow.AngularClampType)angularClampMode.intValue)
                     {
                         case Follow.AngularClampType.AngleStepping:
                             {

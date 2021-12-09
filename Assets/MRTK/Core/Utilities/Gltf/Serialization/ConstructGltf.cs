@@ -360,7 +360,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
 
-            material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
+            if (gltfMaterial.pbrMetallicRoughness?.baseColorFactor != null)
+            {
+                material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
+            }
 
             if (gltfMaterial.alphaMode == "MASK")
             {
@@ -507,8 +510,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         {
             GltfMesh gltfMesh = gltfObject.meshes[meshId];
 
-            var renderer = parent.gameObject.AddComponent<MeshRenderer>();
-            var filter = parent.gameObject.AddComponent<MeshFilter>();
+            var renderer = parent.AddComponent<MeshRenderer>();
+            var filter = parent.AddComponent<MeshFilter>();
 
             if (gltfMesh.primitives.Length == 1)
             {

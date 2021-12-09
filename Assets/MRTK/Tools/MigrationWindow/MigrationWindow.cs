@@ -45,13 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private Type selectedMigrationHandlerType;
         private string migrationLog;
 
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationTabDark.png
+        // Tools/MigrationWindow/Icons/IconMigrationTabDark.png
         private const string darkTabIconGUID = "b2681195a786ce54e97b2126f1164e1f";
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationTabLight.png
+        // Tools/MigrationWindow/Icons/IconMigrationTabLight.png
         private const string lightTabIconGUID = "2064c6a354f93c74397e7795dfbfc111";
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationPass.png
+        // Tools/MigrationWindow/Icons/IconMigrationPass.png
         private const string passIconGUID = "f3b1d57b0d86d29419b5737244fed8a9";
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationFail.png
+        // Tools/MigrationWindow/Icons/IconMigrationFail.png
         private const string failIconGUID = "5f1c0a610cc7c1841a1e9b43045c3f05";
 
         private static Texture passIcon;

@@ -34,18 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             serializedObject.Update();
 
-            bool objectChanged = false;
-
-            EditorGUI.BeginChangeCheck();
-
             InspectorUIUtility.DrawEnumSerializedProperty(secondTrackedTargetTypeProperty, SecondTrackedTypeLabel, solverInBetween.SecondTrackedObjectType);
 
-            if (secondTrackedTargetTypeProperty.enumValueIndex == (int)TrackedObjectType.CustomOverride)
+            if (secondTrackedTargetTypeProperty.intValue == (int)TrackedObjectType.CustomOverride)
             {
                 EditorGUILayout.PropertyField(secondTransformOverrideProperty);
             }
-
-            objectChanged = EditorGUI.EndChangeCheck();
 
             EditorGUILayout.PropertyField(partwayOffsetProperty);
 

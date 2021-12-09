@@ -231,6 +231,10 @@ $HardcodedPathExceptions = @{
         'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
         'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
         'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
+        'value: Assets/MRTK/Examples/Demos/Solvers/Scenes/SurfaceMagnetismSpatialAwarenessExample.unity'
+        'value: Assets/MRTK/Examples/Demos/ScrollingObjectCollection/Scenes/ScrollingObjectCollection.unity'
+        'value: Assets/MRTK/Examples/Demos/HandCoach/Scenes/HandCoachExample.unity'
+        'value: Assets/MRTK/Examples/Experimental/SceneUnderstanding/Scenes/SceneUnderstandingExample.unity'
     );
 }
 

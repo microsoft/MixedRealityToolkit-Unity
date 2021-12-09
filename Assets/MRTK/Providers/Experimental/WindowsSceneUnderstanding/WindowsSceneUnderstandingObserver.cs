@@ -14,14 +14,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.MixedReality.SceneUnderstanding;
-#if WINDOWS_UWP
-using Windows.Perception.Spatial;
-using Windows.Perception.Spatial.Preview;
 #if MSFT_OPENXR
 using Microsoft.MixedReality.OpenXR;
+using Microsoft.MixedReality.OpenXR.Remoting;
 using Microsoft.MixedReality.Toolkit.XRSDK;
 using UnityEngine.XR.OpenXR;
 #endif // MSFT_OPENXR
+#if WINDOWS_UWP
+using Windows.Perception.Spatial;
+using Windows.Perception.Spatial.Preview;
 #endif // WINDOWS_UWP
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -129,13 +130,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
 #else
             base.Initialize();
-#if WINDOWS_UWP
 #if MSFT_OPENXR
             isOpenXRLoaderActive = LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>() ?? false;
-#else
+            isOpenXRRemotingConnected = AppRemoting.TryGetConnectionState(out ConnectionState state, out _) && state == ConnectionState.Connected;
+#elif WINDOWS_UWP
             isOpenXRLoaderActive = false;
 #endif // MSFT_OPENXR
-#endif // WINDOWS_UWP
             sceneEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>(EventSystem.current);
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
 
@@ -166,7 +166,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             // Terminate the background thread when we stop in editor.
             cancelToken = cancelTokenSource.Token;
 
-            task = Task.Run(() => RunObserverAsync(cancelToken));
+            task = Task.Run(() => RunObserverAsync(cancelToken)).ContinueWith(t =>
+            {
+                Debug.LogError($"{t.Exception.InnerException.GetType().Name}: {t.Exception.InnerException.Message} {t.Exception.InnerException.StackTrace}");
+            }, TaskContinuationOptions.OnlyOnFaulted);
 #else
             IsEnabled = false;
 #endif // SCENE_UNDERSTANDING_PRESENT && UNITY_WSA
@@ -180,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             if (instantiationQueue.Count > 0)
             {
                 // Make our new objects in batches and tell observers about it
-                int batchCount = Math.Min(InstantiationBatchRate, instantiationQueue.Count);
+                int batchCount = CreateGameObjects ? Math.Min(InstantiationBatchRate, instantiationQueue.Count) : instantiationQueue.Count;
 
                 for (int i = 0; i < batchCount; ++i)
                 {
@@ -313,7 +316,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public void SaveScene(string filenamePrefix)
         {
 #if WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
-            Task.Run(() => SaveToFile(filenamePrefix));
+            Task.Run(() => SaveToFile(filenamePrefix)).ContinueWith(t =>
+            {
+                Debug.LogError($"{t.Exception.InnerException.GetType().Name}: {t.Exception.InnerException.Message} {t.Exception.InnerException.StackTrace}");
+            }, TaskContinuationOptions.OnlyOnFaulted);
 #else // WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
             Debug.LogWarning("SaveScene() only supported at runtime! Ignoring request.");
 #endif // WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
@@ -413,9 +419,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private System.Numerics.Matrix4x4 sceneToWorldTransformMatrix;
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
         private Texture defaultTexture;
-#if WINDOWS_UWP
+#if WINDOWS_UWP || MSFT_OPENXR
         private bool isOpenXRLoaderActive;
-#endif // WINDOWS_UWP
+#endif // WINDOWS_UWP || MSFT_OPENXR
+#if MSFT_OPENXR
+        private bool isOpenXRRemotingConnected;
+#endif // MSFT_OPENXR
 
         #endregion Private Fields
 
@@ -665,7 +674,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
                     case ObserverState.GetScene:
                         observerState = ObserverState.Working;
-                        if (CreateGameObjects && instantiationQueue.Count > 0)
+                        while (CreateGameObjects && instantiationQueue.Count > 0)
                         {
                             await new WaitForUpdate();
                         }
@@ -788,8 +797,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private System.Numerics.Matrix4x4? GetSceneToWorldTransform()
         {
             var result = System.Numerics.Matrix4x4.Identity;
-#if WINDOWS_UWP
+#if WINDOWS_UWP // On HoloLens 2 device
             if (isOpenXRLoaderActive)
+#elif MSFT_OPENXR // In editor and using OpenXR
+            if (isOpenXRLoaderActive && isOpenXRRemotingConnected && !ShouldLoadFromFile)
+#else // All other cases
+            if (false)
+#endif // WINDOWS_UWP
             {
 #if MSFT_OPENXR
                 SpatialGraphNode node = SpatialGraphNode.FromStaticNodeId(sceneOriginId);
@@ -805,6 +819,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
             else
             {
+#if WINDOWS_UWP
                 SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
                 SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
 
@@ -818,8 +833,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 {
                     return null;
                 }
-            }
 #endif // WINDOWS_UWP
+            }
             return result;
         }
 
@@ -858,7 +873,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                     EnableSceneObjectQuads = RequestPlaneData,
                     EnableSceneObjectMeshes = RequestMeshData,
                     EnableOnlyObservedSceneObjects = !InferRegions,
-                    EnableWorldMesh = SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World),
+                    EnableWorldMesh = SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.World),
                     RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
                 };
 
@@ -1008,7 +1023,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             for (int i = 0; i < count; ++i)
             {
-                if (!SurfaceTypes.HasFlag(SpatialAwarenessSurfaceType(newObjects[i].Kind)))
+                if (!SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceType(newObjects[i].Kind)))
                 {
                     continue;
                 }
@@ -1320,13 +1335,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// </summary>
         private void CleanupInstantiatedSceneObjects()
         {
-            if (observedObjectParent != null)
+            if (ObservedObjectParent != null)
             {
-                int kidCount = observedObjectParent.transform.childCount;
+                int kidCount = ObservedObjectParent.transform.childCount;
 
                 for (int i = 0; i < kidCount; ++i)
                 {
-                    UnityEngine.Object.Destroy(observedObjectParent.transform.GetChild(i).gameObject);
+                    UnityEngine.Object.Destroy(ObservedObjectParent.transform.GetChild(i).gameObject);
                 }
             }
         }

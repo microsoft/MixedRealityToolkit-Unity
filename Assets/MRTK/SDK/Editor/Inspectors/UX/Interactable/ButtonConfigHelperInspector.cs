@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             showComponents = EditorGUILayout.Toggle("Show Component References", showComponents);
 
-            ButtonIconStyle oldStyle = (ButtonIconStyle)iconStyleProp.enumValueIndex;
+            ButtonIconStyle oldStyle = (ButtonIconStyle)iconStyleProp.intValue;
 
             using (new EditorGUI.IndentLevelScope(1))
             {
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             if (seeItSayItLabel.activeSelf != seeItSayItLabelActive)
                             {
                                 seeItSayItLabel.SetActive(seeItSayItLabelActive);
-                                EditorUtility.SetDirty(seeItSayItLabel.gameObject);
+                                EditorUtility.SetDirty(seeItSayItLabel);
                             }
 
                             if (seeItSayItLabel.activeSelf)
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                                     if (interactableProp.objectReferenceValue != null)
                                     {
                                         SerializedObject interactableObject = new SerializedObject(interactableProp.objectReferenceValue);
-                                        SerializedProperty voiceCommandProperty = interactableObject.FindProperty("VoiceCommand");
+                                        SerializedProperty voiceCommandProperty = interactableObject.FindProperty("voiceCommand");
 
                                         if(string.IsNullOrEmpty(voiceCommandProperty.stringValue))
                                         {
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             serializedObject.ApplyModifiedProperties();
 
-            if (oldStyle != (ButtonIconStyle)iconStyleProp.enumValueIndex)
+            if (oldStyle != (ButtonIconStyle)iconStyleProp.intValue)
             {
                 cb.ForceRefresh();
             }
@@ -387,6 +387,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(iconSetProp);
+
+            EditorGUILayout.Space();
             if (iconSet == null)
             {
                 EditorGUILayout.HelpBox("No icon set assigned. You can specify custom icons manually by assigning them to the field below:", MessageType.Info);

@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 if (hasValidType)
                 {
                     MixedRealityControllerAttribute controllerAttribute = MixedRealityControllerAttribute.Find(controllerType.Type);
-                    if (controllerAttribute != null && !controllerAttribute.SupportedUnityXRPipelines.HasFlag(xrPipelineUtility.SelectedPipeline))
+                    if (controllerAttribute != null && !controllerAttribute.SupportedUnityXRPipelines.IsMaskSet(xrPipelineUtility.SelectedPipeline))
                     {
                         continue;
                     }

@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         private uint GetControllerId(InputDevice inputDevice)
         {
-            var handedness = (uint)(inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right) ? 2 : (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ? 1 : 0));
+            var handedness = (uint)(inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) ? 2 : (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) ? 1 : 0));
             return GetControllerId(handedness);
         }
 #endif // HP_CONTROLLER_ENABLED
@@ -299,10 +299,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking))
             {
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
-                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) ||
+                    inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))
                 {
                     // If it's a hand with a reported handedness, assume HL2 articulated hand
                     return SupportedControllerType.ArticulatedHand;
@@ -314,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
 
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
                 // primary2DAxis represents the touchpad in Windows XR Plugin.
                 // The HP motion controller doesn't have a touchpad, so we check for its existence in the feature usages.
