@@ -34,7 +34,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 triangleIndex = hitInfo.triangleIndex;
 
                 MeshCollider meshCollider = hitInfo.collider as MeshCollider;
-                if (meshCollider == null || meshCollider.sharedMesh.isReadable)
+                if (meshCollider == null)
+                {
+                    textureCoord = hitInfo.textureCoord;
+                    textureCoord2 = hitInfo.textureCoord2;
+                    lightmapCoord = hitInfo.lightmapCoord;
+                }
+                else if (meshCollider.sharedMesh.isReadable)
                 {
 #if UNITY_2019_4_OR_NEWER
                     if (meshCollider.sharedMesh.HasVertexAttribute(UnityEngine.Rendering.VertexAttribute.TexCoord0))
