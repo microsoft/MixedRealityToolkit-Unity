@@ -32,18 +32,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 barycentricCoordinate = hitInfo.barycentricCoordinate;
                 distance = hitInfo.distance;
                 triangleIndex = hitInfo.triangleIndex;
-                textureCoord = hitInfo.textureCoord;
+
                 MeshCollider meshCollider = hitInfo.collider as MeshCollider;
                 if (meshCollider == null || meshCollider.sharedMesh.isReadable)
                 {
+#if UNITY_2019_4_OR_NEWER
+                    if (meshCollider.sharedMesh.HasVertexAttribute(UnityEngine.Rendering.VertexAttribute.TexCoord0))
+                    {
+                        textureCoord = hitInfo.textureCoord;
+                    }
+                    else
+                    {
+                        textureCoord = Vector2.zero;
+                    }
+
+                    if (meshCollider.sharedMesh.HasVertexAttribute(UnityEngine.Rendering.VertexAttribute.TexCoord1))
+                    {
+                        textureCoord2 = hitInfo.textureCoord2;
+                        lightmapCoord = hitInfo.lightmapCoord;
+                    }
+                    else
+                    {
+                        textureCoord2 = Vector2.zero;
+                        lightmapCoord = Vector2.zero;
+                    }
+#else
+                    textureCoord = hitInfo.textureCoord;
                     textureCoord2 = hitInfo.textureCoord2;
+                    lightmapCoord = hitInfo.lightmapCoord;
+#endif
                 }
                 else
                 {
+                    textureCoord = Vector2.zero;
                     textureCoord2 = Vector2.zero;
+                    lightmapCoord = Vector2.zero;
                 }
+
                 transform = hitInfo.transform;
-                lightmapCoord = hitInfo.lightmapCoord;
                 collider = hitInfo.collider;
             }
             else
