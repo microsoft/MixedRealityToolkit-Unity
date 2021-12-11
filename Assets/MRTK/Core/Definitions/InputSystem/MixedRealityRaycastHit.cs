@@ -52,6 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         textureCoord = Vector2.zero;
                     }
 
+                    // This checks for TexCoord1, since textureCoord2 and lightmapCoord both query that index
+                    // via CalculateRaycastTexCoord(collider, m_UV, m_Point, m_FaceID, 1); (the last parameter is the index)
                     if (meshCollider.sharedMesh.HasVertexAttribute(UnityEngine.Rendering.VertexAttribute.TexCoord1))
                     {
                         textureCoord2 = hitInfo.textureCoord2;
