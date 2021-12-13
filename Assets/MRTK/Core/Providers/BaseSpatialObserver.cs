@@ -79,8 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         public override void Initialize()
         {
-            base.Initialize();
             CreateObserver();
+            base.Initialize();
         }
 
         /// <summary>
