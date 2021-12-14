@@ -496,8 +496,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private BoxDisplay boxDisplay;
         private ProximityEffect proximityEffect;
 
-        // Whether we should be displaying just the wireframe (if enabled) or the handles too
+        /// <summary>
+        /// Whether we should be displaying just the wireframe (if enabled) or the handles too
+        /// </summary>
         public bool WireframeOnly { get => wireframeOnly; }
+
         private bool wireframeOnly = false;
 
         // Pointer that is being used to manipulate the bounds control
@@ -1317,6 +1320,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         #region Used Event Handlers
 
+        /// <inheritdoc />
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.NewFocusedObject == null)
@@ -1343,6 +1347,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
         }
 
+        /// <inheritdoc />
         void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             if (currentPointer != null && eventData.Pointer == currentPointer)
@@ -1351,6 +1356,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
         }
 
+        /// <inheritdoc />
         void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData) { }
 
         private void OnPointerUp(MixedRealityPointerEventData eventData)
@@ -1446,6 +1452,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
+        /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
             if (eventData.Controller != null)
@@ -1457,6 +1464,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
         }
 
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             sourcesDetected.Remove(eventData.Controller);
@@ -1471,6 +1479,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         #region Unused Event Handlers
 
+        /// <inheritdoc />
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
 
         #endregion Unused Event Handlers
