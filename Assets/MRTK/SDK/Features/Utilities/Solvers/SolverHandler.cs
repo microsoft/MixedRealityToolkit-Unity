@@ -278,8 +278,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (!IsValidTrackedObjectType(trackedTargetType))
             {
-                Debug.LogError("Using Obsolete SolverHandler.TrackedTargetType. Defaulting to type Head");
-                TrackedTargetType = TrackedObjectType.Head;
+                Debug.LogError("Using obsolete SolverHandler.TrackedTargetType. Attempting to update or defaulting to type Head if unsuccessful.");
+#pragma warning disable 0618
+                if (trackedTargetType == TrackedObjectType.HandJointLeft)
+                {
+                    TrackedTargetType = TrackedObjectType.HandJoint;
+                    TrackedHandness = Handedness.Left;
+                }
+                else if (trackedTargetType == TrackedObjectType.HandJointRight)
+                {
+                    TrackedTargetType = TrackedObjectType.HandJoint;
+                    TrackedHandness = Handedness.Right;
+                }
+                else if (trackedTargetType == TrackedObjectType.MotionControllerLeft)
+                {
+                    TrackedTargetType = TrackedObjectType.ControllerRay;
+                    TrackedHandness = Handedness.Left;
+                }
+                else if (trackedTargetType == TrackedObjectType.MotionControllerRight)
+                {
+                    TrackedTargetType = TrackedObjectType.ControllerRay;
+                    TrackedHandness = Handedness.Right;
+                }
+                else
+                {
+                    TrackedTargetType = TrackedObjectType.Head;
+                }
+#pragma warning restore 0618
+            }
+
+            if (!IsValidHandedness(trackedHandness))
+            {
+                Debug.LogError("Using invalid SolverHandler.TrackedHandness value. Defaulting to Handedness.Both");
+                trackedHandness = Handedness.Both;
             }
         }
 
