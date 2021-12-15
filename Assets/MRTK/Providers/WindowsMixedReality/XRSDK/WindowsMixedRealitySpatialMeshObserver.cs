@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
-        SupportedPlatforms.WindowsUniversal,
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal,
         "XR SDK Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK",
