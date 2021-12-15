@@ -48,7 +48,7 @@ steps:
     $extraArgs = ""
     if ("${{ parameters.Platform }}" -eq "UWP")
     {
-        $extraArgs += '-buildTarget WSAPlayer -buildAppx'
+        $extraArgs += '-buildTarget WSAPlayer'
     }
     elseif ("${{ parameters.Platform }}" -eq "Standalone")
     {
@@ -106,45 +106,7 @@ steps:
         Write-Output 'Unity Player Log Missing!'
     }
 
-    # The NuGet and AppX logs are only relevant for UWP builds.
-    if ("${{ parameters.Platform }}" -eq "UWP")
-    {
-        $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
-        if (Test-Path $nugetRestoreLogFileName)
-        {
-            Write-Output '====================================================='
-            Write-Output '           Begin NuGet Restore Log                   '
-            Write-Output '====================================================='
-
-            Get-Content $nugetRestoreLogFileName
-
-            Write-Output '====================================================='
-            Write-Output '           End NuGet Restore Log                     '
-            Write-Output '====================================================='
-        }
-        else
-        {
-            Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
-        }
-
-        $appxBuildLogFileName = "$logDirectory\buildAppx.log"
-        if (Test-Path $appxBuildLogFileName)
-        {
-            Write-Output '====================================================='
-            Write-Output '           Begin AppX Build Log                      '
-            Write-Output '====================================================='
-
-            Get-Content $appxBuildLogFileName
-
-            Write-Output '====================================================='
-            Write-Output '           End AppX Build Log                        '
-            Write-Output '====================================================='
-        }
-        else
-        {
-            Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
-        }
-    }
+    
 
     if ($proc.ExitCode -ne 0)
     {
@@ -168,8 +130,8 @@ steps:
     # The final location of the generated package depends on the type of scripting backend it's built against.
     # For the default scripting backend (IL2CPP) the naming of the appx follows the form below:
     ${{ if eq(parameters.ScriptingBackend, 'default') }}:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
+      PathToPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
     # For .NET scripting backends, the naming is slightly different (mainly the AppPackages and MixedRealityToolkit folder
     # names are reversed, and the Architecture is part of the AppX name)
     ${{ if eq(parameters.ScriptingBackend, '.NET') }}:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\MixedRealityToolkit\AppPackages\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.Arch }}_Master_Test'
+      PathToPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\MixedRealityToolkit\AppPackages\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.Arch }}_Master_Test'
