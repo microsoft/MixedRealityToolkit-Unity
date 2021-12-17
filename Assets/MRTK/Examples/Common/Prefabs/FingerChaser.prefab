@@ -91,9 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedTargetType: 3
-  trackedHandness: 3
-  trackedHandJoint: 5
+  trackedTargetType: 6
+  trackedHandness: 2
+  trackedHandJoint: 1
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 180}
