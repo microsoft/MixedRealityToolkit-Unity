@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         public GameObject GameObjectReference { get; internal set; }
 
         /// <summary>
-        /// the Node Id and corresponding GameObject pairs.
+        /// The Node Id and corresponding GameObject pairs.
         /// </summary>
         public Dictionary<int, GameObject> NodeGameObjectPairs { get; internal set; } = new Dictionary<int, GameObject>();
 
