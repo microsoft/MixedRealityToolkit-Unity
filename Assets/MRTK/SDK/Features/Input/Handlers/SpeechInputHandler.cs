@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (enabled && responses.TryGetValue(eventData.Command.Keyword.ToLower(), out UnityEvent keywordResponse))
             {
                 keywordResponse.Invoke();
-            eventData.Use();
+                eventData.Use();
 
                 // Instantiate the Speech Confirmation Tooltip prefab if assigned
                 // Ignore "Select" keyword since OS will display the tooltip.
