@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             await EnsureInputSystemValid();
 
             // We've been destroyed during the await.
-            if (this == null)
+            if (this.IsNull())
             {
                 return;
             }
@@ -225,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 base.Controller = value;
 
-                if (base.Controller != null && this != null)
+                if (base.Controller != null && this.IsNotNull())
                 {
                     // Ensures that the basePointerName is only initialized once
                     if (basePointerName == string.Empty)
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 pointerName = value;
-                if (this != null)
+                if (this.IsNotNull())
                 {
                     gameObject.name = value;
                 }
