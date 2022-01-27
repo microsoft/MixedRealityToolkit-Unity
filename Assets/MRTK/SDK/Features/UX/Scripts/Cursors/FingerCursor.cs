@@ -139,6 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="visible">Should the ring be visible?</param>
         protected virtual void UpdateVisuals(Renderer ringRenderer, float distance, bool visible)
         {
+            base.SetVisibility(visible);
             ringRenderer.GetPropertyBlock(materialPropertyBlock);
             materialPropertyBlock.SetFloat(proximityDistanceID, visible ? distance : 1.0f);
             ringRenderer.SetPropertyBlock(materialPropertyBlock);
