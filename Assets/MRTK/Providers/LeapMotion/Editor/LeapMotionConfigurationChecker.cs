@@ -19,7 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
     {
         // The presence of the LeapXRServiceProvider.cs is used to determine if the Leap Motion Core Assets are in the project.
         private const string trackedLeapFileName = "LeapXRServiceProvider.cs";
-        private static readonly string[] Definitions = { "LEAPMOTIONCORE_PRESENT" };
+        private static readonly string[] CommonDefinitions = { "LEAPMOTIONCORE_PRESENT" };
+        private static readonly string[] UnityPluginDefinitions = { "LEAPMOTIONPLUGIN_PRESENT" };
 
         // True if the Leap Motion Core Assets are in the project.
         private static bool isLeapInProject = false;
@@ -30,15 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         private static bool isLeapRecognizedByMRTK = false;
 
         // The current supported Leap Core Assets version numbers.
-        // Note the Ultraleap V5.0.0 and V5.1.0 Unity plugins are not compatible with MRTK due to an issue with how cameras are assigned to the LeapXRServiceProvider. 
-		// This has been fixed in V5.2.0
-        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0", "4.9.1", "5.2.0"};
+        // Note V5.0 - V5.2 are not compatible with MRTK. Fixes to restore full compatibility with MRTK were introduced in V5.3.0
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0", "4.9.1", "5.3.0"};
 
         // The current Leap Core Assets version in this project
         private static string currentLeapCoreAssetsVersion = "";
 
         // The path difference between the root of assets and the root of the Leap Motion Core Assets.
-        private static string pathDifference = "";
+        private static string pathDifference = ""; 
 
         // The Leap Unity Modules version 4.7.1 already contains a LeapMotion.asmdef file at this path
         private static string leapAsmDefPath_471 = "LeapMotion/Core/Scripts/LeapMotion.asmdef";
@@ -90,8 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
             if (files.Length > 0)
             {
-                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, CommonDefinitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, CommonDefinitions);
 
                 isLeapInProject = true;
                 isLeapRecognizedByMRTK = true;
@@ -100,8 +100,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             }
             else
             {
-                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, CommonDefinitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, CommonDefinitions);
+
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, UnityPluginDefinitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, UnityPluginDefinitions);
+                
                 isLeapRecognizedByMRTK = false;
 
                 return false;
@@ -147,6 +151,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                     AddAndUpdateAsmDefs();
                     AddLeapEditorAsmDefs();
 
+                    if (UsingUnityPlugin())
+                    {
+                        AddScriptingDefinitionsForUnityPlugin();   
+                    }
+
                     // Refresh the database because tests were removed and 10 asmdefs were added
                     AssetDatabase.Refresh();
                 }
@@ -154,12 +163,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 {
                     Debug.LogError("The Leap Motion Unity Modules version imported is not currently supported by MRTK, compatible versions are listed in the Leap Motion MRTK documentation: " +
                         "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/supported-devices/leap-motion-mrtk");
-
-                    // Force removal of the Scripting Definitions while the Leap Assets are still in the project
-                    ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-                    ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
                 }
             }
+        }
+
+        private static void AddScriptingDefinitionsForUnityPlugin()
+        {
+            ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, UnityPluginDefinitions);
+            ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, UnityPluginDefinitions);
         }
 
         /// <summary>
@@ -227,11 +238,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             string versionPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "Core", "Version.txt");
 
-            // First check the path to the Ultraleap/LeapMotion Unity Modules version text file (<= v4.9.1)
+            // Path to the Unity Modules version text file (<= v4.9.1)
             if (File.Exists(versionPath))
                 return versionPath;
 
-            // Next, check the path to the Ultraleap Unity Plugin version text file >= v5.0.0)
+            // Path to the Unity Plugin version text file >= v5.0.0)
             versionPath = Path.Combine(Application.dataPath, pathDifference, "Version.txt");
             if (File.Exists(versionPath))
                 return versionPath;
@@ -287,10 +298,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             string leapCoreAsmDefPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "LeapMotion.asmdef");
 
             // If the Leap Unity Modules version is 4.7.1 or newer, the LeapMotion.asmdef file does not need to be created
-            // NB V5.0.0 and V5.1.0 are not supported by MRTK so are not expected here.
+            // NB V5.0 - V5.2 are not supported by MRTK so are not expected here.
             if (currentLeapCoreAssetsVersion == "4.7.1" ||
                 currentLeapCoreAssetsVersion == "4.9.1" || 
-                currentLeapCoreAssetsVersion == "5.2.0" )
+                currentLeapCoreAssetsVersion == "5.3.0" )
             {
                 return;
             }
@@ -329,10 +340,21 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// </summary>
         private static void AddLeapEditorAsmDefs()
         {
-            if (currentLeapCoreAssetsVersion != "5.2.0")
+            if (!UsingUnityPlugin())
             {
                 AddLeapEditorAsmDefsForUnityModules();
             }
+        }
+
+        private static bool UsingUnityPlugin()
+        {
+            if (String.IsNullOrEmpty(currentLeapCoreAssetsVersion))
+            {
+                Debug.Log("Version number is not available, unable to determine if Unity Plugin has been installed in the project");
+                return false;
+            }
+
+            return currentLeapCoreAssetsVersion == "5.3.0";
         }
 
         private static void AddLeapEditorAsmDefsForUnityModules()
@@ -365,10 +387,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         };
 
                         // Add the LeapMotion.LeapCSharp assembly definition to the leap motion tests assembly definition
-                        if ((currentLeapCoreAssetsVersion == "4.5.1" ||
-                            currentLeapCoreAssetsVersion == "4.6.0" ||
-                            currentLeapCoreAssetsVersion == "4.7.0" ||
-                            currentLeapCoreAssetsVersion == "4.7.1" ||
+                        if ((currentLeapCoreAssetsVersion == "4.5.1" || 
+                            currentLeapCoreAssetsVersion == "4.6.0" || 
+                            currentLeapCoreAssetsVersion == "4.7.0" || 
+                            currentLeapCoreAssetsVersion == "4.7.1" || 
                             currentLeapCoreAssetsVersion == "4.9.1") && (leapAsmDef.Key == "LeapMotion.Core.Tests.Editor" || leapAsmDef.Key == "LeapMotion.Core.Editor"))
                         {
                             leapEditorAsmDef.AddReference("LeapMotion.LeapCSharp");
@@ -389,8 +411,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             }
         }
 
-       
-
         /// <summary>
         /// Get the difference between the root of assets and the location of the leap core assets.  If the leap core assets 
         /// are at the root of assets, there is no path difference.
@@ -406,11 +426,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
             List<string> leapPath = leapFilePath.Split(Path.DirectorySeparatorChar).ToList();
 
-            // The Ultraleap Unity Plugin (i.e. V5.0.0 onwards) has been renameded to Ultraleap, use this to determine if we are dealing with
+
+            // The Ultraleap Unity Plugin (i.e. V5.0 onwards) has been renamed to Ultraleap. Use this to determine if we are dealing with
             // the Unity Modules or Unity Plugin
             if (leapPath.Contains("Ultraleap"))
             {
-				// Remove the last 4 elements of the ultraleap path (Ultraleap/Core/Scripts/LeapXRService.cs) from the list to get the root of the leap core assets
+                // Account fot the extra folder level used by the plugin
                 leapPath.RemoveRange(leapPath.Count - 4, 4);
             }
             else
@@ -420,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             }
 
             List<string> unityDataPath = Application.dataPath.Split('/').ToList();
-            unityDataPath.Add("LeapMotion"); // ???
+            unityDataPath.Add("LeapMotion");
 
             // Get the difference between the root of assets and the root of leap core assets
             IEnumerable<string> difference = leapPath.Except(unityDataPath);
@@ -534,8 +555,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
 
             // Force removal of the Scripting Definitions while the Leap Assets are still in the project
-            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, CommonDefinitions);
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, CommonDefinitions);
+
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, UnityPluginDefinitions);
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, UnityPluginDefinitions);
 
             isLeapRecognizedByMRTK = false;
 
