@@ -167,6 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             }
         }
 
+        /// <summary>
+        /// Adds scripting definitions that are required when using the Ultraleap Unity Plugin (i.e. >= V5.0)
+        /// </summary>
         private static void AddScriptingDefinitionsForUnityPlugin()
         {
             ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, UnityPluginDefinitions);
@@ -233,7 +236,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             }
         }
 
-
+        /// <summary>
+        /// Gets the filepath to the Unity Modules / Unity Plugin version text file. This contains the version string
+        /// of the Ultraleap plugin
+        /// </summary>
+        /// <returns>The path to the Unity Modules / Unity Plugin version text file</returns>
         private static string GetVersionPath()
         {
             string versionPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "Core", "Version.txt");
@@ -247,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             if (File.Exists(versionPath))
                 return versionPath;
 
-            throw new FileNotFoundException("Unable to locate version.txt file for Ultraleap/Leap Motion Unity plugin");
+            return String.Empty;
         }
 
         /// <summary>
@@ -295,8 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// </summary>
         private static void AddAndUpdateAsmDefs()
         {
-            string leapCoreAsmDefPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "LeapMotion.asmdef");
-
             // If the Leap Unity Modules version is 4.7.1 or newer, the LeapMotion.asmdef file does not need to be created
             // NB V5.0 - V5.2 are not supported by MRTK so are not expected here.
             if (currentLeapCoreAssetsVersion == "4.7.1" ||
@@ -306,6 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 return;
             }
 
+            string leapCoreAsmDefPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "LeapMotion.asmdef");
             // If the asmdef has already been created then do not create another one
             if (!File.Exists(leapCoreAsmDefPath))
             {
@@ -346,6 +352,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             }
         }
 
+        /// <summary>
+        /// Identifes whether the hand tracking Unity components are known as
+        /// the Unity Plugin (>=V5.0) or the Unity Modules (<V5.0)
+        /// </summary>
+        /// <returns>True if the version string indicates that the plugin in installed in the project, otherwise false</returns>
         private static bool UsingUnityPlugin()
         {
             if (String.IsNullOrEmpty(currentLeapCoreAssetsVersion))
@@ -357,6 +368,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             return currentLeapCoreAssetsVersion == "5.3.0";
         }
 
+        /// <summary>
+        /// Adds assembly definition files for the Unity Modules
+        /// </summary>
         private static void AddLeapEditorAsmDefsForUnityModules()
         {
             if (FileUtilities.FindFilesInAssets("LeapMotion.Core.Editor.asmdef").Length == 0)
@@ -429,6 +443,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
             // The Ultraleap Unity Plugin (i.e. V5.0 onwards) has been renamed to Ultraleap. Use this to determine if we are dealing with
             // the Unity Modules or Unity Plugin
+            List<string> unityDataPath = Application.dataPath.Split('/').ToList();
+
             if (leapPath.Contains("Ultraleap"))
             {
                 // Account fot the extra folder level used by the plugin
@@ -438,10 +454,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             {
                 // Remove the last 3 elements of leap path (/Core/Scripts/LeapXRService.cs) from the list to get the root of the leap core assets
                 leapPath.RemoveRange(leapPath.Count - 3, 3);
+                unityDataPath.Add("LeapMotion");
             }
-
-            List<string> unityDataPath = Application.dataPath.Split('/').ToList();
-            unityDataPath.Add("LeapMotion");
 
             // Get the difference between the root of assets and the root of leap core assets
             IEnumerable<string> difference = leapPath.Except(unityDataPath);
