@@ -106,6 +106,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             {
                 if (attachmentHand != null && attachmentHand.isTracked)
                 {
+                    IsPositionAvailable = IsRotationAvailable = true;
+
                     // Is the current joint a metacarpal
                     bool isMetacarpal = metacarpals.Contains(joint);
 
@@ -131,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 }
                 else
                 {
+                    IsPositionAvailable = IsRotationAvailable = false;
                     jointPoses[joint] = MixedRealityPose.ZeroIdentity;
                 }
             }
