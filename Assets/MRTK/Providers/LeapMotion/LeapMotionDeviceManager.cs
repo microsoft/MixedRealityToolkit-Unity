@@ -126,8 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             if (leapControllerOrientation == LeapControllerOrientation.Headset)
             {
                 // As of the Unity Plugin (>V5.0.0), the leap service provider needs to know what is the main camera,
-                // it will pick this up from the MainCameraProvider which is used because camera.Main is not supported
-                // across all XR platforms. This needs to be done before the LeapXRServiceProvider is created
+                // it will pick this up from the MainCameraProvider. This needs to be done before the LeapXRServiceProvider is created
 
 #if LEAPMOTIONPLUGIN_PRESENT
                 MainCameraProvider.mainCamera = CameraCache.Main;
