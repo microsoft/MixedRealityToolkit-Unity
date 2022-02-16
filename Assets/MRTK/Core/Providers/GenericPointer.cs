@@ -61,9 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public ICursorModifier CursorModifier { get; set; }
 
-        /// <inheritdoc />
-        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
-
         private bool isInteractionEnabled = true;
 
         /// <inheritdoc />
@@ -83,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public bool IsActive { get; set; }
 
         /// <inheritdoc />

@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Logs the given message to the Unity console and player log if verbose logging is enabled.
         /// </summary>
         /// <remarks>
-        /// <para>If you are doing string concatentation or manipulation, use LogVerboseFormat
+        /// <para>If you are doing string concatenation or manipulation, use LogVerboseFormat
         /// that formats the string, as that will not allocate memory when verbose logging is enabled.</para>
         ///
         /// <para>For example, don't do:

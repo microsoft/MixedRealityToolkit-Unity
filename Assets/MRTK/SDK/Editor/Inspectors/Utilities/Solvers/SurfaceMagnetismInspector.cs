@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(raycastModeProperty);
 
             // Draw properties dependent on type of raycast direction mode selected
-            switch (raycastModeProperty.enumValueIndex)
+            switch (raycastModeProperty.intValue)
             {
                 case (int)SceneQueryType.BoxRaycast:
                     EditorGUILayout.PropertyField(boxRaysPerEdgeProperty);
@@ -120,8 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
                     break;
             }
 
-            if (raycastModeProperty.enumValueIndex != (int)SceneQueryType.SimpleRaycast &&
-                raycastModeProperty.enumValueIndex != (int)SceneQueryType.SphereOverlap)
+            if (raycastModeProperty.intValue != (int)SceneQueryType.SimpleRaycast &&
+                raycastModeProperty.intValue != (int)SceneQueryType.SphereOverlap)
             {
                 EditorGUILayout.PropertyField(volumeCastSizeOverrideProperty);
             }

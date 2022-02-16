@@ -9,12 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// <summary>
     /// Camera settings provider for use with Windows Mixed Reality.
     /// </summary>
-    [MixedRealityDataProvider(
-        typeof(IMixedRealityCameraSystem),
-        SupportedPlatforms.WindowsUniversal,
-        "Windows Mixed Reality Camera Settings",
-        "WindowsMixedReality/Shared/Profiles/DefaultWindowsMixedRealityCameraSettingsProfile.asset",
-        "MixedRealityToolkit.Providers")]
     public abstract class BaseWindowsMixedRealityCameraSettings : BaseCameraSettingsProvider, IMixedRealityCameraProjectionOverrideProvider
     {
         /// <summary>
@@ -141,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// </summary>
         private void InitializeProjectionOverride()
         {
-            if (reprojectionUpdater == null && Profile != null && Profile.ReadingModeEnabled)
+            if (projectionOverride == null && Profile != null && Profile.ReadingModeEnabled)
             {
                 projectionOverride = CameraCache.Main.EnsureComponent<ProjectionOverride>();
                 projectionOverride.ReadingModeEnabled = Profile.ReadingModeEnabled;

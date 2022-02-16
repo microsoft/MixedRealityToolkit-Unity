@@ -72,9 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ".pdf",
         };
 
-        private const string DependencyWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/DependencyWindow.html";
+        private const string DependencyWindow_URL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/dependency-window";
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
         {
             var window = GetWindow<DependencyWindow>(typeof(SceneView));
@@ -312,11 +312,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             dependencyGraph.Clear();
 
-            // Get all meta files from the assets and package cache directories. 
+            // Get all meta files from the assets and package cache directories.
             const string metaExtension = ".meta";
             var metaFiles = new List<string>();
             metaFiles.AddRange(Directory.GetFiles(Application.dataPath, "*" + metaExtension, SearchOption.AllDirectories));
             metaFiles.AddRange(Directory.GetFiles(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library\\PackageCache"), "*" + metaExtension, SearchOption.AllDirectories));
+            metaFiles.AddRange(Directory.GetFiles(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Packages"), "*" + metaExtension, SearchOption.AllDirectories));
 
             for (int i = 0; i < metaFiles.Count; ++i)
             {

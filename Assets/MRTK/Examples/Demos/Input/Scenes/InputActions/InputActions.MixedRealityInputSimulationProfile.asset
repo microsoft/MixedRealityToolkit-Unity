@@ -34,7 +34,7 @@ MonoBehaviour:
   currentControlMode: 0
   fastControlKey:
     bindingType: 2
-    code: 305
+    code: 303
   controlSlowSpeed: 1
   controlFastSpeed: 5
   moveHorizontal: Horizontal

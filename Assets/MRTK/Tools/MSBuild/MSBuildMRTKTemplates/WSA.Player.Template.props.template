@@ -16,6 +16,11 @@
 
   <!-- This is for successful building step from dotnet cli -->
   <Choose>
+    <When Condition="'$(XamlTargetsPathOverride)'!= ''">
+      <PropertyGroup>
+        <LanguageTargets>$(XamlTargetsPathOverride)\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+      </PropertyGroup>
+    </When>
     <When Condition="'$(MSBuildExtensionsPathOverride)'!= ''">
       <PropertyGroup>
         <LanguageTargets>$(MSBuildExtensionsPathOverride)\Microsoft\WindowsXaml\v15.0\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>

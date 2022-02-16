@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -437,15 +436,15 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        private static void InverseTransformPoints(ref Vector3[] positions, Transform relativeTo)	 
-        {	 	 
-            if (relativeTo)	 	 
-            {	 	 
-                for (var i = 0; i < positions.Length; ++i)	 	 
-                {	 	 
-                    positions[i] = relativeTo.InverseTransformPoint(positions[i]);	 	 
-                }	 	 
-            }	 	 
+        private static void InverseTransformPoints(ref Vector3[] positions, Transform relativeTo)
+        {
+            if (relativeTo)
+            {
+                for (var i = 0; i < positions.Length; ++i)
+                {
+                    positions[i] = relativeTo.InverseTransformPoint(positions[i]);
+                }
+            }
         }
 
 

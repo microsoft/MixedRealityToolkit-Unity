@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     [DisallowMultipleComponent]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Pointers.html")]
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/pointers")]
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityQueryablePointer
     {
         [SerializeField]
         private GameObject cursorPrefab = null;
@@ -82,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (SetCursorPerfMarker.Auto())
             {
-                if (cursorInstance != null)
+                // Destroy the old cursor and replace it with the new one if a new cursor was provided
+                if (cursorInstance != null && newCursor != null)
                 {
                     DestroyCursorInstance();
                     cursorInstance = newCursor;
@@ -90,13 +91,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (cursorInstance == null && cursorPrefab != null)
                 {
-                    cursorInstance = Instantiate(cursorPrefab, transform);
+                    // We spawn the cursor at the same level as this pointer by setting its parent to be the same as the pointer's
+                    // In the future, the pointer will not be responsible for instantiating the cursor, so we'll avoid making this assumption about the hierarchy
+                    cursorInstance = Instantiate(cursorPrefab, transform.parent);
                     isCursorInstantiatedFromPrefab = true;
                 }
 
                 if (cursorInstance != null)
                 {
-                    cursorInstance.name = $"{Handedness}_{name}_Cursor";
+                    cursorInstance.name = $"{name}_Cursor";
 
                     BaseCursor oldC = BaseCursor as BaseCursor;
                     if (oldC != null && enabled)
@@ -166,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             await EnsureInputSystemValid();
 
             // We've been destroyed during the await.
-            if (this == null)
+            if (this.IsNull())
             {
                 return;
             }
@@ -222,10 +225,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 base.Controller = value;
 
-                if (base.Controller != null && this != null)
+                if (base.Controller != null && this.IsNotNull())
                 {
-                    PointerName = gameObject.name;
+                    // Ensures that the basePointerName is only initialized once
+                    if (basePointerName == string.Empty)
+                    {
+                        basePointerName = gameObject.name;
+                    }
+                    PointerName = $"{Handedness}_{basePointerName}";
                     InputSourceParent = base.Controller.InputSource;
+                    SetCursor();
                 }
             }
         }
@@ -246,6 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private string basePointerName = string.Empty;
         private string pointerName = string.Empty;
 
         /// <inheritdoc />
@@ -255,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 pointerName = value;
-                if (this != null)
+                if (this.IsNotNull())
                 {
                     gameObject.name = value;
                 }
@@ -360,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         /// <inheritdoc />
-        public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
+        public virtual LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
         /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }
@@ -395,6 +405,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public virtual void OnPreSceneQuery() { }
+
+        /// <inheritdoc />
+        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        {
+            var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+            switch (SceneQueryType)
+            {
+                case SceneQueryType.SimpleRaycast:
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
+                        if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                case SceneQueryType.SphereCast:
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
+                        if (raycastProvider.SphereCast(Rays[i], SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+                default:
+                    throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
+            }
+            hitInfo = new MixedRealityRaycastHit();
+            return false;
+        }
+
+        /// <inheritdoc />
+        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
+        {
+            MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
+            bool querySuccessful = OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+
+            hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
+            hitPoint = hitInfo.point;
+            hitDistance = hitInfo.distance;
+
+            return querySuccessful;
+        }
 
         private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnPostSceneQuery");
 

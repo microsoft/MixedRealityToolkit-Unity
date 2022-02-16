@@ -13,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit
     {
         public const uint DefaultPriority = 10;
 
+        public BaseService()
+        {
+            typeName = new[] { GetType().ToString() };
+        }
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -25,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual BaseMixedRealityProfile ConfigurationProfile { get; protected set; } = null;
 
         /// <inheritdoc />
-        public virtual void Initialize() 
+        public virtual void Initialize()
         {
             IsInitialized = true;
         }
 
         /// <inheritdoc />
-        public virtual void Reset() 
+        public virtual void Reset()
         {
             IsInitialized = false;
         }
@@ -66,49 +71,52 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region IMixedRealityServiceState Implementation
 
-        protected bool? isInitialized = null;
+        private bool? isInitialized = null;
+
+        private readonly string[] typeName = null;
+
+        private const string IsInitializedAssert = "{0} has not set a value for IsInitialized; returning false.";
+        private const string IsEnabledAssert = "{0} has not set a value for IsEnabled; returning false.";
+        private const string IsMarkedDestroyedAssert = "{0} has not set a value for IsMarkedDestroyed; returning false.";
 
         /// <inheritdoc />
         public virtual bool IsInitialized
         {
             get
             {
-                Debug.Assert(isInitialized.HasValue, $"{this.GetType()} has not set a value for IsInitialized, returning false.");
+                Debug.AssertFormat(isInitialized.HasValue, IsInitializedAssert, typeName);
                 return isInitialized ?? false;
             }
 
-            set => isInitialized = value;
+            protected set => isInitialized = value;
         }
 
-        protected bool? isEnabled = null;
+        private bool? isEnabled = null;
 
         /// <inheritdoc />
         public virtual bool IsEnabled
         {
             get
             {
-                Debug.Assert(isEnabled.HasValue, $"{this.GetType()} has not set a value for IsEnabled, returning false.");
+                Debug.AssertFormat(isEnabled.HasValue, IsEnabledAssert, typeName);
                 return isEnabled ?? false;
             }
 
-            set => isEnabled = value;
+            protected set => isEnabled = value;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        protected bool? isMarkedDestroyed = null;
+        private bool? isMarkedDestroyed = null;
 
         /// <inheritdoc />
         public virtual bool IsMarkedDestroyed
         {
             get
             {
-                Debug.Assert(isMarkedDestroyed.HasValue, $"{this.GetType()} has not set a value for IsMarkedDestroyed, returning false.");
+                Debug.AssertFormat(isMarkedDestroyed.HasValue, IsMarkedDestroyedAssert, typeName);
                 return isMarkedDestroyed ?? false;
             }
 
-            set => isMarkedDestroyed = value;
+            protected set => isMarkedDestroyed = value;
         }
 
         #endregion IMixedRealityServiceState Implementation

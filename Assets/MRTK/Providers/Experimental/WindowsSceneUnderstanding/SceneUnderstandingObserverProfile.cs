@@ -1,11 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 {
@@ -19,22 +20,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         #region IMixedRealityOnDemandObserver settings
 
         [SerializeField]
-        [Tooltip("Observer will update once after initialization then require manual update thereafter.")]
-        private bool updateOnceOnLoad = false;
+        [FormerlySerializedAs("updateOnceOnLoad")]
+        [Tooltip("Whether the observer updates once after initialization (regardless whether AutoUpdate is true).")]
+        private bool updateOnceInitialized = false;
         /// <summary>
-        /// Observer will update once after initialization then require manual update thereafter. Uses <see cref="FirstUpdateDelay"/> to determine when.
+        /// Whether the observer updates once after initialization (regardless whether <see cref="AutoUpdate"/> is true).
         /// </summary>
-        public bool UpdateOnceOnLoad => updateOnceOnLoad;
+        public bool UpdateOnceInitialized => updateOnceInitialized;
 
         [SerializeField]
-        [Tooltip("Should the observer update on an interval or on demand?")]
+        [Tooltip("Whether the observer updates its observations automatically on interval.")]
         private bool autoUpdate = false;
 
         /// <summary>
-        /// Indicates if the observer is to start immediately or wait for manual startup.
+        /// Whether the observer updates its observations automatically on interval.
         /// </summary>
         /// <remarks>
-        /// When false, the observer will only update when UpdateOnDemand() is called.
+        /// When false, call UpdateOnDemand() to manually update an observer when needed.
         /// </remarks>
         public bool AutoUpdate => autoUpdate;
 
@@ -52,9 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         [EnumFlags]
         [SerializeField]
         [Tooltip("Which plane types the observer should generate.")]
-        private SpatialAwarenessSurfaceTypes surfaceTypes = 
-            SpatialAwarenessSurfaceTypes.Floor | 
-            SpatialAwarenessSurfaceTypes.Ceiling | 
+        private SpatialAwarenessSurfaceTypes surfaceTypes =
+            SpatialAwarenessSurfaceTypes.Floor |
+            SpatialAwarenessSurfaceTypes.Ceiling |
             SpatialAwarenessSurfaceTypes.Wall |
             SpatialAwarenessSurfaceTypes.Platform;
 
@@ -88,10 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public Material DefaultWorldMeshMaterial => defaultWorldMeshMaterial;
 
         [SerializeField]
-        [Tooltip("Load saved scan data from a file instead of device")]
+        [Tooltip("Load saved scan data from a file instead of getting live date from device. Only works in Editor.")]
         private bool shouldLoadFromFile = false;
         /// <summary>
-        /// Load saved scan into scene understanding.
+        /// Load saved scan data from a file instead of getting live date from device. Only works in Editor.
         /// </summary>
         public bool ShouldLoadFromFile => shouldLoadFromFile;
 
@@ -138,12 +140,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public bool InferRegions => inferRegions;
 
         [SerializeField]
-        [Tooltip("The amount of delay before the scene is updated the first time")]
-        private float firstUpdateDelay = 1.0f;
+        [FormerlySerializedAs("firstUpdateDelay")]
+        [Tooltip("Delay in seconds before the observer starts to update automatically for the first time after initialization")]
+        private float firstAutoUpdateDelay = 1.0f;
         /// <summary>
-        /// The amount of delay before the scene us updated the first time
+        /// Delay in seconds before the observer starts to update automatically for the first time after initialization
         /// </summary>
-        public float FirstUpdateDelay => firstUpdateDelay;
+        public float FirstAutoUpdateDelay => firstAutoUpdateDelay;
 
         [SerializeField]
         [Tooltip("Controls the amount of polygons returned for the mesh")]
@@ -162,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public bool UsePersistentObjects => usePersistentObjects;
 
         [SerializeField]
-        [Tooltip("Calculate surfaces upto radius distance")]
+        [Tooltip("Calculate surfaces up to radius distance")]
         private float queryRadius = 5.0f;
         /// <summary>
         /// Keep previously observed objects when updating the scene

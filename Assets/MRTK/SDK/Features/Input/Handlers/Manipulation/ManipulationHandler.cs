@@ -18,17 +18,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/manipulation-handler")]
     [AddComponentMenu("Scripts/MRTK/SDK/ManipulationHandler")]
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
+
         public enum HandMovementType
         {
             OneHandedOnly = 0,
             TwoHandedOnly,
             OneAndTwoHanded
         }
+
         public enum TwoHandedManipulation
         {
             Scale,
@@ -37,7 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MoveRotate,
             RotateScale,
             MoveRotateScale
-        };
+        }
+
         public enum RotateInOneHandType
         {
             MaintainRotationToUser,
@@ -47,13 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MaintainOriginalRotation,
             RotateAboutObjectCenter,
             RotateAboutGrabPoint
-        };
-        [System.Flags]
+        }
+
+        [Flags]
         public enum ReleaseBehaviorType
         {
             KeepVelocity = 1 << 0,
             KeepAngularVelocity = 1 << 1
         }
+
         #endregion Public Enums
 
         #region Serialized Fields
@@ -684,7 +689,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // the initial pointer pose; if far manipulation, a more complex
                 // look-rotation-based pointer pose is used.
                 MixedRealityPose pose = IsNearManipulation() ? new MixedRealityPose(GetPointersCentroid()) : GetAveragePointerPose();
-                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
+
+                // The manipulation handler is not built to handle near manipulation properly, please use the object manipulator
+                targetTransform.Position = moveLogic.UpdateTransform(pose, targetTransform, true, false);
                 if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
                 {
                     moveConstraint.ApplyConstraint(ref targetTransform);
@@ -748,7 +755,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
+
+            // The manipulation handler is not built to handle near manipulation properly, please use the object manipulator
+            targetTransform.Position = moveLogic.UpdateTransform(pointerPose, targetTransform, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, false);
             if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
             {
                 moveConstraint.ApplyConstraint(ref targetTransform);
@@ -950,12 +959,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 rigidBody.isKinematic = wasKinematic;
 
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                if (releaseBehavior.IsMaskSet(ReleaseBehaviorType.KeepVelocity))
                 {
                     rigidBody.velocity = GetPointersVelocity();
                 }
 
-                if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                if (releaseBehavior.IsMaskSet(ReleaseBehaviorType.KeepAngularVelocity))
                 {
                     rigidBody.angularVelocity = GetPointersAngularVelocity();
                 }

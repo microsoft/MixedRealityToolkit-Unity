@@ -64,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 bbox = cube.AddComponent<BoundingBox>();
                 bbox.HideElementsInInspector = false;
                 bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
+                var cm = cube.AddComponent<ConstraintManager>();
                 var om = cube.AddComponent<ObjectManipulator>();
                 yield return WaitForSpeechCommand();
 
@@ -187,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     var cubechild = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cubechild.transform.localPosition = Random.insideUnitSphere + cubePosition + forwardOffset;
                     cubechild.transform.rotation = Quaternion.Euler(Random.insideUnitSphere * 360f);
-                    cubechild.transform.parent = lastParent ?? multiRoot.transform;
+                    cubechild.transform.parent = (lastParent != null) ? lastParent : multiRoot.transform;
                     float baseScale = lastParent == null ? 0.1f : 1f;
                     cubechild.transform.localScale = new Vector3(baseScale, baseScale, baseScale);
                     lastParent = cubechild.transform;
@@ -197,6 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
                 bbox.HideElementsInInspector = false;
                 bbox.WireframeEdgeRadius = .05f;
+                multiRoot.AddComponent<ConstraintManager>();
                 multiRoot.AddComponent<ObjectManipulator>();
 
                 SetStatus("Randomize Child Scale for skewing");

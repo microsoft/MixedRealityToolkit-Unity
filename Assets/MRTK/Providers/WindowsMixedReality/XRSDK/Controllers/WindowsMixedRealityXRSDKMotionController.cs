@@ -7,6 +7,10 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
+#if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+#endif // WINDOWS_UWP
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
@@ -15,7 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
+        "Textures/MotionController",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class WindowsMixedRealityXRSDKMotionController : BaseWindowsMixedRealityXRSDKSource
     {
         /// <summary>
@@ -128,5 +133,54 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
         }
+
+#if WINDOWS_UWP
+        private WindowsMixedRealityControllerModelProvider controllerModelProvider;
+
+        /// <inheritdoc />
+        protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
+        {
+            if (GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
+            {
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+            else
+            {
+                TryRenderControllerModelWithModelProvider();
+                return true;
+            }
+        }
+
+        private async void TryRenderControllerModelWithModelProvider()
+        {
+            if (controllerModelProvider == null)
+            {
+                controllerModelProvider = new WindowsMixedRealityControllerModelProvider(ControllerHandedness);
+            }
+
+            GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
+
+            if (this != null)
+            {
+                if (controllerModel != null
+                    && MixedRealityControllerModelHelpers.TryAddVisualizationScript(controllerModel, GetType(), ControllerHandedness)
+                    && TryAddControllerModelToSceneHierarchy(controllerModel))
+                {
+                    controllerModel.SetActive(true);
+                    return;
+                }
+
+                Debug.LogWarning("Failed to create controller model from driver; defaulting to BaseController behavior.");
+                base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+            }
+
+            if (controllerModel != null)
+            {
+                // If we didn't successfully set up the model and add it to the hierarchy (which returns early), set it inactive.
+                controllerModel.SetActive(false);
+            }
+        }
+#endif
     }
 }

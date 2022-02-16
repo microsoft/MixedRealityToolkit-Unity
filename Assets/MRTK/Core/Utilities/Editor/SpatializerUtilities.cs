@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (string.IsNullOrWhiteSpace(spatializer))
             {
-                Debug.LogWarning("No spatializer was specified. The application will not support Spatial Sound.");
+                Debug.Log("No spatializer was specified. The application will not support Spatial Sound.");
             }
             else if (!InstalledSpatializers.Contains(spatializer))
             {

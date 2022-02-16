@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Hand positions
             float offset = 0.001f;
             Vector3 initialPos = Vector3.zero;
-            Vector3 scrollTouchPos = contentItems[1].transform.position + Vector3.forward * 0.015f; // Touching scroll second colum slot        
+            Vector3 scrollTouchPos = contentItems[1].transform.position + Vector3.forward * 0.015f; // Touching scroll second column slot        
             Vector3 scrollEngagedUpPos = scrollTouchPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset); // Scrolls up one row
             Vector3 scrollEngagedDownPos = scrollTouchPos - Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset); // Scrolls down one row
 
@@ -474,7 +474,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(scrollEngagedOnePageUpPos);
 
-            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered."); // both coliders disabled need to go deeper
+            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered."); // both colliders disabled need to go deeper
             Assert.IsTrue(button1TouchBegin, "Button1 touch begin was not triggered.");
             Assert.IsFalse(button3TouchBegin, "Button3 touch begin was triggered.");
             Assert.IsFalse(button4TouchBegin, "Button4 touch begin was triggered.");
@@ -1144,7 +1144,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
             Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
 
-            // Barelly visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
+            // Barely visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
             Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
             Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
@@ -1242,7 +1242,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
             Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
 
-            // Barelly visible content should still have renderers enabled and have renderers clipped. Colliders should be disabled for interaction
+            // Barely visible content should still have renderers enabled and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
             Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
             Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
@@ -1476,6 +1476,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Scroll amount should roughly follow hand movement with 1:1 ratio
             Assert.AreEqual((handTouchDelta - scrollView.HandDeltaScrollThreshold) / newScale, scrollView.ScrollContainerPosition.y, 0.005, "Scroll drag amount was not 1:1");
+        }
+
+        /// <summary>
+        /// Tests that no errors are raised after the scrolling object collection is removed from the scene
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScrollViewCleanup()
+        {
+            // Setting up a vertical 1x2 scroll view with three pressable buttons items
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         2,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Object.Destroy(scrollView.gameObject);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
         }
 
         #endregion Tests

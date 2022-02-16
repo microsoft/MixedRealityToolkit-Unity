@@ -21,7 +21,7 @@ MonoBehaviour:
   showPlayArea: 1
   playAreaMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
   playAreaPhysicsLayer: 2
-  showTrackedArea: 1
+  showTrackedArea: 0
   trackedAreaMaterial: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
   trackedAreaPhysicsLayer: 2
   showBoundaryWalls: 0

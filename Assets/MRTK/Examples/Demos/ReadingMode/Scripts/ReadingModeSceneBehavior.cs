@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -16,11 +17,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.ReadingMode
         [SerializeField]
         private PinchSlider renderViewportScaleSlider = null;
 
+        private float previousSliderValue = -1;
+        private const float MinScale = 0.001f;
+
         private void Update()
         {
-            if (renderViewportScaleSlider != null)
+            if (renderViewportScaleSlider == null || renderViewportScaleSlider.SliderValue == previousSliderValue)
             {
-                XRSettings.renderViewportScale = renderViewportScaleSlider.SliderValue;
+                return;
+            }
+
+            previousSliderValue = renderViewportScaleSlider.SliderValue;
+
+            if (DeviceUtility.IsPresent)
+            {
+                XRSettings.renderViewportScale = Mathf.Max(renderViewportScaleSlider.SliderValue, MinScale);
             }
         }
 

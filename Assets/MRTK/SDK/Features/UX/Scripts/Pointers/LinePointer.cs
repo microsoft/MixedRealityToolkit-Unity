@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool IsInteractionEnabled =>
                 // If IsTracked is not true, then we don't have position data yet (or have stale data),
                 // so remain disabled until we know where to appear (not just at the origin).
-                IsFocusLocked || (IsTracked && Controller.IsInPointingPose && base.IsInteractionEnabled);
+                IsFocusLocked || (IsTracked && Controller.IsNotNull() && Controller.IsInPointingPose && base.IsInteractionEnabled);
 
         private Vector3 lineStartPoint;
         private Vector3 lineEndPoint;
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Used to ensure the line doesn't extend beyond the cursor
                 float cursorOffsetWorldLength = (BaseCursor != null) ? BaseCursor.SurfaceCursorDistance : 0;
 
-                // Readjust the Line renderer's endpoint to match the the cursor's position if it is focus locked to a target
+                // Readjust the Line renderer's endpoint to match the cursor's position if it is focus locked to a target
                 if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
                 {
                     SetLinePoints(Position, Result.Details.Point + Rotation * Vector3.back * cursorOffsetWorldLength);

@@ -6,8 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-
-using EditMode = Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.EditMode;
 using PaginationMode = Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.PaginationMode;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
@@ -72,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string BackReleasePlaneDescription = "Back release Plane";
         private const string FrontReleasePlaneDescription = "Front Release Plane";
 
-        private const string ScrollViewDocURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ScrollView.html";
+        private const string ScrollViewDocURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/scrolling-object-collection";
 
         protected const string ShowAdvancedPrefKey = "ScrollViewInspectorShowAdvanced";
         protected const string ShowEventsPrefKey = "ScrollViewInspectorShowEvents";
@@ -288,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             scrollView.MaskEnabled = maskEnabled.boolValue;
                             EditorUtility.SetDirty(target);
                         }
-                    }              
+                    }
 
                     using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying))
                     {
@@ -361,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void DrawTouchReleaseThresholdsSection()
         {
             Rect rect = EditorGUILayout.GetControlRect(true, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PrefixLabel(rect, new GUIContent("Release threshold", "Withdraw amount, in meters, from the the scroll view boundaries that triggers a touch release."), EditorStyles.boldLabel);
+            EditorGUI.PrefixLabel(rect, new GUIContent("Release threshold", "Withdraw amount, in meters, from the scroll view boundaries that triggers a touch release."), EditorStyles.boldLabel);
 
             int oldIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;

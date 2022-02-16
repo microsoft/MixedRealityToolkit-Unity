@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK",
         true)]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input-simulation/input-simulation-service")]
     public class InputSimulationService :
         BaseInputSimulationService,
         IInputSimulationService,
@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (indicators)
             {
-                GameObject.Destroy(indicators);
+                UnityEngine.Object.Destroy(indicators);
             }
 
             DisableCameraControl();
@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 }
 
-                if (cameraControl != null && CameraCache.Main  != null)
+                if (cameraControl != null && CameraCache.Main != null)
                 {
                     cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
                 }
@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (cameraControl == null)
             {
                 cameraControl = new ManualCameraControl(InputSimulationProfile);
-            
+
                 if (CameraCache.Main != null)
                 {
                     cameraControl.SetInitialTransform(CameraCache.Main.transform);

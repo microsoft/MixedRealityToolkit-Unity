@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using UnityEngine;
 
@@ -28,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 {
                     HandlePositions[i] = VisualUtils.GetFaceCenterPosition(i, ref boundsCorners);
                 }
-            
+
                 UpdateHandles();
             }
         }
 
-        internal TranslationHandles(TranslationHandlesConfiguration configuration) 
+        internal TranslationHandles(TranslationHandlesConfiguration configuration)
             : base(configuration)
-        { 
+        {
         }
 
         protected override Quaternion GetRotationRealignment(int handleIndex)
@@ -46,18 +45,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
             if (VisualUtils.FaceAxisType[handleIndex] == CardinalAxisType.X)
             {
-                return Quaternion.FromToRotation(Vector3.up, directionSign * Vector3.right);
+                return Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.right);
             }
             else if (VisualUtils.FaceAxisType[handleIndex] == CardinalAxisType.Z)
             {
-                return Quaternion.FromToRotation(Vector3.up, directionSign * Vector3.forward);
+                return Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.forward);
             }
             else // y axis
             {
                 return Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.up);
             }
         }
-      
+
         #region BoundsControlHandlerBase 
 
         internal override HandleType GetHandleType()

@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 
 #if UNITY_EDITOR || !UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit
 {

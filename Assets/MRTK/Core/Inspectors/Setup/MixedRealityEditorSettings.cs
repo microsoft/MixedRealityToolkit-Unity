@@ -86,10 +86,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!EditorApplication.isPlayingOrWillChangePlaymode
                 && !IgnoreProjectConfigForSession
-                && !MixedRealityProjectPreferences.IgnoreSettingsPrompt
-                && !MixedRealityProjectConfigurator.IsProjectConfigured())
+                && !MixedRealityProjectPreferences.IgnoreSettingsPrompt)
             {
-                MixedRealityProjectConfiguratorWindow.ShowWindow();
+                if (!XRSettingsUtilities.XREnabled)
+                {
+                    MixedRealityProjectConfiguratorWindow.ShowWindowOnInit(false);
+                }
+                else if (!MixedRealityProjectConfigurator.IsProjectConfigured())
+                {
+                    MixedRealityProjectConfiguratorWindow.ShowWindowOnInit(true);
+                }
             }
         }
 
@@ -98,11 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         private static void LogConfigurationWarnings()
         {
-            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-            // with legacy requirements.
-            if (!XRSettingsUtilities.LegacyXREnabled)
+            if (!XRSettingsUtilities.XREnabled)
             {
-                Debug.LogWarning("<b>Virtual reality supported</b> not enabled. Check <i>XR Settings</i> under <i>Player Settings</i>");
+                Debug.LogWarning("There is no properly configured XR pipeline in the project! Please run the configurator by clicking on Mixed Reality (menu bar) -> Toolkit -> Utilities -> Configure Project for MRTK if the current settings are not desired.");
             }
 
             if (!MixedRealityOptimizeUtils.IsOptimalRenderingPath())
@@ -143,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (PlayerSettings.stripUnusedMeshComponents)
             {
-                /// For more information please see <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Performance/PerfGettingStarted.html#optimize-mesh-data">Optimize Mesh Data</see>
+                /// For more information please see <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/performance/perf-getting-started#optimize-mesh-data">Optimize Mesh Data</see>
                 Debug.LogWarning("<b>Optimize Mesh Data</b> is enabled. This setting can drastically increase build times. It is recommended to disable this setting during development and re-enable during \"Master\" build creation. See <i>Player Settings</i> > <i>Other Settings</i> > <i>Optimize Mesh Data</i>");
             }
         }

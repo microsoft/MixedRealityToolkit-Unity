@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         // Note: the min sdk target cannot be changed.
                         EditorUserBuildSettings.wsaUWPSDK = arguments[++i];
                         break;
+                    case "-nugetPath":
+                        buildInfo.NugetExecutablePath = arguments[++i];
+                        break;
                 }
             }
         }

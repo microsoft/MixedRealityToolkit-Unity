@@ -1,64 +1,70 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.Examples
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Class which handles displaying and hiding the input simulation help guide
     /// </summary>
-    public class InputSimulationHelpGuide : MonoBehaviour
+    internal class InputSimulationHelpGuide : MonoBehaviour
     {
-        [SerializeField]
+        [SerializeField, FormerlySerializedAs("HelpGuideShortcutKeys")]
         [Tooltip("Keys required to bring up the input display tips")]
-        public List<KeyCode> HelpGuideShortcutKeys;
+        private List<KeyCode> helpGuideShortcutKeys = new List<KeyCode>(0);
 
-        [SerializeField]
-        [Tooltip("The gameobject that displays the shortcut for bringing up the input simulation help guide")]
-        public GameObject HelpGuideShortcutTip = null;
+        [SerializeField, FormerlySerializedAs("HelpGuideShortcutTip")]
+        [Tooltip("The GameObject that displays the shortcut for bringing up the input simulation help guide")]
+        private GameObject helpGuideShortcutTip = null;
 
-        [SerializeField]
+        [SerializeField, FormerlySerializedAs("DisplayHelpGuideShortcutTipOnStart")]
         [Tooltip("Whether or not to show the help guide shortcut on startup")]
-        public bool DisplayHelpGuideShortcutTipOnStart = true;
+        private bool displayHelpGuideShortcutTipOnStart = true;
 
-        [SerializeField]
-        [Tooltip("The game object containing the input simulation help guide")]
-        public GameObject HelpGuideVisual = null;
+        [SerializeField, FormerlySerializedAs("HelpGuideVisual")]
+        [Tooltip("The GameObject containing the input simulation help guide")]
+        private GameObject helpGuideVisual = null;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            string HelpGuideShortcutString = "";
-            for(int i = 0; i < HelpGuideShortcutKeys.Count; i++)
+            if (DeviceUtility.IsPresent)
             {
-                string key = HelpGuideShortcutKeys[i].ToString();
+                gameObject.SetActive(false);
+                return;
+            }
+
+            string HelpGuideShortcutString = "";
+            for (int i = 0; i < helpGuideShortcutKeys.Count; i++)
+            {
+                string key = helpGuideShortcutKeys[i].ToString();
                 if (i > 0)
+                {
                     HelpGuideShortcutString += " + ";
+                }
                 HelpGuideShortcutString += key;
             }
 
-            HelpGuideShortcutTip.GetComponentInChildren<TextMeshProUGUI>().text = "Press " + HelpGuideShortcutString + " to open up the input simulation guide";
-            if (DisplayHelpGuideShortcutTipOnStart)
+            helpGuideShortcutTip.GetComponentInChildren<TextMeshProUGUI>().text = "Press " + HelpGuideShortcutString + " to open up the input simulation guide";
+            if (displayHelpGuideShortcutTipOnStart)
             {
-                HelpGuideShortcutTip.SetActive(true);
+                helpGuideShortcutTip.SetActive(true);
             }
-            HelpGuideVisual.SetActive(false);
+            helpGuideVisual.SetActive(false);
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             bool shortcutPressed = true;
             bool shortcutDown = false;
 
             // Checks to make sure that all keys are pressed and that one of the required shortcut keys was pressed on this frame
             // before bringing up the shortcut
-            foreach (KeyCode key in HelpGuideShortcutKeys)
+            foreach (KeyCode key in helpGuideShortcutKeys)
             {
                 shortcutPressed &= KeyInputSystem.GetKey(KeyBinding.FromKey(key));
                 shortcutDown |= KeyInputSystem.GetKeyDown(KeyBinding.FromKey(key));
@@ -66,8 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
             if (shortcutPressed && shortcutDown)
             {
-                HelpGuideVisual.SetActive(!HelpGuideVisual.activeSelf);
-                HelpGuideShortcutTip.SetActive(false);
+                helpGuideVisual.SetActive(!helpGuideVisual.activeSelf);
+                helpGuideShortcutTip.SetActive(false);
             }
         }
     }

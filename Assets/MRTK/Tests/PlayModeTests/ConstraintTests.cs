@@ -22,22 +22,8 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class ConstraintTests
+    public class ConstraintTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator SetUp()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         /// <summary>
         /// Tests that the MoveAxisConstraint works for various axes.
         /// This test uses world space axes.
@@ -330,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private IEnumerator ConstraintManagerFilterTest(bool reuseDefaultManager)
-        { 
+        {
             float initialScale = 0.2f;
             float minScale = 0.5f;
             float maxScale = 2f;
@@ -339,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * initialScale;
             testObject.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0f, 0f, 1f));
-            
+
             testObject.AddComponent<NearInteractionGrabbable>();
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
@@ -350,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rotationConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
             rotationConstraint.UseLocalSpaceForConstraint = true;
             var scaleConstraint = testObject.EnsureComponent<MinMaxScaleConstraint>();
-            
+
             scaleConstraint.RelativeToInitialState = true;
             scaleConstraint.ScaleMinimum = minScale;
             scaleConstraint.ScaleMaximum = maxScale;
@@ -941,6 +927,89 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestUtilities.AssertNotAboutEqual(originalRotation, testObject.transform.rotation, "Rotation should not be equal for far interaction");
             TestUtilities.AssertAboutEqual(originalPosition, testObject.transform.position, "Position should be equal for far interaction");
+        }
+
+        /// <summary>
+        /// Tests that multiple constraints obey their relative execution order priorities
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ConstraintExecutionOrder()
+        {
+            TestUtilities.PlayspaceToArbitraryPose();
+
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 originalPosition = TestUtilities.PositionRelativeToPlayspace(Vector3.forward);
+            testObject.transform.position = originalPosition;
+            Quaternion originalRotation = Quaternion.identity;
+            testObject.transform.rotation = originalRotation;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
+            manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+            // Add every-axis rotation constraint
+            var rotateConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
+            rotateConstraint.UseLocalSpaceForConstraint = false;
+            rotateConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.YAxis | AxisFlags.ZAxis;
+            rotateConstraint.ProximityType = ManipulationProximityFlags.Far;
+
+            // Add a face user constraint.
+            var faceUserConstraint = manipHandler.EnsureComponent<FaceUserConstraint>();
+            faceUserConstraint.FaceAway = true;
+            faceUserConstraint.ProximityType = ManipulationProximityFlags.Far;
+
+            // First, we'll test the rotate constraint executing first.
+            // Expected behavior: cube will still rotate to face user, because
+            // the FaceUserConstraint will execute second.
+            rotateConstraint.ExecutionPriority = 0;
+            faceUserConstraint.ExecutionPriority = 1;
+            yield return null;
+
+            const int numHandSteps = 1;
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            yield return rightHand.Show(TestUtilities.PositionRelativeToPlayspace(new Vector3(0.05f, -0.1f, 0.45f)));
+            yield return null;
+
+            // Pinch and rotate hand.
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+            yield return rightHand.SetRotation(Quaternion.Euler(0, 45, 0), numHandSteps);
+            yield return null;
+
+            // With this execution order, the faceUser constraint should still be setting the cube's rotation.
+            TestUtilities.AssertAboutEqual(testObject.transform.forward.normalized, (testObject.transform.position - CameraCache.Main.transform.position).normalized, "Cube should have faced away from user.");
+
+            // Reset hand position + gesture
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+            yield return rightHand.SetRotation(Quaternion.identity, numHandSteps);
+            yield return null;
+
+            // Reset cube position+rotation
+            testObject.transform.position = originalPosition;
+            testObject.transform.rotation = originalRotation;
+
+            // Now, we'll switch the execution order of the two constraints.
+            // With the rotation constraint executing *after* the faceUser constraint,
+            // the rotation of the cube should now be properly locked.
+
+            // This also tests whether setting these priorities
+            // properly re-sorts the ConstraintManager's priority list.
+            rotateConstraint.ExecutionPriority = 1;
+            faceUserConstraint.ExecutionPriority = 0;
+
+            // Pinch and rotate hand.
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+            yield return rightHand.SetRotation(Quaternion.Euler(0, 45, 0), numHandSteps);
+            yield return null;
+
+            // With this execution order, the rotation constraint should be properly constraining rotation.
+            TestUtilities.AssertAboutEqual(testObject.transform.rotation, originalRotation, "Cube should not have been able to rotate.");
         }
 
         /// <summary>

@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 
         /// <summary>
-        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection 
+        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled back-press protection
         /// if hands were moving too fast in low framerate
         /// </summary>
         [UnityTest]

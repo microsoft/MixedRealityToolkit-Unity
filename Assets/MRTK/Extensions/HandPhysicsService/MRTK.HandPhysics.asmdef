@@ -4,17 +4,12 @@
         "Microsoft.MixedReality.Toolkit",
         "Unity.TextMeshPro"
     ],
-    "includePlatforms": [
-        "Android",
-        "Editor",
-        "WSA"
-    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    "defineConstraints": []
 }

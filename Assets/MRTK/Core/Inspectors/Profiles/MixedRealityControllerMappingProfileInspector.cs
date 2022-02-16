@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
+using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 SupportedControllerType supportedControllerType = controllerMapping.SupportedControllerType;
 
                 ControllerMappingSignature currentSignature = new ControllerMappingSignature(supportedControllerType, handedness);
-                if(!controllersAffectedByMappingSignatures.ContainsKey(currentSignature))
+                if (!controllersAffectedByMappingSignatures.ContainsKey(currentSignature))
                 {
                     controllersAffectedByMappingSignatures.Add(currentSignature, new List<string>());
                 }
@@ -325,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                             EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
                             var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(controllerType, handedness));
-                            if (GUILayout.Button(buttonContent, MixedRealityStylesUtility.ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32), GUILayout.ExpandWidth(true))) 
+                            if (GUILayout.Button(buttonContent, MixedRealityStylesUtility.ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32), GUILayout.ExpandWidth(true)))
                             {
                                 ControllerMappingSignature buttonSignature = new ControllerMappingSignature(supportedControllerType, handedness);
                                 ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness, controllersAffectedByMappingSignatures[buttonSignature]);
@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         /// <summary>
         /// Resets the input actions of the controller mapping according to the mapping's GetDefaultInteractionMappings() function
         /// </summary>
-        /// <param name="controllerMapping">A reference to the controller mapping struct geing reset</param>
+        /// <param name="controllerMapping">A reference to the controller mapping struct getting reset</param>
         private void ResetInputActions(ref MixedRealityControllerMapping controllerMapping)
         {
             controllerMapping.SetDefaultInteractionMapping(true);

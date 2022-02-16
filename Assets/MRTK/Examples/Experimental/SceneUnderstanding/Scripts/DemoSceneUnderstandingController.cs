@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Examples.Demos;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.UI;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
@@ -54,8 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         private Interactable backgroundToggle = null;
 
         #endregion Serialized Fields
-        
+
         private IMixedRealitySceneUnderstandingObserver observer;
+
+        private List<GameObject> instantiatedPrefabs;
+
+        private Dictionary<SpatialAwarenessSurfaceTypes, Dictionary<int, SpatialAwarenessSceneObject>> observedSceneObjects;
 
         #endregion Private Fields
 
@@ -67,10 +72,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
             if (observer == null)
             {
-                Debug.LogError("Couldn't access Scene Understanding Observer!");
+                Debug.LogError("Couldn't access Scene Understanding Observer! Please make sure the current build target is set to Universal Windows Platform. "
+                    + "Visit https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/scene-understanding for more information.");
                 return;
             }
             InitToggleButtonState();
+            instantiatedPrefabs = new List<GameObject>();
+            observedSceneObjects = new Dictionary<SpatialAwarenessSurfaceTypes, Dictionary<int, SpatialAwarenessSceneObject>>();
         }
 
         protected override void OnEnable()
@@ -100,15 +108,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
             AddToData(eventData.Id);
 
-            if (InstantiatePrefabs)
+            if (observedSceneObjects.TryGetValue(eventData.SpatialObject.SurfaceType, out Dictionary<int, SpatialAwarenessSceneObject> sceneObjectDict))
+            {
+                sceneObjectDict.Add(eventData.Id, eventData.SpatialObject);
+            }
+            else
+            {
+                observedSceneObjects.Add(eventData.SpatialObject.SurfaceType, new Dictionary<int, SpatialAwarenessSceneObject> { { eventData.Id, eventData.SpatialObject } });
+            }
+            
+            if (InstantiatePrefabs && eventData.SpatialObject.Quads.Count > 0)
             {
                 var prefab = Instantiate(InstantiatedPrefab);
                 prefab.transform.SetPositionAndRotation(eventData.SpatialObject.Position, eventData.SpatialObject.Rotation);
-
+                float sx = eventData.SpatialObject.Quads[0].Extents.x;
+                float sy = eventData.SpatialObject.Quads[0].Extents.y;
+                prefab.transform.localScale = new Vector3(sx, sy, .1f);
                 if (InstantiatedParent)
                 {
                     prefab.transform.SetParent(InstantiatedParent);
                 }
+                instantiatedPrefabs.Add(prefab);
             }
             else
             {
@@ -124,15 +144,56 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
             UpdateData(eventData.Id);
+            
+            if (observedSceneObjects.TryGetValue(eventData.SpatialObject.SurfaceType, out Dictionary<int, SpatialAwarenessSceneObject> sceneObjectDict))
+            {
+                observedSceneObjects[eventData.SpatialObject.SurfaceType][eventData.Id] = eventData.SpatialObject;
+            }
+            else
+            {
+                observedSceneObjects.Add(eventData.SpatialObject.SurfaceType, new Dictionary<int, SpatialAwarenessSceneObject> { { eventData.Id, eventData.SpatialObject } });
+            }
         }
 
         /// <inheritdoc />
         public void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
             RemoveFromData(eventData.Id);
+
+            foreach (var sceneObjectDict in observedSceneObjects.Values)
+            {
+                sceneObjectDict?.Remove(eventData.Id);
+            }
         }
 
         #endregion IMixedRealitySpatialAwarenessObservationHandler Implementations
+
+        #region Public Functions
+
+        /// <summary>
+        /// Get all currently observed SceneObjects of a certain type.
+        /// </summary>
+        /// <remarks>
+        /// Before calling this function, the observer should be configured to observe the specified type by including that type in the SurfaceTypes property.
+        /// </remarks>
+        /// <returns>A dictionary with the scene objects of the requested type being the values and their ids being the keys.</returns>
+        public IReadOnlyDictionary<int, SpatialAwarenessSceneObject> GetSceneObjectsOfType(SpatialAwarenessSurfaceTypes type)
+        {
+            if (!observer.SurfaceTypes.IsMaskSet(type))
+            {
+                Debug.LogErrorFormat("The Scene Objects of type {0} are not being observed. You should add {0} to the SurfaceTypes property of the observer in advance.", type);
+            }
+
+            if (observedSceneObjects.TryGetValue(type, out Dictionary<int, SpatialAwarenessSceneObject> sceneObjects))
+            {
+                return sceneObjects;
+            }
+            else
+            {
+                observedSceneObjects.Add(type, new Dictionary<int, SpatialAwarenessSceneObject>());
+                return observedSceneObjects[type];
+            }
+        }
 
         #region UI Functions
 
@@ -157,6 +218,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ClearScene()
         {
+            foreach (GameObject gameObject in instantiatedPrefabs)
+            {
+                Destroy(gameObject);
+            }
+            instantiatedPrefabs.Clear();
             observer.ClearObservations();
         }
 
@@ -169,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         }
 
         /// <summary>
-        /// Change whether to request occulusion mask from the observer followed by
+        /// Change whether to request occlusion mask from the observer followed by
         /// clearing existing observations and requesting an update
         /// </summary>
         public void ToggleOcclusionMask()
@@ -184,8 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                     quadsToggle.IsToggled = true;
                 }
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -200,8 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 observer.RequestMeshData = false;
                 meshesToggle.IsToggled = false;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -216,8 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 observer.RequestPlaneData = false;
                 quadsToggle.IsToggled = false;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -226,17 +289,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ToggleFloors()
         {
-            var surfaceType = SpatialAwarenessSurfaceTypes.Floor;
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
-            {
-                observer.SurfaceTypes &= ~surfaceType;
-            }
-            else
-            {
-                observer.SurfaceTypes |= surfaceType;
-            }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.Floor);
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -245,17 +299,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ToggleWalls()
         {
-            var surfaceType = SpatialAwarenessSurfaceTypes.Wall;
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
-            {
-                observer.SurfaceTypes &= ~surfaceType;
-            }
-            else
-            {
-                observer.SurfaceTypes |= surfaceType;
-            }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.Wall);
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -264,17 +309,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ToggleCeilings()
         {
-            var surfaceType = SpatialAwarenessSurfaceTypes.Ceiling;
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
-            {
-                observer.SurfaceTypes &= ~surfaceType;
-            }
-            else
-            {
-                observer.SurfaceTypes |= surfaceType;
-            }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.Ceiling);
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -283,28 +319,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void TogglePlatforms()
         {
-            var surfaceType = SpatialAwarenessSurfaceTypes.Platform;
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
-            {
-                observer.SurfaceTypes &= ~surfaceType;
-            }
-            else
-            {
-                observer.SurfaceTypes |= surfaceType;
-            }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.Platform);
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
-        /// Change whether to request infered region data from the observer followed by
+        /// Change whether to request inferred region data from the observer followed by
         /// clearing existing observations and requesting an update
         /// </summary>
         public void ToggleInferRegions()
         {
             observer.InferRegions = !observer.InferRegions;
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -313,24 +339,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ToggleWorld()
         {
-            var surfaceType = SpatialAwarenessSurfaceTypes.World;
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
-            {
-                observer.SurfaceTypes &= ~surfaceType;
-            }
-            else
-            {
-                observer.SurfaceTypes |= surfaceType;
-            }
+            ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.World);
 
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
+            if (observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.World))
             {
                 // Ensure we requesting meshes
                 observer.RequestMeshData = true;
                 meshesToggle.GetComponent<Interactable>().IsToggled = true;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -339,17 +356,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ToggleBackground()
         {
-            var surfaceType = SpatialAwarenessSurfaceTypes.Background;
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
-            {
-                observer.SurfaceTypes &= ~surfaceType;
-            }
-            else
-            {
-                observer.SurfaceTypes |= surfaceType;
-            }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.Background);
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -358,20 +366,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ToggleCompletelyInferred()
         {
-            var surfaceType = SpatialAwarenessSurfaceTypes.Inferred;
-            if (observer.SurfaceTypes.HasFlag(surfaceType))
-            {
-                observer.SurfaceTypes &= ~surfaceType;
-            }
-            else
-            {
-                observer.SurfaceTypes |= surfaceType;
-            }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes.Inferred);
+            ClearAndUpdateObserver();
         }
 
         #endregion UI Functions
+
+        #endregion Public Functions
 
         #region Helper Functions
 
@@ -385,13 +386,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             inferRegionsToggle.IsToggled = observer.InferRegions;
 
             // Filter display
-            platformToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Platform);
-            wallToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Wall);
-            floorToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Floor);
-            ceilingToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Ceiling);
-            worldToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World);
-            completelyInferred.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Inferred);
-            backgroundToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Background);
+            platformToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Platform);
+            wallToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Wall);
+            floorToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Floor);
+            ceilingToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Ceiling);
+            worldToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.World);
+            completelyInferred.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Inferred);
+            backgroundToggle.IsToggled = observer.SurfaceTypes.IsMaskSet(SpatialAwarenessSurfaceTypes.Background);
         }
 
         /// <summary>
@@ -423,6 +424,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                     return new Color32(42, 161, 152, 255); // cyan
                 default:
                     return new Color32(220, 50, 47, 255); // red
+            }
+        }
+
+        private void ClearAndUpdateObserver()
+        {
+            ClearScene();
+            observer.UpdateOnDemand();
+        }
+
+        private void ToggleObservedSurfaceType(SpatialAwarenessSurfaceTypes surfaceType)
+        {
+            if (observer.SurfaceTypes.IsMaskSet(surfaceType))
+            {
+                observer.SurfaceTypes &= ~surfaceType;
+            }
+            else
+            {
+                observer.SurfaceTypes |= surfaceType;
             }
         }
 

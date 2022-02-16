@@ -122,10 +122,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             SimulatedMotionControllerState motionControllerStateLeft = InputStateLeft as SimulatedMotionControllerState;
             SimulatedMotionControllerState motionControllerStateRight = InputStateRight as SimulatedMotionControllerState;
-            
+
             motionControllerStateLeft.Update();
             motionControllerStateRight.Update();
-            
+
             // Cache the generator delegates so we don't gc alloc every frame
             if (updaterLeft == null)
             {

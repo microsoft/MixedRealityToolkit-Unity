@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
@@ -80,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
             quadRenderer.sharedMaterial = testMat;
 
             ButtonConfigHelper buttonConfig = buttonGameObject.GetComponent<ButtonConfigHelper>();
-            ButtonIconSet testIconSet = new ButtonIconSet();
+            ButtonIconSet testIconSet = ScriptableObject.CreateInstance<ButtonIconSet>();
             buttonConfig.IconStyle = ButtonIconStyle.Quad;
             buttonConfig.IconSet = testIconSet;
             buttonConfig.EditorSetDefaultIconSet(testIconSet);

@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 refs.Add(referenceName);
             }
-            else 
+            else
             {
                 Debug.Log($"The {referenceName} reference name is already listed in the {Name} file.");
                 return;

@@ -63,11 +63,15 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 1
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
-  defaultPointerExtent: 10
+  defaultPointerExtent: 1
   sphereCastRadius: 0.1
   hideCursorWhenInactive: 1
   movementThresholdToUnHide: 0.5

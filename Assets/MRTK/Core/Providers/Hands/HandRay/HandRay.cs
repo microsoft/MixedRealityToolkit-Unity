@@ -55,8 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float DynamicPivotBaseY = -0.1f, DynamicPivotMultiplierY = 0.65f, DynamicPivotMinY = -0.6f, DynamicPivotMaxY = -0.2f;
         private const float DynamicPivotBaseX = 0.03f, DynamicPivotMultiplierX = 0.65f, DynamicPivotMinX = 0.08f, DynamicPivotMaxX = 0.15f;
         private const float HeadToPivotOffsetZ = 0.08f;
-        private readonly float CursorBeamBackwardTolerance = 0.5f;
-        private readonly float CursorBeamUpTolerance = 0.8f;
+        private const float CursorBeamBackwardTolerance = 0.5f;
+        private const float CursorBeamUpTolerance = 0.8f;
 
         // Smoothing factor for ray stabilization.
         private const float StabilizedRayHalfLife = 0.01f;

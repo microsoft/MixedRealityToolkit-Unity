@@ -106,6 +106,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             {
                 if (attachmentHand != null && attachmentHand.isTracked)
                 {
+                    IsPositionAvailable = IsRotationAvailable = true;
+
                     // Is the current joint a metacarpal
                     bool isMetacarpal = metacarpals.Contains(joint);
 
@@ -131,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 }
                 else
                 {
+                    IsPositionAvailable = IsRotationAvailable = false;
                     jointPoses[joint] = MixedRealityPose.ZeroIdentity;
                 }
             }
@@ -155,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 if ((hand.IsLeft && ControllerHandedness == Handedness.Left) ||
                     (hand.IsRight && ControllerHandedness == Handedness.Right))
                 {
-                    // Leapmotion thumb metacarpal is stored at index 1
+                    // Leap Motion thumb metacarpal is stored at index 1
                     int boneIndex = (metacarpalJoint == TrackedHandJoint.ThumbMetacarpalJoint) ? 1 : 0;
                     Vector3 position = hand.Fingers[metacarpalIndex].bones[boneIndex].PrevJoint.ToVector3();
                     Quaternion rotation = hand.Fingers[metacarpalIndex].bones[boneIndex].Rotation.ToQuaternion();
@@ -247,6 +250,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 pointerPose.Position = ray.origin;
                 pointerPose.Rotation = Quaternion.LookRotation(ray.direction);
             }
+        
+            CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, gripPose);
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
@@ -268,6 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                         break;
                     case DeviceInputType.Select:
                     case DeviceInputType.TriggerPress:
+                    case DeviceInputType.GripPress:
                         Interactions[i].BoolData = IsPinching;
                         if (Interactions[i].Changed)
                         {

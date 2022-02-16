@@ -13591,6 +13591,8 @@ MonoBehaviour:
   scrollContainer: {fileID: 702484767150051257}
   clippingObject: {fileID: 702484766695044273}
   clipBox: {fileID: 702484766695044239}
+  disableClippedGameObjects: 1
+  disableClippedRenderers: 0
 --- !u!82 &6478456967883747177
 AudioSource:
   m_ObjectHideFlags: 0

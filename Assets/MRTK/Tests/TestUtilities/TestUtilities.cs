@@ -1,31 +1,30 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using UnityEngine;
+
+#if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-#if UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-#endif
-
-#if WINDOWS_UWP
-using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
-        const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
+#if UNITY_EDITOR
+        private const string PrimaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
+        private const string AdditiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
+
         public static Scene primaryTestScene;
         public static Scene[] additiveTestScenes = System.Array.Empty<Scene>();
+#endif // UNITY_EDITOR
 
         /// <summary>
         /// Destroys all scene assets that were created over the course of testing.
@@ -37,15 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             if (!EditorApplication.isPlaying)
             {
                 // If any of our scenes were saved, tear down the assets
-                SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(primaryTestSceneTemporarySavePath);
+                SceneAsset primaryTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(PrimaryTestSceneTemporarySavePath);
                 if (primaryTestSceneAsset != null)
                 {
-                    AssetDatabase.DeleteAsset(primaryTestSceneTemporarySavePath);
+                    AssetDatabase.DeleteAsset(PrimaryTestSceneTemporarySavePath);
                 }
 
                 for (int i = 0; i < additiveTestScenes.Length; i++)
                 {
-                    string path = additiveTestSceneTemporarySavePath.Replace("#", i.ToString());
+                    string path = AdditiveTestSceneTemporarySavePath.Replace("#", i.ToString());
                     SceneAsset additiveTestSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
                     if (additiveTestSceneAsset != null)
                     {
@@ -54,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
                 AssetDatabase.Refresh();
             }
-#endif
+#endif // UNITY_EDITOR
         }
 
         /// <summary>
@@ -72,20 +71,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             List<Scene> additiveTestScenesList = new List<Scene>();
 
-            if (numScenesToCreate == 1)
-            {   // No need to save this scene, we're just creating one
-                primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-            }
-            else
+            // Make the first scene single so it blows away previously loaded scenes
+            primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+
+            if (numScenesToCreate != 1)
             {
-                // Make the first scene single so it blows away previously loaded scenes
-                primaryTestScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
                 // Save the scene (temporarily) so we can load additively on top of it
-                EditorSceneManager.SaveScene(primaryTestScene, primaryTestSceneTemporarySavePath);
+                EditorSceneManager.SaveScene(primaryTestScene, PrimaryTestSceneTemporarySavePath);
 
                 for (int i = 1; i < numScenesToCreate; i++)
                 {
-                    string path = additiveTestSceneTemporarySavePath.Replace("#", additiveTestScenesList.Count.ToString());
+                    string path = AdditiveTestSceneTemporarySavePath.Replace("#", additiveTestScenesList.Count.ToString());
                     // Create subsequent scenes additively
                     Scene additiveScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Additive);
                     additiveTestScenesList.Add(additiveScene);
@@ -95,14 +91,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             additiveTestScenes = additiveTestScenesList.ToArray();
-#endif
+#endif // UNITY_EDITOR
         }
 
         /// <summary>
         /// Pose to create MRTK playspace's parent transform at.
         /// </summary>
         public static Pose ArbitraryParentPose { get; set; } = new Pose(new Vector3(-2.0f, 1.0f, -3.0f), Quaternion.Euler(-30.0f, -90.0f, 0.0f));
-        
+
         /// <summary>
         /// Pose to set playspace at, when using <see cref="PlayspaceToArbitraryPose"/>. 
         /// </summary>
@@ -127,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(Vector3.zero);
             });
         }
-       
+
         /// <summary>
         /// Forces the playspace camera to origin facing forward along +Z.
         /// </summary>
@@ -288,13 +284,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
-
-            if (!MixedRealityToolkit.IsInitialized)
-            {
-                MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
-                MixedRealityToolkit.SetActiveInstance(mixedRealityToolkit);
-                MixedRealityToolkit.ConfirmInitialized();
-            }
+#if UNITY_EDITOR
+            MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
+#endif
 
             // Todo: this condition shouldn't be here.
             // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
@@ -308,8 +300,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(MixedRealityToolkit.IsInitialized);
             Debug.Assert(MixedRealityToolkit.Instance != null);
 
-
-            MixedRealityToolkit.Instance.ActiveProfile = configuration;
             Debug.Assert(MixedRealityToolkit.Instance.ActiveProfile != null);
         }
 
@@ -346,29 +336,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message, float tolerance = 0.01f)
         {
             var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(dist < tolerance, $"{message}, expected {expected:0.000}, was {actual:0.000}");
         }
 
         public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message, float tolerance = 0.01f)
         {
             var angle = Quaternion.Angle(actual, expected);
-            Debug.Assert(angle < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(angle < tolerance, $"{message}, expected {expected:0.000}, was {actual:0.000}");
         }
 
         public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message, float tolerance = 0.01f)
         {
             var dist = (val1 - val2).magnitude;
-            Debug.Assert(dist >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Debug.Assert(dist >= tolerance, $"{message}, val1 {val1:0.000} almost equals val2 {val2:0.000}");
         }
 
         public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message, float tolerance = 0.01f)
         {
             var angle = Quaternion.Angle(val1, val2);
-            Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Debug.Assert(angle >= tolerance, $"{message}, val1 {val1:0.000} almost equals val2 {val2:0.000}");
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.LessOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -380,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.LessOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -392,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -403,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert((Mathf.Abs(observed - expected) <= tolerance) || (observed > expected));
         }
         /// <summary>
-        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// Equivalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
         /// applies a slight tolerance on the equality check.
         /// </summary>
         /// <remarks>
@@ -415,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 #if UNITY_EDITOR
-        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
         {
             Texture2D icon = null;
@@ -449,11 +439,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                     MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(scriptPath);
 
-                    Texture2D currentIcon = getIconForObject?.Invoke(null, new object[] { script }) as Texture2D;
+                    Texture2D currentIcon = GetIconForObject?.Invoke(null, new object[] { script }) as Texture2D;
                     if (currentIcon == null || !currentIcon.Equals(icon))
                     {
-                        setIconForObject?.Invoke(null, new object[] { script, icon });
-                        copyMonoScriptIconToImporters?.Invoke(null, new object[] { script });
+                        SetIconForObject?.Invoke(null, new object[] { script, icon });
+                        CopyMonoScriptIconToImporters?.Invoke(null, new object[] { script });
                     }
                 }
             }
@@ -461,9 +451,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EditorUtility.ClearProgressBar();
         }
 
-        private static readonly MethodInfo getIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
-        private static readonly MethodInfo setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
-        private static readonly MethodInfo copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo GetIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo SetIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo CopyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.Static | BindingFlags.NonPublic);
 #endif
     }
 }

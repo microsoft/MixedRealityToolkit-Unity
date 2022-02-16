@@ -19,7 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class HPMotionController : WindowsMixedRealityController
     {
 #if HP_CONTROLLER_ENABLED
@@ -53,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 if (MotionControllerState != null)
                 {
                     // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data
-                    // the interaction source updates the 6-dof data first since some interaction mappings rely on 6dof data
+                    // the interaction source updates the 6-DoF data first since some interaction mappings rely on 6-DoF data
                     UpdateSixDofData(interactionSourceState);
                     InputHandler.UpdateController(MotionControllerState);
                 }

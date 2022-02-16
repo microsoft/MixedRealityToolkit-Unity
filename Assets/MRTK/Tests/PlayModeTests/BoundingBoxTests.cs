@@ -10,34 +10,20 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using System.Collections;
-using System.Linq;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using NUnit.Framework;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class BoundingBoxTests
+    public class BoundingBoxTests : BasePlayModeTests
     {
         #region Utilities
-        [UnitySetUp]
-        public IEnumerator SetUp()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
 
         private readonly Vector3 boundingBoxStartCenter = Vector3.forward * 1.5f;
         private readonly Vector3 boundingBoxStartScale = Vector3.one * 0.5f;
@@ -371,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move hands beyond max scale limit
             yield return hand.MoveTo(new Vector3(scaleHandler.ScaleMaximum * 2, scaleHandler.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
-            
+
             // Assert scale at max
             Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, bbox.Target.transform.localScale);
 

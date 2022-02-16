@@ -27,10 +27,11 @@
 //------------------------------------------------------------------------------ -
 
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.﻿
+// Licensed under the MIT License.
 
+using System;
 using UnityEngine;
-using UnityEngine.XR;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
@@ -61,15 +62,23 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
 
         [SerializeField]
+        [FormerlySerializedAs("renderAvatarHandsInsteadOfControllers")]
         [Tooltip("Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed. \n\n" +
          "Note: In order to render avatar hands, you will need to set an app id in Assets/Resources/OvrAvatarSettings. Any number will do, but it needs to be set.")]
-        private bool renderAvatarHandsInsteadOfControllers = true;
+        private bool renderAvatarHandsWithControllers = true;
 
         /// <summary>
         /// Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed.
         /// "Note: In order to render avatar hands, you will need to set an app id in Assets/Resources/OvrAvatarSettings. Any number will do, but it needs to be set.")]
         /// </summary>
-        public bool RenderAvatarHandsInsteadOfController => renderAvatarHandsInsteadOfControllers;
+        [Obsolete("Use RenderAvatarHandsWithControllers instead")]
+        public bool RenderAvatarHandsInsteadOfController => renderAvatarHandsWithControllers;
+
+        /// <summary>
+        /// Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed.
+        /// "Note: In order to render avatar hands, you will need to set an app id in Assets/Resources/OvrAvatarSettings. Any number will do, but it needs to be set.")]
+        /// </summary>
+        public bool RenderAvatarHandsWithControllers => renderAvatarHandsWithControllers;
 
         [SerializeField]
         [Tooltip("Prefab reference for LocalAvatar to load, if none are found in scene.")]
@@ -179,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         public void ApplyConfiguredPerformanceSettings()
         {
 #if OCULUSINTEGRATION_PRESENT
-            XRSettings.eyeTextureResolutionScale = resolutionScale;
+            UnityEngine.XR.XRSettings.eyeTextureResolutionScale = resolutionScale;
             OVRManager.cpuLevel = CPULevel;
             OVRManager.gpuLevel = GPULevel;
 

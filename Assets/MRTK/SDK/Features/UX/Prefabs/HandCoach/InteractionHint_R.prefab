@@ -45,9 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hideIfHandTracked: 0
-  minDelay: 5
-  maxDelay: 10
-  useMaxDelay: 1
+  hintDisplayDelay: 5
+  trackedHandHintDisplayDelay: 10
   repeats: 2
   autoActivate: 1
   animationState: 

@@ -21,8 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityInputPlaybackService,
         IMixedRealityEyeGazeDataProvider
     {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         /// <summary>
         /// Invoked when playback begins or resumes
         /// </summary>
@@ -39,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool isPlaying = false;
         /// <inheritdoc />
         public bool IsPlaying => isPlaying;
-        
+
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
@@ -77,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Pose data for the left hand.
         /// </summary>
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
-        
+
         /// <summary>
         /// Pose data for the right hand.
         /// </summary>
@@ -94,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Evaluate();
             }
         }
-        
+
         public IMixedRealityEyeSaccadeProvider SaccadeProvider => null;
 
         /// <summary>
@@ -131,8 +129,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         { }
 
         /// <inheritdoc />
-        public void Play() {
-            if (animation == null || isPlaying) {
+        public void Play()
+        {
+            if (animation == null || isPlaying)
+            {
                 return;
             }
 
@@ -143,10 +143,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void Stop()
         {
-            if (!isPlaying) {
+            if (!isPlaying)
+            {
                 return;
             }
-            
+
             localTime = 0.0f;
             isPlaying = false;
             OnPlaybackStopped?.Invoke();
@@ -158,10 +159,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void Pause()
         {
-            if (!isPlaying) {
+            if (!isPlaying)
+            {
                 return;
             }
-            
+
             isPlaying = false;
             OnPlaybackPaused?.Invoke();
         }
@@ -206,10 +208,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     animation = null;
                 }
             }
-            
+
             return false;
         }
-        
+
         /// <inheritdoc />
         public async Task<bool> LoadInputAnimationAsync(string filepath)
         {
@@ -232,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     animation = null;
                 }
             }
-            
+
             return false;
         }
 
@@ -243,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 localTime = 0.0f;
                 isPlaying = false;
-                
+
                 return;
             }
 
@@ -258,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EvaluateHandData(HandDataLeft, Handedness.Left);
                 EvaluateHandData(HandDataRight, Handedness.Right);
             }
-            
+
             if (animation.HasEyeGaze)
             {
                 EvaluateEyeGaze();
@@ -272,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (handData.Update(isTracked, isPinching,
                 (MixedRealityPose[] joints) =>
                 {
-                    for (int i = 0; i < jointCount; ++i)
+                    for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                     {
                         joints[i] = animation.EvaluateHandJoint(localTime, handedness, (TrackedHandJoint)i);
                     }
@@ -282,10 +284,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void EvaluateEyeGaze() 
+        private void EvaluateEyeGaze()
         {
             var ray = animation.EvaluateEyeGaze(localTime);
-            
+
             Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
             Service?.EyeGazeProvider?.UpdateEyeGaze(this, ray, DateTime.UtcNow);
         }

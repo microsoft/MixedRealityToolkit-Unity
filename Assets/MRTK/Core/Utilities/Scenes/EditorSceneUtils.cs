@@ -1,14 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using System.Reflection;
-using Microsoft.MixedReality.Toolkit.SceneSystem;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -252,7 +253,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public static bool IsEditingPrefab()
         {
+#if UNITY_2021_2_OR_NEWER
+            var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#else
             var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#endif
             return prefabStage != null;
         }
 

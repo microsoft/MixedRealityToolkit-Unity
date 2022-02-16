@@ -3,12 +3,12 @@
 // Licensed under the MIT License.
 //
 
+using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -116,12 +116,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUI.BeginChangeCheck();
 
+                    // Initializes the target object of the bounds control to itself
                     EditorGUILayout.PropertyField(targetObject);
+                    if (targetObject.objectReferenceValue == null)
+                    {
+                        targetObject.objectReferenceValue = boundsControl.gameObject;
+                    }
+
+                    // Checks that the targetObject has a box collider that this bounds control can manage if bounds override was not supplied, otherwise, raises a warning and prompts the user to add one
+                    if (boundsOverride.objectReferenceValue == null)
+                    {
+                        GameObject boundsTargetObject = targetObject.objectReferenceValue as GameObject;
+                        if (boundsTargetObject != null && boundsTargetObject.GetComponent<BoxCollider>() == null)
+                        {
+                            EditorGUILayout.HelpBox("No Box Collider assigned to the TargetObject and no Bounds Override assigned, add a Box Collider to enable proper interaction with the Bounds Control", MessageType.Warning);
+
+                           if (GUILayout.Button("Add Box Collider to Target Object"))
+                           {
+                                boundsTargetObject.AddComponent<BoxCollider>();
+                           }
+                        }
+                    }
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Behavior"), EditorStyles.boldLabel);
                     EditorGUILayout.PropertyField(activationType);
                     EditorGUILayout.PropertyField(boundsOverride);
+
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);
@@ -137,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     using (new EditorGUI.IndentLevelScope())
                     {
-                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
-                                                                                                                 "Box Configuration", 
+                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration,
+                                                                                                                 "Box Configuration",
                                                                                                                  showBoxConfiguration);
 
                         showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
@@ -153,12 +174,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                                                                                                                         "Translation Handles Configuration",
                                                                                                                                         showTranslationHandlesConfiguration);
 
-                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
-                                                                                                              "Links Configuration", 
+                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration,
+                                                                                                              "Links Configuration",
                                                                                                               showLinksConfiguration);
 
-                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
-                                                                                                                            "Proximity Configuration", 
+                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration,
+                                                                                                                            "Proximity Configuration",
                                                                                                                             showProximityConfiguration);
                     }
 

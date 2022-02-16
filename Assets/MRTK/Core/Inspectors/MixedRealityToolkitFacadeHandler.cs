@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     /// Links service facade objects to active services.
     /// </summary>
     /// <remarks>
-    /// <para>This feature is is being deprecated in 2.5 and will be removed in a future release.
+    /// <para>This feature is being deprecated in 2.5 and will be removed in a future release.
     /// The code that remains will actively seek to remove existing facades in scenes to ensure that
     /// developers that update to 2.5 will get their scenes cleaned up appropriately.</para>
     /// </remarks>

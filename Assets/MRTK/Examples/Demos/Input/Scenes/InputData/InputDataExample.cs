@@ -3,7 +3,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {

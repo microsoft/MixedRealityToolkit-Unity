@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         protected SerializedProperty enterPinchDistance;
         protected SerializedProperty exitPinchDistance;
 
-        private const string leapDocURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html";
+        private const string leapDocURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/supported-devices/leap-motion-mrtk";
 
         // Used for setting the leapVRDeviceOrigin object reference value
         Transform leapVRDeviceOriginTransform;
@@ -102,14 +102,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                         // Allow selection of the LeapVRDeviceOffsetMode if the LeapControllerOrientation is Headset
                         EditorGUILayout.PropertyField(leapVRDeviceOffsetMode);
 
-                        if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.ManualHeadOffset)
+                        if (leapVRDeviceOffsetMode.intValue == (int)LeapVRDeviceOffsetMode.ManualHeadOffset)
                         {
                             // Display the properties for editing the head offset 
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetY);
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetZ);
-                            EditorGUILayout.PropertyField(leapVRDeviceOffsetTiltX);   
+                            EditorGUILayout.PropertyField(leapVRDeviceOffsetTiltX);
                         }
-                        else if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.Transform)
+                        else if (leapVRDeviceOffsetMode.intValue == (int)LeapVRDeviceOffsetMode.Transform)
                         {
                             // Display the transform property 
                             // EditorGUILayout.PropertyField() did not allow the setting the transform property in editor 
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
             return MixedRealityToolkit.IsInitialized && profile != null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations != null &&
-                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.DeviceManagerProfile);
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.DataProviderConfigurations.Any(s => profile == s.Profile);
         }
     }
 }

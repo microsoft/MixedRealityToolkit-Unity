@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
     [System.Serializable]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/interactable")]
     [AddComponentMenu("Scripts/MRTK/SDK/Interactable")]
     public class Interactable :
         MonoBehaviour,
@@ -229,16 +229,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool CanDeselect = true;
 
+        [SpeechKeyword]
+        [SerializeField, FormerlySerializedAs("VoiceCommand")]
+        [Tooltip("This string keyword is the voice command that will fire a click on this Interactable.")]
+        private string voiceCommand = "";
+
         /// <summary>
         /// This string keyword is the voice command that will fire a click on this Interactable.
         /// </summary>
-        [Tooltip("This string keyword is the voice command that will fire a click on this Interactable.")]
-        public string VoiceCommand = "";
+        public string VoiceCommand
+        {
+            get => voiceCommand;
+            set => voiceCommand = value;
+        }
 
-        [FormerlySerializedAs("RequiresFocus")]
-        [SerializeField]
+        [SerializeField, FormerlySerializedAs("RequiresFocus")]
         [Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
         public bool voiceRequiresFocus = true;
+
         /// <summary>
         /// Does the voice command require this to have focus?
         /// Registers as a global listener for speech commands, ignores input events
@@ -1158,11 +1166,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
-            MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
-            if (actions?.Length > 0)
+            if (CoreServices.InputSystem?.InputSystemProfile != null
+                && CoreServices.InputSystem.InputSystemProfile.InputActionsProfile != null)
             {
-                index = Mathf.Clamp(index, 0, actions.Length - 1);
-                return actions[index];
+                MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
+                if (actions?.Length > 0)
+                {
+                    index = Mathf.Clamp(index, 0, actions.Length - 1);
+                    return actions[index];
+                }
             }
 
             return default;
@@ -1302,7 +1314,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             yield return new WaitForSeconds(time);
 
             HasVoiceCommand = false;
-            if (!HasFocus)
+            if (HasFocus && focusingPointers.Count == 0)
             {
                 HasFocus = false;
             }

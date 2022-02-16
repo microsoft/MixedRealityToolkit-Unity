@@ -13,7 +13,7 @@ using Object = UnityEngine.Object;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html"/>This is an utility window for the MigrationTool. 
+    /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/migration-window"/>This is an utility window for the MigrationTool. 
     /// </summary>
     public class MigrationWindow : EditorWindow
     {
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private Vector2 scrollPosition = Vector2.zero;
         private Vector2 logScrollPosition = Vector2.zero;
 
-        private const string MigrationWindowURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html";
+        private const string MigrationWindowURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/tools/migration-window";
         private const string WindowTitle = "Migration Window";
         private const string WindowDescription = "This tool allows the migration of obsolete components into up-to-date versions.";
 
@@ -45,13 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private Type selectedMigrationHandlerType;
         private string migrationLog;
 
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationTabDark.png
+        // Tools/MigrationWindow/Icons/IconMigrationTabDark.png
         private const string darkTabIconGUID = "b2681195a786ce54e97b2126f1164e1f";
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationTabLight.png
+        // Tools/MigrationWindow/Icons/IconMigrationTabLight.png
         private const string lightTabIconGUID = "2064c6a354f93c74397e7795dfbfc111";
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationPass.png
+        // Tools/MigrationWindow/Icons/IconMigrationPass.png
         private const string passIconGUID = "f3b1d57b0d86d29419b5737244fed8a9";
-        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationFail.png
+        // Tools/MigrationWindow/Icons/IconMigrationFail.png
         private const string failIconGUID = "5f1c0a610cc7c1841a1e9b43045c3f05";
 
         private static Texture passIcon;
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private readonly MigrationTool migrationTool = new MigrationTool();
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Migration Window", false, 4)]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Migration Window", false, 4)]
         private static void ShowWindow()
         {
             var window = GetWindow<MigrationWindow>(typeof(SceneView));

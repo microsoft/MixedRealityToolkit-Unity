@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
         }
 
-        internal RotationHandles(RotationHandlesConfiguration configuration) 
+        internal RotationHandles(RotationHandlesConfiguration configuration)
             : base(configuration)
         {
         }

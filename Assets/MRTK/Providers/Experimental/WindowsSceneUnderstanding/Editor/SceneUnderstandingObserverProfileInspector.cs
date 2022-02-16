@@ -1,8 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
 
@@ -11,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.
     [CustomEditor(typeof(SceneUnderstandingObserverProfile))]
     public class SceneUnderstandingObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private SerializedProperty updateOnceOnLoad;
-        private SerializedProperty firstUpdateDelay;
+        private SerializedProperty updateOnceInitialized;
+        private SerializedProperty firstAutoUpdateDelay;
         private SerializedProperty autoUpdate;
         private SerializedProperty updateInterval;
         private SerializedProperty defaultPhysicsLayer;
@@ -40,8 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.
         {
             base.OnEnable();
 
-            updateOnceOnLoad = serializedObject.FindProperty("updateOnceOnLoad");
-            firstUpdateDelay = serializedObject.FindProperty("firstUpdateDelay");
+            updateOnceInitialized = serializedObject.FindProperty("updateOnceInitialized");
+            firstAutoUpdateDelay = serializedObject.FindProperty("firstAutoUpdateDelay");
             autoUpdate = serializedObject.FindProperty("autoUpdate");
             updateInterval = serializedObject.FindProperty("updateInterval");
 
@@ -80,10 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.
 
                 EditorGUILayout.LabelField("Life cycle", EditorStyles.boldLabel);
                 {
-                    EditorGUILayout.PropertyField(updateOnceOnLoad);
+                    EditorGUILayout.PropertyField(updateOnceInitialized);
                     EditorGUILayout.PropertyField(autoUpdate);
                     EditorGUILayout.PropertyField(updateInterval);
-                    EditorGUILayout.PropertyField(firstUpdateDelay);
+                    EditorGUILayout.PropertyField(firstAutoUpdateDelay);
                 }
                 EditorGUILayout.Space();
 

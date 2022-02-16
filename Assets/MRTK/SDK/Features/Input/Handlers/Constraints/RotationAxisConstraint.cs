@@ -55,15 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Quaternion rotation = transform.Rotation * Quaternion.Inverse(worldPoseOnManipulationStart.Rotation);
             Vector3 eulers = rotation.eulerAngles;
-            if (constraintOnRotation.HasFlag(AxisFlags.XAxis))
+            if (constraintOnRotation.IsMaskSet(AxisFlags.XAxis))
             {
                 eulers.x = 0;
             }
-            if (constraintOnRotation.HasFlag(AxisFlags.YAxis))
+            if (constraintOnRotation.IsMaskSet(AxisFlags.YAxis))
             {
                 eulers.y = 0;
             }
-            if (constraintOnRotation.HasFlag(AxisFlags.ZAxis))
+            if (constraintOnRotation.IsMaskSet(AxisFlags.ZAxis))
             {
                 eulers.z = 0;
             }

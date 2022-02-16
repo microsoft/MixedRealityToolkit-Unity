@@ -3,9 +3,9 @@
 
 <#
 .SYNOPSIS
-    Builds the Mixed Reality Toolkit nuget packacges.
+    Builds the Mixed Reality Toolkit NuGet packages.
 .DESCRIPTION
-    Builds nuget packages for the Mixed Reality Toolkit.
+    Builds NuGet packages for the Mixed Reality Toolkit.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER Version
@@ -15,15 +15,13 @@
 param(
     [string]$OutputDirectory = ".\artifacts",
     [ValidatePattern("^\d+\.\d+\.\d+$")]
-    [string]$Version,
-    [string]$UnityDirectory
+    [string]$Version = "0.0.0",
+    [Parameter(Mandatory=$true)]
+    [string]$UnityDirectory,
+    [string]$VisualStudioDirectory = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise"
 )
 
 Write-Verbose "Reconciling Unity binary:"
-if (-not $UnityDirectory) {
-    throw "-UnityDirectory is a required flag"
-}
-
 $unityEditor = Get-ChildItem $UnityDirectory -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 if (-not $unityEditor) {
     throw "Unable to find the unity editor executable in $UnityDirectory"
@@ -98,13 +96,19 @@ try {
         exit($lastexitcode)
     }
     Write-Output "============ Building Player WSA ============ "
-    dotnet msbuild .\BuildSource.proj -target:BuildWSAPlayer  > "Logs\Build.Player.WSA.$($Version).log"
+    if ($VisualStudioDirectory -match "2019") {
+        $VisualStudioDirectory = Join-Path $VisualStudioDirectory "MSBuild\Microsoft\WindowsXaml\v16.0"
+    }
+    else {
+        $VisualStudioDirectory = Join-Path $VisualStudioDirectory "MSBuild\Microsoft\WindowsXaml\v15.0"
+    }
+    dotnet msbuild .\BuildSource.proj -target:BuildWSAPlayer /p:XamlTargetsPath=$VisualStudioDirectory > "Logs\Build.Player.WSA.$($Version).log"
     if ($lastexitcode -ge 1) {
         Write-Error "Building Player WSA Failed! See log file for more information $(Get-Location)\Logs\Build.Player.WSA.$($Version).log";
         exit($lastexitcode)
     }
 
-    ### Run Asset regargetting:
+    ### Run Asset retargeting:
     RunUnityTask -taskName "AssetRetargeting" -methodToExecute "Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets"
     
     ### Package NuGet

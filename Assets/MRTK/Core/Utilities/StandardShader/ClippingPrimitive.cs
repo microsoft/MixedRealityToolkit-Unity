@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// used to drive per pixel based clipping.
     /// </summary>
     [ExecuteAlways]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/ClippingPrimitive.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/rendering/clipping-primitive")]
     public abstract class ClippingPrimitive : MonoBehaviour, IMaterialInstanceOwner
     {
         private const int InitialCollectionSize = 256;
@@ -92,16 +92,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
                 }
 
-                if (value)
+                if (useOnPreRender != value)
                 {
-                    cameraMethods.OnCameraPreRender += OnCameraPreRender;
-                }
-                else
-                {
-                    cameraMethods.OnCameraPreRender -= OnCameraPreRender;
-                }
+                    if (value)
+                    {
+                        cameraMethods.OnCameraPreRender += OnCameraPreRender;
+                    }
+                    else if (!value)
+                    {
+                        cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+                    }
 
-                useOnPreRender = value;
+                    useOnPreRender = value;
+                }
             }
         }
 
@@ -169,7 +172,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Removes a renderer to the list of objects this clipping primitive clips.
         /// </summary>
-        public void RemoveRenderer(Renderer renderer)
+        public void RemoveRenderer(Renderer _renderer)
+        {
+            int index = renderers.IndexOf(_renderer);
+            if (index >= 0)
+            {
+                RemoveRenderer(index);
+            }
+        }
+
+        private void RemoveRenderer(int index, bool autoDestroyMaterial = true)
         {
             if (renderer != null)
             {
@@ -178,10 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (materialInstance != null)
                 {
-                    // There is no need to acquire new instances if ones do not already exist since we are 
-                    // in the process of removing.
-                    ToggleClippingFeature(materialInstance.AcquireMaterials(this, false), false);
-                    materialInstance.ReleaseMaterial(this);
+                    materialInstance.ReleaseMaterial(this, autoDestroyMaterial);
                 }
             }
         }
@@ -189,14 +198,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Removes all renderers in the list of objects this clipping primitive clips.
         /// </summary>
-        public void ClearRenderers()
+        public void ClearRenderers(bool autoDestroyMaterial = true)
         {
             if (renderers.Count > 0)
             {
                 renderersCache.AddRange(renderers.Keys);
                 foreach (var renderer in renderersCache)
                 {
-                    RemoveRenderer(renderer);
+                    RemoveRenderer(renderers.Count - 1, autoDestroyMaterial);
                 }
 
                 renderersCache.Clear();
@@ -246,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (cameraMethods != null)
             {
-                cameraMethods.OnCameraPreRender -= OnCameraPreRender;
+                UseOnPreRender = false;
             }
         }
 
@@ -323,9 +332,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             renderersCache.AddRange(renderers.Keys);
             foreach (var cachedRenderer in renderersCache)
             {
-                if (Application.isPlaying && cachedRenderer == null)
+                var _renderer = renderers[i];
+                if (_renderer == null)
                 {
-                    RemoveRenderer(cachedRenderer);
+                    if (Application.isPlaying)
+                    {
+                        RemoveRenderer(i);
+                    }
                     continue;
                 }
 

@@ -3,7 +3,6 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Microsoft.MixedReality.Toolkit.Gltf",
         "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
     ],
     "includePlatforms": [
@@ -23,6 +22,11 @@
             "name": "com.microsoft.mixedreality.input",
             "expression": "",
             "define": "HP_CONTROLLER_ENABLED"
+        },
+        {
+            "name": "com.microsoft.windows.mixedreality.dotnetwinrt",
+            "expression": "",
+            "define": "DOTNETWINRT_PRESENT"
         }
     ],
     "noEngineReferences": false

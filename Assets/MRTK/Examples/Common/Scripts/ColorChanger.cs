@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
             }
         }
-        
+
         /// <summary>
         /// Decrements to the previous material in the input list of materials and applies it to the renderer.
         /// </summary>

@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         var resourceLoader = global::Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
                         localizedKeyword = resourceLoader.GetString(localizationKey);
                     }
-                    catch(System.Exception e)
+                    catch (System.Exception e)
                     {
                         // Ignore the exception and just use the fallback
                         Debug.LogError("GetLocalizedKeywordException: " + e.Message);

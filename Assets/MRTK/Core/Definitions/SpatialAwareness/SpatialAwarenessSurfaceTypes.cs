@@ -43,8 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </remarks>
         Platform = 1 << 4,
 
-        // Insert additional surface types here.
-
         /// <summary>
         /// A surface that does not fit one of the defined surface types.
         /// </summary>
@@ -53,16 +51,35 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <para>Background should not be confused with Unknown. There is sufficient data to 
         /// classify the surface and it has been found to not correspond to a defined type.</para>
         /// </remarks>
-        Background = 1 << 29,
+        Background = 1 << 5,
 
         /// <summary>
         /// A boundless world mesh.
         /// </summary>
-        World = 1 << 30,
+        World = 1 << 6,
 
         /// <summary>
         /// Objects for which we have no observations
         /// </summary>
-        Inferred = 1 << 31
+        Inferred = 1 << 7
+    }
+
+    /// <summary>
+    /// Extension methods specific to the <see cref="SpatialAwarenessSurfaceTypes"/> enum.
+    /// </summary>
+    public static class SpatialAwarenessSurfaceTypesExtensions
+    {
+        /// <summary>
+        /// Checks to determine if all bits in a provided mask are set.
+        /// </summary>
+        /// <param name="a"><see cref="SpatialAwarenessSurfaceTypes"/> value.</param>
+        /// <param name="b"><see cref="SpatialAwarenessSurfaceTypes"/> mask.</param>
+        /// <returns>
+        /// True if all of the bits in the specified mask are set in the current value.
+        /// </returns>
+        public static bool IsMaskSet(this SpatialAwarenessSurfaceTypes a, SpatialAwarenessSurfaceTypes b)
+        {
+            return (a & b) == b;
+        }
     }
 }

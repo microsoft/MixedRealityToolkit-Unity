@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
@@ -621,8 +620,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-
-#region Compressable Button
+        #region Compressable Button
 
         /// <summary>
         /// Test the CompressableButtonCube prefab which contains the PressedNear state.
@@ -669,9 +667,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(touchState.Value, 0);
         }
 
-#endregion
+        #endregion
 
-#region Interaction Tests Helpers
+        #region Interaction Tests Helpers
 
         private InteractiveElement CreateInteractiveCube()
         {

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
     /// A simple service that creates KinematicRigidbodies on fingertips for physics interactions.
     /// </summary>
     [MixedRealityExtensionService(
-        SupportedPlatforms.WindowsUniversal,
+        (SupportedPlatforms)(-1),
         "Hand Physics Service",
         "HandPhysicsService/Profiles/DefaultHandPhysicsServiceProfile.asset",
         "MixedRealityToolkit.Extensions",

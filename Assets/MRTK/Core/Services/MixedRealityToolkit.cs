@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Rendering;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -13,9 +16,6 @@ using System.Linq;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Microsoft.MixedReality.Toolkit.SceneSystem;
-using Microsoft.MixedReality.Toolkit.CameraSystem;
-using Microsoft.MixedReality.Toolkit.Rendering;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
@@ -87,14 +87,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <remarks>
         /// <para>If changing the Active profile prior to the initialization (i.e. Awake()) of <see cref="MixedRealityToolkit"/> is desired, 
-        /// call the static funtion <see cref="SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile)"/> instead.</para>
+        /// call the static function <see cref="SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile)"/> instead.</para>
         /// <para>When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
         /// of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
         /// first Update() of all services.</para>
-        /// <para>A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
+        /// <para>A noticeable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
         /// before the new profile is properly setup.</para>
         /// <para>You are strongly recommended to see 
-        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching.</para>
         /// </remarks>
         public MixedRealityToolkitConfigurationProfile ActiveProfile
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <para>This function requires the caller script to be executed earlier than the <see cref="MixedRealityToolkit"/> script, which can be achieved by setting 
         /// <see href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</see>.</para>
         /// <para>You are strongly recommended to see 
-        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching.</para>
         /// </remarks>
         public static void SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile profile)
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <para>This function should only be used by editor code in most cases.</para>
         /// <para>Do not call this function if resetting profile at runtime.
         /// Instead see 
-        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// <see href="https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/configuration/mixed-reality-configuration-guide#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching at runtime.</para>
         /// </remarks>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
@@ -470,10 +470,10 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
-            if (ActiveProfile.IsBoundarySystemEnabled)
+            if (ActiveProfile.IsBoundarySystemEnabled && ActiveProfile.ExperienceSettingsProfile != null)
             {
                 DebugUtilities.LogVerbose("Begin registration of the boundary system");
-                object[] args = { ActiveProfile.BoundaryVisualizationProfile, ActiveProfile.TargetExperienceScale };
+                object[] args = { ActiveProfile.BoundaryVisualizationProfile, ActiveProfile.ExperienceSettingsProfile.TargetExperienceScale };
                 if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, args: args) || CoreServices.BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");

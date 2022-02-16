@@ -30,16 +30,23 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         {
-            SpatialAwarenessSystem = spatialAwarenessSystem;
-
-            SourceId = (SpatialAwarenessSystem != null) ? SpatialAwarenessSystem.GenerateNewSourceId() : 0;
+            SourceId = (Service != null) ? Service.GenerateNewSourceId() : 0;
             SourceName = name;
         }
 
         /// <summary>
         /// The spatial awareness system that is associated with this observer.
         /// </summary>
-        protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; private set; }
+        [System.Obsolete("Call Service instead.")]
+        protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => Service;
+
+        private GameObject observedObjectParent = null;
+        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = Service?.CreateSpatialAwarenessObservationParent(Name));
+
+        /// <summary>
+        /// The parent GameObject for all observed meshes to be placed under.
+        /// </summary>
+        public GameObject ObservationParent => ObservedObjectParent;
 
         /// <summary>
         /// Creates the spatial observer and handles the desired startup behavior.
@@ -80,8 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         public override void Initialize()
         {
-            base.Initialize();
             CreateObserver();
+            base.Initialize();
         }
 
         /// <summary>
@@ -184,6 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public Quaternion ObserverRotation { get; set; } = Quaternion.identity;
 
+        /// <inheritdoc />
         public Vector3 ObserverOrigin { get; set; } = Vector3.zero;
 
         /// <inheritdoc />

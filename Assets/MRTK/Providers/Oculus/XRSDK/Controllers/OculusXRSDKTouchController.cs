@@ -4,9 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
-using UnityEngine;
 using Unity.Profiling;
+using UnityEngine;
 using UnityEngine.XR;
+using System;
+using System.Threading.Tasks;
+using System.Threading;
 
 #if OCULUS_ENABLED
 using Unity.XR.Oculus;
@@ -17,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
     [MixedRealityController(
         SupportedControllerType.OculusTouch,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/OculusControllersTouch")]
+        "Textures/OculusControllersTouch",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class OculusXRSDKTouchController : GenericXRSDKController
     {
         /// <summary>
@@ -30,6 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new OculusTouchControllerDefinition(controllerHandedness))
         { }
+
+        internal GameObject OculusControllerVisualization { get; private set; }
 
         private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] OculusXRSDKController.UpdateButtonData");
 
@@ -86,6 +92,61 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                         }
                     }
                 }
+            }
+        }
+
+        /// <inheritdoc />
+        protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
+        {
+            if (GetControllerVisualizationProfile() != null && 
+                GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
+            {
+               TryRenderControllerModelFromOculus();
+               return true;
+            }
+            else
+            {
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+        }
+
+        private async void TryRenderControllerModelFromOculus()
+        {
+            await WaitForOculusVisuals();
+
+            if (this != null)
+            {
+                if (OculusControllerVisualization != null
+                    && MixedRealityControllerModelHelpers.TryAddVisualizationScript(OculusControllerVisualization, GetType(), ControllerHandedness)
+                    && TryAddControllerModelToSceneHierarchy(OculusControllerVisualization))
+                {
+                    OculusControllerVisualization.SetActive(true);
+                    return;
+                }
+
+                Debug.LogWarning("Failed to obtain Oculus controller model; defaulting to BaseController behavior.");
+                base.TryRenderControllerModel(GetType(), InputSource.SourceType);
+            }
+        }
+
+        private const int controllerInitializationTimeout = 1000;
+        private async Task WaitForOculusVisuals()
+        {
+            int timeWaited = 0;
+            while (OculusControllerVisualization == null || timeWaited > controllerInitializationTimeout)
+            {
+                await Task.Delay(100);
+                timeWaited += 100;
+            }
+        }
+
+        internal void RegisterControllerVisualization(GameObject visualization)
+        {
+            OculusControllerVisualization = visualization;
+            if (GetControllerVisualizationProfile() != null &&
+                !GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
+            {
+                OculusControllerVisualization.SetActive(false);
             }
         }
     }
