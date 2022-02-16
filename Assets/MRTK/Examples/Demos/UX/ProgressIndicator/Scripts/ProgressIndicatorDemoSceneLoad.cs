@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private GameObject progressIndicatorObject = null;
         [SerializeField]
-        private SceneInfo sceneToLoad = null;;
+        private SceneInfo sceneToLoad = new SceneInfo();
         [SerializeField, Range(0f, 5f)]
         private float loadDelay = 2.5f;
 
