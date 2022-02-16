@@ -1,12 +1,13 @@
 # Checks for changes in one branch not present in another branch. Opens a PR into the second branch if needed.
 
-schedules:
+# schedules:
 # Cron schedules use UTC time. This is 2pm UTC on every weekday.
-- cron: 0 14 * * 1,2,3,4,5
-  branches:
-    include:
-    - main
-  always: true
+# Uncomment the following lines (and line 3 above!) and update sourceBranch below when mergetool is needed again.
+# - cron: 0 14 * * 1,2,3,4,5
+#   branches:
+#     include:
+#     - main
+#   always: true
 
 pr: none
 trigger: none

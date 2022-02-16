@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             objBuffer.Append($"# {target.name}").AppendNewLine();
             var dt = DateTime.Now;
-            objBuffer.Append($"# {dt.ToString(CultureInfo.InvariantCulture)}").AppendNewLine().AppendNewLine();
+            objBuffer.Append($"# {dt.ToString(CultureInfo.InvariantCulture)}").AppendNewLine();
 
             Stack<Transform> processStack = new Stack<Transform>();
             processStack.Push(target.transform);
@@ -100,25 +100,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             var transform = meshFilter.transform;
 
-            buffer.Append("g ").Append(transform.name).AppendNewLine();
+            buffer.AppendNewLine().Append("g ").Append(transform.name).AppendNewLine();
 
             foreach (Vector3 vertex in mesh.vertices)
             {
                 Vector3 v = transform.TransformPoint(vertex);
-                buffer.Append($"v {v.x} {v.y} {v.z}\n");
+                buffer.Append(FormattableString.Invariant($"v {-1 * v.x} {v.y} {v.z}\n"));
             }
             buffer.AppendNewLine();
 
             foreach (Vector3 normal in mesh.normals)
             {
                 Vector3 vn = transform.TransformDirection(normal);
-                buffer.Append($"vn {vn.x} {vn.y} {vn.z}\n");
+                buffer.Append(FormattableString.Invariant($"vn {-1 * vn.x} {vn.y} {vn.z}\n"));
             }
 
             buffer.AppendNewLine();
             foreach (Vector3 uv in mesh.uv)
             {
-                buffer.Append($"vt {uv.x} {uv.y}\n");
+                buffer.Append(FormattableString.Invariant($"vt {uv.x} {uv.y}\n"));
             }
 
             for (int idx = 0; idx < mesh.subMeshCount; idx++)
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 for (int i = 0; i < triangles.Length; i += 3)
                 {
                     buffer.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
-                        triangles[i] + 1 + startVertexIndex, triangles[i + 1] + 1 + startVertexIndex, triangles[i + 2] + 1 + startVertexIndex));
+                        triangles[i + 2] + 1 + startVertexIndex, triangles[i + 1] + 1 + startVertexIndex, triangles[i] + 1 + startVertexIndex));
                 }
             }
 

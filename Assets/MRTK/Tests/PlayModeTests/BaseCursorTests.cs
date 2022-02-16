@@ -138,6 +138,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move back so the cursor is no longer on the object
             yield return hand.MoveTo(offObjectPos, numFramesPerMove);
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.Interact);
+
+            yield return null;
         }
 
         [UnityTest]

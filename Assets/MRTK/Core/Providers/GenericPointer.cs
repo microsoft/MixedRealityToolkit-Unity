@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public bool IsActive { get; set; }
 
         /// <inheritdoc />

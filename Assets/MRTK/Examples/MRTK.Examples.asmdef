@@ -7,8 +7,7 @@
         "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Providers.LeapMotion",
-        "Unity.TextMeshPro",
-        "Microsoft.MixedReality.Toolkit.MicStream"
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

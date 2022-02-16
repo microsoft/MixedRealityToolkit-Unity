@@ -159,7 +159,7 @@ foreach ($entry in $packages.GetEnumerator()) {
 
     # Apply the version number to the package json file
     $packageJsonPath = "$packagePath/package.json"
-    ((Get-Content -Path $packageJsonPath -Raw) -Replace '("version\": )"([0-9.]+-?[a-zA-Z0-9.]*|%version%)', "`$1`"$Version") | Set-Content -Path $packageJsonPath -NoNewline
+    ((Get-Content -Path $packageJsonPath -Raw) -Replace '("version": |"com\.microsoft\.mixedreality\.toolkit\.\w+": )"([0-9.]+-?[a-zA-Z0-9.]*|%version%)', "`$1`"$Version") | Set-Content -Path $packageJsonPath -NoNewline
 
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName"
@@ -188,12 +188,12 @@ foreach ($entry in $packages.GetEnumerator()) {
         
         if ($packageName -eq "foundation") {
             # The foundation package MOVES some content around. This restores the moved files.
-            Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
+            Start-Process -FilePath "git" -ArgumentList "checkout */Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
         }
         elseif ($packageName -eq "standardassets") {
             # The standard assets package RENAMES and DELETES some content. This restores the original files.
             Rename-Item -Path "$packagePath/Shaders~" -NewName "$packagePath/Shaders"
-            Start-Process -FilePath "git" -ArgumentList "checkout Shaders.meta" -NoNewWindow -Wait
+            Start-Process -FilePath "git" -ArgumentList "checkout */Shaders.meta" -NoNewWindow -Wait
         }
 
         # Delete the files copied in previously
@@ -210,6 +210,6 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path "$packagePath/package.json.meta"
 
         # Restore original files
-        Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
+        Start-Process -FilePath "git" -ArgumentList "checkout */packagetemplate.*" -NoNewWindow -Wait
     }
 }

@@ -38,6 +38,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public float TouchableDistance => touchableDistance;
 
+
+        [SerializeField]
+        [Tooltip("The offset that the poke pointer has from the source pose when the index finger pose is not available.")]
+        protected float sourcePoseOffset = 0.075f;
+        /// <summary>
+        /// The offset that the poke pointer has from the source pose when the index finger pose is not available.
+        /// This value puts the pointer slightly in front of the source pose's origin, oriented according to the source pose's rotation
+        /// </summary>
+        public float SourcePoseOffset => sourcePoseOffset;
+
+
         [SerializeField]
         [Tooltip("Maximum number of colliders that can be detected in a scene query.")]
         [Min(1)]
@@ -75,7 +86,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Only [BaseNearInteractionTouchables](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable) in one of the LayerMasks will raise touch events.
         /// </remarks>
+        [System.Obsolete("Use PrioritizedLayerMasksOverride instead")]
         public LayerMask[] PokeLayerMasks => pokeLayerMasks;
+
+        /// <inheritdoc />
+        public override LayerMask[] PrioritizedLayerMasksOverride
+        {
+            get { return pokeLayerMasks; }
+            set { pokeLayerMasks = value; }
+        }
+
 
         [SerializeField]
         [Tooltip("Specify whether queries for touchable surfaces hit triggers.")]
@@ -148,11 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 closestNormal = Rotation * Vector3.forward;
 
-                var layerMasks = PrioritizedLayerMasksOverride ?? PokeLayerMasks;
-
                 // Find closest touchable
                 BaseNearInteractionTouchable newClosestTouchable = null;
-                foreach (var layerMask in layerMasks)
+                foreach (var layerMask in PrioritizedLayerMasksOverride)
                 {
                     if (FindClosestTouchableForLayerMask(layerMask, out newClosestTouchable, out closestDistance, out closestNormal))
                     {
@@ -453,6 +471,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
+        public override void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
+        {
+            base.OnSourcePoseChanged(eventData);
+
+            if (SourcePoseDataUsable(eventData))
+            {
+                transform.position += sourcePoseOffset * transform.forward;
+            }
+        }
+
+        /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
             // Poke pointer should not respond when a button is pressed or hand is pinched
@@ -486,7 +515,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (closestProximityTouchable != null)
             {
-                Gizmos.DrawLine(transform.position, closestProximityTouchable.transform.position);
+                Gizmos.DrawLine(Position, closestProximityTouchable.transform.position);
             }
         }
     }

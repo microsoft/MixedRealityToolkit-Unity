@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 
 #if WINDOWS_UWP
-using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
 using Windows.Perception.People;
@@ -78,7 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             if (poseVertices.Length == 0)
             {
-                Debug.LogError("Loaded 0 verts for poseVertices");
+                Debug.LogError("Loaded 0 vertices for poseVertices");
+                handMeshUVsUnity = Array.Empty<Vector2>();
+                return;
             }
 
             float minY = poseVertices[0].y;

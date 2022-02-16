@@ -360,7 +360,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
 
-            material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
+            if (gltfMaterial.pbrMetallicRoughness?.baseColorFactor != null)
+            {
+                material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
+            }
 
             if (gltfMaterial.alphaMode == "MASK")
             {
@@ -454,6 +457,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             var nodeName = string.IsNullOrEmpty(node.name) ? $"glTF Node {nodeId}" : node.name;
             var nodeGameObject = new GameObject(nodeName);
+
+            gltfObject.NodeGameObjectPairs.Add(nodeId, nodeGameObject);
 
             // If we're creating a really large node, we need it to not be visible in partial stages. So we hide it while we create it
             nodeGameObject.SetActive(false);

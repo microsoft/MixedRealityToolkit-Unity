@@ -81,7 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (Controller?.InputSource.SourceId == eventData.SourceId)
+            // We must check if either this or gameObject equate to null because this callback may be triggered after
+            // the object has been destroyed. Although event handlers are unregistered in OnDisable(), this may in fact
+            // be postponed (see BaseEventSystem.UnregisterHandler()).
+            if (this.IsNotNull() && gameObject != null && Controller?.InputSource.SourceId == eventData.SourceId)
             {
                 Destroy(gameObject);
             }

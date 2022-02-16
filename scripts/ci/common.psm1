@@ -15,7 +15,7 @@
 
     C:\repo\Assets\File.cs
 #>
-function GetChangedFiles { 
+function GetChangedFiles {
     [CmdletBinding()]
     param(
         [string]$Filename,

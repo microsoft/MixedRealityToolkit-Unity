@@ -316,40 +316,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            GUIStyle headerStyle = new GUIStyle();
-            headerStyle.richText = true;
-
-            if (currentControllerOption == null || currentControllerTexture == null)
+            using (new EditorGUILayout.VerticalScope())
             {
-                GUILayout.BeginVertical();
-                using (new EditorGUILayout.VerticalScope())
-                {
-                    GUILayout.FlexibleSpace();
-                    EditorGUILayout.LabelField("<b>Controllers affected by this mapping</b>", headerStyle);
-                    for (int i = 0; i < controllerList.Count; i++)
-                    {
-                        EditorGUILayout.LabelField(controllerList[i]);
-                    }
-                }
-                GUILayout.EndVertical();
-            }
-            else
-            {
-                float max_y = currentControllerOption.InputLabelPositions.Max(x => x.y);
-
-                var titleRectPosition = Vector2.up * (max_y + 4 * EditorGUIUtility.singleLineHeight);
-                var titleRectSize = new Vector2(500, EditorGUIUtility.singleLineHeight);
-
-                var titleRect = new Rect(titleRectPosition, titleRectSize);
-                EditorGUI.LabelField(titleRect, "<b>Controllers affected by this mapping</b>", headerStyle);
-
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.LabelField("Controllers affected by this mapping", EditorStyles.boldLabel);
                 for (int i = 0; i < controllerList.Count; i++)
                 {
-                    var rectPosition = Vector2.up * (max_y + (i + 5) * EditorGUIUtility.singleLineHeight);
-                    var rectSize = new Vector2(1000, EditorGUIUtility.singleLineHeight);
-
-                    var labelRect = new Rect(rectPosition, rectSize);
-                    EditorGUI.LabelField(labelRect, controllerList[i]);
+                    EditorGUILayout.LabelField(controllerList[i]);
                 }
             }
         }
@@ -529,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         {
                             var inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                             actionDescription.stringValue = inputAction.Description;
-                            actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                            actionConstraint.intValue = (int)inputAction.AxisConstraint;
                         }
 
                         if ((AxisType)axisType.intValue == AxisType.Digital)
@@ -757,7 +730,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                             actionId.intValue = (int)inputAction.Id;
                             actionDescription.stringValue = inputAction.Description;
-                            actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                            actionConstraint.intValue = (int)inputAction.AxisConstraint;
                             interactionList.serializedObject.ApplyModifiedProperties();
                         }
                     }

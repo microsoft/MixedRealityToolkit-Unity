@@ -41,7 +41,44 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
-        protected virtual bool? IsActiveLoader => true;
+        private IReadOnlyList<GenericXRSDKSpatialMeshObserver> observersCache;
+
+        protected virtual bool? IsActiveLoader
+        {
+            get
+            {
+#if XR_MANAGEMENT_ENABLED
+                if (XRGeneralSettings.Instance != null
+                    && XRGeneralSettings.Instance.Manager != null
+                    && XRGeneralSettings.Instance.Manager.activeLoader != null)
+                {
+                    if ((observersCache == null || observersCache.Count == 0)
+                        && Service is IMixedRealityDataProviderAccess spatialAwarenessDataProviderAccess
+                        && Service is IMixedRealityServiceState spatialAwarenessState
+                        && spatialAwarenessState.IsInitialized)
+                    {
+                        observersCache = spatialAwarenessDataProviderAccess.GetDataProviders<GenericXRSDKSpatialMeshObserver>();
+                    }
+
+                    // Don't report ourselves as active if another observer is handling this platform
+                    for (int i = 0; i < observersCache?.Count; i++)
+                    {
+                        GenericXRSDKSpatialMeshObserver observer = observersCache[i];
+                        if (observer != this && (observer.IsActiveLoader ?? false))
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+                return null;
+#else
+                return false;
+#endif
+            }
+        }
 
         /// <inheritdoc />
         public override void Enable()
@@ -58,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 return;
             }
 
+            ConfigureObserverVolume();
             base.Enable();
         }
 
@@ -73,29 +111,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         #region BaseSpatialObserver Implementation
 
         private XRMeshSubsystem meshSubsystem;
-
-        /// <summary>
-        /// Creates the XRMeshSubsystem and handles the desired startup behavior.
-        /// </summary>
-        protected override void CreateObserver()
-        {
-            if (Service == null
+        private XRMeshSubsystem MeshSubsystem => meshSubsystem != null && meshSubsystem.running
+            ? meshSubsystem :
 #if XR_MANAGEMENT_ENABLED
-                || XRGeneralSettings.Instance == null || XRGeneralSettings.Instance.Manager == null || XRGeneralSettings.Instance.Manager.activeLoader == null
-#endif // XR_MANAGEMENT_ENABLED
-                ) { return; }
-
-#if XR_MANAGEMENT_ENABLED
-            meshSubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRMeshSubsystem>();
+            meshSubsystem = IsActiveLoader ?? false
+                ? XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRMeshSubsystem>()
+                : null;
 #else
             meshSubsystem = XRSubsystemHelpers.MeshSubsystem;
 #endif // XR_MANAGEMENT_ENABLED
-
-            if (meshSubsystem != null)
-            {
-                ConfigureObserverVolume();
-            }
-        }
 
         /// <summary>
         /// Implements proper cleanup of the SurfaceObserver.
@@ -119,15 +143,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             // For non-custom levels, the enum value is the appropriate triangles per cubic meter.
             int level = (int)levelOfDetail;
-            if (meshSubsystem != null)
+            if (MeshSubsystem != null)
             {
                 if (levelOfDetail == SpatialAwarenessMeshLevelOfDetail.Unlimited)
                 {
-                    meshSubsystem.meshDensity = 1;
+                    MeshSubsystem.meshDensity = 1;
                 }
                 else
                 {
-                    meshSubsystem.meshDensity = level / (float)SpatialAwarenessMeshLevelOfDetail.Fine; // For now, map Coarse to 0.0 and Fine to 1.0
+                    MeshSubsystem.meshDensity = level / (float)SpatialAwarenessMeshLevelOfDetail.Fine; // For now, map Coarse to 0.0 and Fine to 1.0
                 }
             }
             return level;
@@ -215,9 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             using (ResumePerfMarker.Auto())
             {
-                if (meshSubsystem != null && !meshSubsystem.running)
+                if (MeshSubsystem != null && !MeshSubsystem.running)
                 {
-                    meshSubsystem.Start();
+                    MeshSubsystem.Start();
                 }
 
                 // We want the first update immediately.
@@ -241,9 +265,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             using (SuspendPerfMarker.Auto())
             {
-                if (meshSubsystem != null && meshSubsystem.running)
+                if (MeshSubsystem != null && MeshSubsystem.running)
                 {
-                    meshSubsystem.Stop();
+                    MeshSubsystem.Stop();
                 }
 
                 // UpdateObserver keys off of this value to stop observing.
@@ -293,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         private void UpdateObserver()
         {
-            if (Service == null || meshSubsystem == null) { return; }
+            if (Service == null || MeshSubsystem == null) { return; }
 
             using (UpdateObserverPerfMarker.Auto())
             {
@@ -325,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         // The application can update the observer volume at any time, make sure we are using the latest.
                         ConfigureObserverVolume();
 
-                        if (meshSubsystem.TryGetMeshInfos(meshInfos))
+                        if (MeshSubsystem.TryGetMeshInfos(meshInfos))
                         {
                             UpdateMeshes(meshInfos);
                         }
@@ -368,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     newMesh.GameObject.SetActive(true);
                 }
 
-                meshSubsystem.GenerateMeshAsync(meshId, newMesh.Filter.mesh, newMesh.Collider, MeshVertexAttributes.Normals, (MeshGenerationResult meshGenerationResult) => MeshGenerationAction(meshGenerationResult));
+                MeshSubsystem.GenerateMeshAsync(meshId, newMesh.Filter.mesh, newMesh.Collider, MeshVertexAttributes.Normals, (MeshGenerationResult meshGenerationResult) => MeshGenerationAction(meshGenerationResult));
                 outstandingMeshObject = newMesh;
             }
         }
@@ -439,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         protected virtual void ConfigureObserverVolume()
         {
-            if (meshSubsystem == null
+            if (MeshSubsystem == null
                 || (oldObserverOrigin == ObserverOrigin
                 && oldObservationExtents == ObservationExtents
                 && oldObserverVolumeType == ObserverVolumeType))
@@ -453,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 switch (ObserverVolumeType)
                 {
                     case VolumeType.AxisAlignedCube:
-                        meshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
+                        MeshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
                         break;
 
                     default:
@@ -590,7 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             base.Initialize();
 
-            if (Service == null || meshSubsystem == null) { return; }
+            if (Service == null || MeshSubsystem == null) { return; }
 
             if (RuntimeSpatialMeshPrefab != null)
             {

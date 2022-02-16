@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 if (hasValidType)
                 {
                     MixedRealityControllerAttribute controllerAttribute = MixedRealityControllerAttribute.Find(controllerType.Type);
-                    if (controllerAttribute != null && !controllerAttribute.SupportedUnityXRPipelines.HasFlag(xrPipelineUtility.SelectedPipeline))
+                    if (controllerAttribute != null && !controllerAttribute.SupportedUnityXRPipelines.IsMaskSet(xrPipelineUtility.SelectedPipeline))
                     {
                         continue;
                     }
@@ -229,15 +229,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 if (!hasValidType)
                 {
                     EditorGUILayout.HelpBox("A controller type must be defined!", MessageType.Error);
-                }
-                else
-                {
-                    // Only check for Oculus if we already know the type is valid (otherwise, null ref)
-                    bool isOculusType = controllerType.Type.FullName.Contains("OculusXRSDKTouchController");
-                    if (isOculusType)
-                    {
-                        EditorGUILayout.HelpBox("Oculus Touch controller model visualization is not managed by MRTK, refer to the Oculus XRSDK Device Manager to configure controller visualization settings", MessageType.Error);
-                    }
                 }
 
                 var handednessValue = mixedRealityControllerHandedness.intValue - 1;

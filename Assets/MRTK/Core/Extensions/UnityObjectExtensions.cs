@@ -58,6 +58,13 @@ namespace Microsoft.MixedReality.Toolkit
         public static bool IsNull<T>(this T @interface) where T : class => @interface == null || @interface.Equals(null);
 
         /// <summary>
+        /// Tests if an interface is null, taking potential UnityEngine.Object derived class implementers into account
+        /// which require their overridden operators to be called.
+        /// </summary>
+        /// <returns>Falseif either the managed or native object is null, true otherwise.</returns>
+        public static bool IsNotNull<T>(this T @interface) where T : class => !@interface.IsNull();
+
+        /// <summary>
         /// Properly checks an interface for null and returns the MonoBehaviour implementing it.
         /// </summary>
         /// <returns>True if the implementer of the interface is a MonoBehaviour and the MonoBehaviour is not null.</returns>

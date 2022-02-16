@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 {
     /// <summary>
-    /// Rotation handles for <see cref="BoundsControl"/> that are used for rotating the
+    /// Handles for <see cref="BoundsControl"/> that are used for manipulating the
     /// Gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
     public abstract class PerAxisHandles : HandlesBase
@@ -75,6 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 // remove old colliders
                 bool shouldCreateNewCollider = false;
                 var oldBoxCollider = handle.GetComponent<BoxCollider>();
+
+                // Caution, Destroy() will destroy one frame later.
+                // Do not check later for presence this frame!
                 if (oldBoxCollider != null && config.HandlePrefabColliderType == HandlePrefabCollider.Sphere)
                 {
                     shouldCreateNewCollider = true;
@@ -92,7 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 {
                     // attach new collider
                     var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-                    var invScale = handleBounds.size.x == 0.0f ? 0.0f : config.HandleSize / handleBounds.size.x;
+                    float maxDim = VisualUtils.GetMaxComponent(handleBounds.size);
+                    float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
                     Vector3 colliderSizeScaled = handleBounds.size * invScale;
                     Vector3 colliderCenterScaled = handleBounds.center * invScale;
                     if (config.HandlePrefabColliderType == HandlePrefabCollider.Box)
@@ -106,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         SphereCollider sphere = handle.gameObject.AddComponent<SphereCollider>();
                         sphere.center = colliderCenterScaled;
-                        sphere.radius = colliderSizeScaled.x * 0.5f;
+                        sphere.radius = VisualUtils.GetMaxComponent(colliderSizeScaled) * 0.5f;
                         sphere.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
                     }
                 }
@@ -185,10 +189,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 handle.transform.position = HandlePositions[i];
                 handle.transform.parent = parent;
 
-                Bounds midpointBounds = CreateVisual(i, handle);
-                float maxDim = VisualUtils.GetMaxComponent(midpointBounds.size);
+                Bounds handleVisualBounds = CreateVisual(i, handle);
+                float maxDim = VisualUtils.GetMaxComponent(handleVisualBounds.size);
                 float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
-                VisualUtils.AddComponentsToAffordance(handle, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
+
+                // TODO: Some subclasses of PerAxisHandles shouldn't use CursorContextInfo.CursorAction.Rotate
+                VisualUtils.AddComponentsToAffordance(handle, new Bounds(handleVisualBounds.center * invScale, handleVisualBounds.size * invScale),
                     config.HandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, config.DrawTetherWhenManipulating);
 
                 handles.Add(handle.transform);
@@ -209,11 +215,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 {
                     // get old child and remove it
                     obsoleteChild.parent = null;
+
+                    // Caution, Destroy() will destroy one frame later.
+                    // Do not check later for presence this frame!
                     Object.Destroy(obsoleteChild.gameObject);
                 }
                 else
                 {
-                    Debug.LogError("couldn't find rotation visual on recreating visuals");
+                    Debug.LogError("Couldn't find handle visual on recreating visuals");
                 }
 
                 // create new visual
@@ -228,7 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
-            var invScale = visualSize.x == 0.0f ? 0.0f : config.HandleSize / visualSize.x;
+            float maxDim = VisualUtils.GetMaxComponent(visualSize);
+            float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
             GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
             if (config.HandlePrefabColliderType == HandlePrefabCollider.Box)
@@ -240,47 +250,53 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             else
             {
                 SphereCollider collider = handle.gameObject.GetComponent<SphereCollider>();
-                collider.radius = colliderSizeScaled.x * 0.5f;
+                collider.radius = VisualUtils.GetMaxComponent(colliderSizeScaled) * 0.5f;
                 collider.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
             }
         }
 
         private Bounds CreateVisual(int handleIndex, GameObject parent)
         {
-            GameObject midpointVisual;
+            GameObject handleVisual;
             GameObject prefabType = config.HandlePrefab;
             if (prefabType != null)
             {
-                midpointVisual = Object.Instantiate(prefabType);
+                handleVisual = Object.Instantiate(prefabType);
             }
             else
             {
-                midpointVisual = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                // deactivate collider on visuals and register for deletion - actual collider
-                // of handle is attached to the handle gameobject, not the visual
-                var collider = midpointVisual.GetComponent<SphereCollider>();
+                handleVisual = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                // We only want the Primitive sphere mesh, but CreatePrimitive will
+                // give us a sphere collider too. Remove the sphere collider here
+                // so we can manually add our own properly configured collider later.
+                var collider = handleVisual.GetComponent<SphereCollider>();
                 collider.enabled = false;
+
+                // Caution, Destroy() will destroy one frame later.
+                // Do not check later for presence this frame!
                 Object.Destroy(collider);
-            }
+            }           
 
-            Quaternion realignment = GetRotationRealignment(handleIndex);
-            midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
-
-            Bounds midpointBounds = VisualUtils.GetMaxBounds(midpointVisual);
-            float maxDim = VisualUtils.GetMaxComponent(midpointBounds.size);
+            // handleVisualBounds are returned in handleVisual-local space.
+            Bounds handleVisualBounds = VisualUtils.GetMaxBounds(handleVisual);
+            float maxDim = VisualUtils.GetMaxComponent(handleVisualBounds.size);
             float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
 
-            midpointVisual.name = visualsName;
-            midpointVisual.transform.parent = parent.transform;
-            midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
-            midpointVisual.transform.localPosition = Vector3.zero;
+            handleVisual.name = visualsName;
+            handleVisual.transform.parent = parent.transform;
+            handleVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
+            handleVisual.transform.localPosition = Vector3.zero;
+            handleVisual.transform.localRotation = Quaternion.identity;
+
+            Quaternion realignment = GetRotationRealignment(handleIndex);
+            parent.transform.localRotation = realignment;
 
             if (config.HandleMaterial != null)
             {
-                VisualUtils.ApplyMaterialToAllRenderers(midpointVisual, config.HandleMaterial);
+                VisualUtils.ApplyMaterialToAllRenderers(handleVisual, config.HandleMaterial);
             }
 
-            return midpointBounds;
+            return handleVisualBounds;
         }
 
         #region BoundsControlHandlerBase 

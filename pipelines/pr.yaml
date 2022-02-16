@@ -1,4 +1,4 @@
-# Build for PR validation.
+# Build for PR validation via Unity 2018 and 2019
 
 variables:
 - template: config/settings.yml
@@ -15,7 +15,7 @@ jobs:
       # check unchanged files for code style/doc style violations.
       scopedValidation: true
 
-- job: UnityValidation
+- job: Unity2018Validation
   timeoutInMinutes: 90
   pool:
     name: On-Prem Unity
@@ -38,4 +38,21 @@ jobs:
       buildUWPArm: false
       buildUWPDotNet: false
       UnityVersion: $(Unity2018Version)
+  
+- job: Unity2019Validation
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - ${{ variables.Unity2019Version }}
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+    - VS2019 -equals TRUE
+  steps:
+  - template: templates/common.yml
+    parameters:
+      buildUWPX86: false
+      buildUWPArm: false
+      buildUWPDotNet: false
+      UnityVersion: $(Unity2019Version)
   - template: templates/end.yml
