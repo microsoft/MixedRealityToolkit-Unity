@@ -473,11 +473,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             using (ConfigureObserverVolumePerfMarker.Auto())
             {
+                Vector3 observerOriginPlayspace = MixedRealityPlayspace.InverseTransformPoint(ObserverOrigin);
+
                 // Update the observer
                 switch (ObserverVolumeType)
                 {
                     case VolumeType.AxisAlignedCube:
-                        MeshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
+                        MeshSubsystem.SetBoundingVolume(observerOriginPlayspace, ObservationExtents);
                         break;
 
                     default:
