@@ -334,7 +334,7 @@ MonoBehaviour:
   handedness: 1
   cursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
     type: 3}
-  disableCursorOnStart: 0
+  disableCursorOnStart: 1
   setCursorVisibilityOnSourceDetected: 0
   raycastOrigin: {fileID: 0}
   activeHoldAction:

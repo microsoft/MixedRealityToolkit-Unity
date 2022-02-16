@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Tests to verify pointer state and pointer direction
     /// </summary>
-    public class PointerTests
+    public class PointerTests : BasePlayModeTests
     {
         // SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab
         private const string LinePointerGuid = "d5b94136462644c9873bb3347169ae7e";
@@ -52,18 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// See usage of these helpers throughout the tests within this file, e.g. <see cref="TestSpherePointerInsideGrabbable"/>.
         /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
         /// </remarks>
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToArbitraryPose();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 

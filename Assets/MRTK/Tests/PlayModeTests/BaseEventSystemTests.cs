@@ -31,22 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// (i.e. input and diagnostics are used, but any arbitrary systems that can raise events on demand
     /// would work)
     /// </remarks>
-    class BaseEventSystemTests
+    internal class BaseEventSystemTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         /// <summary>
         /// Test input system catches exception thrown in global listener responding to input event, and
         /// that the input system is still able to unregister the event listener (i.e. eventExecutionDepth

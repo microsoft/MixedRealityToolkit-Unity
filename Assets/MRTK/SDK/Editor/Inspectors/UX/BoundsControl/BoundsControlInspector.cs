@@ -116,12 +116,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUI.BeginChangeCheck();
 
+                    // Initializes the target object of the bounds control to itself
                     EditorGUILayout.PropertyField(targetObject);
+                    if (targetObject.objectReferenceValue == null)
+                    {
+                        targetObject.objectReferenceValue = boundsControl.gameObject;
+                    }
+
+                    // Checks that the targetObject has a box collider that this bounds control can manage if bounds override was not supplied, otherwise, raises a warning and prompts the user to add one
+                    if (boundsOverride.objectReferenceValue == null)
+                    {
+                        GameObject boundsTargetObject = targetObject.objectReferenceValue as GameObject;
+                        if (boundsTargetObject != null && boundsTargetObject.GetComponent<BoxCollider>() == null)
+                        {
+                            EditorGUILayout.HelpBox("No Box Collider assigned to the TargetObject and no Bounds Override assigned, add a Box Collider to enable proper interaction with the Bounds Control", MessageType.Warning);
+
+                           if (GUILayout.Button("Add Box Collider to Target Object"))
+                           {
+                                boundsTargetObject.AddComponent<BoxCollider>();
+                           }
+                        }
+                    }
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Behavior"), EditorStyles.boldLabel);
                     EditorGUILayout.PropertyField(activationType);
                     EditorGUILayout.PropertyField(boundsOverride);
+
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);

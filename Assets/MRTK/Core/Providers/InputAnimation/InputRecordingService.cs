@@ -23,8 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         BaseInputDeviceManager,
         IMixedRealityInputRecordingService
     {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         /// <summary>
         /// Invoked when recording begins
         /// </summary>
@@ -392,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isTracked)
             {
-                for (int i = 0; i < jointCount; ++i)
+                for (int i = 0; i < ArticulatedHandPose.JointCount; ++i)
                 {
                     if (hand.TryGetJoint((TrackedHandJoint)i, out MixedRealityPose jointPose))
                     {

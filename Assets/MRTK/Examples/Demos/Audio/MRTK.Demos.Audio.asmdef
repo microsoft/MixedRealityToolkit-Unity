@@ -1,0 +1,23 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Demos.Audio",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.MicStream"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.toolkit.micstream",
+            "expression": "",
+            "define": "MICSTREAM_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
+}

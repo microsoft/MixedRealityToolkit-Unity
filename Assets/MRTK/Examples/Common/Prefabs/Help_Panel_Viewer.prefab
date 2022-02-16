@@ -11,14 +11,13 @@ GameObject:
   - component: {fileID: 7679070037079963644}
   - component: {fileID: 1025555136919324373}
   - component: {fileID: 5160033305772425515}
-  - component: {fileID: 661491026927839371}
   m_Layer: 5
   m_Name: Canvas_Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7679070037079963644
 RectTransform:
   m_ObjectHideFlags: 0
@@ -82,23 +81,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &661491026927839371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003569881887503376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &2039166811144635796
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,14 +254,13 @@ GameObject:
   - component: {fileID: 1664423664642718425}
   - component: {fileID: 6335558611449888476}
   - component: {fileID: 4008448074863834326}
-  - component: {fileID: 7378147382707451450}
   m_Layer: 5
   m_Name: Canvas_Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1664423664642718425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -343,23 +324,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &7378147382707451450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3884521507736125813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &4854470455832798453
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b468aa5b7f931c140adaa4a3e66d718e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HelpGuideShortcutKeys: 3201000068000000
-  HelpGuideShortcutTip: {fileID: 2003569881887503376}
-  DisplayHelpGuideShortcutTipOnStart: 1
-  HelpGuideVisual: {fileID: 3884521507736125813}
+  helpGuideShortcutKeys: 3201000068000000
+  helpGuideShortcutTip: {fileID: 2003569881887503376}
+  displayHelpGuideShortcutTipOnStart: 1
+  helpGuideVisual: {fileID: 3884521507736125813}

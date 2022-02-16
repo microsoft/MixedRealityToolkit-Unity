@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// <remarks>
     /// <para>Note that the checks that this class runs are fairly expensive and are only done manually by the user
     /// as part of their setup steps described here:
-    /// https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/using-ar-foundation </para>
+    /// https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/supported-devices/using-ar-foundation </para>
     /// </remarks>
     static class UnityARConfigurationChecker
     {

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
-        SupportedPlatforms.WindowsUniversal,
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal,
         "XR SDK Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK",
@@ -22,8 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         SupportedUnityXRPipelines.XRSDK)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class WindowsMixedRealitySpatialMeshObserver :
-        GenericXRSDKSpatialMeshObserver,
-        IMixedRealityCapabilityCheck
+        GenericXRSDKSpatialMeshObserver
     {
         /// <summary>
         /// Constructor.
@@ -39,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
-        protected override bool IsActiveLoader =>
+        protected override bool? IsActiveLoader =>
 #if WMR_ENABLED
             LoaderHelpers.IsLoaderActive("Windows MR Loader");
 #else

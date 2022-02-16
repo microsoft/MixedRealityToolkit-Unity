@@ -21,7 +21,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class DialogTests
+    public class DialogTests : BasePlayModeTests
     {
         // SDK/Features/UX/Prefabs/Slate/Slate.prefab
         private const string smallDialogPrefabAssetGuid = "8e686c90124b8e14cbf8093893109e9a";
@@ -33,21 +33,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private const float DialogStabilizationTime = 1.5f;
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
-            GameObject.Destroy(dialogGameObject);
-            GameObject.Destroy(dialogComponent);
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            Object.Destroy(dialogGameObject);
+            Object.Destroy(dialogComponent);
+            yield return base.TearDown();
         }
 
         /// <summary>

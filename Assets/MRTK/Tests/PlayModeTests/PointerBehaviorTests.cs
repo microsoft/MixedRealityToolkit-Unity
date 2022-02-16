@@ -223,6 +223,77 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Right, grabOff);
             EnsurePointerStates(Handedness.Left, grabOff);
         }
+        
+        /// <summary>
+        /// Tests that when source pose data is used the poke pointer and grab pointer are aligned in approximately the correct positions
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestUseSourcePoseData()
+        {
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            PokePointer pokePointer = PointerUtils.GetPointer<PokePointer>(Handedness.Right);
+            Assert.IsNotNull(pokePointer);
+            SpherePointer grabPointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
+            Assert.IsNotNull(grabPointer);
+
+            pokePointer.UseSourcePoseData = true;
+            grabPointer.UseSourcePoseData = true;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            yield return rightHand.Hide();
+            yield return rightHand.Show(Vector3.zero);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+
+            // The source pose is centered on the palm
+            MixedRealityPose palmPose;
+            HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out palmPose);
+            // This offset value is derived from the PokePointer's sourcePoseOffset property
+            float pokePointerOffset = 0.075f; 
+            TestUtilities.AssertAboutEqual(pokePointer.Position, grabPointer.Position + pokePointer.transform.forward * pokePointerOffset, "pointer was not in the expected position");
+            TestUtilities.AssertAboutEqual(grabPointer.Position, palmPose.Position, "pointer was not in the expected position");
+        }
+
+        /// <summary>
+        /// Tests that when the source pose data is used as a fallback when the normal pose action is not raised
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestUseSourcePoseDataAsFallback()
+        {
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            PokePointer pokePointer = PointerUtils.GetPointer<PokePointer>(Handedness.Right);
+            Assert.IsNotNull(pokePointer);
+            pokePointer.UseSourcePoseAsFallback = true;
+
+            SpherePointer grabPointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
+            Assert.IsNotNull(grabPointer);
+            grabPointer.UseSourcePoseAsFallback = true;
+
+            // Setting the pointer's pose action to a new input action is functionally equivalent to ensuring that an event is never raised of the pointer's desired pose action
+            // This makes it so it will have to use the source pose data as a fallback
+            pokePointer.PoseAction = new MixedRealityInputAction();
+            grabPointer.PoseAction = new MixedRealityInputAction();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            yield return rightHand.Hide();
+            yield return rightHand.Show(Vector3.zero);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // The source pose is centered on the palm
+            MixedRealityPose palmPose;
+            HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out palmPose);
+
+            // This offset value is derived from the PokePointer's sourcePoseOffset property
+            float pokePointerOffset = 0.075f;
+            TestUtilities.AssertAboutEqual(pokePointer.Position, grabPointer.Position + pokePointer.transform.forward * pokePointerOffset, "pointer was not in the expected position");
+            TestUtilities.AssertAboutEqual(grabPointer.Position, palmPose.Position, "pointer was not in the expected position");
+        }
 
         /// <summary>
         /// Tests that the teleport pointer functions as expected
@@ -253,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             PlayModeTestUtilities.Setup(profile);
 
-            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(0.5f);
 
             // Ensure that the SceneContent object is contentOffset units above the origin
             Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, contentOffset, 0.005f);
@@ -355,6 +426,57 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.None);
 
+        }
+
+        /// <summary>
+        /// Tests strafing with the teleport pointer
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTeleportStrafe()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+
+            // Create a floor and make sure it's below the camera
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor.transform.position = -0.5f * Vector3.up;
+
+            // Bring out the right hand and set it to the teleport gesture
+            TestUtilities.PlayspaceToOriginLookingForward();
+            Vector3 initialPosition = MixedRealityPlayspace.Position;
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Make sure the hand is in front of the camera
+            yield return rightHand.Show(Vector3.forward * 0.6f);
+            rightHand.SetRotation(Quaternion.identity);
+
+            TeleportPointer teleportPointer = rightHand.GetPointer<TeleportPointer>();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition - Vector3.forward * teleportPointer.strafeAmount, "Did not strafe to the expected position");
+
+            teleportPointer.checkForFloorOnStrafe = true;
+            teleportPointer.adjustHeightOnStrafe = true;
+            teleportPointer.strafeAmount = 1.0f;
+            teleportPointer.maxHeightChangeOnStrafe = 0.5f;
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition, "Performed an invalid strafe");
+
+            var floor2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor2.transform.position = new Vector3(0,-0.25f,-1.0f);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            
+            TestUtilities.PlayspaceToOriginLookingForward();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition + new Vector3(0, 0.25f, -teleportPointer.strafeAmount), "Height did not change on strafe");
+
+            floor2.transform.position = new Vector3(0, -0.75f, -1.0f);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+            teleportPointer.PerformStrafe();
+            TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition + new Vector3(0, -0.25f, -teleportPointer.strafeAmount), "Height did not change on strafe");
         }
 
         /// <summary>

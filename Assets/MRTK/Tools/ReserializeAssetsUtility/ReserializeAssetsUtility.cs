@@ -19,15 +19,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality/Toolkit/Utilities/Reserialize/Prefabs, Scenes, and ScriptableObjects")]
         private static void ReserializePrefabsAndScenes()
         {
-            var array = GetAssets("t:Prefab t:Scene t:ScriptableObject");
+            string[] array = GetAssets("t:Prefab t:Scene t:ScriptableObject");
             AssetDatabase.ForceReserializeAssets(array);
+            Debug.Log($"Reserialized {array.Length} assets.");
         }
 
         [MenuItem("Mixed Reality/Toolkit/Utilities/Reserialize/Materials and Textures")]
         private static void ReserializeMaterials()
         {
-            var array = GetAssets("t:Material t:Texture");
+            string[] array = GetAssets("t:Material t:Texture");
             AssetDatabase.ForceReserializeAssets(array);
+            Debug.Log($"Reserialized {array.Length} assets.");
         }
 
         [MenuItem("Mixed Reality/Toolkit/Utilities/Reserialize/Reserialize Selection")]
@@ -45,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             string[] array = assetsPath.ToArray();
             AssetDatabase.ForceReserializeAssets(array);
-            Debug.Log($"Reserialized {assetsPath.Count} assets.");
+            Debug.Log($"Reserialized {array.Length} assets.");
         }
 
         private static string[] GetAssets(string filter)

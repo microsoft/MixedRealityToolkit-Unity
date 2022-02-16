@@ -197,10 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                     return palmFacingThresholdMet;
                 }
-                else
-                {
-                    Debug.LogWarning($"HandConstraintPalmUp requires a palm joint, but none was provided by {controller.InputSource.SourceName}.");
-                }
 
                 return palmFacingThresholdMet;
             }
@@ -372,8 +368,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     break;
                 case SolverSafeZone.UlnarSide:
                 default:
-                    referenceJoint1 = TrackedHandJoint.IndexKnuckle;
-                    referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
+                    referenceJoint1 = TrackedHandJoint.PinkyKnuckle;
+                    referenceJoint2 = TrackedHandJoint.Wrist;
                     break;
             }
 

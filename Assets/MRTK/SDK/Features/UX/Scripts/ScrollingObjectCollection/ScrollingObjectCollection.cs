@@ -722,6 +722,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool oldIsTargetPositionLockedOnFocusLock;
 
+        private readonly HashSet<Renderer> clippedRenderers = new HashSet<Renderer>();
+
         #region scroll state variables
 
         /// <summary>
@@ -1183,7 +1185,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityTouchHandler>(this);
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
 
+            // Currently in editor duplicating prefab GameObject containing both TMP and non-TMP children inside the Scrolling Object Collection container causes material life cycle management issues
+            // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9481
+            // Thus we do not automatically destroy material controlled by Material Instance if the OnDisable comes from pasting in editor
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                bool? isCalledFromPastingGameObject = new System.Diagnostics.StackFrame(1)?.GetMethod()?.Name?.Contains("Paste");
+                RestoreContentVisibility(!isCalledFromPastingGameObject.GetValueOrDefault());
+            }
+            else
+            {
+                RestoreContentVisibility();
+            }
+#else
             RestoreContentVisibility();
+#endif
 
             if (useOnPreRender && cameraMethods != null)
             {
@@ -1643,9 +1660,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Removes all renderers currently being clipped by the clipping box
         /// </summary>
-        private void ClearClippingBox()
+        private void ClearClippingBox(bool autoDestroyMaterial = true)
         {
-            ClipBox.ClearRenderers();
+            ClipBox.ClearRenderers(autoDestroyMaterial);
         }
 
         /// <summary>
@@ -1676,7 +1693,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Bounds clippingThresholdBounds = ClippingBoundsCollider.bounds;
 
             Renderer[] contentRenderers = ScrollContainer.GetComponentsInChildren<Renderer>(true);
-            List<Renderer> clippedRenderers = ClipBox.GetRenderersCopy().ToList();
+            clippedRenderers.Clear();
+            clippedRenderers.UnionWith(ClipBox.GetRenderersCopy());
 
             // Remove all renderers from clipping primitive that are not part of scroll content
             foreach (var clippedRenderer in clippedRenderers)
@@ -1897,9 +1915,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// All inactive content objects and colliders are reactivated and renderers are unclipped.
         /// </summary>
-        private void RestoreContentVisibility()
+        private void RestoreContentVisibility(bool autoDestroyMaterial = true)
         {
-            ClearClippingBox();
+            ClearClippingBox(autoDestroyMaterial);
             ManageVisibility(true);
         }
 

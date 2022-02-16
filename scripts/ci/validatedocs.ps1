@@ -19,7 +19,7 @@ param(
     # The directory containing the docs to validate. This is the fallback if
     # ChangesFile doesn't exist or isn't valid, and as a result this is
     # always required.
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the code validation
@@ -126,7 +126,8 @@ function CheckImage {
                 Write-Host "Image file was not found: "
                 Write-Host $resolvedPath
                 $ResolvedImagePaths[$resolvedPath] = $false
-            } else {
+            }
+            else {
                 # Otherwise we still have to ensure that the image itself matches the
                 # correct case (i.e. image.png vs image.PNG).
                 #
@@ -226,9 +227,11 @@ function CheckDocument {
         for ($i = 0; $i -lt $fileContent.Length; $i++) {
             if (CheckDocLinks $FileName $fileContent $i) {
                 $issueFound = $true
-            } elseif (CheckBrokenImages $FileName $fileContent $i) {
+            }
+            elseif (CheckBrokenImages $FileName $fileContent $i) {
                 $issueFound = $true
-            } elseif (CheckIncorrectRelativePath $FileName $fileContent $i) {
+            }
+            elseif (CheckIncorrectRelativePath $FileName $fileContent $i) {
                 $issueFound = $true
             }
         }

@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public void Migrate(GameObject gameObject)
         {
             var manipHandler = gameObject.GetComponent<ManipulationHandler>();
+            gameObject.AddComponent<ConstraintManager>();
             var objManip = gameObject.AddComponent<ObjectManipulator>();
 
             objManip.enabled = manipHandler.enabled;
@@ -182,11 +183,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
 
-            if (proximity.HasFlag(ManipulationProximityFlags.Near))
+            if (proximity.IsMaskSet(ManipulationProximityFlags.Near))
             {
                 objManip.OneHandRotationModeNear = newMode;
             }
-            if (proximity.HasFlag(ManipulationProximityFlags.Far))
+            if (proximity.IsMaskSet(ManipulationProximityFlags.Far))
             {
                 objManip.OneHandRotationModeFar = newMode;
             }

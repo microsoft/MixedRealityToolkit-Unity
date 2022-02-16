@@ -21,23 +21,15 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class HandCoachTests
+    class HandCoachTests : BasePlayModeTests
     {
         private const string handCoachRightGuid = "2225b28a6968ba04594a7564e934a679";
         private static readonly string handCoachRightPath = AssetDatabase.GUIDToAssetPath(handCoachRightGuid);
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 

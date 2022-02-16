@@ -36,7 +36,7 @@ $timer = [System.Diagnostics.Stopwatch]::StartNew()
 Write-Host "Starting test run"
 Write-Host "Writing test output to $logPath...`n"
 
-$args = @(
+$unityArgs = @(
     "-runTests",
     "-testPlatform playmode"
     "-batchmode",
@@ -46,8 +46,8 @@ $args = @(
     "-editorTestsFilter $editorTestsFilter"
     )
 Write-Host "Running command:"
-Write-Host $unityExePath ($args -Join " ")
-$handle = Start-Process -FilePath $unityExePath -PassThru -ArgumentList $args
+Write-Host $unityExePath ($unityArgs -Join " ")
+$handle = Start-Process -FilePath $unityExePath -PassThru -ArgumentList $unityArgs
 
 Start-Process powershell -ArgumentList @(
     "-command", 

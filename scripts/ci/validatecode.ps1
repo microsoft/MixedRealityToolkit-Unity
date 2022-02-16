@@ -25,7 +25,7 @@ param(
     # The directory containing the code to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the code validation
@@ -128,7 +128,7 @@ function CheckSpacelessComments {
             Write-Host $FileContent[$LineNumber]
             $hasIssue = $true
         }
-        
+
         $hasIssue
     }
 }
@@ -211,12 +211,12 @@ $HardcodedPathExceptions = @{
         'var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;'
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
-    "MRTKExamplesHub.unity" = @(
+    "MRTKExamplesHub.unity"                               = @(
         'Path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
         'value: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
-    "MRTKExamplesHubMainMenu.unity" = @(
+    "MRTKExamplesHubMainMenu.unity"                       = @(
         'value: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
         'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
         'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
@@ -231,6 +231,10 @@ $HardcodedPathExceptions = @{
         'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
         'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
         'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
+        'value: Assets/MRTK/Examples/Demos/Solvers/Scenes/SurfaceMagnetismSpatialAwarenessExample.unity'
+        'value: Assets/MRTK/Examples/Demos/ScrollingObjectCollection/Scenes/ScrollingObjectCollection.unity'
+        'value: Assets/MRTK/Examples/Demos/HandCoach/Scenes/HandCoachExample.unity'
+        'value: Assets/MRTK/Examples/Experimental/SceneUnderstanding/Scenes/SceneUnderstandingExample.unity'
     );
 }
 
@@ -249,12 +253,12 @@ function CheckHardcodedPath {
     )
     process {
         # Some files have total exceptions (i.e. ones that deal with profile cloning or for tests)
-        if ($FileName -match "Assets.MixedRealityToolkit\.Tests" -or
+        if ($FileName -match "Assets.MRTK.Tests" -or
             $FileName -match "MixedRealityProfileCloneWindow\.cs") {
             return $false
         }
 
-        $results = Select-String -Pattern "Assets.MixedRealityToolkit" $FileName -AllMatches
+        $results = Select-String -Pattern "Assets.(MixedRealityToolkit|MRTK)" $FileName -AllMatches
         $containsIssue = $false
         $relativeFileName = Split-Path $FileName -leaf
 
@@ -352,7 +356,7 @@ function GetProjectRelativePath {
     }
 }
 
-# This set contains all of the currently allowed InitializeOnLoad handlers# in MRTK.
+# This set contains all of the currently allowed InitializeOnLoad handlers in MRTK.
 # InitializeOnLoad handlers have a fairly dangerous impact on the inner loop speed of anyone
 # using the MRTK, as they add milliseconds of time after each compile and prior to entering play mode.
 # While individual handlers may not be that significant, the sum total of time across all handlers
@@ -391,7 +395,7 @@ function CheckInitializeOnLoad {
         # the obviously do not have any actual effect)
         # "^\s*//" -> will match a case where the line begins with any amount of whitespace
         # followed by the two // characters.
-        if (($FileContent[$LineNumber] -match "InitializeOnLoad") -and 
+        if (($FileContent[$LineNumber] -match "InitializeOnLoad") -and
                 ($FileContent[$LineNumber] -notmatch "^\s*//")) {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
@@ -440,7 +444,7 @@ function CheckAssemblyTypes {
                 Write-Host "If this is using Assembly.GetTypes(), switch to Assembly.GetLoadableTypes() instead or add to AssemblyTypesExceptions"
                 $hasIssue = $true
             }
-        }      
+        }
         $hasIssue
     }
 }
@@ -482,8 +486,7 @@ function CheckScript {
 
         # Only validate that there is a namespace declaration if it's not an AssemblyInfo.cs file.
         # These do not contain namespace declarations.
-        if ((-not $containsNamespaceDeclaration) -and ($FileName -notmatch "AssemblyInfo.cs$"))
-        {
+        if ((-not $containsNamespaceDeclaration) -and ($FileName -notmatch "AssemblyInfo.cs$")) {
             Write-Warning "$FileName is missing a namespace declaration (i.e. missing namespace Microsoft.MixedReality.Toolkit.*)"
             $containsIssue = $true;
         }
@@ -542,7 +545,7 @@ function CheckUnityScene {
         $MatchesPlayspaces = Select-String MixedRealityPlayspace $FileName -AllMatches
         $NumPlayspaces = $MatchesPlayspaces.Matches.Count
 
-        if ($NumPlayspaces -gt 1){
+        if ($NumPlayspaces -gt 1) {
             Write-Warning "There are multiple MixedRealityPlayspace objects in $FileName, delete the extra playspaces from the unity scene."
             $containsIssue = $true
         }
@@ -586,6 +589,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/Gltf/MRTK.Gltf.asmdef",
     "Assets/MRTK/Core/Utilities/Gltf/Serialization/Importers/MRTK.Gltf.Importers.asmdef",
     "Assets/MRTK/Examples/MRTK.Examples.asmdef",
+    "Assets/MRTK/Examples/Demos/Audio/MRTK.Demos.Audio.asmdef",
     "Assets/MRTK/Examples/Demos/Gltf/MRTK.Demos.Gltf.asmdef",
     "Assets/MRTK/Examples/Demos/Gltf/Scripts/Editor/MRTK.Demos.Gltf.Inspectors.asmdef",
     "Assets/MRTK/Examples/Demos/StandardShader/Scripts/Editor/MRTK.Demos.StandardShader.Inspectors.asmdef",
@@ -603,6 +607,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
     "Assets/MRTK/Providers/OpenXR/MRTK.OpenXR.asmdef",
+    "Assets/MRTK/Providers/OpenXR/Editor/MRTK.OpenXR.Editor.asmdef",
     "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/MRTK.UnityAR.Editor.asmdef",
     "Assets/MRTK/Providers/Windows/MRTK.WindowsVoice.asmdef",

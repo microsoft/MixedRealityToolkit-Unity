@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using UnityEngine;
 using UnityEngine.XR;
 
 #if HP_CONTROLLER_ENABLED
@@ -51,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if WMR_ENABLED
             LoaderHelpers.IsLoaderActive("Windows MR Loader");
 #else
@@ -63,13 +64,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
-
-            base.Enable();
 
             if (WindowsMixedRealityUtilities.UtilitiesProvider == null)
             {
@@ -87,6 +92,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             motionControllerWatcher.MotionControllerRemoved += RemoveTrackedMotionController;
             var nowait = motionControllerWatcher.StartAsync();
 #endif // HP_CONTROLLER_ENABLED
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -241,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         private uint GetControllerId(InputDevice inputDevice)
         {
-            var handedness = (uint)(inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right) ? 2 : (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ? 1 : 0));
+            var handedness = (uint)(inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) ? 2 : (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) ? 1 : 0));
             return GetControllerId(handedness);
         }
 #endif // HP_CONTROLLER_ENABLED
@@ -283,10 +299,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking))
             {
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
-                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) ||
+                    inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))
                 {
                     // If it's a hand with a reported handedness, assume HL2 articulated hand
                     return SupportedControllerType.ArticulatedHand;
@@ -298,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
 
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
                 // primary2DAxis represents the touchpad in Windows XR Plugin.
                 // The HP motion controller doesn't have a touchpad, so we check for its existence in the feature usages.

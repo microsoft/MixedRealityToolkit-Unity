@@ -81,7 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (Controller?.InputSource.SourceId == eventData.SourceId)
+            // We must check if either this or gameObject equate to null because this callback may be triggered after
+            // the object has been destroyed. Although event handlers are unregistered in OnDisable(), this may in fact
+            // be postponed (see BaseEventSystem.UnregisterHandler()).
+            if (this.IsNotNull() && gameObject != null && Controller?.InputSource.SourceId == eventData.SourceId)
             {
                 Destroy(gameObject);
             }
@@ -93,15 +96,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnHandJointsUpdatedPerfMarker.Auto())
             {
-                var inputSystem = CoreServices.InputSystem;
-
                 if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
                 {
                     return;
                 }
                 Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
 
-                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
+                IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
                 if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
                 {
                     // clear existing joint GameObjects / meshes
@@ -125,22 +127,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     else
                     {
                         GameObject prefab;
-                        if (handJoint == TrackedHandJoint.None)
+                        if (handJoint == TrackedHandJoint.None || handTrackingProfile == null)
                         {
                             // No visible mesh for the "None" joint
                             prefab = null;
                         }
                         else if (handJoint == TrackedHandJoint.Palm)
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
+                            prefab = handTrackingProfile.PalmJointPrefab;
                         }
                         else if (handJoint == TrackedHandJoint.IndexTip)
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.FingerTipPrefab;
+                            prefab = handTrackingProfile.FingerTipPrefab;
                         }
                         else
                         {
-                            prefab = inputSystem.InputSystemProfile.HandTrackingProfile.JointPrefab;
+                            prefab = handTrackingProfile.JointPrefab;
                         }
 
                         GameObject jointObject;

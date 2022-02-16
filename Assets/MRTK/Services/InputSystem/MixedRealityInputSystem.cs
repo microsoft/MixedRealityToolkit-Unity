@@ -874,6 +874,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return new BaseGenericInputSource(name, pointers, sourceType);
         }
 
+        /// <inheritdoc />
+        public BaseGlobalInputSource RequestNewGlobalInputSource(string name, IMixedRealityFocusProvider focusProvider = null, InputSourceType sourceType = InputSourceType.Other)
+        {
+            var inputSourceFocusProvider = focusProvider.IsNull() ? FocusProvider : focusProvider;
+            return new BaseGlobalInputSource(name, inputSourceFocusProvider, sourceType);
+        }
+
+
         #region Input Source State Events
 
         private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourceDetected");
@@ -1183,13 +1191,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 IMixedRealityPointerHandler ancestorPointerHandler = null;
                 while (currentObject != null && ancestorPointerHandler == null)
                 {
-                    foreach (var component in currentObject.GetComponents<Component>())
+                    foreach (IMixedRealityPointerHandler handler in currentObject.GetComponents<IMixedRealityPointerHandler>())
                     {
-                        if (component is IMixedRealityPointerHandler handler)
+                        if(handler is MonoBehaviour behavior && !behavior.enabled)
                         {
-                            ancestorPointerHandler = handler;
-                            break;
+                            continue;
                         }
+                        ancestorPointerHandler = handler;
+                        break;
                     }
                     currentObject = currentObject.transform.parent;
                 }

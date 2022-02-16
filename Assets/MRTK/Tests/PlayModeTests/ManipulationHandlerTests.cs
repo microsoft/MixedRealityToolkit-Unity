@@ -22,24 +22,14 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class ManipulationHandlerTests
+    public class ManipulationHandlerTests : BasePlayModeTests
     {
         private readonly List<Action> cleanupAction = new List<Action>();
 
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
+        public override IEnumerator TearDown()
         {
             cleanupAction.ForEach(f => f?.Invoke());
-
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.TearDown();
         }
 
         /// <summary>

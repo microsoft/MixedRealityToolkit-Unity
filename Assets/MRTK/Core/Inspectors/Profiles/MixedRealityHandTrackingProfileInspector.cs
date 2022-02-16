@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty handMeshVisualizationModes;
         private SerializedProperty handJointVisualizationModes;
 
-        private const string ProfileTitle = "Hand Tracking Settings";
+        private const string ProfileTitle = "Articulated Hand Tracking Settings";
         private const string ProfileDescription = "Use this for hand tracking settings.";
 
         protected override void OnEnable()
@@ -48,6 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(palmPrefab);
                 EditorGUILayout.PropertyField(fingertipPrefab);
                 EditorGUILayout.PropertyField(handMeshPrefab);
+
+                EditorGUILayout.LabelField("Visualization settings", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(handMeshVisualizationModes);
                 EditorGUILayout.PropertyField(handJointVisualizationModes);
 

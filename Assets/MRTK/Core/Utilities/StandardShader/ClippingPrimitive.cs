@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        private void RemoveRenderer(int index)
+        private void RemoveRenderer(int index, bool autoDestroyMaterial = true)
         {
             Renderer _renderer = renderers[index];
 
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 var materialInstance = _renderer.GetComponent<MaterialInstance>();
                 if (materialInstance != null)
                 {
-                    materialInstance.ReleaseMaterial(this);
+                    materialInstance.ReleaseMaterial(this, autoDestroyMaterial);
                 }
             }
         }
@@ -189,13 +189,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Removes all renderers in the list of objects this clipping primitive clips.
         /// </summary>
-        public void ClearRenderers()
+        public void ClearRenderers(bool autoDestroyMaterial = true)
         {
             if (renderers != null)
             {
                 while (renderers.Count != 0)
                 {
-                    RemoveRenderer(renderers.Count - 1);
+                    RemoveRenderer(renderers.Count - 1, autoDestroyMaterial);
                 }
             }
         }
@@ -314,9 +314,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             for (int i = renderers.Count - 1; i >= 0; --i)
             {
                 var _renderer = renderers[i];
-                if (Application.isPlaying && _renderer == null)
+                if (_renderer == null)
                 {
-                    RemoveRenderer(i);
+                    if (Application.isPlaying)
+                    {
+                        RemoveRenderer(i);
+                    }
                     continue;
                 }
 

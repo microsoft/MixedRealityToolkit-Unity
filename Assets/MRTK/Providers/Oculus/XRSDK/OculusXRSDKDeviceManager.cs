@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using UnityEngine;
 using UnityEngine.XR;
 
 #if OCULUS_ENABLED
@@ -13,7 +14,6 @@ using Unity.XR.Oculus;
 
 #if OCULUSINTEGRATION_PRESENT
 using System.Collections.Generic;
-using UnityEngine;
 #endif // OCULUSINTEGRATION_PRESENT
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
@@ -57,6 +57,8 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         private readonly Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
 
         private OVRCameraRig cameraRig;
+        private OVRControllerHelper leftControllerHelper;
+        private OVRControllerHelper rightControllerHelper;
 
         private OVRHand rightHand;
         private OVRSkeleton rightSkeleton;
@@ -94,9 +96,23 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
             GenericXRSDKController controller = base.GetOrAddController(inputDevice);
-            if (controller is OculusXRSDKTouchController oculusTouchController)
+
+            if (!cameraRig.IsNull() && controller is OculusXRSDKTouchController oculusTouchController && oculusTouchController.OculusControllerVisualization == null)
             {
-                oculusTouchController.UseMRTKControllerVisualization = cameraRig.IsNull();
+                GameObject platformVisualization = null; 
+                if (oculusTouchController.ControllerHandedness == Handedness.Left)
+                {
+                    platformVisualization = leftControllerHelper.gameObject;
+                }
+                if (oculusTouchController.ControllerHandedness == Handedness.Right)
+                {
+                    platformVisualization = rightControllerHelper.gameObject;
+                }
+
+                if(platformVisualization != null)
+                {
+                    oculusTouchController.RegisterControllerVisualization(platformVisualization);
+                }
             }
 
             return controller;
@@ -134,17 +150,17 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking))
             {
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
-                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) ||
+                    inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))
                 {
                     // If it's a hand with a reported handedness, assume articulated hand
                     return SupportedControllerType.ArticulatedHand;
                 }
             }
 
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
                 return SupportedControllerType.OculusTouch;
             }
@@ -154,7 +170,7 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
 
         #endregion Controller Utilities
 
-        private bool IsActiveLoader =>
+        private bool? IsActiveLoader =>
 #if OCULUS_ENABLED
             LoaderHelpers.IsLoaderActive<OculusLoader>();
 #else
@@ -164,18 +180,33 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         /// <inheritdoc/>
         public override void Enable()
         {
-            if (!IsActiveLoader)
+            if (!IsActiveLoader.HasValue)
+            {
+                IsEnabled = false;
+                EnableIfLoaderBecomesActive();
+                return;
+            }
+            else if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
             }
 
-            base.Enable();
-
 #if OCULUSINTEGRATION_PRESENT
             SetupInput();
             ConfigurePerformancePreferences();
 #endif // OCULUSINTEGRATION_PRESENT
+
+            base.Enable();
+        }
+
+        private async void EnableIfLoaderBecomesActive()
+        {
+            await new WaitUntil(() => IsActiveLoader.HasValue);
+            if (IsActiveLoader.Value)
+            {
+                Enable();
+            }
         }
 
 #if OCULUSINTEGRATION_PRESENT
@@ -232,21 +263,31 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
                 cameraRig.EnsureGameObjectIntegrity();
             }
 
-            bool useAvatarHands = SettingsProfile.RenderAvatarHandsInsteadOfController;
-            // If using Avatar hands, deactivate ovr controller rendering
-            foreach (var controllerHelper in cameraRig.gameObject.GetComponentsInChildren<OVRControllerHelper>())
-            {
-                controllerHelper.gameObject.SetActive(!useAvatarHands);
-            }
-
+            bool useAvatarHands = SettingsProfile.RenderAvatarHandsWithControllers;
+            // If using Avatar hands, initialize the local avatar controller
             if (useAvatarHands)
             {
-                // Initialize the local avatar controller
                 GameObject.Instantiate(SettingsProfile.LocalAvatarPrefab, cameraRig.trackingSpace);
             }
 
-            var ovrHands = cameraRig.GetComponentsInChildren<OVRHand>();
 
+            var ovrControllerHelpers = cameraRig.GetComponentsInChildren<OVRControllerHelper>();
+            foreach (var ovrControllerHelper in ovrControllerHelpers)
+            {
+                switch (ovrControllerHelper.m_controller)
+                {
+                    case OVRInput.Controller.LTouch:
+                        leftControllerHelper = ovrControllerHelper;
+                        break;
+                    case OVRInput.Controller.RTouch:
+                        rightControllerHelper = ovrControllerHelper;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            var ovrHands = cameraRig.GetComponentsInChildren<OVRHand>();
             foreach (var ovrHand in ovrHands)
             {
                 // Manage Hand skeleton data

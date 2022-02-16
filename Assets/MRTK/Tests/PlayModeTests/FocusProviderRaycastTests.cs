@@ -9,7 +9,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
 using System.Collections;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -19,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// This class is used to test that <see cref="Toolkit.Input.FocusProvider"/> raycasts are selecting the correct focus object.
     /// </summary>
-    public class FocusProviderRaycastTests
+    public class FocusProviderRaycastTests : BasePlayModeTests
     {
         private GameObject raycastTestPrefabInstance = null;
         private TestPointer pointer = null;
@@ -47,10 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        [UnitySetUp]
-        public IEnumerator SetupFocusProviderRaycastTests()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
 
             focusProvider = PlayModeTestUtilities.GetInputSystem().FocusProvider;
 
@@ -62,8 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        [UnityTearDown]
-        public IEnumerator ShutdownFocusProviderRaycastTests()
+        public override IEnumerator TearDown()
         {
             if (raycastTestPrefabInstance)
             {
@@ -75,8 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             focusProvider = null;
             pointer = null;
 
-            PlayModeTestUtilities.TearDown();
-            yield return null;
+            yield return base.TearDown();
         }
     }
 }

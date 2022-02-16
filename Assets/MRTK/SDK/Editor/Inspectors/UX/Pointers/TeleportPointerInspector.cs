@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
         private SerializedProperty rotationAmount;
         private SerializedProperty backStrafeActivationAngle;
         private SerializedProperty strafeAmount;
+        private SerializedProperty checkForFloorOnStrafe;
+        private SerializedProperty adjustHeightOnStrafe;
+        private SerializedProperty maxHeightChangeOnStrafe;
         private SerializedProperty upDirectionThreshold;
         private SerializedProperty lineColorHotSpot;
         private SerializedProperty validLayers;
@@ -42,11 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             rotationAmount = serializedObject.FindProperty("rotationAmount");
             backStrafeActivationAngle = serializedObject.FindProperty("backStrafeActivationAngle");
             strafeAmount = serializedObject.FindProperty("strafeAmount");
+            checkForFloorOnStrafe = serializedObject.FindProperty("checkForFloorOnStrafe");
+            adjustHeightOnStrafe = serializedObject.FindProperty("adjustHeightOnStrafe");
+            maxHeightChangeOnStrafe = serializedObject.FindProperty("maxHeightChangeOnStrafe");
             upDirectionThreshold = serializedObject.FindProperty("upDirectionThreshold");
             lineColorHotSpot = serializedObject.FindProperty("LineColorHotSpot");
             validLayers = serializedObject.FindProperty("ValidLayers");
             invalidLayers = serializedObject.FindProperty("InvalidLayers");
-
             pointerAudioSource = serializedObject.FindProperty("pointerAudioSource");
             teleportRequestedClip = serializedObject.FindProperty("teleportRequestedClip");
             teleportCompletedClip = serializedObject.FindProperty("teleportCompletedClip");
@@ -71,6 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
                 EditorGUILayout.PropertyField(rotationAmount);
                 EditorGUILayout.PropertyField(backStrafeActivationAngle);
                 EditorGUILayout.PropertyField(strafeAmount);
+                EditorGUILayout.PropertyField(checkForFloorOnStrafe);
+                if (checkForFloorOnStrafe.boolValue)
+                {
+                    EditorGUILayout.PropertyField(adjustHeightOnStrafe);
+                    EditorGUILayout.PropertyField(maxHeightChangeOnStrafe);
+                }
                 EditorGUILayout.PropertyField(upDirectionThreshold);
                 EditorGUILayout.PropertyField(lineColorHotSpot);
                 EditorGUILayout.PropertyField(validLayers);

@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SupportedUnityXRPipelines SupportedUnityXRPipelines { get; }
 
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         public MixedRealityControllerAttribute(
             SupportedControllerType supportedControllerType,

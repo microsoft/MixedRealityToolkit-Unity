@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         protected SerializedProperty enterPinchDistance;
         protected SerializedProperty exitPinchDistance;
 
-        private const string leapDocURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/cross-platform/leap-motion-mrtk";
+        private const string leapDocURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/supported-devices/leap-motion-mrtk";
 
         // Used for setting the leapVRDeviceOrigin object reference value
         Transform leapVRDeviceOriginTransform;
@@ -102,14 +102,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                         // Allow selection of the LeapVRDeviceOffsetMode if the LeapControllerOrientation is Headset
                         EditorGUILayout.PropertyField(leapVRDeviceOffsetMode);
 
-                        if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.ManualHeadOffset)
+                        if (leapVRDeviceOffsetMode.intValue == (int)LeapVRDeviceOffsetMode.ManualHeadOffset)
                         {
                             // Display the properties for editing the head offset 
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetY);
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetZ);
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetTiltX);
                         }
-                        else if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.Transform)
+                        else if (leapVRDeviceOffsetMode.intValue == (int)LeapVRDeviceOffsetMode.Transform)
                         {
                             // Display the transform property 
                             // EditorGUILayout.PropertyField() did not allow the setting the transform property in editor 

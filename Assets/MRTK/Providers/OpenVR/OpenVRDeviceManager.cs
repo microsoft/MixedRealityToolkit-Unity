@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 return SupportedControllerType.ViveWand;
             }
 
-            if (joystickName.Contains("Vive Knuckles"))
+            if (joystickName.Contains("Knuckles"))
             {
                 return SupportedControllerType.ViveKnuckles;
             }

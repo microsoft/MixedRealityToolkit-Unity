@@ -18,22 +18,8 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
-    class DisableEnableInputSystemTest
+    class DisableEnableInputSystemTest : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         [UnityTest]
         public IEnumerator DisableEnableInputSystem()
         {

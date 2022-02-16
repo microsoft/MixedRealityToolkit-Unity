@@ -142,6 +142,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ UNITY_UI_CLIP_RECT
             #pragma multi_compile _ _HOVER_LIGHT_MEDIUM _HOVER_LIGHT_HIGH
             #pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
@@ -183,9 +184,8 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _ENVIRONMENT_COLORING
             #pragma shader_feature _IGNORE_Z_SCALE
 
-            #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
-
             #include "UnityCG.cginc"
+            #include "UnityUI.cginc"
             #include "UnityStandardConfig.cginc"
             #include "UnityStandardUtils.cginc"
             #include "MixedRealityShaderUtils.cginc"
@@ -211,7 +211,13 @@ Shader "Mixed Reality Toolkit/Standard"
             #undef _WORLD_POSITION
 #endif
 
-#if defined(_ALPHATEST_ON) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
+#if defined(UNITY_UI_CLIP_RECT)
+            #define _LOCAL_POSITION
+#else
+            #undef _LOCAL_POSITION
+#endif
+
+#if defined(_ALPHATEST_ON) || defined(UNITY_UI_CLIP_RECT) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
             #define _ALPHA_CLIP
 #else
             #undef _ALPHA_CLIP
@@ -271,7 +277,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct v2f 
+            struct v2f
             {
                 float4 position : SV_POSITION;
 #if defined(_BORDER_LIGHT)
@@ -297,6 +303,9 @@ Shader "Mixed Reality Toolkit/Standard"
 #else
                 float3 worldPosition : TEXCOORD2;
 #endif
+#endif
+#if defined(_LOCAL_POSITION)
+                float3 localPosition : TEXCOORD7;
 #endif
 #if defined(_SCALE)
                 float3 scale : TEXCOORD3;
@@ -343,6 +352,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_ALPHA_CLIP)
             fixed _Cutoff;
+#endif
+
+#if defined(UNITY_UI_CLIP_RECT)
+            float4 _ClipRect;
 #endif
 
             fixed _Metallic;
@@ -441,7 +454,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_ROUND_CORNERS)
 #if defined(_INDEPENDENT_CORNERS)
-            float4 _RoundCornersRadius; 
+            float4 _RoundCornersRadius;
 #else
             fixed _RoundCornerRadius;
 #endif
@@ -458,7 +471,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT)
-            fixed _EdgeSmoothingValue;
+            float _EdgeSmoothingValue;
 #endif
 
 #if defined(_INNER_GLOW)
@@ -515,7 +528,7 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 float proximityLightDistance = dot(proximityLight.xyz - worldPosition, worldNormal);
 #if defined(_PROXIMITY_LIGHT_TWO_SIDED)
-                worldNormal = IF(proximityLightDistance < 0.0, -worldNormal, worldNormal);
+                worldNormal = proximityLightDistance < 0.0 ? -worldNormal : worldNormal;
                 proximityLightDistance = abs(proximityLightDistance);
 #endif
                 float normalizedProximityLightDistance = saturate(proximityLightDistance * proximityLightParams.y);
@@ -541,12 +554,12 @@ Shader "Mixed Reality Toolkit/Standard"
                 return length(max(abs(position) - cornerCircleDistance, 0.0)) - cornerCircleRadius;
             }
 
-            inline fixed RoundCornersSmooth(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
+            inline float RoundCornersSmooth(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
             {
                 return smoothstep(1.0, 0.0, PointVsRoundedBox(position, cornerCircleDistance, cornerCircleRadius) / _EdgeSmoothingValue);
             }
 
-            inline fixed RoundCorners(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
+            inline float RoundCorners(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
             {
 #if defined(_TRANSPARENT)
                 return RoundCornersSmooth(position, cornerCircleDistance, cornerCircleRadius);
@@ -623,6 +636,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 o.worldPosition.xyz = worldVertexPosition;
 #endif
 
+#if defined(_LOCAL_POSITION)
+                o.localPosition.xyz = vertexPosition;
+#endif
+
 #if defined(_NEAR_PLANE_FADE)
                 float rangeInverse = 1.0 / (_FadeBeginDistance - _FadeCompleteDistance);
 #if defined(_NEAR_LIGHT_FADE)
@@ -649,7 +666,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_BORDER_LIGHT) || defined(_ROUND_CORNERS)
                 o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
-   
+
                 float minScale = min(min(o.scale.x, o.scale.y), o.scale.z);
 
 #if defined(_BORDER_LIGHT) 
@@ -704,8 +721,8 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_BORDER_LIGHT) 
                 float scaleRatio = min(o.scale.x, o.scale.y) / max(o.scale.x, o.scale.y);
-                o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
-                o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
+                o.uv.z = o.scale.x > o.scale.y ? 1.0 - (borderWidth * scaleRatio) : 1.0 - borderWidth;
+                o.uv.w = o.scale.x > o.scale.y ? 1.0 - borderWidth : 1.0 - (borderWidth * scaleRatio);
 #endif
 #elif defined(_UV)
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
@@ -779,8 +796,8 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed4 albedo = fixed4(1.0, 1.0, 1.0, 1.0);
 #else
 #if defined(_TRIPLANAR_MAPPING)
-                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
-                                tex2D(_MainTex, uvY) * triplanarBlend.y + 
+                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x +
+                                tex2D(_MainTex, uvY) * triplanarBlend.y +
                                 tex2D(_MainTex, uvZ) * triplanarBlend.z;
 #else
 #if defined(_USE_SSAA)
@@ -841,7 +858,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #if defined(_CLIPPING_BORDER)
                 fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
-                albedo.rgb += primitiveBorderColor * IF((primitiveDistance < _ClippingBorderWidth), 1.0, 0.0);
+                albedo.rgb += primitiveBorderColor * (primitiveDistance < _ClippingBorderWidth ? 1.0 : 0.0);
 #endif
 #endif
 
@@ -994,13 +1011,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_BORDER_LIGHT)
                 fixed borderValue;
 #if defined(_ROUND_CORNERS)
-                fixed borderMargin = _RoundCornerMargin  + _BorderWidth * 0.5;
+                fixed borderMargin = _RoundCornerMargin + _BorderWidth * 0.5;
 
                 cornerCircleRadius = saturate(max(currentCornerRadius - borderMargin, 0.01)) * i.scale.z;
 
                 cornerCircleDistance = halfScale - (borderMargin * i.scale.z) - cornerCircleRadius;
 
-                borderValue =  1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
+                borderValue = 1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #else
                 borderValue = max(smoothstep(i.uv.z - _EdgeSmoothingValue, i.uv.z + _EdgeSmoothingValue, distanceToEdge.x),
                                   smoothstep(i.uv.w - _EdgeSmoothingValue, i.uv.w + _EdgeSmoothingValue, distanceToEdge.y));
@@ -1027,6 +1044,10 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_ROUND_CORNERS)
                 albedo *= roundCornerClip;
                 pointToLight *= roundCornerClip;
+#endif
+
+#ifdef UNITY_UI_CLIP_RECT
+                albedo.a *= UnityGet2DClipping(i.localPosition.xy, _ClipRect);
 #endif
 
 #if defined(_ALPHA_CLIP)
@@ -1129,7 +1150,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 // Environment coloring.
 #if defined(_ENVIRONMENT_COLORING)
                 fixed3 environmentColor = incident.x * incident.x * _EnvironmentColorX +
-                                          incident.y * incident.y * _EnvironmentColorY + 
+                                          incident.y * incident.y * _EnvironmentColorY +
                                           incident.z * incident.z * _EnvironmentColorZ;
                 output.rgb += environmentColor * max(0.0, dot(incident, worldNormal) + _EnvironmentColorThreshold) * _EnvironmentColorIntensity;
 
@@ -1232,7 +1253,7 @@ Shader "Mixed Reality Toolkit/Standard"
             ENDCG
         }
     }
-    
+
     Fallback "Hidden/InternalErrorShader"
     CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI"
 }
