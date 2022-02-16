@@ -15,13 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     public class ProgressIndicatorDemoAsyncMethod : MonoBehaviour, IProgressIndicatorDemoObject
     {
         [SerializeField]
-        private GameObject progressIndicatorObject;
+        private GameObject progressIndicatorObject = null;
         [SerializeField, Range(0.5f, 10f)]
         private float asyncTaskDuration = 5f;
         [SerializeField]
-        private AnimationCurve coffeeCurve;
+        private AnimationCurve coffeeCurve = null;
         [SerializeField]
-        private Transform coffeeTransform;
+        private Transform coffeeTransform = null;
 
         private IProgressIndicator progressIndicator;
         private CancellationTokenSource tokenSource;

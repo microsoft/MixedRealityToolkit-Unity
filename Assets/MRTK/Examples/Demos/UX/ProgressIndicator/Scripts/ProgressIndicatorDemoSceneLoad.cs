@@ -16,9 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     public class ProgressIndicatorDemoSceneLoad : MonoBehaviour, IProgressIndicatorDemoObject
     {
         [SerializeField]
-        private GameObject progressIndicatorObject;
+        private GameObject progressIndicatorObject = null;
         [SerializeField]
-        private SceneInfo sceneToLoad;
+        private SceneInfo sceneToLoad = null;;
         [SerializeField, Range(0f, 5f)]
         private float loadDelay = 2.5f;
 
@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             indicator.Message = "Preparing for scene operation...";
             await indicator.OpenAsync();
 
-            Task sceneTask = null;
-            string progressMessage = string.Empty;
+            Task sceneTask;
+            string progressMessage;
 
             // A scene this small will load almost instantly, so we're doing a delay so the indicator is visible
             float timeStarted = Time.time;

@@ -12,9 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         const string animationName = "PIDemoAnimationPlay";
 
         [SerializeField]
-        private GameObject progressIndicatorObject;
+        private GameObject progressIndicatorObject = null;
         [SerializeField]
-        private Animator animator;
+        private Animator animator = null;
 
         private IProgressIndicator progressIndicator;
 
