@@ -219,10 +219,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             // Create a pivot object to contain the sliders and aide in non-uniform scaling. 
             pivot = new GameObject($"{nameof(PinchSliderBox)}Pivot").transform;
-            pivot.parent = scaleConstraint.TargetTransform.parent;
-            pivot.localPosition = scaleConstraint.TargetTransform.localPosition;
-            pivot.localRotation = scaleConstraint.TargetTransform.localRotation;
-            scaleConstraint.TargetTransform.parent = pivot;
+            pivot.parent = scaleConstraint.transform.parent;
+            pivot.localPosition = scaleConstraint.transform.localPosition;
+            pivot.localRotation = scaleConstraint.transform.localRotation;
+            scaleConstraint.transform.parent = pivot;
 
             // Create an axis highlight game object to toggle when sliders are hovered upon.
             if (hightlightPrefab != null)
@@ -259,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 // Restore the original parent. Unity will present a warning if parents are altered when quitting.
                 if (!quitting)
                 {
-                    scaleConstraint.TargetTransform.parent = pivot.parent;
+                    scaleConstraint.transform.parent = pivot.parent;
                 }
 
                 Destroy(pivot.gameObject);
@@ -321,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             slider.transform.parent = pivot;
 
             // Calculates a normal to the pinch slider axis to place the slider at.
-            var targetTransform = scaleConstraint.TargetTransform;
+            var targetTransform = scaleConstraint.transform;
             var axisNormal = GetSliderAxisDirection(CalculateAxisNormal(axis));
             var axisNormalHalfScale = CalculateAxisHalfScale(targetTransform, axisNormal);
             slider.transform.position = CalculateSliderPosition(targetTransform, axisNormal, axisNormalHalfScale, globalDirection);
@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             var scaleMin = scaleConstraint.ScaleMinimumVector[axisIndex];
             var scaleMax = scaleConstraint.ScaleMaximumVector[axisIndex];
             var scaleRange = scaleMax - scaleMin;
-            var targetTransform = scaleConstraint.TargetTransform;
+            var targetTransform = scaleConstraint.transform;
 
             // Update scale.
             var scale = targetTransform.localScale;
@@ -479,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 var sliderPair = sliderToPlane[data.Slider].GetSliderPair(data.Slider);
                 var direction = (sliderPair.Sliders[PositiveIndex] == data.Slider) ? 1.0f : -1.0f;
 
-                axisHighlight.parent = scaleConstraint.TargetTransform;
+                axisHighlight.parent = scaleConstraint.transform;
                 axisHighlight.localPosition = axis * 0.5f * direction;
                 axisHighlight.localRotation = Quaternion.LookRotation(axis, axisType == SliderAxis.YAxis ? Vector3.right : Vector3.up);
                 axisHighlight.localScale = Vector3.one;
