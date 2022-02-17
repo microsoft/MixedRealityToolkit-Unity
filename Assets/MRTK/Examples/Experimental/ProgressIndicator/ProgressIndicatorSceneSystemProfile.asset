@@ -24,7 +24,13 @@ MonoBehaviour:
   useLightingScene: 0
   defaultLightingSceneIndex: -1
   lightingScenes: []
-  contentScenes: []
+  contentScenes:
+  - Name: ProgressIndicatorExamplesAdditiveLoad
+    Path: Assets/MRTK/Examples/Demos/UX/ProgressIndicator/Scenes/ProgressIndicatorExamplesAdditiveLoad.unity
+    Included: 0
+    BuildIndex: -1
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 6656338ce09c49d4cbeb765266d02fb9, type: 3}
   permittedLightingSceneComponentTypes:
   - reference: UnityEngine.Transform, UnityEngine.CoreModule
   - reference: UnityEngine.GameObject, UnityEngine.CoreModule
