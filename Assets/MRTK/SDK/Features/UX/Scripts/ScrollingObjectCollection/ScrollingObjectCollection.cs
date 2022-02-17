@@ -1703,7 +1703,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             clippedRenderers.UnionWith(ClipBox.GetRenderersCopy());
 
             // Remove all renderers from clipping primitive that are not part of scroll content
-            var clippedRenderers = ClipBox.Renderers;
             foreach (var clippedRenderer in clippedRenderers)
             {
                 if (clippedRenderer != null && !clippedRenderer.transform.IsChildOf(ScrollContainer.transform))

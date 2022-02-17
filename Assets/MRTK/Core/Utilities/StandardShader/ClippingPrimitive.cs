@@ -172,25 +172,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Removes a renderer to the list of objects this clipping primitive clips.
         /// </summary>
-        public void RemoveRenderer(Renderer _renderer)
+        public void RemoveRenderer(Renderer _renderer, bool autoDestroyMaterial = true)
         {
-            int index = renderers.IndexOf(_renderer);
-            if (index >= 0)
+            if (_renderer != null)
             {
-                RemoveRenderer(index);
-            }
-        }
-
-        private void RemoveRenderer(int index, bool autoDestroyMaterial = true)
-        {
-            if (renderer != null)
-            {
-                renderers.TryGetValue(renderer, out MaterialInstance materialInstance);
-                renderers.Remove(renderer);
-
-                if (materialInstance != null)
+                if (renderers.TryGetValue(_renderer, out MaterialInstance materialInstance))
                 {
-                    materialInstance.ReleaseMaterial(this, autoDestroyMaterial);
+                    renderers.Remove(_renderer);
+
+                    if (materialInstance != null)
+                    {
+                        // There is no need to acquire new instances if ones do not already exist since we are
+                        // in the process of removing.
+                        ToggleClippingFeature(AcquireMaterials(_renderer, instance: false), false);
+                        materialInstance.ReleaseMaterial(this, autoDestroyMaterial);
+                    }
                 }
             }
         }
@@ -205,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 renderersCache.AddRange(renderers.Keys);
                 foreach (var renderer in renderersCache)
                 {
-                    RemoveRenderer(renderers.Count - 1, autoDestroyMaterial);
+                    RemoveRenderer(renderer, autoDestroyMaterial);
                 }
 
                 renderersCache.Clear();
@@ -332,12 +328,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             renderersCache.AddRange(renderers.Keys);
             foreach (var cachedRenderer in renderersCache)
             {
-                var _renderer = renderers[i];
-                if (_renderer == null)
+                if (cachedRenderer == null)
                 {
                     if (Application.isPlaying)
                     {
-                        RemoveRenderer(i);
+                        RemoveRenderer(cachedRenderer);
                     }
                     continue;
                 }
