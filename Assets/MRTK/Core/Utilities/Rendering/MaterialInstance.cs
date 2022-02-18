@@ -99,12 +99,45 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// <summary>
         /// Returns the first instantiated Material assigned to the renderer, similar to <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see>.
         /// </summary>
-        public Material Material => AcquireMaterial();
+        public Material Material
+        {
+            get { return AcquireMaterial(); }
+        }
 
         /// <summary>
         /// Returns all the instantiated materials of this object, similar to <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>.
         /// </summary>
-        public Material[] Materials => AcquireMaterials();
+        public Material[] Materials
+        {
+            get { return AcquireMaterials(); }
+        }
+
+        /// <summary>
+        /// Whether to use a cached copy of cachedRenderer.sharedMaterials or call sharedMaterials on the Renderer directly.
+        /// Enabling the option will lead to better performance but you must turn it off before modifying sharedMaterials of the Renderer.
+        /// </summary>
+        public bool CacheSharedMaterialsFromRenderer
+        {
+            get
+            {
+                return cacheSharedMaterialsFromRenderer;
+            }
+            set
+            {
+                if (cacheSharedMaterialsFromRenderer != value)
+                {
+                    if (value)
+                    {
+                        cachedSharedMaterials = CachedRenderer.sharedMaterials;
+                    }
+                    else
+                    {
+                        cachedSharedMaterials = null;
+                    }
+                    cacheSharedMaterialsFromRenderer = value;
+                }
+            }
+        }
 
         private Renderer CachedRenderer
         {
@@ -113,21 +146,39 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 if (cachedRenderer == null)
                 {
                     cachedRenderer = GetComponent<Renderer>();
-                    cachedSharedMaterials = cachedRenderer.sharedMaterials;
-
-                    return cachedRenderer;
+                    if (CacheSharedMaterialsFromRenderer)
+                    {
+                        cachedSharedMaterials = cachedRenderer.sharedMaterials;
+                    }
                 }
 
                 return cachedRenderer;
             }
         }
 
-        private Material[] CachedSharedMaterials
+        private Material[] CachedRendererSharedMaterials
         {
-            get => cachedSharedMaterials;
+            get
+            {
+                if (CacheSharedMaterialsFromRenderer)
+                {
+                    if (cachedSharedMaterials == null)
+                    {
+                        cachedSharedMaterials = cachedRenderer.sharedMaterials;
+                    }
+                    return cachedSharedMaterials;
+                }
+                else
+                {
+                    return cachedRenderer.sharedMaterials;
+                }
+            }
             set
             {
-                cachedSharedMaterials = value;
+                if (CacheSharedMaterialsFromRenderer)
+                {
+                    cachedSharedMaterials = value;
+                }
                 cachedRenderer.sharedMaterials = value;
             }
         }
@@ -141,6 +192,10 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private Material[] cachedSharedMaterials = null;
         private bool initialized = false;
         private bool materialsInstanced = false;
+        [SerializeField]
+        [Tooltip("Whether to use a cached copy of cachedRenderer.sharedMaterials or call sharedMaterials on the Renderer directly. " +
+            "Enabling the option will lead to better performance but you must turn it off before modifying sharedMaterials of the Renderer.")]
+        private bool cacheSharedMaterialsFromRenderer = false;
         private readonly HashSet<Object> materialOwners = new HashSet<Object>();
 
         private const string instancePostfix = " (Instance)";
@@ -155,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private void Update()
         {
             // If the materials get changed via outside of MaterialInstance.
-            var sharedMaterials = CachedSharedMaterials;
+            var sharedMaterials = CachedRendererSharedMaterials;
 
             if (!MaterialsMatch(sharedMaterials, instanceMaterials))
             {
@@ -200,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (CachedRenderer != null && defaultMaterials != null)
             {
-                CachedSharedMaterials = defaultMaterials;
+                CachedRendererSharedMaterials = defaultMaterials;
             }
 
             DestroyMaterials(instanceMaterials);
@@ -217,11 +272,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 // Cache the default materials if ones do not already exist.
                 if (!HasValidMaterial(defaultMaterials))
                 {
-                    defaultMaterials = CachedSharedMaterials;
+                    defaultMaterials = CachedRendererSharedMaterials;
                 }
                 else if (!materialsInstanced) // Restore the clone to its initial state.
                 {
-                    CachedSharedMaterials = defaultMaterials;
+                    CachedRendererSharedMaterials = defaultMaterials;
                 }
 
                 initialized = true;
@@ -232,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (CachedRenderer != null)
             {
-                if (!MaterialsMatch(CachedSharedMaterials, instanceMaterials))
+                if (!MaterialsMatch(CachedRendererSharedMaterials, instanceMaterials))
                 {
                     CreateInstances();
                 }
@@ -249,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
             if (CachedRenderer != null && instanceMaterials != null)
             {
-                CachedSharedMaterials = instanceMaterials;
+                CachedRendererSharedMaterials = instanceMaterials;
             }
 
             materialsInstanced = true;

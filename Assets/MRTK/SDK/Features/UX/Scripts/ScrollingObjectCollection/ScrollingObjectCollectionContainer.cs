@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     ///     It's main purpose is to find and cache those Components.
     ///     Thanks to that we don't have to run GetComponentsInChildren every frame. 
     /// </summary>
+    [ExecuteAlways]
     public class ScrollingObjectCollectionContainer : MonoBehaviour
     {
         [SerializeField]
@@ -50,6 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        private void Awake()
+        {
+            UpdateChildren();
+        }
+
         public void UpdateChildren()
         {
             ItemRenderersMap = new Dictionary<GameObject, Renderer[]>();
@@ -76,13 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             var componentsInChildren = child.GetComponentsInChildren<T>(true);
-            if (collection.ContainsKey(child))
-            {
-                collection[child] = componentsInChildren;
-                return;
-            }
-
-            collection.Add(child, componentsInChildren);
+            collection[child] = componentsInChildren;
         }
     }
 }
