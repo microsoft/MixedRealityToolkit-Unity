@@ -1720,7 +1720,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ClippingBoundsCollider.enabled = true;
             
             clippedRenderers.Clear();
-            clippedRenderers.UnionWith(ClipBox.GetRenderersCopy());
+            clippedRenderers.UnionWith(ClipBox.GetRenderersReadOnlyCopy());
 
             // Remove all renderers from clipping primitive that are not part of scroll content
             foreach (var clippedRenderer in clippedRenderers)
