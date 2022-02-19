@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    ///     Container for all renderers and colliders used in the ScrollingObjectCollection.
-    ///     It's main purpose is to find and cache those Components.
-    ///     Thanks to that we don't have to run GetComponentsInChildren every frame. 
+    /// Container for all renderers and colliders used in the ScrollingObjectCollection.
+    /// It's main purpose is to find and cache those Components.
+    /// Thanks to that we don't have to run GetComponentsInChildren every frame. 
     /// </summary>
     [ExecuteAlways]
     public class ScrollingObjectCollectionContainer : MonoBehaviour
@@ -15,19 +18,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private GameObject[] children;
 
         /// <summary>
-        ///     Dictionary containing ScrollingObjectCollection's items child renderers.
+        /// Dictionary containing ScrollingObjectCollection's items child renderers.
         /// </summary>
         public Dictionary<GameObject, Renderer[]> ItemRenderersMap { get; private set; } 
             = new Dictionary<GameObject, Renderer[]>();
 
         /// <summary>
-        ///     Dictionary containing ScrollingObjectCollection's items child colliders.
+        /// Dictionary containing ScrollingObjectCollection's items child colliders.
         /// </summary>
         public Dictionary<GameObject, Collider[]> ItemCollidersMap { get; private set; } 
             = new Dictionary<GameObject, Collider[]>();
 
         /// <summary>
-        ///     Position of the Container.
+        /// Position of the Container.
         /// </summary>
         public Vector3 LocalPosition
         {
@@ -43,8 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (children == null || children.Length != childCount)
                 {
                     children = new GameObject[childCount];
-                    for (var i = 0; i < children.Length; ++i)
-                        children[i] = transform.GetChild(i).gameObject;
+                }
+                for (var i = 0; i < children.Length; ++i)
+                {
+                    children[i] = transform.GetChild(i).gameObject;
                 }
 
                 return children;
@@ -67,12 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             foreach (var child in Children)
             {
-                AddItem(child, ItemRenderersMap);
-                AddItem(child, ItemCollidersMap);
+                UpdateComponentMap(child, ItemRenderersMap);
+                UpdateComponentMap(child, ItemCollidersMap);
             }
         }
         
-        private static void AddItem<T>(GameObject child, IDictionary<GameObject, T[]> collection) where T : Component
+        private static void UpdateComponentMap<T>(GameObject child, IDictionary<GameObject, T[]> collection) where T : Component
         {
             if (!child)
             {
