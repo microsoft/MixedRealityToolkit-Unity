@@ -242,6 +242,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return new List<Renderer>(renderers);
         }
 
+        /// <summary>
+        /// Returns a copy of the current list of renderers.
+        /// </summary>
+        /// <returns>The current list of renderers.</returns>
+        public IEnumerable<Renderer> GetRenderersReadOnlyCopy()
+        {
+            return renderers.AsReadOnly();
+        }
+
         #region MonoBehaviour Implementation
 
         protected void Awake()
