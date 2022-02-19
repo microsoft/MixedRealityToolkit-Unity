@@ -1774,7 +1774,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
 
                     // All content renderers should be added to clipping primitive
-                    if (!isRestoringVisibility && MaskEnabled)
+                    if (!isRestoringVisibility && MaskEnabled && !clippedRenderers.Contains(renderer))
                     {
                         renderersToClip.Add(renderer);
                     }
