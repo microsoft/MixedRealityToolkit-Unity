@@ -815,7 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 wasGravity = rigidBody.useGravity;
                 wasKinematic = rigidBody.isKinematic;
                 rigidBody.useGravity = false;
-                rigidBody.isKinematic = false;
+                rigidBody.isKinematic = true;
             }
 
             if (EnableConstraints && constraintsManager != null)
