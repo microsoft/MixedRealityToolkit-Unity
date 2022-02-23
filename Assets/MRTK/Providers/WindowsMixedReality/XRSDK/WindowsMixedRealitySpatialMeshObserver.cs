@@ -64,20 +64,23 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
             using (ConfigureObserverVolumePerfMarker.Auto())
             {
+                Vector3 observerOriginPlayspace = MixedRealityPlayspace.InverseTransformPoint(ObserverOrigin);
+
                 // Update the observer
                 switch (ObserverVolumeType)
                 {
                     case VolumeType.AxisAlignedCube:
-                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
+                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolume(observerOriginPlayspace, ObservationExtents);
                         break;
 #if WMR_ENABLED
                     case VolumeType.Sphere:
                         // We use the x value of the extents as the sphere radius
-                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeSphere(ObserverOrigin, ObservationExtents.x);
+                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeSphere(observerOriginPlayspace, ObservationExtents.x);
                         break;
 
                     case VolumeType.UserAlignedCube:
-                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
+                        Quaternion observerRotationPlayspace = Quaternion.Inverse(MixedRealityPlayspace.Rotation) * ObserverRotation;
+                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeOrientedBox(observerOriginPlayspace, ObservationExtents, observerRotationPlayspace);
                         break;
 #endif // WMR_ENABLED
                     default:
