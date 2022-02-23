@@ -15,17 +15,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private static readonly Dictionary<GestureId, string> GesturePoseJSONMapping = new Dictionary<GestureId, string>()
         {
-            { GestureId.Flat, ArticulatedHandPose_Flat},
-            { GestureId.Grab, ArticulatedHandPose_Grab},
-            { GestureId.Open, ArticulatedHandPose_Open},
-            { GestureId.OpenSteadyGrabPoint, ArticulatedHandPose_OpenSteadyGrabPoint},
-            { GestureId.Pinch, ArticulatedHandPose_Pinch},
-            { GestureId.PinchSteadyWrist, ArticulatedHandPose_PinchSteadyWrist},
+            { GestureId.Flat, ArticulatedHandPose_Flat },
+            { GestureId.Grab, ArticulatedHandPose_Grab },
+            { GestureId.Open, ArticulatedHandPose_Open },
+            { GestureId.OpenSteadyGrabPoint, ArticulatedHandPose_OpenSteadyGrabPoint },
+            { GestureId.Pinch, ArticulatedHandPose_Pinch },
+            { GestureId.PinchSteadyWrist, ArticulatedHandPose_PinchSteadyWrist },
             { GestureId.Poke, ArticulatedHandPose_Poke },
-            { GestureId.ThumbsUp, ArticulatedHandPose_ThumbsUp},
-            { GestureId.Victory, ArticulatedHandPose_Victory},
-            { GestureId.TeleportStart, ArticulatedHandPose_TeleportStart},
-            { GestureId.TeleportEnd, ArticulatedHandPose_TeleportEnd}
+            { GestureId.ThumbsUp, ArticulatedHandPose_ThumbsUp },
+            { GestureId.Victory, ArticulatedHandPose_Victory },
+            { GestureId.TeleportStart, ArticulatedHandPose_TeleportStart },
+            { GestureId.TeleportEnd, ArticulatedHandPose_TeleportEnd }
         };
 
         private static Dictionary<GestureId, ArticulatedHandPose> gesturePoses;

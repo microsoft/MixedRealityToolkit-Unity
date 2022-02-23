@@ -36,4 +36,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         LegacyXR = 1 << 0,
         XRSDK = 1 << 1,
     }
+
+    /// <summary>
+    /// Extension methods specific to the <see cref="SupportedUnityXRPipelines"/> enum.
+    /// </summary>
+    public static class SupportedUnityXRPipelinesExtensions
+    {
+        /// <summary>
+        /// Checks to determine if all bits in a provided mask are set.
+        /// </summary>
+        /// <param name="a"><see cref="SupportedUnityXRPipelines"/> value.</param>
+        /// <param name="b"><see cref="SupportedUnityXRPipelines"/> mask.</param>
+        /// <returns>
+        /// True if all of the bits in the specified mask are set in the current value.
+        /// </returns>
+        public static bool IsMaskSet(this SupportedUnityXRPipelines a, SupportedUnityXRPipelines b)
+        {
+            return (a & b) == b;
+        }
+    }
 }

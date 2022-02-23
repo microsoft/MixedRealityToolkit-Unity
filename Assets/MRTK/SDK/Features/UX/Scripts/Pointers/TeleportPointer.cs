@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         [SerializeField]
         [Tooltip("The distance to move the camera when the strafe is activated")]
         internal float strafeAmount = 0.25f;
-        
+
         [SerializeField]
         [Tooltip("Whether or not a strafe checks that there is a floor beneath the user's origin on strafe")]
         internal bool checkForFloorOnStrafe = false;
@@ -195,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     await new WaitUntil(() => CoreServices.TeleportSystem != null);
 
                     // We've been destroyed during the await.
-                    if (this == null)
+                    if (this.IsNull())
                     {
                         return;
                     }

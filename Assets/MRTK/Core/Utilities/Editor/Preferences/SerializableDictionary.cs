@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [SerializeField]
         private List<TValue> values = new List<TValue>();
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             keys.Clear();
             values.Clear();
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             this.Clear();
 

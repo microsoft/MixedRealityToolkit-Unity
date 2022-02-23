@@ -150,6 +150,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                         {
                             interactionMapping.BoolData = buttonPressed;
                         }
+                        else
+                        {
+                            base.UpdateButtonData(interactionMapping, inputDevice);
+                            return;
+                        }
                         break;
                     default:
                         base.UpdateButtonData(interactionMapping, inputDevice);

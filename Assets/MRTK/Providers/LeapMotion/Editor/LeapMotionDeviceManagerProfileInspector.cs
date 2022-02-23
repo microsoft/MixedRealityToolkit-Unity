@@ -102,14 +102,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                         // Allow selection of the LeapVRDeviceOffsetMode if the LeapControllerOrientation is Headset
                         EditorGUILayout.PropertyField(leapVRDeviceOffsetMode);
 
-                        if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.ManualHeadOffset)
+                        if (leapVRDeviceOffsetMode.intValue == (int)LeapVRDeviceOffsetMode.ManualHeadOffset)
                         {
                             // Display the properties for editing the head offset 
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetY);
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetZ);
                             EditorGUILayout.PropertyField(leapVRDeviceOffsetTiltX);
                         }
-                        else if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.Transform)
+                        else if (leapVRDeviceOffsetMode.intValue == (int)LeapVRDeviceOffsetMode.Transform)
                         {
                             // Display the transform property 
                             // EditorGUILayout.PropertyField() did not allow the setting the transform property in editor 

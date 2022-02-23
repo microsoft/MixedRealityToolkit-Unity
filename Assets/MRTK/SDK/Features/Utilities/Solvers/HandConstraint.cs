@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (SolverHandler.TrackedTargetType != TrackedObjectType.HandJoint &&
                 SolverHandler.TrackedTargetType != TrackedObjectType.ControllerRay)
             {
-                Debug.LogWarning("Solver HandConstraint requires TrackedObjectType of type HandJoint or ControllerRay");
+                // Requires HandJoint or ControllerRay target type.
                 return;
             }
 
@@ -705,6 +705,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             trackedController = null;
             OnLastHandLost.Invoke();
             OnHandDeactivate.Invoke();
+
+            if (SolverHandler.TrackedTargetType != TrackedObjectType.HandJoint &&
+                SolverHandler.TrackedTargetType != TrackedObjectType.ControllerRay)
+            {
+                Debug.LogWarning("Solver HandConstraint requires TrackedObjectType of type HandJoint or ControllerRay.");
+            }
         }
 
         #endregion MonoBehaviour Implementation
