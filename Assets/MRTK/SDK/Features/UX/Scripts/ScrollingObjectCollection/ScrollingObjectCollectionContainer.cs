@@ -63,13 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void UpdateChildren()
         {
-            ItemRenderersMap = new Dictionary<GameObject, Renderer[]>();
-            ItemCollidersMap = new Dictionary<GameObject, Collider[]>();
             OnTransformChildrenChanged();
         }
         
         private void OnTransformChildrenChanged()
         {
+            ItemRenderersMap = new Dictionary<GameObject, Renderer[]>();
+            ItemCollidersMap = new Dictionary<GameObject, Collider[]>();
             foreach (var child in Children)
             {
                 UpdateComponentMap(child, ItemRenderersMap);
