@@ -522,6 +522,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var uwpBuildInfo = buildInfo as UwpBuildInfo;
 
             Debug.Assert(uwpBuildInfo != null);
+
+            // Here, ResearchModeCapability must come first, in order to avoid schema errors
+            // See https://docs.microsoft.com/windows/uwp/packaging/app-capability-declarations#restricted-capabilities
+            if (uwpBuildInfo.ResearchModeCapabilityEnabled
+#if !UNITY_2021_2_OR_NEWER
+                && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
+#endif // !UNITY_2021_2_OR_NEWER
+            )
+            {
+                AddResearchModeCapability(rootElement);
+            }
+
             if (uwpBuildInfo.DeviceCapabilities != null)
             {
                 AddCapabilities(rootElement, uwpBuildInfo.DeviceCapabilities);
@@ -529,15 +541,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (uwpBuildInfo.GazeInputCapabilityEnabled)
             {
                 AddGazeInputCapability(rootElement);
-            }
-
-            if (uwpBuildInfo.ResearchModeCapabilityEnabled
-#if !UNITY_2021_2_OR_NEWER
-                && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
-#endif // !UNITY_2021_2_OR_NEWER
-                )
-            {
-                AddResearchModeCapability(rootElement);
             }
 
             rootElement.Save(manifestFilePath);
