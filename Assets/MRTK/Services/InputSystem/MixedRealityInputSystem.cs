@@ -9,7 +9,6 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK")]
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
