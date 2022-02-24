@@ -363,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected virtual void UpdateRenderers()
         {
-            if (renderers.Count == 0) { return; }
+            if (renderers == null || renderers.Count == 0) { return; }
 
             CheckTransformChange();
             if (!IsDirty) { return; }
@@ -398,6 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected void ToggleClippingFeature(bool keywordOn)
         {
             if (renderers.Count > 0)
+            {
                 foreach (var cachedRenderer in renderers)
                 {
                     if (cachedRenderer != null)
@@ -405,6 +406,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         ToggleClippingFeature(AcquireMaterials(cachedRenderer), keywordOn);
                     }
                 }
+            }
         }
 
         protected void ToggleClippingFeature(Material[] materials, bool keywordOn)

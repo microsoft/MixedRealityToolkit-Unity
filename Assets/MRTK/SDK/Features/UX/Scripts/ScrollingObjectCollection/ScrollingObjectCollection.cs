@@ -566,7 +566,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
-        
+
         private BoxCollider scrollingCollider;
         /// <summary>
         /// Scrolling interaction collider used to catch pointer and touch events on empty spaces.
@@ -1479,10 +1479,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                         else
                         {
-                        avgVelocity *= velocityDampen;
-                        workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
+                            avgVelocity *= velocityDampen;
+                            workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
 
-                        SnapVelocityFinish();
+                            SnapVelocityFinish();
                         }
                     }
 
