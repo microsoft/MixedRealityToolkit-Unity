@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// Destroys all sliders created with CreateSliders and restores the 
-        /// [MinMaxScaleConstraint](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint)'s TargetTransform's parent.
+        /// <see cref="MinMaxScaleConstraint"/>'s TargetTransform's parent.
         /// </summary>
         public void DestroyHandles()
         {
