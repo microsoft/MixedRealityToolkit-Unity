@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
     /// Manages and creates sliders to allow for non-uniform scaling of a box along multiple axes.
-    /// The [MinMaxScaleConstraint](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) is 
+    /// The <see cref="MinMaxScaleConstraint"/> is 
     /// used to control the target of the scale and scale constraints.
     /// </summary>
     [RequireComponent(typeof(MinMaxScaleConstraint))]
