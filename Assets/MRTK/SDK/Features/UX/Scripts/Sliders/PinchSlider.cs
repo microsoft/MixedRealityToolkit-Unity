@@ -57,7 +57,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool SnapToPosition
         {
             get { return snapToPosition; }
-            set { snapToPosition = value; touchCollider.enabled = value; thumbCollider.enabled = !value; }
+            set 
+            { 
+                snapToPosition = value;
+                if (!touchCollider.IsNull())
+                {
+                    touchCollider.enabled = value;
+                }
+                if (!thumbCollider.IsNull())
+                {
+                    thumbCollider.enabled = !value;
+                }
+            }
         }
 
         [SerializeField]
