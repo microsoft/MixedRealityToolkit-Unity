@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// Creates sliders for each requested axis of the box. A pivot object is also created and 
-        /// made the parent of the [MinMaxScaleConstraint](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) TargetTransform.
+        /// made the parent of the <see cref="MinMaxScaleConstraint"/> TargetTransform.
         /// </summary>
         [ContextMenu("Create Sliders")]
         public void CreateSliders()
