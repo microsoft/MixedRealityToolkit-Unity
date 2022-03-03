@@ -86,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             AutoUpdate = profile.AutoUpdate;
             UpdateOnceInitialized = profile.UpdateOnceInitialized;
+            DefaultPhysicsLayer = profile.DefaultPhysicsLayer;
             DefaultMaterial = profile.DefaultMaterial;
             DefaultWorldMeshMaterial = profile.DefaultWorldMeshMaterial;
             SurfaceTypes = profile.SurfaceTypes;

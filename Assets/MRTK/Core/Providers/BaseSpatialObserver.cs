@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
 
         /// <inheritdoc />
-        public int DefaultPhysicsLayer { get; } = DefaultSpatialAwarenessLayer;
+        public int DefaultPhysicsLayer { get; protected set; } = DefaultSpatialAwarenessLayer;
 
         /// <inheritdoc />
         public bool IsRunning { get; protected set; } = false;
