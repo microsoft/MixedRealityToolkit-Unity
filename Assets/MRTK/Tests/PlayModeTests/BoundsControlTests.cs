@@ -997,7 +997,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 expectedSize = Vector3.one * 0.5f;
             TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
             TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
-            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating"); ;
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
 
             GameObject.Destroy(boundsControl.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -2456,7 +2456,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // first test to interact with the cube without activating the app bar
             // this shouldn't scale the cube
             TestHand hand = new TestHand(Handedness.Left);
-            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray\
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface, so we won't go behind the cube with our ray
             yield return hand.MoveTo(rightCornerInteractionPoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.MoveTo(scalePoint);
