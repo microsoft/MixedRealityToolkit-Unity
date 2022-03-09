@@ -998,7 +998,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Log(boundsControl.transform.position.ToString("F4"));
             TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
             TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
-            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating"); ;
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
 
             GameObject.Destroy(boundsControl.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
