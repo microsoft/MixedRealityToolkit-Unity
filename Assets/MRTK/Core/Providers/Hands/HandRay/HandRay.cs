@@ -87,17 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float relativePivotY = DynamicPivotBaseY + Mathf.Min(DynamicPivotMultiplierY * handPositionHeadSpace.y, 0);
             relativePivotY = Mathf.Clamp(relativePivotY, DynamicPivotMinY, DynamicPivotMaxY);
 
-            float xBase = DynamicPivotBaseX;
+            float xBase = sourceHandedness == Handedness.Right ? DynamicPivotBaseX : -DynamicPivotBaseX;
             float xMultiplier = DynamicPivotMultiplierX;
-            float xMin = DynamicPivotMinX;
-            float xMax = DynamicPivotMaxX;
-            if (sourceHandedness == Handedness.Left)
-            {
-                xBase = -xBase;
-                float tmp = xMin;
-                xMin = -xMax;
-                xMax = tmp;
-            }
+            float xMin = sourceHandedness == Handedness.Right ? DynamicPivotMinX : -DynamicPivotMaxX;
+            float xMax = sourceHandedness == Handedness.Right ? DynamicPivotMaxX : -DynamicPivotMinX;
+
             float relativePivotX = xBase + xMultiplier * handPositionHeadSpace.x;
             relativePivotX = Mathf.Clamp(relativePivotX, xMin, xMax);
 
