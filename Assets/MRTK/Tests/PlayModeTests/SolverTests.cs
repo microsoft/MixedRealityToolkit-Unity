@@ -679,7 +679,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
 
             // Set hand position 
-            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            Vector3 handStartPosition = new Vector3(-0.055f, -0.1f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
@@ -742,14 +742,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
 
             // Set hand position
-            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            Vector3 handStartPosition = new Vector3(-0.055f, -0.1f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
             Vector3 initialObjPosition = tapToPlaceObj.target.transform.position;
 
             yield return leftHand.Click();
-
             // Make sure the object is being placed after selection
             Assert.True(tapToPlace.IsBeingPlaced);
 
@@ -861,7 +860,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
             tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
 
-            Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
+            Vector3 handStartPosition = new Vector3(-0.04f, -0.15f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
@@ -871,14 +870,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(tapToPlace.IsBeingPlaced);
 
+            
             // Move hand, object should follow
-            yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(-0.20f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
 
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.20f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
 
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.05f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
 
             // Stop the placement via code instead of click from the hand
@@ -916,7 +916,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
             tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
 
-            Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
+            Vector3 handStartPosition = new Vector3(-0.04f, -0.15f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
@@ -936,17 +936,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(tapToPlace.IsBeingPlaced);
 
             // Move hand in front of a collider for surface detection, the Tap to Place object should follow
-            yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(-0.20f, 0, 0), 30);
 
             // Make sure the depth of the Tap to Place Object is very close to the depth of the wall because the SurfaceNormalOffset is 0
             Assert.AreEqual(tapToPlaceObj.target.transform.position.z, colliderObj1.transform.position.z, 0.05f);
 
             // Move hand between the colliders, the Tap to Place object should have a greater z position because the raycast did not detect a surface
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.20f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
 
             // Move the hand in front of a collider for a surface detection
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.05f, 0, 0), 30);
 
             // Set the UseDefaultSurfaceNormalOffset to true while still in the placing state
             tapToPlace.UseDefaultSurfaceNormalOffset = true;

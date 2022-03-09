@@ -993,11 +993,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(endPosition);
 
             // make sure translation is as expected and no other transform values have been modified through this
-            Vector3 expectedPosition = new Vector3(1f, 0f, 1.5f);
+            Vector3 expectedPosition = new Vector3(1.1126f, 0f, 1.5f);
             Vector3 expectedSize = Vector3.one * 0.5f;
+            Debug.Log(boundsControl.transform.position.ToString("F4"));
             TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
             TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
-            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating"); ;
 
             GameObject.Destroy(boundsControl.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
