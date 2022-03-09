@@ -2457,7 +2457,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // first test to interact with the cube without activating the app bar
             // this shouldn't scale the cube
             TestHand hand = new TestHand(Handedness.Left);
-            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray\
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface, so we won't go behind the cube with our ray
             yield return hand.MoveTo(rightCornerInteractionPoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.MoveTo(scalePoint);
