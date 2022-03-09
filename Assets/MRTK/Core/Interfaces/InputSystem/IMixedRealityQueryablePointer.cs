@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Physics;
-using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input

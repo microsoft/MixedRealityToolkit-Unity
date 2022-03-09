@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     newInstance.ActiveProfile = configProfile;
                 }
 
-                if(!newInstance.ActiveProfile.ExperienceSettingsProfile.IsNull())
+                if (!newInstance.ActiveProfile.ExperienceSettingsProfile.IsNull())
                 {
                     // Add a MixedRealitySceneContent object to a scene. Children of this object will scale appropriately dependent on MR platform
                     MixedRealitySceneContent contentAdjuster = new GameObject("MixedRealitySceneContent").AddComponent<MixedRealitySceneContent>();
@@ -566,7 +566,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 List<GUIContent> profileContentList = new List<GUIContent>();
 
                 // Pull profile instances and profile content from cache
-                for(int i = 0; i < profileTypes.Length; i++)
+                for (int i = 0; i < profileTypes.Length; i++)
                 {
                     Type profileType = profileTypes[i];
                     profileInstanceList.AddRange(MixedRealityProfileUtility.GetProfilesOfType(profileType));

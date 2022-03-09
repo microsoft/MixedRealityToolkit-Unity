@@ -504,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = true; // Force enable so we can view profile defaults
 
             GUIContent[] profileTitles = new GUIContent[ProfileTabTitles.Length];
-            for (int  profileIndex = 0; profileIndex < ProfileTabTitles.Length; profileIndex++)
+            for (int profileIndex = 0; profileIndex < ProfileTabTitles.Length; profileIndex++)
             {
                 profileTitles[profileIndex] = new GUIContent();
                 profileTitles[profileIndex].text = ProfileTabTitles[profileIndex];
