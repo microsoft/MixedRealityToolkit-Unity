@@ -3,15 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-	public class ConeCastGazeProvider : GazeProvider
-	{
+    public class ConeCastGazeProvider : GazeProvider
+    {
         public override IMixedRealityPointer GazePointer => coneCastPointer ?? InitializeGazePointer();
         private GazeConePointer coneCastPointer = null;
 
@@ -75,12 +73,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 coneCastPointer = new GazeConePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
 
-				if ((GazeCursor == null) &&
-					(GazeCursorPrefab != null))
-				{
-					GameObject cursor = Instantiate(GazeCursorPrefab);
-					MixedRealityPlayspace.AddChild(cursor.transform);
-					SetGazeCursor(cursor);
+                if ((GazeCursor == null) &&
+                    (GazeCursorPrefab != null))
+                {
+                    GameObject cursor = Instantiate(GazeCursorPrefab);
+                    MixedRealityPlayspace.AddChild(cursor.transform);
+                    SetGazeCursor(cursor);
                 }
 
                 coneCastPointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;

@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -1194,7 +1193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     foreach (IMixedRealityPointerHandler handler in currentObject.GetComponents<IMixedRealityPointerHandler>())
                     {
-                        if(handler is MonoBehaviour behavior && !behavior.enabled)
+                        if (handler is MonoBehaviour behavior && !behavior.enabled)
                         {
                             continue;
                         }

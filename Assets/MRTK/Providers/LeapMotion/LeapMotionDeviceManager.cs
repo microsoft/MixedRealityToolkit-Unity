@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -52,10 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             return (capability == MixedRealityCapability.ArticulatedHand);
         }
 
-
         #endregion IMixedRealityCapabilityCheck Implementation
-#if LEAPMOTIONCORE_PRESENT
 
+#if LEAPMOTIONCORE_PRESENT
         /// <summary>
         /// The profile that contains settings for the Leap Motion Device Manager input data provider.  This profile is nested under 
         /// Input > Input Data Providers > Leap Motion Device Manager in the MixedRealityToolkit object in the hierarchy.
@@ -332,7 +330,5 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             }
         }
 #endif
-            }
-
-        }
-
+    }
+}

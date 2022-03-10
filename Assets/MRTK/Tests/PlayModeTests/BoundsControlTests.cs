@@ -2156,10 +2156,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
 
             // Iterate over all handle transforms
-            foreach(Transform handle in boundsControl.transform.Find("rigRoot"))
-            {   
+            foreach (Transform handle in boundsControl.transform.Find("rigRoot"))
+            {
                 // Is this the handle type we're currently looking for?
-                if(handle.name.StartsWith(testData.handleName))
+                if (handle.name.StartsWith(testData.handleName))
                 {
                     BoxCollider handleCollider = handle.GetComponent<BoxCollider>();
 
@@ -2171,7 +2171,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     VisualUtils.GetCornerPositionsFromBounds(new Bounds(handleCollider.center, handleCollider.size - padding), ref colliderPoints);
 
                     // Perform a local-global transformation on all corners of the local collider bounds.
-                    for(int i = 0; i < colliderPoints.Length; ++i)
+                    for (int i = 0; i < colliderPoints.Length; ++i)
                     {
                         globalColliderPoints[i] = handle.TransformPoint(colliderPoints[i]);
                     }
@@ -2185,16 +2185,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     VisualUtils.GetCornerPositionsFromBounds(handleBounds, ref visualPoints);
 
                     // Perform a local-global transformation on all corners of the local visual handle bounds.
-                    for(int i = 0; i < visualPoints.Length; ++i)
+                    for (int i = 0; i < visualPoints.Length; ++i)
                     {
                         globalVisualPoints[i] = visual.TransformPoint(visualPoints[i]);
                     }
 
                     // Make sure all corners/vertices of the bounds are coherent after realignment, in global space
                     bool flag = true;
-                    for(int i = 0; i < globalColliderPoints.Length; ++i)
+                    for (int i = 0; i < globalColliderPoints.Length; ++i)
                     {
-                        if(globalColliderPoints[i] != globalVisualPoints[i])
+                        if (globalColliderPoints[i] != globalVisualPoints[i])
                         {
                             flag = false;
                             Debug.LogError($"Bounds mismatch, collider point: {globalColliderPoints[i].ToString("F3")}, visual point: {globalVisualPoints[i].ToString("F3")}");
