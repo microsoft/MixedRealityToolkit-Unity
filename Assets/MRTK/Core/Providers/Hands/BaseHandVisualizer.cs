@@ -125,8 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (jointTransform != null)
                     {
-                        jointTransform.position = handJointPose.Position;
-                        jointTransform.rotation = handJointPose.Rotation;
+                        jointTransform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
                     }
                     else
                     {
@@ -160,8 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         jointObject.name = handJoint.ToString() + " Proxy Transform";
-                        jointObject.transform.position = handJointPose.Position;
-                        jointObject.transform.rotation = handJointPose.Rotation;
+                        jointObject.transform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
                         jointObject.transform.parent = transform;
 
                         jointsArray[i] = jointObject.transform;
@@ -226,8 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         mesh.RecalculateBounds();
                     }
 
-                    handMeshFilter.transform.position = eventData.InputData.position;
-                    handMeshFilter.transform.rotation = eventData.InputData.rotation;
+                    handMeshFilter.transform.SetPositionAndRotation(eventData.InputData.position, eventData.InputData.rotation);
                 }
             }
         }
