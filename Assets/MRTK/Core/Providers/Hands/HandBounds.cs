@@ -153,12 +153,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var newGlobalBounds = new Bounds(palmPose.Position, Vector3.zero);
                 var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
 
-                for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
+                // This starts at 1 to skip over TrackedHandJoint.None.
+                for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
                     TrackedHandJoint handJoint = (TrackedHandJoint)i;
 
-                    if (handJoint == TrackedHandJoint.None ||
-                        handJoint == TrackedHandJoint.Palm)
+                    if (handJoint == TrackedHandJoint.Palm)
                     {
                         continue;
                     }

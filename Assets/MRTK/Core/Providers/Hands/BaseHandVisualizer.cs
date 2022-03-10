@@ -116,11 +116,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
+                // This starts at 1 to skip over TrackedHandJoint.None.
+                for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
                     TrackedHandJoint handJoint = (TrackedHandJoint)i;
-
-                    if (handJoint == TrackedHandJoint.None) { continue; }
 
                     MixedRealityPose handJointPose = eventData.InputData[handJoint];
                     Transform jointTransform = jointsArray[i];

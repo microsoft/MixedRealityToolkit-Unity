@@ -328,12 +328,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null && handTrackingProfile.EnableHandJointVisualization)
             {
-                for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
+                // This starts at 1 to skip over TrackedHandJoint.None.
+                for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
                     TrackedHandJoint handJoint = (TrackedHandJoint)i;
-
-                    if (handJoint == TrackedHandJoint.None) { continue; }
-
                     MixedRealityPose handJointPose = eventData.InputData[handJoint];
 
                     if (skeletonJoints.TryGetValue(handJoint, out Transform skeletonJointTransform))
@@ -344,12 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     else
                     {
                         GameObject prefab;
-                        if (handJoint == TrackedHandJoint.None)
-                        {
-                            // No visible mesh for the "None" joint
-                            prefab = null;
-                        }
-                        else if (handJoint == TrackedHandJoint.Palm)
+                        if (handJoint == TrackedHandJoint.Palm)
                         {
                             prefab = inputSystem.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
                         }
@@ -399,12 +392,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Render the rigged hand mesh itself
                 // Apply updated TrackedHandJoint pose data to the assigned transforms
-                for (int i = 0; i < ArticulatedHandPose.JointCount; i++)
+
+                // This starts at 1 to skip over TrackedHandJoint.None.
+                for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
                     TrackedHandJoint handJoint = (TrackedHandJoint)i;
-
-                    if (handJoint == TrackedHandJoint.None) { continue; }
-
                     MixedRealityPose handJointPose = eventData.InputData[handJoint];
 
                     if (joints.TryGetValue(handJoint, out Transform jointTransform))
