@@ -3,8 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
-using System.Runtime.CompilerServices;
-using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -57,8 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool SnapToPosition
         {
             get { return snapToPosition; }
-            set 
-            { 
+            set
+            {
                 snapToPosition = value;
                 if (!touchCollider.IsNull())
                 {
@@ -688,7 +686,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            if(isTouchable)
+            if (isTouchable)
             {
                 CalculateSliderValueBasedOnTouchPoint(eventData.InputData);
             }

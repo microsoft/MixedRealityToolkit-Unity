@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                                         SerializedObject interactableObject = new SerializedObject(interactableProp.objectReferenceValue);
                                         SerializedProperty voiceCommandProperty = interactableObject.FindProperty("voiceCommand");
 
-                                        if(string.IsNullOrEmpty(voiceCommandProperty.stringValue))
+                                        if (string.IsNullOrEmpty(voiceCommandProperty.stringValue))
                                         {
                                             EditorGUILayout.HelpBox("No valid speech command provided to the interactable", MessageType.Warning);
                                         }

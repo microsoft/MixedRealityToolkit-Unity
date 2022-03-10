@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     continue;
                 }
-                
+
                 if (constraint.isActiveAndEnabled &&
                     constraint.ConstraintType == transformType &&
                     constraint.HandType.IsMaskSet(handMode) &&

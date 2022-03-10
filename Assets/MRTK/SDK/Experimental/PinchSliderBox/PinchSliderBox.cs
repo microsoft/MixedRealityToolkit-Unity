@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static Microsoft.MixedReality.Toolkit.UI.PinchSlider;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -135,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 get
                 {
-                    return (Sliders[PositiveIndex].SliderValue + 
+                    return (Sliders[PositiveIndex].SliderValue +
                             Sliders[NegativeIndex].SliderValue) * 0.5f;
                 }
             }
@@ -349,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             var scaleRange = scaleConstraint.ScaleMaximumVector[axisIndex] - scaleConstraint.ScaleMinimumVector[axisIndex];
             slider.SliderValue = (targetTransform.localScale[axisIndex] - scaleConstraint.ScaleMinimumVector[axisIndex]) / scaleRange;
-            
+
             slider.OnValueUpdated.AddListener(OnSlideValueUpdated);
             slider.OnHoverEntered.AddListener(OnHoverEntered);
             slider.OnHoverExited.AddListener(OnHoverExited);
@@ -425,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             targetTransform.localPosition = position;
 
             // Update the opposite slider pair.
-            var oppositeSliderPair = (sliderPair == sliderPlane.SliderPairs[PositiveIndex]) ? sliderPlane.SliderPairs[NegativeIndex] : 
+            var oppositeSliderPair = (sliderPair == sliderPlane.SliderPairs[PositiveIndex]) ? sliderPlane.SliderPairs[NegativeIndex] :
                                                                                               sliderPlane.SliderPairs[PositiveIndex];
             for (var i = 0; i < 2; ++i)
             {
