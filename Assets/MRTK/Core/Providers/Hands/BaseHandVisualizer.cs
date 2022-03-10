@@ -120,7 +120,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
                     TrackedHandJoint handJoint = (TrackedHandJoint)i;
-
                     MixedRealityPose handJointPose = eventData.InputData[handJoint];
                     Transform jointTransform = jointsArray[i];
 
