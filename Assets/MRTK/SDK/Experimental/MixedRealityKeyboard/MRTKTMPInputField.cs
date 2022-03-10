@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using UnityEngine.EventSystems;
 using TMPro;
+
+#if !UNITY_2019_3_OR_NEWER
+using UnityEngine.EventSystems;
+#endif // !UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {

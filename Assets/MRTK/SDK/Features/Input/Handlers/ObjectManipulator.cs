@@ -886,7 +886,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     HostTransform.localScale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
                 }
-                
             }
             else
             {
@@ -910,7 +909,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 else
                 {
                     // We are using forces
-
                     rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - HostTransform.position);
 
                     var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);

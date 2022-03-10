@@ -259,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             Vector3 strafeTerminus = strafeOrigin + (Vector3.down * maxHeightChangeOnStrafe * 2f);
 
             RayStep rayStep = new RayStep(strafeOrigin, strafeTerminus);
-            LayerMask[] layerMasks =  new LayerMask[] { ValidLayers };
+            LayerMask[] layerMasks = new LayerMask[] { ValidLayers };
 
             // check are we hiting a floor plane or step above the current MixedRealityPlayspace.Position
             if (!raycastProvider.IsNull() && raycastProvider.Raycast(rayStep, layerMasks, false, out var hitInfo))

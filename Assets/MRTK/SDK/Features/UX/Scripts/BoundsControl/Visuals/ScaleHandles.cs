@@ -98,7 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             for (int i = 0; i < handles.Count; ++i)
             {
-                
                 Transform obsoleteChild = handles[i].Find(visualsName);
                 if (obsoleteChild)
                 {
@@ -149,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             {
                 // instantiate default prefab, a cube with box collider
                 handleVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                
+
                 // deactivate collider on visuals and register for deletion - actual collider
                 // of handle is attached to the handle gameobject, not the visual
                 var collider = handleVisual.GetComponent<BoxCollider>();
@@ -160,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             {
                 handleVisual = GameObject.Instantiate(prefabType, parent.transform);
             }
-            
+
             // this is the size of the corner visuals
             var handleVisualBounds = VisualUtils.GetMaxBounds(handleVisual);
             float maxDim = VisualUtils.GetMaxComponent(handleVisualBounds.size);
@@ -172,11 +171,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             handleVisual.transform.localPosition = Vector3.zero;
             handleVisual.transform.localRotation = Quaternion.identity;
 
-            
             Quaternion realignment = GetRotationRealignment(handleIndex, isFlattened);
             parent.transform.localRotation = realignment;
 
-            if(config.HandleMaterial != null)
+            if (config.HandleMaterial != null)
             {
                 VisualUtils.ApplyMaterialToAllRenderers(handleVisual, config.HandleMaterial);
             }
@@ -194,10 +192,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             Vector3 neutralHandle = signVector(HandlePositions[6]);
             Vector3 handlePos = signVector(HandlePositions[handleIndex]);
 
-            if(isFlattened)
+            if (isFlattened)
             {
                 Vector3 axis = Vector3.forward;
-                switch(currentFlattenAxis)
+                switch (currentFlattenAxis)
                 {
                     case FlattenModeType.FlattenAuto:
                         Debug.LogError("ScaleHandles should never receive FlattenAuto. BoundsControl should pass ActualFlattenAxis");
@@ -231,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                                                                 new Vector3(handlePos.x, 0, handlePos.z),
                                                                 Vector3.up);
                 return Quaternion.Euler(0, angleAroundVertical, 0) * flip;
-            }   
+            }
         }
 
         internal void Reset(bool areHandlesActive, FlattenModeType flattenAxis)
