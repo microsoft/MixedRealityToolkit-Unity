@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -83,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             speechCommandsReceived.Add(eventData.Command.Keyword);
 
-            if(useEventDataOnReception)
+            if (useEventDataOnReception)
             {
                 eventData.Use();
             }

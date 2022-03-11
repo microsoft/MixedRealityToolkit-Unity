@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     Debug.LogWarning($"Skipping processing {reference} for {toReturn.Name}, as it's marked as excluded.");
                     continue;
                 }
-                
+
                 string packageCandidate = $"com.{reference.ToLower()}";
                 if (builtInPackagesWithoutSource.Any(t => packageCandidate.StartsWith(t)))
                 {

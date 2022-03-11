@@ -357,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// 
         /// </summary>
         public Material DefaultMaterial { get; set; } // Need references so they are included for runtime
-        
+
         /// <summary>
         /// 
         /// </summary>

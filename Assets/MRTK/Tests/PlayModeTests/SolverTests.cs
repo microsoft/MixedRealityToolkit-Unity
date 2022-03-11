@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Give the floor a very small tilt
             floor.transform.rotation = Quaternion.Euler(10, 0, 0);
-            
+
             yield return WaitForFrames(2);
 
             // Instantiate our test GameObject with solver. 
@@ -870,7 +870,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(tapToPlace.IsBeingPlaced);
 
-            
             // Move hand, object should follow
             yield return leftHand.Move(new Vector3(-0.20f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);

@@ -331,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
 
             Assert.AreEqual(0.75f, slider.SliderValue);
-            
+
             yield return rightHand.Move(new Vector3(-0.6f, 0, 0));
             Assert.AreEqual(0.25f, slider.SliderValue);
 

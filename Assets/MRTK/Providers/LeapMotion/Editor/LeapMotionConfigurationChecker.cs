@@ -32,13 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
         // The current supported Leap Core Assets version numbers.
         // Note V5.0 - V5.2 are not compatible with MRTK. Fixes to restore full compatibility with MRTK were introduced in V5.3.0
-        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0", "4.9.1", "5.3.0"};
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.5.0", "4.5.1", "4.6.0", "4.7.0", "4.7.1", "4.8.0", "4.9.1", "5.3.0" };
 
         // The current Leap Core Assets version in this project
         private static string currentLeapCoreAssetsVersion = "";
 
         // The path difference between the root of assets and the root of the Leap Motion Core Assets.
-        private static string pathDifference = ""; 
+        private static string pathDifference = "";
 
         // The Leap Unity Modules version 4.7.1 already contains a LeapMotion.asmdef file at this path
         private static string leapAsmDefPath_471 = "LeapMotion/Core/Scripts/LeapMotion.asmdef";
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, UnityPluginDefinitions);
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, UnityPluginDefinitions);
-                
+
                 isLeapRecognizedByMRTK = false;
 
                 return false;
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                     if (UsingUnityPlugin())
                     {
-                        AddScriptingDefinitionsForUnityPlugin();   
+                        AddScriptingDefinitionsForUnityPlugin();
                     }
 
                     // Refresh the database because tests were removed and 10 asmdefs were added
@@ -305,8 +305,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             // If the Leap Unity Modules version is 4.7.1 or newer, the LeapMotion.asmdef file does not need to be created
             // NB V5.0 - V5.2 are not supported by MRTK so are not expected here.
             if (currentLeapCoreAssetsVersion == "4.7.1" ||
-                currentLeapCoreAssetsVersion == "4.9.1" || 
-                currentLeapCoreAssetsVersion == "5.3.0" )
+                currentLeapCoreAssetsVersion == "4.9.1" ||
+                currentLeapCoreAssetsVersion == "5.3.0")
             {
                 return;
             }
@@ -401,10 +401,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         };
 
                         // Add the LeapMotion.LeapCSharp assembly definition to the leap motion tests assembly definition
-                        if ((currentLeapCoreAssetsVersion == "4.5.1" || 
-                            currentLeapCoreAssetsVersion == "4.6.0" || 
-                            currentLeapCoreAssetsVersion == "4.7.0" || 
-                            currentLeapCoreAssetsVersion == "4.7.1" || 
+                        if ((currentLeapCoreAssetsVersion == "4.5.1" ||
+                            currentLeapCoreAssetsVersion == "4.6.0" ||
+                            currentLeapCoreAssetsVersion == "4.7.0" ||
+                            currentLeapCoreAssetsVersion == "4.7.1" ||
                             currentLeapCoreAssetsVersion == "4.9.1") && (leapAsmDef.Key == "LeapMotion.Core.Tests.Editor" || leapAsmDef.Key == "LeapMotion.Core.Editor"))
                         {
                             leapEditorAsmDef.AddReference("LeapMotion.LeapCSharp");
