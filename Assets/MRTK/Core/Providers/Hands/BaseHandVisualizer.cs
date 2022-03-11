@@ -17,7 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public IMixedRealityController Controller { get; set; }
 
+        [System.Obsolete("This has been replaced with jointsArray with TrackedHandJoint as the int index.", true)]
         protected readonly Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
+
+        protected readonly Transform[] jointsArray = new Transform[ArticulatedHandPose.JointCount];
         protected MeshFilter handMeshFilter;
 
         // This member stores the last count of hand mesh vertices, to avoid using
@@ -48,9 +51,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnDestroy()
         {
-            foreach (var joint in joints)
+            foreach (Transform joint in jointsArray)
             {
-                Destroy(joint.Value.gameObject);
+                if (joint != null)
+                {
+                    Destroy(joint.gameObject);
+                }
             }
 
             if (handMeshFilter != null)
@@ -62,19 +68,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public bool TryGetJointTransform(TrackedHandJoint joint, out Transform jointTransform)
         {
-            if (joints == null)
+            if (jointsArray == null)
             {
                 jointTransform = null;
                 return false;
             }
 
-            if (joints.TryGetValue(joint, out jointTransform))
-            {
-                return true;
-            }
-
-            jointTransform = null;
-            return false;
+            jointTransform = jointsArray[(int)joint];
+            return jointTransform != null;
         }
 
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
@@ -107,22 +108,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
                 {
                     // clear existing joint GameObjects / meshes
-                    foreach (var joint in joints)
+                    foreach (Transform joint in jointsArray)
                     {
-                        Destroy(joint.Value.gameObject);
+                        if (joint != null)
+                        {
+                            Destroy(joint.gameObject);
+                        }
                     }
 
-                    joints.Clear();
                     return;
                 }
 
-                foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
+                // This starts at 1 to skip over TrackedHandJoint.None.
+                for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
-                    Transform jointTransform;
-                    if (joints.TryGetValue(handJoint, out jointTransform))
+                    TrackedHandJoint handJoint = (TrackedHandJoint)i;
+                    MixedRealityPose handJointPose = eventData.InputData[handJoint];
+                    Transform jointTransform = jointsArray[i];
+
+                    if (jointTransform != null)
                     {
-                        jointTransform.position = eventData.InputData[handJoint].Position;
-                        jointTransform.rotation = eventData.InputData[handJoint].Rotation;
+                        jointTransform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
                     }
                     else
                     {
@@ -156,11 +162,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         jointObject.name = handJoint.ToString() + " Proxy Transform";
-                        jointObject.transform.position = eventData.InputData[handJoint].Position;
-                        jointObject.transform.rotation = eventData.InputData[handJoint].Rotation;
+                        jointObject.transform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
                         jointObject.transform.parent = transform;
 
-                        joints.Add(handJoint, jointObject.transform);
+                        jointsArray[i] = jointObject.transform;
                     }
                 }
             }
@@ -222,8 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         mesh.RecalculateBounds();
                     }
 
-                    handMeshFilter.transform.position = eventData.InputData.position;
-                    handMeshFilter.transform.rotation = eventData.InputData.rotation;
+                    handMeshFilter.transform.SetPositionAndRotation(eventData.InputData.position, eventData.InputData.rotation);
                 }
             }
         }
