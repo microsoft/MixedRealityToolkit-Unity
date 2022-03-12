@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 EditorGUI.BeginChangeCheck();
                 overrideModelPrefab = EditorGUILayout.ObjectField(new GUIContent(overrideModel.displayName, "If no override model is set, the global model is used."), overrideModelPrefab, typeof(GameObject), false) as GameObject;
-                if(overrideModelPrefab == null && !controllerUsePlatformModelOverride.boolValue)
+                if (overrideModelPrefab == null && !controllerUsePlatformModelOverride.boolValue)
                 {
                     EditorGUILayout.HelpBox("No override model was assigned and this controller will not attempt to use the platform's model, the global model will be used instead", MessageType.Warning);
                 }

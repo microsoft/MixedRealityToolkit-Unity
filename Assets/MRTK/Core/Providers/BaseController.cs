@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             MixedRealityControllerVisualizationProfile controllerVisualizationProfile = GetControllerVisualizationProfile();
             bool controllerVisualizationProfilePresent = controllerVisualizationProfile != null;
-           
+
             if (!controllerVisualizationProfilePresent || !controllerVisualizationProfile.RenderMotionControllers)
             {
                 return true;

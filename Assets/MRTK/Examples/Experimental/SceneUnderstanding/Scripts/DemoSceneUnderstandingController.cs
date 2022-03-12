@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             {
                 observedSceneObjects.Add(eventData.SpatialObject.SurfaceType, new Dictionary<int, SpatialAwarenessSceneObject> { { eventData.Id, eventData.SpatialObject } });
             }
-            
+
             if (InstantiatePrefabs && eventData.SpatialObject.Quads.Count > 0)
             {
                 var prefab = Instantiate(InstantiatedPrefab);
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
             UpdateData(eventData.Id);
-            
+
             if (observedSceneObjects.TryGetValue(eventData.SpatialObject.SurfaceType, out Dictionary<int, SpatialAwarenessSceneObject> sceneObjectDict))
             {
                 observedSceneObjects[eventData.SpatialObject.SurfaceType][eventData.Id] = eventData.SpatialObject;

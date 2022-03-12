@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Rendering;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Rendering;
 using UnityEditor;
 using UnityEngine;
 
@@ -219,7 +219,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     materialInstance.ReleaseMaterial(this, autoDestroyMaterial);
                 }
             }
-            
         }
 
         /// <summary>
@@ -382,11 +381,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 _renderer.GetPropertyBlock(materialPropertyBlock);
-                materialPropertyBlock.SetFloat(clippingSideID, (float) clippingSide);
+                materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
                 UpdateShaderProperties(materialPropertyBlock);
                 _renderer.SetPropertyBlock(materialPropertyBlock);
             }
-            
+
             EndUpdateShaderProperties();
             IsDirty = false;
         }
