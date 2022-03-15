@@ -35,6 +35,7 @@ Properties {
 
 SubShader {
     Tags{ "RenderType" = "Transparent" "Queue" = "Transparent"}
+    Tags {"DisableBatching" = "True"}
     Blend One OneMinusSrcAlpha
 
     LOD 100
