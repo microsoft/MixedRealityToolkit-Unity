@@ -469,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Only show this warning once
                     else if (!displayedMaterialPropertyWarning)
                     {
-                        Debug.LogError(String.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
+                        Debug.LogError(String.Format("The property {0} for reacting to pinch strength was not found. Please provide a valid material property name.", pinchStrengthMaterialProperty));
                         displayedMaterialPropertyWarning = true;
                     }
                 }
