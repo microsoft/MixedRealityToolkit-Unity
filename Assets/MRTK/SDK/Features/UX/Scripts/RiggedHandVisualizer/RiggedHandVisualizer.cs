@@ -313,6 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private bool displayedMaterialPropertyWarning = false;
         /// <inheritdoc/>
         void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
@@ -465,9 +466,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         handRenderer.sharedMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
                     }
-                    else
+                    // Only show this warning once
+                    else if (!displayedMaterialPropertyWarning)
                     {
-                        throw new Exception(String.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
+                        Debug.LogError(String.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
+                        displayedMaterialPropertyWarning = true;
                     }
                 }
             }
