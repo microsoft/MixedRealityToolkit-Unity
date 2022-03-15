@@ -67,8 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
-        /// This can prevent accidental touches, and will allow hand rays to turn on when you may be near 
-        /// a touchable but cannot see it. Visual FOV is defined by cone centered about display center, 
+        /// This can prevent accidental touches, and will allow hand rays to turn on when you may be near
+        /// a touchable but cannot see it. Visual FOV is defined by cone centered about display center,
         /// radius equal to half display height.
         /// </summary>
         public bool IgnoreCollidersNotInFOV
@@ -166,8 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Rays = new RayStep[1];
                 }
 
-                closestNormal = Rotation * Vector3.forward;
-
                 // Find closest touchable
                 BaseNearInteractionTouchable newClosestTouchable = null;
                 foreach (var layerMask in PrioritizedLayerMasksOverride)
@@ -181,13 +179,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (newClosestTouchable != null)
                 {
                     // Build ray (poke from in front to the back of the pointer position)
-                    // We make a very long ray if we are touching a touchable volume to ensure that we actually 
+                    // We make a very long ray if we are touching a touchable volume to ensure that we actually
                     // hit the volume when we are inside of the volume, which could be very large.
                     var lengthOfPointerRay = newClosestTouchable is NearInteractionTouchableVolume ?
                         maximumTouchableVolumeSize : touchableDistance;
                     Vector3 start = Position + lengthOfPointerRay * closestNormal;
                     Vector3 end = Position - lengthOfPointerRay * closestNormal;
                     Rays[0].UpdateRayStep(ref start, ref end);
+                }
+                else
+                {
+                    closestNormal = Rotation * Vector3.forward;
                 }
 
                 // Check if the currently touched object is still part of the new touchable.
@@ -213,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 closest = null;
                 closestDistance = float.PositiveInfinity;
-                closestNormal = Vector3.zero;
+                closestNormal = Vector3.forward;
 
                 int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
                 if (numColliders == queryBuffer.Length)
@@ -434,15 +436,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         bool IMixedRealityNearPointer.TryGetDistanceToNearestSurface(out float distance)
         {
-            distance = closestDistance;
-            return true;
+            if (closestProximityTouchable != null)
+            {
+                distance = closestDistance;
+                return true;
+            }
+            else
+            {
+                distance = 0.0f;
+                return false;
+            }
         }
 
         /// <inheritdoc />
         bool IMixedRealityNearPointer.TryGetNormalToNearestSurface(out Vector3 normal)
         {
             normal = closestNormal;
-            return true;
+            return closestProximityTouchable != null;
         }
 
         private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] PokePointer.OnSourceLost");

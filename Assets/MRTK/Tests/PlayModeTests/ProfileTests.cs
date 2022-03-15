@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // keep the old floor height and experience scale to reset it later
             ExperienceScale originalExperienceScale = hl1Profile.ExperienceSettingsProfile.TargetExperienceScale;
             float oldContentOffset = hl1Profile.ExperienceSettingsProfile.ContentOffset;
-            
+
             hl1Profile.ExperienceSettingsProfile.TargetExperienceScale = ExperienceScale.Room;
             hl1Profile.ExperienceSettingsProfile.ContentOffset = contentOffset;
             TestUtilities.InitializeMixedRealityToolkit(hl1Profile);

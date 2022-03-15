@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using Unity.Profiling;
 using UnityEngine;
 

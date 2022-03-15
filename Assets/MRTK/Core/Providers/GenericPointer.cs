@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Teleport;
 using System.Collections;
 using UnityEngine;
 

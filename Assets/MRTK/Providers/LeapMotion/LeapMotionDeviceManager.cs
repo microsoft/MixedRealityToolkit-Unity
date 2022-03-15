@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -52,10 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             return (capability == MixedRealityCapability.ArticulatedHand);
         }
 
-
         #endregion IMixedRealityCapabilityCheck Implementation
-#if LEAPMOTIONCORE_PRESENT
 
+#if LEAPMOTIONCORE_PRESENT
         /// <summary>
         /// The profile that contains settings for the Leap Motion Device Manager input data provider.  This profile is nested under 
         /// Input > Input Data Providers > Leap Motion Device Manager in the MixedRealityToolkit object in the hierarchy.
@@ -125,12 +123,15 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
             if (leapControllerOrientation == LeapControllerOrientation.Headset)
             {
+                // As of the Unity Plugin (>V5.0.0), the leap service provider needs to know what is the main camera,
+                // it will pick this up from the MainCameraProvider. This needs to be done before the LeapXRServiceProvider is created
+
+#if LEAPMOTIONPLUGIN_PRESENT
+                MainCameraProvider.mainCamera = CameraCache.Main;
+#endif
                 // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
-                // The LeapXRServiceProvider can only be attached to a camera 
                 LeapMotionServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
-
-                LeapXRServiceProvider leapXRServiceProvider = LeapMotionServiceProvider as LeapXRServiceProvider;
-
+                
                 // Allow modification of VR specific offset modes if the leapControllerOrientation is Headset
                 // These settings mirror the modification of the properties exposed in the inspector within the LeapXRServiceProvider attached
                 // to the main camera
@@ -330,6 +331,4 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         }
 #endif
     }
-
 }
-

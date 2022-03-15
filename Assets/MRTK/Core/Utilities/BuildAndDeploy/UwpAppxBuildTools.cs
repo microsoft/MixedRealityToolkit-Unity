@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 !Application.isBatchMode,
                 cancellationToken);
             }
-            
+
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -158,32 +158,32 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     Debug.LogWarning("The build was terminated either by user's keyboard input CTRL+C or CTRL+Break or closing command prompt window.");
                     break;
                 default:
+                {
+                    if (processResult.ExitCode != 0)
                     {
-                        if (processResult.ExitCode != 0)
+                        Debug.Log($"Command failed, errorCode: {processResult.ExitCode}");
+
+                        if (Application.isBatchMode)
                         {
-                            Debug.Log($"Command failed, errorCode: {processResult.ExitCode}");
+                            var output = "Command output:\n";
 
-                            if (Application.isBatchMode)
+                            foreach (var message in processResult.Output)
                             {
-                                var output = "Command output:\n";
-
-                                foreach (var message in processResult.Output)
-                                {
-                                    output += $"{message}\n";
-                                }
-
-                                output += "Command errors:";
-
-                                foreach (var error in processResult.Errors)
-                                {
-                                    output += $"{error}\n";
-                                }
-
-                                Debug.LogError(output);
+                                output += $"{message}\n";
                             }
+
+                            output += "Command errors:";
+
+                            foreach (var error in processResult.Errors)
+                            {
+                                output += $"{error}\n";
+                            }
+
+                            Debug.LogError(output);
                         }
-                        break;
                     }
+                    break;
+                }
             }
             return processResult.ExitCode;
         }

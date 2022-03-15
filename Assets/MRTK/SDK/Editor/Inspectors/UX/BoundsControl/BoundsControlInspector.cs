@@ -131,10 +131,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         {
                             EditorGUILayout.HelpBox("No Box Collider assigned to the TargetObject and no Bounds Override assigned, add a Box Collider to enable proper interaction with the Bounds Control", MessageType.Warning);
 
-                           if (GUILayout.Button("Add Box Collider to Target Object"))
-                           {
+                            if (GUILayout.Button("Add Box Collider to Target Object"))
+                            {
                                 boundsTargetObject.AddComponent<BoxCollider>();
-                           }
+                            }
                         }
                     }
 

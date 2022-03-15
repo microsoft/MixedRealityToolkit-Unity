@@ -51,11 +51,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public int ExecutionPriority
         {
             get => executionOrder;
-            set {
+            set
+            {
                 executionOrder = value;
 
                 // Notify all ConstraintManagers to re-sort these priorities.
-                foreach(var mgr in gameObject.GetComponents<ConstraintManager>())
+                foreach (var mgr in gameObject.GetComponents<ConstraintManager>())
                 {
                     mgr.RefreshPriorities();
                 }

@@ -479,18 +479,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     default:
                     case AngularClampType.ViewDegrees:
                     case AngularClampType.AngleStepping:
-                        {
-                            minMaxAngle = MaxViewVerticalDegrees * 0.5f;
-                        }
+                    {
+                        minMaxAngle = MaxViewVerticalDegrees * 0.5f;
                         break;
+                    }
 
                     case AngularClampType.RendererBounds:
                     case AngularClampType.ColliderBounds:
-                        {
-                            Vector3 top = refRotation * new Vector3(0.0f, boundsExtents.y, currentDistance);
-                            minMaxAngle = AngleBetweenOnPlane(top, currentRefForward, refRight) * 2.0f;
-                        }
+                    {
+                        Vector3 top = refRotation * new Vector3(0.0f, boundsExtents.y, currentDistance);
+                        minMaxAngle = AngleBetweenOnPlane(top, currentRefForward, refRight) * 2.0f;
                         break;
+                    }
                 }
 
                 if (angle < -minMaxAngle)
@@ -509,45 +509,45 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             switch (angularClampMode)
             {
                 case AngularClampType.AngleStepping:
-                    {
-                        float stepAngle = 360f / tetherAngleSteps;
-                        int numberOfSteps = Mathf.RoundToInt(SolverHandler.TransformTarget.transform.eulerAngles.y / stepAngle);
+                {
+                    float stepAngle = 360f / tetherAngleSteps;
+                    int numberOfSteps = Mathf.RoundToInt(SolverHandler.TransformTarget.transform.eulerAngles.y / stepAngle);
 
-                        float newAngle = stepAngle * numberOfSteps;
+                    float newAngle = stepAngle * numberOfSteps;
 
-                        rotation = Quaternion.Euler(rotation.eulerAngles.x, newAngle, rotation.eulerAngles.z);
-                    }
+                    rotation = Quaternion.Euler(rotation.eulerAngles.x, newAngle, rotation.eulerAngles.z);
                     break;
+                }
 
                 case AngularClampType.ViewDegrees:
                 case AngularClampType.RendererBounds:
                 case AngularClampType.ColliderBounds:
+                {
+                    float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
+                    float minMaxAngle;
+
+                    if (angularClampMode == AngularClampType.ViewDegrees)
                     {
-                        float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
-                        float minMaxAngle;
+                        minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
+                    }
+                    else
+                    {
+                        Vector3 side = refRotation * new Vector3(boundsExtents.x, 0.0f, boundsExtents.z);
+                        minMaxAngle = AngleBetweenVectorAndPlane(side, refRight) * 2.0f;
+                    }
 
-                        if (angularClampMode == AngularClampType.ViewDegrees)
-                        {
-                            minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
-                        }
-                        else
-                        {
-                            Vector3 side = refRotation * new Vector3(boundsExtents.x, 0.0f, boundsExtents.z);
-                            minMaxAngle = AngleBetweenVectorAndPlane(side, refRight) * 2.0f;
-                        }
-
-                        if (angle < -minMaxAngle)
-                        {
-                            rotation = Quaternion.AngleAxis(-minMaxAngle - angle, Vector3.up) * rotation;
-                            angularClamped = true;
-                        }
-                        else if (angle > minMaxAngle)
-                        {
-                            rotation = Quaternion.AngleAxis(minMaxAngle - angle, Vector3.up) * rotation;
-                            angularClamped = true;
-                        }
+                    if (angle < -minMaxAngle)
+                    {
+                        rotation = Quaternion.AngleAxis(-minMaxAngle - angle, Vector3.up) * rotation;
+                        angularClamped = true;
+                    }
+                    else if (angle > minMaxAngle)
+                    {
+                        rotation = Quaternion.AngleAxis(minMaxAngle - angle, Vector3.up) * rotation;
+                        angularClamped = true;
                     }
                     break;
+                }
             }
 
             refForward = rotation * Vector3.forward;
@@ -721,14 +721,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             switch (angularClampType)
             {
                 case AngularClampType.RendererBounds:
-                    {
-                        return BoundsExtensions.GetRenderBounds(target, out bounds, 0);
-                    }
+                {
+                    return BoundsExtensions.GetRenderBounds(target, out bounds, 0);
+                }
 
                 case AngularClampType.ColliderBounds:
-                    {
-                        return BoundsExtensions.GetColliderBounds(target, out bounds, 0);
-                    }
+                {
+                    return BoundsExtensions.GetColliderBounds(target, out bounds, 0);
+                }
             }
 
             bounds = new Bounds();

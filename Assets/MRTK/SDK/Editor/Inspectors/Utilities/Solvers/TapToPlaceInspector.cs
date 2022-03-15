@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         protected virtual void OnEnable()
         {
-            instance = (TapToPlace) target;
+            instance = (TapToPlace)target;
 
             // Main Tap to Place Properties
             autoStart = serializedObject.FindProperty("autoStart");

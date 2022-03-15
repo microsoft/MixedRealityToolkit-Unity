@@ -758,25 +758,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             switch ((AlbedoAlphaMode)albedoAlphaMode.floatValue)
             {
                 case AlbedoAlphaMode.Transparency:
-                    {
-                        material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
-                        material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
-                    }
+                {
+                    material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
+                    material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
                     break;
+                }
 
                 case AlbedoAlphaMode.Metallic:
-                    {
-                        material.EnableKeyword(Styles.albedoMapAlphaMetallicName);
-                        material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
-                    }
+                {
+                    material.EnableKeyword(Styles.albedoMapAlphaMetallicName);
+                    material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
                     break;
+                }
 
                 case AlbedoAlphaMode.Smoothness:
-                    {
-                        material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
-                        material.EnableKeyword(Styles.albedoMapAlphaSmoothnessName);
-                    }
+                {
+                    material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
+                    material.EnableKeyword(Styles.albedoMapAlphaSmoothnessName);
                     break;
+                }
             }
         }
 
