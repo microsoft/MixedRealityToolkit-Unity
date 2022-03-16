@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio.Editor
 
         public override void OnInspectorGUI()
         {
-            if (voiceProperty.enumValueIndex == (int)TextToSpeechVoice.Other)
+            if (voiceProperty.intValue == (int)TextToSpeechVoice.Other)
             {
                 DrawDefaultInspector();
                 EditorGUILayout.HelpBox("Use the links below to find more available voices (for non en-US languages):", MessageType.Info);
