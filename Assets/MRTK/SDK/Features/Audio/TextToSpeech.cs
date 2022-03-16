@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
-    /// The en-US voices that can be used by <see cref="TextToSpeech"/>. Voices for all other locale are categorized as Other.
+    /// The en-US voices that can be used by <see cref="TextToSpeech"/>. Voices for all other locales are categorized as Other.
     /// </summary>
     public enum TextToSpeechVoice
     {
