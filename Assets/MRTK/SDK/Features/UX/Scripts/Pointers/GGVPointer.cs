@@ -188,16 +188,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         // Returns the hit values from the gaze provider. Gaze provider queries the scene using the perferred method.
-        public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo, out RayStep Ray, out int rayStepIndex)
         {
             if (gazeProvider.GazePointer is IMixedRealityQueryablePointer queryPointer)
             {
-                return queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+                return queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo, out Ray, out rayStepIndex);
             }
             else
             {
                 bool didHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(Rays[0], Rays[0].Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
                 hitInfo = new MixedRealityRaycastHit(didHit, physicsHit);
+                Ray = Rays[0];
+                rayStepIndex = 0;
                 return didHit;
             }
         }

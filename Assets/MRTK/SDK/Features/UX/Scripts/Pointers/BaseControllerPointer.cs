@@ -407,33 +407,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnPreSceneQuery() { }
 
         /// <inheritdoc />
-        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo, out RayStep Ray, out int rayStepIndex)
         {
+            float rayStartDistance = 0;
             var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-            switch (SceneQueryType)
+            for (int i = 0; i < Rays.Length; i++)
             {
-                case SceneQueryType.SimpleRaycast:
-                    for (int i = 0; i < Rays.Length; i++)
-                    {
+                switch (SceneQueryType)
+                {
+                    case SceneQueryType.SimpleRaycast:
                         if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
                         {
+                            // Ensure that our distance is the sum of the rays we've traversed so far
+                            hitInfo.distance += rayStartDistance;
+                            Ray = Rays[i];
+                            rayStepIndex = i;
                             return true;
                         }
-                    }
-                    break;
-                case SceneQueryType.SphereCast:
-                    for (int i = 0; i < Rays.Length; i++)
-                    {
+                        break;
+                    case SceneQueryType.SphereCast:
                         if (raycastProvider.SphereCast(Rays[i], SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
                         {
+                            // Ensure that our distance is the sum of the rays we've traversed so far
+                            hitInfo.distance += rayStartDistance;
+                            Ray = Rays[i];
+                            rayStepIndex = i;
                             return true;
                         }
-                    }
-                    break;
-                default:
-                    throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
+                        break;
+                    default:
+                        throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
+                }
+                rayStartDistance += Rays[i].Length;
             }
+
             hitInfo = new MixedRealityRaycastHit();
+            Ray = Rays[0];
+            rayStepIndex = 0;
             return false;
         }
 
@@ -441,7 +451,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
             MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
-            bool querySuccessful = OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+            bool querySuccessful = OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo, out _, out _);
 
             hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
             hitPoint = hitInfo.point;
