@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.LabelField("Pointer Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(pointingExtent);
-                    EditorGUILayout.PropertyField(pointingRaycastLayerMasks, true);
+                    EditorGUILayout.PropertyField(pointingRaycastLayerMasks, new GUIContent("Default Raycast LayerMasks"), true);
                     EditorGUILayout.PropertyField(pointerMediator);
                     EditorGUILayout.PropertyField(primaryPointerSelector);
 

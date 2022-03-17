@@ -50,8 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             maxHeightChangeOnStrafe = serializedObject.FindProperty("maxHeightChangeOnStrafe");
             upDirectionThreshold = serializedObject.FindProperty("upDirectionThreshold");
             lineColorHotSpot = serializedObject.FindProperty("LineColorHotSpot");
-            validLayers = serializedObject.FindProperty("ValidLayers");
-            invalidLayers = serializedObject.FindProperty("InvalidLayers");
+            validLayers = serializedObject.FindProperty("ValidTeleportationLayers");
+            invalidLayers = serializedObject.FindProperty("InvalidTeleportationLayers");
             pointerAudioSource = serializedObject.FindProperty("pointerAudioSource");
             teleportRequestedClip = serializedObject.FindProperty("teleportRequestedClip");
             teleportCompletedClip = serializedObject.FindProperty("teleportCompletedClip");

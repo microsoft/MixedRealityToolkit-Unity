@@ -8,6 +8,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
@@ -111,12 +112,25 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         protected Gradient LineColorHotSpot = new Gradient();
 
         [SerializeField]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the the objects the teleport pointer is allowed to hit")]
+        private LayerMask[] teleportLayerMasks = { UnityPhysics.DefaultRaycastLayers };
+
+        /// <inheritdoc />
+        public override LayerMask[] PrioritizedLayerMasksOverride
+        {
+            get { return teleportLayerMasks; }
+            set { teleportLayerMasks = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Layers that are considered 'valid' for navigation")]
-        protected LayerMask ValidLayers = UnityPhysics.DefaultRaycastLayers;
+        [FormerlySerializedAs("ValidLayers")]
+        protected LayerMask ValidTeleportationLayers = UnityPhysics.DefaultRaycastLayers;
 
         [SerializeField]
         [Tooltip("Layers that are considered 'invalid' for navigation")]
-        protected LayerMask InvalidLayers = UnityPhysics.IgnoreRaycastLayer;
+        [FormerlySerializedAs("InvalidLayers")]
+        protected LayerMask InvalidTeleportationLayers = UnityPhysics.IgnoreRaycastLayer;
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
@@ -259,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             Vector3 strafeTerminus = strafeOrigin + (Vector3.down * maxHeightChangeOnStrafe * 2f);
 
             RayStep rayStep = new RayStep(strafeOrigin, strafeTerminus);
-            LayerMask[] layerMasks = new LayerMask[] { ValidLayers };
+            LayerMask[] layerMasks = new LayerMask[] { ValidTeleportationLayers };
 
             // check are we hiting a floor plane or step above the current MixedRealityPlayspace.Position
             if (!raycastProvider.IsNull() && raycastProvider.Raycast(rayStep, layerMasks, false, out var hitInfo))
@@ -345,9 +359,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                 // Re-enable gravity if we're looking at a hotspot
                 GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
-
-                // Set the have the teleport pointer control which layer masks it raycasts against
-                PrioritizedLayerMasksOverride = PrioritizedLayerMasksOverride ?? new LayerMask[] { ValidLayers | InvalidLayers };
             }
         }
 
@@ -381,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     if (Result.CurrentPointerTarget != null)
                     {
                         // Check if it's in our valid layers
-                        if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
+                        if (((1 << Result.CurrentPointerTarget.layer) & ValidTeleportationLayers.value) != 0)
                         {
                             // See if it's a hot spot
                             if (TeleportHotspot != null && TeleportHotspot.IsActive)
@@ -400,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                     : TeleportSurfaceResult.Invalid;
                             }
                         }
-                        else if (((1 << Result.CurrentPointerTarget.layer) & InvalidLayers) != 0)
+                        else if (((1 << Result.CurrentPointerTarget.layer) & InvalidTeleportationLayers) != 0)
                         {
                             TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
                         }
