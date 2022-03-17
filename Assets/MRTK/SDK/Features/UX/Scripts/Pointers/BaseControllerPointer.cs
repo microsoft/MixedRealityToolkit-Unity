@@ -411,11 +411,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             float rayStartDistance = 0;
             var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-            for (int i = 0; i < Rays.Length; i++)
+
+            switch (SceneQueryType)
             {
-                switch (SceneQueryType)
-                {
-                    case SceneQueryType.SimpleRaycast:
+                case SceneQueryType.SimpleRaycast:
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
                         if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
                         {
                             // Ensure that our distance is the sum of the rays we've traversed so far
@@ -424,8 +425,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             rayStepIndex = i;
                             return true;
                         }
-                        break;
-                    case SceneQueryType.SphereCast:
+                        rayStartDistance += Rays[i].Length;
+                    }
+                    break;
+                case SceneQueryType.SphereCast:
+                    for (int i = 0; i < Rays.Length; i++)
+                    {
                         if (raycastProvider.SphereCast(Rays[i], SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
                         {
                             // Ensure that our distance is the sum of the rays we've traversed so far
@@ -434,11 +439,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             rayStepIndex = i;
                             return true;
                         }
-                        break;
-                    default:
-                        throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
-                }
-                rayStartDistance += Rays[i].Length;
+                        rayStartDistance += Rays[i].Length;
+                    }
+                    break;
+                default:
+                    throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
             }
 
             hitInfo = new MixedRealityRaycastHit();
