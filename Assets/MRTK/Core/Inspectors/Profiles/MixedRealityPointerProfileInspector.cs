@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             isEyeTrackingEnabled = serializedObject.FindProperty("isEyeTrackingEnabled");
             showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
-            primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
+            //primaryPointerSelector = serializyedObject.FindProperty("primaryPointerSelector");
         }
 
         public override void OnInspectorGUI()
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(pointingExtent);
                     EditorGUILayout.PropertyField(pointingRaycastLayerMasks, new GUIContent("Default Raycast LayerMasks"), true);
                     EditorGUILayout.PropertyField(pointerMediator);
-                    EditorGUILayout.PropertyField(primaryPointerSelector);
+                    //EditorGUILayout.PropertyField(primaryPointerSelector);
 
                     EditorGUILayout.Space();
                     showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);
@@ -127,11 +127,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 var controllerType = newPointerOption.FindPropertyRelative("controllerType");
                 var handedness = newPointerOption.FindPropertyRelative("handedness");
                 var prefab = newPointerOption.FindPropertyRelative("pointerPrefab");
+                var raycastLayerMask = newPointerOption.FindPropertyRelative("pointingRaycastLayerMasks");
 
                 // Reset new entry
                 controllerType.intValue = 0;
                 handedness.intValue = 0;
                 prefab.objectReferenceValue = null;
+                //raycastLayerMask.arra = ((MixedRealityPointerProfile)target).PointingRaycastLayerMasks;
             }
 
             if (list == null || list.arraySize == 0)
@@ -144,10 +146,29 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
+                    Color prevColor = GUI.color;
+
                     var pointerOption = list.GetArrayElementAtIndex(i);
                     var controllerType = pointerOption.FindPropertyRelative("controllerType");
                     var handedness = pointerOption.FindPropertyRelative("handedness");
                     var prefab = pointerOption.FindPropertyRelative("pointerPrefab");
+
+                    // Display an error if the prefab doesn't have a IMixedRealityPointer Component
+                    if (prefab.objectReferenceValue != null && ((GameObject)prefab.objectReferenceValue).GetComponent<IMixedRealityPointer>() == null)
+                    {
+                        InspectorUIUtility.DrawError($"The prefab associated with this pointer option needs an {typeof(IMixedRealityPointer).Name} component");
+
+                        GUI.color = MixedRealityInspectorUtility.ErrorColor;
+                    }
+                    // if the prefab does have the component, provide a field to display and edit it's PrioritzedLayerMaskOverrides if it specifies a way to get it
+                    else
+                    {
+                        var pointer = ((GameObject)prefab.objectReferenceValue).GetComponent<IMixedRealityPointer>();
+                        if (pointer.PrioritizedLayerMasksOverride != null)
+                        {
+                            //TODO
+                        }
+                    }
 
                     using (new EditorGUILayout.HorizontalScope())
                     {
@@ -161,6 +182,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     EditorGUILayout.PropertyField(controllerType, ControllerTypeContent);
                     EditorGUILayout.PropertyField(handedness);
+
+
+                    GUI.color = prevColor;
                 }
                 EditorGUILayout.Space();
             }
