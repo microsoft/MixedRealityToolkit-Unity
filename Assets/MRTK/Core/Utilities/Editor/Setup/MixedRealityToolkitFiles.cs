@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -39,11 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// API for working with MixedRealityToolkit folders contained in the project.
     /// </summary>
     /// <remarks>
-    /// This class works by looking for sentinel files (following the pattern MRTK.*.sentinel,
+    /// <para>This class works by looking for sentinel files (following the pattern MRTK.*.sentinel,
     /// for example, MRTK.Core.sentinel) in order to identify where the MRTK is located
-    /// within the project.
+    /// within the project.</para>
     /// </remarks>
-    [InitializeOnLoad]
     public static class MixedRealityToolkitFiles
     {
         /// <summary>
@@ -227,13 +225,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        static MixedRealityToolkitFiles()
-        {
-            Init();
-        }
-
         private static void Init()
         {
+            // Note that this file used to have an InitializeOnLoad handler to handle
+            // early initialization of the folder refresh. However, this had an effect of slowing down
+            // the Unity editor (i.e. on play mode entry, on recompile) even in cases where the MRTK
+            // isn't in the scene.
             if (!isInitialized)
             {
                 RefreshFolders();
@@ -329,10 +326,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Maps a single relative path file to MRTK folders to its absolute path, if found. Otherwise returns null.
         /// </summary>
         /// <remarks>
-        /// For example, this will map "Inspectors\Data\EditorWindowOptions.json" to its full path like
+        /// <para>For example, this will map "Inspectors\Data\EditorWindowOptions.json" to its full path like
         /// "c:\project\Assets\Libs\MRTK\MixedRealityToolkit\Inspectors\Data\EditorWindowOptions.json".
         /// This assumes that the passed in mrtkPathToFile is found under the "MixedRealityToolkit" folder
-        /// (instead of the MixedRealityToolkit.SDK, or any of the other folders).
+        /// (instead of the MixedRealityToolkit.SDK, or any of the other folders).</para>
         /// </remarks>
         public static string MapRelativeFilePathToAbsolutePath(string mrtkPathToFile)
         {
@@ -344,9 +341,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// file belongs to.
         /// </summary>
         /// <remarks>
-        /// When searching for a resource that lives in the MixedRealityToolkit.SDK folder, this could be invoked
+        /// <para>When searching for a resource that lives in the MixedRealityToolkit.SDK folder, this could be invoked
         /// in this way:
-        /// MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType.SDK, mrtkPathToFile)
+        /// MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType.SDK, mrtkPathToFile)</para>
         /// </remarks>
         public static string MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType module, string mrtkPathToFile)
         {

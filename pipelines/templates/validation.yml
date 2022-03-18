@@ -1,0 +1,28 @@
+# [Template] Validation tasks that don't require Unity.
+
+parameters:
+  # If true, validation scripts will only be run on the set of changed files
+  # associated with a given pull request. Note that this is only valid to use
+  # for pull request validation, since this functionality requires a pull request
+  # ID in order to determine the two commits to diff.
+  scopedValidation: false
+
+steps:
+# Generate the list of changed files in this pull request.
+- ${{ if eq(parameters.scopedValidation, true) }}:
+  - template: tasks/githubchanges.yml
+    parameters:
+      changesFile: '$(Agent.TempDirectory)\build\changedfiles.txt'
+
+# Validate that the code doesn't contain common issues
+- template: tasks/validatecode.yml
+  parameters:
+    scopedValidation: ${{ parameters.scopedValidation }}
+    changesFile: '$(Agent.TempDirectory)\build\changedfiles.txt'
+
+# Validate that no assets take dependencies on files that are not in the appropriate package.
+# For example, files in the Extensions package are not to take a dependency on a file in the Examples package.
+- template: tasks/validateassets.yml
+  parameters:
+    scopedValidation: ${{ parameters.scopedValidation }}
+    changesFile: '$(Agent.TempDirectory)\build\changedfiles.txt'

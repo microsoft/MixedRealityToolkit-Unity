@@ -24,3 +24,4 @@ MonoBehaviour:
   windowFollowSpeed: 5
   defaultInstancedMaterial: {fileID: 2100000, guid: 5b6fc83077d74fd4ca4c675623942a3e,
     type: 2}
+  showProfilerDuringMRC: 0

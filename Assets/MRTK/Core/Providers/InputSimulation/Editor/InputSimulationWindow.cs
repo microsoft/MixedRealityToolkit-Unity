@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Texture2D iconJumpBack = null;
         private Texture2D iconJumpFwd = null;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Input Simulation")]
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Input Simulation")]
         private static void ShowWindow()
         {
             InputSimulationWindow window = GetWindow<InputSimulationWindow>();

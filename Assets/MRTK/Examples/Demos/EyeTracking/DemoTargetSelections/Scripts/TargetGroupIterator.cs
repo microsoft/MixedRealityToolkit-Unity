@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                 // 2. If "DisableDistractors" is true then let's hide the selected target
                 if (DeactiveDistractors)
-                    CurrentTarget.gameObject.SetActive(false);
+                    CurrentTarget.SetActive(false);
 
                 // 3. Let's update to highlight the new target.
                 currTargetIndex++;
@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             if (CurrentTarget == null)
                 ProceedToNextTarget();
 
-            CurrentTarget.gameObject.SetActive(true);
+            CurrentTarget.SetActive(true);
             HighlightTarget(highlightColor);
         }
 
@@ -284,8 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void Fire_OnAllTargetsSelected()
         {
             // Make sure someone is listening to event
-            if (OnAllTargetsSelected != null)
-                OnAllTargetsSelected();
+            OnAllTargetsSelected?.Invoke();
         }
 
         /// <summary>
@@ -294,8 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void Fire_OnTargetSelected()
         {
             // Make sure someone is listening to event
-            if (OnTargetSelected != null)
-                OnTargetSelected();
+            OnTargetSelected?.Invoke();
         }
 
         #region IMixedRealityPointerHandler

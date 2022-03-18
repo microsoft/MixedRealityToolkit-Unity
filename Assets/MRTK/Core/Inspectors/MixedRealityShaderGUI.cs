@@ -203,102 +203,102 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             switch (mode)
             {
                 case RenderingMode.Opaque:
-                    {
-                        material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Opaque]);
-                        material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Opaque);
-                        material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.Zero);
-                        material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.On);
-                        material.DisableKeyword(BaseStyles.alphaTestOnName);
-                        material.DisableKeyword(BaseStyles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Geometry;
-                    }
+                {
+                    material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Opaque]);
+                    material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Opaque);
+                    material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
+                    material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.Zero);
+                    material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.On);
+                    material.DisableKeyword(BaseStyles.alphaTestOnName);
+                    material.DisableKeyword(BaseStyles.alphaBlendOnName);
+                    material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Geometry;
                     break;
+                }
 
                 case RenderingMode.Cutout:
-                    {
-                        material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Cutout]);
-                        material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Cutout);
-                        material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.Zero);
-                        material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.On);
-                        material.EnableKeyword(BaseStyles.alphaTestOnName);
-                        material.DisableKeyword(BaseStyles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.AlphaTest;
-                    }
+                {
+                    material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Cutout]);
+                    material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Cutout);
+                    material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
+                    material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.Zero);
+                    material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.On);
+                    material.EnableKeyword(BaseStyles.alphaTestOnName);
+                    material.DisableKeyword(BaseStyles.alphaBlendOnName);
+                    material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.AlphaTest;
                     break;
+                }
 
                 case RenderingMode.Fade:
-                    {
-                        material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Fade]);
-                        material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Fade);
-                        material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.SrcAlpha);
-                        material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
-                        material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
-                        material.DisableKeyword(BaseStyles.alphaTestOnName);
-                        material.EnableKeyword(BaseStyles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
-                    }
+                {
+                    material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Fade]);
+                    material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Fade);
+                    material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.SrcAlpha);
+                    material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
+                    material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
+                    material.DisableKeyword(BaseStyles.alphaTestOnName);
+                    material.EnableKeyword(BaseStyles.alphaBlendOnName);
+                    material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
                     break;
+                }
 
                 case RenderingMode.Transparent:
-                    {
-                        material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Fade]);
-                        material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Fade);
-                        material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
-                        material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
-                        material.DisableKeyword(BaseStyles.alphaTestOnName);
-                        material.EnableKeyword(BaseStyles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
-                    }
+                {
+                    material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Fade]);
+                    material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Fade);
+                    material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
+                    material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.OneMinusSrcAlpha);
+                    material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
+                    material.DisableKeyword(BaseStyles.alphaTestOnName);
+                    material.EnableKeyword(BaseStyles.alphaBlendOnName);
+                    material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
                     break;
+                }
 
                 case RenderingMode.Additive:
-                    {
-                        material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Fade]);
-                        material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Fade);
-                        material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
-                        material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.One);
-                        material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
-                        material.DisableKeyword(BaseStyles.alphaTestOnName);
-                        material.EnableKeyword(BaseStyles.alphaBlendOnName);
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
-                    }
+                {
+                    material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.renderingModeNames[(int)RenderingMode.Fade]);
+                    material.SetInt(BaseStyles.customRenderingModeName, (int)CustomRenderingMode.Fade);
+                    material.SetInt(BaseStyles.sourceBlendName, (int)BlendMode.One);
+                    material.SetInt(BaseStyles.destinationBlendName, (int)BlendMode.One);
+                    material.SetInt(BaseStyles.depthWriteName, (int)DepthWrite.Off);
+                    material.DisableKeyword(BaseStyles.alphaTestOnName);
+                    material.EnableKeyword(BaseStyles.alphaBlendOnName);
+                    material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : (int)RenderQueue.Transparent;
                     break;
+                }
 
                 case RenderingMode.Custom:
+                {
+                    material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.customRenderingModeNames[(int)customMode]);
+                    // _SrcBlend, _DstBlend, _BlendOp, _ZTest, _ZWrite, _ColorWriteMask are controlled by UI.
+
+                    switch (customMode)
                     {
-                        material.SetOverrideTag(BaseStyles.renderTypeName, BaseStyles.customRenderingModeNames[(int)customMode]);
-                        // _SrcBlend, _DstBlend, _BlendOp, _ZTest, _ZWrite, _ColorWriteMask are controlled by UI.
-
-                        switch (customMode)
+                        case CustomRenderingMode.Opaque:
                         {
-                            case CustomRenderingMode.Opaque:
-                                {
-                                    material.DisableKeyword(BaseStyles.alphaTestOnName);
-                                    material.DisableKeyword(BaseStyles.alphaBlendOnName);
-                                }
-                                break;
-
-                            case CustomRenderingMode.Cutout:
-                                {
-                                    material.EnableKeyword(BaseStyles.alphaTestOnName);
-                                    material.DisableKeyword(BaseStyles.alphaBlendOnName);
-                                }
-                                break;
-
-                            case CustomRenderingMode.Fade:
-                                {
-                                    material.DisableKeyword(BaseStyles.alphaTestOnName);
-                                    material.EnableKeyword(BaseStyles.alphaBlendOnName);
-                                }
-                                break;
+                            material.DisableKeyword(BaseStyles.alphaTestOnName);
+                            material.DisableKeyword(BaseStyles.alphaBlendOnName);
+                            break;
                         }
 
-                        material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : material.renderQueue;
+                        case CustomRenderingMode.Cutout:
+                        {
+                            material.EnableKeyword(BaseStyles.alphaTestOnName);
+                            material.DisableKeyword(BaseStyles.alphaBlendOnName);
+                            break;
+                        }
+
+                        case CustomRenderingMode.Fade:
+                        {
+                            material.DisableKeyword(BaseStyles.alphaTestOnName);
+                            material.EnableKeyword(BaseStyles.alphaBlendOnName);
+                            break;
+                        }
                     }
+
+                    material.renderQueue = (renderQueueOverride >= 0) ? renderQueueOverride : material.renderQueue;
                     break;
+                }
             }
         }
 

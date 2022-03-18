@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
             {
                 Scene scene = SceneManager.GetSceneAt(i);
                 SceneManager.SetActiveScene(scene);
-                MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                _ = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             }
 
             MixedRealityToolkit[] instances = GameObject.FindObjectsOfType<MixedRealityToolkit>();

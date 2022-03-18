@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Tests to verify pointer state and pointer direction
     /// </summary>
-    public class PointerTests
+    public class PointerTests : BasePlayModeTests
     {
         // SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab
         private const string LinePointerGuid = "d5b94136462644c9873bb3347169ae7e";
@@ -52,18 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// See usage of these helpers throughout the tests within this file, e.g. <see cref="TestSpherePointerInsideGrabbable"/>.
         /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
         /// </remarks>
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToArbitraryPose();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 
@@ -195,11 +187,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests that right after being instantiated, the pointer's direction 
+        /// Tests that right after hand being instantiated, the pointer's direction 
         /// is in the same general direction as the forward direction of the camera
         /// </summary>
         [UnityTest]
-        public IEnumerator TestPointerDirectionToCameraDirection()
+        public IEnumerator TestHandPointerDirectionToCameraDirection()
         {
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
@@ -211,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.Show(initialPos);
 
             // Return first hand controller that is right and source type hand
-            var handController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Utilities.Handedness.Right && x.InputSource.SourceType == InputSourceType.Hand);
+            var handController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Handedness.Right && x.InputSource.SourceType == InputSourceType.Hand);
             Assert.IsNotNull(handController);
 
             // Get the line pointer from the hand controller
@@ -227,6 +219,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Check that the angle between the line pointer ray and camera forward does not exceed 40 degrees
             float angle = Vector3.Angle(linePointer.Rays[0].Direction, CameraCache.Main.transform.forward);
             Assert.LessOrEqual(angle, 40.0f);
+        }
+
+        /// <summary>
+        /// Tests that right after motion controller being instantiated, the pointer's direction 
+        /// is in the same general direction as the forward direction of the camera
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestMotionControllerPointerDirectionToCameraDirection()
+        {
+            var inputSystem = PlayModeTestUtilities.GetInputSystem();
+
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            // Raise the motion controller
+            var rightMotionController = new TestMotionController(Handedness.Right);
+
+            // Set initial position and show motion controller
+            Vector3 initialPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.01f, 0.1f, 0.5f));
+            yield return rightMotionController.Show(initialPos);
+
+            // Return first motion controller that is right and source type controller
+            var motionController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Handedness.Right && x.InputSource.SourceType == InputSourceType.Controller);
+            Assert.IsNotNull(motionController);
+
+            // Get the line pointer from the motion controller
+            var linePointer = motionController.InputSource.Pointers.OfType<ShellHandRayPointer>().First();
+            Assert.IsNotNull(linePointer);
+
+            Vector3 linePointerOrigin = linePointer.Position;
+
+            // Check that the line pointer origin is within half a centimeter of the initial position of the motion controller
+            var distance = Vector3.Distance(initialPos, linePointerOrigin);
+            Assert.LessOrEqual(distance, 0.005f);
+
+            // Check that the angle between the line pointer ray and camera forward does not exceed 40 degrees
+            float angle = Vector3.Angle(linePointer.Rays[0].Direction, CameraCache.Main.transform.forward);
+            Assert.LessOrEqual(angle, 40.0f);
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
         }
 
 
@@ -353,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static T CreatePointerPrefab<T>(string prefabPath,
                                                 out IMixedRealityInputSource inputSource,
                                                 out IMixedRealityController controller)
-            where T : IMixedRealityPointer
+            where T : MonoBehaviour, IMixedRealityPointer
         {
             var pointerPrefab = AssetDatabase.LoadAssetAtPath<Object>(prefabPath);
             var result = PrefabUtility.InstantiatePrefab(pointerPrefab) as GameObject;

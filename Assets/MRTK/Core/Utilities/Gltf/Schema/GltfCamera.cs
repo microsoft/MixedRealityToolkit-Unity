@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 {
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/schema/camera.schema.json
     /// </summary>
     [Serializable]
-    public class GltfCamera : GltfChildOfRootProperty
+    public class GltfCamera : GltfChildOfRootProperty, ISerializationCallbackReceiver
     {
         /// <summary>
         /// An orthographic camera containing properties to create an orthographic
@@ -30,6 +31,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// Based on this, either the camera's `perspective` or `orthographic` property
         /// will be defined.
         /// </summary>
-        public GltfCameraType type;
+        public GltfCameraType Type { get; set; }
+
+        [SerializeField]
+        private string type = null;
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            if (Enum.TryParse(type, out GltfCameraType result))
+            {
+                Type = result;
+            }
+            else
+            {
+                Type = default;
+            }
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            type = Type.ToString();
+        }
     }
 }

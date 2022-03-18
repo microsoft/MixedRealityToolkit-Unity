@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             var primitive = target as ClippingSphere;
             Debug.Assert(primitive != null);
-            return new Bounds(primitive.transform.position, Vector3.one * primitive.Radius);
+            return new Bounds(primitive.transform.position, primitive.Radii);
         }
     }
 }

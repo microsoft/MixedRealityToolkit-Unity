@@ -16,10 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// for a build to be successful.
         /// </summary>
         /// <remarks>
-        /// This controls the version of the Windows SDK that is build against on the local
+        /// <para>This controls the version of the Windows SDK that is build against on the local
         /// machine, NOT the version of the OS that must be present on the device that
         /// the built application is deployed to (this other aspect is controlled by
-        /// MIN_PLATFORM_VERSION)
+        /// MIN_PLATFORM_VERSION)</para>
         /// </remarks>
         public static Version MIN_SDK_VERSION = new Version("10.0.18362.0");
 
@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// is deployed to.
         /// </summary>
         /// <remarks>
-        /// This is intentionally set to a very low version, so that the application can be
-        /// deployed to variety of different devices which may be on older OS versions.
+        /// <para>This is intentionally set to a very low version, so that the application can be
+        /// deployed to variety of different devices which may be on older OS versions.</para>
         /// </remarks>
         public static Version MIN_PLATFORM_VERSION = new Version("10.0.10240.0");
 
@@ -46,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED = "BuildDeployWindow_MulticoreAppxBuildEnabled";
         private const string EDITOR_PREF_RESEARCH_MODE_CAPABILITY_ENABLED = "BuildDeployWindow_ResearchModeCapabilityEnabled";
         private const string EDITOR_PREF_ALLOW_UNSAFE_CODE = "BuildDeployWindow_AllowUnsafeCode";
+        private const string EDITOR_PREF_NUGET_EXECUTABLE_PATH = "BuildDeployWindow_NugetExecutablePath";
 
         /// <summary>
         /// The current Build Configuration. (Debug, Release, or Master)
@@ -193,6 +194,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_ALLOW_UNSAFE_CODE, false);
             set => EditorPreferences.Set(EDITOR_PREF_ALLOW_UNSAFE_CODE, value);
+        }
+
+        /// <summary>
+        /// Current value of the optional path to nuget.exe.
+        /// </summary>
+        public static string NugetExecutablePath
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_NUGET_EXECUTABLE_PATH, string.Empty);
+            set => EditorPreferences.Set(EDITOR_PREF_NUGET_EXECUTABLE_PATH, value);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public override IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)
         {
             this.position = position;
-            yield return PlayModeTestUtilities.ShowMontionController(handedness, simulationService);
+            yield return PlayModeTestUtilities.ShowMontionController(handedness, simulationService, new SimulatedMotionControllerButtonState(), position);
             if (waitForFixedUpdate)
             {
                 yield return new WaitForFixedUpdate();

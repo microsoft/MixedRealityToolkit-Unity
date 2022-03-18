@@ -1280,11 +1280,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 686154052196818910}
     m_Modifications:
-    - target: {fileID: 1693235197764364136, guid: 97a170e8fd708894ab1da1fd48414f6c,
-        type: 3}
-      propertyPath: m_Name
-      value: FocusProviderRaycastTestUI (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 746122008106266471, guid: 97a170e8fd708894ab1da1fd48414f6c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1390,6 +1385,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1693235197764364136, guid: 97a170e8fd708894ab1da1fd48414f6c,
+        type: 3}
+      propertyPath: m_Name
+      value: FocusProviderRaycastTestUI (1)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a170e8fd708894ab1da1fd48414f6c, type: 3}
 --- !u!1 &3939072328957289200 stripped
@@ -1411,11 +1411,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 686154052196818910}
     m_Modifications:
-    - target: {fileID: 1693235197764364136, guid: 97a170e8fd708894ab1da1fd48414f6c,
-        type: 3}
-      propertyPath: m_Name
-      value: FocusProviderRaycastTestUI
-      objectReference: {fileID: 0}
     - target: {fileID: 746122008106266471, guid: 97a170e8fd708894ab1da1fd48414f6c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1520,6 +1515,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693235197764364136, guid: 97a170e8fd708894ab1da1fd48414f6c,
+        type: 3}
+      propertyPath: m_Name
+      value: FocusProviderRaycastTestUI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a170e8fd708894ab1da1fd48414f6c, type: 3}

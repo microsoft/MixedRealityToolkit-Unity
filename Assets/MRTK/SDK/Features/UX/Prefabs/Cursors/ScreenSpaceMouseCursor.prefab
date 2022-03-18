@@ -50,6 +50,8 @@ MonoBehaviour:
   scaleLerpTime: 0.01
   rotationLerpTime: 0.01
   lookRotationBlend: 0.5
+  resizeCursorWithDistance: 0
+  cursorAngularSize: 50
   PrimaryCursorVisual: {fileID: 0}
   SourceDownIds: 
   defaultCursorDistance: 2

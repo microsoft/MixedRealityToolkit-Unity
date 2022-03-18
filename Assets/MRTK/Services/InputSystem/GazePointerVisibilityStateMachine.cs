@@ -11,8 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// appear, hide the gaze cursor. Whenever user says "select", make the gaze cursor appear.
     /// </summary>
     /// <remarks>
-    /// Has different behavior depending on whether or not eye gaze or head gaze in use - see comments on
-    /// GazePointerState for more details.
+    /// <para>Has different behavior depending on whether or not eye gaze or head gaze in use - see comments on
+    /// GazePointerState for more details.</para>
     /// </remarks>
     public class GazePointerVisibilityStateMachine : IMixedRealitySpeechHandler
     {

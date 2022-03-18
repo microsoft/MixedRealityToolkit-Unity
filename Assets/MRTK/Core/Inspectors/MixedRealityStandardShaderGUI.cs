@@ -7,7 +7,6 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -29,8 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static string renderingOptionsTitle = "Rendering Options";
             public static string advancedOptionsTitle = "Advanced Options";
             public static string fluentOptionsTitle = "Fluent Options";
-            public static string instancedColorName = "_InstancedColor";
-            public static string instancedColorFeatureName = "_INSTANCED_COLOR";
             public static string stencilComparisonName = "_StencilComparison";
             public static string stencilOperationName = "_StencilOperation";
             public static string disableAlbedoMapName = "_DISABLE_ALBEDO_MAP";
@@ -38,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static string albedoMapAlphaSmoothnessName = "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A";
             public static string propertiesComponentHelp = "Use the {0} component(s) to control {1} properties.";
             public static readonly string[] albedoAlphaModeNames = Enum.GetNames(typeof(AlbedoAlphaMode));
-            public static GUIContent instancedColor = new GUIContent("Instanced Color", "Enable a Unique Color Per Instance");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
             public static GUIContent albedoAssignedAtRuntime = new GUIContent("Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
@@ -52,6 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent enableEmission = new GUIContent("Emission", "Enable Emission");
             public static GUIContent emissiveColor = new GUIContent("Color");
             public static GUIContent enableTriplanarMapping = new GUIContent("Triplanar Mapping", "Enable Triplanar Mapping, a technique which programmatically generates UV coordinates");
+            public static GUIContent enableSSAA = new GUIContent("Super Sample Anti-Aliasing", "Enable Super Sample Anti-Aliasing, a technique improves texture clarity at long distances");
+            public static GUIContent mipmapBias = new GUIContent("Mipmap Bias", "Degree to bias the mip map. A larger negative value reduces aliasing and improves clarity, but may decrease performance");
             public static GUIContent enableLocalSpaceTriplanarMapping = new GUIContent("Local Space", "If True Triplanar Mapping is Calculated in Local Space");
             public static GUIContent triplanarMappingBlendSharpness = new GUIContent("Blend Sharpness", "The Power of the Blend with the Normal");
             public static GUIContent directionalLight = new GUIContent("Directional Light", "Affected by One Unity Directional Light");
@@ -121,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent ignoreZScale = new GUIContent("Ignore Z Scale", "For Features That Use Object Scale (Round Corners, Border Light, etc.), Ignore the Z Scale of the Object");
         }
 
-        protected MaterialProperty instancedColor;
         protected MaterialProperty albedoMap;
         protected MaterialProperty albedoColor;
         protected MaterialProperty albedoAlphaMode;
@@ -135,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty enableEmission;
         protected MaterialProperty emissiveColor;
         protected MaterialProperty enableTriplanarMapping;
+        protected MaterialProperty enableSSAA;
+        protected MaterialProperty mipmapBias;
         protected MaterialProperty enableLocalSpaceTriplanarMapping;
         protected MaterialProperty triplanarMappingBlendSharpness;
         protected MaterialProperty metallic;
@@ -209,7 +208,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.FindProperties(props);
 
-            instancedColor = FindProperty(Styles.instancedColorName, props);
             albedoMap = FindProperty("_MainTex", props);
             albedoColor = FindProperty("_Color", props);
             albedoAlphaMode = FindProperty("_AlbedoAlphaMode", props);
@@ -225,6 +223,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             enableEmission = FindProperty("_EnableEmission", props);
             emissiveColor = FindProperty("_EmissiveColor", props);
             enableTriplanarMapping = FindProperty("_EnableTriplanarMapping", props);
+            enableSSAA = FindProperty("_EnableSSAA", props);
+            mipmapBias = FindProperty("_MipmapBias", props);
             enableLocalSpaceTriplanarMapping = FindProperty("_EnableLocalSpaceTriplanarMapping", props);
             triplanarMappingBlendSharpness = FindProperty("_TriplanarMappingBlendSharpness", props);
             directionalLight = FindProperty("_DirectionalLight", props);
@@ -462,6 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(emissiveColor, Styles.emissiveColor, 2);
             }
 
+            GUI.enabled = !PropertyEnabled(enableSSAA);
             materialEditor.ShaderProperty(enableTriplanarMapping, Styles.enableTriplanarMapping);
 
             if (PropertyEnabled(enableTriplanarMapping))
@@ -469,6 +470,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(enableLocalSpaceTriplanarMapping, Styles.enableLocalSpaceTriplanarMapping, 2);
                 materialEditor.ShaderProperty(triplanarMappingBlendSharpness, Styles.triplanarMappingBlendSharpness, 2);
             }
+            GUI.enabled = true;
+
+            GUI.enabled = !PropertyEnabled(enableTriplanarMapping);
+            // SSAA implementation based off this article: https://medium.com/@bgolus/sharper-mipmapping-using-shader-based-supersampling-ed7aadb47bec
+            materialEditor.ShaderProperty(enableSSAA, Styles.enableSSAA);
+
+            if (PropertyEnabled(enableSSAA))
+            {
+                materialEditor.ShaderProperty(mipmapBias, Styles.mipmapBias, 2);
+            }
+            GUI.enabled = true;
 
             EditorGUILayout.Space();
             materialEditor.TextureScaleOffsetProperty(albedoMap);
@@ -700,16 +712,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             materialEditor.EnableInstancingField();
 
-            if (material.enableInstancing)
-            {
-                GUI.enabled = true;
-                materialEditor.ShaderProperty(instancedColor, Styles.instancedColor, 2);
-            }
-            else
-            {
-                // When instancing is disable, disable instanced color.
-                SetShaderFeatureActive(material, Styles.instancedColorFeatureName, Styles.instancedColorName, 0.0f);
-            }
+            GUI.enabled = true;
 
             materialEditor.ShaderProperty(stencil, Styles.stencil);
 
@@ -755,33 +758,44 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             switch ((AlbedoAlphaMode)albedoAlphaMode.floatValue)
             {
                 case AlbedoAlphaMode.Transparency:
-                    {
-                        material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
-                        material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
-                    }
+                {
+                    material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
+                    material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
                     break;
+                }
 
                 case AlbedoAlphaMode.Metallic:
-                    {
-                        material.EnableKeyword(Styles.albedoMapAlphaMetallicName);
-                        material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
-                    }
+                {
+                    material.EnableKeyword(Styles.albedoMapAlphaMetallicName);
+                    material.DisableKeyword(Styles.albedoMapAlphaSmoothnessName);
                     break;
+                }
 
                 case AlbedoAlphaMode.Smoothness:
-                    {
-                        material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
-                        material.EnableKeyword(Styles.albedoMapAlphaSmoothnessName);
-                    }
+                {
+                    material.DisableKeyword(Styles.albedoMapAlphaMetallicName);
+                    material.EnableKeyword(Styles.albedoMapAlphaSmoothnessName);
                     break;
+                }
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
-        protected static void UpgradeShaderForLightweightRenderPipeline()
+#if UNITY_2019_1_OR_NEWER
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline")]
+#else
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
+#endif
+        protected static void UpgradeShaderForUniversalRenderPipeline()
         {
+            string confirmationMessage;
+#if UNITY_2019_1_OR_NEWER
+            confirmationMessage = "This will alter the MRTK Standard Shader for use with Unity's Universal Render Pipeline. You cannot undo this action.";
+#else
+            confirmationMessage = "This will alter the MRTK Standard Shader for use with Unity's Lightweight Render Pipeline. You cannot undo this action.";
+#endif
+
             if (EditorUtility.DisplayDialog("Upgrade MRTK Standard Shader?",
-                                            "This will alter the MRTK Standard Shader for use with Unity's Lightweight Render Pipeline. You cannot undo this action.",
+                                            confirmationMessage,
                                             "Ok",
                                             "Cancel"))
             {
@@ -792,14 +806,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     try
                     {
                         string upgradedShader = File.ReadAllText(path);
+
+#if UNITY_2019_1_OR_NEWER
+                        upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
+                                                                "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"UniversalForward\" }");
+#else
                         upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
                                                                 "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"LightweightForward\" }");
-                        upgradedShader = upgradedShader.Replace("//#define _LIGHTWEIGHT_RENDER_PIPELINE",
-                                                                "#define _LIGHTWEIGHT_RENDER_PIPELINE");
+#endif
+
+                        upgradedShader = upgradedShader.Replace("//#define _RENDER_PIPELINE",
+                                                                "#define _RENDER_PIPELINE");
+
                         File.WriteAllText(path, upgradedShader);
                         AssetDatabase.Refresh();
 
+#if UNITY_2019_1_OR_NEWER
+                        Debug.LogFormat("Upgraded {0} for use with the Universal Render Pipeline.", path);
+#else
                         Debug.LogFormat("Upgraded {0} for use with the Lightweight Render Pipeline.", path);
+#endif
                     }
                     catch (Exception e)
                     {
@@ -813,8 +839,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline", true)]
-        protected static bool UpgradeShaderForLightweightRenderPipelineValidate()
+#if UNITY_2019_1_OR_NEWER
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline", true)]
+#else
+        [MenuItem("Mixed Reality/Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline", true)]
+#endif
+        protected static bool UpgradeShaderForUniversalRenderPipelineValidate()
         {
             // If a scriptable render pipeline is not present, no need to upgrade the shader.
             return GraphicsSettings.renderPipelineAsset != null;

@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 currentDistortion = -velocity * blobDistortion;
             distortion = Vector3.Lerp(distortion, currentDistortion, 1f / blobDistortion * Time.deltaTime);
 
-            inertialContentBounds.center = inertialContentBounds.center + velocity;
+            inertialContentBounds.center += velocity;
             Vector3 size = inertialContentBounds.size + distortion;
             inertialContentBounds.size = size;
 

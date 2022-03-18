@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        private static readonly Type[] requiredMeshComponents =
+        private static readonly Type[] RequiredMeshComponents =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject
             {
                 Id = meshId,
-                GameObject = new GameObject(name, requiredMeshComponents)
+                GameObject = new GameObject(name, RequiredMeshComponents)
                 {
                     layer = layer
                 }

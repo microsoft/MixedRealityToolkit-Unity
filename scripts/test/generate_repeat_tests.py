@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 """Prints code that can be copy / pasted to run multiple Unity Playmode tests
 """
 

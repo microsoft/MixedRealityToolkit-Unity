@@ -11,7 +11,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
-    class DefaultRaycastProviderTest
+    class DefaultRaycastProviderTest : BasePlayModeTests
     {
         private DefaultRaycastProvider defaultRaycastProvider;
 
@@ -32,18 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             yield return null;
         }
 
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             defaultRaycastProvider = new DefaultRaycastProvider(null);
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
     }

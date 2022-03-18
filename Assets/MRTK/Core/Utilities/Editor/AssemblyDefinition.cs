@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             FileInfo file = new FileInfo(fileName);
 
-            bool readOnly = (file.Exists) ? file.IsReadOnly : false;
+            bool readOnly = file.Exists && file.IsReadOnly;
             if (readOnly)
             {
                 file.IsReadOnly = false;
@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 refs.Add(referenceName);
             }
-            else 
+            else
             {
                 Debug.Log($"The {referenceName} reference name is already listed in the {Name} file.");
                 return;

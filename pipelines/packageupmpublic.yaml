@@ -3,20 +3,42 @@
 variables:
 - template: config/settings.yml
 
+parameters:
+- name: SourcePipeline
+  type: string
+  default: stabilization_ci
+  values:
+    - stabilization_ci
+    - mrtk_ci
+- name: PreviewNumber
+  type: number
+  default: -1
+
 jobs:
 - job: UPMPublicRelease
   timeoutInMinutes: 30
   pool:
-    name: On-Prem Unity
+    vmImage: windows-2019
   steps:
-  - template: templates/tasks/upmpackages.yml
-    parameters:
-      excludeBuildNumber: 1
-  - task: PowerShell@2
-    displayName: 'UPM packages to registry'
+  - task: DownloadPipelineArtifact@2
+    displayName: Download tarballs
     inputs:
-      targetType: filePath
-      filePath: ./scripts/packaging/publishupmpackages.ps1
-      arguments: >
-        -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
-        -RegistryPath $(UpmRegistry)
+      source: specific
+      project: $(System.TeamProjectId)
+      ${{ if eq(parameters.SourcePipeline, 'stabilization_ci') }}:
+        pipeline: 32
+      ${{ if eq(parameters.SourcePipeline, 'mrtk_ci') }}:
+        pipeline: 15
+      runVersion: latestFromBranch
+      runBranch: $(Build.SourceBranch)
+      artifactName: mrtk-upm
+      path: $(Agent.TempDirectory)
+
+  - template: templates/tasks/pack-upm.yml
+    parameters:
+      ${{ if ge(parameters.PreviewNumber, 0) }}:
+        previewNumber: ${{ parameters.PreviewNumber }}
+      ${{ if lt(parameters.PreviewNumber, 0) }}:
+        previewNumber: ""
+      projectRoot: $(Agent.TempDirectory)
+      repack: true

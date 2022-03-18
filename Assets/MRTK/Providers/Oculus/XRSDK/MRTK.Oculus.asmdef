@@ -1,0 +1,36 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus",
+    "rootNamespace": "",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.Management",
+        "Unity.XR.Oculus",
+        "Oculus.VR"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2019_3_OR_NEWER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.xr.oculus",
+            "expression": "",
+            "define": "OCULUS_ENABLED"
+        }
+    ],
+    "noEngineReferences": false
+}

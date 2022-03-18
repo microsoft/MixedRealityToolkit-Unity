@@ -49,3 +49,8 @@ Several mechanisms to orientate and place object in a scene relative to each oth
 Several default line drawing options for use in your project. Also utilized by the MRTK itself for controller pointer and teleportation use.
 
 > Keep checking back often as more UX controls are added.
+
+## Reading Mode
+
+* Reading Mode Demo
+Demonstrates how to alter the HoloLens2 field of view to trade view size for detail.  This is called [Reading Mode](https://docs.microsoft.com/en-us/hololens/hololens2-display).  Reading Mode may be helpful when small details need to be visualized on HoloLens2.  There is also the ability to change the Render Viewport Scale which may increase FPS by having the application render fewer pixels.

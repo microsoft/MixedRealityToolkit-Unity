@@ -58,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             p2Velocity = Vector3.Lerp(p2Velocity, p2Offset, Time.deltaTime * inertia);
             p2Velocity = Vector3.Lerp(p2Velocity, Vector3.zero, Time.deltaTime * dampen);
 
-            p1Position = p1Position + p1Velocity;
-            p2Position = p2Position + p2Velocity;
+            p1Position += p1Velocity;
+            p2Position += p2Velocity;
 
             p1Position = Vector3.Lerp(p1Position, p1WorldTarget, seekTargetStrength * Time.deltaTime);
             p2Position = Vector3.Lerp(p2Position, p2WorldTarget, seekTargetStrength * Time.deltaTime);

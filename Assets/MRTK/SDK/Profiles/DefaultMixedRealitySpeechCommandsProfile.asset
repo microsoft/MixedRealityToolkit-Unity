@@ -44,3 +44,10 @@ MonoBehaviour:
       id: 15
       description: Toggle Profiler
       axisConstraint: 0
+  - localizationKey: 
+    keyword: Make Planes
+    keyCode: 52
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0

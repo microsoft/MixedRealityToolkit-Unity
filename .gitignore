@@ -8,6 +8,7 @@
 [Bb]uild/
 [Ll]ibrary/
 [Aa]pp/
+[Uu]serSettings/
 UWP/
 WindowsStoreApp/
 WSA/
@@ -17,10 +18,10 @@ UnityPackageManager/
 project.json
 project.lock.json
 *.package
-Assets/XR/
-Assets/XR.meta
+**/.DS_Store
 Assets/Oculus/
 Assets/Oculus.meta
+
 # ============ #
 # Certificates #
 # ============ #
@@ -33,6 +34,7 @@ Assets/Oculus.meta
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
 .vs/
+.vsconfig
 ExportedObj/
 obj/
 *.svd
@@ -104,3 +106,10 @@ MSBuildForUnity.Common.props
 *.msb4u.sln.meta
 Dependencies*
 Nuget.config*
+*.obj
+*.bin
+
+# =========== #
+# Other files #
+# =========== #
+.DS_Store

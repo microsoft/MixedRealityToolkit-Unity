@@ -168,6 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             pointerConfigurations = System.Array.Empty<PointerConfig>();
             activePointersToConfig.Clear();
+
+            base.Destroy();
         }
 
         #endregion
@@ -191,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < pointerConfigurations.Length; i++)
                 {
                     var option = pointerConfigurations[i].profile;
-                    if (option.ControllerType.HasFlag(controllerType) && option.Handedness.HasFlag(controllingHand))
+                    if (option.ControllerType.IsMaskSet(controllerType) && option.Handedness.IsMaskSet(controllingHand))
                     {
                         IMixedRealityPointer requestedPointer = null;
 

@@ -4,14 +4,13 @@
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class MixedRealitySpatialAwarenessSystem :
         BaseDataProviderAccessCoreSystem,
         IMixedRealitySpatialAwarenessSystem,
@@ -49,11 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                IMixedRealityCapabilityCheck capabilityChecker = observer as IMixedRealityCapabilityCheck;
-
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
-                if ((capabilityChecker != null) &&
+                if (observer is IMixedRealityCapabilityCheck capabilityChecker &&
                     capabilityChecker.CheckCapability(capability))
                 {
                     return true;
@@ -67,16 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         #region IMixedRealityToolkitService Implementation
 
-        private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
-
         /// <inheritdoc/>
         public override void Initialize()
         {
-            base.Initialize();
-
-            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
-
+            // Mark not initialized early so observers can use this state in their own initialization
+            IsInitialized = false;
             InitializeInternal();
+            base.Initialize();
         }
 
         /// <summary>

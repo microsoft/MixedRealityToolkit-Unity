@@ -1,10 +1,13 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Prepares the MRTK\Extensions folder for UPM packaging.
 .DESCRIPTION
     Prepares the MRTK\Extensions folder for UPM packaging.
 .PARAMETER PackageRoot
-    The root folder containing the examples package contents. If not specified, the current folder is presumed.
+    The root folder containing the extensions package contents. If not specified, the current folder is presumed.
 #>
 param(
     [string]$PackageRoot

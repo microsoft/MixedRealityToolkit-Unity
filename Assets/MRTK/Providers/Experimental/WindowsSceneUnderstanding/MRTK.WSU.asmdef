@@ -1,0 +1,40 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsSceneUnderstanding",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
+        "Microsoft.MixedReality.SceneUnderstanding.Projections.Editor",
+        "Microsoft.MixedReality.SceneUnderstanding.Projections.WSA",
+        "Microsoft.MixedReality.OpenXR",
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.Management",
+        "Unity.XR.OpenXR"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "WSA"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2019_4_OR_NEWER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.sceneunderstanding",
+            "expression": "",
+            "define": "SCENE_UNDERSTANDING_PRESENT"
+        },
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "",
+            "define": "MSFT_OPENXR"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {

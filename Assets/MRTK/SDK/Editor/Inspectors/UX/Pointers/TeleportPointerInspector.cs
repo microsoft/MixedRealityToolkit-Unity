@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
     [CustomEditor(typeof(TeleportPointer))]
     public class TeleportPointerInspector : LinePointerInspector
     {
+        private SerializedProperty hotSpotCursorVisibility;
         private SerializedProperty teleportAction;
         private SerializedProperty inputThreshold;
         private SerializedProperty angleOffset;
@@ -17,10 +18,16 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
         private SerializedProperty rotationAmount;
         private SerializedProperty backStrafeActivationAngle;
         private SerializedProperty strafeAmount;
+        private SerializedProperty checkForFloorOnStrafe;
+        private SerializedProperty adjustHeightOnStrafe;
+        private SerializedProperty maxHeightChangeOnStrafe;
         private SerializedProperty upDirectionThreshold;
         private SerializedProperty lineColorHotSpot;
         private SerializedProperty validLayers;
         private SerializedProperty invalidLayers;
+        private SerializedProperty pointerAudioSource;
+        private SerializedProperty teleportRequestedClip;
+        private SerializedProperty teleportCompletedClip;
 
         private bool teleportPointerFoldout = true;
 
@@ -29,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             DrawBasePointerActions = false;
             base.OnEnable();
 
+            hotSpotCursorVisibility = serializedObject.FindProperty("hotSpotCursorVisibility");
             teleportAction = serializedObject.FindProperty("teleportAction");
             inputThreshold = serializedObject.FindProperty("inputThreshold");
             angleOffset = serializedObject.FindProperty("angleOffset");
@@ -37,10 +45,16 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             rotationAmount = serializedObject.FindProperty("rotationAmount");
             backStrafeActivationAngle = serializedObject.FindProperty("backStrafeActivationAngle");
             strafeAmount = serializedObject.FindProperty("strafeAmount");
+            checkForFloorOnStrafe = serializedObject.FindProperty("checkForFloorOnStrafe");
+            adjustHeightOnStrafe = serializedObject.FindProperty("adjustHeightOnStrafe");
+            maxHeightChangeOnStrafe = serializedObject.FindProperty("maxHeightChangeOnStrafe");
             upDirectionThreshold = serializedObject.FindProperty("upDirectionThreshold");
             lineColorHotSpot = serializedObject.FindProperty("LineColorHotSpot");
             validLayers = serializedObject.FindProperty("ValidLayers");
             invalidLayers = serializedObject.FindProperty("InvalidLayers");
+            pointerAudioSource = serializedObject.FindProperty("pointerAudioSource");
+            teleportRequestedClip = serializedObject.FindProperty("teleportRequestedClip");
+            teleportCompletedClip = serializedObject.FindProperty("teleportCompletedClip");
         }
 
         public override void OnInspectorGUI()
@@ -53,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             if (teleportPointerFoldout)
             {
                 EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(hotSpotCursorVisibility);
                 EditorGUILayout.PropertyField(teleportAction);
                 EditorGUILayout.PropertyField(inputThreshold);
                 EditorGUILayout.PropertyField(angleOffset);
@@ -61,10 +76,19 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
                 EditorGUILayout.PropertyField(rotationAmount);
                 EditorGUILayout.PropertyField(backStrafeActivationAngle);
                 EditorGUILayout.PropertyField(strafeAmount);
+                EditorGUILayout.PropertyField(checkForFloorOnStrafe);
+                if (checkForFloorOnStrafe.boolValue)
+                {
+                    EditorGUILayout.PropertyField(adjustHeightOnStrafe);
+                    EditorGUILayout.PropertyField(maxHeightChangeOnStrafe);
+                }
                 EditorGUILayout.PropertyField(upDirectionThreshold);
                 EditorGUILayout.PropertyField(lineColorHotSpot);
                 EditorGUILayout.PropertyField(validLayers);
                 EditorGUILayout.PropertyField(invalidLayers);
+                EditorGUILayout.PropertyField(pointerAudioSource);
+                EditorGUILayout.PropertyField(teleportRequestedClip);
+                EditorGUILayout.PropertyField(teleportCompletedClip);
                 EditorGUI.indentLevel--;
             }
 

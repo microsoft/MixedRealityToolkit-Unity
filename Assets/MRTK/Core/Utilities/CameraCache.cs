@@ -46,15 +46,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
                     else
                     {
-                        Debug.LogWarning("The Mixed Reality Toolkit requires one camera in the scene to be tagged as \"MainCamera\". Please ensure the application's main camera is tagged.");
+                        Debug.LogWarning("The Mixed Reality Toolkit was unable to determine a main camera. Please tag the scene's primary camera as \"MainCamera\", in the hierarchy.");
                     }
                 }
 
                 // Cache the main camera
                 cachedCamera = mainCamera;
-
                 return cachedCamera;
             }
+        }
+
+        /// <summary>
+        /// Manually update the cached main camera 
+        /// </summary>
+        public static void UpdateCachedMainCamera(Camera camera)
+        {
+            cachedCamera = camera;
         }
     }
 }

@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Test orbital around left hand line pointer
             {
                 testObjects.handler.TrackedTargetType = TrackedObjectType.ControllerRay;
-                testObjects.handler.TrackedHandness = Handedness.Left;
+                testObjects.handler.TrackedHandedness = Handedness.Left;
 
                 yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
             }
@@ -220,6 +220,77 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test Surface Magnetism against vertical normal and ensure no temporal instability (gimbal lock)
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestSurfaceMagnetismGimbalLock()
+        {
+            Vector3 floorCenter = Vector3.forward * 10.0f + Vector3.up * -2.0f;
+
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(floorCenter);
+            });
+
+            // Build floor to collide against
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor.transform.localScale = new Vector3(25.0f, 0.2f, 25.0f);
+            floor.transform.position = floorCenter;
+
+            // Give the floor a very small tilt
+            floor.transform.rotation = Quaternion.Euler(10, 0, 0);
+
+            yield return WaitForFrames(2);
+
+            // Instantiate our test GameObject with solver. 
+            // Set layer to ignore raycast so solver doesn't raycast itself (i.e BoxCollider)
+            var testObjects = InstantiateTestSolver<SurfaceMagnetism>();
+            testObjects.target.layer = LayerMask.NameToLayer("Ignore Raycast");
+            SurfaceMagnetism surfaceMag = testObjects.solver as SurfaceMagnetism;
+
+            var targetTransform = testObjects.target.transform;
+            var cameraTransform = CameraCache.Main.transform;
+
+            yield return WaitForFrames(2);
+
+            // Change default orientation mode to surface normal
+            surfaceMag.CurrentOrientationMode = SurfaceMagnetism.OrientationMode.SurfaceNormal;
+            surfaceMag.KeepOrientationVertical = false;
+
+            yield return WaitForFrames(2);
+
+            // Test object should now be facing the floor
+            Assert.IsTrue(Mathf.Approximately(1.0f, Vector3.Dot(-targetTransform.forward.normalized, floor.transform.up)));
+
+            // Cache test object's current right vector
+            Vector3 rightVector = testObjects.target.transform.right;
+
+            floor.transform.Rotate(new Vector3(-20, 0, 0));
+            yield return WaitForFrames(2);
+
+            // Make sure that the target's right vector has not flip-flopped
+            Assert.IsTrue(Mathf.Sign(targetTransform.transform.right.x) == Mathf.Sign(rightVector.x));
+
+            // Do the same, but with KeepOrientationVertical = true
+            surfaceMag.KeepOrientationVertical = true;
+
+            // Cache test object's current right vector
+            rightVector = testObjects.target.transform.right;
+
+            yield return WaitForFrames(2);
+
+            // Test object should now have proper upright orientation
+            Assert.IsTrue(Mathf.Approximately(1.0f, Vector3.Dot(targetTransform.up.normalized, Vector3.up)));
+            floor.transform.Rotate(new Vector3(20, 0, 0));
+            yield return WaitForFrames(2);
+
+            // Make sure that the target's right vector has not flip-flopped
+            Assert.IsTrue(Mathf.Sign(targetTransform.transform.right.x) == Mathf.Sign(rightVector.x));
+        }
+
+        /// <summary>
         /// Test solver system's ability to change target types at runtime
         /// </summary>
         [UnityTest]
@@ -266,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraint>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
@@ -309,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;
@@ -418,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             var manipHandler = testObjects.target.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObjects.target.transform;
@@ -608,7 +679,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
 
             // Set hand position 
-            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            Vector3 handStartPosition = new Vector3(-0.055f, -0.1f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
@@ -671,14 +742,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
 
             // Set hand position
-            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            Vector3 handStartPosition = new Vector3(-0.055f, -0.1f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
             Vector3 initialObjPosition = tapToPlaceObj.target.transform.position;
 
             yield return leftHand.Click();
-
             // Make sure the object is being placed after selection
             Assert.True(tapToPlace.IsBeingPlaced);
 
@@ -790,7 +860,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
             tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
 
-            Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
+            Vector3 handStartPosition = new Vector3(-0.04f, -0.15f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
@@ -801,13 +871,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(tapToPlace.IsBeingPlaced);
 
             // Move hand, object should follow
-            yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(-0.20f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
 
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.20f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
 
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.05f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
 
             // Stop the placement via code instead of click from the hand
@@ -845,7 +915,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
             tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
 
-            Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
+            Vector3 handStartPosition = new Vector3(-0.04f, -0.15f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
@@ -865,17 +935,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(tapToPlace.IsBeingPlaced);
 
             // Move hand in front of a collider for surface detection, the Tap to Place object should follow
-            yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(-0.20f, 0, 0), 30);
 
             // Make sure the depth of the Tap to Place Object is very close to the depth of the wall because the SurfaceNormalOffset is 0
             Assert.AreEqual(tapToPlaceObj.target.transform.position.z, colliderObj1.transform.position.z, 0.05f);
 
             // Move hand between the colliders, the Tap to Place object should have a greater z position because the raycast did not detect a surface
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.20f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
 
             // Move the hand in front of a collider for a surface detection
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            yield return leftHand.Move(new Vector3(0.05f, 0, 0), 30);
 
             // Set the UseDefaultSurfaceNormalOffset to true while still in the placing state
             tapToPlace.UseDefaultSurfaceNormalOffset = true;
@@ -992,6 +1062,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertLessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
             Assert.IsTrue(indicatorMesh.enabled);
 
+            // Check that the solver is near the max scale when turned away from the target
+            directionTarget.transform.position = 10.0f * Vector3.back;
+            yield return WaitForFrames(2);
+            TestUtilities.AssertAboutEqual(indicatorSolver.transform.lossyScale, indicatorSolver.MaxIndicatorScale * Vector3.one, "Not at max indicator size");
+
+
+            // Check that the solver is smaller when the target is closer to the cameras FOV
+            directionTarget.transform.position = 2.0f * Vector3.right + 1.0f * Vector3.forward;
+            yield return WaitForFrames(2);
+            TestUtilities.AssertLessOrEqual(indicatorSolver.transform.lossyScale.magnitude, ((indicatorSolver.MinIndicatorScale + indicatorSolver.MaxIndicatorScale * 0.5f) * Vector3.one).magnitude, "Not smaller than the average of the indicator size range");
+
             // Destroy the object and then validate that the mesh is no longer visible
             Object.Destroy(directionTarget);
             yield return null;
@@ -1099,13 +1180,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
 
-            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
-            yield return new WaitForFixedUpdate();
-            yield return null;
-
-            Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
-
-            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
+            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 90));
             yield return new WaitForFixedUpdate();
             yield return null;
 
@@ -1248,7 +1323,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Transform expectedTransform = null;
             if (testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay)
             {
-                expectedTransform = PointerUtils.GetPointer<LinePointer>(hand)?.transform;
+                LinePointer pointer = PointerUtils.GetPointer<LinePointer>(hand);
+                expectedTransform = (pointer != null) ? pointer.transform : null;
             }
             else
             {
@@ -1324,7 +1400,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-            testObjects.handler.TrackedHandness = Handedness.Both;
+            testObjects.handler.TrackedHandedness = Handedness.Both;
 
             var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;

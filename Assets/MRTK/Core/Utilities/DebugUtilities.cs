@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Unity player log.
         /// </summary>
         /// <remarks>
-        /// Note that the order of enums below is important, since when the log level is
+        /// <para>Note that the order of enums below is important, since when the log level is
         /// set to any of the options below, all of the other log levels greater than it in
         /// value will also be enabled. For example, setting LogLevel to Warn will show both
         /// warnings and errors. The only exception for this is "None", which, when set, will
-        /// not show any logs.
+        /// not show any logs.</para>
         /// </remarks>
         public enum LoggingLevel
         {
@@ -124,18 +124,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Logs the given message to the Unity console and player log if verbose logging is enabled.
         /// </summary>
         /// <remarks>
-        /// If you are doing string concatentation or manipulation, use LogVerboseFormat
-        /// that formats the string, as that will not allocate memory when verbose logging is enabled.
+        /// <para>If you are doing string concatenation or manipulation, use LogVerboseFormat
+        /// that formats the string, as that will not allocate memory when verbose logging is enabled.</para>
         ///
-        /// For example, don't do:
-        /// Debug.LogVerbose("This is my message: " + text);
+        /// <para>For example, don't do:
+        /// Debug.LogVerbose("This is my message: " + text);</para>
         ///
-        /// Do:
-        /// Debug.LogVerbose("This is my message: {0}", text);
+        /// <para>Do:
+        /// Debug.LogVerbose("This is my message: {0}", text);</para>
         ///
-        /// Note that verbose logs do not include the callstack to reduce the noise in the generated
+        /// <para>Note that verbose logs do not include the callstack to reduce the noise in the generated
         /// editor log. Even with default stack trace parameter (StackTraceLogType.ScriptOnly),
-        /// the editor logs will grow significantly (i.e. a 10x+ line growth factor).
+        /// the editor logs will grow significantly (i.e. a 10x+ line growth factor).</para>
         /// </remarks>
         public static void LogVerbose(string message)
         {

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a1c93114e9437cb75d8b3ee4e0e1ba, type: 3}
+  m_Name: OpenXRCameraProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  settingsConfigurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK
+    componentName: XR SDK Camera Settings
+    priority: 0
+    runtimePlatform: -1
+    settingsProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    componentName: OpenXR Camera Settings
+    priority: 0
+    runtimePlatform: -1
+    settingsProfile: {fileID: 11400000, guid: 32349edfa9bacb94a9fe58923e9a2400, type: 2}
+  nearClipPlaneOpaqueDisplay: 0.1
+  farClipPlaneOpaqueDisplay: 1000
+  cameraClearFlagsOpaqueDisplay: 1
+  backgroundColorOpaqueDisplay: {r: 0, g: 0, b: 0, a: 1}
+  opaqueQualityLevel: 5
+  nearClipPlaneTransparentDisplay: 0.1
+  farClipPlaneTransparentDisplay: 50
+  cameraClearFlagsTransparentDisplay: 2
+  backgroundColorTransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
+  transparentQualityLevel: 0

@@ -14,14 +14,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
-        SupportedPlatforms.WindowsUniversal,
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal,
         "XR SDK Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
-        "MixedRealityToolkit.SDK")]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+        "MixedRealityToolkit.SDK",
+        true,
+        SupportedUnityXRPipelines.XRSDK)]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class WindowsMixedRealitySpatialMeshObserver :
-        GenericXRSDKSpatialMeshObserver,
-        IMixedRealityCapabilityCheck
+        GenericXRSDKSpatialMeshObserver
     {
         /// <summary>
         /// Constructor.
@@ -37,38 +38,60 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
+        protected override bool? IsActiveLoader =>
+#if WMR_ENABLED
+            LoaderHelpers.IsLoaderActive("Windows MR Loader");
+#else
+            false;
+#endif // WMR_ENABLED
+
         private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.ConfigureObserverVolume");
+
+        private Vector3 oldObserverOrigin = Vector3.zero;
+        private Vector3 oldObservationExtents = Vector3.zero;
+        private VolumeType oldObserverVolumeType = VolumeType.None;
 
         /// <inheritdoc/>
         protected override void ConfigureObserverVolume()
         {
-            if (SpatialAwarenessSystem == null || XRSubsystemHelpers.MeshSubsystem == null)
+            if (XRSubsystemHelpers.MeshSubsystem == null
+                || (oldObserverOrigin == ObserverOrigin
+                && oldObservationExtents == ObservationExtents
+                && oldObserverVolumeType == ObserverVolumeType))
             {
                 return;
             }
 
             using (ConfigureObserverVolumePerfMarker.Auto())
             {
+                Vector3 observerOriginPlayspace = MixedRealityPlayspace.InverseTransformPoint(ObserverOrigin);
+
                 // Update the observer
                 switch (ObserverVolumeType)
                 {
                     case VolumeType.AxisAlignedCube:
-                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
+                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolume(observerOriginPlayspace, ObservationExtents);
                         break;
 #if WMR_ENABLED
                     case VolumeType.Sphere:
                         // We use the x value of the extents as the sphere radius
-                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeSphere(ObserverOrigin, ObservationExtents.x);
+                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeSphere(observerOriginPlayspace, ObservationExtents.x);
                         break;
 
                     case VolumeType.UserAlignedCube:
-                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
+                        Quaternion observerRotationPlayspace = Quaternion.Inverse(MixedRealityPlayspace.Rotation) * ObserverRotation;
+                        XRSubsystemHelpers.MeshSubsystem.SetBoundingVolumeOrientedBox(observerOriginPlayspace, ObservationExtents, observerRotationPlayspace);
                         break;
 #endif // WMR_ENABLED
                     default:
                         Debug.LogError($"Unsupported ObserverVolumeType value {ObserverVolumeType}");
                         break;
                 }
+
+
+                oldObserverOrigin = ObserverOrigin;
+                oldObservationExtents = ObservationExtents;
+                oldObserverVolumeType = ObserverVolumeType;
             }
         }
     }

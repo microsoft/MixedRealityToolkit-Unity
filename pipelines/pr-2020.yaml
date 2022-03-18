@@ -1,0 +1,43 @@
+# Build for PR validation via Unity 2020.
+
+variables:
+- template: config/settings.yml
+
+jobs:
+- job: CodeValidation
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: templates/validation.yml
+    parameters:
+      # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
+      # the set of changed files, so that we can save some time. There's no need to
+      # check unchanged files for code style/doc style violations.
+      scopedValidation: true
+
+- job: Unity2020Validation
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - ${{ variables.Unity2020Version }}
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+    - VS2019 -equals TRUE
+  steps:
+  - template: templates/common.yml
+    parameters:
+      # For mrtk_pr builds, don't build all flavors to reduce the amount of time
+      # taken for each validation run. With this configuration, only the Standalone
+      # configuration is built.
+      # Note that all of the flavors are still built during the rolling CI.
+      # If there are failures in rolling CI in any of these tasks, we should re-enable
+      # the specific flavors below that are experiencing failures in CI (for example,
+      # if we're actively working on features that have a lot of churn on underlying
+      # WMR APIs, buildUWPArm would be a good candidate to re-enable)
+      buildUWPX86: false
+      buildUWPArm: false
+      buildUWPDotNet: false
+      UnityVersion: $(Unity2020Version)
+
+  - template: templates/end.yml

@@ -90,7 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             CsrfToken = string.Empty;
         }
 
-        /// <inheritdoc/>
         public override string ToString()
         {
             return IP + (string.IsNullOrEmpty(MachineName) ? string.Empty : $" [{MachineName}]");

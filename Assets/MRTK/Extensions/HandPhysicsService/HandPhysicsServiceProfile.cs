@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
     /// Configuration profile for <see cref="HandPhysicsService"/> extension service.
     /// </summary>
 	[MixedRealityServiceProfile(typeof(IHandPhysicsService))]
-    [CreateAssetMenu(fileName = "HandPhysicsServiceProfile", menuName = "Mixed Reality Toolkit/Extensions/Hand Physics Service/Hand Physics Service Configuration Profile")]
+    [CreateAssetMenu(fileName = "HandPhysicsServiceProfile", menuName = "Mixed Reality/Toolkit/Extensions/Hand Physics Service/Hand Physics Service Configuration Profile")]
     public class HandPhysicsServiceProfile : BaseMixedRealityProfile
     {
         /// <summary>

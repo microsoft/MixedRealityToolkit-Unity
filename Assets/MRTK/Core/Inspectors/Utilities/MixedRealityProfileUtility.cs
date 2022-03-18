@@ -61,11 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (!profileContentCaches.TryGetValue(profileType, out profileContent))
             {
                 ScriptableObject[] profilesOfType = GetProfilesOfType(profileType);
-                profileContent = new GUIContent[profilesOfType.Length + 1];
-                profileContent[0] = new GUIContent("(None)");
+                profileContent = new GUIContent[profilesOfType.Length];
                 for (int i = 0; i < profilesOfType.Length; i++)
                 {
-                    profileContent[i + 1] = new GUIContent(profilesOfType[i].name);
+                    profileContent[i] = new GUIContent(profilesOfType[i].name);
                 }
                 profileContentCaches.Add(profileType, profileContent);
             }
@@ -130,6 +129,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (!profileTypesForServiceCaches.TryGetValue(serviceType, out types))
             {
                 HashSet<Type> allTypes = new HashSet<Type>();
+
+#if UNITY_2019_1_OR_NEWER
+                foreach (var type in TypeCache.GetTypesDerivedFrom<BaseMixedRealityProfile>())
+                {
+                    if (IsProfileForService(type, serviceType))
+                    {
+                        allTypes.Add(type);
+                    }
+                }
+#else
                 ScriptableObject[] allProfiles = GetProfilesOfType(typeof(BaseMixedRealityProfile));
                 for (int i = 0; i < allProfiles.Length; i++)
                 {
@@ -139,6 +148,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         allTypes.Add(profile.GetType());
                     }
                 }
+#endif
+
                 types = allTypes.ToArray();
                 profileTypesForServiceCaches.Add(serviceType, types);
             }

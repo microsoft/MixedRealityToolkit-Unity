@@ -26,7 +26,7 @@
 //SOFTWARE.
 //------------------------------------------------------------------------------ -
 
-Shader "MixedRealityToolkit/RimOutline"
+Shader "Mixed Reality Toolkit/RimOutline"
 {
     Properties{
         _Color("Color", Color) = (1,1,1,1)

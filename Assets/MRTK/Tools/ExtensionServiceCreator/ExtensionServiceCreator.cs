@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Returns true if the asset supplied, via Folder object representing path and file name string (assumming .cs files only), does not exist. False otherwise
+        /// Returns true if the asset supplied, via Folder object representing path and file name string (assuming .cs files only), does not exist. False otherwise
         /// </summary>
         public bool CanBuildAsset(UnityEngine.Object folder, string fileName)
         {

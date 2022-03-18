@@ -16,12 +16,12 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Text;
-using System.IO;
 
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -31,20 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// You can use GridObjectLayoutControl.cs in the examples package to
     /// quickly generate the expected positions used in these tests.
     /// </summary>
-    internal class GridObjectCollectionTests
+    internal class GridObjectCollectionTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
+        public override IEnumerator Setup()
         {
-            PlayModeTestUtilities.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
             yield return null;
         }
 

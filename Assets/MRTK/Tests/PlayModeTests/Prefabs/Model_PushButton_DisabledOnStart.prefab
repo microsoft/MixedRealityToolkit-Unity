@@ -79,6 +79,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Events: []
+  resetOnDestroy: 0
   enabledOnStart: 0
 --- !u!114 &7749362567466608817
 MonoBehaviour:

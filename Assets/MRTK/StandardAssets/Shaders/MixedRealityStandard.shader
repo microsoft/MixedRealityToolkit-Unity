@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// NOTE: MRTK Shaders are versioned via the MRTK.Shaders.sentinel file.
+// When making changes to any shader's source file, the value in the sentinel _must_ be incremented.
+
 Shader "Mixed Reality Toolkit/Standard"
 {
     Properties
@@ -21,6 +24,8 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_EMISSION)] _EnableEmission("Enable Emission", Float) = 0.0
         [HDR]_EmissiveColor("Emissive Color", Color) = (0.0, 0.0, 0.0, 1.0)
         [Toggle(_TRIPLANAR_MAPPING)] _EnableTriplanarMapping("Triplanar Mapping", Float) = 0.0
+        [Toggle(_USE_SSAA)] _EnableSSAA("Super Sample Anti Aliasing", Float) = 0.0
+        _MipmapBias("Mipmap Bias", Range(-5.0, 0.0)) = -2.0
         [Toggle(_LOCAL_SPACE_TRIPLANAR_MAPPING)] _EnableLocalSpaceTriplanarMapping("Local Space", Float) = 0.0
         _TriplanarMappingBlendSharpness("Blend Sharpness", Range(1.0, 16.0)) = 4.0
 
@@ -101,7 +106,6 @@ Shader "Mixed Reality Toolkit/Standard"
         [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 // "All"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
-        [Toggle(_INSTANCED_COLOR)] _InstancedColor("Instanced Color", Float) = 0.0
         [Toggle(_IGNORE_Z_SCALE)] _IgnoreZScale("Ignore Z Scale", Float) = 0.0
         [Toggle(_STENCIL)] _Stencil("Enable Stencil Testing", Float) = 0.0
         _StencilReference("Stencil Reference", Range(0, 255)) = 0
@@ -138,6 +142,8 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ UNITY_UI_CLIP_RECT
+            #pragma multi_compile _ _HOVER_LIGHT_MEDIUM _HOVER_LIGHT_HIGH
             #pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
@@ -148,6 +154,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _EMISSION
             #pragma shader_feature _TRIPLANAR_MAPPING
             #pragma shader_feature _LOCAL_SPACE_TRIPLANAR_MAPPING
+            #pragma shader_feature _USE_SSAA
             #pragma shader_feature _DIRECTIONAL_LIGHT
             #pragma shader_feature _SPECULAR_HIGHLIGHTS
             #pragma shader_feature _SPHERICAL_HARMONICS
@@ -167,7 +174,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _PROXIMITY_LIGHT_SUBTRACTIVE
             #pragma shader_feature _PROXIMITY_LIGHT_TWO_SIDED
             #pragma shader_feature _ROUND_CORNERS
-			#pragma shader_feature _INDEPENDENT_CORNERS
+            #pragma shader_feature _INDEPENDENT_CORNERS
             #pragma shader_feature _BORDER_LIGHT
             #pragma shader_feature _BORDER_LIGHT_USES_HOVER_COLOR
             #pragma shader_feature _BORDER_LIGHT_REPLACES_ALBEDO
@@ -175,18 +182,16 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _INNER_GLOW
             #pragma shader_feature _IRIDESCENCE
             #pragma shader_feature _ENVIRONMENT_COLORING
-            #pragma shader_feature _INSTANCED_COLOR
             #pragma shader_feature _IGNORE_Z_SCALE
 
-            #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
-
             #include "UnityCG.cginc"
+            #include "UnityUI.cginc"
             #include "UnityStandardConfig.cginc"
             #include "UnityStandardUtils.cginc"
             #include "MixedRealityShaderUtils.cginc"
 
-            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
-            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+            // This define will get commented in by the UpgradeShaderForUniversalRenderPipeline method.
+            //#define _RENDER_PIPELINE
 
 #if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_SPHERICAL_HARMONICS) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_ENVIRONMENT_COLORING)
             #define _NORMAL
@@ -206,7 +211,13 @@ Shader "Mixed Reality Toolkit/Standard"
             #undef _WORLD_POSITION
 #endif
 
-#if defined(_ALPHATEST_ON) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
+#if defined(UNITY_UI_CLIP_RECT)
+            #define _LOCAL_POSITION
+#else
+            #undef _LOCAL_POSITION
+#endif
+
+#if defined(_ALPHATEST_ON) || defined(UNITY_UI_CLIP_RECT) || defined(_CLIPPING_PRIMITIVE) || defined(_ROUND_CORNERS)
             #define _ALPHA_CLIP
 #else
             #undef _ALPHA_CLIP
@@ -266,7 +277,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct v2f 
+            struct v2f
             {
                 float4 position : SV_POSITION;
 #if defined(_BORDER_LIGHT)
@@ -293,6 +304,9 @@ Shader "Mixed Reality Toolkit/Standard"
                 float3 worldPosition : TEXCOORD2;
 #endif
 #endif
+#if defined(_LOCAL_POSITION)
+                float3 localPosition : TEXCOORD7;
+#endif
 #if defined(_SCALE)
                 float3 scale : TEXCOORD3;
 #endif
@@ -309,24 +323,39 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed3 worldNormal : COLOR3;
 #endif
 #endif
-                UNITY_VERTEX_OUTPUT_STEREO
-#if defined(_INSTANCED_COLOR)
                 UNITY_VERTEX_INPUT_INSTANCE_ID
-#endif
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
-#if defined(_INSTANCED_COLOR)
             UNITY_INSTANCING_BUFFER_START(Props)
             UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
-            UNITY_INSTANCING_BUFFER_END(Props)
-#else
-            fixed4 _Color;
+
+#if defined(_CLIPPING_PLANE)
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipPlaneSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4, _ClipPlane)
 #endif
+
+#if defined(_CLIPPING_SPHERE)
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipSphereSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4x4, _ClipSphereInverseTransform)
+#endif
+
+#if defined(_CLIPPING_BOX)
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipBoxSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4x4, _ClipBoxInverseTransform)
+#endif
+
+            UNITY_INSTANCING_BUFFER_END(Props)
+
             sampler2D _MainTex;
             fixed4 _MainTex_ST;
 
 #if defined(_ALPHA_CLIP)
             fixed _Cutoff;
+#endif
+
+#if defined(UNITY_UI_CLIP_RECT)
+            float4 _ClipRect;
 #endif
 
             fixed _Metallic;
@@ -345,12 +374,16 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed4 _EmissiveColor;
 #endif
 
+#if defined(_USE_SSAA)
+            float _MipmapBias;
+#endif
+
 #if defined(_TRIPLANAR_MAPPING)
             float _TriplanarMappingBlendSharpness;
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_RENDER_PIPELINE)
             CBUFFER_START(_LightBuffer)
             float4 _MainLightPosition;
             half4 _MainLightColor;
@@ -373,21 +406,6 @@ Shader "Mixed Reality Toolkit/Standard"
             float _VertexExtrusionValue;
 #endif
 
-#if defined(_CLIPPING_PLANE)
-            fixed _ClipPlaneSide;
-            float4 _ClipPlane;
-#endif
-
-#if defined(_CLIPPING_SPHERE)
-            fixed _ClipSphereSide;
-            float4 _ClipSphere;
-#endif
-
-#if defined(_CLIPPING_BOX)
-            fixed _ClipBoxSide;
-            float4 _ClipBoxSize;
-            float4x4 _ClipBoxInverseTransform;
-#endif
 
 #if defined(_CLIPPING_PRIMITIVE)
             float _BlendedClippingWidth;
@@ -405,7 +423,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
+#if defined(_HOVER_LIGHT_HIGH)
+#define HOVER_LIGHT_COUNT 10
+#elif defined(_HOVER_LIGHT_MEDIUM)
+#define HOVER_LIGHT_COUNT 4
+#else
 #define HOVER_LIGHT_COUNT 2
+#endif
 #define HOVER_LIGHT_DATA_SIZE 2
             float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
 #if defined(_HOVER_COLOR_OVERRIDE)
@@ -430,7 +454,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_ROUND_CORNERS)
 #if defined(_INDEPENDENT_CORNERS)
-            float4 _RoundCornersRadius; 
+            float4 _RoundCornersRadius;
 #else
             fixed _RoundCornerRadius;
 #endif
@@ -447,7 +471,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT)
-            fixed _EdgeSmoothingValue;
+            float _EdgeSmoothingValue;
 #endif
 
 #if defined(_INNER_GLOW)
@@ -504,7 +528,7 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 float proximityLightDistance = dot(proximityLight.xyz - worldPosition, worldNormal);
 #if defined(_PROXIMITY_LIGHT_TWO_SIDED)
-                worldNormal = IF(proximityLightDistance < 0.0, -worldNormal, worldNormal);
+                worldNormal = proximityLightDistance < 0.0 ? -worldNormal : worldNormal;
                 proximityLightDistance = abs(proximityLightDistance);
 #endif
                 float normalizedProximityLightDistance = saturate(proximityLightDistance * proximityLightParams.y);
@@ -530,12 +554,12 @@ Shader "Mixed Reality Toolkit/Standard"
                 return length(max(abs(position) - cornerCircleDistance, 0.0)) - cornerCircleRadius;
             }
 
-            inline fixed RoundCornersSmooth(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
+            inline float RoundCornersSmooth(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
             {
                 return smoothstep(1.0, 0.0, PointVsRoundedBox(position, cornerCircleDistance, cornerCircleRadius) / _EdgeSmoothingValue);
             }
 
-            inline fixed RoundCorners(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
+            inline float RoundCorners(float2 position, float2 cornerCircleDistance, float cornerCircleRadius)
             {
 #if defined(_TRANSPARENT)
                 return RoundCornersSmooth(position, cornerCircleDistance, cornerCircleRadius);
@@ -562,10 +586,10 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 v2f o;
                 UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2f, o);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-#if defined(_INSTANCED_COLOR)
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
-#endif
+
                 float4 vertexPosition = v.vertex;
 
 #if defined(_WORLD_POSITION) || defined(_VERTEX_EXTRUSION)
@@ -612,6 +636,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 o.worldPosition.xyz = worldVertexPosition;
 #endif
 
+#if defined(_LOCAL_POSITION)
+                o.localPosition.xyz = vertexPosition;
+#endif
+
 #if defined(_NEAR_PLANE_FADE)
                 float rangeInverse = 1.0 / (_FadeBeginDistance - _FadeCompleteDistance);
 #if defined(_NEAR_LIGHT_FADE)
@@ -638,7 +666,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_BORDER_LIGHT) || defined(_ROUND_CORNERS)
                 o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
-   
+
                 float minScale = min(min(o.scale.x, o.scale.y), o.scale.z);
 
 #if defined(_BORDER_LIGHT) 
@@ -693,8 +721,8 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_BORDER_LIGHT) 
                 float scaleRatio = min(o.scale.x, o.scale.y) / max(o.scale.x, o.scale.y);
-                o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
-                o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
+                o.uv.z = o.scale.x > o.scale.y ? 1.0 - (borderWidth * scaleRatio) : 1.0 - borderWidth;
+                o.uv.w = o.scale.x > o.scale.y ? 1.0 - borderWidth : 1.0 - (borderWidth * scaleRatio);
 #endif
 #elif defined(_UV)
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
@@ -746,9 +774,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
             fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
-#if defined(_INSTANCED_COLOR)
                 UNITY_SETUP_INSTANCE_ID(i);
-#endif
 
 #if defined(_TRIPLANAR_MAPPING)
                 // Calculate triplanar uvs and apply texture scale and offset values like TRANSFORM_TEX.
@@ -770,13 +796,28 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed4 albedo = fixed4(1.0, 1.0, 1.0, 1.0);
 #else
 #if defined(_TRIPLANAR_MAPPING)
-                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
-                                tex2D(_MainTex, uvY) * triplanarBlend.y + 
+                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x +
+                                tex2D(_MainTex, uvY) * triplanarBlend.y +
                                 tex2D(_MainTex, uvZ) * triplanarBlend.z;
+#else
+#if defined(_USE_SSAA)
+                // Does SSAA on the texture, implementation based off this article: https://medium.com/@bgolus/sharper-mipmapping-using-shader-based-supersampling-ed7aadb47bec
+                // per pixel screen space partial derivatives
+                float2 dx = ddx(i.uv.xy) * 0.25; // horizontal offset
+                float2 dy = ddy(i.uv.xy) * 0.25; // vertical offset
+                // supersampled 2x2 ordered grid
+                fixed4 albedo = 0;
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx + dy, 0.0, _MipmapBias));
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx + dy, 0.0, _MipmapBias));
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx - dy, 0.0, _MipmapBias));
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx - dy, 0.0, _MipmapBias));
+                albedo *= 0.25;
 #else
                 fixed4 albedo = tex2D(_MainTex, i.uv);
 #endif
 #endif
+#endif
+
 
 #ifdef LIGHTMAP_ON
                 albedo.rgb *= DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.lightMapUV));
@@ -801,17 +842,23 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_CLIPPING_PRIMITIVE)
                 float primitiveDistance = 1.0;
 #if defined(_CLIPPING_PLANE)
-                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, _ClipPlane) * _ClipPlaneSide);
+                fixed clipPlaneSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipPlaneSide);
+                float4 clipPlane = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipPlane);
+                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, clipPlane) * clipPlaneSide);
 #endif
 #if defined(_CLIPPING_SPHERE)
-                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, _ClipSphere) * _ClipSphereSide);
+                fixed clipSphereSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereSide);
+                float4x4 clipSphereInverseTransform = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereInverseTransform);
+                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, clipSphereInverseTransform) * clipSphereSide);
 #endif
 #if defined(_CLIPPING_BOX)
-                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+                fixed clipBoxSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipBoxSide);
+                float4x4 clipBoxInverseTransform = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipBoxInverseTransform);
+                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, clipBoxInverseTransform) * clipBoxSide);
 #endif
 #if defined(_CLIPPING_BORDER)
                 fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
-                albedo.rgb += primitiveBorderColor * IF((primitiveDistance < _ClippingBorderWidth), 1.0, 0.0);
+                albedo.rgb += primitiveBorderColor * (primitiveDistance < _ClippingBorderWidth ? 1.0 : 0.0);
 #endif
 #endif
 
@@ -865,11 +912,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 float roundCornerClip = RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #endif
 
-#if defined(_INSTANCED_COLOR)
                 albedo *= UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
-#else
-                albedo *= _Color;
-#endif
 
 #if defined(_VERTEX_COLORS)
                 albedo *= i.color;
@@ -968,13 +1011,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_BORDER_LIGHT)
                 fixed borderValue;
 #if defined(_ROUND_CORNERS)
-                fixed borderMargin = _RoundCornerMargin  + _BorderWidth * 0.5;
+                fixed borderMargin = _RoundCornerMargin + _BorderWidth * 0.5;
 
                 cornerCircleRadius = saturate(max(currentCornerRadius - borderMargin, 0.01)) * i.scale.z;
 
                 cornerCircleDistance = halfScale - (borderMargin * i.scale.z) - cornerCircleRadius;
 
-                borderValue =  1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
+                borderValue = 1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #else
                 borderValue = max(smoothstep(i.uv.z - _EdgeSmoothingValue, i.uv.z + _EdgeSmoothingValue, distanceToEdge.x),
                                   smoothstep(i.uv.w - _EdgeSmoothingValue, i.uv.w + _EdgeSmoothingValue, distanceToEdge.y));
@@ -1003,6 +1046,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 pointToLight *= roundCornerClip;
 #endif
 
+#ifdef UNITY_UI_CLIP_RECT
+                albedo.a *= UnityGet2DClipping(i.localPosition.xy, _ClipRect);
+#endif
+
 #if defined(_ALPHA_CLIP)
 #if !defined(_ALPHATEST_ON)
                 _Cutoff = 0.5;
@@ -1016,7 +1063,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Blinn phong lighting.
 #if defined(_DIRECTIONAL_LIGHT)
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_RENDER_PIPELINE)
                 float4 directionalLightDirection = _MainLightPosition;
 #else
                 float4 directionalLightDirection = _WorldSpaceLightPos0;
@@ -1063,7 +1110,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_DIRECTIONAL_LIGHT)
                 fixed oneMinusMetallic = (1.0 - _Metallic);
                 output.rgb = lerp(output.rgb, ibl, minProperty);
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_RENDER_PIPELINE)
                 fixed3 directionalLightColor = _MainLightColor.rgb;
 #else
                 fixed3 directionalLightColor = _LightColor0.rgb;
@@ -1103,7 +1150,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 // Environment coloring.
 #if defined(_ENVIRONMENT_COLORING)
                 fixed3 environmentColor = incident.x * incident.x * _EnvironmentColorX +
-                                          incident.y * incident.y * _EnvironmentColorY + 
+                                          incident.y * incident.y * _EnvironmentColorY +
                                           incident.z * incident.z * _EnvironmentColorZ;
                 output.rgb += environmentColor * max(0.0, dot(incident, worldNormal) + _EnvironmentColorThreshold) * _EnvironmentColorIntensity;
 
@@ -1147,8 +1194,8 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityCG.cginc"
             #include "UnityMetaPass.cginc"
 
-            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
-            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+            // This define will get commented in by the UpgradeShaderForUniversalRenderPipeline method.
+            //#define _RENDER_PIPELINE
 
             struct v2f
             {
@@ -1173,7 +1220,7 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed4 _Color;
             fixed4 _EmissiveColor;
 
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_RENDER_PIPELINE)
             CBUFFER_START(_LightBuffer)
             float4 _MainLightPosition;
             half4 _MainLightColor;
@@ -1195,7 +1242,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 output.Emission += _EmissiveColor;
 #endif
 #endif
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_RENDER_PIPELINE)
                 output.SpecularColor = _MainLightColor.rgb;
 #else
                 output.SpecularColor = _LightColor0.rgb;
@@ -1206,7 +1253,7 @@ Shader "Mixed Reality Toolkit/Standard"
             ENDCG
         }
     }
-    
+
     Fallback "Hidden/InternalErrorShader"
     CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI"
 }

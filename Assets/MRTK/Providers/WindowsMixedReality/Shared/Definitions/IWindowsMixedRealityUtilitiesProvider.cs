@@ -10,8 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// to provide access to specific underlying native objects relevant to Windows Mixed Reality.
     /// </summary>
     /// <remarks>
-    /// This is intended to be used to support both XR SDK and Unity's legacy XR pipeline, which provide
-    /// different APIs to access these native objects.
+    /// <para>This is intended to be used to support both XR SDK and Unity's legacy XR pipeline, which provide
+    /// different APIs to access these native objects.</para>
     /// </remarks>
     public interface IWindowsMixedRealityUtilitiesProvider
     {

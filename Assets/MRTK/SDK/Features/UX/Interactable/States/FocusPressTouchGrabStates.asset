@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33e3b76d6c5c0e48bb3b6ee686c7fd6, type: 3}
   m_Name: FocusPressTouchGrabStates
   m_EditorClassIdentifier: 
-  StateList:
+  stateList:
   - Name: Default
     Index: 0
     Bit: 1
@@ -48,6 +48,6 @@ MonoBehaviour:
     Bit: 64
     Value: 0
     ActiveIndex: 6
-  DefaultIndex: 0
-  StateLogicName: InteractableStates
+  defaultIndex: 0
+  StateModelClassName: InteractableStates
   AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableStates, Microsoft.MixedReality.Toolkit.SDK

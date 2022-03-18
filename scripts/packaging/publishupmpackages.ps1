@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Publishes the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
@@ -36,7 +39,7 @@ $npmrcContents = "registry=$RegistryPath`n`nalways-auth=true"
 Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
 
 # Authenticate to the registry
-npm install -g vsts-npm-auth    
+npm install -g vsts-npm-auth
 vsts-npm-auth -config .npmrc
 
 # Get the list of package (.tgz) files
@@ -46,7 +49,7 @@ foreach ($package in $packages)
     Write-Output "======================="
     Write-Output "Publishing: $package"
     Write-Output "======================="
-    npm publish $package    
+    npm publish $package
 }
 
 Remove-Item -Path $npmrcFileName

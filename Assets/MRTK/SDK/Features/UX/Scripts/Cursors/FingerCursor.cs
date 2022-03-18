@@ -34,6 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private int proximityDistanceID;
         private readonly Quaternion fingerPadRotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
 
+        private const float MinVisibleRingDistance = 0.1f;
+
         protected virtual void Awake()
         {
             materialPropertyBlock = new MaterialPropertyBlock();
@@ -57,71 +59,70 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 Vector3 indexFingerPosition;
                 Quaternion indexFingerRotation;
+                // If we are unable to get the hand joint default to the Near Pointer's position and rotation
                 if (!TryGetJoint(TrackedHandJoint.IndexTip, out indexFingerPosition, out indexFingerRotation))
                 {
-                    indexFingerPosition = transform.position;
-                    indexFingerRotation = transform.rotation;
+                    indexFingerPosition = Pointer.Position;
+                    indexFingerRotation = Pointer.Rotation;
                 }
 
                 Vector3 indexKnucklePosition;
+                // If we are unable to get the hand joint default to the Near Pointer's position
                 if (!TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnucklePosition, out _)) // knuckle rotation not used
                 {
-                    indexKnucklePosition = transform.position;
+                    indexKnucklePosition = Pointer.Position;
                 }
 
-                if (!nearPointer.IsInteractionEnabled)
-                {
-                    // If the pointer is disabled, make sure to turn the ring cursor off
-                    // but still want show the proximity effect on bounding content
-                    if (indexFingerRingRenderer != null)
-                    {
-                        UpdateVisuals(indexFingerRingRenderer, 1, false);
-                    }
-                }
-                else if (nearPointer.IsNearObject)
+                float distance = float.MaxValue;
+                Vector3 surfaceNormal = Vector3.zero;
+
+                bool surfaceNormalFound = false;
+                bool showVisual = true;
+                bool nearPokeable = nearPointer.IsNearObject;
+
+
+                // Show the cursor if we are deemed to be near an object or if it is near a grabbable object
+                if (nearPokeable)
                 {
                     // If the pointer is near an object translate the primary ring to the index finger tip and rotate to surface normal if close.
                     // The secondary ring should be hidden.
 
-                    float distance;
                     if (!nearPointer.TryGetDistanceToNearestSurface(out distance))
                     {
                         distance = float.MaxValue;
                     }
-
-                    if (indexFingerRingRenderer != null)
-                    {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
-
-                        Vector3 surfaceNormal;
-                        if ((distance < alignWithSurfaceDistance) &&
-                            nearPointer.TryGetNormalToNearestSurface(out surfaceNormal))
-                        {
-                            RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance);
-                            TranslateFromTipToPad(indexFingerRingRenderer.transform, indexFingerPosition, indexKnucklePosition, surfaceNormal, distance);
-                        }
-                        else
-                        {
-                            RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
-                        }
-
-                        UpdateVisuals(indexFingerRingRenderer, distance, true);
-                    }
+                    surfaceNormalFound = nearPointer.TryGetNormalToNearestSurface(out surfaceNormal);
                 }
                 else
                 {
                     // If the pointer is near a grabbable object position and rotate the ring to the default, 
                     // else hide it.
 
-                    float distance = 0;
-                    bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject(out distance);
+                    bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject();
 
-                    if (indexFingerRingRenderer != null)
+                    // There is no good way to get the distance of the nearest grabbable object at the moment, so we either return the MinVisibleRingDistance or 1 (invisible).
+                    distance = nearGrabbable ? MinVisibleRingDistance : 1.0f;
+
+                    // Only show the visual if we are near a grabbable
+                    showVisual = nearGrabbable;
+                    surfaceNormalFound = false;
+                }
+
+                if (indexFingerRingRenderer != null)
+                {
+                    TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
+
+                    if ((distance < alignWithSurfaceDistance) && surfaceNormalFound)
                     {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
-                        RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
-                        UpdateVisuals(indexFingerRingRenderer, distance, nearGrabbable);
+                        RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance);
+                        TranslateFromTipToPad(indexFingerRingRenderer.transform, indexFingerPosition, indexKnucklePosition, surfaceNormal, distance);
                     }
+                    else
+                    {
+                        RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
+                    }
+
+                    UpdateVisuals(indexFingerRingRenderer, distance, showVisual);
                 }
             }
             else
@@ -138,6 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="visible">Should the ring be visible?</param>
         protected virtual void UpdateVisuals(Renderer ringRenderer, float distance, bool visible)
         {
+            base.SetVisibility(visible);
             ringRenderer.GetPropertyBlock(materialPropertyBlock);
             materialPropertyBlock.SetFloat(proximityDistanceID, visible ? distance : 1.0f);
             ringRenderer.SetPropertyBlock(materialPropertyBlock);
@@ -148,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <returns>True if associated sphere pointer is near any grabbable objects, else false.</returns>
         /// <param name="dist">Out parameter gets the distance to the grabbable.</param>
-        protected virtual bool IsNearGrabbableObject(out float dist)
+        protected virtual bool IsNearGrabbableObject()
         {
             var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
@@ -158,16 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (spherePointer.Controller == Pointer.Controller)
                     {
-                        var focusObject = focusProvider.GetFocusedObject(spherePointer);
-                        if (focusObject != null)
-                        {
-                            return spherePointer.TryGetDistanceToNearestSurface(out dist);
-                        }
+                        return spherePointer.IsNearObject;
                     }
                 }
             }
 
-            dist = -1;
             return false;
         }
 
@@ -183,8 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (Pointer != null)
             {
-                var hand = Pointer.Controller as IMixedRealityHand;
-                if (hand != null)
+                if (Pointer.Controller is IMixedRealityHand hand)
                 {
                     if (hand.TryGetJoint(joint, out MixedRealityPose handJoint))
                     {
@@ -234,10 +230,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Lerping an angular measurement from 0 degrees (default cursor position at tip of finger) to
             // 90 degrees (a new position on the fingertip pad) around the fingertip's X axis.
-            Quaternion degreesRelative = Quaternion.AngleAxis((1f - t) * 90f * (1f - fingerSurfaceDot), indexFingerRingRenderer.transform.right);
+            Quaternion degreesRelative = Quaternion.AngleAxis((1f - t) * 90f * (1f - fingerSurfaceDot), target.right);
 
             Vector3 tipToPadPosition = fingerPosition + degreesRelative * tipOffset;
-            indexFingerRingRenderer.transform.position = tipToPadPosition;
+            target.position = tipToPadPosition;
         }
     }
 }

@@ -25,22 +25,37 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null) : base(trackingState, controllerHandedness, inputSource, interactions)
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new MouseControllerDefinition())
         { }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
+        public override MixedRealityInteractionMapping[] DefaultInteractions
         {
-            new MixedRealityInteractionMapping(0, "Spatial Mouse Position", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition),
-            new MixedRealityInteractionMapping(2, "Mouse Scroll Position", AxisType.DualAxis, DeviceInputType.Scroll, ControllerMappingLibrary.AXIS_3),
-            new MixedRealityInteractionMapping(3, "Left Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse0),
-            new MixedRealityInteractionMapping(4, "Right Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse1),
-            new MixedRealityInteractionMapping(5, "Mouse Button 2", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse2),
-            new MixedRealityInteractionMapping(6, "Mouse Button 3", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse3),
-            new MixedRealityInteractionMapping(7, "Mouse Button 4", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse4),
-            new MixedRealityInteractionMapping(8, "Mouse Button 5", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse5),
-            new MixedRealityInteractionMapping(9, "Mouse Button 6", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse6),
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(ControllerHandedness);
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i], LegacyInputSupport[i]);
+                }
+                return defaultInteractions;
+            }
+        }
+
+        private static readonly MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport = new[]
+        {
+            new MixedRealityInteractionMappingLegacyInput(), // Spatial Mouse Position
+            new MixedRealityInteractionMappingLegacyInput(), // Mouse Delta Position
+            new MixedRealityInteractionMappingLegacyInput(axisCodeX: ControllerMappingLibrary.AXIS_3), // Mouse Scroll Position
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse0), // Left Mouse Button
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse1), // Right Mouse Button
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse2), // Mouse Button 2
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse3), // Mouse Button 3
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse4), // Mouse Button 4
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse5), // Mouse Button 5
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.Mouse6), // Mouse Button 6
         };
 
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;

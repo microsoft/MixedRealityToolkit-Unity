@@ -35,7 +35,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 case TargetFramework.Net20:
                     return "net20";
                 case TargetFramework.Net46:
+#if UNITY_2020_2_OR_NEWER
+                    return "net471";
+#else
                     return "net46";
+#endif
             }
 
             throw new ArgumentOutOfRangeException(nameof(@this));

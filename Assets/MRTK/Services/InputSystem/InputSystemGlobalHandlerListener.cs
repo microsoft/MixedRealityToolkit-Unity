@@ -54,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// A task that will only complete when the input system has in a valid state.
         /// </summary>
         /// <remarks>
-        /// It's possible for this object to have been destroyed after the await, which
-        /// implies that callers should check that this != null after awaiting this task.
+        /// <para>It's possible for this object to have been destroyed after the await, which
+        /// implies that callers should check that this != null after awaiting this task.</para>
         /// </remarks>
         protected async Task EnsureInputSystemValid()
         {

@@ -16,17 +16,16 @@ using UnityEngine.Profiling;
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
     /// <summary>
-    /// 
-    /// ABOUT: The VisualProfiler provides a drop in, single file, solution for viewing 
+    /// The VisualProfiler provides a drop in, single file, solution for viewing 
     /// your Windows Mixed Reality Unity application's frame rate and memory usage. Missed 
     /// frames are displayed over time to visually find problem areas. Memory is reported 
     /// as current, peak and max usage in a bar graph. 
-    /// 
-    /// USAGE: To use this profiler simply add this script as a component of any GameObject in 
-    /// your Unity scene. The profiler is initially enabled (toggle-able via the initiallyActive 
-    /// property), but can be toggled via the enabled/disable voice commands keywords.
-    /// 
     /// </summary>
+    /// <remarks>
+    /// <para>To use this profiler simply add this script as a component of any GameObject in 
+    /// your Unity scene. The profiler is initially enabled (toggle-able via the initiallyActive 
+    /// property), but can be toggled via the enabled/disable voice commands keywords.</para>
+    /// </remarks>
     [AddComponentMenu("Scripts/MRTK/Services/MixedRealityToolkitVisualProfiler")]
     public class MixedRealityToolkitVisualProfiler : MonoBehaviour
     {
@@ -58,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private bool ShouldShowProfiler =>
 #if WINDOWS_UWP
-            (appCapture == null || !appCapture.IsCapturingVideo || showProfilerDuringMRC) &&
+            (!appCaptureIsCapturingVideo || showProfilerDuringMRC) &&
 #endif // WINDOWS_UWP
             isVisible;
 
@@ -217,6 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private Mesh quadMesh;
 
 #if WINDOWS_UWP
+        private bool appCaptureIsCapturingVideo = false;
         private AppCapture appCapture;
 #endif // WINDOWS_UWP
 
@@ -289,11 +289,23 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
 #if WINDOWS_UWP
             appCapture = AppCapture.GetForCurrentView();
+            if (appCapture != null)
+            {
+                appCaptureIsCapturingVideo = appCapture.IsCapturingVideo;
+                appCapture.CapturingChanged += AppCapture_CapturingChanged;
+            }
 #endif // WINDOWS_UWP
         }
 
         private void OnDestroy()
         {
+#if WINDOWS_UWP
+            if (appCapture != null)
+            {
+                appCapture.CapturingChanged -= AppCapture_CapturingChanged;
+            }
+#endif // WINDOWS_UWP
+
             if (window != null)
             {
                 Destroy(window.gameObject);
@@ -378,14 +390,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     Matrix4x4 parentLocalToWorldMatrix = window.localToWorldMatrix;
 
-                    if (defaultInstancedMaterial != null)
+                    if (defaultInstancedMaterial != null && SystemInfo.supportsInstancing)
                     {
                         frameInfoPropertyBlock.SetMatrix(parentMatrixID, parentLocalToWorldMatrix);
                         Graphics.DrawMeshInstanced(quadMesh, 0, defaultInstancedMaterial, frameInfoMatrices, frameInfoMatrices.Length, frameInfoPropertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false);
                     }
                     else
                     {
-                        // If a instanced material is not available, fall back to non-instanced rendering.
+                        // If a instanced material is not available or instancing isn't supported, fall back to non-instanced rendering.
                         for (int i = 0; i < frameInfoMatrices.Length; ++i)
                         {
                             frameInfoPropertyBlock.SetColor(colorID, frameInfoColors[i]);
@@ -437,10 +449,22 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
 
                 // Update visibility state.
-                window.gameObject.SetActive(ShouldShowProfiler);
-                memoryStats.gameObject.SetActive(memoryStatsVisible);
+                if (window.gameObject.activeSelf != ShouldShowProfiler)
+                {
+                    window.gameObject.SetActive(ShouldShowProfiler);
+                }
+
+                if (memoryStats.gameObject.activeSelf != memoryStatsVisible)
+                {
+                    memoryStats.gameObject.SetActive(memoryStatsVisible);
+                }
             }
         }
+
+#if WINDOWS_UWP
+        private void AppCapture_CapturingChanged(AppCapture sender, object args) => appCaptureIsCapturingVideo = sender.IsCapturingVideo;
+        private float previousFieldOfView = -1.0f;
+#endif // WINDOWS_UWP
 
         private static readonly ProfilerMarker CalculateWindowPositionPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkitVisualProfiler.CalculateWindowPosition");
 
@@ -448,7 +472,13 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             using (CalculateWindowPositionPerfMarker.Auto())
             {
-                float windowDistance = Mathf.Max(16.0f / CameraCache.Main.fieldOfView, CameraCache.Main.nearClipPlane + 0.25f);
+                float windowDistance =
+#if WINDOWS_UWP
+                    Mathf.Max(16.0f / (appCaptureIsCapturingVideo ? previousFieldOfView : previousFieldOfView = CameraCache.Main.fieldOfView), Mathf.Max(CameraCache.Main.nearClipPlane, 0.5f));
+#else
+                    Mathf.Max(16.0f / CameraCache.Main.fieldOfView, Mathf.Max(CameraCache.Main.nearClipPlane, 0.5f));
+#endif // WINDOWS_UWP
+
                 Vector3 position = cameraTransform.position + (cameraTransform.forward * windowDistance);
                 Vector3 horizontalOffset = cameraTransform.right * windowOffset.x;
                 Vector3 verticalOffset = cameraTransform.up * windowOffset.y;
@@ -618,7 +648,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     usedAnchor = CreateAnchor("UsedAnchor", limitBar.transform);
                     GameObject bar = CreateQuad("UsedBar", usedAnchor);
                     Material material = new Material(foregroundMaterial);
-                    material.renderQueue = material.renderQueue + 1;
+                    material.renderQueue += 1;
                     InitializeRenderer(bar, material, colorID, memoryUsedColor);
                     bar.transform.localScale = Vector3.one;
                     bar.transform.localPosition = new Vector3(0.5f, 0.0f, 0.0f);
@@ -632,8 +662,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
             }
 
-            window.gameObject.SetActive(ShouldShowProfiler);
-            memoryStats.gameObject.SetActive(memoryStatsVisible);
+            if (window.gameObject.activeSelf != ShouldShowProfiler)
+            {
+                window.gameObject.SetActive(ShouldShowProfiler);
+            }
+
+            if (memoryStats.gameObject.activeSelf != memoryStatsVisible)
+            {
+                memoryStats.gameObject.SetActive(memoryStatsVisible);
+            }
         }
 
         private void BuildFrameRateStrings()

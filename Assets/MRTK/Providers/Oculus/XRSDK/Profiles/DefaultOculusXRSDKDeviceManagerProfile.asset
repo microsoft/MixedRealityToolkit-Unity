@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f726b4cb3605994fac74d508110ec62, type: 3}
+  m_Name: DefaultOculusXRSDKDeviceManagerProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  ovrCameraRigPrefab: {fileID: 2343937678421323989, guid: 69a746aa83d0d0e45b4e2d33eab0fff4,
+    type: 3}
+  renderAvatarHandsWithControllers: 0
+  localAvatarPrefab: {fileID: 6297684789857299957, guid: 5357c8e6c4495c04f90e97272375c294,
+    type: 3}
+  minimumHandConfidence: 0
+  lowConfidenceTimeThreshold: 0.2
+  defaultCpuLevel: 2
+  defaultGpuLevel: 2
+  resolutionScale: 1.25
+  useDynamicFixedFoveatedRendering: 1
+  fixedFoveatedRenderingLevel: 3

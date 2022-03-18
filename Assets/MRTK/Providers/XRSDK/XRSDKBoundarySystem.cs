@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/boundary/boundary-system-getting-started")]
     public class XRSDKBoundarySystem : BaseBoundarySystem
     {
         /// <summary>
@@ -26,41 +26,41 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
         }
 
+#if UNITY_2019_3_OR_NEWER
+        private static readonly List<XRInputSubsystem> XRInputSubsystems = new List<XRInputSubsystem>();
+#endif // UNITY_2019_3_OR_NEWER
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "XR SDK Boundary System";
-
-        /// <inheritdoc/>
-        public override void Initialize()
-        {
-            if (!Application.isPlaying) { return; }
-
-            List<InputDevice> devices = new List<InputDevice>();
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, devices);
-
-            if (devices.Count <= 0) { return; }
-
-            base.Initialize();
-        }
 
         #endregion IMixedRealityService Implementation
 
         /// <inheritdoc/>
         protected override List<Vector3> GetBoundaryGeometry()
         {
-            // Boundaries are supported for Room Scale experiences only.
-            if (XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
-            {
-                return null;
-            }
-
             // Get the boundary geometry.
             var boundaryGeometry = new List<Vector3>(0);
 
-            if (!XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry) || boundaryGeometry.Count == 0)
+            if (XRSubsystemHelpers.InputSubsystem?.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor
+                || !XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry)
+                || boundaryGeometry.Count == 0)
             {
-                return null;
+#if UNITY_2019_3_OR_NEWER
+                // If the "main" input subsystem doesn't have an available boundary, check the rest of them
+                SubsystemManager.GetInstances(XRInputSubsystems);
+                foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
+                {
+                    if (xrInputSubsystem.running
+                        && xrInputSubsystem.GetTrackingOriginMode() == TrackingOriginModeFlags.Floor
+                        && xrInputSubsystem.TryGetBoundaryPoints(boundaryGeometry)
+                        && boundaryGeometry.Count > 0)
+                    {
+                        break;
+                    }
+                }
+#endif // UNITY_2019_3_OR_NEWER
             }
 
             return boundaryGeometry;
@@ -94,8 +94,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     break;
             }
 
-            if (!XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+            if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
             {
+#if UNITY_2019_3_OR_NEWER
+                // If the "main" input subsystem can't set the origin mode, check the rest of them
+                SubsystemManager.GetInstances(XRInputSubsystems);
+                foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
+                {
+                    if (xrInputSubsystem.running && xrInputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+                    {
+                        return;
+                    }
+                }
+#endif // UNITY_2019_3_OR_NEWER
                 Debug.LogWarning("Tracking origin unable to be set.");
             }
         }

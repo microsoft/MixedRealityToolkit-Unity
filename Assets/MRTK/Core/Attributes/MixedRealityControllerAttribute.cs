@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Attach to a controller device class to make it show up in the controller mapping profile.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class MixedRealityControllerAttribute : Attribute
     {
         /// <summary>
@@ -39,18 +39,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityControllerConfigurationFlags Flags { get; }
 
         /// <summary>
-        /// 
+        /// The supported Unity XR pipelines for this controller.
+        /// </summary>
+        public SupportedUnityXRPipelines SupportedUnityXRPipelines { get; }
+
+        /// <summary>
+        /// Constructor.
         /// </summary>
         public MixedRealityControllerAttribute(
             SupportedControllerType supportedControllerType,
             Handedness[] supportedHandedness,
             string texturePath = "",
-            MixedRealityControllerConfigurationFlags flags = 0)
+            MixedRealityControllerConfigurationFlags flags = 0,
+            SupportedUnityXRPipelines supportedUnityXRPipelines = (SupportedUnityXRPipelines)(-1))
         {
             SupportedControllerType = supportedControllerType;
             SupportedHandedness = supportedHandedness;
             TexturePath = texturePath;
             Flags = flags;
+            SupportedUnityXRPipelines = supportedUnityXRPipelines;
         }
 
         /// <summary>

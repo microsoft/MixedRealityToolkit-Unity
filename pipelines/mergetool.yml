@@ -1,0 +1,48 @@
+# Checks for changes in one branch not present in another branch. Opens a PR into the second branch if needed.
+
+# schedules:
+# Cron schedules use UTC time. This is 2pm UTC on every weekday.
+# Uncomment the following lines (and line 3 above!) and update sourceBranch below when mergetool is needed again.
+# - cron: 0 14 * * 1,2,3,4,5
+#   branches:
+#     include:
+#     - main
+#   always: true
+
+pr: none
+trigger: none
+
+parameters:
+- name: sourceBranch
+  type: string
+  default: prerelease/2.7.0_stabilization
+- name: destinationBranch
+  type: string
+  default: main
+
+pool:
+  vmImage: 'windows-latest'
+steps:
+- task: UsePythonVersion@0
+  displayName: Ensure Python installation
+
+- powershell: |
+    git fetch --force --tags --prune --progress --no-recurse-submodules origin ${{ parameters.sourceBranch }}
+    git fetch --force --tags --prune --progress --no-recurse-submodules origin ${{ parameters.destinationBranch }}
+  displayName: Fetch target branches
+
+- powershell: pip install -r $(Build.SourcesDirectory)/scripts/ci/requirements.txt
+  displayName: Install Python requirements
+
+- task: PythonScript@0
+  displayName: Run MergeTool script
+  inputs:
+    scriptPath: $(Build.SourcesDirectory)/scripts/ci/mergetool.py
+    # Variable 'github.pat' should be defined in the Variables tab
+    arguments: >
+      --repo microsoft/MixedRealityToolkit-Unity
+      --repo_path $(Build.SourcesDirectory)
+      --source_branch ${{ parameters.sourceBranch }}
+      --destination_branch ${{ parameters.destinationBranch }}
+      --label Automerge
+      --pat $(github.pat)

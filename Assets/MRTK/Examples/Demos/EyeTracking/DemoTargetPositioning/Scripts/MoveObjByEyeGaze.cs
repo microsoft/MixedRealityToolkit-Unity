@@ -143,10 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private bool head_isInMotion;
         private float head_deltaDirf = 0;
 
-        private int constrX { get { return ((freezeX) ? 0 : 1); } }
-        private int constrY { get { return ((freezeY) ? 0 : 1); } }
-        private int constrZ { get { return ((freezeZ) ? 0 : 1); } }
-        private Vector3 constrMoveCtrl { get { return new Vector3(constrX, constrY, constrZ); } }
+        private int ConstrX => freezeX ? 0 : 1;
+        private int ConstrY => freezeY ? 0 : 1;
+        private int ConstrZ => freezeZ ? 0 : 1;
 
         Vector3? prevPreviewPos;
 
@@ -283,7 +282,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (IsActiveHand(eventData.InputSource.SourceName))
+            if ((currEngagedHand == Handedness.Right && eventData.Controller.ControllerHandedness == Handedness.Right) ||
+                (currEngagedHand == Handedness.Left && eventData.Controller.ControllerHandedness == Handedness.Left))
             {
                 HandDrag_Stop();
             }
@@ -291,7 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (IsActiveHand(eventData.InputSource.SourceName))
+            if ((currEngagedHand == Handedness.Right && eventData.Handedness == Handedness.Right) ||
+                (currEngagedHand == Handedness.Left && eventData.Handedness == Handedness.Left))
             {
                 HandDrag_Stop();
             }
@@ -299,7 +300,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (SetActiveHand(eventData.InputSource.SourceName))
+
+            if (currEngagedHand == Handedness.None)
+            {
+                currEngagedHand = eventData.Handedness;
+            }
+
+            if (currEngagedHand != Handedness.None)
             {
                 HandDrag_Start();
             }
@@ -307,38 +314,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
         #endregion
-
-        private bool SetActiveHand(string sourcename)
-        {
-            if (currEngagedHand == Handedness.None)
-            {
-                if ((sourcename == "Right Hand") || (sourcename == "Mixed Reality Controller Right"))
-                {
-                    currEngagedHand = Handedness.Right;
-                }
-                else if ((sourcename == "Left Hand") || (sourcename == "Mixed Reality Controller Left"))
-                {
-                    currEngagedHand = Handedness.Left;
-                }
-
-                if (currEngagedHand != Handedness.None)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool IsActiveHand(string sourcename)
-        {
-
-            if (((currEngagedHand == Handedness.Right) && ((sourcename == "Right Hand") || (sourcename == "Mixed Reality Controller Right"))) ||
-                ((currEngagedHand == Handedness.Left) && ((sourcename == "Left Hand") || (sourcename == "Mixed Reality Controller Left"))))
-            {
-                return true;
-            }
-            return false;
-        }
 
         /// <summary>
         /// Start moving the target using your hands.
@@ -669,16 +644,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                     {
-                        hitp.y = hitp.y + gameObject.transform.localScale.y / 2;
+                        hitp.y += gameObject.transform.localScale.y / 2;
                     }
 
                     Vector3 objp = gameObject.transform.position;
 
                     // Constrain in y-direction
                     gameObject.transform.position = new Vector3(
-                        (((constrX + 1) % 2) * objp.x) + (constrX * hitp.x),
-                        (((constrY + 1) % 2) * objp.y) + (constrY * hitp.y),
-                        (((constrZ + 1) % 2) * objp.z) + (constrZ * hitp.z));
+                        (((ConstrX + 1) % 2) * objp.x) + (ConstrX * hitp.x),
+                        (((ConstrY + 1) % 2) * objp.y) + (ConstrY * hitp.y),
+                        (((ConstrZ + 1) % 2) * objp.z) + (ConstrZ * hitp.z));
 
                     ConstrainMovement();
 
@@ -688,7 +663,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 {
                     // Continuous manual target movement
                     Vector3 oldPos = gameObject.transform.position;
-                    Vector3 d = new Vector3(-delta.x * constrX, -delta.y * constrY, -delta.z * constrZ);
+                    Vector3 d = new Vector3(-delta.x * ConstrX, -delta.y * ConstrY, -delta.z * ConstrZ);
                     gameObject.transform.position = oldPos + d * handmapping;
 
                     ConstrainMovement();
@@ -751,16 +726,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     // Discrete cursor-based target movement
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                     {
-                        destination.y = destination.y + gameObject.transform.localScale.y / 2;
+                        destination.y += gameObject.transform.localScale.y / 2;
                     }
 
                     Vector3 objp = gameObject.transform.position;
 
                     // Constrain movement
                     gameObject.transform.position = new Vector3(
-                        (((constrX + 1) % 2) * objp.x) + (constrX * destination.x),
-                        (((constrY + 1) % 2) * objp.y) + (constrY * destination.y),
-                        (((constrZ + 1) % 2) * objp.z) + (constrZ * destination.z));
+                        (((ConstrX + 1) % 2) * objp.x) + (ConstrX * destination.x),
+                        (((ConstrY + 1) % 2) * objp.y) + (ConstrY * destination.y),
+                        (((ConstrZ + 1) % 2) * objp.z) + (ConstrZ * destination.z));
 
                     initialHandPos = handPos_absolute;
                 }

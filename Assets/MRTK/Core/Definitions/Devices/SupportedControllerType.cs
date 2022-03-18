@@ -25,6 +25,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         TouchScreen = 1 << 8,
         Mouse = 1 << 9,
         ArticulatedHand = 1 << 10,
-        GGVHand = 1 << 11
+        GGVHand = 1 << 11,
+        HPMotionController = 1 << 12
+    }
+
+    /// <summary>
+    /// Extension methods specific to the <see cref="SupportedControllerType"/> enum.
+    /// </summary>
+    public static class SupportedControllerTypeExtensions
+    {
+        /// <summary>
+        /// Checks to determine if all bits in a provided mask are set.
+        /// </summary>
+        /// <param name="a"><see cref="SupportedControllerType"/> value.</param>
+        /// <param name="b"><see cref="SupportedControllerType"/> mask.</param>
+        /// <returns>
+        /// True if all of the bits in the specified mask are set in the current value.
+        /// </returns>
+        public static bool IsMaskSet(this SupportedControllerType a, SupportedControllerType b)
+        {
+            return (a & b) == b;
+        }
     }
 }

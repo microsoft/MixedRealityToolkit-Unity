@@ -29,6 +29,15 @@
     },
     {
       "Component": {
+        "Type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/provencher/MRTK-Quest",
+          "commitHash": "896d2e1639b571c6d177cac143259cd1094aa867"
+        }
+      }
+    },
+    {
+      "Component": {
         "Type": "other",
         "Other": {
           "Name": "Oculus Controller Art",
@@ -36,6 +45,36 @@
           "DownloadUrl": "https://developer.oculus.com/downloads/package/oculus-controller-art/"
         }
       }
+    },
+    {
+      "Component": {
+        "Type": "other",
+        "Other": {
+          "Name": "TextMesh Pro",
+          "Version": "1.0",
+          "DownloadUrl": "https://unity3d.com/legal/licenses/Unity_Companion_License"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "pip",
+        "Pip": {
+          "Name": "pygithub",
+          "Version": "1.55"
+        }
+      },
+      "DevelopmentDependency": true
+    },
+    {
+      "Component": {
+        "Type": "pip",
+        "Pip": {
+          "Name": "gitpython",
+          "Version": "3.1.18"
+        }
+      },
+      "DevelopmentDependency": true
     }
   ],
   "Version": 1

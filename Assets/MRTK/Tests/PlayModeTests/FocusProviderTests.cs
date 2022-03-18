@@ -10,34 +10,20 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class FocusProviderTests
+    public class FocusProviderTests : BasePlayModeTests
     {
-        [UnitySetUp]
-        public IEnumerator Setup()
-        {
-            PlayModeTestUtilities.Setup();
-            yield return null;
-        }
-
-        [UnityTearDown]
-        public IEnumerator TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-            yield return null;
-        }
-
         /// <summary>
         /// Test that the gaze cursor behaves properly with articulated hand pointers.
         /// </summary>
@@ -173,14 +159,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        [UnityTest]
+        public IEnumerator TestGazeProviderDestroyed()
+        {
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // remove the gaze provider and it's components from the scene
+            GazeProvider gazeProvider = CoreServices.InputSystem.GazeProvider.GameObjectReference.GetComponent<GazeProvider>();
+            gazeProvider.GazePointer.BaseCursor.Destroy();
+            DebugUtilities.LogVerbose("Application was playing, destroyed the gaze pointer's BaseCursor");
+            UnityObjectExtensions.DestroyObject(gazeProvider);
+            gazeProvider = null;
+
+            // Ensure that the input system and it's related input sources are able to be reinitialized without issue.
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            PlayModeTestUtilities.GetInputSystem().Initialize();
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            yield return null;
+        }
+
         /// <summary>
         /// Ensure FocusProvider's FocusDetails can be overridden.
         /// </summary>
         [UnityTest]
         public IEnumerator TestOverrideFocusDetails()
         {
-            PlayModeTestUtilities.Setup();
-
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             yield return null;
 
@@ -196,10 +201,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(focusProvider.TryGetFocusDetails(pointer, out focusDetails));
             Assert.IsNull(focusDetails.Object);
 
-            var newFocusDetails = new Physics.FocusDetails();
-            newFocusDetails.Object = cube;
-            newFocusDetails.RayDistance = 10;
-            newFocusDetails.Point = new Vector3(1, 2, 3);
+            var newFocusDetails = new Physics.FocusDetails
+            {
+                Object = cube,
+                RayDistance = 10,
+                Point = new Vector3(1, 2, 3)
+            };
             Assert.IsTrue(focusProvider.TryOverrideFocusDetails(pointer, newFocusDetails));
 
             Assert.IsTrue(focusProvider.TryGetFocusDetails(pointer, out focusDetails));

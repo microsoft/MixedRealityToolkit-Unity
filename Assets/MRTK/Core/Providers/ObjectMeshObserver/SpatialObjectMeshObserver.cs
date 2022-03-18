@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.license information.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Spatial Object Mesh Observer",
-        "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
-        "MixedRealityToolkit.Providers")]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+        "Providers/ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
+        "MixedRealityToolkit.Core")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/spatial-awareness/spatial-awareness-getting-started")]
     public class SpatialObjectMeshObserver :
         BaseSpatialMeshObserver,
         IMixedRealityCapabilityCheck
@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                         meshes.Add(currentMeshId, meshObject);
 
                         meshEventData.Initialize(this, currentMeshId, meshObject);
-                        SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
+                        Service?.HandleEvent(meshEventData, OnMeshAdded);
 
                         currentMeshId++;
                     }
@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
                     // Send the mesh removed event
                     meshEventData.Initialize(this, meshId, null);
-                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                    Service?.HandleEvent(meshEventData, OnMeshRemoved);
                 }
             }
         }

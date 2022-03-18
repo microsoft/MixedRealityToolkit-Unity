@@ -1,0 +1,33 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+    "references": [
+        "Unity.TextMeshPro.Editor",
+        "Unity.TextMeshPro",
+        "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
+        "Unity.XR.Management",
+        "Unity.XR.Management.Editor"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "",
+            "define": "MSFT_OPENXR"
+        },
+        {
+            "name": "com.unity.xr.management",
+            "expression": "",
+            "define": "XR_MANAGEMENT_ENABLED"
+        }
+    ],
+    "noEngineReferences": false
+}

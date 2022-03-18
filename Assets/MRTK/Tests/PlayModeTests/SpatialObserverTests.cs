@@ -15,7 +15,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -23,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Test class that validates observers start and stop based on right configuration in editor. 
     /// </summary>
-    public class SpatialObserverTests : BasePlayModeTests
+    public class SpatialObserverTests
     {
         // Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset
         private const string TestSpatialAwarenessSystemProfileGuid = "c992bdb3ac45cd44d856b0198a3ee85d";
@@ -32,6 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile_ManualStart.asset
         private const string TestSpatialAwarenessSystemProfileGuid_ManualStart = "d38d502ad0bcb3447b106d550fd5a371";
         private static readonly string TestSpatialAwarenessSystemProfilePath_ManualStart = AssetDatabase.GUIDToAssetPath(TestSpatialAwarenessSystemProfileGuid_ManualStart);
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
+        }
 
         /// <summary>
         /// Test default case of Auto-Start SpatialObjectMeshObserver observer type and SpatialAwarenessSystem in editor
@@ -122,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static MixedRealityToolkitConfigurationProfile CreateMRTKTestProfile(string spatialAwarenessSystemPath)
         {
-            var mrtkProfile = ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
+            var mrtkProfile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
 
             mrtkProfile.SpatialAwarenessSystemSystemType = new SystemType(typeof(MixedRealitySpatialAwarenessSystem));
             mrtkProfile.IsSpatialAwarenessSystemEnabled = true;

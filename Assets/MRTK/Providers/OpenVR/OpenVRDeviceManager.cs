@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Runtime.InteropServices;
 using Unity.Profiling;
 using UnityEngine;
 
@@ -17,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.LinuxStandalone,
-        "OpenVR Device Manager")]
+        "OpenVR Device Manager",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.LegacyXR)]
     public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -114,6 +114,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     case SupportedControllerType.WindowsMixedReality:
                         controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
                         break;
+                    case SupportedControllerType.HPMotionController:
+                        controllerType = typeof(HPMotionController);
+                        break;
                     default:
                         return null;
                 }
@@ -189,14 +192,23 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 return SupportedControllerType.ViveWand;
             }
 
-            if (joystickName.Contains("Vive Knuckles"))
+            if (joystickName.Contains("Knuckles"))
             {
                 return SupportedControllerType.ViveKnuckles;
             }
 
             if (joystickName.Contains("WindowsMR"))
             {
-                return SupportedControllerType.WindowsMixedReality;
+                // Working around the fact that HP controllers identify as a WindowsMR controller, but have a specific PID we can check
+                // https://github.com/microsoft/MixedRealityToolkit-Unity/pull/8794#discussion_r523313899
+                if (joystickName.Contains("0x066A"))
+                {
+                    return SupportedControllerType.HPMotionController;
+                }
+                else
+                {
+                    return SupportedControllerType.WindowsMixedReality;
+                }
             }
 
             Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");

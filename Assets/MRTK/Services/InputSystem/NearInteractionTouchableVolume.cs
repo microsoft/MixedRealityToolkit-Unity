@@ -33,6 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             touchableCollider = GetComponent<Collider>();
         }
 
+        private void Awake()
+        {
+            if (touchableCollider == null)
+            {
+                touchableCollider = GetComponent<Collider>();
+            }
+        }
+
         /// <inheritdoc />
         public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {

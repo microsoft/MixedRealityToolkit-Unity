@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Validates the code and assets to check for common patterns and usage that shouldn't be
@@ -22,7 +25,7 @@ param(
     # The directory containing the code to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the code validation
@@ -83,7 +86,7 @@ function CheckEmptyDoccomment {
             # ///\s*<returns[\sa-zA-Z"=]*>\s*</returns>
             # which basically looks for an empty tag (allowing for alphanumeric param names
             # and values in the tag itself)
-            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=]*>\s*</$tag>"
+            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=_]*>\s*</$tag>"
             if ($FileContent[$LineNumber] -match $matcher) {
                 Write-Host "An empty doccomment was found in $FileName at line $LineNumber "
                 Write-Host "Delete the line or add a description "
@@ -125,7 +128,7 @@ function CheckSpacelessComments {
             Write-Host $FileContent[$LineNumber]
             $hasIssue = $true
         }
-        
+
         $hasIssue
     }
 }
@@ -207,13 +210,17 @@ $HardcodedPathExceptions = @{
     "MixedRealityToolkitConfigurationProfileInspector.cs" = @(
         'var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;'
     );
+    "ProgressIndicatorExamples.unity"                               = @(
+        'Path: Assets/MRTK/Examples/Demos/UX/ProgressIndicator/Scenes/ProgressIndicatorExamplesAdditiveLoad.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/ProgressIndicator/Scenes/ProgressIndicatorExamplesAdditiveLoad.unity'
+    );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
-    "MRTKExamplesHub.unity" = @(
+    "MRTKExamplesHub.unity"                               = @(
         'Path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
         'value: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
-    "MRTKExamplesHubMainMenu.unity" = @(
+    "MRTKExamplesHubMainMenu.unity"                       = @(
         'value: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
         'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
         'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
@@ -228,6 +235,10 @@ $HardcodedPathExceptions = @{
         'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
         'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
         'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
+        'value: Assets/MRTK/Examples/Demos/Solvers/Scenes/SurfaceMagnetismSpatialAwarenessExample.unity'
+        'value: Assets/MRTK/Examples/Demos/ScrollingObjectCollection/Scenes/ScrollingObjectCollection.unity'
+        'value: Assets/MRTK/Examples/Demos/HandCoach/Scenes/HandCoachExample.unity'
+        'value: Assets/MRTK/Examples/Experimental/SceneUnderstanding/Scenes/SceneUnderstandingExample.unity'
     );
 }
 
@@ -246,12 +257,12 @@ function CheckHardcodedPath {
     )
     process {
         # Some files have total exceptions (i.e. ones that deal with profile cloning or for tests)
-        if ($FileName -match "Assets.MixedRealityToolkit\.Tests" -or
+        if ($FileName -match "Assets.MRTK.Tests" -or
             $FileName -match "MixedRealityProfileCloneWindow\.cs") {
             return $false
         }
 
-        $results = Select-String -Pattern "Assets.MixedRealityToolkit" $FileName -AllMatches
+        $results = Select-String -Pattern "Assets.(MixedRealityToolkit|MRTK)" $FileName -AllMatches
         $containsIssue = $false
         $relativeFileName = Split-Path $FileName -leaf
 
@@ -349,7 +360,7 @@ function GetProjectRelativePath {
     }
 }
 
-# This set contains all of the currently allowed InitializeOnLoad handlers# in MRTK.
+# This set contains all of the currently allowed InitializeOnLoad handlers in MRTK.
 # InitializeOnLoad handlers have a fairly dangerous impact on the inner loop speed of anyone
 # using the MRTK, as they add milliseconds of time after each compile and prior to entering play mode.
 # While individual handlers may not be that significant, the sum total of time across all handlers
@@ -365,13 +376,8 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/WindowsApiChecker.cs",
     "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
-    "Assets/MRTK/Core/Utilities/Editor/Setup/MixedRealityToolkitFiles.cs",
     "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/UnityAR/Editor/UnityARConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/WindowsMixedRealityXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/XRSDK/Editor/XRSDKConfigurationChecker.cs"
+    "Assets/MRTK/StandardAssets/EditorUtilities/OnLoadUtilities.cs"
 )
 
 <#
@@ -388,7 +394,13 @@ function CheckInitializeOnLoad {
     )
     process {
         $hasIssue = $false
-        if ($FileContent[$LineNumber] -match "InitializeOnLoad") {
+        # This checks that the InitializeOnLoad string is both present and also not within
+        # a // comment block (cases that are inside a comment block are perfectly okay since
+        # the obviously do not have any actual effect)
+        # "^\s*//" -> will match a case where the line begins with any amount of whitespace
+        # followed by the two // characters.
+        if (($FileContent[$LineNumber] -match "InitializeOnLoad") -and
+                ($FileContent[$LineNumber] -notmatch "^\s*//")) {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
                 Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
@@ -428,7 +440,7 @@ function CheckAssemblyTypes {
     process {
         $hasIssue = $false
 
-        if ($FileContent[$LineNumber] -match "\.GetTypes()") {
+        if ($FileContent[$LineNumber] -match "\.GetTypes\(\)") {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $AssemblyTypesExceptions.Contains($assetFileName)) {
                 Write-Host "$FileName at line $LineNumber has a possible usage of Assembly.GetTypes()"
@@ -436,7 +448,7 @@ function CheckAssemblyTypes {
                 Write-Host "If this is using Assembly.GetTypes(), switch to Assembly.GetLoadableTypes() instead or add to AssemblyTypesExceptions"
                 $hasIssue = $true
             }
-        }      
+        }
         $hasIssue
     }
 }
@@ -478,8 +490,7 @@ function CheckScript {
 
         # Only validate that there is a namespace declaration if it's not an AssemblyInfo.cs file.
         # These do not contain namespace declarations.
-        if ((-not $containsNamespaceDeclaration) -and ($FileName -notmatch "AssemblyInfo.cs$"))
-        {
+        if ((-not $containsNamespaceDeclaration) -and ($FileName -notmatch "AssemblyInfo.cs$")) {
             Write-Warning "$FileName is missing a namespace declaration (i.e. missing namespace Microsoft.MixedReality.Toolkit.*)"
             $containsIssue = $true;
         }
@@ -538,7 +549,7 @@ function CheckUnityScene {
         $MatchesPlayspaces = Select-String MixedRealityPlayspace $FileName -AllMatches
         $NumPlayspaces = $MatchesPlayspaces.Matches.Count
 
-        if ($NumPlayspaces -gt 1){
+        if ($NumPlayspaces -gt 1) {
             Write-Warning "There are multiple MixedRealityPlayspace objects in $FileName, delete the extra playspaces from the unity scene."
             $containsIssue = $true
         }
@@ -568,67 +579,69 @@ function CheckUnityScene {
 # binary that has a lot of overlap.
 # Either way, this is an explicit speed bump being added to force discussion at future times.
 $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
-    "Assets/MRTK/Core/Microsoft.MixedReality.Toolkit.asmdef",
-    "Assets/MRTK/Core/Extensions/EditorClassExtensions/Microsoft.MixedReality.Toolkit.Editor.ClassExtensions.asmdef",
-    "Assets/MRTK/Core/Inspectors/Microsoft.MixedReality.Toolkit.Editor.Inspectors.asmdef",
-    "Assets/MRTK/Core/Inspectors/ServiceInspectors/Microsoft.MixedReality.Toolkit.Editor.ServiceInspectors.asmdef",
-    "Assets/MRTK/Core/Providers/InputAnimation/MixedRealityToolkit.Services.InputAnimation.asmdef",
-    "Assets/MRTK/Core/Providers/InputSimulation/Microsoft.MixedReality.Toolkit.Services.InputSimulation.asmdef",
-    "Assets/MRTK/Core/Providers/InputSimulation/Editor/Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.asmdef",
-    "Assets/MRTK/Core/Providers/ObjectMeshObserver/Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver.asmdef",
-    "Assets/MRTK/Core/Utilities/Async/Microsoft.MixedReality.Toolkit.Async.asmdef",
-    "Assets/MRTK/Core/Utilities/BuildAndDeploy/Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy.asmdef",
-    "Assets/MRTK/Core/Utilities/Editor/Microsoft.MixedReality.Toolkit.Editor.Utilities.asmdef",
-    "Assets/MRTK/Core/Utilities/Gltf/Microsoft.MixedReality.Toolkit.Gltf.asmdef",
-    "Assets/MRTK/Core/Utilities/Gltf/Serialization/Importers/Microsoft.MixedReality.Toolkit.Gltf.Importers.asmdef",
-    "Assets/MRTK/Examples/Microsoft.MixedReality.Toolkit.Examples.asmdef",
-    "Assets/MRTK/Examples/Demos/Gltf/Microsoft.MixedReality.Toolkit.Demos.Gltf.asmdef",
-    "Assets/MRTK/Examples/Demos/Gltf/Scripts/Editor/Microsoft.MixedReality.Toolkit.Demos.Gltf.Inspectors.asmdef",
-    "Assets/MRTK/Examples/Demos/StandardShader/Scripts/Editor/Demos.StandardShader.Inspectors.asmdef",
-    "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Microsoft.MixedReality.Toolkit.Demos.InspectorFields.asmdef",
-    "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Inspectors/Demos.InspectorFields.Inspectors.asmdef",
-    "Assets/MRTK/Examples/Demos/UX/Interactables/Microsoft.MixedReality.Toolkit.Demos.UX.Interactables.asmdef",
-    "Assets/MRTK/Examples/Experimental/Dwell/Editor/Microsoft.MixedReality.Examples.Editor.Dwell.asmdef",
-    "Assets/MRTK/Extensions/HandPhysicsService/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.asmdef",
-    "Assets/MRTK/Extensions/LostTrackingService/Microsoft.MixedReality.Toolkit.Extensions.Tracking.asmdef",
-    "Assets/MRTK/Extensions/LostTrackingService/Editor/Microsoft.MixedReality.Toolkit.Extensions.Tracking.Editor.asmdef",
-    "Assets/MRTK/Extensions/SceneTransitionService/Microsoft.MixedReality.Toolkit.Extensions.SceneTransitionService.asmdef",
-    "Assets/MRTK/Providers/LeapMotion/Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef",
-    "Assets/MRTK/Providers/LeapMotion/Editor/Microsoft.MixedReality.Toolkit.LeapMotion.Editor.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Scripts/Utils/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities.asmdef",
-    "Assets/MRTK/Providers/OpenVR/Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef",
-    "Assets/MRTK/Providers/UnityAR/Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef",
-    "Assets/MRTK/Providers/UnityAR/Editor/Microsoft.MixedReality.Toolkit.UnityAR.Editor.asmdef",
-    "Assets/MRTK/Providers/Windows/Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.asmdef",
-    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared.asmdef",
-    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/Microsoft.MixedReality.Toolkit.WMR.Editor.asmdef",
-    "Assets/MRTK/Providers/WindowsMixedReality/XR2018/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.asmdef",
-    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef",
-    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.WMR.Editor.asmdef",
-    "Assets/MRTK/Providers/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef",
-    "Assets/MRTK/Providers/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Editor.asmdef",
-    "Assets/MRTK/SDK/Microsoft.MixedReality.Toolkit.SDK.asmdef",
-    "Assets/MRTK/SDK/Editor/Microsoft.MixedReality.Toolkit.SDK.Editor.asmdef",
-    "Assets/MRTK/SDK/Experimental/Editor/Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.asmdef",
-    "Assets/MRTK/Services/BoundarySystem/XR2018/Microsoft.MixedReality.Toolkit.Services.BoundarySystem.asmdef",
-    "Assets/MRTK/Services/CameraSystem/Microsoft.MixedReality.Toolkit.Services.CameraSystem.asmdef",
-    "Assets/MRTK/Services/DiagnosticsSystem/Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.asmdef",
-    "Assets/MRTK/Services/InputSystem/Microsoft.MixedReality.Toolkit.Services.InputSystem.asmdef",
-    "Assets/MRTK/Services/InputSystem/Editor/Microsoft.MixedReality.Toolkit.Services.InputSystem.Editor.asmdef",
-    "Assets/MRTK/Services/SceneSystem/Microsoft.MixedReality.Toolkit.Services.SceneSystem.asmdef",
-    "Assets/MRTK/Services/SpatialAwarenessSystem/Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.asmdef",
-    "Assets/MRTK/Services/TeleportSystem/Microsoft.MixedReality.Toolkit.Services.TeleportSystem.asmdef",
-    "Assets/MRTK/Tests/EditModeTests/Microsoft.MixedReality.Toolkit.Tests.EditModeTests.asmdef",
-    "Assets/MRTK/Tests/PlayModeTests/Microsoft.MixedReality.Toolkit.Tests.PlayModeTests.asmdef",
-    "Assets/MRTK/Tests/TestUtilities/Microsoft.MixedReality.Toolkit.Tests.Utilities.asmdef",
-    "Assets/MRTK/Tools/Microsoft.MixedReality.Toolkit.Tools.asmdef",
-    "Assets/MRTK/Tools/MSBuild/Microsoft.MixedReality.Toolkit.MSBuild.asmdef",
-    "Assets/MRTK/Tools/RuntimeTools/Tools/Microsoft.MixedReality.Toolkit.Tools.Runtime.asmdef"
+    "Assets/MRTK/Core/MRTK.Core.asmdef",
+    "Assets/MRTK/Core/Extensions/EditorClassExtensions/MRTK.Editor.ClassExtensions.asmdef",
+    "Assets/MRTK/Core/Inspectors/MRTK.Inspectors.asmdef",
+    "Assets/MRTK/Core/Inspectors/ServiceInspectors/MRTK.ServiceInspectors.asmdef",
+    "Assets/MRTK/Core/Providers/InputAnimation/MRTK.InputAnimation.asmdef",
+    "Assets/MRTK/Core/Providers/InputSimulation/MRTK.InputSimulation.asmdef",
+    "Assets/MRTK/Core/Providers/InputSimulation/Editor/MRTK.InputSimulation.Editor.asmdef",
+    "Assets/MRTK/Core/Providers/ObjectMeshObserver/MRTK.ObjectMeshObserver.asmdef",
+    "Assets/MRTK/Core/Utilities/Async/MRTK.Async.asmdef",
+    "Assets/MRTK/Core/Utilities/BuildAndDeploy/MRTK.BuildAndDeploy.asmdef",
+    "Assets/MRTK/Core/Utilities/Editor/MRTK.Editor.Utilities.asmdef",
+    "Assets/MRTK/Core/Utilities/Gltf/MRTK.Gltf.asmdef",
+    "Assets/MRTK/Core/Utilities/Gltf/Serialization/Importers/MRTK.Gltf.Importers.asmdef",
+    "Assets/MRTK/Examples/MRTK.Examples.asmdef",
+    "Assets/MRTK/Examples/Demos/Audio/MRTK.Demos.Audio.asmdef",
+    "Assets/MRTK/Examples/Demos/Gltf/MRTK.Demos.Gltf.asmdef",
+    "Assets/MRTK/Examples/Demos/Gltf/Scripts/Editor/MRTK.Demos.Gltf.Inspectors.asmdef",
+    "Assets/MRTK/Examples/Demos/StandardShader/Scripts/Editor/MRTK.Demos.StandardShader.Inspectors.asmdef",
+    "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/MRTK.Demos.InspectorFields.asmdef",
+    "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Inspectors/MRTK.Demos.InspectorFields.Inspectors.asmdef",
+    "Assets/MRTK/Examples/Demos/UX/Interactables/MRTK.Demos.UX.Interactables.asmdef",
+    "Assets/MRTK/Examples/Demos/UX/Dwell/Editor/MRTK.Demos.Dwell.Editor.asmdef",
+    "Assets/MRTK/Extensions/HandPhysicsService/MRTK.HandPhysics.asmdef",
+    "Assets/MRTK/Extensions/LostTrackingService/MRTK.LostTracking.asmdef",
+    "Assets/MRTK/Extensions/LostTrackingService/Editor/MRTK.LostTracking.Editor.asmdef",
+    "Assets/MRTK/Extensions/SceneTransitionService/MRTK.SceneTransitionService.asmdef",
+    "Assets/MRTK/Providers/LeapMotion/MRTK.LeapMotion.asmdef",
+    "Assets/MRTK/Providers/LeapMotion/Editor/MRTK.LeapMotion.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.Oculus.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
+    "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
+    "Assets/MRTK/Providers/OpenXR/MRTK.OpenXR.asmdef",
+    "Assets/MRTK/Providers/OpenXR/Editor/MRTK.OpenXR.Editor.asmdef",
+    "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
+    "Assets/MRTK/Providers/UnityAR/Editor/MRTK.UnityAR.Editor.asmdef",
+    "Assets/MRTK/Providers/Windows/MRTK.WindowsVoice.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/Shared/MRTK.WMR.Shared.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/MRTK.WMR.Editor.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/XR2018/MRTK.WMR.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/MRTK.WMR.XRSDK.asmdef",
+    "Assets/MRTK/Providers/XRSDK/MRTK.XRSDK.asmdef",
+    "Assets/MRTK/SDK/MRTK.SDK.asmdef",
+    "Assets/MRTK/SDK/Editor/MRTK.SDK.Editor.asmdef",
+    "Assets/MRTK/SDK/Experimental/Editor/MRTK.SDK.Experimental.Editor.asmdef",
+    "Assets/MRTK/SDK/Editor/Inspectors/Exp/InteractiveEl/MRTK.SDK.Editor.Experimental.Interactive.asmdef",
+    "Assets/MRTK/SDK/Experimental/InteractiveElement/MRTK.SDK.Experimental.Interactive.asmdef",
+    "Assets/MRTK/Services/BoundarySystem/XR2018/MRTK.BoundarySystem.asmdef",
+    "Assets/MRTK/Services/CameraSystem/MRTK.CameraSystem.asmdef",
+    "Assets/MRTK/Services/DiagnosticsSystem/MRTK.DiagnosticsSystem.asmdef",
+    "Assets/MRTK/Services/InputSystem/MRTK.InputSystem.asmdef",
+    "Assets/MRTK/Services/InputSystem/Editor/MRTK.InputSystem.Editor.asmdef",
+    "Assets/MRTK/Services/SceneSystem/MRTK.SceneSystem.asmdef",
+    "Assets/MRTK/Services/SpatialAwarenessSystem/MRTK.SpatialAwarenessSystem.asmdef",
+    "Assets/MRTK/Services/TeleportSystem/MRTK.TeleportSystem.asmdef",
+    "Assets/MRTK/StandardAssets/EditorUtilities/MRTK.StandardAssets.Editor.asmdef",
+    "Assets/MRTK/Tests/EditModeTests/MRTK.EditModeTests.asmdef",
+    "Assets/MRTK/Tests/PlayModeTests/MRTK.PlayModeTests.asmdef",
+    "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",
+    "Assets/MRTK/Tools/MRTK.Tools.asmdef",
+    "Assets/MRTK/Tools/MSBuild/MRTK.Tools.MSBuild.asmdef",
+    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/MRTK.WSU.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/Editor/MRTK.WSU.Editor.asmdef"
 )
 
 function CheckAsmDef {

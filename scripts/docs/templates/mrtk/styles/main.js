@@ -30,6 +30,7 @@ function createSharedTags()
 	link.href = rootDir+'web/version.css';
 	link.media = 'all';
 	head.appendChild(link);
+
 }
 
 createSharedTags();

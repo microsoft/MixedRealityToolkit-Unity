@@ -145,6 +145,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else
             {
+                // Make sure there is a running instance of AsyncCoroutineRunner before calling AsyncCoroutineRunner.Post
+                // If not warn the user. Note we cannot call AsyncCoroutineRunner.Instance here as that getter contains
+                // calls to Unity functions that can only be run on the Unity thread
+                if (!AsyncCoroutineRunner.IsInstanceRunning)
+                {
+                    Debug.LogWarning("There is no active AsyncCoroutineRunner when an action is posted. Place a GameObject " +
+                        "at the root of the scene and attach the AsyncCoroutineRunner script to make it function properly.");
+                }
                 AsyncCoroutineRunner.Post(action);
             }
         }
@@ -292,8 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     // We could just yield return nested IEnumerator's here but we choose to do
                     // our own handling here so that we can catch exceptions in nested coroutines
                     // instead of just top level coroutine
-                    var item = topWorker.Current as IEnumerator;
-                    if (item != null)
+                    if (topWorker.Current is IEnumerator item)
                     {
                         processStack.Push(item);
                     }

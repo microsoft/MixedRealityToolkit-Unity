@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// Wrapper around Unity's WorldAnchorStore to simplify usage of persistence operations.
     /// </summary>
     /// <remarks>
-    /// This class only functions when built for the WSA platform using legacy XR.
-    /// It uses APIs that are only present on that platform.
+    /// <para>This class only functions when built for the WSA platform using legacy XR.
+    /// It uses APIs that are only present on that platform.</para>
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/SDK/WorldAnchorManager")]
     public class WorldAnchorManager : MonoBehaviour
@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// If non-null, verbose logging messages will be displayed on this TextMesh.
         /// </summary>
         /// <remarks>
-        /// Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
-        /// to be displayed.
+        /// <para>Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+        /// to be displayed.</para>
         /// </remarks>
         public TextMesh AnchorDebugText => anchorDebugText;
 
@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// If true, more verbose logging messages will be written to the console window.
         /// </summary>
         /// <remarks>
-        /// Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
-        /// to be displayed.
+        /// <para>Note that ShowDetailedLogs and AnchorDebugText will cause the same set of information
+        /// to be displayed.</para>
         /// </remarks>
         public bool ShowDetailedLogs => showDetailedLogs;
 

@@ -57,16 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (eventData.Controller?.ControllerHandedness == handedness)
+            // Check the handedness and don't track hands
+            if (eventData.Controller?.ControllerHandedness == handedness && !(eventData.Controller is IMixedRealityHand))
             {
-                if (eventData.Controller is IMixedRealityHand)
-                {
-
-                }
-                else
-                {
-                    AddControllerTransform(eventData.Controller);
-                }
+                AddControllerTransform(eventData.Controller);
             }
         }
 

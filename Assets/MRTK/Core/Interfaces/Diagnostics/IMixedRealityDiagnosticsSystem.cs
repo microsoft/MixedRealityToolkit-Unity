@@ -18,8 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// Enable / disable diagnostic display.
         /// </summary>
         /// <remarks>
-        /// When set to true, visibility settings for individual diagnostics are honored. When set to false,
-        /// all visualizations are hidden.
+        /// <para>When set to true, visibility settings for individual diagnostics are honored. When set to false,
+        /// all visualizations are hidden.</para>
         /// </remarks>
         bool ShowDiagnostics { get; set; }
 

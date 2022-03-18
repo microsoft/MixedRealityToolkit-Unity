@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor,
         "Windows Dictation Input")]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Dictation.html")]
+    [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/dictation")]
     public class WindowsDictationInputProvider : BaseInputDeviceManager, IMixedRealityDictationSystem, IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -262,6 +262,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 InitializeDictationRecognizer();
             }
+
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         private void InitializeDictationRecognizer()
@@ -280,7 +284,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
             catch (System.Exception ex)
             {
-                Debug.LogWarning($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
+                // Don't log if the application is currently running in batch mode (for example, when running tests). This failure is expected in this case.
+                if (!Application.isBatchMode)
+                {
+                    Debug.LogWarning($"Failed to start dictation recognizer. Are microphone permissions granted? Exception: {ex}");
+                }
                 Disable();
                 dictationRecognizer = null;
             }
@@ -294,6 +302,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             using (UpdatePerfMarker.Auto())
             {
                 if (!Application.isPlaying || Service == null || dictationRecognizer == null) { return; }
+
+                base.Update();
 
                 if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
                 {
@@ -323,6 +333,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
                 dictationRecognizer.Dispose();
             }
+
+            base.Disable();
         }
 
         /// <inheritdoc />

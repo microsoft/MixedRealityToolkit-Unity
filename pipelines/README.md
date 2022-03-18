@@ -14,9 +14,21 @@ This runs on externally-facing machines whenever a PR is merged.
 
 This runs on internally-facing machines whenever a PR is merged.
 
-### ci-release
+### ci-weekly-internal
 
-This runs on internally-facing machines manually. It packages and signs the packages for public release.
+This runs on internally-facing machines every Monday at 8:00 UTC for compliance tasks.
+
+### docs-binaries
+
+This runs on internally-facing machines whenever a PR is merged. It generates binaries for updating the [MRTK API documentation](https://docs.microsoft.com/dotnet/api/microsoft.mixedreality.toolkit).
+
+### mergetool
+
+This runs on externally-facing machines every morning when enabled, typically during stabilization periods. It checks for the presence of new changes on a specific branch and opens a PR, if necessary, onto a second specific branch.
+
+### packageupmpublic
+
+This runs on externally-facing machines manually to repackage stabilization packages for full release.
 
 ### pr
 

@@ -36,11 +36,6 @@
       <Link>MRTK\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
 
-    <Content Include="$(MSBuildThisFileDirectory)..\link.xml" Condition=" '$(MRTKIncludeContent)' == 'true' ">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>MRTK\link.xml</Link>
-    </Content>
-
     <!-- Get all the dlls for the target player, and store the Identity in a custom OriginalPath metadata.
          If Identity is used directly as the HintPath in the Reference, Visual Studio generates a warning
          indicating the assemblies are not found, even though the build succeeds. -->

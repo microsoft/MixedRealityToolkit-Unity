@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a66f7659243ab748891f032ff4477e2, type: 3}
+  m_Name: DefaultSceneUnderstandingObserverProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  startupBehavior: 0
+  isStationaryObserver: 0
+  observationExtents: {x: 3, y: 3, z: 3}
+  observerVolumeType: 1
+  updateInterval: 5
+  updateOnceInitialized: 0
+  autoUpdate: 0
+  defaultPhysicsLayer: 31
+  surfaceTypes: 60
+  instantiationBatchRate: 1
+  defaultMaterial: {fileID: 2100000, guid: c6bd404f506e1894289fde7b1689f901, type: 2}
+  defaultWorldMeshMaterial: {fileID: 2100000, guid: 47c3d3b0d8143e3489351498fceed55d,
+    type: 2}
+  shouldLoadFromFile: 0
+  serializedScene: {fileID: 0}
+  createGameObjects: 0
+  requestPlaneData: 1
+  requestMeshData: 1
+  inferRegions: 1
+  firstAutoUpdateDelay: 1
+  worldMeshLevelOfDetail: 1
+  usePersistentObjects: 1
+  queryRadius: 5
+  requestOcclusionMask: 1
+  occlusionMaskResolution: {x: 256, y: 256}
+  orientScene: 0

@@ -14,4 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   leapControllerOrientation: 0
-  leapControllerOffset: {x: 0, y: -0.2, z: 0.2}
+  leapControllerOffset: {x: 0, y: -0.2, z: 0.35}
+  leapVRDeviceOffsetMode: 0
+  leapVRDeviceOffsetY: 0
+  leapVRDeviceOffsetZ: 0
+  leapVRDeviceOffsetTiltX: 0
+  leapVRDeviceOrigin: {fileID: 0}
+  enterPinchDistance: 0.02
+  exitPinchDistance: 0.05

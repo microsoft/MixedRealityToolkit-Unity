@@ -3,8 +3,9 @@
 --- !u!74 &7400000
 AnimationClip:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: TeleportInvalid
   serializedVersion: 6
   m_Legacy: 0
@@ -38,7 +39,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: TeleportPadMid
+    path: TeleportMid
   m_ScaleCurves: []
   m_FloatCurves:
   - curve:
@@ -75,7 +76,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.r
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -112,7 +113,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.g
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -149,7 +150,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.b
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -186,7 +187,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.a
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -199,8 +200,8 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 0
@@ -208,14 +209,14 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_IsActive
-    path: TeleportPadArrow
-    classID: 1
+    attribute: m_Enabled
+    path: TeleportArrow
+    classID: 23
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
@@ -227,8 +228,8 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
@@ -236,14 +237,14 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_IsActive
-    path: TeleportPadMid
-    classID: 1
+    attribute: m_Enabled
+    path: TeleportMid
+    classID: 23
     script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 60
@@ -254,49 +255,49 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3923819429
+      path: 1112903405
       attribute: 2108656497
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3093145629
-      attribute: 2086281974
+      path: 3595436678
+      attribute: 3305885265
       script: {fileID: 0}
-      typeID: 1
+      typeID: 23
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3923819429
-      attribute: 2086281974
+      path: 1112903405
+      attribute: 3305885265
       script: {fileID: 0}
-      typeID: 1
+      typeID: 23
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3923819429
+      path: 1112903405
       attribute: 1
       script: {fileID: 0}
       typeID: 4
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3923819429
+      path: 1112903405
       attribute: 1303350129
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3923819429
+      path: 1112903405
       attribute: 1571785585
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3923819429
+      path: 1112903405
       attribute: 1840221041
       script: {fileID: 0}
       typeID: 23
@@ -349,7 +350,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -377,7 +378,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -405,7 +406,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -442,7 +443,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.r
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -479,7 +480,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.g
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -516,7 +517,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.b
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -553,7 +554,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: material._Color.a
-    path: TeleportPadMid
+    path: TeleportMid
     classID: 23
     script: {fileID: 0}
   - curve:
@@ -566,8 +567,8 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 0
@@ -575,14 +576,14 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_IsActive
-    path: TeleportPadArrow
-    classID: 1
+    attribute: m_Enabled
+    path: TeleportArrow
+    classID: 23
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
@@ -594,8 +595,8 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
@@ -603,17 +604,16 @@ AnimationClip:
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_IsActive
-    path: TeleportPadMid
-    classID: 1
+    attribute: m_Enabled
+    path: TeleportMid
+    classID: 23
     script: {fileID: 0}
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_GenerateMotionCurves: 0
   m_Events: []

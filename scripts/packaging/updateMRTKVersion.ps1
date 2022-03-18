@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Updates Mixed Reality Toolkit version (i.e. major.minor.patch) across all known files.
@@ -54,8 +57,6 @@ Set-Location $PSScriptRoot
 $GitRoot = (git rev-parse --show-toplevel) | Out-String
 $GitRoot = ($GitRoot -replace "/", "\").Trim()
 
-$FullProductName = "Microsoft Mixed Reality Toolkit"
-
 $Errors = @()
 
 $PipelinesDir = Get-Item (Join-Path $GitRoot "pipelines")
@@ -84,17 +85,6 @@ foreach ($file in (Get-ChildItem -Path $GitRoot -Recurse))
     elseif ($file.Name -eq "UwpAppxBuildToolsTest.cs")
     {
         $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=\sVersion=')(\d+\.\d+\.\d+)(?=\.\d+\')") -Strict $True
-    }
-}
-
-$AssetsDir = Get-Item (Join-Path $GitRoot "Assets")
-
-foreach ($file in (Get-ChildItem -Path $AssetsDir -Recurse))
-{
-    if ($file.Name -eq "AssemblyInfo.cs")
-    {
-        $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=AssemblyVersion[(][""])(\d+\.\d+\.\d+)(?=\.\d+)") -Strict $True
-        $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=AssemblyFileVersion[(][""])(\d+\.\d+\.\d+)(?=\.\d+)") -Strict $True
     }
 }
 

@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -52,10 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             return (capability == MixedRealityCapability.ArticulatedHand);
         }
 
-
         #endregion IMixedRealityCapabilityCheck Implementation
-#if LEAPMOTIONCORE_PRESENT
 
+#if LEAPMOTIONCORE_PRESENT
         /// <summary>
         /// The profile that contains settings for the Leap Motion Device Manager input data provider.  This profile is nested under 
         /// Input > Input Data Providers > Leap Motion Device Manager in the MixedRealityToolkit object in the hierarchy.
@@ -105,6 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// </summary>
         private Vector3 leapHandsOffset => SettingsProfile.LeapControllerOffset;
 
+        // If the Leap Controller Orientation is the Headset, controller offset settings will be exposed in the inspector while using the LeapXRServiceProvider
+        private LeapVRDeviceOffsetMode leapVRDeviceOffsetMode => SettingsProfile.LeapVRDeviceOffsetMode;
+
         /// <summary>
         /// Dictionary to capture all active leap motion hands detected.
         /// </summary>
@@ -122,9 +123,40 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
             if (leapControllerOrientation == LeapControllerOrientation.Headset)
             {
+                // As of the Unity Plugin (>V5.0.0), the leap service provider needs to know what is the main camera,
+                // it will pick this up from the MainCameraProvider. This needs to be done before the LeapXRServiceProvider is created
+
+#if LEAPMOTIONPLUGIN_PRESENT
+                MainCameraProvider.mainCamera = CameraCache.Main;
+#endif
                 // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
-                // The LeapXRServiceProvider can only be attached to a camera 
                 LeapMotionServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
+                
+                // Allow modification of VR specific offset modes if the leapControllerOrientation is Headset
+                // These settings mirror the modification of the properties exposed in the inspector within the LeapXRServiceProvider attached
+                // to the main camera
+                if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.ManualHeadOffset)
+                {
+                    // Change the offset mode before setting the properties 
+                    leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.ManualHeadOffset;
+
+                    leapXRServiceProvider.deviceOffsetYAxis = SettingsProfile.LeapVRDeviceOffsetY;
+                    leapXRServiceProvider.deviceOffsetZAxis = SettingsProfile.LeapVRDeviceOffsetZ;
+                    leapXRServiceProvider.deviceTiltXAxis = SettingsProfile.LeapVRDeviceOffsetTiltX;
+                }
+                else if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.Transform)
+                {
+                    if (SettingsProfile.LeapVRDeviceOrigin != null)
+                    {
+                        leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.Transform;
+
+                        leapXRServiceProvider.deviceOrigin = SettingsProfile.LeapVRDeviceOrigin;
+                    }
+                    else
+                    {
+                        Debug.LogError("The Leap VR Device Origin Transform was not set in the LeapMotionDeviceManagerProfile and is null.");
+                    }
+                }
             }
 
             if (leapControllerOrientation == LeapControllerOrientation.Desk)
@@ -203,8 +235,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 var leapHand = new LeapMotionArticulatedHand(TrackingState.Tracked, handedness, inputSource);
 
                 // Set pinch thresholds
-                leapHand.handDefinition.EnterPinchDistance = enterPinchDistance;
-                leapHand.handDefinition.ExitPinchDistance = exitPinchDistance;
+                leapHand.HandDefinition.EnterPinchDistance = enterPinchDistance;
+                leapHand.HandDefinition.ExitPinchDistance = exitPinchDistance;
 
                 // Set the leap attachment hand to the corresponding handedness
                 if (handedness == Handedness.Left)
@@ -299,6 +331,4 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         }
 #endif
     }
-
 }
-

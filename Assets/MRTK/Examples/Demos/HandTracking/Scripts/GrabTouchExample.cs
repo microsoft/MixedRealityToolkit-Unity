@@ -42,8 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// This Handler is called by a HandTrackingInputSource when a Touch action for that hand starts.
         /// </summary>
         /// <remarks>    
-        /// A Touch action requires a target. a Touch action must occur inside the bounds of a gameObject.
-        /// The eventData argument contains.
+        /// <para>A Touch action requires a target. a Touch action must occur inside the bounds of a gameObject.
+        /// The eventData argument contains.</para>
         /// </remarks>
         /// <param name="eventData">
         /// The argument passed contains information about the InputSource, the point in space where

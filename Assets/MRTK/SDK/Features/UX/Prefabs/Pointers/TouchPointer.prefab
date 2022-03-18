@@ -43,13 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af940557c3b8434598ee5b473021dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 0
   destroyOnSourceLost: 0
   useSourcePoseData: 1
   poseAction:
     id: 0
     description: None
     axisConstraint: 0
+  handedness: 0
   cursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
     type: 3}
   disableCursorOnStart: 1
@@ -63,6 +63,10 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  grabAction:
+    id: 0
+    description: None
+    axisConstraint: 0
   requiresHoldAction: 0
   requiresActionBeforeEnabling: 1
   overrideGlobalPointerExtent: 0

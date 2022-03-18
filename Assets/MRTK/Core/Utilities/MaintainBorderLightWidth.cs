@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// Utility component to keep the border light width a constant size no mater the 
-    /// object scale. This component should be used in conjunction with the 
+    /// Utility component to keep the border light width a constant size no matter the
+    /// object scale. This component should be used in conjunction with the
     /// "MixedRealityToolkit/Standard" shader "_BorderLight" feature.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     {
         private Renderer targetRenderer = null;
         private MaterialPropertyBlock properties = null;
-        private static int borderWidthID = Shader.PropertyToID("_BorderWidth");
+        private static readonly int BorderWidthID = Shader.PropertyToID("_BorderWidth");
         private float initialBorderWidth = 1.0f;
         private Vector3 initialScale = Vector3.one;
         private Vector3 prevScale;
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             targetRenderer = GetComponent<Renderer>();
             properties = new MaterialPropertyBlock();
 
-            initialBorderWidth = targetRenderer.sharedMaterial.GetFloat(borderWidthID);
+            initialBorderWidth = targetRenderer.sharedMaterial.GetFloat(BorderWidthID);
             initialScale = transform.lossyScale;
             prevScale = initialScale;
 
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 targetRenderer.GetPropertyBlock(properties);
-                properties.SetFloat(borderWidthID, initialBorderWidth / scalePercentage);
+                properties.SetFloat(BorderWidthID, initialBorderWidth / scalePercentage);
                 targetRenderer.SetPropertyBlock(properties);
             }
         }

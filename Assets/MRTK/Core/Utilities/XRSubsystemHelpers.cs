@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 #else
+#if UNITY_2019_2_OR_NEWER
+using UnityEngine.XR;
+#endif
 using UnityEngine.Experimental.XR;
 #endif
 

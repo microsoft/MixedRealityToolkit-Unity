@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
-using System.Text;
-using System.Collections.Generic;
 using UnityEngine.TextCore;
-using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// An asset for storing textures, sprites and character icons for use with MRTK buttons. Used by ButtonConfigHelper script.
     /// </summary>
-    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality Toolkit/IconSet")]
+    [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality/Toolkit/IconSet")]
     public class ButtonIconSet : ScriptableObject
     {
         // Struct used to pair a font icon with a searchable name.
@@ -205,9 +205,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Texture[] spriteIconTextures = null;
         private static Material fontRenderMat;
 
+        private const string missingPreviewImagesMessage = "Not all icon previews were loaded. Check the settings of the icons included in your iconset.";
         private const string noIconFontMessage = "No icon font selected. Icon fonts will be unavailable.";
         private const string downloadIconFontMessage = "For instructions on how to install the HoloLens icon font, click the button below.";
-        private const string hololensIconFontUrl = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html";
+        private const string hololensIconFontUrl = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/button";
         private const string mdl2IconFontName = "holomdl2";
         private const string textMeshProMenuItem = "Window/TextMeshPro/Font Asset Creator";
 
@@ -223,9 +224,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Draws a selectable grid of character icons.
         /// </summary>
         /// <returns>True if a new icon was selected.</returns>
-        public bool EditorDrawCharIconSelector(uint currentChar, out uint newChar, int indentLevel = 0)
+        public bool EditorDrawCharIconSelector(uint currentChar, out bool foundChar, out uint newChar, int indentLevel = 0)
         {
             newChar = 0;
+            foundChar = false;
+            int currentSelection = -1;
 
             if (charIconFont == null)
             {
@@ -233,7 +236,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            int currentSelection = -1;
             for (int i = 0; i < charIcons.Length; i++)
             {
                 if (charIcons[i].Character == currentChar)
@@ -243,10 +245,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
+            if (currentSelection >= 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField("Current Icon Name", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(charIcons[currentSelection].Name);
+
+                EditorGUILayout.EndHorizontal();
+            }
+
             using (new EditorGUI.IndentLevelScope(indentLevel))
             {
                 int column = 0;
-                int newSelection = -1;
+                int newSelection = currentSelection;
 
                 if (charIcons.Length > 0)
                 {
@@ -282,9 +294,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     EditorGUILayout.LabelField("(No icons in set)");
                 }
 
-                if (newSelection >= 0 && newSelection != currentSelection)
+                if (newSelection >= 0)
                 {
-                    newChar = charIcons[newSelection].Character;
+                    foundChar = true;
+                    if (newSelection != currentSelection)
+                    {
+                        newChar = charIcons[newSelection].Character;
+                    }
                 }
             }
 
@@ -295,11 +311,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Draws a selectable grid of sprite icons.
         /// </summary>
         /// <returns>True if a new icon was selected.</returns>
-        public bool EditorDrawSpriteIconSelector(Sprite currentSprite, out Sprite newSprite, int indentLevel = 0)
+        public bool EditorDrawSpriteIconSelector(Sprite currentSprite, out bool foundSprite, out Sprite newSprite, int indentLevel = 0)
         {
             newSprite = null;
-
             int currentSelection = -1;
+            foundSprite = false;
+
             for (int i = 0; i < spriteIcons.Length; i++)
             {
                 if (spriteIcons[i] == currentSprite)
@@ -309,32 +326,73 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
+            if (currentSelection >= 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField("Current Icon Name", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(spriteIcons[currentSelection].name);
+
+                EditorGUILayout.EndHorizontal();
+            }
+
             if (spriteIconTextures == null || spriteIconTextures.Length != spriteIcons.Length)
             {
-                spriteIconTextures = new Texture[spriteIcons.Length];
-                for (int i = 0; i < spriteIcons.Length; i++)
-                {
-                    spriteIconTextures[i] = GetTextureFromSprite(spriteIcons[i]);
-                }
+                UpdateSpriteIconTextures();
             }
 
             using (new EditorGUI.IndentLevelScope(indentLevel))
             {
                 float height = maxButtonSize * ((float)spriteIcons.Length / maxButtonsPerColumn);
                 var maxHeight = GUILayout.MaxHeight(height);
+
+                bool allPreviewsLoaded;
+                var gridContent = GenerateGridContent(spriteIconTextures, out allPreviewsLoaded);
+
+                if (!allPreviewsLoaded)
+                {
+                    EditorGUILayout.HelpBox(missingPreviewImagesMessage, MessageType.Warning);
+                }
 #if UNITY_2019_3_OR_NEWER
-                int newSelection = GUILayout.SelectionGrid(currentSelection, spriteIconTextures, maxButtonsPerColumn, maxHeight);
+                int newSelection = GUILayout.SelectionGrid(currentSelection, gridContent, maxButtonsPerColumn, maxHeight);
 #else
                 var maxWidth = GUILayout.MaxWidth(maxButtonSize * maxButtonsPerColumn);
                 int newSelection = GUILayout.SelectionGrid(currentSelection, spriteIconTextures, maxButtonsPerColumn, maxHeight, maxWidth);
 #endif
-                if (newSelection >= 0 && newSelection != currentSelection)
+                if (newSelection >= 0)
                 {
-                    newSprite = spriteIcons[newSelection];
+                    foundSprite = true;
+                    if (newSelection != currentSelection)
+                    {
+                        newSprite = spriteIcons[newSelection];
+                    }
                 }
             }
 
             return newSprite != null;
+        }
+
+        /// <summary>
+        /// Updates the cached sprite icon textures to the latest textures in spriteIcons
+        /// </summary>
+        public void UpdateSpriteIconTextures()
+        {
+            if (spriteIcons != null)
+            {
+                spriteIconTextures = new Texture[spriteIcons.Length];
+                for (int i = 0; i < spriteIcons.Length; i++)
+                {
+                    try
+                    {
+                        spriteIconTextures[i] = GetTextureFromSprite(spriteIcons[i]);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError("There was an issue processing the Sprite Icons of this IconSet. Ensure that your IconSet is configured properly");
+                        throw e;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -356,12 +414,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
+            if (currentSelection >= 0)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField("Current Icon Name", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(quadIcons[currentSelection].name);
+
+                EditorGUILayout.EndHorizontal();
+            }
+
             using (new EditorGUI.IndentLevelScope(indentLevel))
             {
                 float height = maxButtonSize * ((float)quadIcons.Length / maxButtonsPerColumn);
                 var maxHeight = GUILayout.MaxHeight(height);
+
+                bool allPreviewsLoaded;
+                var gridContent = GenerateGridContent(quadIcons, out allPreviewsLoaded);
+
+                if (!allPreviewsLoaded)
+                {
+                    EditorGUILayout.HelpBox(missingPreviewImagesMessage, MessageType.Warning);
+                }
 #if UNITY_2019_3_OR_NEWER
-                int newSelection = GUILayout.SelectionGrid(currentSelection, quadIcons, maxButtonsPerColumn, maxHeight);
+                int newSelection = GUILayout.SelectionGrid(currentSelection, gridContent, maxButtonsPerColumn, maxHeight);
 #else
                 var maxWidth = GUILayout.MaxWidth(maxButtonSize * maxButtonsPerColumn);
                 int newSelection = GUILayout.SelectionGrid(currentSelection, quadIcons, maxButtonsPerColumn, maxHeight, maxWidth);
@@ -484,6 +560,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return true;
         }
 
+        public GUIContent[] GenerateGridContent(Texture[] previewTextures, out bool allPreviewsLoaded)
+        {
+            GUIContent[] gridContent = new GUIContent[previewTextures.Length];
+            allPreviewsLoaded = true;
+
+            for (int i = 0; i < previewTextures.Length; i++)
+            {
+                if (previewTextures[i] != null)
+                {
+                    gridContent[i] = new GUIContent(previewTextures[i]);
+                }
+                else
+                {
+                    gridContent[i] = new GUIContent("N/A");
+                    allPreviewsLoaded = false;
+                }
+            }
+
+            return gridContent;
+        }
+
         [CustomEditor(typeof(ButtonIconSet))]
         private class ButtonIconSetInspector : UnityEditor.Editor
         {
@@ -518,6 +615,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 #if UNITY_2019_3_OR_NEWER
                 showQuadIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showQuadIconFoldout, "Quad Icons");
+                EditorGUILayout.EndFoldoutHeaderGroup();
 #else
                 showQuadIconFoldout = EditorGUILayout.Foldout(showQuadIconFoldout, "Quad Icons");
 #endif
@@ -529,12 +627,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         EditorGUILayout.PropertyField(quadIconsProp, true);
                     }
                 }
-#if UNITY_2019_3_OR_NEWER
-                EditorGUILayout.EndFoldoutHeaderGroup();
-#endif
 
 #if UNITY_2019_3_OR_NEWER
                 showSpriteIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showSpriteIconFoldout, "Sprite Icons");
+                EditorGUILayout.EndFoldoutHeaderGroup();
 #else
                 showSpriteIconFoldout = EditorGUILayout.Foldout(showSpriteIconFoldout, "Sprite Icons");
 #endif
@@ -543,22 +639,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     using (new EditorGUI.IndentLevelScope(1))
                     {
                         spriteIconsProp.isExpanded = true;
+
+                        // Check if the sprite Icons were updated
+                        EditorGUI.BeginChangeCheck();
                         EditorGUILayout.PropertyField(spriteIconsProp, true);
+                        // End the code block and update the label if a change occurred
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            serializedObject.ApplyModifiedProperties();
+                            bis.UpdateSpriteIconTextures();
+                        }
                     }
                 }
-#if UNITY_2019_3_OR_NEWER
-                EditorGUILayout.EndFoldoutHeaderGroup();
-#endif
 
 #if UNITY_2019_3_OR_NEWER
                 showCharIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showCharIconFoldout, "Font Icons");
+                EditorGUILayout.EndFoldoutHeaderGroup();
 #else
                 showCharIconFoldout = EditorGUILayout.Foldout(showCharIconFoldout, "Font Icons");
-#endif
-
-
-#if UNITY_2019_3_OR_NEWER
-                EditorGUILayout.EndFoldoutHeaderGroup();
 #endif
 
                 if (showCharIconFoldout)
@@ -754,6 +852,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         Texture2D GetTextureFromSprite(Sprite sprite)
         {
+            if (sprite == null || sprite.texture == null)
+            {
+                return null;
+            }
+
             var rect = sprite.rect;
             var tex = new Texture2D((int)rect.width, (int)rect.height);
             var data = sprite.texture.GetPixels((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
