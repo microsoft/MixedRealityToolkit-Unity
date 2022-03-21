@@ -23,11 +23,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float PointingExtent => pointingExtent;
 
         [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
+        [Tooltip("The default LayerMasks, in prioritized order, that are used to determine pointer's target. These layer masks are used if " +
+            "the pointer doesn't specify its own override")]
         private LayerMask[] pointingRaycastLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
 
         /// <summary>
-        /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
+        /// The default layerMasks, in prioritized order, that are used to determine the target when raycasting.
         /// </summary>
         public LayerMask[] PointingRaycastLayerMasks => pointingRaycastLayerMasks;
 
