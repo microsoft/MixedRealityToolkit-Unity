@@ -326,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             Type interfaceType = typeof(T);
 
-            if (HasProfileAndIsInitialized)
+            if (IsInitialized)
             {
                 DebugUtilities.LogVerboseFormat("Unregistered service of type {0} was an initialized service, disabling and destroying it", typeof(T));
                 if (Application.IsPlaying(activeProfile))
