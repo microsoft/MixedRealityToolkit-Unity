@@ -413,6 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             TeleportPointer teleportPointer = rightHand.GetPointer<TeleportPointer>();
+            teleportPointer.PrioritizedLayerMasksOverride = new LayerMask[1] { UnityEngine.Physics.AllLayers };
 
             floor.layer = LayerMask.NameToLayer("Default");
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
