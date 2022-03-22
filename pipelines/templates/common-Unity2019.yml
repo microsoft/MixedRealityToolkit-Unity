@@ -5,13 +5,27 @@ parameters:
 
 steps:
 # Build UWP ARM64.
-- template: tasks/unitybuild.yml
+- template: tasks/build-unity.yml
   parameters:
-    Arch: 'arm64'
-    Platform: 'UWP'
-    PackagingDir: 'ARM64'
     UnityVersion: ${{ parameters.UnityVersion }}
-    PublishArtifacts: true
+    BuildTarget: WSAPlayer
+    CommandLineBuildMethod: Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild
+    PathToProject: $(Build.Repository.LocalPath)
+    OutputPath: $(Agent.TempDirectory)/build/uwp
+    AdditionalArguments: -sceneList "Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity"
+
+- template: tasks/build-appx.yml
+  parameters:
+    ProjectName: ${{ parameters.ProjectName }}
+    Architectures: [ARM64]
+    BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+    OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm64
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish UWP ARM64
+  inputs:
+    ArtifactName: mrtk-build-arm64
+    PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm64
 
 - template: tests.yml
   parameters:

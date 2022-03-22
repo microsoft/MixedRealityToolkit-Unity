@@ -1,59 +1,30 @@
 # [Template] Build appx from a Unity-built sln.
 
 parameters:
-- name: PathToSolution
+- name: ProjectName
   type: string
-  default: $(Build.SourcesDirectory)/TestProjects/Main
-- name: Arch
+
+- name: Architectures
+  type: object
+  default: []
+
+- name: BuildFolderPath
   type: string
-  values:
-    - x86
-    - x64
-    - arm
-    - arm64
+
+- name: OutputPath
+  type: string
 
 steps:
-- task: MSBuild@1
-  displayName: Build UWP ${{ parameters.Arch }} AppX
-  inputs:
-    solution: ${{ parameters.PathToSolution }}
-    platform: ${{ parameters.Arch }}
-    configuration: Master
+- ${{ each arch in parameters.Architectures }}:
+  - task: MSBuild@1
+    displayName: Build ${{ arch }} AppX
+    inputs:
+      solution: ${{ parameters.BuildFolderPath }}/${{ parameters.ProjectName }}.sln
+      platform: ${{ arch }}
+      configuration: Master
 
-
-- powershell: |
-    $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
-    if (Test-Path $nugetRestoreLogFileName)
-    {
-        Write-Output '====================================================='
-        Write-Output '           Begin NuGet Restore Log                   '
-        Write-Output '====================================================='
-
-        Get-Content $nugetRestoreLogFileName
-
-        Write-Output '====================================================='
-        Write-Output '           End NuGet Restore Log                     '
-        Write-Output '====================================================='
-    }
-    else
-    {
-        Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
-    }
-
-    $appxBuildLogFileName = "$logDirectory\buildAppx.log"
-    if (Test-Path $appxBuildLogFileName)
-    {
-        Write-Output '====================================================='
-        Write-Output '           Begin AppX Build Log                      '
-        Write-Output '====================================================='
-
-        Get-Content $appxBuildLogFileName
-
-        Write-Output '====================================================='
-        Write-Output '           End AppX Build Log                        '
-        Write-Output '====================================================='
-    }
-    else
-    {
-        Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
-    }
+  - task: CopyFiles@2
+    displayName: Copy ${{ arch }} AppX to ${{ parameters.OutputPath }}
+    inputs:
+      sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(MRTKVersion).0_${{ arch }}_Master_Test
+      targetFolder: ${{ parameters.OutputPath }}

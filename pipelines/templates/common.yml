@@ -13,11 +13,14 @@ steps:
 # to get run, Unity will hang showing a dialog (even when in batch mode).
 # This is the fastest build, since it doesn't produce an AppX.
 - ${{ if eq(parameters.buildStandalone, true) }}:
-  - template: tasks/unitybuild.yml
+  - template: tasks/build-unity.yml
     parameters:
-      Arch: 'x64'
-      Platform: 'Standalone'
       UnityVersion: ${{ parameters.UnityVersion }}
+      BuildTarget: StandaloneWindows64
+      CommandLineBuildMethod: Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild
+      PathToProject: $(Build.Repository.LocalPath)
+      OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-exe-x64/MixedRealityToolkit.exe
+      AdditionalArguments: -sceneList Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
 
 # Tests should run earlier in the process, so that engineers can get test failure
 # notifications earlier in the CI process.
@@ -26,22 +29,51 @@ steps:
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
 
-# Build UWP x86
-- ${{ if eq(parameters.buildUWPX86, true) }}:
-  - template: tasks/unitybuild.yml
+# Build UWP.
+- ${{ if or(eq(parameters.buildUWPx86, true), eq(parameters.buildUWPArm, true)) }}:
+  - template: tasks/build-unity.yml
     parameters:
-      Arch: 'x86'
-      Platform: 'UWP'
-      PublishArtifacts: true
       UnityVersion: ${{ parameters.UnityVersion }}
+      BuildTarget: WSAPlayer
+      CommandLineBuildMethod: Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild
+      PathToProject: $(Build.Repository.LocalPath)
+      OutputPath: $(Agent.TempDirectory)/build/uwp
+      AdditionalArguments: -sceneList Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
 
-# Build UWP ARM
-- ${{ if eq(parameters.buildUWPArm, true) }}:
-  - template: tasks/unitybuild.yml
-    parameters:
-      Arch: 'arm'
-      Platform: 'UWP'
-      PublishArtifacts: true
-      PackagingDir: 'ARM'
-      UnityVersion: ${{ parameters.UnityVersion }}
+  - task: PowerShell@2
+    displayName: Validate build logs
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/ci/validatebuildlog.ps1
+      arguments: >
+        -LogFile $(Join-Path $(Agent.TempDirectory) "build_WSAPlayer.log")
 
+  # Build UWP x86.
+  - ${{ if eq(parameters.buildUWPx86, true) }}:
+    - template: tasks/build-appx.yml
+      parameters:
+        ProjectName: MixedRealityToolkit
+        Architectures: [x86]
+        BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+        OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-x86
+
+    - task: PublishBuildArtifacts@1
+      displayName: Publish UWP x86
+      inputs:
+        ArtifactName: mrtk-build-x86
+        PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-x86
+
+  # Build UWP ARM.
+  - ${{ if eq(parameters.buildUWPArm, true) }}:
+    - template: tasks/build-appx.yml
+      parameters:
+        ProjectName: MixedRealityToolkit
+        Architectures: [ARM]
+        BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+        OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm
+
+    - task: PublishBuildArtifacts@1
+      displayName: Publish UWP ARM
+      inputs:
+        ArtifactName: mrtk-build-arm
+        PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm

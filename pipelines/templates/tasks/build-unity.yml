@@ -1,73 +1,35 @@
-# [Template] Compile MRTK inside Unity.
+# [Template] Build project inside Unity.
 
 parameters:
-- name: Architectures
-  type: object
-  default:
-    - x86
-    - ARM
-- name: Platform
-  type: string
-  values:
-    - UWP
-    - Standalone
-- name: PublishArtifacts
-  type: boolean
-  default: false
 - name: UnityVersion
   type: string
 
+- name: BuildTarget
+  type: string
+  values:
+    - StandaloneWindows64
+    - WSAPlayer
+    - Android
+
+- name: CommandLineBuildMethod
+  type: string
+
+- name: PathToProject
+  type: string
+
+- name: OutputPath
+  type: string
+
+- name: AdditionalArguments
+  type: string
+  default: ''
+
 steps:
-- powershell: Install-Module UnitySetup -Scope CurrentUser -Force
-  displayName: Install unitysetup.powershell
-
-- ${{ if eq(parameters.Platform, 'UWP') }}:
-  - powershell: |
-      $logFile = "build_uwp.log"
-      Start-UnityEditor -Project ${{ parameters.PathToProject }} -Version ${{ parameters.UnityVersion }} -ExecuteMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -BatchMode -Quit -Wait -LogFile $logFile -BuildTarget WSAPlayer -OutputPath build/uwp -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
-      if (Test-Path $logFile)
-      {
-        Get-Content $logFile
-      }
-    displayName: Build UWP
-
-  - task: PowerShell@2
-    displayName: Validate build logs
-    inputs:
-      targetType: filePath
-      filePath: ./scripts/ci/validatebuildlog.ps1
-      arguments: >
-        -LogFile: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\build\build.log'
-
-  - ${{ each arch in parameters.Architectures }}:
-    - task: MSBuild@1
-      displayName: Build UWP ${{ arch }} AppX
-      inputs:
-        solution: ${{ parameters.PathToProject }}/build/uwp/${{ parameters.ProjectName }}.sln
-        platform: ${{ arch }}
-        configuration: Master
-
-    - task: CopyFiles@2
-      displayName: Copy UWP ${{ arch }} AppX to artifacts staging directory
-      inputs:
-        sourceFolder: ${{ parameters.PathToProject }}/build/uwp/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(buildNumber).0_${{ arch }}_Master_Test
-        targetFolder: $(Build.ArtifactStagingDirectory)/Apps/uwp-${{ arch }}
-
-- ${{ if eq(parameters.Platform, 'Standalone') }}:
-  - ${{ each arch in parameters.Architectures }}:
-    - powershell: |
-        $logFile = "build_standalone_${{ arch }}.log"
-        Start-UnityEditor -Project ${{ parameters.PathToProject }} -Version ${{ parameters.UnityVersion }} -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -Wait -LogFile $logFile -BuildTarget StandaloneWindows64 -OutputPath build/standalone_${{ arch }}/${{ parameters.ProjectName }}.exe -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
-        if (Test-Path $logFile)
-        {
-          Get-Content $logFile
-        }
-      displayName: Build StandaloneWindows64
-
-    - task: PowerShell@2
-      displayName: Validate build logs
-      inputs:
-        targetType: filePath
-        filePath: ./scripts/ci/validatebuildlog.ps1
-        arguments: >
-          -LogFile: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\build\build.log'
+- powershell: |
+    $logFile = Join-Path $(Agent.TempDirectory) "build_${{ parameters.BuildTarget }}.log"
+    Start-UnityEditor -Project ${{ parameters.PathToProject }} -Version ${{ parameters.UnityVersion }} -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -Wait -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath ${{ parameters.OutputPath }} -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01} ${{ parameters.AdditionalArguments }}"
+    if (Test-Path $logFile)
+    {
+      Get-Content $logFile
+    }
+  displayName: Build ${{ parameters.BuildTarget }}
