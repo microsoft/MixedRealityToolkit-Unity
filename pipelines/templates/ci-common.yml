@@ -9,7 +9,6 @@ parameters:
 steps:
 - template: common.yml
   parameters:
-    buildUWPDotNet: false
     UnityVersion: ${{ parameters.UnityVersion }}
 - template: tasks/versionmetadata.yml
 - ${{ if eq(parameters.packagingEnabled, true) }}:

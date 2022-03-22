@@ -25,7 +25,6 @@ jobs:
       # WMR APIs, buildUWPArm would be a good candidate to re-enable)
       buildUWPX86: false
       buildUWPArm: false
-      buildUWPDotNet: false
       UnityVersion: $(Unity2018Version)
   
 - job: Unity2019Validation
@@ -42,6 +41,5 @@ jobs:
     parameters:
       buildUWPX86: false
       buildUWPArm: false
-      buildUWPDotNet: false
       UnityVersion: $(Unity2019Version)
   - template: templates/end.yml

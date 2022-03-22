@@ -26,7 +26,6 @@ jobs:
       # WMR APIs, buildUWPArm would be a good candidate to re-enable)
       buildUWPX86: false
       buildUWPArm: false
-      buildUWPDotNet: false
       UnityVersion: $(Unity2020Version)
 
   - template: templates/end.yml

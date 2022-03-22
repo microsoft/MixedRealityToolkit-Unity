@@ -4,7 +4,6 @@ parameters:
   UnityVersion: ""
   buildStandalone: true
   buildUWPArm: true
-  buildUWPDotNet: true
   buildUWPX86: true
   runTests: true
 
@@ -46,12 +45,3 @@ steps:
       PackagingDir: 'ARM'
       UnityVersion: ${{ parameters.UnityVersion }}
 
-# Build UWP x86 .NET backend
-- ${{ if eq(parameters.buildUWPDotNet, true) }}:
-  - template: tasks/unitybuild.yml
-    parameters:
-      Arch: 'x86'
-      Platform: 'UWP'
-      PublishArtifacts: true
-      ScriptingBackend: '.NET'
-      UnityVersion: ${{ parameters.UnityVersion }}
