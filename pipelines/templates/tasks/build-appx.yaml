@@ -11,9 +11,6 @@ parameters:
 - name: BuildFolderPath
   type: string
 
-- name: OutputPath
-  type: string
-
 steps:
 - ${{ each arch in parameters.Architectures }}:
   - task: MSBuild@1
@@ -24,7 +21,7 @@ steps:
       configuration: Master
 
   - task: CopyFiles@2
-    displayName: Copy ${{ arch }} AppX to ${{ parameters.OutputPath }}
+    displayName: Copy ${{ arch }} AppX to artifacts staging directory
     inputs:
       sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(MRTKVersion).0_${{ arch }}_Master_Test
-      targetFolder: ${{ parameters.OutputPath }}
+      targetFolder: $(Build.ArtifactStagingDirectory)/Apps/uwp-${{ arch }}

@@ -48,13 +48,12 @@ steps:
         ProjectName: MixedRealityToolkit
         Architectures: [x86]
         BuildFolderPath: $(Agent.TempDirectory)/build/uwp
-        OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-x86
 
     - task: PublishBuildArtifacts@1
       displayName: Publish x86 AppX
       inputs:
         ArtifactName: mrtk-build-x86
-        PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-x86
+        PathToPublish: $(Build.ArtifactStagingDirectory)/Apps/uwp-x86
 
   # Build UWP ARM.
   - ${{ if eq(parameters.buildUWPArm, true) }}:
@@ -63,13 +62,12 @@ steps:
         ProjectName: MixedRealityToolkit
         Architectures: [ARM]
         BuildFolderPath: $(Agent.TempDirectory)/build/uwp
-        OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm
 
     - task: PublishBuildArtifacts@1
       displayName: Publish ARM AppX
       inputs:
         ArtifactName: mrtk-build-arm
-        PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm
+        PathToPublish: $(Build.ArtifactStagingDirectory)/Apps/uwp-arm
 
   # Build UWP ARM64.
   - ${{ if eq(parameters.buildUWPArm64, true) }}:
@@ -78,10 +76,9 @@ steps:
         ProjectName: MixedRealityToolkit
         Architectures: [ARM64]
         BuildFolderPath: $(Agent.TempDirectory)/build/uwp
-        OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm64
 
     - task: PublishBuildArtifacts@1
       displayName: Publish ARM64 AppX
       inputs:
         ArtifactName: mrtk-build-arm64
-        PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm64
+        PathToPublish: $(Build.ArtifactStagingDirectory)/Apps/uwp-arm64
