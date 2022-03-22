@@ -16,10 +16,10 @@ jobs:
     - SDK_18362 -equals TRUE
     - VS2019 -equals TRUE
   steps:
-  - template: templates/common-Unity2019.yml
+  - template: templates/common.yml
     parameters:
-      packagingEnabled: false
       UnityVersion: $(Unity2019Version)
+      buildUWPArm64: true
 
 - job: Unity2018Validation
   timeoutInMinutes: 120

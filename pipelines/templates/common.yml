@@ -2,9 +2,10 @@
 
 parameters:
   UnityVersion: ""
-  buildStandalone: true
-  buildUWPArm: true
-  buildUWPx86: true
+  buildStandalone: false
+  buildUWPx86: false
+  buildUWPArm: false
+  buildUWPArm64: false
   runTests: true
 
 steps:
@@ -30,7 +31,7 @@ steps:
       UnityVersion: ${{ parameters.UnityVersion }}
 
 # Build UWP.
-- ${{ if or(eq(parameters.buildUWPx86, true), eq(parameters.buildUWPArm, true)) }}:
+- ${{ if or(eq(parameters.buildUWPx86, true), eq(parameters.buildUWPArm, true), eq(parameters.buildUWPArm64, true)) }}:
   - template: tasks/build-unity.yml
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
@@ -77,3 +78,18 @@ steps:
       inputs:
         ArtifactName: mrtk-build-arm
         PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm
+
+  # Build UWP ARM64.
+  - ${{ if eq(parameters.buildUWPArm64, true) }}:
+    - template: tasks/build-appx.yml
+      parameters:
+        ProjectName: MixedRealityToolkit
+        Architectures: [ARM64]
+        BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+        OutputPath: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm64
+
+    - task: PublishBuildArtifacts@1
+      displayName: Publish UWP ARM64
+      inputs:
+        ArtifactName: mrtk-build-arm64
+        PathToPublish: $(Build.ArtifactStagingDirectory)/mrtk-build-uwp-arm64

@@ -24,8 +24,7 @@ jobs:
       # the specific flavors below that are experiencing failures in CI (for example,
       # if we're actively working on features that have a lot of churn on underlying
       # WMR APIs, buildUWPArm would be a good candidate to re-enable)
-      buildUWPx86: false
-      buildUWPArm: false
+      buildStandalone: true
       UnityVersion: $(Unity2020Version)
 
   - template: templates/end.yml

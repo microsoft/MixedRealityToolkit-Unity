@@ -10,6 +10,9 @@ steps:
 - template: common.yml
   parameters:
     UnityVersion: ${{ parameters.UnityVersion }}
+    buildStandalone: true
+    buildUWPx86: true
+    buildUWPArm: true
 - template: tasks/versionmetadata.yml
 - ${{ if eq(parameters.packagingEnabled, true) }}:
   - ${{ if eq(parameters.packageNuGet, true) }}:
