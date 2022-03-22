@@ -23,7 +23,7 @@ jobs:
       # the specific flavors below that are experiencing failures in CI (for example,
       # if we're actively working on features that have a lot of churn on underlying
       # WMR APIs, buildUWPArm would be a good candidate to re-enable)
-      buildUWPX86: false
+      buildUWPx86: false
       buildUWPArm: false
       UnityVersion: $(Unity2018Version)
   
@@ -39,7 +39,7 @@ jobs:
   steps:
   - template: templates/common.yml
     parameters:
-      buildUWPX86: false
+      buildUWPx86: false
       buildUWPArm: false
       UnityVersion: $(Unity2019Version)
   - template: templates/end.yml

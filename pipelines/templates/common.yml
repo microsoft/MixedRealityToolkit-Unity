@@ -4,7 +4,7 @@ parameters:
   UnityVersion: ""
   buildStandalone: true
   buildUWPArm: true
-  buildUWPX86: true
+  buildUWPx86: true
   runTests: true
 
 steps:
