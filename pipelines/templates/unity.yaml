@@ -1,0 +1,33 @@
+# [Template] Build project inside Unity.
+
+parameters:
+- name: UnityVersion
+  type: string
+
+- name: BuildTarget
+  type: string
+  values:
+    - StandaloneWindows64
+    - WSAPlayer
+    - Android
+
+- name: OutputPath
+  type: string
+
+steps:
+- template: tasks/build-unity.yaml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+    BuildTarget: ${{ parameters.BuildTarget }}
+    CommandLineBuildMethod: Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild
+    PathToProject: $(Build.Repository.LocalPath)
+    OutputPath: ${{ parameters.OutputPath }}
+    AdditionalArguments: -sceneList Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
+
+- task: PowerShell@2
+  displayName: Validate build logs
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/ci/validatebuildlog.ps1
+    arguments: >
+      -LogFile $(Join-Path $(Agent.TempDirectory) "build_${{ parameters.BuildTarget }}.log")
