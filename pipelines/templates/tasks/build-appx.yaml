@@ -23,5 +23,8 @@ steps:
   - task: CopyFiles@2
     displayName: Copy ${{ arch }} AppX to artifacts staging directory
     inputs:
-      sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(MRTKVersion).0_${{ arch }}_Master_Test
+      ${{ if eq(arch, 'x86') }}:
+        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(MRTKVersion).0_Win32_Master_Test
+      ${{ if not(eq(arch, 'x86')) }}:
+        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(MRTKVersion).0_${{ arch }}_Master_Test
       targetFolder: $(Build.ArtifactStagingDirectory)/Apps/uwp-${{ arch }}
