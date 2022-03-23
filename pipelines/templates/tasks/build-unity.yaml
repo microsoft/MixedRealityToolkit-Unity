@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 # [Template] Build project inside Unity.
 
 parameters:
@@ -25,7 +28,14 @@ parameters:
   default: ''
 
 steps:
-- powershell: |
+- pwsh: |
+    # Module management requires TLS 1.2.
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    # UnitySetup 5.5.146-develop specifically added support for Unity 2021.
+    if (-not (Get-InstalledModule -Name UnitySetup -MinimumVersion "5.5.146-develop" -AllowPrerelease)) {
+        Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
+    }
+
     $logFile = Join-Path $(Agent.TempDirectory) "build_${{ parameters.BuildTarget }}.log"
     $proc = Start-UnityEditor -Project ${{ parameters.PathToProject }} -Version ${{ parameters.UnityVersion }} -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -PassThru -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath ${{ parameters.OutputPath }} -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01} ${{ parameters.AdditionalArguments }}"
     $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile
