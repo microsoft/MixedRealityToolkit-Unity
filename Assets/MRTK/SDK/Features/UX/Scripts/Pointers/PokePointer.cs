@@ -111,8 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Vector3 closestNormal = Vector3.forward;
 
-        private Vector3 endPoint;
-
         // previous frame pointer position
         public Vector3 PreviousPosition { get; private set; } = Vector3.zero;
 
