@@ -29,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty gazeProviderType;
         private SerializedProperty useHeadGazeOverride;
         private SerializedProperty isEyeTrackingEnabled;
-        private SerializedProperty showCursorWithEyeGaze;
         private SerializedProperty pointerMediator;
+        private SerializedProperty primaryPointerSelector;
 
         protected override void OnEnable()
         {
@@ -45,8 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
             useHeadGazeOverride = serializedObject.FindProperty("useHeadGazeOverride");
             isEyeTrackingEnabled = serializedObject.FindProperty("isEyeTrackingEnabled");
-            showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
-            pointerMediator = serializedObject.FindProperty("pointerMediator");            
+            pointerMediator = serializedObject.FindProperty("pointerMediator");
+            primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
         }
 
         public override void OnInspectorGUI()
@@ -82,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(pointingExtent);
                     EditorGUILayout.PropertyField(pointingRaycastLayerMasks, new GUIContent("Default Raycast LayerMasks"), true);
                     EditorGUILayout.PropertyField(pointerMediator);
+                    EditorGUILayout.PropertyField(primaryPointerSelector);
 
                     EditorGUILayout.Space();
                     showPointerOptionProperties = EditorGUILayout.Foldout(showPointerOptionProperties, "Pointer Options", true);
