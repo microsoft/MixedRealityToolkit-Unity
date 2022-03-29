@@ -128,9 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         protected LayerMask ValidTeleportationLayers = UnityPhysics.DefaultRaycastLayers;
 
         [SerializeField]
-        [Tooltip("Layers that are considered 'invalid' for navigation")]
-        [FormerlySerializedAs("InvalidLayers")]
-        protected LayerMask InvalidTeleportationLayers = UnityPhysics.IgnoreRaycastLayer;
+        protected LayerMask InvalidTeleportationLayers => UnityPhysics.AllLayers ^ ValidTeleportationLayers;
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
