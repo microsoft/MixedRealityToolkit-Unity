@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent ControllerTypeContent = new GUIContent("Controller Type", "The type of Controller this pointer will attach itself to at runtime.");
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Pointer Option");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Pointer Option", "Add Pointer Option");
+        private static readonly GUIContent GazeCursorPrefabContent = new GUIContent("Gaze Cursor Prefab");
+        private static readonly GUIContent RaycastLayerMaskContent = new GUIContent("Default Raycast LayerMasks");
 
         private const string ProfileTitle = "Pointer Settings";
         private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
@@ -64,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.LabelField("Gaze Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(gazeCursorPrefab, new GUIContent("Gaze Cursor Prefab"));
+                    EditorGUILayout.PropertyField(gazeCursorPrefab, GazeCursorPrefabContent);
                     EditorGUILayout.PropertyField(gazeProviderType);
                     EditorGUILayout.PropertyField(useHeadGazeOverride);
                     EditorGUILayout.PropertyField(isEyeTrackingEnabled);
@@ -80,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.LabelField("Pointer Settings", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(pointingExtent);
-                    EditorGUILayout.PropertyField(pointingRaycastLayerMasks, new GUIContent("Default Raycast LayerMasks"), true);
+                    EditorGUILayout.PropertyField(pointingRaycastLayerMasks, RaycastLayerMaskContent, true);
                     EditorGUILayout.PropertyField(pointerMediator);
                     EditorGUILayout.PropertyField(primaryPointerSelector);
 
