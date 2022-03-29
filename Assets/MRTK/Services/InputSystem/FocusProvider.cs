@@ -1262,7 +1262,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // This function is only callable when the pointer implements IMixedRealityQueryablePointer
         private static void QuerySceneWithPointer(IMixedRealityQueryablePointer queryPointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
         {
-            float rayStartDistance = 0;
             MixedRealityRaycastHit hitInfo;
 
             switch (queryPointer.SceneQueryType)
@@ -1273,7 +1272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     int rayStepIndex = 0;
                     if (queryPointer.OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo, out hitRayStep, out rayStepIndex))
                     {
-                        hit.Set(hitInfo, hitRayStep, rayStepIndex, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
+                        hit.Set(hitInfo, hitRayStep, rayStepIndex, hitInfo.distance, focusIndividualCompoundCollider);
                         return;
                     }
                     break;
