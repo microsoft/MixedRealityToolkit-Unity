@@ -129,8 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         [FormerlySerializedAs("ValidLayers")]
         protected LayerMask ValidTeleportationLayers = UnityPhysics.DefaultRaycastLayers;
 
-        [SerializeField]
-        protected LayerMask InvalidTeleportationLayers => UnityPhysics.AllLayers ^ ValidTeleportationLayers;
+        protected LayerMask InvalidTeleportationLayers => ~ValidTeleportationLayers;
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
@@ -411,13 +410,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                     : TeleportSurfaceResult.Invalid;
                             }
                         }
-                        else if (((1 << Result.CurrentPointerTarget.layer) & InvalidTeleportationLayers) != 0)
-                        {
-                            TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
-                        }
                         else
                         {
-                            TeleportSurfaceResult = TeleportSurfaceResult.None;
+                            TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
                         }
 
                         clearWorldLength = Result.Details.RayDistance;

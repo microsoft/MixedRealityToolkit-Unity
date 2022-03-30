@@ -413,19 +413,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             TeleportPointer teleportPointer = rightHand.GetPointer<TeleportPointer>();
-            teleportPointer.PrioritizedLayerMasksOverride = new LayerMask[1] { UnityEngine.Physics.AllLayers };
+            teleportPointer.PrioritizedLayerMasksOverride = new LayerMask[1] { UnityEngine.Physics.AllLayers ^ (1 << LayerMask.NameToLayer("UI")) };
 
             floor.layer = LayerMask.NameToLayer("Default");
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.AreEqual(teleportPointer.TeleportSurfaceResult, Physics.TeleportSurfaceResult.Valid);
+            Assert.AreEqual(Physics.TeleportSurfaceResult.Valid, teleportPointer.TeleportSurfaceResult);
 
             floor.layer = LayerMask.NameToLayer("Ignore Raycast");
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.Invalid);
+            Assert.AreEqual(Physics.TeleportSurfaceResult.Invalid, teleportPointer.TeleportSurfaceResult);
 
             floor.layer = LayerMask.NameToLayer("UI");
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.None);
+            Assert.AreEqual(Physics.TeleportSurfaceResult.None, teleportPointer.TeleportSurfaceResult);
 
         }
 
