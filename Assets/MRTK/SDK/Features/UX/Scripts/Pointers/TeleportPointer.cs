@@ -112,18 +112,20 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         protected Gradient LineColorHotSpot = new Gradient();
 
         [SerializeField]
+        [FormerlySerializedAs("teleportLayerMasks")]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the the objects the teleport pointer is allowed to hit")]
-        private LayerMask[] teleportLayerMasks = { UnityPhysics.DefaultRaycastLayers };
+        private LayerMask[] teleportRaycastLayerMasks = { UnityPhysics.DefaultRaycastLayers };
 
         /// <inheritdoc />
         public override LayerMask[] PrioritizedLayerMasksOverride
         {
-            get { return teleportLayerMasks; }
-            set { teleportLayerMasks = value; }
+            get { return teleportRaycastLayerMasks; }
+            set { teleportRaycastLayerMasks = value; }
         }
 
         [SerializeField]
-        [Tooltip("Layers that are considered 'valid' for navigation")]
+        [Tooltip("Layers that are considered 'valid' for navigation. Layers which are not here are considered 'invalid' for navigation. This is separate from " +
+            "layers which the teleport pointer is allowed to hit")]
         [FormerlySerializedAs("ValidLayers")]
         protected LayerMask ValidTeleportationLayers = UnityPhysics.DefaultRaycastLayers;
 
