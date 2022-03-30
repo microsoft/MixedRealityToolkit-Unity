@@ -61,6 +61,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The LayerMasks, in prioritized order, which are used to determine the target
         /// </summary>
         public LayerMask[] PrioritizedLayerMasks => prioritizedLayerMasks;
-
     }
 }
