@@ -111,17 +111,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         // Returns the hit values cached by the queryBuffer during the prescene query step
-        public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        public bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo, out RayStep Ray, out int rayStepIndex)
         {
             PrioritizedLayerMasksOverride = prioritizedLayerMasks;
             if (coneCastHit.collider != null)
             {
                 hitInfo = new MixedRealityRaycastHit(true, coneCastHit);
+                Ray = Rays[0];
+                rayStepIndex = 0;
                 return true;
             }
             else
             {
                 hitInfo = new MixedRealityRaycastHit();
+                Ray = Rays[0];
+                rayStepIndex = 0;
                 return false;
             }
         }
