@@ -129,7 +129,18 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         [FormerlySerializedAs("ValidLayers")]
         protected LayerMask ValidTeleportationLayers = UnityPhysics.DefaultRaycastLayers;
 
-        protected LayerMask InvalidTeleportationLayers => ~ValidTeleportationLayers;
+        protected LayerMask InvalidTeleportationLayers
+        {
+            get 
+            {
+                LayerMask raycastedLayerMasks = new LayerMask();
+                for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
+                {
+                    raycastedLayerMasks |= PrioritizedLayerMasksOverride[i];
+                }
+                return ~ValidTeleportationLayers & raycastedLayerMasks;
+            }
+        }            
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
