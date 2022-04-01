@@ -16,12 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public PointerOption(SupportedControllerType controllerType, Handedness handedness, GameObject pointerPrefab, LayerMask[] prioritizedLayerMasks)
+        public PointerOption(SupportedControllerType controllerType, Handedness handedness, GameObject pointerPrefab, LayerMask[] prioritizedLayerMasks = null)
         {
             this.controllerType = controllerType;
             this.handedness = handedness;
             this.pointerPrefab = pointerPrefab;
-            this.prioritizedLayerMasks = prioritizedLayerMasks;
+            this.prioritizedLayerMasks = prioritizedLayerMasks ?? new LayerMask[1] { UnityEngine.Physics.DefaultRaycastLayers };
         }
 
         [EnumFlags]

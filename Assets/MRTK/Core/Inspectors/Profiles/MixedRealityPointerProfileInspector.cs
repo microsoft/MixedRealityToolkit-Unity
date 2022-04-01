@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     CreateCachedEditor((Object)gazeProvider, null, ref gazeProviderEditor);
 
                     showGazeProviderProperties = EditorGUILayout.Foldout(showGazeProviderProperties, "Gaze Provider Settings", true, boldFoldout);
-                    if (showGazeProviderProperties)
+                    if (showGazeProviderProperties && !gazeProviderEditor.IsNull())
                     {
                         gazeProviderEditor.OnInspectorGUI();
                     }
