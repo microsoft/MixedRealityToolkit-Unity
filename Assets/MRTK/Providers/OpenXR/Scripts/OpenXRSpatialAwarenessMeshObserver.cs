@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (ApplyUpdatedMeshDisplayOptionPerfMarker.Auto())
             {
-                SetMeshComputeSettings(option, LevelOfDetail);
+                SetMeshComputeSettings(LevelOfDetail);
                 base.ApplyUpdatedMeshDisplayOption(option);
             }
         }
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (LookupTriangleDensityPerfMarker.Auto())
             {
-                if (Application.isPlaying && SetMeshComputeSettings(DisplayOption, levelOfDetail))
+                if (Application.isPlaying && SetMeshComputeSettings(levelOfDetail))
                 {
                     return (int)levelOfDetail;
                 }
@@ -77,11 +77,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
         }
 
-        private bool SetMeshComputeSettings(SpatialAwarenessMeshDisplayOptions option, SpatialAwarenessMeshLevelOfDetail levelOfDetail)
+        private bool SetMeshComputeSettings(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
         {
             MeshComputeSettings settings = new MeshComputeSettings
             {
-                MeshType = (option == SpatialAwarenessMeshDisplayOptions.Visible) ? MeshType.Visual : MeshType.Collider,
                 VisualMeshLevelOfDetail = MapMRTKLevelOfDetailToOpenXR(levelOfDetail),
                 MeshComputeConsistency = MeshComputeConsistency.OcclusionOptimized,
             };
