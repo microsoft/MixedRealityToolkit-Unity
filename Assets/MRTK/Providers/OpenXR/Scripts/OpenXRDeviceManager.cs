@@ -125,11 +125,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             gestureRecognizer?.Stop();
+#if UNITY_OPENXR_1_4_0_OR_NEWER
+            gestureRecognizer?.Destroy();
+#else
             gestureRecognizer?.Dispose();
+#endif // UNITY_OPENXR_1_4_0_OR_NEWER
             gestureRecognizer = null;
 
             navigationGestureRecognizer?.Stop();
+#if UNITY_OPENXR_1_4_0_OR_NEWER
+            navigationGestureRecognizer?.Destroy();
+#else
             navigationGestureRecognizer?.Dispose();
+#endif // UNITY_OPENXR_1_4_0_OR_NEWER
             navigationGestureRecognizer = null;
 
             base.Disable();
