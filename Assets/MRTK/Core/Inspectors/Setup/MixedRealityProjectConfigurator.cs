@@ -132,7 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.MicrophoneCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.Microphone), BuildTarget.WSAPlayer) },
             { Configurations.InternetClientCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.InternetClient), BuildTarget.WSAPlayer) },
 #if UNITY_2019_3_OR_NEWER
-            { Configurations.EyeTrackingCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.GazeInput) || !(CoreServices.InputSystem?.InputSystemProfile.PointerProfile.IsEyeTrackingEnabled ?? false), BuildTarget.WSAPlayer) },
+            { Configurations.EyeTrackingCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.GazeInput)
+                                                                           || !(CoreServices.InputSystem != null
+                                                                                && CoreServices.InputSystem.InputSystemProfile != null
+                                                                                && CoreServices.InputSystem.InputSystemProfile.PointerProfile != null
+                                                                                && CoreServices.InputSystem.InputSystemProfile.PointerProfile.IsEyeTrackingEnabled), BuildTarget.WSAPlayer) },
 #endif // UNITY_2019_3_OR_NEWER
  
 #if UNITY_2019_3_OR_NEWER
