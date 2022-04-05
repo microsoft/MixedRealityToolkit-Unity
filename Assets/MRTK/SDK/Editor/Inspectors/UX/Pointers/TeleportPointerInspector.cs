@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
         private SerializedProperty lineColorHotSpot;
         private SerializedProperty teleportLayerMasks;
         private SerializedProperty validLayers;
-        private SerializedProperty invalidLayers;
         private SerializedProperty pointerAudioSource;
         private SerializedProperty teleportRequestedClip;
         private SerializedProperty teleportCompletedClip;
@@ -51,9 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             maxHeightChangeOnStrafe = serializedObject.FindProperty("maxHeightChangeOnStrafe");
             upDirectionThreshold = serializedObject.FindProperty("upDirectionThreshold");
             lineColorHotSpot = serializedObject.FindProperty("LineColorHotSpot");
-            teleportLayerMasks = serializedObject.FindProperty("teleportLayerMasks");
+            teleportLayerMasks = serializedObject.FindProperty("teleportRaycastLayerMasks");
             validLayers = serializedObject.FindProperty("ValidTeleportationLayers");
-            invalidLayers = serializedObject.FindProperty("InvalidTeleportationLayers");
             pointerAudioSource = serializedObject.FindProperty("pointerAudioSource");
             teleportRequestedClip = serializedObject.FindProperty("teleportRequestedClip");
             teleportCompletedClip = serializedObject.FindProperty("teleportCompletedClip");
@@ -88,7 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
                 EditorGUILayout.PropertyField(lineColorHotSpot);
                 EditorGUILayout.PropertyField(teleportLayerMasks);
                 EditorGUILayout.PropertyField(validLayers);
-                EditorGUILayout.PropertyField(invalidLayers);
                 EditorGUILayout.PropertyField(pointerAudioSource);
                 EditorGUILayout.PropertyField(teleportRequestedClip);
                 EditorGUILayout.PropertyField(teleportCompletedClip);

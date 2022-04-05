@@ -112,25 +112,35 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         protected Gradient LineColorHotSpot = new Gradient();
 
         [SerializeField]
+        [FormerlySerializedAs("teleportLayerMasks")]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the the objects the teleport pointer is allowed to hit")]
-        private LayerMask[] teleportLayerMasks = { UnityPhysics.DefaultRaycastLayers };
+        private LayerMask[] teleportRaycastLayerMasks = { UnityPhysics.DefaultRaycastLayers };
 
         /// <inheritdoc />
         public override LayerMask[] PrioritizedLayerMasksOverride
         {
-            get { return teleportLayerMasks; }
-            set { teleportLayerMasks = value; }
+            get { return teleportRaycastLayerMasks; }
+            set { teleportRaycastLayerMasks = value; }
         }
 
         [SerializeField]
-        [Tooltip("Layers that are considered 'valid' for navigation")]
+        [Tooltip("Layers that are considered 'valid' for navigation. Layers which are not here are considered 'invalid' for navigation. This is separate from " +
+            "layers which the teleport pointer is allowed to hit")]
         [FormerlySerializedAs("ValidLayers")]
         protected LayerMask ValidTeleportationLayers = UnityPhysics.DefaultRaycastLayers;
 
-        [SerializeField]
-        [Tooltip("Layers that are considered 'invalid' for navigation")]
-        [FormerlySerializedAs("InvalidLayers")]
-        protected LayerMask InvalidTeleportationLayers = UnityPhysics.IgnoreRaycastLayer;
+        protected LayerMask InvalidTeleportationLayers
+        {
+            get 
+            {
+                LayerMask raycastedLayerMasks = new LayerMask();
+                for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
+                {
+                    raycastedLayerMasks |= PrioritizedLayerMasksOverride[i];
+                }
+                return ~ValidTeleportationLayers & raycastedLayerMasks;
+            }
+        }            
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
@@ -411,13 +421,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                     : TeleportSurfaceResult.Invalid;
                             }
                         }
-                        else if (((1 << Result.CurrentPointerTarget.layer) & InvalidTeleportationLayers) != 0)
-                        {
-                            TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
-                        }
                         else
                         {
-                            TeleportSurfaceResult = TeleportSurfaceResult.None;
+                            TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
                         }
 
                         clearWorldLength = Result.Details.RayDistance;

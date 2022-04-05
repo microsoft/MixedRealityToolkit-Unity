@@ -309,6 +309,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (pointerProfile != null && pointerProfile.GazeProviderType?.Type != null)
             {
+                IMixedRealityGazeProvider existingGazeProvider = CameraCache.Main.gameObject.GetComponent<IMixedRealityGazeProvider>();
+                if (existingGazeProvider != null && existingGazeProvider.GetType() != pointerProfile.GazeProviderType.Type)
+                {
+                    UnityEngine.Object.DestroyImmediate((UnityEngine.Object)existingGazeProvider);
+                }
                 GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                 GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
                 DebugUtilities.LogVerboseFormat("Initialized a gaze provider of type {0}", pointerProfile.GazeProviderType.Type);
