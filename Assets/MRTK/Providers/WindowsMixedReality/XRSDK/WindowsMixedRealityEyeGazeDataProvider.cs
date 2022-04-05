@@ -84,7 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 EnableIfLoaderBecomesActive();
                 return;
             }
-            else if (!IsActiveLoader.Value)
+            
+            if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;
                 return;
@@ -96,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private async void EnableIfLoaderBecomesActive()
         {
             await new WaitUntil(() => IsActiveLoader.HasValue);
-            if (IsActiveLoader.Value)
+            if (IsActiveLoader != null && IsActiveLoader.Value)
             {
                 Enable();
             }

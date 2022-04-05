@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>This <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> must have a <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor">The new cursor</param>
-        public virtual void SetCursor(GameObject newCursor = null)
+        private void SetCursor(GameObject newCursor = null)
         {
             using (SetCursorPerfMarker.Auto())
             {
@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Maximum distance at which all pointers can collide with a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>, unless it has an override extent.
         /// </summary>
-        public float PointerExtent
+        protected float PointerExtent
         {
             get
             {
@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The length of the pointer when nothing is hit.
         /// </summary>
-        public float DefaultPointerExtent
+        protected float DefaultPointerExtent
         {
             get => Mathf.Min(defaultPointerExtent, PointerExtent);
             set => defaultPointerExtent = value;
@@ -381,7 +381,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Ray stabilizer used when calculating position of pointer end point.
         /// </summary>
-        public IBaseRayStabilizer RayStabilizer { get; set; }
+        protected IBaseRayStabilizer RayStabilizer { get; set; }
 
         /// <inheritdoc />
         public virtual SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;

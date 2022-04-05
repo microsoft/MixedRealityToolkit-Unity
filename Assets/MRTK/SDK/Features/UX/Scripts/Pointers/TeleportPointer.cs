@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     }
                 }
                 lateRegisterTeleport = false;
-                CoreServices.TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
+                CoreServices.TeleportSystem?.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         private Vector2 currentInputPosition = Vector2.zero;
 
-        protected bool isTeleportRequestActive = false;
+        private bool isTeleportRequestActive = false;
 
         private bool lateRegisterTeleport = true;
 
@@ -243,21 +243,16 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         private bool canMove = false;
 
-        protected Gradient GetLineGradient(TeleportSurfaceResult targetResult)
+        private Gradient GetLineGradient(TeleportSurfaceResult targetResult)
         {
-            switch (targetResult)
+            return targetResult switch
             {
-                case TeleportSurfaceResult.None:
-                    return LineColorNoTarget;
-                case TeleportSurfaceResult.Valid:
-                    return LineColorValid;
-                case TeleportSurfaceResult.Invalid:
-                    return LineColorInvalid;
-                case TeleportSurfaceResult.HotSpot:
-                    return LineColorHotSpot;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(targetResult), targetResult, null);
-            }
+                TeleportSurfaceResult.None => LineColorNoTarget,
+                TeleportSurfaceResult.Valid => LineColorValid,
+                TeleportSurfaceResult.Invalid => LineColorInvalid,
+                TeleportSurfaceResult.HotSpot => LineColorHotSpot,
+                _ => throw new ArgumentOutOfRangeException(nameof(targetResult), targetResult, null)
+            };
         }
 
         /// <summary>

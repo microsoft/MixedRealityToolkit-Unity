@@ -196,10 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return (frequency < 0.0f) ? (Time.time / 0.000001f) * -1.0f : (Time.time / frequency) * -1.0f;
                 }
-                else
-                {
-                    return (frequency < 0.0f) ? Time.time / 0.000001f : Time.time / frequency;
-                }
+                
+                return (frequency < 0.0f) ? Time.time / 0.000001f : Time.time / frequency;
             }
         }
 
@@ -209,13 +207,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Transform dot01;
         private Vector3 dot01NewPos = Vector3.zero;
-        private Vector3 dot01NewScale = Vector3.zero;
-        private Vector3 dot01NewRot = Vector3.zero;
 
         private Transform dot02;
         private Vector3 dot02NewPos = Vector3.zero;
-        private Vector3 dot02NewScale = Vector3.zero;
-        private Vector3 dot02NewRot = Vector3.zero;
 
         private const float tau = Mathf.PI * 2.0f;
 
