@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             TrackingOriginModeFlags trackingOriginMode;
 
             // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
-            // is not Room or Standing, it currently maps to TrackingSpaceType.Stationary.
+            // is not Room or Standing, it currently maps to TrackingOriginModeFlags.Device or TrackingOriginModeFlags.Unbounded.
             switch (Scale)
             {
                 case ExperienceScale.Standing:
@@ -84,8 +84,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
                 case ExperienceScale.OrientationOnly:
                 case ExperienceScale.Seated:
-                case ExperienceScale.World:
                     trackingOriginMode = TrackingOriginModeFlags.Device;
+                    break;
+
+                case ExperienceScale.World:
+#if UNITY_2020_2_OR_NEWER
+                    trackingOriginMode = TrackingOriginModeFlags.Unbounded;
+#else
+                    trackingOriginMode = TrackingOriginModeFlags.Device;
+#endif // UNITY_2020_2_OR_NEWER
                     break;
 
                 default:
