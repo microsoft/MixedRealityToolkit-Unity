@@ -245,14 +245,19 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         private Gradient GetLineGradient(TeleportSurfaceResult targetResult)
         {
-            return targetResult switch
+            switch (targetResult)
             {
-                TeleportSurfaceResult.None => LineColorNoTarget,
-                TeleportSurfaceResult.Valid => LineColorValid,
-                TeleportSurfaceResult.Invalid => LineColorInvalid,
-                TeleportSurfaceResult.HotSpot => LineColorHotSpot,
-                _ => throw new ArgumentOutOfRangeException(nameof(targetResult), targetResult, null)
-            };
+                case TeleportSurfaceResult.None:
+                    return LineColorNoTarget;
+                case TeleportSurfaceResult.Valid:
+                    return LineColorValid;
+                case TeleportSurfaceResult.Invalid:
+                    return LineColorInvalid;
+                case TeleportSurfaceResult.HotSpot:
+                    return LineColorHotSpot;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(targetResult), targetResult, null);
+            }
         }
 
         /// <summary>
