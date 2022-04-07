@@ -318,6 +318,91 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object.Destroy(touchable.gameObject);
         }
 
+        /// <summary>
+        /// Test NearInteractionTouchableVolume raycasting, by placing a signifcant larger touchable volume next to a smaller one.
+        /// Move from one to the other and check if the touch events are only raised once, without loosing "touch".
+        /// </summary>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableVolumeRaycast()
+        {
+            var touchable = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
+            var blocking = CreateTouchable<NearInteractionTouchableVolume>(new Vector3(10f, 10f, 1f));
+            blocking.transform.localPosition = objectPosition - new Vector3(touchable.TouchableCollider.bounds.extents.z + blocking.TouchableCollider.bounds.extents.z, 0f, 0f); 
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            TestHand testHand = new TestHand(Handedness.Left);
+            yield return testHand.Show(blocking.transform.position);
+            using (var catcher = CreateTouchEventCatcher(touchable))
+            {
+                // Move from center to center, checking if raycasting is hitting the correct touchable volume
+                yield return testHand.MoveTo(objectPosition);
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(0, catcher.EventsCompleted);
+
+                // Move back
+                yield return testHand.MoveTo(blocking.transform.position);
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(1, catcher.EventsCompleted);
+            }
+
+            Object.Destroy(touchable.gameObject);
+            Object.Destroy(blocking.gameObject);
+        }
+        /// <summary>
+        /// Test nested NearInteractionTouchableVolume instances.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableVolumeNested()
+        {
+            var outer = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
+            var inner = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one * 0.1f);
+
+            Vector3 innerPosition = objectPosition + (inner.transform.forward * 0.2f);
+            inner.transform.localPosition = innerPosition;
+
+            var outerCatcher = CreateTouchEventCatcher(outer);
+            var innerCatcher = CreateTouchEventCatcher(inner);
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            TestHand testHand = new TestHand(Handedness.Left);
+            yield return testHand.Show(Vector3.zero);
+
+            // Move into outer cube
+            yield return testHand.MoveTo(objectPosition);
+            Assert.AreEqual(1, outerCatcher.EventsStarted);
+            Assert.AreEqual(0, outerCatcher.EventsCompleted);
+            Assert.AreEqual(0, innerCatcher.EventsStarted);
+            Assert.AreEqual(0, innerCatcher.EventsCompleted);
+
+            // Move from outer into inner cube
+            yield return testHand.MoveTo(innerPosition);
+            Assert.AreEqual(1, outerCatcher.EventsStarted);
+            Assert.AreEqual(1, outerCatcher.EventsCompleted);
+            Assert.AreEqual(1, innerCatcher.EventsStarted);
+            Assert.AreEqual(0, innerCatcher.EventsCompleted);
+
+            // Move fromm inner to outer cube back
+            yield return testHand.MoveTo(objectPosition);
+            Assert.AreEqual(2, outerCatcher.EventsStarted);
+            Assert.AreEqual(1, outerCatcher.EventsCompleted);
+            Assert.AreEqual(1, innerCatcher.EventsStarted);
+            Assert.AreEqual(1, innerCatcher.EventsCompleted);
+
+            // Move from outer back outside
+            yield return testHand.MoveTo(Vector3.zero);
+            Assert.AreEqual(2, outerCatcher.EventsStarted);
+            Assert.AreEqual(2, outerCatcher.EventsCompleted);
+            Assert.AreEqual(1, innerCatcher.EventsStarted);
+            Assert.AreEqual(1, innerCatcher.EventsCompleted);
+
+            Object.Destroy(outer.gameObject);
+            Object.Destroy(inner.gameObject);
+        }
+
         private static void TestEvents(TouchEventCatcher[] catchers, int[] eventsStarted, int[] eventsCompleted)
         {
             Assert.AreEqual(catchers.Length, eventsCompleted.Length);
@@ -741,6 +826,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                 Assert.AreEqual(2, catcher.EventsCompleted);
             }
+
+            Object.Destroy(cube);
+            Object.Destroy(cube2);
         }
     }
 }
