@@ -234,8 +234,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             continue;
                         }
                         float distance = touchable.DistanceToTouchable(Position, out Vector3 normal); 
-                        if (distance < closestDistance)
-                            {
+                        
+                        // Favor touched volumes, but when there are multiple touched volumes, favor the one with the closest surface.
+                        bool bothInside = (distance <= 0f) && (closestDistance <= 0f);
+                        bool betterFit = bothInside ? Mathf.Abs(distance) < Mathf.Abs(closestDistance) : distance < closestDistance;
+                        if (betterFit)
+                        {
                             closest = touchable;
                             closestDistance = distance;
                             closestNormal = normal;
