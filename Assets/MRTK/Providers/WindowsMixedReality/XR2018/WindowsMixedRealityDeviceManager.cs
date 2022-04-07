@@ -768,6 +768,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 detectedController = new WindowsMixedRealityGGVHand(TrackingState.NotTracked, controllingHand, inputSource);
             }
+
             if (!detectedController.Enabled)
             {
                 // Controller failed to be setup correctly.
