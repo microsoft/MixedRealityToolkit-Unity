@@ -87,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
 #if WINDOWS_UWP
             WindowsMixedRealityUtilities.SpatialInteractionManager.SourcePressed += SpatialInteractionManager_SourcePressed;
-            WindowsMixedRealityUtilities.SpatialInteractionManager.SourceReleased += SpatialInteractionManager_SourceReleased;
 #endif // WINDOWS_UWP
 
 #if HP_CONTROLLER_ENABLED
@@ -135,6 +134,28 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
 
+#if WINDOWS_UWP
+            if (shouldSendVoiceEvents)
+            {
+                WindowsMixedRealityXRSDKGGVHand controller = GetOrAddVoiceController();
+                if (controller != null)
+                {
+                    // RaiseOnInputDown for "select"
+                    controller.UpdateVoiceState(true);
+                    // RaiseOnInputUp for "select"
+                    controller.UpdateVoiceState(false);
+
+                    // On WMR, the voice recognizer does not actually register the phrase 'select'
+                    // when you add it to the speech commands profile. Therefore, simulate
+                    // the "select" voice command running to ensure that we get a select voice command
+                    // registered. This is used by FocusProvider to detect when the select pointer is active.
+                    Service?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+                }
+
+                shouldSendVoiceEvents = false;
+            }
+#endif // WINDOWS_UWP
+
             base.Update();
         }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -144,7 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         public override void Disable()
         {
             WindowsMixedRealityUtilities.SpatialInteractionManager.SourcePressed -= SpatialInteractionManager_SourcePressed;
-            WindowsMixedRealityUtilities.SpatialInteractionManager.SourceReleased -= SpatialInteractionManager_SourceReleased;
 
             if (voiceController != null)
             {
@@ -359,39 +379,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
 #if WINDOWS_UWP
         /// <summary>
-        /// SDK Interaction Source Released Event handler. Used only for voice.
+        /// SDK Interaction Source Pressed Event handler. Used only for voice.
         /// </summary>
-        /// <param name="args">SDK source released event arguments</param>
+        /// <param name="args">SDK source pressed event arguments</param>
         private void SpatialInteractionManager_SourcePressed(SpatialInteractionManager sender, SpatialInteractionSourceEventArgs args)
         {
             if (args.State.Source.Kind == SpatialInteractionSourceKind.Voice)
             {
-                GetOrAddVoiceController()?.UpdateVoiceState(true);
-            }
-        }
-
-        /// <summary>
-        /// SDK Interaction Source Pressed Event handler. Used only for voice.
-        /// </summary>
-        /// <param name="args">SDK source pressed event arguments</param>
-        private void SpatialInteractionManager_SourceReleased(SpatialInteractionManager sender, SpatialInteractionSourceEventArgs args)
-        {
-            if (args.State.Source.Kind == SpatialInteractionSourceKind.Voice)
-            {
-                WindowsMixedRealityXRSDKGGVHand controller = GetOrAddVoiceController();
-                if (controller != null)
-                {
-                    controller.UpdateVoiceState(false);
-                    // On WMR, the voice recognizer does not actually register the phrase 'select'
-                    // when you add it to the speech commands profile. Therefore, simulate
-                    // the "select" voice command running to ensure that we get a select voice command
-                    // registered. This is used by FocusProvider to detect when the select pointer is active
-                    Service?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
-                }
+                shouldSendVoiceEvents = true;
             }
         }
 
         private WindowsMixedRealityXRSDKGGVHand voiceController = null;
+        private bool shouldSendVoiceEvents = false;
 
         private WindowsMixedRealityXRSDKGGVHand GetOrAddVoiceController()
         {
