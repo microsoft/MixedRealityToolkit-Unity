@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -24,12 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("Scripts/MRTK/SDK/PokePointer")]
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
-        /// <summary>
-        /// If touchable volumes are larger than this size (meters), pointer will raise
-        /// touch up even when pointer is inside the volume
-        /// </summary>
-        private const int maximumTouchableVolumeSize = 1000;
-
         [SerializeField]
         [Tooltip("Maximum distance a which a touchable surface can be interacted with.")]
         protected float touchableDistance = 0.2f;
@@ -177,13 +171,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (newClosestTouchable != null)
                 {
                     // Build ray (poke from in front to the back of the pointer position)
-                    // We make a very long ray if we are touching a touchable volume to ensure that we actually
-                    // hit the volume when we are inside of the volume, which could be very large.
-                    var lengthOfPointerRay = newClosestTouchable is NearInteractionTouchableVolume ?
-                        maximumTouchableVolumeSize : touchableDistance;
-                    Vector3 start = Position + lengthOfPointerRay * closestNormal;
-                    Vector3 end = Position - lengthOfPointerRay * closestNormal;
-                    Rays[0].UpdateRayStep(ref start, ref end);
+                    NearInteractionTouchableVolume touchableVolume = newClosestTouchable as NearInteractionTouchableVolume;
+                    if (touchableVolume != null && (closestDistance < 0.0f))
+                    {
+                        // When we are inside of a volume, ensure that we actually hit it by placing the origin closely outside the volume.
+                        Vector3 start = Position + (-closestDistance * 1.01f) * closestNormal;
+                        Vector3 end = Position - touchableVolume.TouchableCollider.bounds.size.magnitude * closestNormal;
+                        Rays[0].UpdateRayStep(ref start, ref end);
+                    }
+                    else
+                    {
+                        Vector3 start = Position + touchableDistance * closestNormal;
+                        Vector3 end = Position - touchableDistance * closestNormal;
+                        Rays[0].UpdateRayStep(ref start, ref end);
+                    }
                 }
                 else
                 {
@@ -232,9 +233,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             continue;
                         }
-                        float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
+                        float distance = touchable.DistanceToTouchable(Position, out Vector3 normal); 
                         if (distance < closestDistance)
-                        {
+                            {
                             closest = touchable;
                             closestDistance = distance;
                             closestNormal = normal;
