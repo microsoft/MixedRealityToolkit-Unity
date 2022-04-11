@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
         private SerializedProperty useHeadGazeOverride;
-        private SerializedProperty isEyeTrackingEnabled;
+        private SerializedProperty useEyeTrackingDataWhenAvailable;
 
         private static bool showGazeProviderProperties = true;
         private UnityEditor.Editor gazeProviderEditor;
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
             useHeadGazeOverride = serializedObject.FindProperty("useHeadGazeOverride");
-            isEyeTrackingEnabled = serializedObject.FindProperty("isEyeTrackingEnabled");
+            useEyeTrackingDataWhenAvailable = serializedObject.FindProperty("isEyeTrackingEnabled");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
             primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
         }
@@ -82,7 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(gazeCursorPrefab, GazeCursorPrefabContent);
                     EditorGUILayout.PropertyField(gazeProviderType);
                     EditorGUILayout.PropertyField(useHeadGazeOverride);
-                    EditorGUILayout.PropertyField(isEyeTrackingEnabled);
+
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PropertyField(useEyeTrackingDataWhenAvailable, new GUIContent("Use Eye Tracking Data"));
+                    // Render a help link for getting started with eyetracking documentation
+                    string helpURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input/eye-tracking/eye-tracking-basic-setup";
+                    InspectorUIUtility.RenderDocumentationButton(helpURL);
+                    EditorGUILayout.EndHorizontal();
+
                     EditorGUILayout.Space();
 
                     var gazeProvider = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>();
