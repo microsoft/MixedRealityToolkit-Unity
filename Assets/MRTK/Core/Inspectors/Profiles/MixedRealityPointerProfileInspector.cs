@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Pointer Option");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Pointer Option", "Add Pointer Option");
         private static readonly GUIContent GazeCursorPrefabContent = new GUIContent("Gaze Cursor Prefab");
+        private static readonly GUIContent UseEyeTrackingDataContent = new GUIContent("Use Eye Tracking Data");
         private static readonly GUIContent RaycastLayerMaskContent = new GUIContent("Default Raycast LayerMasks");
 
         private const string ProfileTitle = "Pointer Settings";
@@ -84,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(useHeadGazeOverride);
 
                     EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.PropertyField(useEyeTrackingDataWhenAvailable, new GUIContent("Use Eye Tracking Data"));
+                    EditorGUILayout.PropertyField(useEyeTrackingDataWhenAvailable, UseEyeTrackingDataContent);
                     // Render a help link for getting started with eyetracking documentation
                     string helpURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/eye-tracking/eye-tracking-basic-setup";
                     InspectorUIUtility.RenderDocumentationButton(helpURL);
