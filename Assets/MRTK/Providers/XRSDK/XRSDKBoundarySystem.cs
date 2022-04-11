@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             TrackingOriginModeFlags trackingOriginMode;
 
             // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
-            // is not Room or Standing, it currently maps to TrackingSpaceType.Stationary.
+            // is not Room or Standing, it currently maps to TrackingOriginModeFlags.Device or TrackingOriginModeFlags.Unbounded.
             switch (Scale)
             {
                 case ExperienceScale.Standing:
@@ -84,8 +84,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
                 case ExperienceScale.OrientationOnly:
                 case ExperienceScale.Seated:
-                case ExperienceScale.World:
                     trackingOriginMode = TrackingOriginModeFlags.Device;
+                    break;
+
+                case ExperienceScale.World:
+#if UNITY_2020_2_OR_NEWER
+                    trackingOriginMode = TrackingOriginModeFlags.Unbounded;
+#else
+                    trackingOriginMode = TrackingOriginModeFlags.Device;
+#endif // UNITY_2020_2_OR_NEWER
                     break;
 
                 default:
@@ -94,21 +101,41 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     break;
             }
 
-            if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+            if (TrySetTrackingOriginModeOnAllXRInputSystems(trackingOriginMode))
             {
-#if UNITY_2019_3_OR_NEWER
-                // If the "main" input subsystem can't set the origin mode, check the rest of them
-                SubsystemManager.GetInstances(XRInputSubsystems);
-                foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
-                {
-                    if (xrInputSubsystem.running && xrInputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
-                    {
-                        return;
-                    }
-                }
-#endif // UNITY_2019_3_OR_NEWER
-                Debug.LogWarning("Tracking origin unable to be set.");
+                return;
             }
+#if UNITY_2020_2_OR_NEWER
+            // If Unbounded couldn't be set, try falling back to Device
+            else if (trackingOriginMode == TrackingOriginModeFlags.Unbounded && TrySetTrackingOriginModeOnAllXRInputSystems(TrackingOriginModeFlags.Device))
+            {
+                return;
+            }
+#endif // UNITY_2020_2_OR_NEWER
+
+            Debug.LogWarning("Tracking origin unable to be set.");
+        }
+
+        private bool TrySetTrackingOriginModeOnAllXRInputSystems(TrackingOriginModeFlags trackingOriginMode)
+        {
+            if (XRSubsystemHelpers.InputSubsystem != null && XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+            {
+                return true;
+            }
+
+#if UNITY_2019_3_OR_NEWER
+            // If the "main" input subsystem can't set the origin mode, check the rest of them
+            SubsystemManager.GetInstances(XRInputSubsystems);
+            foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
+            {
+                if (xrInputSubsystem.running && xrInputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+                {
+                    return true;
+                }
+            }
+#endif // UNITY_2019_3_OR_NEWER
+
+            return false;
         }
     }
 }
