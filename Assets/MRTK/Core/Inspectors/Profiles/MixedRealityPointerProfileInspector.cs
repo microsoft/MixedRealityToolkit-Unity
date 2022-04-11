@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.PropertyField(useEyeTrackingDataWhenAvailable, new GUIContent("Use Eye Tracking Data"));
                     // Render a help link for getting started with eyetracking documentation
-                    string helpURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input/eye-tracking/eye-tracking-basic-setup";
+                    string helpURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/eye-tracking/eye-tracking-basic-setup";
                     InspectorUIUtility.RenderDocumentationButton(helpURL);
                     EditorGUILayout.EndHorizontal();
 
