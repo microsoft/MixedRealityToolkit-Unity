@@ -82,11 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool UseHeadGazeOverride => useHeadGazeOverride;
 
         [SerializeField]
-        [Tooltip("If true, eye-based tracking will be used as gaze input when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
+        [Tooltip("If true, eye-based tracking will be used as gaze input when available. This field does not control whether eye tracking data is provided.")]
         private bool isEyeTrackingEnabled = false;
 
         /// <summary>
-        /// If true, eye-based tracking will be used as gaze input when available.
+        /// If true, eye-based tracking will be used as gaze input when available. This field does not control whether eye tracking data is provided.
         /// </summary>
         public bool IsEyeTrackingEnabled
         {
