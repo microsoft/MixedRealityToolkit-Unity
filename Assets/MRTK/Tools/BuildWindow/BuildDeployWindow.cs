@@ -80,8 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly string[] PLATFORM_TOOLSET_NAMES = { "Solution", "v141", "v142" };
 
-        private static readonly string[] LocalRemoteOptions = { "Local", "Remote" };
-
         private static readonly List<string> Builds = new List<string>(0);
 
         private static readonly List<string> AppPackageDirectories = new List<string>(0);
@@ -121,8 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent UseSSLLabel = new GUIContent("Use SSL?", "Use SSL to communicate with Device Portal");
 
         private readonly GUIContent VerifySSLLabel = new GUIContent("Verify SSL Certificates?", "When using SSL for Device Portal communication, verify the SSL certificate against Root Certificates. For self-signed Device Portal certificates disabling this omits SSL rejection errors.");
-
-        private readonly GUIContent TargetTypeLabel = new GUIContent("Target Type", "Target either local connection or a remote device");
 
         private readonly GUIContent AddConnectionLabel = new GUIContent("+", "Add a remote connection");
 
@@ -222,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static DeviceInfo CurrentConnection
         {
-            get => UseRemoteTarget ? CurrentRemoteConnection : localConnection;
+            get => CurrentRemoteConnection;
         }
 
         private static DeviceInfo CurrentRemoteConnection
@@ -250,16 +246,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     portalConnections.CurrentConnectionIndex = value;
                 }
             }
-        }
-
-        /// <summary>
-        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment.
-        /// Saves state for duration of current Unity session
-        /// </summary>
-        private static bool UseRemoteTarget
-        {
-            get => SessionState.GetBool(UseRemoteTargetSessionKey, false);
-            set => SessionState.SetBool(UseRemoteTargetSessionKey, value);
         }
 
         #endregion Properties
@@ -322,8 +308,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             UpdateBuilds();
 
             DevicePortal.UseSSL = UwpBuildDeployPreferences.UseSSL;
-
-            localConnection = JsonUtility.FromJson<DeviceInfo>(UwpBuildDeployPreferences.LocalConnectionInfo);
 
             portalConnections = JsonUtility.FromJson<DevicePortalConnections>(UwpBuildDeployPreferences.DevicePortalConnections);
 
@@ -715,42 +699,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField(TargetTypeLabel, GUILayout.Width(75));
-                UseRemoteTarget = EditorGUILayout.Popup(UseRemoteTarget ? 1 : 0, LocalRemoteOptions, GUILayout.Width(100)) != 0;
                 GUILayout.FlexibleSpace();
             }
 
             using (new GUILayout.VerticalScope("box"))
             {
-                if (UseRemoteTarget)
-                {
-                    RenderRemoteConnections();
-
-                    RenderSSLButtons();
-                }
-                else
-                {
-                    RenderLocalConnection();
-
-                    if (IsHoloLensConnectedUsb)
-                    {
-                        using (new EditorGUI.DisabledGroupScope(!AreCredentialsValid(localConnection)))
-                        {
-                            if (GUILayout.Button("Discover HoloLens WiFi IP", GUILayout.Width(HALF_WIDTH)))
-                            {
-                                EditorApplication.delayCall += () =>
-                                {
-                                    DiscoverLocalHololensIP();
-                                };
-                            }
-                        }
-                    }
-
-                    RenderSSLButtons();
-                }
-
+                RenderRemoteConnections();
+                RenderSSLButtons();
                 EditorGUILayout.Space();
-
                 RenderConnectionButtons();
             }
 
@@ -795,7 +751,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             DeviceInfo currentConnection = CurrentConnection;
 
-            bool canTestConnection = (!UseRemoteTarget || IsValidIpAddress(currentConnection.IP)) && AreCredentialsValid(currentConnection);
+            bool canTestConnection = IsValidIpAddress(currentConnection.IP) && AreCredentialsValid(currentConnection);
             using (new EditorGUI.DisabledGroupScope(!canTestConnection))
             {
 
@@ -837,26 +793,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private void RenderLocalConnection()
-        {
-            using (var c = new EditorGUI.ChangeCheckScope())
-            {
-                string target = IsHoloLensConnectedUsb ? HOLOLENS_USB : DeviceInfo.LocalMachine;
-                EditorGUILayout.LabelField(target, GUILayout.Width(HALF_WIDTH));
-
-                EditorGUILayout.LabelField(IPAddressLabel, new GUIContent(localConnection.IP), GUILayout.Width(HALF_WIDTH));
-
-                localConnection.User = EditorGUILayout.TextField(UsernameLabel, localConnection.User, GUILayout.Width(HALF_WIDTH));
-
-                localConnection.Password = EditorGUILayout.PasswordField(PasswordLabel, localConnection.Password, GUILayout.Width(HALF_WIDTH));
-
-                if (c.changed)
-                {
-                    SaveLocalConnection();
-                }
-            }
-        }
-
         private void RenderRemoteConnections()
         {
             using (var c = new EditorGUI.ChangeCheckScope())
@@ -888,12 +824,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     GUILayout.FlexibleSpace();
                 }
 
-                if (IsHoloLensConnectedUsb && IsLocalConnection(currentConnection))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField(HOLOLENS_USB);
+                    currentConnection.IP = EditorGUILayout.TextField(IPAddressLabel, currentConnection.IP, GUILayout.Width(HALF_WIDTH));
+                    if (GUILayout.Button("Connect over USB?", GUILayout.Width(HALF_WIDTH/2)))
+                    {
+                        Application.OpenURL("https://docs.microsoft.com/en-us/windows/mixed-reality/develop/advanced-concepts/using-the-windows-device-portal#connecting-over-usb");
+                    }
                 }
-
-                currentConnection.IP = EditorGUILayout.TextField(IPAddressLabel, currentConnection.IP, GUILayout.Width(HALF_WIDTH));
 
                 currentConnection.User = EditorGUILayout.TextField(UsernameLabel, currentConnection.User, GUILayout.Width(HALF_WIDTH));
 
@@ -987,11 +925,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                     }
                                 }
 
-                                bool canLaunchLocal = IsLocalConnection(currentConnection) && IsHoloLensConnectedUsb;
                                 bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall;
 
                                 // Launch app...
-                                bool launchAppEnabled = canLaunchLocal || canLaunchRemote;
+                                bool launchAppEnabled = canLaunchRemote;
                                 using (new EditorGUI.DisabledGroupScope(!launchAppEnabled))
                                 {
                                     if (isAppRunning)
@@ -1020,7 +957,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                 string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
                                 bool localLogExists = File.Exists(localLogPath);
 
-                                bool viewLogEnabled = localLogExists || canLaunchRemote || canLaunchLocal;
+                                bool viewLogEnabled = localLogExists || canLaunchRemote;
                                 using (new EditorGUI.DisabledGroupScope(!viewLogEnabled))
                                 {
                                     if (GUILayout.Button(ViewPlayerLogLabel, GUILayout.Width(126)))
@@ -1146,39 +1083,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             portalConnections.Connections.Add(newDevice);
             CurrentRemoteConnectionIndex = portalConnections.Connections.Count - 1;
             SaveRemotePortalConnections();
-        }
-
-        private async void DiscoverLocalHololensIP()
-        {
-            var machineName = await DevicePortal.GetMachineNameAsync(localConnection);
-            var networkInfo = await DevicePortal.GetIpConfigInfoAsync(localConnection);
-            if (machineName != null && networkInfo != null)
-            {
-                foreach (var adapter in networkInfo.Adapters)
-                {
-                    if (adapter.Type.Contains(WifiAdapterType))
-                    {
-                        foreach (var address in adapter.IpAddresses)
-                        {
-                            string ipAddress = address.IpAddress;
-                            if (IsValidIpAddress(ipAddress)
-                                && !portalConnections.Connections.Any(connection => connection.IP == ipAddress))
-                            {
-                                Debug.Log($"Adding new IP {ipAddress} for local HoloLens {machineName.ComputerName} to remote connection list");
-
-                                AddRemoteConnection(new DeviceInfo(ipAddress,
-                                    localConnection.User,
-                                    localConnection.Password,
-                                    machineName.ComputerName));
-
-                                return;
-                            }
-                        }
-                    }
-                }
-
-                Debug.Log($"No new or valid WiFi IP Addresses found for local HoloLens {machineName.ComputerName}");
-            }
         }
 
         private async Task<bool> ConnectToDevice()
