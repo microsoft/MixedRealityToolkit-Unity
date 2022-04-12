@@ -827,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     currentConnection.IP = EditorGUILayout.TextField(IPAddressLabel, currentConnection.IP, GUILayout.Width(HALF_WIDTH));
-                    if (GUILayout.Button("Connect over USB?", GUILayout.Width(HALF_WIDTH/2)))
+                    if (GUILayout.Button("Connect over USB", GUILayout.Width(128f)))
                     {
                         Application.OpenURL("https://docs.microsoft.com/en-us/windows/mixed-reality/develop/advanced-concepts/using-the-windows-device-portal#connecting-over-usb");
                     }
