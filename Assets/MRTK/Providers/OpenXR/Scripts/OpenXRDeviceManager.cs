@@ -221,6 +221,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     return typeof(MicrosoftMotionController);
                 case SupportedControllerType.HPMotionController:
                     return typeof(HPReverbG2Controller);
+                case SupportedControllerType.OculusTouch:
+                    return typeof(OculusController);
                 case SupportedControllerType.ArticulatedHand:
                     return typeof(MicrosoftArticulatedHand);
                 default:

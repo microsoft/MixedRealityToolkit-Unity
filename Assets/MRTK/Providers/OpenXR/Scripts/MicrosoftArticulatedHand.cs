@@ -54,7 +54,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <inheritdoc/>
         public override bool IsInPointingPose => handDefinition.IsInPointingPose;
 
+        protected bool IsPinching => handDefinition.IsPinching;
+
+        // Pinch was also used as grab, we want to allow hand-curl grab not just pinch.
+        // Determine pinch and grab separately
+        protected bool IsGrabbing => handDefinition.IsGrabbing;
+
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] MicrosoftArticulatedHand.UpdateController");
+
+        // This bool is used to track whether or not we are recieving device data from the platform itself
+        // If we aren't we will attempt to infer some common input actions from the hand joint data (i.e. the pinch gesture, pointer positions etc)
+        private bool receivingDeviceInputs = false;
 
         /// <summary>
         /// The OpenXR plug-in uses extensions to expose all possible data, which might be surfaced through multiple input devices.
@@ -76,19 +86,79 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 if (inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 _))
                 {
                     base.UpdateController(inputDevice);
+
+                    // We've gotten device data from the platform, don't attempt to infer other input actions
+                    // from the hand joint data
+                    receivingDeviceInputs = true;
                 }
                 else
                 {
                     UpdateHandData(inputDevice);
 
+                    // Updating the Index finger pose right after getting the hand data
+                    // regardless of whether device data is present
                     for (int i = 0; i < Interactions?.Length; i++)
                     {
-                        switch (Interactions[i].AxisType)
+                        var interactionMapping = Interactions[i];
+                        switch (interactionMapping.InputType)
                         {
-                            case AxisType.SixDof:
-                                UpdatePoseData(Interactions[i], inputDevice);
+                            case DeviceInputType.IndexFinger:
+                                handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
                                 break;
                         }
+                    }
+
+                    // If we aren't getting device data, infer input actions, velocity, etc from hand joint data
+                    if (!receivingDeviceInputs)
+                    {
+                        for (int i = 0; i < Interactions?.Length; i++)
+                        {
+                            switch (Interactions[i].InputType)
+                            {
+                                case DeviceInputType.SpatialGrip:
+                                    MixedRealityPose currentGripPose = unityJointPoses[TrackedHandJoint.Palm];
+                                    Interactions[i].PoseData = currentGripPose;
+
+                                    if (Interactions[i].Changed)
+                                    {
+                                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentGripPose);
+
+                                        // Spatial Grip is also used as the source pose when device data is not provided
+                                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                                        IsPositionAvailable = IsRotationAvailable = true;
+                                    }
+                                    break;
+                                case DeviceInputType.Select:
+                                case DeviceInputType.TriggerPress:
+                                case DeviceInputType.GripPress:
+                                    Interactions[i].BoolData = IsPinching || IsGrabbing;
+
+                                    if (Interactions[i].Changed)
+                                    {
+                                        if (Interactions[i].BoolData)
+                                        {
+                                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                        }
+                                        else
+                                        {
+                                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                        }
+                                    }
+                                    break;
+                                case DeviceInputType.SpatialPointer:
+                                    handDefinition?.UpdatePointerPose(Interactions[i]);
+                                    break;
+                                // Gotta do this only for non-AR devices
+                                case DeviceInputType.ThumbStick:
+                                    handDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
+                                    break;
+                            }
+                        }
+
+                        // Update the controller velocity based on the hand definition's calculations
+                        handDefinition?.UpdateVelocity();
+                        Velocity = (handDefinition?.Velocity).Value;
+                        AngularVelocity = (handDefinition?.AngularVelocity).Value;
                     }
                 }
             }
@@ -186,9 +256,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             {
                 switch (interactionMapping.InputType)
                 {
-                    case DeviceInputType.IndexFinger:
-                        handDefinition?.UpdateCurrentIndexPose(interactionMapping);
-                        break;
                     case DeviceInputType.SpatialPointer:
                         if (inputDevice.TryGetFeatureValue(CustomUsages.PointerPosition, out currentPointerPosition))
                         {
@@ -229,6 +296,31 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 handMeshProvider?.UpdateHandMesh();
                 handJointProvider?.UpdateHandJoints(inputDevice, unityJointPoses);
                 handDefinition?.UpdateHandJoints(unityJointPoses);
+
+                // Note: After some testing, it seems when moving your hand fast, Oculus's pinch estimation data gets frozen, which leads to stuck pinches.
+                // To counter this, we perform a distance check between thumb and index to determine if we should force the pinch to a false state.
+
+                // Need to realign the oculus hand to match the articulated hand definition lol
+                // ... or just ditch it
+                // We can probably use index pinch strength somewhere... just maybe not here?
+                //float pinchStrength = HandPoseUtils.CalculateIndexPinch(ControllerHandedness);
+                //if (pinchStrength == 0.0f)
+                //{
+                //    IsPinching = false;
+                //}
+                //else
+                //{
+                //    if (IsPinching)
+                //    {
+                //        // If we are already pinching, we make the pinch a bit sticky
+                //        IsPinching = pinchStrength > 0.5f;
+                //    }
+                //    else
+                //    {
+                //        // If not yet pinching, only consider pinching if we've exceeded the redesignated threshold
+                //        IsPinching = pinchStrength > 0.85f;
+                //    }
+                //}
             }
         }
     }

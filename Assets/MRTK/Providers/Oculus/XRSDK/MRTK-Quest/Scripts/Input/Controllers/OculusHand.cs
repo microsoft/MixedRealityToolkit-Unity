@@ -135,8 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
                 currentGripPose = jointPoses[TrackedHandJoint.Palm];
 
-                CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, currentGripPose);
-
                 UpdateVelocity();
             }
 
