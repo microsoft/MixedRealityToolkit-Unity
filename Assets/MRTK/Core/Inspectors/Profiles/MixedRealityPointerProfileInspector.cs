@@ -19,6 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent UseEyeTrackingDataContent = new GUIContent("Use Eye Tracking Data");
         private static readonly GUIContent RaycastLayerMaskContent = new GUIContent("Default Raycast LayerMasks");
 
+#if UNITY_2019_3_OR_NEWER
+        private const string EnableGazeCapabilityContent = "If using eye tracking with UWP, you'll need to enable the GazeInput capability in the manifest." +
+            "\nPlease check both the Unity UWP Player Settings and the Visual Studio appxmanifest capabilities to ensure it's enabled.";
+#endif // UNITY_2019_3_OR_NEWER
+
         private const string ProfileTitle = "Pointer Settings";
         private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
 
@@ -90,6 +95,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     string helpURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/eye-tracking/eye-tracking-basic-setup";
                     InspectorUIUtility.RenderDocumentationButton(helpURL);
                     EditorGUILayout.EndHorizontal();
+
+#if UNITY_2019_3_OR_NEWER
+                    if (useEyeTrackingDataWhenAvailable.boolValue && MixedRealityOptimizeUtils.IsBuildTargetUWP() && !PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.GazeInput))
+                    {
+                        EditorGUILayout.HelpBox(EnableGazeCapabilityContent, MessageType.Warning);
+                    }
+#endif // UNITY_2019_3_OR_NEWER
 
                     EditorGUILayout.Space();
 
