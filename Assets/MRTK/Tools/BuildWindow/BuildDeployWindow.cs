@@ -270,7 +270,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static DevicePortalConnections portalConnections = null;
         private static CancellationTokenSource appxCancellationTokenSource = null;
         private static float appxProgressBarTimer = 0.0f;
-        private static DeviceInfo localConnection;
 
         private static bool lastTestConnectionSuccessful = false;
         private static DeviceInfo lastTestConnectionTarget;
@@ -1230,11 +1229,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return mostRecentBuild;
         }
 
-        private void SaveLocalConnection()
-        {
-            UwpBuildDeployPreferences.LocalConnectionInfo = JsonUtility.ToJson(localConnection);
-        }
-
         private void SaveRemotePortalConnections()
         {
             targetIps = new string[portalConnections.Connections.Count];
@@ -1406,7 +1400,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (UwpBuildDeployPreferences.TargetAllConnections)
             {
-                targetDevices = new List<DeviceInfo>() { localConnection };
+                targetDevices = new List<DeviceInfo>(); ;
                 targetDevices.AddRange(portalConnections.Connections);
             }
             else
