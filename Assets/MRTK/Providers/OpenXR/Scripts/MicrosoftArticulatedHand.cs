@@ -44,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
 
+        // The rotation offset between the reported grip pose of a hand and the palm joint orientation.
+        // These values were calculated by comparing the platform's reported grip pose and palm pose.
+        private static readonly Quaternion rightPalmOffset = Quaternion.Inverse(new Quaternion(Mathf.Sqrt(0.125f), Mathf.Sqrt(0.125f), -Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f));
+        private static readonly Quaternion leftPalmOffset = Quaternion.Inverse(new Quaternion(Mathf.Sqrt(0.125f), -Mathf.Sqrt(0.125f), Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f));
+
         #region IMixedRealityHand Implementation
 
         /// <inheritdoc/>
@@ -124,7 +129,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                                     {
                                         CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
 
-                                        // Spatial Grip is also used as the source pose when device data is not provided
+                                        // Spatial Grip is also used as the basis for the source pose when device data is not provided
+                                        // We need to rotate it by an offset to properly represent the source pose.
+                                        MixedRealityPose CurrentControllerPose = currentGripPose;
+                                        CurrentControllerPose.Rotation *= (ControllerHandedness == Handedness.Left ? leftPalmOffset : rightPalmOffset);
+
                                         CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
                                         IsPositionAvailable = IsRotationAvailable = true;
                                     }
