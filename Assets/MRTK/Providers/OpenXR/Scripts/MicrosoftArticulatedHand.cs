@@ -113,15 +113,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     {
                         for (int i = 0; i < Interactions?.Length; i++)
                         {
-                            switch (Interactions[i].InputType)
+                            var interactionMapping = Interactions[i];
+                            switch (interactionMapping.InputType)
                             {
                                 case DeviceInputType.SpatialGrip:
                                     MixedRealityPose currentGripPose = unityJointPoses[TrackedHandJoint.Palm];
-                                    Interactions[i].PoseData = currentGripPose;
+                                    interactionMapping.PoseData = currentGripPose;
 
-                                    if (Interactions[i].Changed)
+                                    if (interactionMapping.Changed)
                                     {
-                                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentGripPose);
+                                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
 
                                         // Spatial Grip is also used as the source pose when device data is not provided
                                         CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
@@ -131,26 +132,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                                 case DeviceInputType.Select:
                                 case DeviceInputType.TriggerPress:
                                 case DeviceInputType.GripPress:
-                                    Interactions[i].BoolData = IsPinching || IsGrabbing;
+                                    interactionMapping.BoolData = IsPinching || IsGrabbing;
 
-                                    if (Interactions[i].Changed)
+                                    if (interactionMapping.Changed)
                                     {
-                                        if (Interactions[i].BoolData)
+                                        if (interactionMapping.BoolData)
                                         {
-                                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                                         }
                                         else
                                         {
-                                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                                         }
                                     }
                                     break;
                                 case DeviceInputType.SpatialPointer:
-                                    handDefinition?.UpdatePointerPose(Interactions[i]);
+                                    handDefinition?.UpdatePointerPose(interactionMapping);
                                     break;
                                 // Gotta do this only for non-AR devices
                                 case DeviceInputType.ThumbStick:
-                                    handDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
+                                    handDefinition?.UpdateCurrentTeleportPose(interactionMapping);
                                     break;
                             }
                         }
@@ -296,31 +297,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 handMeshProvider?.UpdateHandMesh();
                 handJointProvider?.UpdateHandJoints(inputDevice, unityJointPoses);
                 handDefinition?.UpdateHandJoints(unityJointPoses);
-
-                // Note: After some testing, it seems when moving your hand fast, Oculus's pinch estimation data gets frozen, which leads to stuck pinches.
-                // To counter this, we perform a distance check between thumb and index to determine if we should force the pinch to a false state.
-
-                // Need to realign the oculus hand to match the articulated hand definition lol
-                // ... or just ditch it
-                // We can probably use index pinch strength somewhere... just maybe not here?
-                //float pinchStrength = HandPoseUtils.CalculateIndexPinch(ControllerHandedness);
-                //if (pinchStrength == 0.0f)
-                //{
-                //    IsPinching = false;
-                //}
-                //else
-                //{
-                //    if (IsPinching)
-                //    {
-                //        // If we are already pinching, we make the pinch a bit sticky
-                //        IsPinching = pinchStrength > 0.5f;
-                //    }
-                //    else
-                //    {
-                //        // If not yet pinching, only consider pinching if we've exceeded the redesignated threshold
-                //        IsPinching = pinchStrength > 0.85f;
-                //    }
-                //}
             }
         }
     }

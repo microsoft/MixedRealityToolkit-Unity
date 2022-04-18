@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Calculates whether the current pose allows for pointing/distant interactions.
-        /// Equivalent to the HandRay's ShouldShowRay implementation (how do I hotlink the code reference in here Kurtis)
+        /// Equivalent to the HandRay's ShouldShowRay implementation <see cref="HandRay.ShouldShowRay"/>
         /// </summary>
         public bool IsInPointingPose
         {

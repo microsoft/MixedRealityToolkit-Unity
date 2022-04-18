@@ -12,7 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     [MixedRealityController(
         SupportedControllerType.OculusTouch,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right },
+        "Textures/OculusControllersTouch",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
     public class OculusController : GenericXRSDKController
     {
         /// <summary>

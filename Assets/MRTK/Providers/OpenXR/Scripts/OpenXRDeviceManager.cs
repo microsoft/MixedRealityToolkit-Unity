@@ -237,6 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             {
                 case SupportedControllerType.WindowsMixedReality:
                 case SupportedControllerType.HPMotionController:
+                case SupportedControllerType.OculusTouch:
                     return InputSourceType.Controller;
                 case SupportedControllerType.ArticulatedHand:
                     return InputSourceType.Hand;
@@ -255,6 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
             if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
+#if UNITY_ANDROID
+                return SupportedControllerType.OculusTouch;
+#else
                 if (inputDevice.manufacturer == "HP")
                 {
                     return SupportedControllerType.HPMotionController;
@@ -263,14 +267,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 {
                     return SupportedControllerType.WindowsMixedReality;
                 }
+#endif
             }
 
             return base.GetCurrentControllerType(inputDevice);
         }
 
-        #endregion Controller Utilities
+#endregion Controller Utilities
 
-        #region Gesture implementation
+#region Gesture implementation
 
 #if MSFT_OPENXR && WINDOWS_UWP
         private void ReadProfile()
@@ -515,6 +520,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         }
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
-        #endregion Gesture implementation
+#endregion Gesture implementation
     }
 }
