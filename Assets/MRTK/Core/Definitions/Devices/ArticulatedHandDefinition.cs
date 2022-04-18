@@ -285,6 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private IMixedRealityTeleportPointer teleportPointer;
 
         private static readonly ProfilerMarker UpdateCurrentTeleportPosePerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateCurrentTeleportPose");
+
         /// <summary>
         /// Updates the MixedRealityInteractionMapping with the lastest teleport pose status and fires an event when appropriate
         /// </summary>
