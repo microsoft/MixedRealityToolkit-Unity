@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                         switch (interactionMapping.InputType)
                         {
                             case DeviceInputType.IndexFinger:
-                                handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
+                                handDefinition?.UpdateCurrentIndexPose(interactionMapping);
                                 break;
                         }
                     }
