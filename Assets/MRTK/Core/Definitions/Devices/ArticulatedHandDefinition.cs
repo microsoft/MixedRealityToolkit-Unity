@@ -375,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Updates the hand definition with it's velocity
+        /// Updates the hand definition with its velocity
         /// </summary>
         public void UpdateVelocity()
         {
