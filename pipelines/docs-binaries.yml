@@ -26,6 +26,7 @@ jobs:
         -OutputDirectory $(Build.ArtifactStagingDirectory)
 
   - task: PublishPipelineArtifact@1
+    condition: always()
     displayName: Publish docs binaries
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
@@ -51,6 +52,7 @@ jobs:
         -OutputDirectory $(Build.ArtifactStagingDirectory)
 
   - task: PublishPipelineArtifact@1
+    condition: always()
     displayName: Publish docs binaries
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
