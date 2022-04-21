@@ -134,7 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 currentPointerPose.Rotation = Quaternion.LookRotation(pointerForward, pointerUp);
 
                 currentGripPose = jointPoses[TrackedHandJoint.Palm];
-
                 CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, currentGripPose);
 
                 UpdateVelocity();

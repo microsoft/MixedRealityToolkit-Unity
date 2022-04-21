@@ -86,8 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private bool isPinching = false;
-
         /// <summary>
         /// The articulated hands default interactions.
         /// </summary>
@@ -120,8 +118,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInputActionMapping("Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick),
         };
 
+
+        // Internal calculation of what the HandRay should be
+        // Useful as a fallback for hand ray data
+        protected virtual IHandRay HandRay { get; } = new HandRay();
+
         /// <summary>
         /// Calculates whether the current pose allows for pointing/distant interactions.
+        /// Equivalent to the HandRay's ShouldShowRay implementation <see cref="HandRay.ShouldShowRay"/>
         /// </summary>
         public bool IsInPointingPose
         {
@@ -168,12 +172,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 Transform cameraTransform = mainCamera.transform;
 
+                Vector3 palmNormal = -palmPose.Up;
                 // We check if the palm up is roughly in line with the camera up
-                return Vector3.Dot(-palmPose.Up, cameraTransform.up) > 0.6f
+                return Vector3.Dot(palmNormal, cameraTransform.up) > 0.6f
                        // Thumb must be extended, and middle must be grabbing
                        && !isThumbGrabbing && isMiddleGrabbing;
             }
         }
+
+        /// <summary>
+        /// A bool tracking whether the hand definition is pinch or not
+        /// </summary>
+        private bool isPinching = false;
 
         /// <summary>
         /// Calculates whether the current the current joint pose is selecting (air tap gesture).
@@ -206,11 +216,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        public bool IsGrabbing => isIndexGrabbing && isMiddleGrabbing;
+
         private bool isIndexGrabbing;
         private bool isMiddleGrabbing;
         private bool isThumbGrabbing;
 
+        // Velocity internal states
+        private float deltaTimeStart;
+        private const int velocityUpdateInterval = 6;
+        private int frameOn = 0;
+
+        private readonly Vector3[] velocityPositionsCache = new Vector3[velocityUpdateInterval];
+        private readonly Vector3[] velocityNormalsCache = new Vector3[velocityUpdateInterval];
+        private Vector3 velocityPositionsSum = Vector3.zero;
+        private Vector3 velocityNormalsSum = Vector3.zero;
+
+        public Vector3 AngularVelocity { get; protected set; }
+
+        public Vector3 Velocity { get; protected set; }
+
+
         private static readonly ProfilerMarker UpdateHandJointsPerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateHandJoints");
+
+        #region Hand Definition Update functions
 
         /// <summary>
         /// Updates the current hand joints with new data.
@@ -257,6 +286,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker UpdateCurrentTeleportPosePerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateCurrentTeleportPose");
 
+        /// <summary>
+        /// Updates the MixedRealityInteractionMapping with the lastest teleport pose status and fires an event when appropriate
+        /// </summary>
+        /// <param name="interactionMapping">The teleport action's interaction mapping.</param>
         public void UpdateCurrentTeleportPose(MixedRealityInteractionMapping interactionMapping)
         {
             using (UpdateCurrentTeleportPosePerfMarker.Auto())
@@ -311,5 +344,80 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 previousReadyToTeleport = isReadyForTeleport;
             }
         }
+
+        /// <summary>
+        /// Updates the MixedRealityInteractionMapping with the lastest pointer pose status and fires a corresponding pose event.
+        /// </summary>
+        /// <param name="interactionMapping">The pointer pose's interaction mapping.</param>
+        public void UpdatePointerPose(MixedRealityInteractionMapping interactionMapping)
+        {
+            if (!unityJointPoses.TryGetValue(TrackedHandJoint.IndexKnuckle, out var knucklePose)) return;
+            if (!unityJointPoses.TryGetValue(TrackedHandJoint.Palm, out var palmPose)) return;
+
+            Vector3 rayPosition = knucklePose.Position;
+            Vector3 palmNormal = -palmPose.Up;
+
+            HandRay.Update(rayPosition, palmNormal, CameraCache.Main.transform, Handedness);
+            Ray ray = HandRay.Ray;
+
+            MixedRealityPose pointerPose = new MixedRealityPose();
+            pointerPose.Position = ray.origin;
+            pointerPose.Rotation = Quaternion.LookRotation(ray.direction);
+
+            // Update the interaction data source
+            interactionMapping.PoseData = pointerPose;
+
+            // If our value changed raise it
+            if (interactionMapping.Changed)
+            {
+                // Raise input system event if it's enabled
+                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, Handedness, interactionMapping.MixedRealityInputAction, pointerPose);
+            }
+        }
+
+        /// <summary>
+        /// Updates the hand definition with its velocity
+        /// </summary>
+        public void UpdateVelocity()
+        {
+            if (unityJointPoses.TryGetValue(TrackedHandJoint.Palm, out var currentPalmPose))
+            {
+                Vector3 palmPosition = currentPalmPose.Position;
+                Vector3 palmNormal = -currentPalmPose.Up;
+
+                if (frameOn < velocityUpdateInterval)
+                {
+                    velocityPositionsCache[frameOn] = palmPosition;
+                    velocityPositionsSum += velocityPositionsCache[frameOn];
+                    velocityNormalsCache[frameOn] = palmNormal;
+                    velocityNormalsSum += velocityNormalsCache[frameOn];
+                }
+                else
+                {
+                    int frameIndex = frameOn % velocityUpdateInterval;
+
+                    float deltaTime = Time.unscaledTime - deltaTimeStart;
+
+                    Vector3 newPositionsSum = velocityPositionsSum - velocityPositionsCache[frameIndex] + palmPosition;
+                    Vector3 newNormalsSum = velocityNormalsSum - velocityNormalsCache[frameIndex] + palmNormal;
+
+                    Velocity = (newPositionsSum - velocityPositionsSum) / deltaTime / velocityUpdateInterval;
+
+                    Quaternion rotation = Quaternion.FromToRotation(velocityNormalsSum / velocityUpdateInterval, newNormalsSum / velocityUpdateInterval);
+                    Vector3 rotationRate = rotation.eulerAngles * Mathf.Deg2Rad;
+                    AngularVelocity = rotationRate / deltaTime;
+
+                    velocityPositionsCache[frameIndex] = palmPosition;
+                    velocityNormalsCache[frameIndex] = palmNormal;
+                    velocityPositionsSum = newPositionsSum;
+                    velocityNormalsSum = newNormalsSum;
+                }
+
+                deltaTimeStart = Time.unscaledTime;
+                frameOn++;
+            }
+        }
+
+        #endregion
     }
 }
