@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandMeshHandler>(this);
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             if (Controller != null)
             {
@@ -78,8 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return jointTransform != null;
         }
 
+        /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 
+        /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             // We must check if either this or gameObject equate to null because this callback may be triggered after
@@ -93,7 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker OnHandJointsUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.OnHandJointsUpdated");
 
-        void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
+        /// <inheritdoc/>
+        public virtual void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
             using (OnHandJointsUpdatedPerfMarker.Auto())
             {
@@ -173,7 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker OnHandMeshUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.OnHandMeshUpdated");
 
-        public void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
+        /// <inheritdoc/>
+        public virtual void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
         {
             using (OnHandMeshUpdatedPerfMarker.Auto())
             {
