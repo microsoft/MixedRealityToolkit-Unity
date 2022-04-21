@@ -78,7 +78,7 @@ try {
     $logFilePath = "Logs\Build.InEditor.WSA.$($Version).log"
     dotnet msbuild ..\NuGet\BuildSource.proj -target:BuildWSAEditor > $logFilePath
     if ($lastexitcode -ge 1) {
-        Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)$logFilePath";
+        Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)\$logFilePath";
         Copy-Item -Path $logFilePath -Destination "$OutputDirectory\"
         exit($lastexitcode)
     }
