@@ -75,10 +75,11 @@ try {
 
     ### Build the needed flavor for MRTK
     Write-Output "============ Building InEditor WSA ============ "
-    dotnet msbuild ..\NuGet\BuildSource.proj -target:BuildWSAEditor > "Logs\Build.InEditor.WSA.$($Version).log"
+    $logFilePath = "Logs\Build.InEditor.WSA.$($Version).log"
+    dotnet msbuild ..\NuGet\BuildSource.proj -target:BuildWSAEditor > $logFilePath
     if ($lastexitcode -ge 1) {
-        Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WSA.$($Version).log";
-        Copy-Item -Path "Logs\Build.InEditor.WSA.$($Version).log" -Destination "$OutputDirectory\"
+        Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)$logFilePath";
+        Copy-Item -Path $logFilePath -Destination "$OutputDirectory\"
         exit($lastexitcode)
     }
     
