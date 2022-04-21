@@ -122,20 +122,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                             switch (interactionMapping.InputType)
                             {
                                 case DeviceInputType.SpatialGrip:
-                                    MixedRealityPose currentGripPose = unityJointPoses[TrackedHandJoint.Palm];
-                                    interactionMapping.PoseData = currentGripPose;
-
-                                    if (interactionMapping.Changed)
+                                    if (TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose currentGripPose))
                                     {
-                                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
+                                        interactionMapping.PoseData = currentGripPose;
 
-                                        // Spatial Grip is also used as the basis for the source pose when device data is not provided
-                                        // We need to rotate it by an offset to properly represent the source pose.
-                                        MixedRealityPose CurrentControllerPose = currentGripPose;
-                                        CurrentControllerPose.Rotation *= (ControllerHandedness == Handedness.Left ? leftPalmOffset : rightPalmOffset);
+                                        if (interactionMapping.Changed)
+                                        {
+                                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
 
-                                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
-                                        IsPositionAvailable = IsRotationAvailable = true;
+                                            // Spatial Grip is also used as the basis for the source pose when device data is not provided
+                                            // We need to rotate it by an offset to properly represent the source pose.
+                                            MixedRealityPose CurrentControllerPose = currentGripPose;
+                                            CurrentControllerPose.Rotation *= (ControllerHandedness == Handedness.Left ? leftPalmOffset : rightPalmOffset);
+
+                                            CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                                            IsPositionAvailable = IsRotationAvailable = true;
+                                        }
                                     }
                                     break;
                                 case DeviceInputType.Select:
