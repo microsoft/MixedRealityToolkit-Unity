@@ -221,10 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             // Manually add special plugin dependencies to the projects
 #if UNITY_2019_3_OR_NEWER
-#if UNITY_2020_2_OR_NEWER
             if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit") || toReturn.Name.StartsWith("Unity.TextMeshPro"))
-#else
-            if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit"))
 #endif
             {
                 string[] plugins = SpecialPluginNameMappingUnity2019.Values.OrderByDescending(p => p).ToArray();
@@ -234,7 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     {
                         toReturn.AddDependency(projectInfo);
                     }
-#if UNITY_2020_2_OR_NEWER
                     else
                     {
                         CSProjectInfo newProjInfo = new CSProjectInfo(this, asmDefInfoMap[plugin], projectOutputPath);
@@ -245,7 +241,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         projectsMap.Add(plugin, newProjInfo);
                         toReturn.AddDependency(newProjInfo);
                     }
-#endif
                 }
             }
 #endif
