@@ -76,7 +76,6 @@ try {
     ### Build the needed flavor for MRTK
     Write-Output "============ Building InEditor WSA ============ "
     $logFilePath = "$(Get-Location)\Logs\Build.InEditor.WSA.$($Version).log"
-    dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
     dotnet msbuild ..\NuGet\BuildSource.proj -target:BuildWSAEditor > $logFilePath
     if ($lastexitcode -ge 1) {
         Write-Output "Copying $logFilePath to $OutputDirectory"
