@@ -222,7 +222,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             // Manually add special plugin dependencies to the projects
 #if UNITY_2019_3_OR_NEWER
             if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit") || toReturn.Name.StartsWith("Unity.TextMeshPro"))
-#endif
             {
                 string[] plugins = SpecialPluginNameMappingUnity2019.Values.OrderByDescending(p => p).ToArray();
                 foreach (var plugin in plugins)
