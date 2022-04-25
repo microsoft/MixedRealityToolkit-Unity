@@ -300,6 +300,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // The base class takes care of updating all of the joint data
                 base.OnHandJointsUpdated(eventData);
 
+                // Ensures that the hand only renders when the event data matches the controller this visualizer represents
+                if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
+                {
+                    return;
+                }
+                Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
+
                 IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
                 MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
 
