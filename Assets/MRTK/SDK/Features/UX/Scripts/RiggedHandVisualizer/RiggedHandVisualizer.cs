@@ -300,6 +300,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // The base class takes care of updating all of the joint data
                 base.OnHandJointsUpdated(eventData);
 
+                // exit early if we've gotten a hand mesh from the underlying platform
+                if (receivingPlatformHandMesh)
+                {
+                    return;
+                }
+
                 // Ensures that the hand only renders when the event data matches the controller this visualizer represents
                 if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
                 {
@@ -309,12 +315,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
                 MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
-
-                if (receivingPlatformHandMesh)
-                {
-                    // exit early if we've gotten a hand mesh from the underlying platform
-                    return;
-                }
 
                 // Only runs if render hand mesh is true
                 bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization;
