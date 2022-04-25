@@ -93,7 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
         protected virtual void UpdateSixDofData(InputDevice inputDevice)
         {
-            UpdateSourceData(inputDevice);
+            if (!UpdateSourceData(inputDevice))
+            {
+                return;
+            }
+
             UpdateVelocity(inputDevice);
 
             if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
@@ -129,33 +133,43 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// Update the source input from the device.
         /// </summary>
         /// <param name="inputDevice">The InputDevice retrieved from the platform.</param>
-        public void UpdateSourceData(InputDevice inputDevice)
+        /// <returns>Whether position or rotation was successfully updated.</returns>
+        public bool UpdateSourceData(InputDevice inputDevice)
         {
             using (UpdateSourceDataPerfMarker.Auto())
             {
-                var lastState = TrackingState;
+                TrackingState lastState = TrackingState;
                 LastControllerPose = CurrentControllerPose;
 
                 // Check for position and rotation.
-                IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
-                IsPositionApproximate = false;
+                bool isPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+                bool isRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
 
-                IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
-
-                // Devices are considered tracked if we receive position OR rotation data from the sensors.
-                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
-                CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
-
-                CurrentControllerPose.Position = CurrentControllerPosition;
-                CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-                // Raise input system events if it is enabled.
-                if (lastState != TrackingState)
+                if (isPositionAvailable || isRotationAvailable)
                 {
-                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+                    IsPositionAvailable = isPositionAvailable;
+                    IsPositionApproximate = false;
+                    IsRotationAvailable = isRotationAvailable;
+
+                    // Devices are considered tracked if we receive position OR rotation data from the sensors.
+                    TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+                    CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(position);
+                    CurrentControllerRotation = MixedRealityPlayspace.Rotation * rotation;
+
+                    CurrentControllerPose.Position = CurrentControllerPosition;
+                    CurrentControllerPose.Rotation = CurrentControllerRotation;
+
+                    // Raise input system events if it is enabled.
+                    if (lastState != TrackingState)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+                    }
+
+                    return true;
                 }
+
+                return false;
             }
         }
 
@@ -165,13 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             using (UpdateVelocityPerfMarker.Auto())
             {
-                Vector3 newVelocity;
-                if (inputDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out newVelocity))
+                if (inputDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out Vector3 newVelocity))
                 {
                     Velocity = newVelocity;
                 }
-                Vector3 newAngularVelocity;
-                if (inputDevice.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out newAngularVelocity))
+
+                if (inputDevice.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out Vector3 newAngularVelocity))
                 {
                     AngularVelocity = newAngularVelocity;
                 }

@@ -273,9 +273,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             return base.GetCurrentControllerType(inputDevice);
         }
 
-#endregion Controller Utilities
+        #endregion Controller Utilities
 
-#region Gesture implementation
+        #region Gesture implementation
 
 #if MSFT_OPENXR && WINDOWS_UWP
         private void ReadProfile()
@@ -520,6 +520,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         }
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
-#endregion Gesture implementation
+        #endregion Gesture implementation
     }
 }
