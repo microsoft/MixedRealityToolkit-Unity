@@ -14,6 +14,8 @@ jobs:
   - checkout: self
     clean: true
     fetchDepth: 1
+  
+  - task: NuGetToolInstaller@1
 
   - task: PowerShell@2
     displayName: 'Create binaries for docs generation'
@@ -26,6 +28,7 @@ jobs:
         -OutputDirectory $(Build.ArtifactStagingDirectory)
 
   - task: PublishPipelineArtifact@1
+    condition: always()
     displayName: Publish docs binaries
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
@@ -39,6 +42,8 @@ jobs:
   - checkout: self
     clean: true
     fetchDepth: 1
+  
+  - task: NuGetToolInstaller@1
 
   - task: PowerShell@2
     displayName: 'Create binaries for docs generation'
@@ -51,6 +56,7 @@ jobs:
         -OutputDirectory $(Build.ArtifactStagingDirectory)
 
   - task: PublishPipelineArtifact@1
+    condition: always()
     displayName: Publish docs binaries
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
