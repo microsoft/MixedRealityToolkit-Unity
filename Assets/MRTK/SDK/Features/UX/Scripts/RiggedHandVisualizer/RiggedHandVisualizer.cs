@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Hand visualizer that controls a hierarchy of transforms to be used by a SkinnedMeshRenderer
     /// Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has visual parity
     /// </summary>
-    public class RiggedHandVisualizer : BaseHandVisualizer, IMixedRealityHandJointHandler
+    public class RiggedHandVisualizer : BaseHandVisualizer
     {
         // This bool is used to track whether or not we are recieving hand mesh data from the platform itself
         // If we aren't we will use our own rigged hand visualizer to render the hand mesh
-        private bool receivingPlatformHandMesh;
+        private bool receivingPlatformHandMesh => handMeshFilter != null;
 
         /// <summary>
         /// Wrist Transform
@@ -97,11 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SkinnedMeshRenderer handRenderer = null;
 
         /// <summary>
-        /// flag checking that the handRenderer was initialized with its own material
-        /// </summary>
-        private bool handRendererInitialized = false;
-
-        /// <summary>
         /// Renderer of the hand mesh.
         /// </summary>
         public SkinnedMeshRenderer HandRenderer => handRenderer;
@@ -164,6 +159,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         protected readonly Transform[] riggedVisualJointsArray = new Transform[ArticulatedHandPose.JointCount];
+
+        /// <summary>
+        /// flag checking that the handRenderer was initialized with its own material
+        /// </summary>
+        private bool handRendererInitialized = false;
+
+        /// <summary>
+        /// Flag to only show a only show a warning once
+        /// </summary>
+        private bool displayedMaterialPropertyWarning = false;
 
         protected override void Start()
         {
@@ -275,21 +280,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return null;
         }
 
-        private void OnEnable()
-        {
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
-        }
-
-        private void OnDisable()
-        {
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
-        }
-
-        private bool displayedMaterialPropertyWarning = false;
-
-
         private static readonly ProfilerMarker OnHandJointsUpdatedPerfMarker = new ProfilerMarker("[MRTK] RiggedHandVisualizer.OnHandJointsUpdated");
 
         /// <inheritdoc/>
@@ -297,12 +287,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnHandJointsUpdatedPerfMarker.Auto())
             {
+                GameObject.Find("TestText2").GetComponent<TMPro.TextMeshPro>().text = "updating base hand joints";
                 // The base class takes care of updating all of the joint data
                 base.OnHandJointsUpdated(eventData);
 
-                // exit early if we've gotten a hand mesh from the underlying platform
+                // exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform
                 if (receivingPlatformHandMesh)
                 {
+                    HandRenderer.enabled = false;
                     return;
                 }
 
@@ -405,18 +397,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
-        }
-
-        /// <inheritdoc/>
-        public override void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
-        {
-            // We've gotten hand mesh data from the platform, don't use the rigged hand models for visualization
-            if (eventData.Handedness == Controller?.ControllerHandedness)
-            {
-                receivingPlatformHandMesh = true;
-            }
-
-            base.OnHandMeshUpdated(eventData);
         }
 
         private Quaternion Reorientation()

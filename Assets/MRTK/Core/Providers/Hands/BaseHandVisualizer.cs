@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnHandMeshUpdatedPerfMarker.Auto())
             {
-                if (eventData.Handedness != Controller?.ControllerHandedness)
+                if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
                 {
                     return;
                 }
