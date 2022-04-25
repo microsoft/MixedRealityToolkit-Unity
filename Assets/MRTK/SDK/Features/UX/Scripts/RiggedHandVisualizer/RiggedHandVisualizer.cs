@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
         {
             // We've gotten hand mesh data from the platform, don't use the rigged hand models for visualization
-            if (eventData.Handedness != Controller?.ControllerHandedness)
+            if (eventData.Handedness == Controller?.ControllerHandedness)
             {
                 receivingPlatformHandMesh = true;
             }
