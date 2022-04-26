@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using System;
 using System.Collections;
 using Unity.Profiling;
 using UnityEngine;
@@ -233,7 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         basePointerName = gameObject.name;
                     }
                     PointerName = $"{Handedness}_{basePointerName}";
-                    InputSourceParent = base.Controller.InputSource;
                     SetCursor();
                 }
             }
@@ -273,7 +273,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource InputSourceParent { get; protected set; }
+        public IMixedRealityInputSource InputSourceParent
+        {
+            get { return base.Controller?.InputSource; }
+
+            [Obsolete("Setting the Input Source Parent directly is no longer supported")]
+            protected set { }
+        }
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
