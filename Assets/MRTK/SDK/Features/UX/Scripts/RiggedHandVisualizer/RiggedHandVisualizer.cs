@@ -287,7 +287,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnHandJointsUpdatedPerfMarker.Auto())
             {
-                GameObject.Find("TestText2").GetComponent<TMPro.TextMeshPro>().text = "updating base hand joints";
                 // The base class takes care of updating all of the joint data
                 base.OnHandJointsUpdated(eventData);
 
