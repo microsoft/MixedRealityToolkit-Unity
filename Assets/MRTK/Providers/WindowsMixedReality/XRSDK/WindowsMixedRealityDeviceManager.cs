@@ -85,6 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             mixedRealityGazeProviderHeadOverride = Service?.GazeProvider as IMixedRealityGazeProviderHeadOverride;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
+#if WINDOWS_UWP
+            WindowsMixedRealityUtilities.SpatialInteractionManager.SourcePressed += SpatialInteractionManager_SourcePressed;
+#endif // WINDOWS_UWP
+
 #if HP_CONTROLLER_ENABLED
             // Listens to events to track the HP Motion Controller
             motionControllerWatcher = new MotionControllerWatcher();
@@ -130,9 +134,47 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
 
+#if WINDOWS_UWP
+            if (shouldSendVoiceEvents)
+            {
+                WindowsMixedRealityXRSDKGGVHand controller = GetOrAddVoiceController();
+                if (controller != null)
+                {
+                    // RaiseOnInputDown for "select"
+                    controller.UpdateVoiceState(true);
+                    // RaiseOnInputUp for "select"
+                    controller.UpdateVoiceState(false);
+
+                    // On WMR, the voice recognizer does not actually register the phrase 'select'
+                    // when you add it to the speech commands profile. Therefore, simulate
+                    // the "select" voice command running to ensure that we get a select voice command
+                    // registered. This is used by FocusProvider to detect when the select pointer is active.
+                    Service?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+                }
+
+                shouldSendVoiceEvents = false;
+            }
+#endif // WINDOWS_UWP
+
             base.Update();
         }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+
+#if WINDOWS_UWP
+        /// <inheritdoc/>
+        public override void Disable()
+        {
+            WindowsMixedRealityUtilities.SpatialInteractionManager.SourcePressed -= SpatialInteractionManager_SourcePressed;
+
+            if (voiceController != null)
+            {
+                RemoveControllerFromScene(voiceController);
+                voiceController = null;
+            }
+
+            base.Disable();
+        }
+#endif // WINDOWS_UWP
 
         #endregion IMixedRealityDeviceManager Interface
 
@@ -332,5 +374,54 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         }
 
         #endregion Controller Utilities
+
+        #region SpatialInteractionManager events
+
+#if WINDOWS_UWP
+        /// <summary>
+        /// SDK Interaction Source Pressed Event handler. Used only for voice.
+        /// </summary>
+        /// <param name="args">SDK source pressed event arguments</param>
+        private void SpatialInteractionManager_SourcePressed(SpatialInteractionManager sender, SpatialInteractionSourceEventArgs args)
+        {
+            if (args.State.Source.Kind == SpatialInteractionSourceKind.Voice)
+            {
+                shouldSendVoiceEvents = true;
+            }
+        }
+
+        private WindowsMixedRealityXRSDKGGVHand voiceController = null;
+        private bool shouldSendVoiceEvents = false;
+
+        private WindowsMixedRealityXRSDKGGVHand GetOrAddVoiceController()
+        {
+            if (voiceController != null)
+            {
+                return voiceController;
+            }
+
+            IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource("Mixed Reality Voice", sourceType: InputSourceType.Voice);
+            WindowsMixedRealityXRSDKGGVHand detectedController = new WindowsMixedRealityXRSDKGGVHand(TrackingState.NotTracked, Handedness.None, inputSource);
+
+            if (!detectedController.Enabled)
+            {
+                // Controller failed to be setup correctly.
+                // Return null so we don't raise the source detected.
+                return null;
+            }
+
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
+
+            Service?.RaiseSourceDetected(detectedController.InputSource, detectedController);
+
+            voiceController = detectedController;
+            return voiceController;
+        }
+#endif // WINDOWS_UWP
+
+        #endregion SpatialInteractionManager events
     }
 }

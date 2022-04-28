@@ -125,11 +125,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             gestureRecognizer?.Stop();
+#if UNITY_OPENXR_1_4_0_OR_NEWER
+            gestureRecognizer?.Destroy();
+#else
             gestureRecognizer?.Dispose();
+#endif // UNITY_OPENXR_1_4_0_OR_NEWER
             gestureRecognizer = null;
 
             navigationGestureRecognizer?.Stop();
+#if UNITY_OPENXR_1_4_0_OR_NEWER
+            navigationGestureRecognizer?.Destroy();
+#else
             navigationGestureRecognizer?.Dispose();
+#endif // UNITY_OPENXR_1_4_0_OR_NEWER
             navigationGestureRecognizer = null;
 
             base.Disable();
@@ -213,6 +221,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     return typeof(MicrosoftMotionController);
                 case SupportedControllerType.HPMotionController:
                     return typeof(HPReverbG2Controller);
+                case SupportedControllerType.OculusTouch:
+                    return typeof(OculusController);
                 case SupportedControllerType.ArticulatedHand:
                     return typeof(MicrosoftArticulatedHand);
                 default:
@@ -227,6 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             {
                 case SupportedControllerType.WindowsMixedReality:
                 case SupportedControllerType.HPMotionController:
+                case SupportedControllerType.OculusTouch:
                     return InputSourceType.Controller;
                 case SupportedControllerType.ArticulatedHand:
                     return InputSourceType.Hand;
@@ -245,6 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
             if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
+#if UNITY_ANDROID
+                return SupportedControllerType.OculusTouch;
+#else
                 if (inputDevice.manufacturer == "HP")
                 {
                     return SupportedControllerType.HPMotionController;
@@ -253,6 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 {
                     return SupportedControllerType.WindowsMixedReality;
                 }
+#endif
             }
 
             return base.GetCurrentControllerType(inputDevice);

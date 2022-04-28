@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// If true, eye-based tracking will be used when available.
+        /// This field does not control whether eye tracking data is provided.
         /// </summary>
         /// <remarks>
         /// <para>The usage of eye-based tracking depends on having the Gaze Input permission set

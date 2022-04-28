@@ -19,11 +19,7 @@ jobs:
 - job: Compliance
   timeoutInMinutes: 90
   pool:
-    name: Analog On-Prem
-    demands:
-    - ${{ variables.Unity2018VersionInternal }}
-    - COG-UnityCache-WUS2-01
-    - SDK_18362 -equals TRUE
+    name: Analog-Unity
   workspace:
     clean: resources
   steps:
@@ -59,7 +55,7 @@ jobs:
 
   - template: templates/compilemsbuild.yml
     parameters:
-      UnityVersion: $(Unity2018VersionInternal)
+      UnityVersion: $(Unity2019VersionInternal)
 
   - task: BinSkim@3
     inputs:

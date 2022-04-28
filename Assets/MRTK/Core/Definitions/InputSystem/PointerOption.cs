@@ -16,11 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public PointerOption(SupportedControllerType controllerType, Handedness handedness, GameObject pointerPrefab)
+        public PointerOption(SupportedControllerType controllerType, Handedness handedness, GameObject pointerPrefab, LayerMask[] prioritizedLayerMasks = null)
         {
             this.controllerType = controllerType;
             this.handedness = handedness;
             this.pointerPrefab = pointerPrefab;
+            this.prioritizedLayerMasks = prioritizedLayerMasks ?? new LayerMask[1] { UnityEngine.Physics.DefaultRaycastLayers };
         }
 
         [EnumFlags]
@@ -51,5 +52,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The prefab with an <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/> component to create when a valid controller becomes available. 
         /// </summary>
         public GameObject PointerPrefab => pointerPrefab;
+
+        [SerializeField]
+        [Tooltip("The LayerMasks, in prioritized order, which are used to determine the target.")]
+        private LayerMask[] prioritizedLayerMasks;
+
+        /// <summary>
+        /// The LayerMasks, in prioritized order, which are used to determine the target
+        /// </summary>
+        public LayerMask[] PrioritizedLayerMasks => prioritizedLayerMasks;
     }
 }

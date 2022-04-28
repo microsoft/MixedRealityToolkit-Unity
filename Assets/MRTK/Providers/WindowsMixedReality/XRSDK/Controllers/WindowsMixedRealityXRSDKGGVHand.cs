@@ -22,5 +22,42 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new SimpleHandDefinition(controllerHandedness))
         { }
+
+        internal void UpdateVoiceState(bool isPressed)
+        {
+            MixedRealityInteractionMapping interactionMapping = null;
+
+            for (int i = 0; i < Interactions?.Length; i++)
+            {
+                MixedRealityInteractionMapping currentInteractionMapping = Interactions[i];
+
+                if (currentInteractionMapping.AxisType == AxisType.Digital && currentInteractionMapping.InputType == DeviceInputType.Select)
+                {
+                    interactionMapping = currentInteractionMapping;
+                    break;
+                }
+            }
+
+            if (interactionMapping == null)
+            {
+                return;
+            }
+
+            interactionMapping.BoolData = isPressed;
+
+            // If our value changed raise it.
+            if (interactionMapping.Changed)
+            {
+                // Raise input system event if it's enabled
+                if (interactionMapping.BoolData)
+                {
+                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                }
+                else
+                {
+                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                }
+            }
+        }
     }
 }

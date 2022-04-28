@@ -81,7 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             MeshComputeSettings settings = new MeshComputeSettings
             {
+#if !UNITY_OPENXR_1_4_0_OR_NEWER
                 MeshType = (option == SpatialAwarenessMeshDisplayOptions.Visible) ? MeshType.Visual : MeshType.Collider,
+#endif // !UNITY_OPENXR_1_4_0_OR_NEWER
                 VisualMeshLevelOfDetail = MapMRTKLevelOfDetailToOpenXR(levelOfDetail),
                 MeshComputeConsistency = MeshComputeConsistency.OcclusionOptimized,
             };
