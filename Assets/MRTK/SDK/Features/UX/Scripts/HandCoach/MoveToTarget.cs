@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Object to track.
         /// </summary>
-        private GameObject TrackingObject
+        public GameObject TrackingObject
         {
             get
             {
