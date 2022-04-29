@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 MainCameraProvider.mainCamera = CameraCache.Main;
 #endif
                 // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
-                LeapXRServiceProvider leapXRServiceProvider;
+                LeapXRServiceProvider leapXRServiceProvider; // This is a different type than the LeapMotionServiceProvider property for access to specific settings below.
                 LeapMotionServiceProvider = leapXRServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
 
                 // Allow modification of VR specific offset modes if the leapControllerOrientation is Headset
