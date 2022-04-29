@@ -280,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #if UNITY_2020_3_OR_NEWER
             [Obsolete("Setting the Input Source Parent directly is no longer supported")]
 #endif
-            protected set { Debug.LogWarning("Setting the Input Source Parent directly is no longer supported")}
+            protected set { Debug.LogWarning("Setting the Input Source Parent directly is no longer supported"); }
         }
 
         /// <inheritdoc />
