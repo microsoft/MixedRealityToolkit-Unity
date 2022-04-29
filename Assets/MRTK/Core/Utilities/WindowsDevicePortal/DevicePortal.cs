@@ -880,29 +880,30 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
             await webRequest.SendWebRequest();
 
+            long responseCode = webRequest.responseCode;
 #if UNITY_2020_1_OR_NEWER
             if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
 #else
             if (webRequest.isNetworkError || webRequest.isHttpError)
 #endif // UNITY_2020_1_OR_NEWER
             {
-                if (webRequest.responseCode == 401)
+                if (responseCode == 401)
                 {
-                    return new Response(false, "Invalid Credentials", null, webRequest.responseCode);
+                    return new Response(false, "Invalid Credentials", null, responseCode);
                 }
 
                 if (webRequest.GetResponseHeaders() == null)
                 {
-                    return new Response(false, "Device Not Found | No Response Headers", null, webRequest.responseCode);
+                    return new Response(false, "Device Not Found | No Response Headers", null, responseCode);
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
                 string downloadHandlerText = webRequest.downloadHandler?.text;
-                Debug.LogError($"REST Auth Error: {webRequest.responseCode}\n{downloadHandlerText}{responseHeaders}");
-                return new Response(false, $"{downloadHandlerText}", webRequest.downloadHandler?.data, webRequest.responseCode);
+                Debug.LogError($"REST Auth Error: {responseCode}\n{downloadHandlerText}{responseHeaders}");
+                return new Response(false, $"{downloadHandlerText}", webRequest.downloadHandler?.data, responseCode);
             }
 
-            return new Response(true, () => webRequest.GetResponseHeader("Set-Cookie"), () => webRequest.downloadHandler?.data, webRequest.responseCode);
+            return new Response(true, () => webRequest.GetResponseHeader("Set-Cookie"), () => webRequest.downloadHandler?.data, responseCode);
         }
     }
 }
