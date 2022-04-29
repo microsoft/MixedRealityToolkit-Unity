@@ -277,8 +277,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return base.Controller?.InputSource; }
 
+#if UNITY_2020_3_OR_NEWER
             [Obsolete("Setting the Input Source Parent directly is no longer supported")]
-            protected set { }
+#endif
+            protected set { Debug.LogWarning("Setting the Input Source Parent directly is no longer supported")}
         }
 
         /// <inheritdoc />
@@ -506,9 +508,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsFocusLocked = false;
         }
 
-        #endregion IMixedRealityPointer Implementation
+#endregion IMixedRealityPointer Implementation
 
-        #region IEquality Implementation
+#region IEquality Implementation
 
         private static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
@@ -554,9 +556,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion IEquality Implementation
+#endregion IEquality Implementation
 
-        #region IMixedRealitySourcePoseHandler Implementation
+#region IMixedRealitySourcePoseHandler Implementation
 
         private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnSourceLost");
 
@@ -590,9 +592,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion IMixedRealitySourcePoseHandler Implementation
+#endregion IMixedRealitySourcePoseHandler Implementation
 
-        #region IMixedRealityInputHandler Implementation
+#region IMixedRealityInputHandler Implementation
 
         private static readonly ProfilerMarker OnInputUpPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnInputUp");
 
@@ -677,6 +679,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion  IMixedRealityInputHandler Implementation
+#endregion  IMixedRealityInputHandler Implementation
     }
 }
