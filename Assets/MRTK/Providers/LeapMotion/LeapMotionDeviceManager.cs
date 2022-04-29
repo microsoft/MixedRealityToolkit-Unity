@@ -130,7 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 MainCameraProvider.mainCamera = CameraCache.Main;
 #endif
                 // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
-                LeapMotionServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
+                LeapXRServiceProvider leapXRServiceProvider;
+                LeapMotionServiceProvider = leapXRServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
 
                 // Allow modification of VR specific offset modes if the leapControllerOrientation is Headset
                 // These settings mirror the modification of the properties exposed in the inspector within the LeapXRServiceProvider attached
@@ -138,18 +139,18 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.ManualHeadOffset)
                 {
                     // Change the offset mode before setting the properties
-                    LeapMotionServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.ManualHeadOffset;
+                    leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.ManualHeadOffset;
 
-                    LeapMotionServiceProvider.deviceOffsetYAxis = SettingsProfile.LeapVRDeviceOffsetY;
-                    LeapMotionServiceProvider.deviceOffsetZAxis = SettingsProfile.LeapVRDeviceOffsetZ;
-                    LeapMotionServiceProvider.deviceTiltXAxis = SettingsProfile.LeapVRDeviceOffsetTiltX;
+                    leapXRServiceProvider.deviceOffsetYAxis = SettingsProfile.LeapVRDeviceOffsetY;
+                    leapXRServiceProvider.deviceOffsetZAxis = SettingsProfile.LeapVRDeviceOffsetZ;
+                    leapXRServiceProvider.deviceTiltXAxis = SettingsProfile.LeapVRDeviceOffsetTiltX;
                 }
                 else if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.Transform)
                 {
                     if (SettingsProfile.LeapVRDeviceOrigin != null)
                     {
-                        LeapMotionServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.Transform;
-                        LeapMotionServiceProvider.deviceOrigin = SettingsProfile.LeapVRDeviceOrigin;
+                        leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.Transform;
+                        leapXRServiceProvider.deviceOrigin = SettingsProfile.LeapVRDeviceOrigin;
                     }
                     else
                     {
