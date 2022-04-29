@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return true;
             }
 
-            // Try to use the profile'ss override model first
+            // Try to use the profile's override model first
             GameObject controllerModel = controllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
 
             // If the Controller model is still null in the end, use the global defaults.
