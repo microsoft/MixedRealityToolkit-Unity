@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [Tooltip("The amount to offset this controller visualizers rotation from the input pose")]
-        protected Quaternion rotationOffset = Quaternion.Euler(0f, 0f, 0f);
+        protected Quaternion rotationOffset = Quaternion.identity;
 
         protected virtual Quaternion RotationOffset => rotationOffset;
 
