@@ -25,7 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             BuildTarget.WSAPlayer
         };
 
-        public const string CSharpVersion = "7.3";
+        public const string CSharpVersion =
+#if UNITY_2020_2_OR_NEWER
+            "8.0";
+#else
+            "7.3";
+#endif
+
         public readonly static Version DefaultMinUWPSDK = new Version("10.0.14393.0");
 
         private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
