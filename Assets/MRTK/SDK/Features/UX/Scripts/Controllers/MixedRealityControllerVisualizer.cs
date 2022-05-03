@@ -14,10 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer, IMixedRealityControllerVisualizer
     {
         /// <summary>
-        /// The 
+        /// The amount to offset this controller visualizer's rotation from the input pose
         /// </summary>
         [SerializeField]
-        [Tooltip("The amount to offset this controller visualizers rotation from the input pose")]
+        [Tooltip("The amount to offset this controller visualizer's rotation from the input pose")]
         protected Quaternion rotationOffset = Quaternion.identity;
 
         protected virtual Quaternion RotationOffset => rotationOffset;
