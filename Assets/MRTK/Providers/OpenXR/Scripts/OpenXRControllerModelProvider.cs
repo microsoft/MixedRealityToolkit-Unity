@@ -4,30 +4,30 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
 using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System.Collections.Generic;
-#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     /// <summary>
     /// Queries the OpenXR APIs for a renderable controller model.
     /// </summary>
-    internal class MicrosoftControllerModelProvider
+    internal class OpenXRControllerModelProvider
     {
-        public MicrosoftControllerModelProvider(Utilities.Handedness handedness)
+        public OpenXRControllerModelProvider(Utilities.Handedness handedness)
         {
-#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
             controllerModelProvider = handedness == Utilities.Handedness.Left ? ControllerModel.Left : ControllerModel.Right;
-#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
         }
 
-#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
         private static readonly Dictionary<ulong, GameObject> ControllerModelDictionary = new Dictionary<ulong, GameObject>(2);
         private readonly ControllerModel controllerModelProvider;
-#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
 
         // Disables "This async method lacks 'await' operators and will run synchronously." when the correct OpenXR package isn't installed
 #pragma warning disable CS1998
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             GameObject gltfGameObject = null;
 
-#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
                 Debug.LogError("Failed to obtain controller model key from platform.");
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     ControllerModelDictionary.Add(modelKey, gltfGameObject);
                 }
             }
-#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
 
             return gltfGameObject;
         }

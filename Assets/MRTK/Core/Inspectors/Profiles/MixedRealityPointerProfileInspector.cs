@@ -16,7 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Pointer Option");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Pointer Option", "Add Pointer Option");
         private static readonly GUIContent GazeCursorPrefabContent = new GUIContent("Gaze Cursor Prefab");
+        private static readonly GUIContent UseEyeTrackingDataContent = new GUIContent("Use Eye Tracking Data");
         private static readonly GUIContent RaycastLayerMaskContent = new GUIContent("Default Raycast LayerMasks");
+
+#if UNITY_2019_3_OR_NEWER
+        private const string EnableGazeCapabilityContent = "To use eye tracking with UWP, the GazeInput capability needs to be set in the manifest." +
+            "\nPlease click the button below to set it in the Unity UWP Player Settings and check the Visual Studio appxmanifest capabilities to ensure it's enabled.";
+#endif // UNITY_2019_3_OR_NEWER
 
         private const string ProfileTitle = "Pointer Settings";
         private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
@@ -31,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
         private SerializedProperty useHeadGazeOverride;
-        private SerializedProperty isEyeTrackingEnabled;
+        private SerializedProperty useEyeTrackingDataWhenAvailable;
 
         private static bool showGazeProviderProperties = true;
         private UnityEditor.Editor gazeProviderEditor;
@@ -51,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
             useHeadGazeOverride = serializedObject.FindProperty("useHeadGazeOverride");
-            isEyeTrackingEnabled = serializedObject.FindProperty("isEyeTrackingEnabled");
+            useEyeTrackingDataWhenAvailable = serializedObject.FindProperty("isEyeTrackingEnabled");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
             primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
         }
@@ -82,7 +88,25 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.PropertyField(gazeCursorPrefab, GazeCursorPrefabContent);
                     EditorGUILayout.PropertyField(gazeProviderType);
                     EditorGUILayout.PropertyField(useHeadGazeOverride);
-                    EditorGUILayout.PropertyField(isEyeTrackingEnabled);
+
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PropertyField(useEyeTrackingDataWhenAvailable, UseEyeTrackingDataContent);
+                    // Render a help link for getting started with eyetracking documentation
+                    string helpURL = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/eye-tracking/eye-tracking-basic-setup";
+                    InspectorUIUtility.RenderDocumentationButton(helpURL);
+                    EditorGUILayout.EndHorizontal();
+
+#if UNITY_2019_3_OR_NEWER
+                    if (useEyeTrackingDataWhenAvailable.boolValue && MixedRealityOptimizeUtils.IsBuildTargetUWP() && !PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.GazeInput))
+                    {
+                        EditorGUILayout.HelpBox(EnableGazeCapabilityContent, MessageType.Warning);
+                        if (InspectorUIUtility.RenderIndentedButton("Set GazeInput capability"))
+                        {
+                            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true);
+                        }
+                    }
+#endif // UNITY_2019_3_OR_NEWER
+
                     EditorGUILayout.Space();
 
                     var gazeProvider = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>();

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
@@ -10,27 +10,25 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
-    /// <summary>
-    /// Open XR + XR SDK implementation of <see href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#_microsoft_mixed_reality_motion_controller_profile">interaction_profiles/microsoft/motion_controller</see>.
-    /// </summary>
     [MixedRealityController(
-        SupportedControllerType.WindowsMixedReality,
+        SupportedControllerType.OculusTouch,
         new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
-    public class MicrosoftMotionController : GenericXRSDKController
+        "Textures/OculusControllersTouch",
+        supportedUnityXRPipelines: SupportedUnityXRPipelines.XRSDK)]
+    public class OculusController : GenericXRSDKController
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MicrosoftMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions, new WindowsMixedRealityControllerDefinition(controllerHandedness))
+        public OculusController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new OculusTouchControllerDefinition(controllerHandedness))
         { }
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
 
-        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRController.UpdatePoseData");
+        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] OculusController.UpdatePoseData");
 
         /// <summary>
         /// Update spatial pointer and spatial grip data.
