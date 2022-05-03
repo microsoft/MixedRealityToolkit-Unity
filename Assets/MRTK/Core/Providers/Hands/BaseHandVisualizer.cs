@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         jointsArray[i] = jointObject.transform;
                     }
                 }
-             }
+            }
         }
 
         private static readonly ProfilerMarker OnHandMeshUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.OnHandMeshUpdated");
