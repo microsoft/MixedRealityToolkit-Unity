@@ -319,6 +319,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                     {
                         TrackedHandJoint handJoint = (TrackedHandJoint)i;
+                        // Skip this hand joint if the event data doesn't have an entry for it
+                        if (!eventData.InputData.ContainsKey(handJoint))
+                        {
+                            continue;
+                        }
                         MixedRealityPose handJointPose = eventData.InputData[handJoint];
                         Transform jointTransform = riggedVisualJointsArray[i];
 
