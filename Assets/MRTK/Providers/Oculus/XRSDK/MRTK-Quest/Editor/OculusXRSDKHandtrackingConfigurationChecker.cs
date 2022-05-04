@@ -228,11 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             List<string> warningNumbers = new List<string>();
 
             // List of new warning numbers to add to the csc file
+            // Empty as of Oculus Integration 39.0 https://developer.oculus.com/downloads/package/unity-integration/39.0
             List<string> warningNumbersToAdd = new List<string>()
             {
-                "414",
-                "618",
-                "649"
             };
 
             if (!File.Exists(cscFilePath))

@@ -137,13 +137,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         [SerializeField]
         [Tooltip("Default CPU performance level (0-2 is documented), (3-5 is undocumented).")]
         [Range(0, 5)]
-        private int defaultCpuLevel = 2;
+        private OVRManager.ProcessorPerformanceLevel defaultCpuLevel = OVRManager.ProcessorPerformanceLevel.SustainedHigh;
 
         /// <summary>
         /// Accessor for the Oculus CPU performance level.
         /// https://developer.oculus.com/documentation/native/android/mobile-power-overview
         /// </summary>
-        public int CPULevel
+        public OVRManager.ProcessorPerformanceLevel CPULevel
         {
             get => defaultCpuLevel;
             set
@@ -156,12 +156,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         [SerializeField]
         [Tooltip("Default GPU performance level (0-2 is documented), (3-5 is undocumented).")]
         [Range(0, 5)]
-        private int defaultGpuLevel = 2;
+        private OVRManager.ProcessorPerformanceLevel defaultGpuLevel = OVRManager.ProcessorPerformanceLevel.SustainedHigh;
 
         /// <summary>
         /// Accessor for the Oculus GPU performance level.
         /// </summary>
-        public int GPULevel
+        public OVRManager.ProcessorPerformanceLevel GPULevel
         {
             get => defaultGpuLevel;
             set
@@ -189,8 +189,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         {
 #if OCULUSINTEGRATION_PRESENT
             UnityEngine.XR.XRSettings.eyeTextureResolutionScale = resolutionScale;
-            OVRManager.cpuLevel = CPULevel;
-            OVRManager.gpuLevel = GPULevel;
+            OVRManager.suggestedCpuPerfLevel = CPULevel;
+            OVRManager.suggestedGpuPerfLevel = GPULevel;
 
             if (OVRManager.fixedFoveatedRenderingSupported)
             {
