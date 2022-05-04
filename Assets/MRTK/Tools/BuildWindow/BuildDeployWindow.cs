@@ -51,10 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         #region Constants and Readonly Values
 
-        private const string UseRemoteTargetSessionKey = "DeployWindow_UseRemoteTarget";
-
-        private const string HOLOLENS_USB = "HoloLens over USB";
-
         private const string EMPTY_IP_ADDRESS = "0.0.0.0";
 
         private const string WifiAdapterType = "IEEE 802";
@@ -828,7 +824,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     currentConnection.IP = EditorGUILayout.TextField(IPAddressLabel, currentConnection.IP, GUILayout.Width(HALF_WIDTH));
                     if (GUILayout.Button("Connect over USB", GUILayout.Width(128f)))
                     {
-                        Application.OpenURL("https://docs.microsoft.com/en-us/windows/mixed-reality/develop/advanced-concepts/using-the-windows-device-portal#connecting-over-usb");
+                        Application.OpenURL("https://docs.microsoft.com/windows/mixed-reality/develop/advanced-concepts/using-the-windows-device-portal#connecting-over-usb");
                     }
                 }
 
@@ -1400,7 +1396,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (UwpBuildDeployPreferences.TargetAllConnections)
             {
-                targetDevices = new List<DeviceInfo>(); ;
+                targetDevices = new List<DeviceInfo>();
                 targetDevices.AddRange(portalConnections.Connections);
             }
             else
