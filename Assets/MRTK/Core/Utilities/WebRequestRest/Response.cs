@@ -19,9 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Response body from the resource.
         /// </summary>
-        [Obsolete("This property is obsolete. " +
-        "Use the GetResponseBody() method instead.", false)]
-        public string ResponseBody => responseBody ?? (responseBody = responseBodyTask?.Result);
+        public string ResponseBody => responseBody ?? (responseBody = responseBodyAction?.Invoke());
 
         /// <summary>
         /// Response body from the resource.
@@ -34,7 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             return await responseBodyTask;
         }
+
         private string responseBody;
+        private Func<string> responseBodyAction;
         private Task<string> responseBodyTask;
 
         /// <summary>
@@ -55,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public Response(bool successful, string responseBody, byte[] responseData, long responseCode)
         {
             Successful = successful;
+            responseBodyAction = null;
             responseBodyTask = null;
             this.responseBody = responseBody;
             responseDataAction = null;
@@ -62,9 +63,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             ResponseCode = responseCode;
         }
 
+        public Response(bool successful, Func<string> responseBodyAction, Func<byte[]> responseDataAction, long responseCode)
+        {
+            Successful = successful;
+            this.responseBodyAction = responseBodyAction;
+            responseBodyTask = ResponseUtils.BytesToString(responseDataAction.Invoke());
+            responseBody = null;
+            this.responseDataAction = responseDataAction;
+            responseData = null;
+            ResponseCode = responseCode;
+        }
+
         public Response(bool successful, Task<string> responseBodyTask, Func<byte[]> responseDataAction, long responseCode)
         {
             Successful = successful;
+            responseBodyAction = () => System.Text.Encoding.Default.GetString(responseDataAction.Invoke());
             this.responseBodyTask = responseBodyTask;
             responseBody = null;
             this.responseDataAction = responseDataAction;
@@ -75,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public Response(bool successful, Func<byte[]> responseDataAction, long responseCode)
         {
             Successful = successful;
+            responseBodyAction = () => System.Text.Encoding.Default.GetString(responseDataAction.Invoke());
             responseBodyTask = ResponseUtils.BytesToString(responseDataAction.Invoke());
             responseBody = null;
             this.responseDataAction = responseDataAction;
