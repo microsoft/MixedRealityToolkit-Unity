@@ -117,21 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// Current tracking confidence of right hand. Value managed by OculusQuestHand.cs.
         /// </summary>
         public OVRHand.TrackingConfidence CurrentRightHandTrackingConfidence { get; set; }
-#endif
-
-        [SerializeField]
-        [Range(0f, 5f)]
-        [Tooltip("Time after which low confidence is considered unreliable, and tracking is set to false. Setting this to 0 means low-confidence is always acceptable.")]
-        private float lowConfidenceTimeThreshold = 0.2f;
-
-        /// <summary>
-        /// Time in seconds after which low confidence is considered unreliable, and tracking is set to false.
-        /// </summary>
-        public float LowConfidenceTimeThreshold
-        {
-            get => lowConfidenceTimeThreshold;
-            set => lowConfidenceTimeThreshold = value;
-        }
 
         [Header("Performance Configuration")]
         [SerializeField]
@@ -170,6 +155,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 ApplyConfiguredPerformanceSettings();
             }
         }
+#endif
+
+        [SerializeField]
+        [Range(0f, 5f)]
+        [Tooltip("Time after which low confidence is considered unreliable, and tracking is set to false. Setting this to 0 means low-confidence is always acceptable.")]
+        private float lowConfidenceTimeThreshold = 0.2f;
+
+        /// <summary>
+        /// Time in seconds after which low confidence is considered unreliable, and tracking is set to false.
+        /// </summary>
+        public float LowConfidenceTimeThreshold
+        {
+            get => lowConfidenceTimeThreshold;
+            set => lowConfidenceTimeThreshold = value;
+        
 
 #if OCULUSINTEGRATION_PRESENT
         [Header("Super sampling")]
