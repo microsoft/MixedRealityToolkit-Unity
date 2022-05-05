@@ -169,6 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         {
             get => lowConfidenceTimeThreshold;
             set => lowConfidenceTimeThreshold = value;
+        }
         
 
 #if OCULUSINTEGRATION_PRESENT
