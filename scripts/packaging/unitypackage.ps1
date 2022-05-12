@@ -210,6 +210,8 @@ foreach ($entry in $packages.GetEnumerator()) {
             "-exportPackage $exportPackages " +
             "-logFile $logFileName"
 
+        New-Item -Path $logFileName -ItemType File -Force
+
         # Starts the Unity process, and the waits (and shows output from the editor in the console
         # while the process is still running.)
         $proc = Start-Process -FilePath "$unityEditor" -ArgumentList "$unityArgs" -PassThru

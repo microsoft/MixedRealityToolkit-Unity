@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using System;
 using System.Collections;
 using Unity.Profiling;
 using UnityEngine;
@@ -233,7 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         basePointerName = gameObject.name;
                     }
                     PointerName = $"{Handedness}_{basePointerName}";
-                    InputSourceParent = base.Controller.InputSource;
                     SetCursor();
                 }
             }
@@ -273,7 +273,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource InputSourceParent { get; protected set; }
+        public IMixedRealityInputSource InputSourceParent
+        {
+            get { return base.Controller?.InputSource; }
+
+#if UNITY_2020_3_OR_NEWER
+            [Obsolete("Setting the Input Source Parent directly is no longer supported")]
+#endif
+            protected set { Debug.LogWarning("Setting the Input Source Parent directly is no longer supported"); }
+        }
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
@@ -500,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsFocusLocked = false;
         }
 
-        #endregion IMixedRealityPointer Implementation
+#endregion IMixedRealityPointer Implementation
 
         #region IEquality Implementation
 
@@ -548,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion IEquality Implementation
+#endregion IEquality Implementation
 
         #region IMixedRealitySourcePoseHandler Implementation
 
@@ -584,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion IMixedRealitySourcePoseHandler Implementation
+#endregion IMixedRealitySourcePoseHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
@@ -671,6 +679,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion  IMixedRealityInputHandler Implementation
+#endregion  IMixedRealityInputHandler Implementation
     }
 }

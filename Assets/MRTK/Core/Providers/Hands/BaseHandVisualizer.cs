@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandMeshHandler>(this);
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             if (Controller != null)
             {
@@ -78,8 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return jointTransform != null;
         }
 
+        /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 
+        /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             // We must check if either this or gameObject equate to null because this callback may be triggered after
@@ -93,7 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker OnHandJointsUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.OnHandJointsUpdated");
 
-        void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
+        /// <inheritdoc/>
+        public virtual void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
             using (OnHandJointsUpdatedPerfMarker.Auto())
             {
@@ -123,7 +126,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
                     TrackedHandJoint handJoint = (TrackedHandJoint)i;
-                    MixedRealityPose handJointPose = eventData.InputData[handJoint];
+                    // Skip this hand joint if the event data doesn't have an entry for it
+                    if (!eventData.InputData.TryGetValue(handJoint, out MixedRealityPose handJointPose))
+                    {
+                        continue;
+                    }
                     Transform jointTransform = jointsArray[i];
 
                     if (jointTransform != null)
@@ -173,11 +180,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker OnHandMeshUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.OnHandMeshUpdated");
 
-        public void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
+        /// <inheritdoc/>
+        public virtual void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
         {
             using (OnHandMeshUpdatedPerfMarker.Auto())
             {
-                if (eventData.Handedness != Controller?.ControllerHandedness)
+                if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
                 {
                     return;
                 }
