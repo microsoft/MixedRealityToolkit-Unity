@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -209,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
                 case DwellStateType.DwellCanceled:
                     // this is a conditional state transition and can be overridden by the deriving class as per profile settings.
                     bool dwellCompleted = false;
-                    if(dwellProfile.DecayDwellOverTime)
+                    if (dwellProfile.DecayDwellOverTime)
                     {
                         FillTimer -= Time.deltaTime * dwellProfile.TimeToCompleteDwell / dwellProfile.TimeToAllowDwellResume;
                         dwellCompleted = FillTimer <= 0;
@@ -235,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Dwell
         public void OnFocusChanged(FocusEventData eventData)
         {
             InputSourceType inputSourceType = eventData.Pointer is GGVPointer ? InputSourceType.Head : eventData.Pointer.InputSourceParent.SourceType;
-            
+
             if (eventData.NewFocusedObject == gameObject
                 && inputSourceType == dwellProfile.DwellPointerType)
             {

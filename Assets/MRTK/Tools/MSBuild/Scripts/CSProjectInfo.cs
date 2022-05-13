@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 return;
             }
-            
+
             items.Add(new CSProjectDependency<T>(referenceInfo,
                 new HashSet<BuildTarget>(InEditorPlatforms.Keys.Intersect(referenceInfo.InEditorPlatforms.Keys)),
                 new HashSet<BuildTarget>(PlayerPlatforms.Keys.Intersect(referenceInfo.PlayerPlatforms.Keys))));

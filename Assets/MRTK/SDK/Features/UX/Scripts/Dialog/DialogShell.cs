@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             foreach (DialogButtonType buttonType in Enum.GetValues(typeof(DialogButtonType)))
             {
                 // If this button type flag is set
-                if (buttonType != DialogButtonType.None && result.Buttons.HasFlag(buttonType))
+                if (buttonType != DialogButtonType.None && result.Buttons.IsMaskSet(buttonType))
                 {
                     buttonTypes.Add(buttonType);
                 }

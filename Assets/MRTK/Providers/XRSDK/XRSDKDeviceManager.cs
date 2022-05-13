@@ -169,11 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 Handedness controllingHand;
 
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
+                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left))
                 {
                     controllingHand = Handedness.Left;
                 }
-                else if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                else if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))
                 {
                     controllingHand = Handedness.Right;
                 }

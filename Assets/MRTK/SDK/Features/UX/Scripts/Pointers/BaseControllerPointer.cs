@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using System;
 using System.Collections;
 using Unity.Profiling;
 using UnityEngine;
@@ -169,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             await EnsureInputSystemValid();
 
             // We've been destroyed during the await.
-            if (this == null)
+            if (this.IsNull())
             {
                 return;
             }
@@ -225,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 base.Controller = value;
 
-                if (base.Controller != null && this != null)
+                if (base.Controller != null && this.IsNotNull())
                 {
                     // Ensures that the basePointerName is only initialized once
                     if (basePointerName == string.Empty)
@@ -233,7 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         basePointerName = gameObject.name;
                     }
                     PointerName = $"{Handedness}_{basePointerName}";
-                    InputSourceParent = base.Controller.InputSource;
                     SetCursor();
                 }
             }
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 pointerName = value;
-                if (this != null)
+                if (this.IsNotNull())
                 {
                     gameObject.name = value;
                 }
@@ -273,7 +273,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource InputSourceParent { get; protected set; }
+        public IMixedRealityInputSource InputSourceParent
+        {
+            get { return base.Controller?.InputSource; }
+
+#if UNITY_2020_3_OR_NEWER
+            [Obsolete("Setting the Input Source Parent directly is no longer supported")]
+#endif
+            protected set { Debug.LogWarning("Setting the Input Source Parent directly is no longer supported"); }
+        }
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
@@ -370,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         /// <inheritdoc />
-        public virtual LayerMask[] PrioritizedLayerMasksOverride { get; set; }
+        public virtual LayerMask[] PrioritizedLayerMasksOverride { get; set; } = null;
 
         /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }
@@ -407,9 +415,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnPreSceneQuery() { }
 
         /// <inheritdoc />
-        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
+        public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo, out RayStep Ray, out int rayStepIndex)
         {
+            float rayStartDistance = 0;
             var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+
             switch (SceneQueryType)
             {
                 case SceneQueryType.SimpleRaycast:
@@ -417,8 +427,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (raycastProvider.Raycast(Rays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
                         {
+                            // Ensure that our distance is the sum of the rays we've traversed so far
+                            hitInfo.distance += rayStartDistance;
+                            Ray = Rays[i];
+                            rayStepIndex = i;
                             return true;
                         }
+                        rayStartDistance += Rays[i].Length;
                     }
                     break;
                 case SceneQueryType.SphereCast:
@@ -426,14 +441,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (raycastProvider.SphereCast(Rays[i], SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
                         {
+                            // Ensure that our distance is the sum of the rays we've traversed so far
+                            hitInfo.distance += rayStartDistance;
+                            Ray = Rays[i];
+                            rayStepIndex = i;
                             return true;
                         }
+                        rayStartDistance += Rays[i].Length;
                     }
                     break;
                 default:
                     throw new System.Exception("The Base Controller Pointer does not handle non-raycast scene queries");
             }
+
             hitInfo = new MixedRealityRaycastHit();
+            Ray = Rays[0];
+            rayStepIndex = 0;
             return false;
         }
 
@@ -441,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual bool OnSceneQuery(LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out GameObject hitObject, out Vector3 hitPoint, out float hitDistance)
         {
             MixedRealityRaycastHit hitInfo = new MixedRealityRaycastHit();
-            bool querySuccessful = OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
+            bool querySuccessful = OnSceneQuery(prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo, out _, out _);
 
             hitObject = focusIndividualCompoundCollider ? hitInfo.collider.gameObject : hitInfo.transform.gameObject;
             hitPoint = hitInfo.point;
@@ -485,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsFocusLocked = false;
         }
 
-        #endregion IMixedRealityPointer Implementation
+#endregion IMixedRealityPointer Implementation
 
         #region IEquality Implementation
 
@@ -533,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion IEquality Implementation
+#endregion IEquality Implementation
 
         #region IMixedRealitySourcePoseHandler Implementation
 
@@ -569,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion IMixedRealitySourcePoseHandler Implementation
+#endregion IMixedRealitySourcePoseHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
@@ -656,6 +679,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion  IMixedRealityInputHandler Implementation
+#endregion  IMixedRealityInputHandler Implementation
     }
 }

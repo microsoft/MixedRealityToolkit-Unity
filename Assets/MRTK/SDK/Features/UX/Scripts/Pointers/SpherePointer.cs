@@ -529,7 +529,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 hitPosition = closestColliderHitPosition;
 
-                if(closestGrabbable != null)
+                if (closestGrabbable != null)
                 {
                     grabbable = closestGrabbable;
                     return closestGrabbable.gameObject;
@@ -594,7 +594,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                bool isValidGrabbable =  (currentGrabbable != null) && !(ignoreBoundsHandlesForQuery && currentGrabbable.IsBoundsHandles);
+                bool isValidGrabbable = (currentGrabbable != null) && !(ignoreBoundsHandlesForQuery && currentGrabbable.IsBoundsHandles);
                 if (!isValidGrabbable)
                 {
                     return false;

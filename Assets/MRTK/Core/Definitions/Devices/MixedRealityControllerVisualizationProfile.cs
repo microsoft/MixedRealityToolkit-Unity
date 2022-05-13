@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             return setting.ControllerType != null &&
                 setting.ControllerType.Type == controllerType &&
-                setting.Handedness.HasFlag(hand) && setting.Handedness != Handedness.None;
+                setting.Handedness.IsMaskSet(hand) && setting.Handedness != Handedness.None;
         }
     }
 }

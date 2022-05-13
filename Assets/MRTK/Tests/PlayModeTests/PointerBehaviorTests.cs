@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Right, grabOff);
             EnsurePointerStates(Handedness.Left, grabOff);
         }
-        
+
         /// <summary>
         /// Tests that when source pose data is used the poke pointer and grab pointer are aligned in approximately the correct positions
         /// </summary>
@@ -252,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityPose palmPose;
             HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out palmPose);
             // This offset value is derived from the PokePointer's sourcePoseOffset property
-            float pokePointerOffset = 0.075f; 
+            float pokePointerOffset = 0.075f;
             TestUtilities.AssertAboutEqual(pokePointer.Position, grabPointer.Position + pokePointer.transform.forward * pokePointerOffset, "pointer was not in the expected position");
             TestUtilities.AssertAboutEqual(grabPointer.Position, palmPose.Position, "pointer was not in the expected position");
         }
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Ensure that the SceneContent object is contentOffset units above the origin
             Assert.AreEqual(GameObject.Find("MixedRealitySceneContent").transform.position.y, contentOffset, 0.005f);
-            
+
             // Create a floor and make sure it's below the camera
             var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
             floor.transform.position = -0.5f * Vector3.up;
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
-            
+
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
             // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -413,18 +413,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             TeleportPointer teleportPointer = rightHand.GetPointer<TeleportPointer>();
+            teleportPointer.PrioritizedLayerMasksOverride = new LayerMask[1] { UnityEngine.Physics.AllLayers ^ (1 << LayerMask.NameToLayer("UI")) };
 
             floor.layer = LayerMask.NameToLayer("Default");
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.AreEqual(teleportPointer.TeleportSurfaceResult, Physics.TeleportSurfaceResult.Valid);
+            Assert.AreEqual(Physics.TeleportSurfaceResult.Valid, teleportPointer.TeleportSurfaceResult);
 
             floor.layer = LayerMask.NameToLayer("Ignore Raycast");
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.Invalid);
+            Assert.AreEqual(Physics.TeleportSurfaceResult.Invalid, teleportPointer.TeleportSurfaceResult);
 
             floor.layer = LayerMask.NameToLayer("UI");
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.AreEqual(rightHand.GetPointer<TeleportPointer>().TeleportSurfaceResult, Physics.TeleportSurfaceResult.None);
+            Assert.AreEqual(Physics.TeleportSurfaceResult.None, teleportPointer.TeleportSurfaceResult);
 
         }
 
@@ -464,9 +465,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition, "Performed an invalid strafe");
 
             var floor2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            floor2.transform.position = new Vector3(0,-0.25f,-1.0f);
+            floor2.transform.position = new Vector3(0, -0.25f, -1.0f);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            
+
             TestUtilities.PlayspaceToOriginLookingForward();
             teleportPointer.PerformStrafe();
             TestUtilities.AssertAboutEqual(MixedRealityPlayspace.Position, initialPosition + new Vector3(0, 0.25f, -teleportPointer.strafeAmount), "Height did not change on strafe");
