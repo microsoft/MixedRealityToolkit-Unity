@@ -597,6 +597,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 bool isValidGrabbable = (currentGrabbable != null) && !(ignoreBoundsHandlesForQuery && currentGrabbable.IsBoundsHandles);
                 if (!isValidGrabbable)
                 {
+                    // Remove it from the cache if the grabbable is no longer valid for the object
+                    componentCache.Remove(instanceId);
                     return false;
                 }
 
