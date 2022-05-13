@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
         /// <inheritdoc/>
         public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
-        
+
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 

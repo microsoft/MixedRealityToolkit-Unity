@@ -278,16 +278,41 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             DeltaTime = Time.deltaTime;
             lastUpdateTime = Time.realtimeSinceStartup;
 
-            if (!IsValidHandedness(trackedHandedness))
-            {
-                Debug.LogError("Using invalid SolverHandler.TrackedHandness value. Defaulting to Handedness.Both");
-                TrackedHandedness = Handedness.Both;
-            }
-
             if (!IsValidTrackedObjectType(trackedTargetType))
             {
-                Debug.LogError("Using Obsolete SolverHandler.TrackedTargetType. Defaulting to type Head");
-                TrackedTargetType = TrackedObjectType.Head;
+                Debug.LogError("Using obsolete SolverHandler.TrackedTargetType. Attempting to update or defaulting to type Head if unsuccessful.");
+#pragma warning disable 0618
+                if (trackedTargetType == TrackedObjectType.HandJointLeft)
+                {
+                    TrackedTargetType = TrackedObjectType.HandJoint;
+                    TrackedHandedness = Handedness.Left;
+                }
+                else if (trackedTargetType == TrackedObjectType.HandJointRight)
+                {
+                    TrackedTargetType = TrackedObjectType.HandJoint;
+                    TrackedHandedness = Handedness.Right;
+                }
+                else if (trackedTargetType == TrackedObjectType.MotionControllerLeft)
+                {
+                    TrackedTargetType = TrackedObjectType.ControllerRay;
+                    TrackedHandedness = Handedness.Left;
+                }
+                else if (trackedTargetType == TrackedObjectType.MotionControllerRight)
+                {
+                    TrackedTargetType = TrackedObjectType.ControllerRay;
+                    TrackedHandedness = Handedness.Right;
+                }
+                else
+                {
+                    TrackedTargetType = TrackedObjectType.Head;
+                }
+#pragma warning restore 0618
+            }
+
+            if (!IsValidHandedness(trackedHandedness))
+            {
+                Debug.LogError("Using invalid SolverHandler.TrackedHandedness value. Defaulting to Handedness.Both");
+                trackedHandedness = Handedness.Both;
             }
         }
 

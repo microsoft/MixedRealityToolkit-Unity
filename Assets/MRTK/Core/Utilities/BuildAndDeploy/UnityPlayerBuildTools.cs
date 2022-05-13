@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         public static void ParseBuildCommandLine(ref IBuildInfo buildInfo)
         {
             string[] arguments = Environment.GetCommandLineArgs();
-            
+
             // Boolean used to track whether builfInfo contains scenes that are not specified by command line arguments.
             // These non command line arugment scenes should be overwritten by those specified in the command line.
             bool buildInfoContainsNonCommandLineScene = buildInfo.Scenes.Count() > 0;

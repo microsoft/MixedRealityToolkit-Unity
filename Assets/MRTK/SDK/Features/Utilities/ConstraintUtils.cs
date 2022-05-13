@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.UI;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -28,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            if (constraintList.Count == 0 || comparer.Compare(constraintList[constraintList.Count-1], constraint) < 0)
+            if (constraintList.Count == 0 || comparer.Compare(constraintList[constraintList.Count - 1], constraint) < 0)
             {
                 constraintList.Add(constraint);
                 return;

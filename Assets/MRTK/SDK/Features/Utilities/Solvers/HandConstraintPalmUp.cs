@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 return false;
             }
-            
+
             if (!controller.IsPositionAvailable)
             {
                 // A fully populated hand controller will have position 
@@ -196,10 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     }
 
                     return palmFacingThresholdMet;
-                }
-                else
-                {
-                    Debug.LogWarning($"HandConstraintPalmUp requires a palm joint, but none was provided by {controller.InputSource.SourceName}.");
                 }
 
                 return palmFacingThresholdMet;

@@ -23,11 +23,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float PointingExtent => pointingExtent;
 
         [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]
+        [Tooltip("The default LayerMasks, in prioritized order, that are used to determine pointer's target. These layer masks are used if " +
+            "the pointer doesn't specify its own override")]
         private LayerMask[] pointingRaycastLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
 
         /// <summary>
-        /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
+        /// The default layerMasks, in prioritized order, that are used to determine the target when raycasting.
         /// </summary>
         public LayerMask[] PointingRaycastLayerMasks => pointingRaycastLayerMasks;
 
@@ -81,11 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool UseHeadGazeOverride => useHeadGazeOverride;
 
         [SerializeField]
-        [Tooltip("If true, eye-based tracking will be used as gaze input when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
+        [Tooltip("If true, eye-based tracking will be used as gaze input when available. This field does not control whether eye tracking data is provided.")]
         private bool isEyeTrackingEnabled = false;
 
         /// <summary>
-        /// If true, eye-based tracking will be used as gaze input when available.
+        /// If true, eye-based tracking will be used as gaze input when available. This field does not control whether eye tracking data is provided.
         /// </summary>
         public bool IsEyeTrackingEnabled
         {

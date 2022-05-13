@@ -125,11 +125,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
 
             gestureRecognizer?.Stop();
+#if UNITY_OPENXR_1_4_0_OR_NEWER
+            gestureRecognizer?.Destroy();
+#else
             gestureRecognizer?.Dispose();
+#endif // UNITY_OPENXR_1_4_0_OR_NEWER
             gestureRecognizer = null;
 
             navigationGestureRecognizer?.Stop();
+#if UNITY_OPENXR_1_4_0_OR_NEWER
+            navigationGestureRecognizer?.Destroy();
+#else
             navigationGestureRecognizer?.Dispose();
+#endif // UNITY_OPENXR_1_4_0_OR_NEWER
             navigationGestureRecognizer = null;
 
             base.Disable();
@@ -153,10 +161,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 {
                     foreach (InputDevice device in ActiveControllers.Keys)
                     {
-                        if (((device.characteristics.HasFlag(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
-                            || (device.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking)))
-                            && ((device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-                            || (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))))
+                        if (((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
+                            || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
+                            && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left))
+                            || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
                         {
                             ActiveControllers.Add(inputDevice, ActiveControllers[device]);
                             break;
@@ -164,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     }
                 }
 
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking)
+                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)
                     && inputDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked)
                     && !isTracked)
                 {
@@ -189,10 +197,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 foreach (InputDevice device in ActiveControllers.Keys)
                 {
                     if (device != inputDevice
-                        && ((device.characteristics.HasFlag(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
-                        || (device.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking)))
-                        && ((device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-                        || (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))))
+                        && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
+                        || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
+                        && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left))
+                        || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
                     {
                         ActiveControllers.Remove(inputDevice);
                         // Since an additional device exists, return so a lost source isn't reported
@@ -213,6 +221,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     return typeof(MicrosoftMotionController);
                 case SupportedControllerType.HPMotionController:
                     return typeof(HPReverbG2Controller);
+                case SupportedControllerType.OculusTouch:
+                    return typeof(OculusController);
                 case SupportedControllerType.ArticulatedHand:
                     return typeof(MicrosoftArticulatedHand);
                 default:
@@ -227,6 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             {
                 case SupportedControllerType.WindowsMixedReality:
                 case SupportedControllerType.HPMotionController:
+                case SupportedControllerType.OculusTouch:
                     return InputSourceType.Controller;
                 case SupportedControllerType.ArticulatedHand:
                     return InputSourceType.Hand;
@@ -238,13 +249,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking))
             {
                 return SupportedControllerType.ArticulatedHand;
             }
 
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
+#if UNITY_ANDROID
+                return SupportedControllerType.OculusTouch;
+#else
                 if (inputDevice.manufacturer == "HP")
                 {
                     return SupportedControllerType.HPMotionController;
@@ -253,6 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 {
                     return SupportedControllerType.WindowsMixedReality;
                 }
+#endif
             }
 
             return base.GetCurrentControllerType(inputDevice);

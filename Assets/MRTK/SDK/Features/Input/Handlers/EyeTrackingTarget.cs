@@ -170,9 +170,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// GameObject eye gaze is currently targeting, updated once per frame.
         /// null if no object with collider is currently being looked at.
         /// </summary>
-        public static GameObject LookedAtTarget => 
-            (CoreServices.InputSystem != null && 
-            CoreServices.InputSystem.EyeGazeProvider != null && 
+        public static GameObject LookedAtTarget =>
+            (CoreServices.InputSystem != null &&
+            CoreServices.InputSystem.EyeGazeProvider != null &&
             CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid) ? CoreServices.InputSystem.EyeGazeProvider.GazeTarget : null;
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     lastEyeSignalUpdateTimeFromET = (CoreServices.InputSystem?.EyeGazeProvider?.Timestamp).Value;
                     lastEyeSignalUpdateTimeLocal = DateTime.UtcNow;
 
-                    if(LookedAtTarget != null)
+                    if (LookedAtTarget != null)
                     {
                         LookedAtEyeTarget = LookedAtTarget.GetComponent<EyeTrackingTarget>();
                     }

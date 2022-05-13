@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 !Application.isBatchMode,
                 cancellationToken);
             }
-            
+
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -158,32 +158,32 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     Debug.LogWarning("The build was terminated either by user's keyboard input CTRL+C or CTRL+Break or closing command prompt window.");
                     break;
                 default:
+                {
+                    if (processResult.ExitCode != 0)
                     {
-                        if (processResult.ExitCode != 0)
+                        Debug.Log($"Command failed, errorCode: {processResult.ExitCode}");
+
+                        if (Application.isBatchMode)
                         {
-                            Debug.Log($"Command failed, errorCode: {processResult.ExitCode}");
+                            var output = "Command output:\n";
 
-                            if (Application.isBatchMode)
+                            foreach (var message in processResult.Output)
                             {
-                                var output = "Command output:\n";
-
-                                foreach (var message in processResult.Output)
-                                {
-                                    output += $"{message}\n";
-                                }
-
-                                output += "Command errors:";
-
-                                foreach (var error in processResult.Errors)
-                                {
-                                    output += $"{error}\n";
-                                }
-
-                                Debug.LogError(output);
+                                output += $"{message}\n";
                             }
+
+                            output += "Command errors:";
+
+                            foreach (var error in processResult.Errors)
+                            {
+                                output += $"{error}\n";
+                            }
+
+                            Debug.LogError(output);
                         }
-                        break;
                     }
+                    break;
+                }
             }
             return processResult.ExitCode;
         }
@@ -522,6 +522,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var uwpBuildInfo = buildInfo as UwpBuildInfo;
 
             Debug.Assert(uwpBuildInfo != null);
+
+            // Here, ResearchModeCapability must come first, in order to avoid schema errors
+            // See https://docs.microsoft.com/windows/uwp/packaging/app-capability-declarations#restricted-capabilities
+            if (uwpBuildInfo.ResearchModeCapabilityEnabled
+#if !UNITY_2021_2_OR_NEWER
+                && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
+#endif // !UNITY_2021_2_OR_NEWER
+            )
+            {
+                AddResearchModeCapability(rootElement);
+            }
+
             if (uwpBuildInfo.DeviceCapabilities != null)
             {
                 AddCapabilities(rootElement, uwpBuildInfo.DeviceCapabilities);
@@ -529,15 +541,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (uwpBuildInfo.GazeInputCapabilityEnabled)
             {
                 AddGazeInputCapability(rootElement);
-            }
-
-            if (uwpBuildInfo.ResearchModeCapabilityEnabled
-#if !UNITY_2021_2_OR_NEWER
-                && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens
-#endif // !UNITY_2021_2_OR_NEWER
-                )
-            {
-                AddResearchModeCapability(rootElement);
             }
 
             rootElement.Save(manifestFilePath);

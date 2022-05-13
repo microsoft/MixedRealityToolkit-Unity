@@ -134,7 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 currentPointerPose.Rotation = Quaternion.LookRotation(pointerForward, pointerUp);
 
                 currentGripPose = jointPoses[TrackedHandJoint.Palm];
-
                 CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, currentGripPose);
 
                 UpdateVelocity();
@@ -269,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
                 UpdatePalm();
             }
-            
+
             HandDefinition?.UpdateHandJoints(jointPoses);
 
             // Note: After some testing, it seems when moving your hand fast, Oculus's pinch estimation data gets frozen, which leads to stuck pinches.
@@ -372,8 +371,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
         protected void UpdateJointPose(TrackedHandJoint joint, Vector3 position, Quaternion rotation)
         {
-            Vector3 jointPosition = position;
-
             // TODO Figure out kalman filter coefficients to get good quality smoothing
 #if LATER
             if (joint == TrackedHandJoint.IndexTip)
@@ -386,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             }
 #endif
 
-            MixedRealityPose pose = new MixedRealityPose(jointPosition, rotation);
+            MixedRealityPose pose = new MixedRealityPose(position, rotation);
             if (!jointPoses.ContainsKey(joint))
             {
                 jointPoses.Add(joint, pose);

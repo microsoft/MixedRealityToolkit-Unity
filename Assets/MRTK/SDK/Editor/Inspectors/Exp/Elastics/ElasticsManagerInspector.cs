@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             TransformFlags requiredFlag,
             TransformFlags providedFlags) where T : ElasticConfiguration
         {
-            if (providedFlags.HasFlag(requiredFlag))
+            if (providedFlags.IsMaskSet(requiredFlag))
             {
                 bool result = false;
                 using (new EditorGUI.IndentLevelScope())

@@ -48,8 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         public override void Initialize()
         {
             base.Initialize();
+#if !UNITY_2020_1_OR_NEWER
             UnityEngine.Debug.Log(@"Detected a potential deployment issue for the Oculus Quest. In order to use hand tracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
 The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
+            // Add a note about abandoning Oculus XRSDK if on 2020+, use open xr instead please
+#endif
         }
 #endif
 
@@ -150,17 +153,17 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking))
             {
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
-                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) ||
+                    inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))
                 {
                     // If it's a hand with a reported handedness, assume articulated hand
                     return SupportedControllerType.ArticulatedHand;
                 }
             }
 
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
             {
                 return SupportedControllerType.OculusTouch;
             }

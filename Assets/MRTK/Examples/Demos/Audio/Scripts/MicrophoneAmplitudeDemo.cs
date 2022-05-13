@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Audio;
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
