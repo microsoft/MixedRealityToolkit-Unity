@@ -587,10 +587,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 int instanceId = collider.gameObject.GetInstanceID();
                 if (!componentCache.TryGetValue(instanceId, out currentGrabbable))
                 {
-                    currentGrabbable = collider.GetComponent<NearInteractionGrabbable>();
+                    currentGrabbable = collider.gameObject.GetComponent<NearInteractionGrabbable>();
                     if (currentGrabbable != null)
                     {
-                        componentCache.Add(instanceId, grabbable);
+                        componentCache.Add(instanceId, currentGrabbable);
                     }
                 }
 
