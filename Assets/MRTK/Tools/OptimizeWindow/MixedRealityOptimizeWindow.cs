@@ -45,17 +45,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private string TotalPolyCountStr
         {
-            get => $"Total Scene PolyCount: {TotalPolyCount.ToString("N0")} ";
+            get => $"Total Scene PolyCount: {TotalPolyCount:N0} ";
         }
 
         private string TotalActivePolyCountStr
         {
-            get => $"Total PolyCount (Active): {totalActivePolyCount.ToString("N0")} ";
+            get => $"Total PolyCount (Active): {totalActivePolyCount:N0} ";
         }
 
         private string TotalInactivePolyCountStr
         {
-            get => $"Total PolyCount (Inactive): {totalInActivePolyCount.ToString("N0")} ";
+            get => $"Total PolyCount (Inactive): {totalInActivePolyCount:N0} ";
         }
 
         private MeshFilter[] MeshesOrderedByPolyCountDesc;

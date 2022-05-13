@@ -27,8 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
         private static readonly string eyeTrackingConfigurationProfilePath = AssetDatabase.GUIDToAssetPath(eyeTrackingConfigurationProfileGuid);
 
-        private GameObject target;
-
         // This method is called once before we enter play mode and execute any of the tests
         // do any kind of setup here that can't be done in playmode
         public override IEnumerator Setup()

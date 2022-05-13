@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 
 #if SPATIALTRACKING_ENABLED
 using UnityEngine.SpatialTracking;

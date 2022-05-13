@@ -5,9 +5,9 @@ using UnityEditor;
 
 #if UNITY_2019_3_OR_NEWER
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
-using System.Linq;
 #if XR_MANAGEMENT_ENABLED
 using UnityEngine.XR.Management;
 using UnityEditor.XR.Management;

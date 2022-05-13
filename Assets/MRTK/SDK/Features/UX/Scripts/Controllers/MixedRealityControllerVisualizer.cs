@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -12,6 +13,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("Scripts/MRTK/SDK/MixedRealityControllerVisualizer")]
     public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer, IMixedRealityControllerVisualizer
     {
+        /// <summary>
+        /// The amount to offset this controller visualizer's rotation from the input pose
+        /// </summary>
+        [SerializeField]
+        [Tooltip("The amount to offset this controller visualizer's rotation from the input pose")]
+        protected Quaternion rotationOffset = Quaternion.identity;
+
+        protected virtual Quaternion RotationOffset => rotationOffset;
+
         // TODO wire up input actions to controller transform nodes / animations
 
         /// <inheritdoc />
@@ -65,6 +75,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnInputChanged(eventData);
             // TODO Visualize dual axis controls
+        }
+
+
+        /// <inheritdoc />
+        public override void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
+        {
+            if (UseSourcePoseData &&
+                eventData.SourceId == Controller?.InputSource.SourceId)
+            {
+                base.OnSourcePoseChanged(eventData);
+                transform.localRotation *= RotationOffset;
+            }
         }
 
         #endregion IMixedRealityInputHandler Implementation

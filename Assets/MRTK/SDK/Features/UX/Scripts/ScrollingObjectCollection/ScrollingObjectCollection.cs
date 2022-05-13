@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -16,14 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A scrollable frame where content scroll is triggered by manual controller click and drag or according to pagination settings.
-    //// </summary>
-    ///<remarks>Executing also in edit mode to properly catch and mask any new content added to scroll container.</remarks>
+    /// </summary>
+    /// <remarks>Executing also in edit mode to properly catch and mask any new content added to scroll container.</remarks>
     [ExecuteAlways]
     [AddComponentMenu("Scripts/MRTK/SDK/ScrollingObjectCollection")]
     public class ScrollingObjectCollection : MonoBehaviour,
-            IMixedRealityPointerHandler,
-            IMixedRealitySourceStateHandler,
-            IMixedRealityTouchHandler
+        IMixedRealityPointerHandler,
+        IMixedRealitySourceStateHandler,
+        IMixedRealityTouchHandler
     {
         /// <summary>
         /// How velocity is applied to a <see cref="ScrollingObjectCollection"/> when a scroll is released.
@@ -683,7 +682,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ClippingBox clipBox;
 
         /// <summary>
-        /// The ScrollingObjectCollection's <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/> 
+        /// The ScrollingObjectCollection's <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>
         /// that is used for clipping items in and out of the list.
         /// </summary>
         public ClippingBox ClipBox
@@ -732,7 +731,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsEngaged { get; private set; } = false;
 
         /// <summary>
-        /// Tracks whether the scroll is being dragged due to a controller movement. 
+        /// Tracks whether the scroll is being dragged due to a controller movement.
         /// </summary>
         public bool IsDragging { get; private set; } = false;
 
@@ -1023,7 +1022,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
                 // any dynamically added content
-                cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
+                if (cameraMethods == null)
+                {
+                    cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
+                }
+
                 cameraMethods.OnCameraPreRender += OnCameraPreRender;
             }
         }
@@ -1555,8 +1558,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             TryGetPointerPositionOnPlane(out Vector3 newPos);
 
             scrollVelocity = (scrollDirection == ScrollDirectionType.UpAndDown)
-                             ? (newPos.y - lastPointerPos.y) / Time.deltaTime * velocityMultiplier
-                             : (newPos.x - lastPointerPos.x) / Time.deltaTime * velocityMultiplier;
+                ? (newPos.y - lastPointerPos.y) / Time.deltaTime * velocityMultiplier
+                : (newPos.x - lastPointerPos.x) / Time.deltaTime * velocityMultiplier;
 
             // And filter it...
             avgVelocity = (avgVelocity * (1.0f - velocityFilterWeight)) + (scrollVelocity * velocityFilterWeight);
@@ -1680,7 +1683,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Checks visibility of scroll content by iterating through all content renderers and colliders.
-        /// All inactive content objects and colliders are reactivated during visibility restoration. 
+        /// All inactive content objects and colliders are reactivated during visibility restoration.
         /// </summary>
         private void ManageVisibility(bool isRestoringVisibility = false)
         {
@@ -2008,11 +2011,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-
             var itemRenderers = item.GetComponentsInChildren<Renderer>();
             if (itemRenderers != null)
             {
-                foreach (var renderer in item.GetComponentsInChildren<Renderer>())
+                foreach (var renderer in itemRenderers)
                 {
                     renderersToUnclip.Add(renderer);
                 }
@@ -2074,7 +2076,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Moves scroller container to a position where the selected cell is in the first tier of the viewable area.
         /// </summary>
         /// <param name="cellIndex">Index of the cell to move to</param>
-        /// <param name="animate">if true, scroller will animate to new position</param>
+        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void MoveToIndex(int cellIndex, bool animateToPosition = true, System.Action callback = null)
         {

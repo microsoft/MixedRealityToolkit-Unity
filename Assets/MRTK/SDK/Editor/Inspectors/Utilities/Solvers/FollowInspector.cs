@@ -142,26 +142,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
                     EditorGUILayout.PropertyField(angularClampMode);
 
-                    switch ((Follow.AngularClampType)angularClampMode.enumValueIndex)
+                    switch ((Follow.AngularClampType)angularClampMode.intValue)
                     {
                         case Follow.AngularClampType.AngleStepping:
-                            {
-                                EditorGUILayout.PropertyField(tetherAngleSteps);
-                            }
+                        {
+                            EditorGUILayout.PropertyField(tetherAngleSteps);
                             break;
+                        }
                         case Follow.AngularClampType.ViewDegrees:
-                            {
-                                EditorGUILayout.PropertyField(maxViewHorizontalDegrees);
-                                EditorGUILayout.PropertyField(maxViewVerticalDegrees);
-                            }
+                        {
+                            EditorGUILayout.PropertyField(maxViewHorizontalDegrees);
+                            EditorGUILayout.PropertyField(maxViewVerticalDegrees);
                             break;
-
+                        }
                         case Follow.AngularClampType.RendererBounds:
                         case Follow.AngularClampType.ColliderBounds:
-                            {
-                                EditorGUILayout.PropertyField(boundsScaler);
-                            }
+                        {
+                            EditorGUILayout.PropertyField(boundsScaler);
                             break;
+                        }
                     }
                 }
                 else

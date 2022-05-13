@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty triggerInteraction;
         private SerializedProperty sceneQueryBufferSize;
         private SerializedProperty ignoreCollidersNotInFOV;
-
+        private SerializedProperty graspPointPlacement;
 
         private bool spherePointerFoldout = true;
 
@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             grabLayerMasks = serializedObject.FindProperty("grabLayerMasks");
             triggerInteraction = serializedObject.FindProperty("triggerInteraction");
             ignoreCollidersNotInFOV = serializedObject.FindProperty("ignoreCollidersNotInFOV");
+            graspPointPlacement = serializedObject.FindProperty("graspPointPlacement");
         }
 
         public override void OnInspectorGUI()
@@ -58,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(triggerInteraction);
                     EditorGUILayout.PropertyField(grabLayerMasks, true);
                     EditorGUILayout.PropertyField(ignoreCollidersNotInFOV);
+                    EditorGUILayout.PropertyField(graspPointPlacement);
                 }
             }
 

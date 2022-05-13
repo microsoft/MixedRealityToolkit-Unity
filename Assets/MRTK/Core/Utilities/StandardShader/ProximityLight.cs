@@ -161,6 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private void OnEnable()
         {
             AddProximityLight(this);
+            UpdateProximityLights(true);
         }
 
         private void OnDisable()

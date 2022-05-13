@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input;
-using TMPro;
+
 #if (LEAPMOTIONCORE_PRESENT && UNITY_STANDALONE) || (LEAPMOTIONCORE_PRESENT && UNITY_WSA && UNITY_EDITOR)
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
+using TMPro;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Examples

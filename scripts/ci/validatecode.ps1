@@ -210,6 +210,10 @@ $HardcodedPathExceptions = @{
     "MixedRealityToolkitConfigurationProfileInspector.cs" = @(
         'var newProfile = profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as MixedRealityToolkitConfigurationProfile;'
     );
+    "ProgressIndicatorExamples.unity"                               = @(
+        'Path: Assets/MRTK/Examples/Demos/UX/ProgressIndicator/Scenes/ProgressIndicatorExamplesAdditiveLoad.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/ProgressIndicator/Scenes/ProgressIndicatorExamplesAdditiveLoad.unity'
+    );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
     "MRTKExamplesHub.unity"                               = @(
         'Path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
@@ -589,6 +593,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/Gltf/MRTK.Gltf.asmdef",
     "Assets/MRTK/Core/Utilities/Gltf/Serialization/Importers/MRTK.Gltf.Importers.asmdef",
     "Assets/MRTK/Examples/MRTK.Examples.asmdef",
+    "Assets/MRTK/Examples/Demos/Audio/MRTK.Demos.Audio.asmdef",
     "Assets/MRTK/Examples/Demos/Gltf/MRTK.Demos.Gltf.asmdef",
     "Assets/MRTK/Examples/Demos/Gltf/Scripts/Editor/MRTK.Demos.Gltf.Inspectors.asmdef",
     "Assets/MRTK/Examples/Demos/StandardShader/Scripts/Editor/MRTK.Demos.StandardShader.Inspectors.asmdef",

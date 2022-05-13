@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Wait a maximum time before considering the progress bar as stuck
             float timeStarted = Time.time;
-            const float timeout = 5.0f; 
+            const float timeout = 5.0f;
             while (!testTask.IsCompleted)
             {
                 if (Time.time < timeStarted + timeout)

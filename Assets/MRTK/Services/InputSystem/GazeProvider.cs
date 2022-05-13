@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float MovementThreshold = 0.01f;
 
         /// <summary>
-        /// Used on Gaze Pointer initialization. To make the object lock/not lock when focus locked during runtime, use the IsTargetPositionLockedOnFocusLock 
+        /// Used on Gaze Pointer initialization. To make the object lock/not lock when focus locked during runtime, use the IsTargetPositionLockedOnFocusLock
         /// attribute of <see cref="GazePointer.IsTargetPositionLockedOnFocusLock"/>
         /// </summary>
         [SerializeField]
@@ -345,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             await EnsureInputSystemValid();
 
-            if (this == null)
+            if (this.IsNull())
             {
                 // We've been destroyed during the await.
                 return;
@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
                 }
 
-                // Handle toggling the input source's SourceType based on the current eyetracking mode 
+                // Handle toggling the input source's SourceType based on the current eyetracking mode
                 if (IsEyeTrackingEnabledAndValid)
                 {
                     gazeInputSource.SourceType = InputSourceType.Eyes;
@@ -519,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
 
                 gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
-                
+
                 if ((GazeCursor == null) &&
                     (GazeCursorPrefab != null))
                 {
@@ -542,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 await EnsureInputSystemValid();
 
-                if (this == null)
+                if (this.IsNull())
                 {
                     // We've been destroyed during the await.
                     return;

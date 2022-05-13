@@ -20,9 +20,9 @@ MonoBehaviour:
   usePlatformModels: 1
   platformModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2,
     type: 2}
-  globalLeftControllerModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
+  globalLeftControllerModel: {fileID: 1370450866519632, guid: 60b24c9a73f9f5549b32035f8c864cc7,
     type: 3}
-  globalRightControllerModel: {fileID: 1760394390528354, guid: 9ef0df44319c4fb4a05649e5b8ceb6d1,
+  globalRightControllerModel: {fileID: 1370450866519632, guid: e2b0df939d55cdc489073d2560b1f871,
     type: 3}
   globalLeftHandVisualizer: {fileID: 61451597023024772, guid: 6080fb9e3b49fda449e3d70daf6d2254,
     type: 3}
@@ -99,13 +99,24 @@ MonoBehaviour:
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.MicrosoftArticulatedHand,
         Microsoft.MixedReality.Toolkit.Providers.OpenXR
-    handedness: 3
+    handedness: 1
     usePlatformModels: 0
     platformModelMaterial: {fileID: 0}
     overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
       type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
+  - description: Microsoft Articulated Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.MicrosoftArticulatedHand,
+        Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    handedness: 2
+    usePlatformModels: 0
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 3512491064599439886, guid: 7a857af0cb85b4a47b6ec8a1babcb73c,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK
   - description: Microsoft Motion Controller
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.MicrosoftMotionController,
@@ -125,6 +136,48 @@ MonoBehaviour:
     usePlatformModels: 1
     platformModelMaterial: {fileID: 0}
     overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: Simulated Articulated Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 1
+    usePlatformModels: 0
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 61451597023024772, guid: 6080fb9e3b49fda449e3d70daf6d2254,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK
+  - description: Simulated Articulated Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 2
+    usePlatformModels: 0
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 3512491064599439886, guid: 7a857af0cb85b4a47b6ec8a1babcb73c,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK
+  - description: Oculus Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OculusController, Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    handedness: 1
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 1370450866519632, guid: b7913d8b23c647f40a6cf01618dfa9cc,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: Oculus Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OculusController, Microsoft.MixedReality.Toolkit.Providers.OpenXR
+    handedness: 2
+    usePlatformModels: 1
+    platformModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 1370450866519632, guid: abf0b9f9eb3e0864c81ef0f82b6b6ade,
+      type: 3}
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK

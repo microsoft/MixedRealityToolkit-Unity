@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 {
                     return;
                 }
-                
+
                 base.Update();
 
                 // Ensure that touch up and source lost events are at least one frame apart.

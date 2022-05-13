@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
             Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
-            Vector3 rightFrontRotationHandlePoint = new Vector3(0.121f, -0.127f, 0.499f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.034f, -0.1266f, 0.499f); // position of hand for far interacting with front right rotation sphere 
             Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
 
             TestHand hand = new TestHand(Handedness.Left);
@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float angle;
             Vector3 axis = new Vector3();
             boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
-            float expectedAngle = 85f;
+            float expectedAngle = 87f;
             float angleDiff = Mathf.Abs(expectedAngle - angle);
             Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
             TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
@@ -476,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
             Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
-            Vector3 rightFrontRotationHandlePoint = new Vector3(0.121f, -0.127f, 0.499f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.034f, -0.1266f, 0.499f); // position of hand for far interacting with front right rotation sphere 
             Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
 
             TestHand hand = new TestHand(Handedness.Left);
@@ -503,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float angle;
             Vector3 axis = new Vector3();
             boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
-            float expectedAngle = 85f;
+            float expectedAngle = 87f;
             float angleDiff = Mathf.Abs(expectedAngle - angle);
             Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
             TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
@@ -768,7 +768,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
-            Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
+            Vector3 rightCornerInteractionPoint = new Vector3(0.115f, 0.07f, 0.79f); // position of hand for far interacting with front right corner 
             Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
             Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for far interaction scaling
 
@@ -778,8 +778,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.MoveTo(scalePoint);
             var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
-            Vector3 expectedCenter = new Vector3(0.0453f, 0.0453f, 1.455f);
-            Vector3 expectedSize = Vector3.one * 0.59f;
+            Vector3 expectedCenter = new Vector3(0.0668f, 0.0668f, 1.4332f);
+            Vector3 expectedSize = Vector3.one * 0.6336f;
             TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
 
@@ -993,7 +993,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(endPosition);
 
             // make sure translation is as expected and no other transform values have been modified through this
-            Vector3 expectedPosition = new Vector3(1f, 0f, 1.5f);
+            Vector3 expectedPosition = new Vector3(1.1126f, 0f, 1.5f);
             Vector3 expectedSize = Vector3.one * 0.5f;
             TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
             TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
@@ -2156,10 +2156,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
 
             // Iterate over all handle transforms
-            foreach(Transform handle in boundsControl.transform.Find("rigRoot"))
-            {   
+            foreach (Transform handle in boundsControl.transform.Find("rigRoot"))
+            {
                 // Is this the handle type we're currently looking for?
-                if(handle.name.StartsWith(testData.handleName))
+                if (handle.name.StartsWith(testData.handleName))
                 {
                     BoxCollider handleCollider = handle.GetComponent<BoxCollider>();
 
@@ -2171,7 +2171,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     VisualUtils.GetCornerPositionsFromBounds(new Bounds(handleCollider.center, handleCollider.size - padding), ref colliderPoints);
 
                     // Perform a local-global transformation on all corners of the local collider bounds.
-                    for(int i = 0; i < colliderPoints.Length; ++i)
+                    for (int i = 0; i < colliderPoints.Length; ++i)
                     {
                         globalColliderPoints[i] = handle.TransformPoint(colliderPoints[i]);
                     }
@@ -2185,16 +2185,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     VisualUtils.GetCornerPositionsFromBounds(handleBounds, ref visualPoints);
 
                     // Perform a local-global transformation on all corners of the local visual handle bounds.
-                    for(int i = 0; i < visualPoints.Length; ++i)
+                    for (int i = 0; i < visualPoints.Length; ++i)
                     {
                         globalVisualPoints[i] = visual.TransformPoint(visualPoints[i]);
                     }
 
                     // Make sure all corners/vertices of the bounds are coherent after realignment, in global space
                     bool flag = true;
-                    for(int i = 0; i < globalColliderPoints.Length; ++i)
+                    for (int i = 0; i < globalColliderPoints.Length; ++i)
                     {
-                        if(globalColliderPoints[i] != globalVisualPoints[i])
+                        if (globalColliderPoints[i] != globalVisualPoints[i])
                         {
                             flag = false;
                             Debug.LogError($"Bounds mismatch, collider point: {globalColliderPoints[i].ToString("F3")}, visual point: {globalVisualPoints[i].ToString("F3")}");
@@ -2447,16 +2447,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             appBarGameObject.SetActive(true);
 
             // manipulation coords
-            Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
+            Vector3 rightCornerInteractionPoint = new Vector3(0.115f, 0.07f, 0.79f); // position of hand for far interacting with front right corner 
             Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
             Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for far interaction scaling
             Vector3 appBarButtonStart = new Vector3(-0.028f, -0.263f, 0.499f); // location of hand for interaction with the app bar manipulation button after scene setup
-            Vector3 appBarButtonAfterScale = new Vector3(0.009f, -0.255f, 0.499f); // location of the hand for interaction with the app bar manipulation button after scaling
+            Vector3 appBarButtonAfterScale = new Vector3(-0.009f, -0.255f, 0.499f); // location of the hand for interaction with the app bar manipulation button after scaling
 
             // first test to interact with the cube without activating the app bar
             // this shouldn't scale the cube
             TestHand hand = new TestHand(Handedness.Left);
-            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface, so we won't go behind the cube with our ray
             yield return hand.MoveTo(rightCornerInteractionPoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.MoveTo(scalePoint);
@@ -2476,8 +2476,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scalePoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
-            Vector3 expectedScaleCenter = new Vector3(0.0453f, 0.0453f, 1.455f);
-            Vector3 expectedScaleSize = Vector3.one * 0.59f;
+            Vector3 expectedScaleCenter = new Vector3(0.0668f, 0.0668f, 1.4332f);
+            Vector3 expectedScaleSize = Vector3.one * 0.6336f;
             TestUtilities.AssertAboutEqual(endBounds.center, expectedScaleCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedScaleSize, "endBounds incorrect size");
 
@@ -2486,8 +2486,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Click();
 
             // check if we can scale the box - box shouldn't scale
-            Vector3 startLocationScaleToOriginal = new Vector3(0.181f, 0.013f, 0.499f);
-            Vector3 endLocationScaleToOriginal = new Vector3(0.121f, -0.052f, 0.499f);
+            Vector3 startLocationScaleToOriginal = new Vector3(0.1059f, 0.034f, 0.499f);
+            Vector3 endLocationScaleToOriginal = new Vector3(0.0145f, -0.0267f, 0.499f);
             yield return hand.MoveTo(pointOnCube); // make sure our hand ray is on the cube again before moving to the scale corner
             yield return hand.MoveTo(startLocationScaleToOriginal); // move to scale corner
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);

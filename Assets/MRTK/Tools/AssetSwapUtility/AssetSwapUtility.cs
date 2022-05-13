@@ -271,30 +271,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             switch (selectionMode)
             {
                 case SelectionMode.WholeScene:
-                    {
-                        gameObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+                {
+                    gameObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
 
-                        if (gameObjects.Length == 0)
-                        {
-                            warning = "The scene is empty, please create at least one game object.";
-                            return false;
-                        }
+                    if (gameObjects.Length == 0)
+                    {
+                        warning = "The scene is empty, please create at least one game object.";
+                        return false;
                     }
                     break;
+                }
 
                 default:
                 case SelectionMode.SelectionWithChildren:
                 case SelectionMode.SelectionWithoutChildren:
-                    {
-                        gameObjects = Selection.gameObjects;
+                {
+                    gameObjects = Selection.gameObjects;
 
-                        if (gameObjects.Length == 0)
-                        {
-                            warning = "Please select at least one game object in the scene. Locking this panel may help in selection.";
-                            return false;
-                        }
+                    if (gameObjects.Length == 0)
+                    {
+                        warning = "Please select at least one game object in the scene. Locking this panel may help in selection.";
+                        return false;
                     }
                     break;
+                }
             }
 
             warning = string.Empty;
