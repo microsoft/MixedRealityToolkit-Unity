@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (oneHandedFoldout)
             {
-                if (handedness.HasFlag(ManipulationHandFlags.OneHanded))
+                if (handedness.IsMaskSet(ManipulationHandFlags.OneHanded))
                 {
                     EditorGUILayout.PropertyField(oneHandRotationModeNear);
                     EditorGUILayout.PropertyField(oneHandRotationModeFar);
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (twoHandedFoldout)
             {
-                if (handedness.HasFlag(ManipulationHandFlags.TwoHanded))
+                if (handedness.IsMaskSet(ManipulationHandFlags.TwoHanded))
                 {
                     EditorGUILayout.PropertyField(twoHandedManipulationType);
                 }

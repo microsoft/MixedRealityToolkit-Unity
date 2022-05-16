@@ -494,7 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (!iconQuadRenderer.gameObject.activeSelf && !iconSpriteRenderer.gameObject.activeSelf && !iconCharLabel.gameObject.activeSelf)
             {   // If all the icon objects are disabled, set the icon style to none and do nothing else.
-                iconStyleProp.enumValueIndex = (int)ButtonIconStyle.None;
+                iconStyleProp.intValue = (int)ButtonIconStyle.None;
                 configObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(gameObject);
                 return;

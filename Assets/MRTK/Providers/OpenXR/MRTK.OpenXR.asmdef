@@ -27,18 +27,8 @@
         },
         {
             "name": "com.microsoft.mixedreality.openxr",
-            "expression": "0.9.4-preview",
-            "define": "MSFT_OPENXR_0_9_4_OR_NEWER"
-        },
-        {
-            "name": "com.microsoft.mixedreality.openxr",
-            "expression": "0.2.0",
-            "define": "MSFT_OPENXR_0_2_0_OR_NEWER"
-        },
-        {
-            "name": "com.microsoft.mixedreality.openxr",
-            "expression": "0.1.3",
-            "define": "MSFT_OPENXR_0_1_3_OR_NEWER"
+            "expression": "1.4.0",
+            "define": "MSFT_OPENXR_1_4_0_OR_NEWER"
         },
         {
             "name": "com.unity.xr.openxr",

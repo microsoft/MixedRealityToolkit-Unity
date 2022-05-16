@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Dwell
 {

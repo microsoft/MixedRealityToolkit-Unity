@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
-
 using System.Collections;
+using UnityEngine;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit

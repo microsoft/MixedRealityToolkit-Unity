@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 
 #if WINDOWS_UWP
-using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
 using Windows.Perception.People;

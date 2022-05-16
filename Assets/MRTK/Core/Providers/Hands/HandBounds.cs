@@ -97,38 +97,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            var hand = eventData.Controller;
+            IMixedRealityController hand = eventData.Controller;
 
-            if (hand != null)
+            // If a hand does not contain joints, OnHandJointsUpdated will not be called the bounds should
+            // be calculated based on the proxy visuals.
+            if (hand != null && !(hand is IMixedRealityHand))
             {
-                // If a hand does not contain joints, OnHandJointsUpdated will not be called the bounds should
-                // be calculated based on the proxy visuals.
-                bool handContainsJoints = (hand as IMixedRealityHand) != null;
+                var proxy = hand.Visualizer?.GameObjectProxy;
 
-                if (!handContainsJoints)
+                if (proxy != null)
                 {
-                    var proxy = hand.Visualizer?.GameObjectProxy;
+                    // Bounds calculated in proxy-space will have an origin of zero, but bounds
+                    // calculated in global space will have an origin centered on the proxy transform.
+                    var newGlobalBounds = new Bounds(proxy.transform.position, Vector3.zero);
+                    var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
+                    var boundsPoints = new List<Vector3>();
+                    BoundsExtensions.GetRenderBoundsPoints(proxy, boundsPoints, 0);
 
-                    if (proxy != null)
+                    foreach (var point in boundsPoints)
                     {
-                        // Bounds calculated in proxy-space will have an origin of zero, but bounds
-                        // calculated in global space will have an origin centered on the proxy transform.
-                        var newGlobalBounds = new Bounds(proxy.transform.position, Vector3.zero);
-                        var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
-                        var boundsPoints = new List<Vector3>();
-                        BoundsExtensions.GetRenderBoundsPoints(proxy, boundsPoints, 0);
-
-                        foreach (var point in boundsPoints)
-                        {
-                            newGlobalBounds.Encapsulate(point);
-                            // Local hand-space bounds are encapsulated using proxy-space point coordinates
-                            newLocalBounds.Encapsulate(proxy.transform.InverseTransformPoint(point));
-                        }
-
-                        Bounds[hand.ControllerHandedness] = newGlobalBounds;
-                        LocalBounds[hand.ControllerHandedness] = newLocalBounds;
-                        BoundsTransforms[hand.ControllerHandedness] = proxy.transform.localToWorldMatrix;
+                        newGlobalBounds.Encapsulate(point);
+                        // Local hand-space bounds are encapsulated using proxy-space point coordinates
+                        newLocalBounds.Encapsulate(proxy.transform.InverseTransformPoint(point));
                     }
+
+                    Bounds[hand.ControllerHandedness] = newGlobalBounds;
+                    LocalBounds[hand.ControllerHandedness] = newLocalBounds;
+                    BoundsTransforms[hand.ControllerHandedness] = proxy.transform.localToWorldMatrix;
                 }
             }
         }
@@ -153,23 +148,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
-            MixedRealityPose palmPose;
-
-            if (eventData.InputData.TryGetValue(TrackedHandJoint.Palm, out palmPose))
+            if (eventData.InputData.TryGetValue(TrackedHandJoint.Palm, out MixedRealityPose palmPose))
             {
                 var newGlobalBounds = new Bounds(palmPose.Position, Vector3.zero);
                 var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
 
-                foreach (var kvp in eventData.InputData)
+                // This starts at 1 to skip over TrackedHandJoint.None.
+                for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
-                    if (kvp.Key == TrackedHandJoint.None ||
-                        kvp.Key == TrackedHandJoint.Palm)
+                    TrackedHandJoint handJoint = (TrackedHandJoint)i;
+
+                    if (handJoint == TrackedHandJoint.Palm)
                     {
                         continue;
                     }
 
-                    newGlobalBounds.Encapsulate(kvp.Value.Position);
-                    newLocalBounds.Encapsulate(Quaternion.Inverse(palmPose.Rotation) * (kvp.Value.Position - palmPose.Position));
+                    if (eventData.InputData.TryGetValue(handJoint, out MixedRealityPose pose))
+                    {
+                        newGlobalBounds.Encapsulate(pose.Position);
+                        newLocalBounds.Encapsulate(Quaternion.Inverse(palmPose.Rotation) * (pose.Position - palmPose.Position));
+                    }
                 }
 
                 Bounds[eventData.Handedness] = newGlobalBounds;

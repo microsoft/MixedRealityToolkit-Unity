@@ -329,7 +329,10 @@ namespace Microsoft.MixedReality.Toolkit
             if (IsInitialized)
             {
                 DebugUtilities.LogVerboseFormat("Unregistered service of type {0} was an initialized service, disabling and destroying it", typeof(T));
-                serviceInstance.Disable();
+                if (activeProfile != null && Application.IsPlaying(activeProfile))
+                {
+                    serviceInstance.Disable();
+                }
                 serviceInstance.Destroy();
             }
 

@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             showComponents = EditorGUILayout.Toggle("Show Component References", showComponents);
 
-            ButtonIconStyle oldStyle = (ButtonIconStyle)iconStyleProp.enumValueIndex;
+            ButtonIconStyle oldStyle = (ButtonIconStyle)iconStyleProp.intValue;
 
             using (new EditorGUI.IndentLevelScope(1))
             {
@@ -186,9 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                                     if (interactableProp.objectReferenceValue != null)
                                     {
                                         SerializedObject interactableObject = new SerializedObject(interactableProp.objectReferenceValue);
-                                        SerializedProperty voiceCommandProperty = interactableObject.FindProperty("VoiceCommand");
+                                        SerializedProperty voiceCommandProperty = interactableObject.FindProperty("voiceCommand");
 
-                                        if(string.IsNullOrEmpty(voiceCommandProperty.stringValue))
+                                        if (string.IsNullOrEmpty(voiceCommandProperty.stringValue))
                                         {
                                             EditorGUILayout.HelpBox("No valid speech command provided to the interactable", MessageType.Warning);
                                         }
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             serializedObject.ApplyModifiedProperties();
 
-            if (oldStyle != (ButtonIconStyle)iconStyleProp.enumValueIndex)
+            if (oldStyle != (ButtonIconStyle)iconStyleProp.intValue)
             {
                 cb.ForceRefresh();
             }

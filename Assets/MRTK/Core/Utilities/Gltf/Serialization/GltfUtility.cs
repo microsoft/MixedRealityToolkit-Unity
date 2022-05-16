@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 
-#if WINDOWS_UWP
+#if ENABLE_WINMD_SUPPORT
 using Windows.Storage;
 using Windows.Storage.Streams;
 #else
@@ -22,10 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
     public static class GltfUtility
     {
         private const uint GltfMagicNumber = 0x46546C67;
+        private const string DefaultObjectName = "GLTF Object";
 
         private static readonly WaitForUpdate Update = new WaitForUpdate();
         private static readonly WaitForBackgroundThread BackgroundThread = new WaitForBackgroundThread();
-        private static readonly string DefaultObjectName = "GLTF Object";
 
         /// <summary>
         /// Imports a glTF object from the provided uri.
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                 if (gltfObject == null)
                 {
-                    Debug.LogError("Failed load Gltf Object from json schema.");
+                    Debug.LogError("Failed to load glTF object from JSON schema.");
                     return null;
                 }
             }
@@ -71,8 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             {
                 byte[] glbData;
 
-#if WINDOWS_UWP
-
+#if ENABLE_WINMD_SUPPORT
                 if (useBackgroundThread)
                 {
                     try
@@ -123,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
                 if (gltfObject == null)
                 {
-                    Debug.LogError("Failed to load GlTF Object from .glb!");
+                    Debug.LogError("Failed to load glTF Object from .glb!");
                     return null;
                 }
             }
@@ -150,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (gltfObject.GameObjectReference == null)
             {
-                Debug.LogError("Failed to construct Gltf Object.");
+                Debug.LogError("Failed to construct glTF object.");
             }
 
             if (useBackgroundThread) { await Update; }
@@ -170,21 +169,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (gltfObject.extensionsRequired?.Length > 0)
             {
-                Debug.LogError("One or more unsupported glTF extensions required. Unable to load the model.");
+                StringBuilder logMessage = new StringBuilder("One or more unsupported glTF extensions required. Unable to load the model:");
                 for (int i = 0; i < gltfObject.extensionsRequired.Length; ++i)
                 {
-                    Debug.Log($"Extension: {gltfObject.extensionsRequired[i]}");
+                    logMessage.Append($"\nExtension: {gltfObject.extensionsRequired[i]}");
                 }
+                Debug.LogError(logMessage);
                 return null;
             }
 
             if (gltfObject.extensionsUsed?.Length > 0)
             {
-                Debug.Log("One or more unsupported glTF extensions in use, ignoring them.");
+                StringBuilder logMessage = new StringBuilder("One or more unsupported glTF extensions in use. Ignoring the following:");
                 for (int i = 0; i < gltfObject.extensionsUsed.Length; ++i)
                 {
-                    Debug.Log($"Extension: {gltfObject.extensionsUsed[i]}");
+                    logMessage.Append($"\nExtension: {gltfObject.extensionsUsed[i]}");
                 }
+                Debug.Log(logMessage);
             }
 
             var meshPrimitiveAttributes = GetGltfMeshPrimitiveAttributes(jsonString);
@@ -256,14 +257,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 return null;
             }
 
-            var jsonChunk = Encoding.ASCII.GetString(glbData, stride * 5, chunk0Length);
-            var gltfObject = GetGltfObjectFromJson(jsonChunk);
-            var chunk1Length = (int)BitConverter.ToUInt32(glbData, stride * 5 + chunk0Length);
-            var chunk1Type = BitConverter.ToUInt32(glbData, stride * 6 + chunk0Length);
+            string jsonChunk = Encoding.ASCII.GetString(glbData, stride * 5, chunk0Length);
+            GltfObject gltfObject = GetGltfObjectFromJson(jsonChunk);
+            int chunk1Length = (int)BitConverter.ToUInt32(glbData, stride * 5 + chunk0Length);
+            uint chunk1Type = BitConverter.ToUInt32(glbData, stride * 6 + chunk0Length);
 
             if (chunk1Type != (ulong)GltfChunkType.BIN)
             {
                 Debug.LogError("Expected chunk 1 to be BIN data!");
+                return null;
+            }
+
+            if (gltfObject == null)
+            {
+                Debug.LogError("Failed to load glTF object from JSON schema.");
                 return null;
             }
 

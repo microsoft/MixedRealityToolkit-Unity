@@ -5,17 +5,17 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
 using Unity.Profiling;
 using UnityEngine.XR.OpenXR;
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
-        SupportedPlatforms.WindowsUniversal,
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal,
         "OpenXR Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK",
@@ -40,13 +40,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         { }
 
         protected override bool? IsActiveLoader =>
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>();
 #else
             false;
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
         private static readonly ProfilerMarker ApplyUpdatedMeshDisplayOptionPerfMarker = new ProfilerMarker($"[MRTK] {nameof(OpenXRSpatialAwarenessMeshObserver)}.ApplyUpdatedMeshDisplayOption");
 
         /// <inheritdoc/>
@@ -81,7 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             MeshComputeSettings settings = new MeshComputeSettings
             {
+#if !MSFT_OPENXR_1_4_0_OR_NEWER
                 MeshType = (option == SpatialAwarenessMeshDisplayOptions.Visible) ? MeshType.Visual : MeshType.Collider,
+#endif
                 VisualMeshLevelOfDetail = MapMRTKLevelOfDetailToOpenXR(levelOfDetail),
                 MeshComputeConsistency = MeshComputeConsistency.OcclusionOptimized,
             };
@@ -107,6 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     return VisualMeshLevelOfDetail.Coarse;
             }
         }
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
     }
 }

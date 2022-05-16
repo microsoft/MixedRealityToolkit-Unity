@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
@@ -65,16 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         #region IMixedRealityToolkitService Implementation
 
-        private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
-
         /// <inheritdoc/>
         public override void Initialize()
         {
-            base.Initialize();
-
-            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
-
+            // Mark not initialized early so observers can use this state in their own initialization
+            IsInitialized = false;
             InitializeInternal();
+            base.Initialize();
         }
 
         /// <summary>

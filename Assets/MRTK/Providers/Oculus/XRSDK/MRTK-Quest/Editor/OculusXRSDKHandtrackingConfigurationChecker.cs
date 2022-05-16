@@ -211,9 +211,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         }
 
         /// <summary>
-        /// Adds warnings to the nowarn line in the csc.rsp file located at the root of assets.  Warning 618 and 649 are added to the nowarn line because if
+        /// Adds warnings to the nowarn line in the csc.rsp file located at the root of assets.  Warning 618 is added to the nowarn line because if
         /// the MRTK source is from the repo, warnings are converted to errors. Warnings are not converted to errors if the MRTK source is from the unity packages.
-        /// Warning 618 and 649 are logged when Oculus Integration is imported into the project, 618 is the obsolete warning and 649 is a null on start warning.
+        /// Warning 618 is logged when building the project as of Oculus Integration 39.0 https://developer.oculus.com/downloads/package/unity-integration/39.0
+        /// 618 is the obsolete property/function warning
         /// </summary>
         static void UpdateCSC()
         {
@@ -229,8 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             // List of new warning numbers to add to the csc file
             List<string> warningNumbersToAdd = new List<string>()
             {
-                "618",
-                "649"
+                "618"
             };
 
             if (!File.Exists(cscFilePath))

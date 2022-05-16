@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu
 {

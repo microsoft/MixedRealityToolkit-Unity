@@ -71,8 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             }
         }
 
-#if MSFT_OPENXR_0_9_4_OR_NEWER
-        private MicrosoftControllerModelProvider controllerModelProvider;
+#if MSFT_OPENXR
+        private OpenXRControllerModelProvider controllerModelProvider;
 
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             if (controllerModelProvider == null)
             {
-                controllerModelProvider = new MicrosoftControllerModelProvider(ControllerHandedness);
+                controllerModelProvider = new OpenXRControllerModelProvider(ControllerHandedness);
             }
 
             GameObject controllerModel = await controllerModelProvider.TryGenerateControllerModelFromPlatformSDK();
@@ -118,6 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 controllerModel.SetActive(false);
             }
         }
-#endif // MSFT_OPENXR_0_9_4_OR_NEWER
+#endif // MSFT_OPENXR
     }
 }

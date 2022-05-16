@@ -13,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit
     {
         public const uint DefaultPriority = 10;
 
+        public BaseService()
+        {
+            typeName = new[] { GetType().ToString() };
+        }
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -68,12 +73,18 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool? isInitialized = null;
 
+        private readonly string[] typeName = null;
+
+        private const string IsInitializedAssert = "{0} has not set a value for IsInitialized; returning false.";
+        private const string IsEnabledAssert = "{0} has not set a value for IsEnabled; returning false.";
+        private const string IsMarkedDestroyedAssert = "{0} has not set a value for IsMarkedDestroyed; returning false.";
+
         /// <inheritdoc />
         public virtual bool IsInitialized
         {
             get
             {
-                Debug.Assert(isInitialized.HasValue, $"{GetType()} has not set a value for IsInitialized, returning false.");
+                Debug.AssertFormat(isInitialized.HasValue, IsInitializedAssert, typeName);
                 return isInitialized ?? false;
             }
 
@@ -87,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
-                Debug.Assert(isEnabled.HasValue, $"{GetType()} has not set a value for IsEnabled, returning false.");
+                Debug.AssertFormat(isEnabled.HasValue, IsEnabledAssert, typeName);
                 return isEnabled ?? false;
             }
 
@@ -101,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
-                Debug.Assert(isMarkedDestroyed.HasValue, $"{GetType()} has not set a value for IsMarkedDestroyed, returning false.");
+                Debug.AssertFormat(isMarkedDestroyed.HasValue, IsMarkedDestroyedAssert, typeName);
                 return isMarkedDestroyed ?? false;
             }
 

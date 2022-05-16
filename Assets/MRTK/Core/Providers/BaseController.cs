@@ -236,20 +236,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             MixedRealityControllerVisualizationProfile controllerVisualizationProfile = GetControllerVisualizationProfile();
             bool controllerVisualizationProfilePresent = controllerVisualizationProfile != null;
-           
+
             if (!controllerVisualizationProfilePresent || !controllerVisualizationProfile.RenderMotionControllers)
             {
                 return true;
             }
 
-            GameObject controllerModel = null;
-            bool usePlatformModels = controllerVisualizationProfile.GetUsePlatformModelsOverride(controllerType, ControllerHandedness);
-
-            // If a specific controller template wants to override the global model, assign it
-            if (!usePlatformModels)
-            {
-                controllerModel = controllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
-            }
+            // Try to use the profile's override model first
+            GameObject controllerModel = controllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
 
             // If the Controller model is still null in the end, use the global defaults.
             if (controllerModel == null)

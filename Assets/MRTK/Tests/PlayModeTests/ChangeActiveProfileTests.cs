@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     // the MRTK being correctly reconfigured.
     public class ChangeActiveProfileTests : BasePlayModeTests
     {
-        
         #region Utility methods
 
         private void InitializeTest(MixedRealityToolkitConfigurationProfile profile)

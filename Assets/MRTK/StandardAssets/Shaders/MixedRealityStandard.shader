@@ -277,7 +277,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct v2f 
+            struct v2f
             {
                 float4 position : SV_POSITION;
 #if defined(_BORDER_LIGHT)
@@ -454,7 +454,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_ROUND_CORNERS)
 #if defined(_INDEPENDENT_CORNERS)
-            float4 _RoundCornersRadius; 
+            float4 _RoundCornersRadius;
 #else
             fixed _RoundCornerRadius;
 #endif
@@ -666,7 +666,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_BORDER_LIGHT) || defined(_ROUND_CORNERS)
                 o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
-   
+
                 float minScale = min(min(o.scale.x, o.scale.y), o.scale.z);
 
 #if defined(_BORDER_LIGHT) 
@@ -796,8 +796,8 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed4 albedo = fixed4(1.0, 1.0, 1.0, 1.0);
 #else
 #if defined(_TRIPLANAR_MAPPING)
-                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
-                                tex2D(_MainTex, uvY) * triplanarBlend.y + 
+                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x +
+                                tex2D(_MainTex, uvY) * triplanarBlend.y +
                                 tex2D(_MainTex, uvZ) * triplanarBlend.z;
 #else
 #if defined(_USE_SSAA)
@@ -1011,13 +1011,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_BORDER_LIGHT)
                 fixed borderValue;
 #if defined(_ROUND_CORNERS)
-                fixed borderMargin = _RoundCornerMargin  + _BorderWidth * 0.5;
+                fixed borderMargin = _RoundCornerMargin + _BorderWidth * 0.5;
 
                 cornerCircleRadius = saturate(max(currentCornerRadius - borderMargin, 0.01)) * i.scale.z;
 
                 cornerCircleDistance = halfScale - (borderMargin * i.scale.z) - cornerCircleRadius;
 
-                borderValue =  1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
+                borderValue = 1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #else
                 borderValue = max(smoothstep(i.uv.z - _EdgeSmoothingValue, i.uv.z + _EdgeSmoothingValue, distanceToEdge.x),
                                   smoothstep(i.uv.w - _EdgeSmoothingValue, i.uv.w + _EdgeSmoothingValue, distanceToEdge.y));
@@ -1150,7 +1150,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 // Environment coloring.
 #if defined(_ENVIRONMENT_COLORING)
                 fixed3 environmentColor = incident.x * incident.x * _EnvironmentColorX +
-                                          incident.y * incident.y * _EnvironmentColorY + 
+                                          incident.y * incident.y * _EnvironmentColorY +
                                           incident.z * incident.z * _EnvironmentColorZ;
                 output.rgb += environmentColor * max(0.0, dot(incident, worldNormal) + _EnvironmentColorThreshold) * _EnvironmentColorIntensity;
 
@@ -1253,7 +1253,7 @@ Shader "Mixed Reality Toolkit/Standard"
             ENDCG
         }
     }
-    
+
     Fallback "Hidden/InternalErrorShader"
     CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI"
 }

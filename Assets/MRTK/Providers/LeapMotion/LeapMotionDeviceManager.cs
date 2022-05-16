@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.﻿
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
+using System;
 using System.Collections.Generic;
 using Unity.Profiling;
-using System;
+using UnityEngine;
 
 #if LEAPMOTIONCORE_PRESENT
 using Leap;
@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -52,32 +51,31 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             return (capability == MixedRealityCapability.ArticulatedHand);
         }
 
-
         #endregion IMixedRealityCapabilityCheck Implementation
-#if LEAPMOTIONCORE_PRESENT
 
+#if LEAPMOTIONCORE_PRESENT
         /// <summary>
-        /// The profile that contains settings for the Leap Motion Device Manager input data provider.  This profile is nested under 
+        /// The profile that contains settings for the Leap Motion Device Manager input data provider.  This profile is nested under
         /// Input > Input Data Providers > Leap Motion Device Manager in the MixedRealityToolkit object in the hierarchy.
         /// </summary>
         public LeapMotionDeviceManagerProfile SettingsProfile => ConfigurationProfile as LeapMotionDeviceManagerProfile;
 
         /// <summary>
-        /// The LeapServiceProvider is added to the scene at runtime in OnEnable. 
+        /// The LeapServiceProvider is added to the scene at runtime in OnEnable.
         /// </summary>
         public LeapServiceProvider LeapMotionServiceProvider { get; protected set; }
 
         /// <summary>
         /// The distance between the index finger tip and the thumb tip required to enter the pinch/air tap selection gesture.
-        /// The pinch gesture enter will be registered for all values less than the EnterPinchDistance. The default EnterPinchDistance value is 0.02 and must be between 0.015 and 0.1. 
+        /// The pinch gesture enter will be registered for all values less than the EnterPinchDistance. The default EnterPinchDistance value is 0.02 and must be between 0.015 and 0.1.
         /// </summary>
-        private float enterPinchDistance => SettingsProfile.EnterPinchDistance;
+        private float EnterPinchDistance => SettingsProfile.EnterPinchDistance;
 
         /// <summary>
         /// The distance between the index finger tip and the thumb tip required to exit the pinch/air tap gesture.
-        /// The pinch gesture exit will be registered for all values greater than the ExitPinchDistance. The default ExitPinchDistance value is 0.05 and must be between 0.015 and 0.1. 
+        /// The pinch gesture exit will be registered for all values greater than the ExitPinchDistance. The default ExitPinchDistance value is 0.05 and must be between 0.015 and 0.1.
         /// </summary>
-        private float exitPinchDistance => SettingsProfile.ExitPinchDistance;
+        private float ExitPinchDistance => SettingsProfile.ExitPinchDistance;
 
         /// <summary>
         /// If true, the leap motion controller is connected and detected.
@@ -92,21 +90,21 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <summary>
         /// List of hands that are currently in frame and detected by the leap motion controller. If there are no hands in the current frame, this list will be empty.
         /// </summary>
-        private List<Hand> currentHandsDetectedByLeap => LeapMotionServiceProvider.CurrentFrame.Hands;
+        private List<Hand> CurrentHandsDetectedByLeap => LeapMotionServiceProvider.CurrentFrame.Hands;
 
         // This value can only be set in the profile, the default is LeapControllerOrientation.Headset.
-        private LeapControllerOrientation leapControllerOrientation => SettingsProfile.LeapControllerOrientation;
+        private LeapControllerOrientation LeapControllerOrientation => SettingsProfile.LeapControllerOrientation;
 
         /// <summary>
         /// Adds an offset to the game object with LeapServiceProvider attached.  This offset is only applied if the leapControllerOrientation
-        /// is LeapControllerOrientation.Desk and is necessary for the hand to appear in front of the main camera. If the leap controller is on the 
-        /// desk, the LeapServiceProvider is added to the scene instead of the LeapXRServiceProvider. The anchor point for the position of the leap hands is 
+        /// is LeapControllerOrientation.Desk and is necessary for the hand to appear in front of the main camera. If the leap controller is on the
+        /// desk, the LeapServiceProvider is added to the scene instead of the LeapXRServiceProvider. The anchor point for the position of the leap hands is
         /// the position of the game object with the LeapServiceProvider attached.
         /// </summary>
-        private Vector3 leapHandsOffset => SettingsProfile.LeapControllerOffset;
+        private Vector3 LeapHandsOffset => SettingsProfile.LeapControllerOffset;
 
         // If the Leap Controller Orientation is the Headset, controller offset settings will be exposed in the inspector while using the LeapXRServiceProvider
-        private LeapVRDeviceOffsetMode leapVRDeviceOffsetMode => SettingsProfile.LeapVRDeviceOffsetMode;
+        private LeapVRDeviceOffsetMode LeapVRDeviceOffsetMode => SettingsProfile.LeapVRDeviceOffsetMode;
 
         /// <summary>
         /// Dictionary to capture all active leap motion hands detected.
@@ -123,32 +121,35 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         {
             base.Enable();
 
-            if (leapControllerOrientation == LeapControllerOrientation.Headset)
+            if (LeapControllerOrientation == LeapControllerOrientation.Headset)
             {
-                // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
-                // The LeapXRServiceProvider can only be attached to a camera 
-                LeapMotionServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
+                // As of the Unity Plugin (>V5.0.0), the leap service provider needs to know what is the main camera,
+                // it will pick this up from the MainCameraProvider. This needs to be done before the LeapXRServiceProvider is created
 
-                LeapXRServiceProvider leapXRServiceProvider = LeapMotionServiceProvider as LeapXRServiceProvider;
+#if LEAPMOTIONPLUGIN_PRESENT
+                MainCameraProvider.mainCamera = CameraCache.Main;
+#endif
+                // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
+                LeapXRServiceProvider leapXRServiceProvider; // This is a different type than the LeapMotionServiceProvider property for access to specific settings below.
+                LeapMotionServiceProvider = leapXRServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
 
                 // Allow modification of VR specific offset modes if the leapControllerOrientation is Headset
                 // These settings mirror the modification of the properties exposed in the inspector within the LeapXRServiceProvider attached
                 // to the main camera
-                if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.ManualHeadOffset)
+                if (LeapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.ManualHeadOffset)
                 {
-                    // Change the offset mode before setting the properties 
+                    // Change the offset mode before setting the properties
                     leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.ManualHeadOffset;
 
                     leapXRServiceProvider.deviceOffsetYAxis = SettingsProfile.LeapVRDeviceOffsetY;
                     leapXRServiceProvider.deviceOffsetZAxis = SettingsProfile.LeapVRDeviceOffsetZ;
                     leapXRServiceProvider.deviceTiltXAxis = SettingsProfile.LeapVRDeviceOffsetTiltX;
                 }
-                else if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.Transform)
+                else if (LeapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.Transform)
                 {
                     if (SettingsProfile.LeapVRDeviceOrigin != null)
                     {
                         leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.Transform;
-
                         leapXRServiceProvider.deviceOrigin = SettingsProfile.LeapVRDeviceOrigin;
                     }
                     else
@@ -158,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 }
             }
 
-            if (leapControllerOrientation == LeapControllerOrientation.Desk)
+            if (LeapControllerOrientation == LeapControllerOrientation.Desk)
             {
                 // Create a separate gameobject if the leap controller is on the desk
                 GameObject leapProvider = new GameObject("LeapProvider");
@@ -170,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 leapProvider.transform.parent = CameraCache.Main.transform;
 
                 // Apply hand position offset, an offset is required to render the hands in view and in front of the camera
-                LeapMotionServiceProvider.transform.position += leapHandsOffset;
+                LeapMotionServiceProvider.transform.position += LeapHandsOffset;
             }
 
             // Add the attachment hands to the scene for the purpose of getting the tracking state of each hand and joint positions
@@ -207,12 +208,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 if (LeapMotionServiceProvider != null)
                 {
                     // Destroy the LeapProvider GameObject if the controller orientation is the desk
-                    if (leapControllerOrientation == LeapControllerOrientation.Desk)
+                    if (LeapControllerOrientation == LeapControllerOrientation.Desk)
                     {
                         GameObject.Destroy(LeapMotionServiceProvider.gameObject);
                     }
                     // Destroy the LeapXRServiceProvider attached to the main camera if the controller orientation is headset
-                    else if (leapControllerOrientation == LeapControllerOrientation.Headset)
+                    else if (LeapControllerOrientation == LeapControllerOrientation.Headset)
                     {
                         GameObject.Destroy(LeapMotionServiceProvider);
                     }
@@ -234,8 +235,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 var leapHand = new LeapMotionArticulatedHand(TrackingState.Tracked, handedness, inputSource);
 
                 // Set pinch thresholds
-                leapHand.HandDefinition.EnterPinchDistance = enterPinchDistance;
-                leapHand.HandDefinition.ExitPinchDistance = exitPinchDistance;
+                leapHand.HandDefinition.EnterPinchDistance = EnterPinchDistance;
+                leapHand.HandDefinition.ExitPinchDistance = ExitPinchDistance;
 
                 // Set the leap attachment hand to the corresponding handedness
                 if (handedness == Handedness.Left)
@@ -246,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 {
                     leapHand.SetAttachmentHands(rightAttachmentHand, LeapMotionServiceProvider);
                 }
-                
+
                 // Set the pointers for an articulated hand to the leap hand
                 foreach (var pointer in pointers)
                 {
@@ -288,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             if (isLeftTracked && !trackedHands.ContainsKey(Handedness.Left))
             {
                 OnHandDetected(Handedness.Left);
-            }            
+            }
             else if (!isLeftTracked && trackedHands.ContainsKey(Handedness.Left))
             {
                 OnHandDetectionLost(Handedness.Left);
@@ -315,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 if (IsLeapConnected)
                 {
                     // if the number of tracked hands in frame has changed
-                    if (currentHandsDetectedByLeap.Count != trackedHands.Count)
+                    if (CurrentHandsDetectedByLeap.Count != trackedHands.Count)
                     {
                         UpdateLeapTrackedHands(leftAttachmentHand.isTracked, rightAttachmentHand.isTracked);
                     }
@@ -330,6 +331,4 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         }
 #endif
     }
-
 }
-
