@@ -581,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputSystem = CoreServices.InputSystem;
                 IMixedRealityGazeProvider gazeProvider = inputSystem.GazeProvider;
 
-                bool gazeProviderEnabled = (gazeProvider?.Enabled).GetValueOrDefault(false);
+                bool gazeProviderEnabled = gazeProvider.IsNotNull() && gazeProvider.Enabled;
                 // The gaze hit result may be populated from the UpdatePointers call. If it has not, then perform
                 // another raycast if it's not populated
                 if (gazeProviderEnabled && gazeHitResult == null)
@@ -614,7 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                if (!gazeProvider.IsNull())
+                if (gazeProvider.IsNotNull() && gazeHitResult.IsNotNull())
                 {
                     gazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
                 }
