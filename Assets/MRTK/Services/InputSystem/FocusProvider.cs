@@ -909,16 +909,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer
         {
-            List<T> typePointers = new List<T>();
-            foreach (PointerData pointer in pointersList)
+            for (int i = 0; i < pointersList.Count; i++)
             {
-                if (pointer.Pointer is T typePointer && !typePointer.IsNull())
+                if (pointersList[i].Pointer is T typePointer && !typePointer.IsNull())
                 {
-                    typePointers.Add(typePointer);
+                    yield return typePointer;
                 }
             }
-
-            return typePointers;
         }
 
         public void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer)
