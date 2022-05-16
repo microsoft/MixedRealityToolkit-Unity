@@ -48,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private readonly Dictionary<uint, PointerData> pointers = new Dictionary<uint, PointerData>();
+        private readonly List<PointerData> pointersList = new List<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly Dictionary<GameObject, int> pendingOverallFocusExitSet = new Dictionary<GameObject, int>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
@@ -785,7 +786,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (IsPointerRegistered(pointer)) { return false; }
 
-                pointers.Add(pointer.PointerId, new PointerData(pointer));
+                PointerData pointerData = new PointerData(pointer);
+                pointers.Add(pointer.PointerId, pointerData);
+                pointersList.Add(pointerData);
 
                 if (primaryPointerSelector != null)
                 {
@@ -879,7 +882,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GameObject unfocusedObject = pointerData.CurrentPointerTarget;
                     bool objectIsStillFocusedByOtherPointer = false;
 
-                    foreach (var otherPointer in pointers.Values)
+                    foreach (var otherPointer in pointersList)
                     {
                         if (otherPointer.Pointer != pointer && otherPointer.CurrentPointerTarget == unfocusedObject)
                         {
@@ -902,6 +905,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 pointers.Remove(pointerData.Pointer.PointerId);
+                pointersList.Remove(pointerData);
 
                 if (primaryPointerSelector != null)
                 {
@@ -916,16 +920,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer
         {
-            List<T> typePointers = new List<T>();
-            foreach (PointerData pointer in pointers.Values)
+            for (int i = 0; i < pointersList.Count; i++)
             {
-                if (pointer.Pointer is T typePointer && !typePointer.IsNull())
+                if (pointersList[i].Pointer is T typePointer && !typePointer.IsNull())
                 {
-                    typePointers.Add(typePointer);
+                    yield return typePointer;
                 }
             }
-
-            return typePointers;
         }
 
         public void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer)
@@ -977,14 +978,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 foreach (var pointerMediator in pointerMediators)
                 {
-                    // This will be handled by the new pointer mediator ideally....
+                    // This will be handled by the new pointer mediator ideally...
                     pointerMediator.Value.UpdatePointers();
                 }
 
 #if UNITY_EDITOR
                 int pointerCount = 0;
 #endif
-                foreach (var pointerData in pointers.Values)
+                foreach (var pointerData in pointersList)
                 {
                     UpdatePointer(pointerData);
 
@@ -1191,7 +1192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 NumNearPointersActive = 0;
                 int numFarPointersWithoutCursorActive = 0;
 
-                foreach (var pointerData in pointers.Values)
+                foreach (var pointerData in pointersList)
                 {
                     if (pointerData.Pointer is IMixedRealityNearPointer nearPointer && !nearPointer.IsNull())
                     {
@@ -1517,7 +1518,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 //       just in case someone responds to the event by adding/removing a
                 //       pointer which would change the structures we're iterating over.
 
-                foreach (var pointer in pointers.Values)
+                foreach (var pointer in pointersList)
                 {
                     if (pointer.PreviousPointerTarget != pointer.CurrentPointerTarget)
                     {
@@ -1554,7 +1555,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
-                foreach (var pointer in pointers.Values)
+                foreach (var pointer in pointersList)
                 {
                     if (pointer.CurrentPointerTarget != null)
                     {

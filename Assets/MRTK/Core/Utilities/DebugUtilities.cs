@@ -170,6 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Draws a point in the Scene window.
         /// </summary>
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public static void DrawPoint(Vector3 point, Color color, float size = 0.05f)
         {
             DrawPoint(point, Quaternion.identity, color, size);
@@ -178,6 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Draws a point with a rotation in the Scene window.
         /// </summary>
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public static void DrawPoint(Vector3 point, Quaternion rotation, Color color, float size = 0.05f)
         {
             Vector3[] axes = { rotation * Vector3.up, rotation * Vector3.right, rotation * Vector3.forward };
@@ -193,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Draws the minimum and maximum points of the given bounds
         /// </summary>
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public static void DrawBounds(Bounds bounds, Color minColor, Color maxColor)
         {
             DrawPoint(bounds.min, minColor);

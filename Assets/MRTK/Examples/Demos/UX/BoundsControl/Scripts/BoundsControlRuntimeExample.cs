@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -226,11 +225,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
 
             SetStatus("Done!");
-        }
-        private void DebugDrawObjectBounds(Bounds bounds)
-        {
-            DebugUtilities.DrawPoint(bounds.min, Color.magenta);
-            DebugUtilities.DrawPoint(bounds.max, Color.yellow);
         }
 
         private IEnumerator WaitForSpeechCommand()
