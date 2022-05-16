@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit
                 return isEnabled ?? false;
             }
 
-
             protected set => isEnabled = value;
         }
 
