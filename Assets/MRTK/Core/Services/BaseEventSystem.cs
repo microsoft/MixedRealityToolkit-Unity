@@ -128,8 +128,9 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (eventExecutionDepth == 0 && (postponedActions.Count > 0 || postponedObjectActions.Count > 0))
             {
-                foreach (var handler in postponedActions)
+                for (int i = 0; i < postponedActions.Count; i++)
                 {
+                    Tuple<Action, Type, IEventSystemHandler> handler = postponedActions[i];
                     if (handler.Item1 == Action.Add)
                     {
                         AddHandlerToMap(handler.Item2, handler.Item3);
@@ -140,8 +141,9 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                 }
 
-                foreach (var obj in postponedObjectActions)
+                for (int i = 0; i < postponedObjectActions.Count; i++)
                 {
+                    Tuple<Action, GameObject> obj = postponedObjectActions[i];
                     if (obj.Item1 == Action.Add)
                     {
                         // Can call it here, because guaranteed that eventExecutionDepth is 0
