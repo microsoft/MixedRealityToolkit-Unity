@@ -99,8 +99,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // Send events to all handlers registered via RegisterHandler API.
-            List<EventHandlerEntry> handlers;
-            if (EventHandlersByType.TryGetValue(typeof(T), out handlers))
+            if (EventHandlersByType.TryGetValue(typeof(T), out List<EventHandlerEntry> handlers))
             {
                 for (int i = handlers.Count - 1; i >= 0; i--)
                 {
@@ -126,9 +125,17 @@ namespace Microsoft.MixedReality.Toolkit
 
             eventExecutionDepth--;
 
-            if (eventExecutionDepth == 0 && (postponedActions.Count > 0 || postponedObjectActions.Count > 0))
+            if (eventExecutionDepth == 0)
             {
-                for (int i = 0; i < postponedActions.Count; i++)
+                int postponedActionsCount = postponedActions.Count;
+                int postponedObjectActionsCount = postponedObjectActions.Count;
+
+                if (postponedActionsCount <= 0 && postponedObjectActionsCount <= 0)
+                {
+                    return;
+                }
+
+                for (int i = 0; i < postponedActionsCount; i++)
                 {
                     Tuple<Action, Type, IEventSystemHandler> handler = postponedActions[i];
                     if (handler.Item1 == Action.Add)
@@ -141,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                 }
 
-                for (int i = 0; i < postponedObjectActions.Count; i++)
+                for (int i = 0; i < postponedObjectActionsCount; i++)
                 {
                     Tuple<Action, GameObject> obj = postponedObjectActions[i];
                     if (obj.Item1 == Action.Add)
