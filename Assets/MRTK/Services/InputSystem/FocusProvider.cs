@@ -514,7 +514,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             var inputSystem = CoreServices.InputSystem;
 
-            var primaryPointerSelectorType = inputSystem.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
+            var primaryPointerSelectorType = inputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
             if (primaryPointerSelectorType != null)
             {
                 primaryPointerSelector = Activator.CreateInstance(primaryPointerSelectorType) as IMixedRealityPrimaryPointerSelector;
@@ -809,11 +809,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 var inputSystem = CoreServices.InputSystem;
-                IMixedRealityGazeProvider gazeProvider = inputSystem.GazeProvider;
+                IMixedRealityGazeProvider gazeProvider = inputSystem?.GazeProvider;
 
                 IMixedRealityPointerMediator mediator = null;
 
-                var mediatorType = inputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type;
+                var mediatorType = inputSystemProfile.PointerProfile.PointerMediator.Type;
                 if (mediatorType != null)
                 {
                     try
