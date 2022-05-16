@@ -96,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { pokeLayerMasks = value; }
         }
 
-
         [SerializeField]
         [Tooltip("Specify whether queries for touchable surfaces hit triggers.")]
         protected QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal;
