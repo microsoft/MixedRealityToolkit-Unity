@@ -91,7 +91,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             state = ProgressIndicatorState.Closed;
+            gameObject.SetActive(false);
+        }
 
+        /// <inheritdoc/>
+        public void CloseImmediate()
+        {
+            if (state != ProgressIndicatorState.Open)
+            {
+                throw new System.Exception("Can't close in state " + state);
+            }
+
+            StopOrbsImmediately();
+            state = ProgressIndicatorState.Closed;
             gameObject.SetActive(false);
         }
 
@@ -130,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             for (int i = 0; i < orbs.Length; ++i)
             {
-                propertyBlocks[i].SetColor("_Color", new Color(1, 1, 1, 1));
+                propertyBlocks[i].SetColor("_Color", Color.white);
                 dots[i].SetPropertyBlock(propertyBlocks[i]);
                 orbs[i].transform.localRotation = Quaternion.identity;
             }
@@ -142,6 +154,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rotationWhenStopped = angles[0];
         }
 
+        private void StopOrbsImmediately()
+        {
+            for (int i = 0; i < orbs.Length; ++i)
+            {
+                Color orbColor = propertyBlocks[i].GetColor("_Color");
+                orbColor.a = 0.0f;
+                propertyBlocks[i].SetColor("_Color", orbColor);
+                dots[i].SetPropertyBlock(propertyBlocks[i]);
+                orbs[i].transform.localRotation = Quaternion.identity;
+            }
+
+            hasAnimationFinished = true;
+        }
+
         private void Awake()
         {
             angles = new float[orbs.Length];
@@ -151,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             for (int i = 0; i < orbs.Length; ++i)
             {
                 propertyBlocks[i] = new MaterialPropertyBlock();
-                propertyBlocks[i].SetColor("_Color", new Color(1, 1, 1, 1));
+                propertyBlocks[i].SetColor("_Color", Color.white);
                 dots[i] = orbs[i].transform.GetChild(0).gameObject.GetComponent<Renderer>();
                 dots[i].SetPropertyBlock(propertyBlocks[i]);
                 angles[i] = 0;
