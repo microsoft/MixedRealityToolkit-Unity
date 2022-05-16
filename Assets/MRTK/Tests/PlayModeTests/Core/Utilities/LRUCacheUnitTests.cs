@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             // Act
             // Fill cache with sequential from 0 - 5, then add another entry 10 to cause an eviction of least recent entry
             AddItems(cache, capacity);
-            cache.Add(10, 10.ToString());
+            cache.Add(10, "10");
 
             // Assert
             // Expected in cache item (Most recent -> least recent): 10, 4, 3, 2, 1
@@ -185,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             // Expected in cache item (Most recent -> least recent): 10, 0, 4, 3, 2
             AddItems(cache, capacity);
             cache.TryGetValue(0, out var _);
-            cache.Add(10, 10.ToString());
+            cache.Add(10, "10");
 
             // Assert
             // Expected in cache items: 10, 0, 4, 3, 2
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             // Add the least recent entry to bring it to the front, then add another entry to push out the least recent.
             AddItems(cache, capacity);
             cache.Add(0, 0.ToString());
-            cache.Add(10, 10.ToString());
+            cache.Add(10, "10");
 
             // Assert
             // Expected in cache item (Most recent -> least recent): 10, 0, 4, 3, 2

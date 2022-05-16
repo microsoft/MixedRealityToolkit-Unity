@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </remarks>
     /// <typeparam name="TKey">The type that is used as key to look up values in the cache.</typeparam>
     /// <typeparam name="TValue">The type of values stored in the cache.</typeparam>
-    public class LRUCache<TKey, TValue> : IDictionary<TKey, TValue>
+    internal class LRUCache<TKey, TValue> : IDictionary<TKey, TValue>
     {
         /// <summary>
         /// Data structure used to construct a linked list of cached items in temporal order.
