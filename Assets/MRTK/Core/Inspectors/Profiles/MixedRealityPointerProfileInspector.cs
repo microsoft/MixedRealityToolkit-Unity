@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty useEyeTrackingDataWhenAvailable;
 
         private static bool showGazeProviderProperties = true;
+        private bool gazeProviderEnabled = true;
         private UnityEditor.Editor gazeProviderEditor;
 
         private SerializedProperty pointerMediator;
@@ -111,10 +112,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     var gazeProvider = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>();
                     CreateCachedEditor((Object)gazeProvider, null, ref gazeProviderEditor);
-
                     showGazeProviderProperties = EditorGUILayout.Foldout(showGazeProviderProperties, "Gaze Provider Settings", true, boldFoldout);
                     if (showGazeProviderProperties && !gazeProviderEditor.IsNull())
                     {
+                        // Provide a convenient way to toggle the gaze provider as enabled/disabled via editor
+                        gazeProviderEnabled = gazeProvider.Enabled;
+                        gazeProviderEnabled = EditorGUILayout.Toggle("Enable Gaze Provider", gazeProviderEnabled);
+                        gazeProvider.Enabled = gazeProviderEnabled;
+
+                        // Draw out the rest of the Gaze Provider's settings
                         gazeProviderEditor.OnInspectorGUI();
                     }
                 }

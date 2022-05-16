@@ -576,9 +576,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdateGazeProviderPerfMarker.Auto())
             {
+                bool gazeProviderEnabled = (CoreServices.InputSystem.GazeProvider?.Enabled).GetValueOrDefault(false);
                 // The gaze hit result may be populated from the UpdatePointers call. If it has not, then perform
                 // another raycast if it's not populated
-                if (gazeHitResult == null && GazePointerBehavior != PointerBehavior.AlwaysOff)
+                if (gazeProviderEnabled && gazeHitResult == null)
                 {
                     IMixedRealityPointer gazePointer = CoreServices.InputSystem.GazeProvider?.GazePointer;
                     // Check that the gazePointer isn't null and that it has been properly registered as a pointer.
