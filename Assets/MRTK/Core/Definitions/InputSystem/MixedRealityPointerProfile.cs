@@ -112,10 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The concrete Pointer Mediator component to use.
         /// This is a component that mediates all pointers in system, disabling / enabling them based on the state of other pointers.
         /// </summary>
-        public SystemType PointerMediator
-        {
-            get { return pointerMediator; }
-        }
+        public SystemType PointerMediator => pointerMediator;
 
         [SerializeField]
         [Implements(typeof(IMixedRealityPrimaryPointerSelector), TypeGrouping.ByNamespaceFlat)]
@@ -125,9 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Primary pointer selector implementation to use. This is used by the focus provider to choose the primary pointer.
         /// </summary>
-        public SystemType PrimaryPointerSelector
-        {
-            get { return primaryPointerSelector; }
-        }
+        public SystemType PrimaryPointerSelector => primaryPointerSelector;
     }
 }
