@@ -28,7 +28,7 @@
         {
             "name": "com.microsoft.mixedreality.openxr",
             "expression": "1.4.0",
-            "define": "UNITY_OPENXR_1_4_0_OR_NEWER"
+            "define": "MSFT_OPENXR_1_4_0_OR_NEWER"
         },
         {
             "name": "com.unity.xr.openxr",
