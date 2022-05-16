@@ -792,7 +792,7 @@ MonoBehaviour:
   thumbRoot: {fileID: 7993839106062047049}
   isTouchable: 0
   snapToPosition: 0
-  thumbCollider: {fileID: 0}
+  thumbCollider: {fileID: 4759724201994911970}
   touchCollider: {fileID: 0}
   sliderValue: 0.5
   useSliderStepDivisions: 0
