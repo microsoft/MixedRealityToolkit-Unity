@@ -510,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 #endregion IMixedRealityPointer Implementation
 
-        #region IEquality Implementation
+#region IEquality Implementation
 
         private static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
@@ -558,7 +558,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 #endregion IEquality Implementation
 
-        #region IMixedRealitySourcePoseHandler Implementation
+#region IMixedRealitySourcePoseHandler Implementation
 
         private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnSourceLost");
 
@@ -594,7 +594,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 #endregion IMixedRealitySourcePoseHandler Implementation
 
-        #region IMixedRealityInputHandler Implementation
+#region IMixedRealityInputHandler Implementation
 
         private static readonly ProfilerMarker OnInputUpPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnInputUp");
 

@@ -231,6 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             // Empty as of Oculus Integration 39.0 https://developer.oculus.com/downloads/package/unity-integration/39.0
             List<string> warningNumbersToAdd = new List<string>()
             {
+                "618"
             };
 
             if (!File.Exists(cscFilePath))
