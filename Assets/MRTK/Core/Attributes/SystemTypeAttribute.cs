@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit
         public bool AllowAbstract { get; protected set; } = false;
 
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         /// <param name="type">Initializes a new instance of the <see cref="SystemTypeAttribute"/> class.</param>
         /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
@@ -39,7 +39,10 @@ namespace Microsoft.MixedReality.Toolkit
 #else
             bool isValid = type.IsClass || type.IsInterface || type.IsValueType && !type.IsEnum;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
-            Debug.Assert(isValid, $"Invalid Type {type} in attribute.");
+            if (!isValid)
+            {
+                Debug.Assert(isValid, $"Invalid Type {type} in attribute.");
+            }
             Grouping = grouping;
         }
 
