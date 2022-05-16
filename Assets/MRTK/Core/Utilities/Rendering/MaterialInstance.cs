@@ -112,6 +112,33 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             get { return AcquireMaterials(); }
         }
 
+        /// <summary>
+        /// Whether to use a cached copy of cachedRenderer.sharedMaterials or call sharedMaterials on the Renderer directly.
+        /// Enabling the option will lead to better performance but you must turn it off before modifying sharedMaterials of the Renderer.
+        /// </summary>
+        public bool CacheSharedMaterialsFromRenderer
+        {
+            get
+            {
+                return cacheSharedMaterialsFromRenderer;
+            }
+            set
+            {
+                if (cacheSharedMaterialsFromRenderer != value)
+                {
+                    if (value)
+                    {
+                        cachedSharedMaterials = CachedRenderer.sharedMaterials;
+                    }
+                    else
+                    {
+                        cachedSharedMaterials = null;
+                    }
+                    cacheSharedMaterialsFromRenderer = value;
+                }
+            }
+        }
+
         private Renderer CachedRenderer
         {
             get
@@ -119,21 +146,57 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 if (cachedRenderer == null)
                 {
                     cachedRenderer = GetComponent<Renderer>();
+                    if (CacheSharedMaterialsFromRenderer)
+                    {
+                        cachedSharedMaterials = cachedRenderer.sharedMaterials;
+                    }
                 }
 
                 return cachedRenderer;
             }
         }
 
+        private Material[] CachedRendererSharedMaterials
+        {
+            get
+            {
+                if (CacheSharedMaterialsFromRenderer)
+                {
+                    if (cachedSharedMaterials == null)
+                    {
+                        cachedSharedMaterials = cachedRenderer.sharedMaterials;
+                    }
+                    return cachedSharedMaterials;
+                }
+                else
+                {
+                    return cachedRenderer.sharedMaterials;
+                }
+            }
+            set
+            {
+                if (CacheSharedMaterialsFromRenderer)
+                {
+                    cachedSharedMaterials = value;
+                }
+                cachedRenderer.sharedMaterials = value;
+            }
+        }
+
+
         private Renderer cachedRenderer = null;
 
         [SerializeField, HideInInspector]
         private Material[] defaultMaterials = null;
         private Material[] instanceMaterials = null;
+        private Material[] cachedSharedMaterials = null;
         private bool initialized = false;
         private bool materialsInstanced = false;
+        [SerializeField]
+        [Tooltip("Whether to use a cached copy of cachedRenderer.sharedMaterials or call sharedMaterials on the Renderer directly. " +
+            "Enabling the option will lead to better performance but you must turn it off before modifying sharedMaterials of the Renderer.")]
+        private bool cacheSharedMaterialsFromRenderer = false;
         private readonly HashSet<Object> materialOwners = new HashSet<Object>();
-        private readonly List<Material> sharedMaterials = new List<Material>();
 
         private const string instancePostfix = " (Instance)";
 
@@ -147,12 +210,13 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private void Update()
         {
             // If the materials get changed via outside of MaterialInstance.
-            CachedRenderer.GetSharedMaterials(sharedMaterials);
+            // Investigate using Unity's GetSharedMaterials here instead.
+            var sharedMaterials = CachedRendererSharedMaterials;
 
             if (!MaterialsMatch(sharedMaterials, instanceMaterials))
             {
                 // Re-create the material instances.
-                var newDefaultMaterials = new Material[sharedMaterials.Count];
+                var newDefaultMaterials = new Material[sharedMaterials.Length];
                 var min = Math.Min(newDefaultMaterials.Length, defaultMaterials.Length);
 
                 // Copy the old defaults.
@@ -192,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (CachedRenderer != null && defaultMaterials != null)
             {
-                CachedRenderer.sharedMaterials = defaultMaterials;
+                CachedRendererSharedMaterials = defaultMaterials;
             }
 
             DestroyMaterials(instanceMaterials);
@@ -208,11 +272,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 // Cache the default materials if ones do not already exist.
                 if (!HasValidMaterial(defaultMaterials))
                 {
-                    defaultMaterials = CachedRenderer.sharedMaterials;
+                    defaultMaterials = CachedRendererSharedMaterials;
                 }
                 else if (!materialsInstanced) // Restore the clone to its initial state.
                 {
-                    CachedRenderer.sharedMaterials = defaultMaterials;
+                    CachedRendererSharedMaterials = defaultMaterials;
                 }
 
                 initialized = true;
@@ -223,8 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (CachedRenderer != null)
             {
-                CachedRenderer.GetSharedMaterials(sharedMaterials);
-                if (!MaterialsMatch(sharedMaterials, instanceMaterials))
+                if (!MaterialsMatch(CachedRendererSharedMaterials, instanceMaterials))
                 {
                     CreateInstances();
                 }
@@ -241,20 +304,20 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
             if (CachedRenderer != null && instanceMaterials != null)
             {
-                CachedRenderer.sharedMaterials = instanceMaterials;
+                CachedRendererSharedMaterials = instanceMaterials;
             }
 
             materialsInstanced = true;
         }
 
-        private static bool MaterialsMatch(List<Material> a, Material[] b)
+        private static bool MaterialsMatch(Material[] a, Material[] b)
         {
-            if (a?.Count != b?.Length)
+            if (a?.Length != b?.Length)
             {
                 return false;
             }
 
-            for (int i = 0; i < a?.Count; ++i)
+            for (int i = 0; i < a?.Length; ++i)
             {
                 if (a[i] != b[i])
                 {

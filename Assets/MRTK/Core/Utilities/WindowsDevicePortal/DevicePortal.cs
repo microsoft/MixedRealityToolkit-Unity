@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 return null;
             }
 
-            return JsonUtility.FromJson<MachineName>( await response.GetResponseBody());
+            return JsonUtility.FromJson<MachineName>(await response.GetResponseBody());
         }
 
         /// <summary>

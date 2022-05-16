@@ -4,12 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
+using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
-using System;
-using System.Threading.Tasks;
-using System.Threading;
 
 #if OCULUS_ENABLED
 using Unity.XR.Oculus;
@@ -98,11 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(System.Type controllerType, InputSourceType inputSourceType)
         {
-            if (GetControllerVisualizationProfile() != null && 
+            if (GetControllerVisualizationProfile() != null &&
                 GetControllerVisualizationProfile().GetUsePlatformModelsOverride(GetType(), ControllerHandedness))
             {
-               TryRenderControllerModelFromOculus();
-               return true;
+                TryRenderControllerModelFromOculus();
+                return true;
             }
             else
             {
@@ -129,11 +127,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             }
         }
 
-        private const int controllerInitializationTimeout = 1000;
+        private const int ControllerInitializationTimeout = 1000;
         private async Task WaitForOculusVisuals()
         {
             int timeWaited = 0;
-            while (OculusControllerVisualization == null || timeWaited > controllerInitializationTimeout)
+            while (OculusControllerVisualization == null || timeWaited > ControllerInitializationTimeout)
             {
                 await Task.Delay(100);
                 timeWaited += 100;

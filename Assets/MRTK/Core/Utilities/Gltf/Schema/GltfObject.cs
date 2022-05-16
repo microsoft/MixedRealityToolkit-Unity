@@ -117,6 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         public GameObject GameObjectReference { get; internal set; }
 
         /// <summary>
+        /// The Node Id and corresponding GameObject pairs.
+        /// </summary>
+        public Dictionary<int, GameObject> NodeGameObjectPairs { get; internal set; } = new Dictionary<int, GameObject>();
+
+        /// <summary>
         /// The list of registered glTF extensions found for this object.
         /// </summary>
         public List<GltfExtension> RegisteredExtensions { get; internal set; } = new List<GltfExtension>();

@@ -13,9 +13,8 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class CameraFOVChecker
     {
-
         // Help to clear caches when new frame runs
-        static private int inFOVLastCalculatedFrame = -1;
+        private static int inFOVLastCalculatedFrame = -1;
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
         private static Dictionary<Tuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<Tuple<Collider, Camera>, bool>();
         // List of corners shared across all sphere pointer query instances --
@@ -39,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             Tuple<Collider, Camera> cameraColliderPair = new Tuple<Collider, Camera>(myCollider, cam);
-            bool result = false;
+            bool result;
             if (inFOVLastCalculatedFrame != Time.frameCount)
             {
                 inFOVColliderCache.Clear();
@@ -52,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             inFOVBoundsCornerPoints.Clear();
             BoundsExtensions.GetColliderBoundsPoints(myCollider, inFOVBoundsCornerPoints, 0);
-
 
             float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
             float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;

@@ -275,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 // Caution, Destroy() will destroy one frame later.
                 // Do not check later for presence this frame!
                 Object.Destroy(collider);
-            }           
+            }
 
             // handleVisualBounds are returned in handleVisual-local space.
             Bounds handleVisualBounds = VisualUtils.GetMaxBounds(handleVisual);

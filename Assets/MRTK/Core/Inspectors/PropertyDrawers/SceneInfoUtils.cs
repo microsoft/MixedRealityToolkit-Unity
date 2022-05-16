@@ -294,6 +294,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
+            if (!MixedRealityToolkit.IsSceneSystemEnabled)
+            {
+                return;
+            }
+
             RefreshSceneInfoFieldsInScriptableObjects();
             RefreshSceneInfoFieldsInOpenScenes();
         }

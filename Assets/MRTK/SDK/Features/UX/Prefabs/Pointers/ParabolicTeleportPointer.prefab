@@ -115,6 +115,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -429,6 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyOnSourceLost: 0
   useSourcePoseData: 0
+  useSourcePoseAsFallback: 1
   poseAction:
     id: 4
     description: Pointer Pose
@@ -618,6 +620,9 @@ MonoBehaviour:
   rotationAmount: 90
   backStrafeActivationAngle: 45
   strafeAmount: 0.25
+  checkForFloorOnStrafe: 0
+  adjustHeightOnStrafe: 0
+  maxHeightChangeOnStrafe: 0.5
   upDirectionThreshold: 0.2
   LineColorHotSpot:
     serializedVersion: 2
@@ -648,10 +653,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 4
-  ValidLayers:
+  ValidTeleportationLayers:
     serializedVersion: 2
     m_Bits: 1
-  InvalidLayers:
+  InvalidTeleportationLayers:
     serializedVersion: 2
     m_Bits: 4
   gravityDistorter: {fileID: 114225980339285346}

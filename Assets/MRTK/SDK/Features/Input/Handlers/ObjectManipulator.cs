@@ -41,13 +41,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             RotateAboutObjectCenter,
             RotateAboutGrabPoint
-        };
-        [System.Flags]
+        }
+
+        [Flags]
         public enum ReleaseBehaviorType
         {
             KeepVelocity = 1 << 0,
             KeepAngularVelocity = 1 << 1
         }
+
         #endregion Public Enums
 
         #region Serialized Fields
@@ -399,8 +401,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool wasGravity = false;
         private bool wasKinematic = false;
 
-        private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
-        private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
+        private bool IsOneHandedManipulationEnabled => manipulationType.IsMaskSet(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
+        private bool IsTwoHandedManipulationEnabled => manipulationType.IsMaskSet(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
 
         private Quaternion leftHandRotation;
         private Quaternion rightHandRotation;
@@ -654,9 +656,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Call manipulation ended handlers
             var handsPressedCount = pointerIdToPointerMap.Count;
-            if (manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && handsPressedCount == 1)
+            if (manipulationType.IsMaskSet(ManipulationHandFlags.TwoHanded) && handsPressedCount == 1)
             {
-                if (manipulationType.HasFlag(ManipulationHandFlags.OneHanded))
+                if (manipulationType.IsMaskSet(ManipulationHandFlags.OneHanded))
                 {
                     HandleOneHandMoveStarted();
                 }
@@ -680,11 +682,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var handPositionArray = GetHandPositionArray();
 
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
+            if (twoHandedManipulationType.IsMaskSet(TransformFlags.Rotate))
             {
                 rotateLogic.Setup(handPositionArray, HostTransform);
             }
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
+            if (twoHandedManipulationType.IsMaskSet(TransformFlags.Move))
             {
                 // If near manipulation, a pure grabpoint centroid is used for
                 // the initial pointer pose; if far manipulation, a more complex
@@ -693,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 MixedRealityPose hostPose = new MixedRealityPose(HostTransform.position, HostTransform.rotation);
                 moveLogic.Setup(pointerPose, GetPointersGrabPoint(), hostPose, HostTransform.localScale);
             }
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
+            if (twoHandedManipulationType.IsMaskSet(TransformFlags.Scale))
             {
                 scaleLogic.Setup(handPositionArray, HostTransform);
             }
@@ -705,7 +707,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             var handPositionArray = GetHandPositionArray();
 
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
+            if (twoHandedManipulationType.IsMaskSet(TransformFlags.Scale))
             {
                 targetTransform.Scale = scaleLogic.UpdateMap(handPositionArray);
                 if (EnableConstraints && constraintsManager != null)
@@ -713,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     constraintsManager.ApplyScaleConstraints(ref targetTransform, false, IsNearManipulation());
                 }
             }
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
+            if (twoHandedManipulationType.IsMaskSet(TransformFlags.Rotate))
             {
                 targetTransform.Rotation = rotateLogic.Update(handPositionArray, targetTransform.Rotation);
                 if (EnableConstraints && constraintsManager != null)
@@ -721,7 +723,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     constraintsManager.ApplyRotationConstraints(ref targetTransform, false, IsNearManipulation());
                 }
             }
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
+            if (twoHandedManipulationType.IsMaskSet(TransformFlags.Move))
             {
                 // If near manipulation, a pure GrabPoint centroid is used for
                 // the pointer pose; if far manipulation, a more complex
@@ -744,8 +746,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             IMixedRealityPointer pointer = pointerData.pointer;
 
             // Calculate relative transform from object to grip.
-            Quaternion gripRotation;
-            TryGetGripRotation(pointer, out gripRotation);
+            TryGetGripRotation(pointer, out Quaternion gripRotation);
             Quaternion worldToGripRotation = Quaternion.Inverse(gripRotation);
             objectToGripRotation = worldToGripRotation * HostTransform.rotation;
 
@@ -873,19 +874,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     transformUpdated = elasticsManager.ApplyTargetTransform(targetTransform);
                 }
-                if (!transformUpdated.HasFlag(TransformFlags.Move))
+                if (!transformUpdated.IsMaskSet(TransformFlags.Move))
                 {
                     HostTransform.position = applySmoothing ? smoothingLogic.SmoothPosition(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
                 }
-                if (!transformUpdated.HasFlag(TransformFlags.Rotate))
+                if (!transformUpdated.IsMaskSet(TransformFlags.Rotate))
                 {
                     HostTransform.rotation = applySmoothing ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
                 }
-                if (!transformUpdated.HasFlag(TransformFlags.Scale))
+                if (!transformUpdated.IsMaskSet(TransformFlags.Scale))
                 {
                     HostTransform.localScale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
                 }
-                
             }
             else
             {
@@ -909,7 +909,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 else
                 {
                     // We are using forces
-
                     rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - HostTransform.position);
 
                     var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
@@ -987,12 +986,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Otherwise keep the objects current velocity so that it's not dampened unnaturally
                 if (isNearManipulation)
                 {
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))
+                    if (releaseBehavior.IsMaskSet(ReleaseBehaviorType.KeepVelocity))
                     {
                         rigidBody.velocity = velocity;
                     }
 
-                    if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepAngularVelocity))
+                    if (releaseBehavior.IsMaskSet(ReleaseBehaviorType.KeepAngularVelocity))
                     {
                         rigidBody.angularVelocity = angularVelocity;
                     }

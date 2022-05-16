@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             public Handedness ControllerHandedness => Handedness.None;
 
-            public IMixedRealityInputSource InputSource => throw new System.NotImplementedException();
+            public IMixedRealityInputSource InputSource => new MockInputSource();
 
             public IMixedRealityControllerVisualizer Visualizer => throw new System.NotImplementedException();
 
