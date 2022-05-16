@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -55,7 +56,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> GetAsync(string query, Dictionary<string, string> headers = null, int timeout = -1, DownloadHandler downloadHandler = null, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> GetAsync(
+            string query,
+            Dictionary<string, string> headers = null,
+            int timeout = -1,
+            DownloadHandler downloadHandler = null,
+            bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Get(query))
             {
@@ -63,6 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     webRequest.downloadHandler = downloadHandler;
                 }
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
 
                 return await ProcessRequestAsync(webRequest, timeout, headers, readResponseData, certificateHandler, disposeCertificateHandlerOnDispose);
             }
@@ -82,10 +95,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> PostAsync(
+            string query,
+            Dictionary<string, string> headers = null,
+            int timeout = -1,
+            bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Post(query, null as string))
             {
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
                 return await ProcessRequestAsync(webRequest, timeout, headers, readResponseData, certificateHandler, disposeCertificateHandlerOnDispose);
             }
         }
@@ -101,10 +125,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, WWWForm formData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> PostAsync(
+            string query,
+            WWWForm formData,
+            Dictionary<string, string> headers = null,
+            int timeout = -1, bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Post(query, formData))
             {
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
                 return await ProcessRequestAsync(webRequest, timeout, headers, readResponseData, certificateHandler, disposeCertificateHandlerOnDispose);
             }
         }
@@ -120,10 +155,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, string jsonData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> PostAsync(
+            string query,
+            string jsonData,
+            Dictionary<string, string> headers = null,
+            int timeout = -1,
+            bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Post(query, "POST"))
             {
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
                 var data = new UTF8Encoding().GetBytes(jsonData);
                 webRequest.uploadHandler = new UploadHandlerRaw(data);
                 webRequest.downloadHandler = new DownloadHandlerBuffer();
@@ -144,10 +191,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> PostAsync(
+            string query,
+            byte[] bodyData,
+            Dictionary<string, string> headers = null,
+            int timeout = -1,
+            bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Post(query, "POST"))
             {
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
                 webRequest.uploadHandler = new UploadHandlerRaw(bodyData);
                 webRequest.downloadHandler = new DownloadHandlerBuffer();
                 webRequest.SetRequestHeader("Content-Type", "application/octet-stream");
@@ -170,10 +229,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PutAsync(string query, string jsonData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> PutAsync(
+            string query,
+            string jsonData,
+            Dictionary<string, string> headers = null,
+            int timeout = -1,
+            bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Put(query, jsonData))
             {
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
                 webRequest.SetRequestHeader("Content-Type", "application/json");
                 return await ProcessRequestAsync(webRequest, timeout, headers, readResponseData, certificateHandler, disposeCertificateHandlerOnDispose);
             }
@@ -190,10 +261,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PutAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> PutAsync(
+            string query,
+            byte[] bodyData,
+            Dictionary<string, string> headers = null,
+            int timeout = -1,
+            bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Put(query, bodyData))
             {
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
                 webRequest.SetRequestHeader("Content-Type", "application/octet-stream");
                 return await ProcessRequestAsync(webRequest, timeout, headers, readResponseData, certificateHandler, disposeCertificateHandlerOnDispose);
             }
@@ -213,10 +296,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
         /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> DeleteAsync(string query, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
+        public static async Task<Response> DeleteAsync(
+            string query,
+            Dictionary<string, string> headers = null,
+            int timeout = -1,
+            bool readResponseData = false,
+            CertificateHandler certificateHandler = null,
+            bool disposeCertificateHandlerOnDispose = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var webRequest = UnityWebRequest.Delete(query))
             {
+                cancellationToken.Register(() =>
+                {
+                    webRequest.Abort();
+                });
                 return await ProcessRequestAsync(webRequest, timeout, headers, readResponseData, certificateHandler, disposeCertificateHandlerOnDispose);
             }
         }

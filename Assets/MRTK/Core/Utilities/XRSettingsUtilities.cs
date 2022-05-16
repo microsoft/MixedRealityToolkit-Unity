@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#if XR_MANAGEMENT_ENABLED
+#if !UNITY_2020_2_OR_NEWER && UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
 using UnityEngine.XR.Management;
-#endif // XR_MANAGEMENT_ENABLED
+#endif // !UNITY_2020_2_OR_NEWER && UNITY_2019_3_OR_NEWER && XR_MANAGEMENT_ENABLED
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {

@@ -730,18 +730,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     targetTransform.Rotation = Quaternion.LookRotation(cameraForwardFlat, Vector3.up) * startObjectRotationFlatCameraSpace;
                     break;
                 case RotateInOneHandType.FaceUser:
-                    {
-                        Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                        // Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
-                        targetTransform.Rotation = Quaternion.LookRotation(-directionToTarget);
-                        break;
-                    }
+                {
+                    Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
+                    // Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
+                    targetTransform.Rotation = Quaternion.LookRotation(-directionToTarget);
+                    break;
+                }
                 case RotateInOneHandType.FaceAwayFromUser:
-                    {
-                        Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                        targetTransform.Rotation = Quaternion.LookRotation(directionToTarget);
-                        break;
-                    }
+                {
+                    Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
+                    targetTransform.Rotation = Quaternion.LookRotation(directionToTarget);
+                    break;
+                }
                 case RotateInOneHandType.RotateAboutObjectCenter:
                 case RotateInOneHandType.RotateAboutGrabPoint:
                     Quaternion gripRotation;

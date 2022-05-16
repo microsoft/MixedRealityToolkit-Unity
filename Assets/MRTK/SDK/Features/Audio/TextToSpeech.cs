@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
-    /// The well-known voices that can be used by <see cref="TextToSpeech"/>.
+    /// The en-US voices that can be used by <see cref="TextToSpeech"/>. Voices for all other locales are categorized as Other.
     /// </summary>
     public enum TextToSpeechVoice
     {
@@ -25,19 +25,24 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         Default,
 
         /// <summary>
-        /// Microsoft David Mobile
+        /// Microsoft David voice
         /// </summary>
         David,
 
         /// <summary>
-        /// Microsoft Mark Mobile
+        /// Microsoft Mark voice
         /// </summary>
         Mark,
 
         /// <summary>
-        /// Microsoft Zira Mobile
+        /// Microsoft Zira voice
         /// </summary>
         Zira,
+
+        /// <summary>
+        /// Voice not listed above (for non en-US languages)
+        /// </summary>
+        Other
     }
 
     /// <summary>
@@ -65,13 +70,46 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
 
         /// <summary>
-        /// Gets or sets the voice that will be used to generate speech.
+        /// Gets or sets the voice that will be used to generate speech. To use a non en-US voice, set this to Other.
         /// </summary>
+        /// <remarks>
+        /// If a custom voice is desired (i.e. this enum is being set to Other) make sure to set the <see cref="VoiceName"/> property.
+        /// </remarks>
         public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
 
-        [Tooltip("The voice that will be used to generate speech.")]
+        [Tooltip("The voice that will be used to generate speech. To use a non en-US voice, set this to Other.")]
         [SerializeField]
         private TextToSpeechVoice voice;
+
+        /// <summary>
+        /// Gets or sets the voice that will be used to generate speech.
+        /// </summary>
+        /// <remarks>
+        /// It is required to set the voice through this property when using a custom voice.
+        /// </remarks>
+        public string VoiceName
+        {
+            get
+            {
+                return Voice != TextToSpeechVoice.Other ? Voice.ToString() : customVoice;
+            }
+            set
+            {
+                if (Enum.TryParse(value, out TextToSpeechVoice parsedVoice))
+                {
+                    Voice = parsedVoice;
+                }
+                else
+                {
+                    Voice = TextToSpeechVoice.Other;
+                    customVoice = value;
+                }
+            }
+        }
+
+        [Tooltip("The custom voice that will be used to generate speech. See below for the list of available voices.")]
+        [SerializeField]
+        private string customVoice = string.Empty;
 
 #if WINDOWS_UWP
         private SpeechSynthesizer synthesizer;
@@ -202,14 +240,11 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                         // Change voice?
                         if (voice != TextToSpeechVoice.Default)
                         {
-                            // Get name
-                            var voiceName = Enum.GetName(typeof(TextToSpeechVoice), voice);
-
                             // See if it's never been found or is changing
-                            if ((voiceInfo == null) || (!voiceInfo.DisplayName.Contains(voiceName)))
+                            if ((voiceInfo == null) || (!voiceInfo.DisplayName.Contains(VoiceName)))
                             {
                                 // Search for voice info
-                                voiceInfo = SpeechSynthesizer.AllVoices.Where(v => v.DisplayName.Contains(voiceName)).FirstOrDefault();
+                                voiceInfo = SpeechSynthesizer.AllVoices.Where(v => v.DisplayName.Contains(VoiceName)).FirstOrDefault();
 
                                 // If found, select
                                 if (voiceInfo != null)
@@ -218,9 +253,13 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                                 }
                                 else
                                 {
-                                    Debug.LogErrorFormat("TTS voice {0} could not be found.", voiceName);
+                                    Debug.LogErrorFormat("TTS voice {0} could not be found.", VoiceName);
                                 }
                             }
+                        }
+                        else
+                        {
+                            synthesizer.Voice = SpeechSynthesizer.DefaultVoice;
                         }
 
                         // Speak and get stream

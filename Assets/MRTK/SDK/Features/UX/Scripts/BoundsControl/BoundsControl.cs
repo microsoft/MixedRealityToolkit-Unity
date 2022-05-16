@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -495,8 +496,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private BoxDisplay boxDisplay;
         private ProximityEffect proximityEffect;
 
-        // Whether we should be displaying just the wireframe (if enabled) or the handles too
+        /// <summary>
+        /// Whether we should be displaying just the wireframe (if enabled) or the handles too
+        /// </summary>
         public bool WireframeOnly { get => wireframeOnly; }
+
         private bool wireframeOnly = false;
 
         // Pointer that is being used to manipulate the bounds control
@@ -562,13 +566,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private static readonly List<Vector3> TotalBoundsCorners = new List<Vector3>();
 
         private Vector3[] boundsCorners = new Vector3[8];
+
+        /// <summary>
+        /// This property is unused and will be removed in a future release. It has not, and does not, return any information.
+        /// </summary>
+        [Obsolete("The BoundsCorners property is unused and will be removed in a future release. It has not, and does not, return any information.")]
         public Vector3[] BoundsCorners { get; private set; }
 
         // Current actual flattening axis, derived from FlattenAuto, if set
-        private FlattenModeType ActualFlattenAxis {
+        private FlattenModeType ActualFlattenAxis
+        {
             get
             {
-                if(FlattenAxis == FlattenModeType.FlattenAuto)
+                if (FlattenAxis == FlattenModeType.FlattenAuto)
                 {
                     return VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents);
                 }
@@ -590,6 +600,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
+
+        /// <summary>
+        /// Whether the bounds control is currently active and will respond to input.
+        /// </summary>
+        /// <remarks>
+        /// Setting this property will also set the entire gameObject's active state, as well as
+        /// resetting the visuals and proximity scale effects.
+        /// </remarks>
         public bool Active
         {
             get
@@ -636,7 +654,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         #region Public Methods
 
         /// <summary>
-        /// Allows to manually enable wire (edge) highlighting (edges) of the bounds control.
+        /// Allows the manual enabling of the wireframe display of the bounds control.
         /// This is useful if connected to the Manipulation events of a
         /// <see cref="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator"/> 
         /// when used in conjunction with this MonoBehavior.
@@ -646,6 +664,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             SetHighlighted(null);
         }
 
+        /// <summary>
+        /// Allows the manual disabling of the wireframe display.
+        /// </summary>
         public void UnhighlightWires()
         {
             ResetVisuals();
@@ -1292,6 +1313,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         #region Used Event Handlers
 
+        /// <inheritdoc />
         void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
             if (eventData.NewFocusedObject == null)
@@ -1318,6 +1340,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
         }
 
+        /// <inheritdoc />
         void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
         {
             if (currentPointer != null && eventData.Pointer == currentPointer)
@@ -1326,6 +1349,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
         }
 
+        /// <inheritdoc />
         void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData) { }
 
         private void OnPointerUp(MixedRealityPointerEventData eventData)
@@ -1421,6 +1445,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
+        /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
             if (eventData.Controller != null)
@@ -1432,6 +1457,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
         }
 
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             sourcesDetected.Remove(eventData.Controller);
@@ -1446,6 +1472,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         #region Unused Event Handlers
 
+        /// <inheritdoc />
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
 
         #endregion Unused Event Handlers

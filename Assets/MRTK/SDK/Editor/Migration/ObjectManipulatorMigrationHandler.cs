@@ -124,57 +124,57 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             switch (oldMode)
             {
                 case ManipulationHandler.RotateInOneHandType.MaintainRotationToUser:
-                    {
-                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+                {
+                    newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-                        var constraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
-                        constraint.HandType = ManipulationHandFlags.OneHanded;
-                        constraint.ProximityType = proximity;
-                        break;
-                    }
+                    var constraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
+                    constraint.HandType = ManipulationHandFlags.OneHanded;
+                    constraint.ProximityType = proximity;
+                    break;
+                }
                 case ManipulationHandler.RotateInOneHandType.GravityAlignedMaintainRotationToUser:
-                    {
-                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+                {
+                    newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-                        var rotConstraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
-                        rotConstraint.HandType = ManipulationHandFlags.OneHanded;
-                        rotConstraint.ProximityType = proximity;
+                    var rotConstraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
+                    rotConstraint.HandType = ManipulationHandFlags.OneHanded;
+                    rotConstraint.ProximityType = proximity;
 
-                        var axisConstraint = objManip.EnsureComponent<RotationAxisConstraint>();
-                        axisConstraint.HandType = ManipulationHandFlags.OneHanded;
-                        axisConstraint.ProximityType = proximity;
-                        axisConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.ZAxis;
-                        break;
-                    }
+                    var axisConstraint = objManip.EnsureComponent<RotationAxisConstraint>();
+                    axisConstraint.HandType = ManipulationHandFlags.OneHanded;
+                    axisConstraint.ProximityType = proximity;
+                    axisConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.ZAxis;
+                    break;
+                }
                 case ManipulationHandler.RotateInOneHandType.FaceUser:
-                    {
-                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+                {
+                    newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-                        var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
-                        rotConstraint.HandType = ManipulationHandFlags.OneHanded;
-                        rotConstraint.ProximityType = proximity;
-                        rotConstraint.FaceAway = false;
-                        break;
-                    }
+                    var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
+                    rotConstraint.HandType = ManipulationHandFlags.OneHanded;
+                    rotConstraint.ProximityType = proximity;
+                    rotConstraint.FaceAway = false;
+                    break;
+                }
                 case ManipulationHandler.RotateInOneHandType.FaceAwayFromUser:
-                    {
-                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+                {
+                    newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-                        var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
-                        rotConstraint.HandType = ManipulationHandFlags.OneHanded;
-                        rotConstraint.ProximityType = proximity;
-                        rotConstraint.FaceAway = true;
-                        break;
-                    }
+                    var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
+                    rotConstraint.HandType = ManipulationHandFlags.OneHanded;
+                    rotConstraint.ProximityType = proximity;
+                    rotConstraint.FaceAway = true;
+                    break;
+                }
                 case ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation:
-                    {
-                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+                {
+                    newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-                        var rotConstraint = objManip.EnsureComponent<FixedRotationToWorldConstraint>();
-                        rotConstraint.HandType = ManipulationHandFlags.OneHanded;
-                        rotConstraint.ProximityType = proximity;
-                        break;
-                    }
+                    var rotConstraint = objManip.EnsureComponent<FixedRotationToWorldConstraint>();
+                    rotConstraint.HandType = ManipulationHandFlags.OneHanded;
+                    rotConstraint.ProximityType = proximity;
+                    break;
+                }
                 case ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter:
                     newMode = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
                     break;

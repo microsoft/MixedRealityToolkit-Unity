@@ -14,14 +14,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.MixedReality.SceneUnderstanding;
-#if WINDOWS_UWP
-using Windows.Perception.Spatial;
-using Windows.Perception.Spatial.Preview;
 #if MSFT_OPENXR
 using Microsoft.MixedReality.OpenXR;
+using Microsoft.MixedReality.OpenXR.Remoting;
 using Microsoft.MixedReality.Toolkit.XRSDK;
 using UnityEngine.XR.OpenXR;
 #endif // MSFT_OPENXR
+#if WINDOWS_UWP
+using Windows.Perception.Spatial;
+using Windows.Perception.Spatial.Preview;
 #endif // WINDOWS_UWP
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -85,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             AutoUpdate = profile.AutoUpdate;
             UpdateOnceInitialized = profile.UpdateOnceInitialized;
+            DefaultPhysicsLayer = profile.DefaultPhysicsLayer;
             DefaultMaterial = profile.DefaultMaterial;
             DefaultWorldMeshMaterial = profile.DefaultWorldMeshMaterial;
             SurfaceTypes = profile.SurfaceTypes;
@@ -129,13 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
 #else
             base.Initialize();
-#if WINDOWS_UWP
 #if MSFT_OPENXR
             isOpenXRLoaderActive = LoaderHelpers.IsLoaderActive<OpenXRLoaderBase>() ?? false;
-#else
+            isOpenXRRemotingConnected = AppRemoting.TryGetConnectionState(out ConnectionState state, out _) && state == ConnectionState.Connected;
+#elif WINDOWS_UWP
             isOpenXRLoaderActive = false;
 #endif // MSFT_OPENXR
-#endif // WINDOWS_UWP
             sceneEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>(EventSystem.current);
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
 
@@ -356,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// 
         /// </summary>
         public Material DefaultMaterial { get; set; } // Need references so they are included for runtime
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -414,9 +415,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private System.Numerics.Matrix4x4 sceneToWorldTransformMatrix;
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
         private Texture defaultTexture;
-#if WINDOWS_UWP
+#if WINDOWS_UWP || MSFT_OPENXR
         private bool isOpenXRLoaderActive;
-#endif // WINDOWS_UWP
+#endif // WINDOWS_UWP || MSFT_OPENXR
+#if MSFT_OPENXR
+        private bool isOpenXRRemotingConnected;
+#endif // MSFT_OPENXR
 
         #endregion Private Fields
 
@@ -789,8 +793,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private System.Numerics.Matrix4x4? GetSceneToWorldTransform()
         {
             var result = System.Numerics.Matrix4x4.Identity;
-#if WINDOWS_UWP
+#if WINDOWS_UWP // On HoloLens 2 device
             if (isOpenXRLoaderActive)
+#elif MSFT_OPENXR // In editor and using OpenXR
+            if (isOpenXRLoaderActive && isOpenXRRemotingConnected && !ShouldLoadFromFile)
+#else // All other cases
+            if (false)
+#endif // WINDOWS_UWP
             {
 #if MSFT_OPENXR
                 SpatialGraphNode node = SpatialGraphNode.FromStaticNodeId(sceneOriginId);
@@ -806,6 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
             else
             {
+#if WINDOWS_UWP
                 SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
                 SpatialCoordinateSystem worldOrigin = WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
 
@@ -819,8 +829,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 {
                     return null;
                 }
-            }
 #endif // WINDOWS_UWP
+            }
             return result;
         }
 

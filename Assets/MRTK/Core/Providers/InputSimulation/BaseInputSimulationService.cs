@@ -126,19 +126,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 case ControllerSimulationMode.HandGestures:
                     st = SupportedControllerType.GGVHand;
-                    inputSource = Service?.RequestNewGenericInputSource($"{handedness} Hand", RequestPointers(st, handedness), InputSourceType.Hand);
+                    inputSource = Service?.RequestNewGenericInputSource($"Simulated GGV {handedness} Hand", RequestPointers(st, handedness), InputSourceType.Hand);
                     controller = new SimulatedGestureHand(TrackingState.Tracked, handedness, inputSource);
                     controllerType = typeof(SimulatedGestureHand);
                     break;
                 case ControllerSimulationMode.ArticulatedHand:
                     st = SupportedControllerType.ArticulatedHand;
-                    inputSource = Service?.RequestNewGenericInputSource($"{handedness} Hand", RequestPointers(st, handedness), InputSourceType.Hand);
+                    inputSource = Service?.RequestNewGenericInputSource($"Simulated Articulated {handedness} Hand", RequestPointers(st, handedness), InputSourceType.Hand);
                     controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
                     controllerType = typeof(SimulatedArticulatedHand);
                     break;
                 case ControllerSimulationMode.MotionController:
                     st = SupportedControllerType.WindowsMixedReality;
-                    inputSource = Service?.RequestNewGenericInputSource($"{handedness} MotionController", RequestPointers(st, handedness), InputSourceType.Controller);
+                    inputSource = Service?.RequestNewGenericInputSource($"Simulated {handedness} MotionController", RequestPointers(st, handedness), InputSourceType.Controller);
                     controller = new SimulatedMotionController(TrackingState.Tracked, handedness, inputSource);
                     controllerType = typeof(SimulatedMotionController);
                     break;

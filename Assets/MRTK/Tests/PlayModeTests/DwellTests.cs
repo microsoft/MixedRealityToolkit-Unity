@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class DwellTests : BasePlayModeTests
     {
-        
         #region Test cases
 
         private const float allowedDelay = 0.01f;
@@ -42,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject dwellTarget = GameObject.CreatePrimitive(PrimitiveType.Cube);
             dwellTarget.transform.position = new Vector3(2, 0, 2);
             DwellHandler dwellHandler = dwellTarget.AddComponent<DwellHandler>();
-            
+
             // Configure the handle and set up listeners for events
             dwellHandler.DwellProfile.DwellPointerType = Toolkit.Input.InputSourceType.Head;
             dwellHandler.DwellProfile.DwellIntentDelay = 1f;
@@ -52,14 +51,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             dwellHandler.DwellStarted.AddListener((_) => { dwellStarted = true; });
             bool dwellCompleted = false;
             dwellHandler.DwellCompleted.AddListener((_) => { dwellCompleted = true; });
-            
+
             // Confirm initial states
             Assert.IsFalse(dwellIntended, "dwellIntended triggered too early!");
             Assert.IsFalse(dwellStarted, "dwellStarted triggered too early!");
             Assert.IsFalse(dwellCompleted, "dwellCompleted triggered too early!");
             Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.None, "Unexpected dwell state!");
             yield return null;
-            
+
             // Move the cube to a position to make it in focus and verify the state
             dwellTarget.transform.position = new Vector3(0, 0, 2);
             yield return null;
@@ -134,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(focusOnCubeHandPosition);
             yield return null;
             Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.FocusGained, "Unexpected dwell state!");
-            
+
             // Verify we are in the dwell intended state
             yield return new WaitForSeconds(dwellHandler.DwellProfile.DwellIntentDelay + allowedDelay);
             Assert.IsTrue(dwellIntended, "dwellIntended triggered too late!");

@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 bool allPreviewsLoaded;
                 var gridContent = GenerateGridContent(spriteIconTextures, out allPreviewsLoaded);
 
-                if(!allPreviewsLoaded)
+                if (!allPreviewsLoaded)
                 {
                     EditorGUILayout.HelpBox(missingPreviewImagesMessage, MessageType.Warning);
                 }
@@ -414,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            if(currentSelection >= 0)
+            if (currentSelection >= 0)
             {
                 EditorGUILayout.BeginHorizontal();
 
