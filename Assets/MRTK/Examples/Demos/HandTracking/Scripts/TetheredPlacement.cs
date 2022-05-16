@@ -18,10 +18,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// The distance from the GameObject's spawn position at which will trigger a respawn.
         /// </summary>
+        /// <remarks>Also updates a local cache of this value squared for performant distance checking.</remarks>
         public float DistanceThreshold
         {
             get => distanceThreshold;
-            set => distanceThreshold = value;
+            set
+            {
+                distanceThreshold = value;
+                distanceThresholdSquared = distanceThreshold * distanceThreshold;
+            }
         }
 
         private Vector3 localRespawnPosition;
