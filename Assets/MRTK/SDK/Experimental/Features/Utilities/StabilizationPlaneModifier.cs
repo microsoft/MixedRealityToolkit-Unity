@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             get
             {
                 var gazeProvider = CoreServices.InputSystem?.GazeProvider;
-                if (gazeProvider != null && gazeProvider.Enabled)
+                if (gazeProvider.IsNotNull() && gazeProvider.Enabled)
                 {
                     return gazeProvider.GazeOrigin;
                 }
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             get
             {
                 var gazeProvider = CoreServices.InputSystem?.GazeProvider;
-                if (gazeProvider != null && gazeProvider.Enabled)
+                if (gazeProvider.IsNotNull() && gazeProvider.Enabled)
                 {
                     return gazeProvider.GazeDirection;
                 }
@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private bool TryGetGazeHitPosition(out Vector3 hitPosition)
         {
             var gazeProvider = CoreServices.InputSystem?.GazeProvider;
-            if (gazeProvider != null && gazeProvider.Enabled &&
+            if (gazeProvider.IsNotNull() && gazeProvider.Enabled &&
                 gazeProvider.HitInfo.raycastValid)
             {
                 hitPosition = gazeProvider.HitPosition;
