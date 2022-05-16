@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// gaze pointer actually cannot be referenced from here 
         /// since it's an internal class.
         /// 
-        /// This does not control the Gaze Provider's Behavior. Set CoreServices.InputSystem.GazeProvider.Enabled 
+        /// This does not control if the gaze provider is used for raycasting, just its use as an MRTK pointer. Set CoreServices.InputSystem.GazeProvider.Enabled 
         /// to false if you do not wish to use Gaze data in your project
         /// </summary>
         PointerBehavior GazePointerBehavior { get; set; }
