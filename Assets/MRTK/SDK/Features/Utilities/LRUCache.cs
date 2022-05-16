@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// its capacity.
     /// </summary>
     /// <remarks>
-    /// Implemenation involves a dictionary for fast entry lookup, and a doubly linked list to track recent access.
+    /// Implementation involves a dictionary for fast entry lookup, and a doubly linked list to track recent access.
     /// </remarks>
     /// <typeparam name="TKey">The type that is used as key to look up values in the cache.</typeparam>
     /// <typeparam name="TValue">The type of values stored in the cache.</typeparam>
