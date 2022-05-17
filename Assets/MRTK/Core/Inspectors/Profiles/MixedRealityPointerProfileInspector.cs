@@ -182,6 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
+            bool anyPrefabChanged = false;
+
             for (int i = 0; i < list.arraySize; i++)
             {
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
@@ -237,11 +239,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                         PrefabUtility.RecordPrefabInstancePropertyModifications(pointerPrefab);
                         EditorUtility.SetDirty(pointerPrefab);
+                        anyPrefabChanged = true;
                     }
 
                     GUI.color = prevColor;
                 }
                 EditorGUILayout.Space();
+            }
+
+            if (anyPrefabChanged)
+            {
+                AssetDatabase.SaveAssets();
             }
         }
     }
