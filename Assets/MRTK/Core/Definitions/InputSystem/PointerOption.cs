@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Defines a pointer option to assign to a controller.
     /// </summary>
     [Serializable]
-    public struct PointerOption
+    public struct PointerOption : ISerializationCallbackReceiver
     {
         /// <summary>
         /// Constructor.
@@ -61,5 +61,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The LayerMasks, in prioritized order, which are used to determine the target
         /// </summary>
         public LayerMask[] PrioritizedLayerMasks => prioritizedLayerMasks;
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            if (pointerPrefab == null)
+            {
+                prioritizedLayerMasks = Array.Empty<LayerMask>();
+                return;
+            }
+
+            IMixedRealityPointer pointer = pointerPrefab.GetComponent<IMixedRealityPointer>();
+            if (pointer.IsNull()
+                || pointer.PrioritizedLayerMasksOverride == prioritizedLayerMasks
+                || pointer.PrioritizedLayerMasksOverride == null
+                || pointer.PrioritizedLayerMasksOverride.Length == 0)
+            {
+                return;
+            }
+
+            prioritizedLayerMasks = pointer.PrioritizedLayerMasksOverride;
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() { }
     }
 }
