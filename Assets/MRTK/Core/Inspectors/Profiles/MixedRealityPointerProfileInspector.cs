@@ -117,8 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         // Provide a convenient way to toggle the gaze provider as enabled/disabled via editor
                         gazeProvider.Enabled = EditorGUILayout.Toggle("Enable Gaze Provider", gazeProvider.Enabled);
 
-                        // Draw out the rest of the Gaze Provider's settings
-                        gazeProviderEditor.OnInspectorGUI();
+                        using (new EditorGUI.IndentLevelScope())
+                        {
+                            // Draw out the rest of the Gaze Provider's settings
+                            gazeProviderEditor.OnInspectorGUI();
+                        }
                     }
                 }
 
