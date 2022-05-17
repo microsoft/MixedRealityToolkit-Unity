@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -60,26 +61,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The LayerMasks, in prioritized order, which are used to determine the target
         /// </summary>
-        public LayerMask[] PrioritizedLayerMasks => prioritizedLayerMasks;
+        public LayerMask[] PrioritizedLayerMasks
+        {
+            get => prioritizedLayerMasks;
+            internal set => prioritizedLayerMasks = value;
+        }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             if (pointerPrefab == null)
             {
-                prioritizedLayerMasks = Array.Empty<LayerMask>();
                 return;
             }
 
             IMixedRealityPointer pointer = pointerPrefab.GetComponent<IMixedRealityPointer>();
             if (pointer.IsNull()
-                || pointer.PrioritizedLayerMasksOverride == prioritizedLayerMasks
                 || pointer.PrioritizedLayerMasksOverride == null
-                || pointer.PrioritizedLayerMasksOverride.Length == 0)
+                || pointer.PrioritizedLayerMasksOverride.Length == 0
+                || (prioritizedLayerMasks != null && pointer.PrioritizedLayerMasksOverride.SequenceEqual(prioritizedLayerMasks)))
             {
                 return;
             }
 
-            prioritizedLayerMasks = pointer.PrioritizedLayerMasksOverride;
+            int pointerPrioritizedLayerMasksOverrideCount = pointer.PrioritizedLayerMasksOverride.Length;
+            if (prioritizedLayerMasks?.Length != pointerPrioritizedLayerMasksOverrideCount)
+            {
+                prioritizedLayerMasks = new LayerMask[pointerPrioritizedLayerMasksOverrideCount];
+            }
+            Array.Copy(pointer.PrioritizedLayerMasksOverride, prioritizedLayerMasks, pointerPrioritizedLayerMasksOverrideCount);
         }
 
         void ISerializationCallbackReceiver.OnAfterDeserialize() { }

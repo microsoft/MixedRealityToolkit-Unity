@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -11,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality/Toolkit/Profiles/Mixed Reality Pointer Profile", fileName = "MixedRealityInputPointerProfile", order = (int)CreateProfileMenuItemIndices.Pointer)]
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/input/pointers")]
-    public class MixedRealityPointerProfile : BaseMixedRealityProfile
+    public class MixedRealityPointerProfile : BaseMixedRealityProfile, ISerializationCallbackReceiver
     {
         [SerializeField]
         [Tooltip("Maximum distance at which all pointers can collide with a GameObject, unless it has an override extent.")]
@@ -123,5 +125,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Primary pointer selector implementation to use. This is used by the focus provider to choose the primary pointer.
         /// </summary>
         public SystemType PrimaryPointerSelector => primaryPointerSelector;
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            for (int i = 0; i < pointerOptions.Length; i++)
+            {
+                ref PointerOption pointerOption = ref pointerOptions[i];
+                IMixedRealityPointer pointer = pointerOption.PointerPrefab != null ? pointerOption.PointerPrefab.GetComponent<IMixedRealityPointer>() : null;
+
+                if (pointer.IsNull()
+                    || (pointer.PrioritizedLayerMasksOverride != null
+                    && pointer.PrioritizedLayerMasksOverride.Length > 0
+                    && pointerOption.PrioritizedLayerMasks != null
+                    && pointerOption.PrioritizedLayerMasks.SequenceEqual(pointer.PrioritizedLayerMasksOverride))
+                    || (pointingRaycastLayerMasks != null
+                    && pointingRaycastLayerMasks.Length > 0
+                    && pointerOption.PrioritizedLayerMasks != null
+                    && pointerOption.PrioritizedLayerMasks.SequenceEqual(pointingRaycastLayerMasks)))
+                {
+                    continue;
+                }
+
+                // If the prefab has new LayerMasks, sync with prioritizedLayerMasks
+                int pointerPrioritizedLayerMasksOverrideCount = pointer.PrioritizedLayerMasksOverride?.Length ?? 0;
+                if (pointerPrioritizedLayerMasksOverrideCount != 0)
+                {
+                    if (pointerOption.PrioritizedLayerMasks?.Length != pointerPrioritizedLayerMasksOverrideCount)
+                    {
+                        pointerOption.PrioritizedLayerMasks = new LayerMask[pointerPrioritizedLayerMasksOverrideCount];
+                    }
+                    Array.Copy(pointer.PrioritizedLayerMasksOverride, pointerOption.PrioritizedLayerMasks, pointerPrioritizedLayerMasksOverrideCount);
+                }
+                // If the prefab doesn't have any LayerMasks, initialize with the global default
+                else
+                {
+                    int pointingRaycastLayerMasksCount = pointingRaycastLayerMasks.Length;
+                    if (pointerOption.PrioritizedLayerMasks?.Length != pointingRaycastLayerMasksCount)
+                    {
+                        pointerOption.PrioritizedLayerMasks = new LayerMask[pointingRaycastLayerMasksCount];
+                    }
+                    Array.Copy(pointingRaycastLayerMasks, pointerOption.PrioritizedLayerMasks, pointingRaycastLayerMasksCount);
+                }
+            }
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() { }
     }
 }
