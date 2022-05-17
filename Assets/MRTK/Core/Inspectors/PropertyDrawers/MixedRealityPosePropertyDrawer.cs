@@ -25,24 +25,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUIUtility.wideMode = true;
             EditorGUI.BeginProperty(position, label, property);
             EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-            EditorGUI.indentLevel++;
 
-            var fieldHeight = position.height / NumberOfLines;
-            var positionRect = new Rect(position.x, position.y + fieldHeight, position.width, fieldHeight);
-            var rotationRect = new Rect(position.x, position.y + fieldHeight * 2, position.width, fieldHeight);
-
-            EditorGUI.PropertyField(positionRect, property.FindPropertyRelative("position"), positionContent);
-
-            EditorGUI.BeginChangeCheck();
-            var rotationProperty = property.FindPropertyRelative("rotation");
-            var newEulerRotation = EditorGUI.Vector3Field(rotationRect, rotationContent, rotationProperty.quaternionValue.eulerAngles);
-
-            if (EditorGUI.EndChangeCheck())
+            using (new EditorGUI.IndentLevelScope())
             {
-                rotationProperty.quaternionValue = Quaternion.Euler(newEulerRotation);
+                var fieldHeight = position.height / NumberOfLines;
+                var positionRect = new Rect(position.x, position.y + fieldHeight, position.width, fieldHeight);
+                var rotationRect = new Rect(position.x, position.y + fieldHeight * 2, position.width, fieldHeight);
+
+                EditorGUI.PropertyField(positionRect, property.FindPropertyRelative("position"), positionContent);
+
+                EditorGUI.BeginChangeCheck();
+                var rotationProperty = property.FindPropertyRelative("rotation");
+                var newEulerRotation = EditorGUI.Vector3Field(rotationRect, rotationContent, rotationProperty.quaternionValue.eulerAngles);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    rotationProperty.quaternionValue = Quaternion.Euler(newEulerRotation);
+                }
             }
 
-            EditorGUI.indentLevel--;
             EditorGUIUtility.wideMode = lastMode;
             EditorGUI.EndProperty();
         }

@@ -522,28 +522,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 if (foldouts[i])
                 {
-                    EditorGUI.indentLevel++;
-
-                    MixedRealityInputAction newBaseAction;
-                    baseActionId.intValue = RenderBaseInputAction(baseActionId.intValue, out newBaseAction, true);
-                    baseActionDescription.stringValue = newBaseAction.Description;
-                    baseActionConstraint.intValue = (int)newBaseAction.AxisConstraint;
-
-                    if (baseActionId.intValue == ruleActionId.intValue || newBaseAction == MixedRealityInputAction.None || baseActionConstraint.intValue != ruleActionConstraint.intValue)
+                    using (new EditorGUI.IndentLevelScope())
                     {
-                        criteria.Reset();
-                        ruleActionId.intValue = (int)MixedRealityInputAction.None.Id;
-                        ruleActionDescription.stringValue = MixedRealityInputAction.None.Description;
-                        ruleActionConstraint.intValue = (int)MixedRealityInputAction.None.AxisConstraint;
+                        baseActionId.intValue = RenderBaseInputAction(baseActionId.intValue, out MixedRealityInputAction newBaseAction, true);
+                        baseActionDescription.stringValue = newBaseAction.Description;
+                        baseActionConstraint.intValue = (int)newBaseAction.AxisConstraint;
+
+                        if (baseActionId.intValue == ruleActionId.intValue || newBaseAction == MixedRealityInputAction.None || baseActionConstraint.intValue != ruleActionConstraint.intValue)
+                        {
+                            criteria.Reset();
+                            ruleActionId.intValue = (int)MixedRealityInputAction.None.Id;
+                            ruleActionDescription.stringValue = MixedRealityInputAction.None.Description;
+                            ruleActionConstraint.intValue = (int)MixedRealityInputAction.None.AxisConstraint;
+                        }
+
+                        RenderCriteriaField(newBaseAction, criteria);
+
+                        ruleActionId.intValue = RenderRuleInputAction(ruleActionId.intValue, out MixedRealityInputAction newRuleAction);
+                        ruleActionDescription.stringValue = newRuleAction.Description;
+                        ruleActionConstraint.intValue = (int)newRuleAction.AxisConstraint;
                     }
-
-                    RenderCriteriaField(newBaseAction, criteria);
-
-                    MixedRealityInputAction newRuleAction;
-                    ruleActionId.intValue = RenderRuleInputAction(ruleActionId.intValue, out newRuleAction);
-                    ruleActionDescription.stringValue = newRuleAction.Description;
-                    ruleActionConstraint.intValue = (int)newRuleAction.AxisConstraint;
-                    EditorGUI.indentLevel--;
                 }
 
                 EditorGUILayout.Space();
