@@ -312,8 +312,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GameObjectExtensions.DestroyGameObject(pointerObject);
                 }
 
-                // make sure we init the pointer with the correct raycast LayerMasks
-                pointer.PrioritizedLayerMasksOverride = option.PrioritizedLayerMasks;
+                // Make sure we init the pointer with the correct raycast LayerMasks, if needed
+                if (pointer.PrioritizedLayerMasksOverride == null || pointer.PrioritizedLayerMasksOverride.Length == 0)
+                {
+                    pointer.PrioritizedLayerMasksOverride = option.PrioritizedLayerMasks;
+                }
 
                 return pointer;
             }
