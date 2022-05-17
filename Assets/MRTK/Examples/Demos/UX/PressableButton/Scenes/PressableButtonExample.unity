@@ -1307,6 +1307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alignmentType: 0
+  containerObject: {fileID: 0}
 --- !u!4 &79500393
 Transform:
   m_ObjectHideFlags: 0
@@ -1406,7 +1407,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 86423571}
@@ -3006,7 +3007,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 242762042}
@@ -8241,6 +8242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &914966067
@@ -8263,6 +8265,9 @@ MonoBehaviour:
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 0
   moveLerpTime: 0.001

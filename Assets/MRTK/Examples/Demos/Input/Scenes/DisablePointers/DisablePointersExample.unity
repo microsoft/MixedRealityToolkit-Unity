@@ -1996,7 +1996,7 @@ MonoBehaviour:
   startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  voiceCommand: Select
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1806166995}
@@ -2637,7 +2637,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 245704822}
@@ -3119,7 +3119,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1442748973}
@@ -5323,7 +5323,7 @@ MonoBehaviour:
   startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  voiceCommand: Select
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1611805876}
@@ -8715,7 +8715,7 @@ MonoBehaviour:
   startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  voiceCommand: Select
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 983114583}
@@ -10895,7 +10895,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 723004242}
@@ -11948,7 +11948,7 @@ MonoBehaviour:
   startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  voiceCommand: Select
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1259235647}
@@ -16943,7 +16943,7 @@ MonoBehaviour:
   startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  voiceCommand: Select
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1057394252}

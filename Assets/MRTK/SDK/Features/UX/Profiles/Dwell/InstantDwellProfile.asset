@@ -17,3 +17,4 @@ MonoBehaviour:
   dwellStartDelay: 0.5
   timeToCompleteDwell: 2
   timeToAllowDwellResume: 2
+  decayDwellOverTime: 0

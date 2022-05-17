@@ -797,6 +797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 2
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &1039908232
@@ -813,6 +814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 2
+  executionOrder: 0
 --- !u!114 &1039908233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1897,6 +1899,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!1001 &469963228948405311
@@ -3168,6 +3171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 3
+  executionOrder: 0
   faceAway: 1
 --- !u!4 &7614231225807044516
 Transform:

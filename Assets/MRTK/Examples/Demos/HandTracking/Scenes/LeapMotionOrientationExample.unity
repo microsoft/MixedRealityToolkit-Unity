@@ -1318,7 +1318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60e254936276f0d4ab8e4c7a47d068be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientationText: {fileID: 646157690}
 --- !u!1001 &1487501834
 PrefabInstance:
   m_ObjectHideFlags: 0

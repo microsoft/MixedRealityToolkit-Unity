@@ -87,6 +87,7 @@ MonoBehaviour:
   triggerInteraction: 0
   sceneQueryBufferSize: 64
   ignoreCollidersNotInFOV: 1
+  graspPointPlacement: 0
 --- !u!114 &7376459786343609486
 MonoBehaviour:
   m_ObjectHideFlags: 0
