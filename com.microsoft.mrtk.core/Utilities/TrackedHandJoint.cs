@@ -11,17 +11,15 @@ namespace Microsoft.MixedReality.Toolkit
     /// <remarks>See https://en.wikipedia.org/wiki/Interphalangeal_joints_of_the_hand#/media/File:Scheme_human_hand_bones-en.svg for joint name definitions.</remarks>
     public enum TrackedHandJoint
     {
-        None = 0,
+        /// <summary>
+        /// The palm.
+        /// </summary>
+        Palm,
 
         /// <summary>
         /// The wrist.
         /// </summary>
         Wrist,
-
-        /// <summary>
-        /// The palm.
-        /// </summary>
-        Palm,
 
         /// <summary>
         /// The lowest joint in the thumb (down in your palm).
@@ -197,6 +195,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Number of joints total (not counting None).
         /// </summary>
-        TotalJoints = LittleTip
+        TotalJoints = LittleTip + 1
     }
 }

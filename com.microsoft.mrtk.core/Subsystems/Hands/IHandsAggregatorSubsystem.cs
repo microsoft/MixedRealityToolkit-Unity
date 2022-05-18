@@ -66,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
 
         /// <summary>
         /// Get a read-only reference to the entire hand.
+        /// Joint poses are returned in an order consistent where each index matches up with the Microsoft.MixedReality.OpenXR.HandJoint enum
         /// </summary>
         bool TryGetEntireHand(XRNode hand, out IReadOnlyList<HandJointPose> jointPoses);
     }

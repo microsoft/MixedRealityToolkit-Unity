@@ -214,8 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             private static readonly int[] HandJointIndexFromTrackedHandJointIndex = new int[]
             {
-                (int)HandJoint.Wrist,
                 (int)HandJoint.Palm,
+                (int)HandJoint.Wrist,
 
                 (int)HandJoint.ThumbMetacarpal,
                 (int)HandJoint.ThumbProximal,
