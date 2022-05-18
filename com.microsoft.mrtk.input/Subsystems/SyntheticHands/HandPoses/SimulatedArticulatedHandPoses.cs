@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03695414960384369,
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.00045104348100721836,
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.016296127811074258,
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.023209279403090478,
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.009743190370500088,
@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0026917937211692335,
@@ -281,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.045069482177495959,
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.035030756145715716,
@@ -313,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.031546302139759067,
@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.06544187664985657,
@@ -377,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.06159381568431854,
@@ -393,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.06070023775100708,
@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.07710164040327072,
@@ -441,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.08530370891094208,
@@ -457,7 +457,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.08779342472553253,
@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.09219621121883393,
@@ -489,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.09392204880714417,
@@ -563,7 +563,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.033823080360889438,
@@ -579,7 +579,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.0048112208023667339,
@@ -595,7 +595,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.02188277430832386,
@@ -643,7 +643,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.0008817678317427635,
@@ -659,7 +659,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.014839660376310349,
@@ -675,7 +675,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.008270945399999619,
@@ -723,7 +723,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.020074930042028428,
@@ -739,7 +739,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.005748542491346598,
@@ -755,7 +755,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.012452101334929467,
@@ -803,7 +803,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.038666337728500369,
@@ -819,7 +819,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.02693704515695572,
@@ -835,7 +835,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.029263043776154519,
@@ -867,7 +867,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0675557404756546,
@@ -883,7 +883,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.05575947463512421,
@@ -899,7 +899,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.046450983732938769,
@@ -915,7 +915,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.044868819415569308,
@@ -931,7 +931,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.04328276216983795,
@@ -1004,7 +1004,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbMetacarpalJoint"",
+            ""joint"": ""ThumbMetacarpal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.037650320678949359,
@@ -1020,7 +1020,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbProximalJoint"",
+            ""joint"": ""ThumbProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0021200005430728199,
@@ -1036,7 +1036,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbDistalJoint"",
+            ""joint"": ""ThumbDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.017323289066553117,
@@ -1084,7 +1084,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexKnuckle"",
+            ""joint"": ""IndexProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.019956298172473909,
@@ -1100,7 +1100,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexMiddleJoint"",
+            ""joint"": ""IndexIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.008095348253846169,
@@ -1116,7 +1116,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexDistalJoint"",
+            ""joint"": ""IndexDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0024243020452558996,
@@ -1164,7 +1164,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleKnuckle"",
+            ""joint"": ""MiddleProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.04107753932476044,
@@ -1180,7 +1180,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleMiddleJoint"",
+            ""joint"": ""MiddleIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.034631796181201938,
@@ -1196,7 +1196,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleDistalJoint"",
+            ""joint"": ""MiddleDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.03229355812072754,
@@ -1244,7 +1244,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingKnuckle"",
+            ""joint"": ""RingProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.05959733948111534,
@@ -1260,7 +1260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingMiddleJoint"",
+            ""joint"": ""RingIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.05417570844292641,
@@ -1276,7 +1276,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingDistalJoint"",
+            ""joint"": ""RingDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.04917123541235924,
@@ -1308,7 +1308,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyMetacarpal"",
+            ""joint"": ""LittleMetacarpal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0744781643152237,
@@ -1324,7 +1324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyKnuckle"",
+            ""joint"": ""LittleProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.07774728536605835,
@@ -1340,7 +1340,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyMiddleJoint"",
+            ""joint"": ""LittleIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.07291404902935028,
@@ -1356,7 +1356,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyDistalJoint"",
+            ""joint"": ""LittleDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.06660763919353485,
@@ -1372,7 +1372,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyTip"",
+            ""joint"": ""LittleTip"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.059262972325086597,
@@ -1446,7 +1446,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.059964598971419036,
@@ -1462,7 +1462,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.024715005303733051,
@@ -1478,7 +1478,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0037162675289437175,
@@ -1526,7 +1526,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0358468386111781,
@@ -1542,7 +1542,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.02204116981010884,
@@ -1558,7 +1558,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.014715371071361005,
@@ -1606,7 +1606,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.055720763164572418,
@@ -1622,7 +1622,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.047521518426947296,
@@ -1638,7 +1638,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.049561099964194,
@@ -1686,7 +1686,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.073698634165339172,
@@ -1702,7 +1702,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.066912477719597518,
@@ -1718,7 +1718,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.066450962680391967,
@@ -1750,7 +1750,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.094160931068472564,
@@ -1766,7 +1766,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0901073234854266,
@@ -1782,7 +1782,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.084039838868193328,
@@ -1798,7 +1798,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.080680111306719482,
@@ -1814,7 +1814,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0770126300631091,
@@ -1888,7 +1888,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0704388425219804,
@@ -1904,7 +1904,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.030931103276088834,
@@ -1920,7 +1920,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.011377685004845262,
@@ -1968,7 +1968,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.042313426034525037,
@@ -1984,7 +1984,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.015641395235434175,
@@ -2000,7 +2000,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0043656446505337954,
@@ -2048,7 +2048,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.061702992068603635,
@@ -2064,7 +2064,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.033647007541731,
@@ -2080,7 +2080,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.033218997763469815,
@@ -2128,7 +2128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.076233054744079709,
@@ -2144,7 +2144,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.051643508719280362,
@@ -2160,7 +2160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0525671869982034,
@@ -2192,7 +2192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.10081055318005383,
@@ -2208,7 +2208,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.088435876416042447,
@@ -2224,7 +2224,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.071086059557273984,
@@ -2240,7 +2240,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.068500611232593656,
@@ -2256,7 +2256,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.070451776729896665,
@@ -2330,7 +2330,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0726172998547554,
@@ -2346,7 +2346,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.033425573259592059,
@@ -2362,7 +2362,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.014360085129737854,
@@ -2410,7 +2410,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03474228084087372,
@@ -2426,7 +2426,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.011708781123161316,
@@ -2442,7 +2442,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.007551820017397404,
@@ -2490,7 +2490,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.05473826080560684,
@@ -2506,7 +2506,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03288401663303375,
@@ -2522,7 +2522,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03765859827399254,
@@ -2570,7 +2570,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.07221101969480515,
@@ -2586,7 +2586,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.05479241907596588,
@@ -2602,7 +2602,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.05848679319024086,
@@ -2634,7 +2634,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.10431554913520813,
@@ -2650,7 +2650,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.08813987672328949,
@@ -2666,7 +2666,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.07569940388202667,
@@ -2682,7 +2682,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0749262273311615,
@@ -2698,7 +2698,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.07520446181297302,
@@ -2772,7 +2772,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.020570117980241777,
@@ -2788,7 +2788,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.009850621223449707,
@@ -2804,7 +2804,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.02049688994884491,
@@ -2852,7 +2852,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.0017803632654249669,
@@ -2868,7 +2868,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.014122002758085728,
@@ -2884,7 +2884,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.020550768822431566,
@@ -2932,7 +2932,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.018060242757201196,
@@ -2948,7 +2948,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.005449346732348204,
@@ -2964,7 +2964,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0013555703917518259,
@@ -3012,7 +3012,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03491469845175743,
@@ -3028,7 +3028,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.023768775165081025,
@@ -3044,7 +3044,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.02067880891263485,
@@ -3076,7 +3076,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.05288681760430336,
@@ -3092,7 +3092,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.050300415605306628,
@@ -3108,7 +3108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.04166591167449951,
@@ -3124,7 +3124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03587989881634712,
@@ -3140,7 +3140,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03135494887828827,
@@ -3214,7 +3214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.06692907959222794,
@@ -3230,7 +3230,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.048644911497831348,
@@ -3246,7 +3246,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.030924495309591295,
@@ -3294,7 +3294,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.011573880910873413,
@@ -3310,7 +3310,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.021892068907618524,
@@ -3326,7 +3326,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.017463261261582376,
@@ -3374,7 +3374,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.01083554606884718,
@@ -3390,7 +3390,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.025254713371396066,
@@ -3406,7 +3406,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.00917090568691492,
@@ -3454,7 +3454,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.010207276791334153,
@@ -3470,7 +3470,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.01994304731488228,
@@ -3486,7 +3486,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.0031065356452018024,
@@ -3518,7 +3518,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.06254640221595764,
@@ -3534,7 +3534,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.009921858087182045,
@@ -3550,7 +3550,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": -0.007876850664615631,
@@ -3566,7 +3566,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0036155348643660547,
@@ -3582,7 +3582,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.016652610152959825,
@@ -3656,7 +3656,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbMetacarpalJoint"",
+              ""joint"": ""ThumbMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.05787024274468422,
@@ -3672,7 +3672,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbProximalJoint"",
+              ""joint"": ""ThumbProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.030012525618076326,
@@ -3688,7 +3688,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""ThumbDistalJoint"",
+              ""joint"": ""ThumbDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.026396021246910096,
@@ -3736,7 +3736,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexKnuckle"",
+              ""joint"": ""IndexProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.034438081085681918,
@@ -3752,7 +3752,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexMiddleJoint"",
+              ""joint"": ""IndexIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.015563697554171086,
@@ -3768,7 +3768,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""IndexDistalJoint"",
+              ""joint"": ""IndexDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.005756473168730736,
@@ -3816,7 +3816,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleKnuckle"",
+              ""joint"": ""MiddleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.054447855800390246,
@@ -3832,7 +3832,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleMiddleJoint"",
+              ""joint"": ""MiddleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.04355549067258835,
@@ -3848,7 +3848,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""MiddleDistalJoint"",
+              ""joint"": ""MiddleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.03923114016652107,
@@ -3896,7 +3896,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingKnuckle"",
+              ""joint"": ""RingProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.07067620009183884,
@@ -3912,7 +3912,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingMiddleJoint"",
+              ""joint"": ""RingIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.060088954865932468,
@@ -3928,7 +3928,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""RingDistalJoint"",
+              ""joint"": ""RingDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0528024360537529,
@@ -3960,7 +3960,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMetacarpal"",
+              ""joint"": ""LittleMetacarpal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.08909709751605988,
@@ -3976,7 +3976,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyKnuckle"",
+              ""joint"": ""LittleProximal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.0851951465010643,
@@ -3992,7 +3992,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyMiddleJoint"",
+              ""joint"": ""LittleIntermediate"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.07433749735355377,
@@ -4008,7 +4008,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyDistalJoint"",
+              ""joint"": ""LittleDistal"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.06645255535840988,
@@ -4024,7 +4024,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             },
             {
-              ""joint"": ""PinkyTip"",
+              ""joint"": ""LittleTip"",
               ""pose"": {
                 ""position"": {
                   ""x"": 0.05911727994680405,
@@ -4097,7 +4097,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbMetacarpalJoint"",
+            ""joint"": ""ThumbMetacarpal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.001929090591147542,
@@ -4113,7 +4113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbProximalJoint"",
+            ""joint"": ""ThumbProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.028823861852288247,
@@ -4129,7 +4129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbDistalJoint"",
+            ""joint"": ""ThumbDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.040102653205394748,
@@ -4177,7 +4177,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexKnuckle"",
+            ""joint"": ""IndexProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.001622582320123911,
@@ -4193,7 +4193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexMiddleJoint"",
+            ""joint"": ""IndexIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.004348198417574167,
@@ -4209,7 +4209,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexDistalJoint"",
+            ""joint"": ""IndexDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0023091353941708805,
@@ -4257,7 +4257,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleKnuckle"",
+            ""joint"": ""MiddleProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.018873190507292749,
@@ -4273,7 +4273,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleMiddleJoint"",
+            ""joint"": ""MiddleIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.02131693996489048,
@@ -4289,7 +4289,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleDistalJoint"",
+            ""joint"": ""MiddleDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.01886834017932415,
@@ -4337,7 +4337,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingKnuckle"",
+            ""joint"": ""RingProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.03700186684727669,
@@ -4353,7 +4353,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingMiddleJoint"",
+            ""joint"": ""RingIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.038269076496362689,
@@ -4369,7 +4369,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingDistalJoint"",
+            ""joint"": ""RingDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.03218984976410866,
@@ -4401,7 +4401,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyMetacarpal"",
+            ""joint"": ""LittleMetacarpal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.039538975805044177,
@@ -4417,7 +4417,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyKnuckle"",
+            ""joint"": ""LittleProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.0548563189804554,
@@ -4433,7 +4433,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyMiddleJoint"",
+            ""joint"": ""LittleIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.05324401333928108,
@@ -4449,7 +4449,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyDistalJoint"",
+            ""joint"": ""LittleDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.04565788432955742,
@@ -4465,7 +4465,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyTip"",
+            ""joint"": ""LittleTip"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.039479125291109088,
@@ -4534,7 +4534,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbMetacarpalJoint"",
+            ""joint"": ""ThumbMetacarpal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0005868881708011031,
@@ -4550,7 +4550,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbProximalJoint"",
+            ""joint"": ""ThumbProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0282078105956316,
@@ -4566,7 +4566,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""ThumbDistalJoint"",
+            ""joint"": ""ThumbDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.03500421717762947,
@@ -4614,7 +4614,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexKnuckle"",
+            ""joint"": ""IndexProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0035026671830564739,
@@ -4630,7 +4630,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexMiddleJoint"",
+            ""joint"": ""IndexIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": 0.0029254069086164238,
@@ -4646,7 +4646,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""IndexDistalJoint"",
+            ""joint"": ""IndexDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.0014926480362191797,
@@ -4694,7 +4694,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleKnuckle"",
+            ""joint"": ""MiddleProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.016647864133119584,
@@ -4710,7 +4710,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleMiddleJoint"",
+            ""joint"": ""MiddleIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.018303193151950837,
@@ -4726,7 +4726,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""MiddleDistalJoint"",
+            ""joint"": ""MiddleDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.0150249432772398,
@@ -4774,7 +4774,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingKnuckle"",
+            ""joint"": ""RingProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.03470367565751076,
@@ -4790,7 +4790,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingMiddleJoint"",
+            ""joint"": ""RingIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.03590525686740875,
@@ -4806,7 +4806,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""RingDistalJoint"",
+            ""joint"": ""RingDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.028704574331641198,
@@ -4838,7 +4838,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyMetacarpal"",
+            ""joint"": ""LittleMetacarpal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.0366814024746418,
@@ -4854,7 +4854,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyKnuckle"",
+            ""joint"": ""LittleProximal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.05295586213469505,
@@ -4870,7 +4870,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyMiddleJoint"",
+            ""joint"": ""LittleIntermediate"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.05275189131498337,
@@ -4886,7 +4886,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyDistalJoint"",
+            ""joint"": ""LittleDistal"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.04372227564454079,
@@ -4902,7 +4902,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         },
         {
-            ""joint"": ""PinkyTip"",
+            ""joint"": ""LittleTip"",
             ""pose"": {
                 ""position"": {
                     ""x"": -0.03621838986873627,

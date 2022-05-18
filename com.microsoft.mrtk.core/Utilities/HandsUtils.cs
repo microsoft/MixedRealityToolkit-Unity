@@ -177,20 +177,17 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 get
                 {
-                    int nameIndex = Array.FindIndex(JointNames, IsJointName);
-                    if (nameIndex < 0)
+                    if (!Enum.TryParse<TrackedHandJoint>(Joint, out var handJointEnum))
                     {
                         Debug.LogError($"Joint name {Joint} not in TrackedHandJoint enum");
                         return TrackedHandJoint.None;
                     }
-                    return (TrackedHandJoint)nameIndex;
+                    else
+                    {
+                        return handJointEnum;
+                    }
                 }
                 set { joint = JointNames[(int)value]; }
-            }
-
-            private bool IsJointName(string s)
-            {
-                return s == Joint;
             }
 
             /// <summary>
