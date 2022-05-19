@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private readonly OpenXRHandMeshProvider handMeshProvider;
         private readonly OpenXRHandJointProvider handJointProvider;
 
-        protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
+        protected MixedRealityPose[] unityJointPoses = null;
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
@@ -52,7 +52,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         #region IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => unityJointPoses.TryGetValue(joint, out pose);
+        public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
+        {
+            if (unityJointPoses != null)
+            {
+                pose = unityJointPoses[(int)joint];
+                return true;
+            }
+
+            pose = MixedRealityPose.ZeroIdentity;
+            return false;
+        }
 
         #endregion IMixedRealityHand Implementation
 
@@ -306,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             using (UpdateHandDataPerfMarker.Auto())
             {
                 handMeshProvider?.UpdateHandMesh();
-                handJointProvider?.UpdateHandJoints(inputDevice, unityJointPoses);
+                handJointProvider?.UpdateHandJoints(inputDevice, ref unityJointPoses);
                 handDefinition?.UpdateHandJoints(unityJointPoses);
             }
         }
