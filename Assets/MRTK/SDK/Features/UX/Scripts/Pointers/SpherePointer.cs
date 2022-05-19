@@ -227,9 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Rays = new RayStep[1];
                 }
 
-                Vector3 pointerPosition;
-                Vector3 pointerAxis;
-                if (TryGetNearGraspPoint(out pointerPosition) && TryGetNearGraspAxis(out pointerAxis))
+                if (TryGetNearGraspPoint(out Vector3 pointerPosition) && TryGetNearGraspAxis(out Vector3 pointerAxis))
                 {
                     Vector3 endPoint = Vector3.forward * SphereCastRadius;
                     Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
