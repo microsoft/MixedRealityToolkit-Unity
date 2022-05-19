@@ -581,6 +581,26 @@ MonoBehaviour:
   handNode: 4
   jointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   jointMaterial: {fileID: 2100000, guid: f115122e8379c044faecfec013fda057, type: 2}
+  Wrist: {fileID: 0}
+  Palm: {fileID: 0}
+  ThumbRoot: {fileID: 0}
+  ThumbRootIsMetacarpal: 1
+  IndexRoot: {fileID: 0}
+  IndexRootIsMetacarpal: 1
+  MiddleRoot: {fileID: 0}
+  MiddleRootIsMetacarpal: 1
+  RingRoot: {fileID: 0}
+  RingRootIsMetacarpal: 1
+  LittleRoot: {fileID: 0}
+  LittleRootIsMetacarpal: 1
+  ModelPalmAtLeapWrist: 1
+  DeformPosition: 1
+  ScaleLastFingerBone: 1
+  ModelFingerPointing: {x: 0, y: 0, z: 0}
+  ModelPalmFacing: {x: 0, y: 0, z: 0}
+  handMaterial: {fileID: 0}
+  enableHandMesh: 0
+  handRenderer: {fileID: 0}
 --- !u!1 &1948193616346090105
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: 0
-  joint: 11
+  joint: 10
 --- !u!1 &5224294193116514423
 GameObject:
   m_ObjectHideFlags: 0
