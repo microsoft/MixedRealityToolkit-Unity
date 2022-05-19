@@ -148,22 +148,27 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         private void InitializeKeywordRecognizer()
         {
             if (!Application.isPlaying ||
-                (Commands == null) ||
-                (Commands.Length == 0) ||
                 InputSystemProfile == null ||
-                keywordRecognizer != null
-                )
+                keywordRecognizer != null)
+            {
+                return;
+            }
+
+            SpeechCommands[] commands = Commands;
+            int commandsCount = commands?.Length ?? 0;
+
+            if (commandsCount == 0)
             {
                 return;
             }
 
             globalInputSource = Service?.RequestNewGlobalInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
 
-            var newKeywords = new string[Commands.Length];
+            var newKeywords = new string[commandsCount];
 
-            for (int i = 0; i < Commands.Length; i++)
+            for (int i = 0; i < commandsCount; i++)
             {
-                newKeywords[i] = Commands[i].LocalizedKeyword;
+                newKeywords[i] = commands[i].LocalizedKeyword;
             }
 
             RecognitionConfidenceLevel = InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
@@ -197,11 +202,14 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
                 if (keywordRecognizer != null && keywordRecognizer.IsRunning)
                 {
-                    for (int i = 0; i < Commands.Length; i++)
+                    SpeechCommands[] commands = Commands;
+                    int commandsCount = commands?.Length ?? 0;
+                    for (int i = 0; i < commandsCount; i++)
                     {
-                        if (UInput.GetKeyDown(Commands[i].KeyCode))
+                        SpeechCommands command = commands[i];
+                        if (UInput.GetKeyDown(command.KeyCode))
                         {
-                            OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].LocalizedKeyword);
+                            OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, command.LocalizedKeyword);
                         }
                     }
                 }
@@ -244,13 +252,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (OnPhraseRecognizedPerfMarker.Auto())
             {
-                for (int i = 0; i < Commands?.Length; i++)
+                SpeechCommands[] commands = Commands;
+                int commandsCount = commands?.Length ?? 0;
+                for (int i = 0; i < commandsCount; i++)
                 {
-                    if (Commands[i].LocalizedKeyword == text)
+                    SpeechCommands command = commands[i];
+                    if (command.LocalizedKeyword == text)
                     {
                         globalInputSource.UpdateActivePointers();
-
-                        Service?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
+                        Service?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, command);
                         break;
                     }
                 }
