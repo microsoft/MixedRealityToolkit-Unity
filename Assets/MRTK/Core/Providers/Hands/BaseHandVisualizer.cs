@@ -20,14 +20,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [System.Obsolete("This has been replaced with jointsArray with TrackedHandJoint as the int index.", true)]
         protected readonly Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
 
-        protected readonly Transform[] jointsArray = new Transform[ArticulatedHandPose.JointCount];
+        protected IMixedRealityHand MixedRealityHand { get; private set; } = null;
+        protected Transform[] JointsArray { get; } = new Transform[ArticulatedHandPose.JointCount];
         protected MeshFilter handMeshFilter;
 
         // This member stores the last count of hand mesh vertices, to avoid using
         // handMeshFilter.mesh.vertices, which does a copy of the vertices.
         private int lastHandMeshVerticesCount = 0;
 
-        private IDictionary<TrackedHandJoint, MixedRealityPose> cachedJointsDictionary = null;
+        private bool handJointsUpdated = false;
         private HandMeshInfo lastHandMeshInfo = null;
 
         private void OnEnable()
@@ -42,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (Controller != null)
             {
                 Handedness = Controller.ControllerHandedness;
+                MixedRealityHand = Controller as IMixedRealityHand;
             }
         }
 
@@ -60,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnDestroy()
         {
-            foreach (Transform joint in jointsArray)
+            foreach (Transform joint in JointsArray)
             {
                 if (joint != null)
                 {
@@ -75,15 +77,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        [System.Obsolete("Use HandJointUtils.TryGetJointPose instead of this")]
         public bool TryGetJointTransform(TrackedHandJoint joint, out Transform jointTransform)
         {
-            if (jointsArray == null)
+            if (JointsArray == null)
             {
                 jointTransform = null;
                 return false;
             }
 
-            jointTransform = jointsArray[(int)joint];
+            jointTransform = JointsArray[(int)joint];
             return jointTransform != null;
         }
 
@@ -105,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker OnHandJointsUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.OnHandJointsUpdated");
 
         /// <inheritdoc/>
-        public virtual void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
+        void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
             using (OnHandJointsUpdatedPerfMarker.Auto())
             {
@@ -115,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                cachedJointsDictionary = eventData.InputData;
+                handJointsUpdated = true;
                 eventData.Use();
             }
         }
@@ -123,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker OnHandMeshUpdatedPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.OnHandMeshUpdated");
 
         /// <inheritdoc/>
-        public virtual void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
+        void IMixedRealityHandMeshHandler.OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
         {
             using (OnHandMeshUpdatedPerfMarker.Auto())
             {
@@ -138,138 +141,151 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void UpdateHandJoints()
+        private static readonly ProfilerMarker UpdateHandJointsPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.UpdateHandJoints");
+
+        protected virtual bool UpdateHandJoints()
         {
-            if (cachedJointsDictionary == null)
+            using (UpdateHandJointsPerfMarker.Auto())
             {
-                return;
-            }
-
-            IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
-            MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
-            if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
-            {
-                // clear existing joint GameObjects / meshes
-                foreach (Transform joint in jointsArray)
+                if (!handJointsUpdated || MixedRealityHand.IsNull())
                 {
-                    if (joint != null)
-                    {
-                        Destroy(joint.gameObject);
-                    }
+                    return false;
                 }
 
-                return;
-            }
-
-            // This starts at 1 to skip over TrackedHandJoint.None.
-            for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
-            {
-                TrackedHandJoint handJoint = (TrackedHandJoint)i;
-
-                // Skip this hand joint if the event data doesn't have an entry for it
-                if (!cachedJointsDictionary.TryGetValue(handJoint, out MixedRealityPose handJointPose))
+                IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
+                if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
                 {
-                    continue;
+                    // clear existing joint GameObjects / meshes
+                    foreach (Transform joint in JointsArray)
+                    {
+                        if (joint != null)
+                        {
+                            Destroy(joint.gameObject);
+                        }
+                    }
+
+                    return false;
                 }
 
-                Transform jointTransform = jointsArray[i];
-                if (jointTransform != null)
+                // This starts at 1 to skip over TrackedHandJoint.None.
+                for (int i = 1; i < ArticulatedHandPose.JointCount; i++)
                 {
-                    jointTransform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
-                }
-                else
-                {
-                    GameObject prefab;
-                    if (handJoint == TrackedHandJoint.None || handTrackingProfile == null)
+                    TrackedHandJoint handJoint = (TrackedHandJoint)i;
+
+                    // Skip this hand joint if the event data doesn't have an entry for it
+                    if (!MixedRealityHand.TryGetJoint(handJoint, out MixedRealityPose handJointPose))
                     {
-                        // No visible mesh for the "None" joint
-                        prefab = null;
+                        continue;
                     }
-                    else if (handJoint == TrackedHandJoint.Palm)
+
+                    Transform jointTransform = JointsArray[i];
+                    if (jointTransform != null)
                     {
-                        prefab = handTrackingProfile.PalmJointPrefab;
-                    }
-                    else if (handJoint == TrackedHandJoint.IndexTip)
-                    {
-                        prefab = handTrackingProfile.FingerTipPrefab;
+                        jointTransform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
                     }
                     else
                     {
-                        prefab = handTrackingProfile.JointPrefab;
-                    }
+                        GameObject prefab;
+                        if (handJoint == TrackedHandJoint.None || handTrackingProfile == null)
+                        {
+                            // No visible mesh for the "None" joint
+                            prefab = null;
+                        }
+                        else if (handJoint == TrackedHandJoint.Palm)
+                        {
+                            prefab = handTrackingProfile.PalmJointPrefab;
+                        }
+                        else if (handJoint == TrackedHandJoint.IndexTip)
+                        {
+                            prefab = handTrackingProfile.FingerTipPrefab;
+                        }
+                        else
+                        {
+                            prefab = handTrackingProfile.JointPrefab;
+                        }
 
-                    GameObject jointObject;
-                    if (prefab != null)
-                    {
-                        jointObject = Instantiate(prefab);
-                    }
-                    else
-                    {
-                        jointObject = new GameObject();
-                    }
+                        GameObject jointObject;
+                        if (prefab != null)
+                        {
+                            jointObject = Instantiate(prefab);
+                        }
+                        else
+                        {
+                            jointObject = new GameObject();
+                        }
 
-                    jointObject.name = handJoint.ToString() + " Proxy Transform";
-                    jointObject.transform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
-                    jointObject.transform.parent = transform;
+                        jointObject.name = handJoint.ToString() + " Proxy Transform";
+                        jointObject.transform.SetPositionAndRotation(handJointPose.Position, handJointPose.Rotation);
+                        jointObject.transform.parent = transform;
 
-                    jointsArray[i] = jointObject.transform;
+                        JointsArray[i] = jointObject.transform;
+                    }
                 }
+
+                handJointsUpdated = false;
+                return true;
             }
         }
 
-        private void UpdateHandMesh()
+        private static readonly ProfilerMarker UpdateHandMeshPerfMarker = new ProfilerMarker("[MRTK] BaseHandVisualizer.UpdateHandMesh");
+
+        protected virtual void UpdateHandMesh()
         {
-            if (lastHandMeshInfo == null)
+            using (UpdateHandMeshPerfMarker.Auto())
             {
-                return;
-            }
-
-            bool newMesh = handMeshFilter == null;
-
-            if (newMesh &&
-                CoreServices.InputSystem?.InputSystemProfile != null &&
-                CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile != null &&
-                CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
-            {
-                handMeshFilter = Instantiate(CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
-                lastHandMeshVerticesCount = handMeshFilter.mesh.vertices.Length;
-            }
-
-            if (handMeshFilter != null)
-            {
-                Mesh mesh = handMeshFilter.mesh;
-
-                bool meshChanged = false;
-                // On some platforms, mesh length counts may change as the hand mesh is updated.
-                // In order to update the vertices when the array sizes change, the mesh
-                // must be cleared per instructions here:
-                // https://docs.unity3d.com/ScriptReference/Mesh.html
-                if (lastHandMeshVerticesCount != lastHandMeshInfo.vertices?.Length)
+                if (lastHandMeshInfo == null)
                 {
-                    meshChanged = true;
-                    mesh.Clear();
+                    return;
                 }
 
-                mesh.vertices = lastHandMeshInfo.vertices;
-                mesh.normals = lastHandMeshInfo.normals;
-                lastHandMeshVerticesCount = lastHandMeshInfo.vertices != null ? lastHandMeshInfo.vertices.Length : 0;
+                bool newMesh = handMeshFilter == null;
 
-                if (newMesh || meshChanged)
+                if (newMesh &&
+                    CoreServices.InputSystem?.InputSystemProfile != null &&
+                    CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile != null &&
+                    CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
                 {
-                    mesh.triangles = lastHandMeshInfo.triangles;
+                    handMeshFilter = Instantiate(CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
+                    lastHandMeshVerticesCount = handMeshFilter.mesh.vertices.Length;
+                }
 
-                    if (lastHandMeshInfo.uvs?.Length > 0)
+                if (handMeshFilter != null)
+                {
+                    Mesh mesh = handMeshFilter.mesh;
+
+                    bool meshChanged = false;
+                    // On some platforms, mesh length counts may change as the hand mesh is updated.
+                    // In order to update the vertices when the array sizes change, the mesh
+                    // must be cleared per instructions here:
+                    // https://docs.unity3d.com/ScriptReference/Mesh.html
+                    if (lastHandMeshVerticesCount != lastHandMeshInfo.vertices?.Length)
                     {
-                        mesh.uv = lastHandMeshInfo.uvs;
+                        meshChanged = true;
+                        mesh.Clear();
                     }
-                }
 
-                if (meshChanged)
-                {
-                    mesh.RecalculateBounds();
-                }
+                    mesh.vertices = lastHandMeshInfo.vertices;
+                    mesh.normals = lastHandMeshInfo.normals;
+                    lastHandMeshVerticesCount = lastHandMeshInfo.vertices != null ? lastHandMeshInfo.vertices.Length : 0;
 
-                handMeshFilter.transform.SetPositionAndRotation(lastHandMeshInfo.position, lastHandMeshInfo.rotation);
+                    if (newMesh || meshChanged)
+                    {
+                        mesh.triangles = lastHandMeshInfo.triangles;
+
+                        if (lastHandMeshInfo.uvs?.Length > 0)
+                        {
+                            mesh.uv = lastHandMeshInfo.uvs;
+                        }
+                    }
+
+                    if (meshChanged)
+                    {
+                        mesh.RecalculateBounds();
+                    }
+
+                    handMeshFilter.transform.SetPositionAndRotation(lastHandMeshInfo.position, lastHandMeshInfo.rotation);
+                }
             }
         }
     }
