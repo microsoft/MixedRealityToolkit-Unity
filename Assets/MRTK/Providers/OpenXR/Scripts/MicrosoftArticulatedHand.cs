@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             if (unityJointPoses != null)
             {
                 pose = unityJointPoses[(int)joint];
-                return true;
+                return pose != default(MixedRealityPose);
             }
 
             pose = MixedRealityPose.ZeroIdentity;
