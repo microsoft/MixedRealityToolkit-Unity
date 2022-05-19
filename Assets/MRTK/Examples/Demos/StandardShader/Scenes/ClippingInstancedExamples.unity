@@ -338,6 +338,7 @@ MonoBehaviour:
   clippingSide: 1
   useOnPreRender: 0
   applyToSharedMaterial: 1
+  cacheSharedMaterialsFromRenderer: 0
 --- !u!1001 &150935203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3256,6 +3257,7 @@ MonoBehaviour:
   clippingSide: 1
   useOnPreRender: 0
   applyToSharedMaterial: 1
+  cacheSharedMaterialsFromRenderer: 0
 --- !u!1001 &914966059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3489,6 +3491,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &914966067
@@ -3511,6 +3514,9 @@ MonoBehaviour:
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 1
   moveLerpTime: 0.001
@@ -4639,6 +4645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alignmentType: 0
+  containerObject: {fileID: 0}
 --- !u!1 &1239149937
 GameObject:
   m_ObjectHideFlags: 0
@@ -5543,6 +5550,7 @@ MonoBehaviour:
   clippingSide: -1
   useOnPreRender: 0
   applyToSharedMaterial: 1
+  cacheSharedMaterialsFromRenderer: 0
 --- !u!1001 &1481098054
 PrefabInstance:
   m_ObjectHideFlags: 0

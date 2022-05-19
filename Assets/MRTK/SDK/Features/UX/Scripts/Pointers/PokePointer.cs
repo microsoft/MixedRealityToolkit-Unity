@@ -90,7 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { pokeLayerMasks = value; }
         }
 
-
         [SerializeField]
         [Tooltip("Specify whether queries for touchable surfaces hit triggers.")]
         protected QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal;
@@ -225,9 +224,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Camera mainCam = CameraCache.Main;
                 for (int i = 0; i < numColliders; ++i)
                 {
-                    var collider = queryBuffer[i];
-                    var touchable = collider.GetComponent<BaseNearInteractionTouchable>();
-                    if (touchable)
+                    Collider collider = queryBuffer[i];
+#if UNITY_2019_4_OR_NEWER
+                    if (collider.TryGetComponent(out BaseNearInteractionTouchable touchable) && touchable != null)
+#else
+                    BaseNearInteractionTouchable touchable = collider.GetComponent<BaseNearInteractionTouchable>();
+                    if (touchable != null)
+#endif
                     {
                         if (IgnoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
                         {

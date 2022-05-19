@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 7
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 6696346591055048132}
   additionalOffset: {x: 0, y: 0, z: 0}
@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 7
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 6696346591055048132}
   additionalOffset: {x: 0, y: -0.036, z: 0}
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 6
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
@@ -848,7 +848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 7
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 6696346591055048132}
   additionalOffset: {x: 0, y: 0.036, z: 0}

@@ -694,6 +694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   proximityType: 3
+  executionOrder: 0
   faceAway: 1
 --- !u!114 &253318783893490497
 MonoBehaviour:
@@ -709,6 +710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &6326743436241854320
@@ -1068,6 +1070,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 3168860995151308853}
   interactableObject: {fileID: 0}
+  buttonBehavior: 0
   autoFollowAtDistance: 0
   autoFollowDistance: 2
   autoFollowTransformTarget: {fileID: 0}
@@ -1087,7 +1090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 0
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
@@ -1263,6 +1266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   scaleMinimum: 0.3
   scaleMaximum: 5
   relativeToInitialState: 1

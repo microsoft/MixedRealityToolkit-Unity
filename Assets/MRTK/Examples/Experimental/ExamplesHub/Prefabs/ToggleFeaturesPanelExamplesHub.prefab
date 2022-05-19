@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 0
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
@@ -310,6 +310,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.99999994, z: 1}
   m_Center: {x: 0.00000004856583, y: 0, z: 3.0616168e-17}
+--- !u!114 &967623405352601537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5040181823892292137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!114 &2700196265164398086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &6914906376347729852
@@ -467,20 +482,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
   IsBoundsHandles: 0
---- !u!114 &967623405352601537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5040181823892292137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  autoConstraintSelection: 1
-  selectedConstraints: []
 --- !u!1001 &3111713375055023068
 PrefabInstance:
   m_ObjectHideFlags: 0

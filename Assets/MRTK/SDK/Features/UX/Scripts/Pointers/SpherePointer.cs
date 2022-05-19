@@ -469,14 +469,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public bool HasValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV, LRUCache<int, NearInteractionGrabbable> componentCache)
             {
-                Vector3 grabbablePosition = pointerPosition;
-                NearInteractionGrabbable currentGrabbable = null;
-
                 for (int i = 0; i < numColliders; i++)
                 {
                     Collider collider = queryBuffer[i];
-                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable, componentCache)
-                        && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out grabbablePosition))
+                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out NearInteractionGrabbable currentGrabbable, componentCache)
+                        && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out _))
                     {
                         if (currentGrabbable != null)
                         {
@@ -584,17 +581,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public bool IsColliderValidGrabbable(Collider collider, bool ignoreCollidersNotInFOV, out NearInteractionGrabbable currentGrabbable, LRUCache<int, NearInteractionGrabbable> componentCache)
             {
                 // Check if the collider has a grabbable component which is valid
+                bool isValidGrabbable = true;
                 int instanceId = collider.gameObject.GetInstanceID();
                 if (!componentCache.TryGetValue(instanceId, out currentGrabbable))
                 {
-                    currentGrabbable = collider.gameObject.GetComponent<NearInteractionGrabbable>();
+#if UNITY_2019_4_OR_NEWER
+                    isValidGrabbable &= collider.TryGetComponent(out currentGrabbable);
+#else
+                    currentGrabbable = collider.GetComponent<NearInteractionGrabbable>();
+#endif
                     if (currentGrabbable != null)
                     {
                         componentCache.Add(instanceId, currentGrabbable);
                     }
                 }
 
-                bool isValidGrabbable = (currentGrabbable != null) && !(ignoreBoundsHandlesForQuery && currentGrabbable.IsBoundsHandles);
+                isValidGrabbable &= (currentGrabbable != null) && !(ignoreBoundsHandlesForQuery && currentGrabbable.IsBoundsHandles);
+
                 if (!isValidGrabbable)
                 {
                     // Remove it from the cache if the grabbable is no longer valid for the object
