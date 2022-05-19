@@ -699,29 +699,35 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            for (int i = 0; i < InteractableEvents.Count; i++)
+            int interactableEventsCount = InteractableEvents.Count;
+            for (int i = 0; i < interactableEventsCount; i++)
             {
-                if (InteractableEvents[i].Receiver != null)
+                InteractableEvent interactableEvent = InteractableEvents[i];
+                if (interactableEvent.Receiver != null)
                 {
-                    InteractableEvents[i].Receiver.OnUpdate(StateManager, this);
+                    interactableEvent.Receiver.OnUpdate(StateManager, this);
                 }
             }
 
-            for (int i = 0; i < activeThemes.Count; i++)
+            int activeThemesCount = activeThemes.Count;
+            for (int i = 0; i < activeThemesCount; i++)
             {
-                if (activeThemes[i].Loaded)
+                InteractableThemeBase interactableThemeBase = activeThemes[i];
+                if (interactableThemeBase.Loaded)
                 {
-                    activeThemes[i].OnUpdate(StateManager.CurrentState().ActiveIndex, forceUpdate);
+                    interactableThemeBase.OnUpdate(StateManager.CurrentState().ActiveIndex, forceUpdate);
                 }
             }
 
             if (lastState != StateManager.CurrentState())
             {
-                for (int i = 0; i < handlers.Count; i++)
+                int handlersCount = handlers.Count;
+                for (int i = 0; i < handlersCount; i++)
                 {
-                    if (handlers[i] != null)
+                    IInteractableHandler handler = handlers[i];
+                    if (handler != null)
                     {
-                        handlers[i].OnStateChange(StateManager, this);
+                        handler.OnStateChange(StateManager, this);
                     }
                 }
             }
