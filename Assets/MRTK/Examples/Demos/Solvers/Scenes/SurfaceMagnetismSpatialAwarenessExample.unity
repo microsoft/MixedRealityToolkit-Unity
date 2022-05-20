@@ -8570,3 +8570,4 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300230, guid: 2d029f2a1321676428ce89872882c605, type: 3}
+  
