@@ -3,12 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReorientContent : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
-    // Start is called before the first frame update
-    public void AdjustContentOrientation()
+    /// <summary>
+    /// Helper script to help recenter and rocient scene content in front of the user
+    /// </summary>
+    public class ReorientContent : MonoBehaviour
     {
-        MixedRealitySceneContent sceneContent = GameObject.Find("MixedRealitySceneContent").GetComponent<MixedRealitySceneContent>();
-        sceneContent.ReorientContent();
+        public void AdjustContentOrientation()
+        {
+            MixedRealitySceneContent sceneContent = GameObject.Find("MixedRealitySceneContent").GetComponent<MixedRealitySceneContent>();
+            sceneContent.ReorientContent();
+        }
     }
 }
