@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>This <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> must have a <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor">The new cursor</param>
-        private void SetCursor(GameObject newCursor = null)
+        public virtual SetCursor(GameObject newCursor = null)
         {
             using (SetCursorPerfMarker.Auto())
             {
