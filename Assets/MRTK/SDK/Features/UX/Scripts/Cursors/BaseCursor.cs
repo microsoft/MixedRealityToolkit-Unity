@@ -671,8 +671,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Transform contextCenter = null;
                 if (TargetedObject)
                 {
+#if UNITY_2019_4_OR_NEWER
+                    if (TargetedObject.TryGetComponent(out CursorContextInfo contextInfo) && contextInfo != null)
+#else
                     var contextInfo = TargetedObject.GetComponent<CursorContextInfo>();
                     if (contextInfo != null)
+#endif
                     {
                         cursorAction = contextInfo.CurrentCursorAction;
                         contextCenter = contextInfo.ObjectCenter;

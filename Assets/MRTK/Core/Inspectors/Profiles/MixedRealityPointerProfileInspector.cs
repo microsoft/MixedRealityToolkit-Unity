@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent GazeCursorPrefabContent = new GUIContent("Gaze Cursor Prefab");
         private static readonly GUIContent UseEyeTrackingDataContent = new GUIContent("Use Eye Tracking Data");
         private static readonly GUIContent RaycastLayerMaskContent = new GUIContent("Default Raycast LayerMasks");
+        private static readonly GUIContent PointerRaycastLayerMaskContent = new GUIContent("Pointer Raycast LayerMasks");
 
 #if UNITY_2019_3_OR_NEWER
         private const string EnableGazeCapabilityContent = "To use eye tracking with UWP, the GazeInput capability needs to be set in the manifest." +
@@ -28,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
 
         private SerializedProperty pointingExtent;
-        private SerializedProperty pointingRaycastLayerMasks;
+        private SerializedProperty defaultRaycastLayerMasks;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
 
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             base.OnEnable();
 
             pointingExtent = serializedObject.FindProperty("pointingExtent");
-            pointingRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
+            defaultRaycastLayerMasks = serializedObject.FindProperty("pointingRaycastLayerMasks");
             pointerOptions = serializedObject.FindProperty("pointerOptions");
             debugDrawPointingRays = serializedObject.FindProperty("debugDrawPointingRays");
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
@@ -75,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(pointingExtent);
-                EditorGUILayout.PropertyField(pointingRaycastLayerMasks, RaycastLayerMaskContent, true);
+                EditorGUILayout.PropertyField(defaultRaycastLayerMasks, RaycastLayerMaskContent, true);
                 EditorGUILayout.PropertyField(pointerMediator);
                 EditorGUILayout.PropertyField(primaryPointerSelector);
 
@@ -111,11 +112,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     var gazeProvider = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>();
                     CreateCachedEditor((Object)gazeProvider, null, ref gazeProviderEditor);
-
                     showGazeProviderProperties = EditorGUILayout.Foldout(showGazeProviderProperties, "Gaze Provider Settings", true, boldFoldout);
                     if (showGazeProviderProperties && !gazeProviderEditor.IsNull())
                     {
-                        gazeProviderEditor.OnInspectorGUI();
+                        // Provide a convenient way to toggle the gaze provider as enabled/disabled via editor
+                        gazeProvider.Enabled = EditorGUILayout.Toggle("Enable Gaze Provider", gazeProvider.Enabled);
+
+                        using (new EditorGUI.IndentLevelScope())
+                        {
+                            // Draw out the rest of the Gaze Provider's settings
+                            gazeProviderEditor.OnInspectorGUI();
+                        }
                     }
                 }
 
@@ -129,7 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         RenderPointerList(pointerOptions);
                     }
                 }
-
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Debug Settings", EditorStyles.boldLabel);
@@ -153,8 +159,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private void RenderPointerList(SerializedProperty list)
         {
-            var profile = target as MixedRealityPointerProfile;
-
             if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
                 pointerOptions.arraySize += 1;
@@ -178,11 +182,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
+            bool anyPrefabChanged = false;
+
             for (int i = 0; i < list.arraySize; i++)
             {
-                IMixedRealityPointer pointer = null;
-                Object pointerPrefab = null;
-
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
                     Color prevColor = GUI.color;
@@ -193,46 +196,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     var prefab = pointerOption.FindPropertyRelative("pointerPrefab");
                     var prioritizedLayerMasks = pointerOption.FindPropertyRelative("prioritizedLayerMasks");
 
-                    pointerPrefab = prefab.objectReferenceValue;
-                    pointer = pointerPrefab.IsNull() ? null : ((GameObject)pointerPrefab).GetComponent<IMixedRealityPointer>();
+                    GameObject pointerPrefab = prefab.objectReferenceValue as GameObject;
+                    IMixedRealityPointer pointer = pointerPrefab != null ? pointerPrefab.GetComponent<IMixedRealityPointer>() : null;
 
                     // Display an error if the prefab doesn't have a IMixedRealityPointer Component
-                    if (pointer == null)
+                    if (pointer.IsNull())
                     {
                         InspectorUIUtility.DrawError($"The prefab associated with this pointer option needs an {typeof(IMixedRealityPointer).Name} component");
-
                         GUI.color = MixedRealityInspectorUtility.ErrorColor;
-                    }
-                    // if the prefab does have the component, provide a field to display and edit it's PrioritzedLayerMaskOverrides if it specifies a way to get it
-                    else
-                    {
-                        // sync the pointer option with the prefab
-                        if (pointer.PrioritizedLayerMasksOverride != null)
-                        {
-                            if (prioritizedLayerMasks.arraySize != pointer.PrioritizedLayerMasksOverride.Length)
-                            {
-                                prioritizedLayerMasks.arraySize = pointer.PrioritizedLayerMasksOverride.Length;
-                            }
-                            foreach (LayerMask mask in pointer.PrioritizedLayerMasksOverride)
-                            {
-                                SerializedProperty item = prioritizedLayerMasks.GetArrayElementAtIndex(prioritizedLayerMasks.arraySize - 1);
-                                item.intValue = mask;
-                            }
-                        }
-
-                        // if after syncing the the pointer option list is still empty, initialize with the global default
-                        // sync the pointer option with the prefab
-                        if (prioritizedLayerMasks.arraySize == 0)
-                        {
-                            for (int j = 0; j < pointingRaycastLayerMasks.arraySize; j++)
-                            {
-                                var mask = pointingRaycastLayerMasks.GetArrayElementAtIndex(j).intValue;
-
-                                prioritizedLayerMasks.InsertArrayElementAtIndex(prioritizedLayerMasks.arraySize);
-                                SerializedProperty item = prioritizedLayerMasks.GetArrayElementAtIndex(prioritizedLayerMasks.arraySize - 1);
-                                item.intValue = mask;
-                            }
-                        }
                     }
 
                     using (new EditorGUILayout.HorizontalScope())
@@ -250,22 +221,35 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     // Ultimately sync the pointer prefab's value with the pointer option's
                     EditorGUI.BeginChangeCheck();
-                    EditorGUILayout.PropertyField(prioritizedLayerMasks, new GUIContent("Pointer Raycast LayerMasks"), true);
-                    if (EditorGUI.EndChangeCheck() && pointer.PrioritizedLayerMasksOverride != null)
+                    EditorGUILayout.PropertyField(prioritizedLayerMasks, PointerRaycastLayerMaskContent, true);
+                    if (EditorGUI.EndChangeCheck() && pointer.IsNotNull())
                     {
                         Undo.RecordObject(pointerPrefab, "Sync Pointer Prefab");
-                        pointer.PrioritizedLayerMasksOverride = new LayerMask[prioritizedLayerMasks.arraySize];
-                        for (int j = 0; j < prioritizedLayerMasks.arraySize; j++)
+
+                        int prioritizedLayerMasksCount = prioritizedLayerMasks.arraySize;
+                        if (pointer.PrioritizedLayerMasksOverride?.Length != prioritizedLayerMasksCount)
+                        {
+                            pointer.PrioritizedLayerMasksOverride = new LayerMask[prioritizedLayerMasksCount];
+                        }
+
+                        for (int j = 0; j < prioritizedLayerMasksCount; j++)
                         {
                             pointer.PrioritizedLayerMasksOverride[j] = prioritizedLayerMasks.GetArrayElementAtIndex(j).intValue;
                         }
-                        
+
                         PrefabUtility.RecordPrefabInstancePropertyModifications(pointerPrefab);
+                        EditorUtility.SetDirty(pointerPrefab);
+                        anyPrefabChanged = true;
                     }
 
                     GUI.color = prevColor;
                 }
                 EditorGUILayout.Space();
+            }
+
+            if (anyPrefabChanged)
+            {
+                AssetDatabase.SaveAssets();
             }
         }
     }

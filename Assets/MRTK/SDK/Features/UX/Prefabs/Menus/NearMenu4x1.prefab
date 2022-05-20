@@ -27,6 +27,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
   IsBoundsHandles: 0
+--- !u!114 &1393387310240670264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712153382927011348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!114 &5699580772440768612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,6 +61,9 @@ MonoBehaviour:
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 1
   moveLerpTime: 0.001
@@ -151,22 +168,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
---- !u!114 &1393387310240670264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712153382927011348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  autoConstraintSelection: 1
-  selectedConstraints: []
 --- !u!1 &2827255906976489158
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 0
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
@@ -302,6 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 0}
   interactableObject: {fileID: 0}
+  buttonBehavior: 0
   autoFollowAtDistance: 0
   autoFollowDistance: 2
   autoFollowTransformTarget: {fileID: 0}

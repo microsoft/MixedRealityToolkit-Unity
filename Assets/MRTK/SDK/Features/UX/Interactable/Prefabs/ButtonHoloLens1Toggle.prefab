@@ -73,7 +73,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: Select
+  voiceCommand: Select
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1391235132048104}

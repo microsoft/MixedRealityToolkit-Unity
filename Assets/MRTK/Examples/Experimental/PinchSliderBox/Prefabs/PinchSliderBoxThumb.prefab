@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
 --- !u!114 &4626259542773540797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820f94d57893bf843a0cd6d93313fe6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 3654665362766092572}
+  handType: 3
+  proximityType: 3
+  executionOrder: 0
   scaleMinimum: 0.5
   scaleMaximum: 1
   relativeToInitialState: 1

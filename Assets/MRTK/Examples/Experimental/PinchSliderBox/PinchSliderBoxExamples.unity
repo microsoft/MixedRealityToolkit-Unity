@@ -157,7 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820f94d57893bf843a0cd6d93313fe6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 2088655142}
+  handType: 3
+  proximityType: 3
+  executionOrder: 0
   scaleMinimum: 0.2
   scaleMaximum: 1.5
   relativeToInitialState: 1

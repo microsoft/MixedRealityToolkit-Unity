@@ -1250,6 +1250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db568ff594a361d4e9a9ac960905ddd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playSoundsOnlyOnInteract: 0
   interactionStartSound: {fileID: 8300000, guid: 6c0efce9e4f4243449555af66e975f27,
     type: 3}
   interactionEndSound: {fileID: 8300000, guid: 32c013149113ba24cb267e1e3f6725c7, type: 3}
