@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
-using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
@@ -77,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] MicrosoftArticulatedHand.UpdateController");
 
-        // This bool is used to track whether or not we are recieving device data from the platform itself
+        // This bool is used to track whether or not we are receiving device data from the platform itself
         // If we aren't we will attempt to infer some common input actions from the hand joint data (i.e. the pinch gesture, pointer positions etc)
         private bool receivingDeviceInputs = false;
 
@@ -98,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
             using (UpdateControllerPerfMarker.Auto())
             {
-                if (inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 _))
+                if (inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out _))
                 {
                     base.UpdateController(inputDevice);
 
@@ -106,9 +105,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     // from the hand joint data
                     receivingDeviceInputs = true;
                 }
-                else
+
+                if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out Hand hand))
                 {
-                    UpdateHandData(inputDevice);
+                    UpdateHandData(hand);
 
                     // Updating the Index finger pose right after getting the hand data
                     // regardless of whether device data is present
@@ -311,12 +311,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// Update the hand data from the device.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        private void UpdateHandData(InputDevice inputDevice)
+        private void UpdateHandData(Hand hand)
         {
             using (UpdateHandDataPerfMarker.Auto())
             {
                 handMeshProvider?.UpdateHandMesh();
-                handJointProvider?.UpdateHandJoints(inputDevice, ref unityJointPoses);
+                handJointProvider?.UpdateHandJoints(hand, ref unityJointPoses);
                 handDefinition?.UpdateHandJoints(unityJointPoses);
             }
         }

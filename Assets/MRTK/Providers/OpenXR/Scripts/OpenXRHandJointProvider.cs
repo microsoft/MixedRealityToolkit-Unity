@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
-#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#else
+using System.Collections.Generic;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private readonly List<Bone> fingerBones = new List<Bone>();
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
-        public void UpdateHandJoints(InputDevice inputDevice, ref MixedRealityPose[] jointPoses)
+        public void UpdateHandJoints(Hand hand, ref MixedRealityPose[] jointPoses)
         {
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             if (handTracker != null && handTracker.TryLocateHandJoints(FrameTime.OnUpdate, locations))
@@ -54,28 +54,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     jointPoses[ConvertToArrayIndex(handJoint)] = new MixedRealityPose(position, rotation);
                 }
 #else
-            if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out Hand hand))
+            if (jointPoses == null)
             {
-                if (jointPoses == null)
+                jointPoses = new MixedRealityPose[ArticulatedHandPose.JointCount];
+            }
+
+            foreach (HandFinger finger in HandFingers)
+            {
+                if (hand.TryGetRootBone(out Bone rootBone) && TryReadHandJoint(rootBone, out MixedRealityPose rootPose))
                 {
-                    jointPoses = new MixedRealityPose[ArticulatedHandPose.JointCount];
+                    jointPoses[(int)TrackedHandJoint.Palm] = rootPose;
                 }
 
-                foreach (HandFinger finger in HandFingers)
+                if (hand.TryGetFingerBones(finger, fingerBones))
                 {
-                    if (hand.TryGetRootBone(out Bone rootBone) && TryReadHandJoint(rootBone, out MixedRealityPose rootPose))
+                    for (int i = 0; i < fingerBones.Count; i++)
                     {
-                        jointPoses[(int)TrackedHandJoint.Palm] = rootPose;
-                    }
-
-                    if (hand.TryGetFingerBones(finger, fingerBones))
-                    {
-                        for (int i = 0; i < fingerBones.Count; i++)
+                        if (TryReadHandJoint(fingerBones[i], out MixedRealityPose pose))
                         {
-                            if (TryReadHandJoint(fingerBones[i], out MixedRealityPose pose))
-                            {
-                                jointPoses[ConvertToArrayIndex(finger, i)] = pose;
-                            }
+                            jointPoses[ConvertToArrayIndex(finger, i)] = pose;
                         }
                     }
                 }
