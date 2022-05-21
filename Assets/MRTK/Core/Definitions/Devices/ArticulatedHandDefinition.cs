@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly float cursorBeamBackwardTolerance = 0.5f;
         private readonly float cursorBeamUpTolerance = 0.8f;
 
-        private Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoseDictionary = new Dictionary<TrackedHandJoint, MixedRealityPose>();
+        private IDictionary<TrackedHandJoint, MixedRealityPose> unityJointPoseDictionary = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private MixedRealityPose[] unityJointPoses = null;
         private MixedRealityPose currentIndexPose = MixedRealityPose.ZeroIdentity;
         private Vector3 currentPalmNormal = Vector3.zero;
@@ -42,10 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const int IndexTipIndex = (int)TrackedHandJoint.IndexTip;
 
         // Minimum distance between the index and the thumb tip required to enter a pinch
-        private readonly float minimumPinchDistance = 0.015f;
+        private const float MinimumPinchDistance = 0.015f;
 
         // Maximum distance between the index and thumb tip required to exit the pinch gesture
-        private readonly float maximumPinchDistance = 0.1f;
+        private const float MaximumPinchDistance = 0.1f;
 
         // Default enterPinchDistance value
         private float enterPinchDistance = 0.02f;
@@ -59,13 +59,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get => enterPinchDistance;
             set
             {
-                if (value >= minimumPinchDistance && value <= maximumPinchDistance)
+                if (value >= MinimumPinchDistance && value <= MaximumPinchDistance)
                 {
                     enterPinchDistance = value;
                 }
                 else
                 {
-                    Debug.LogError("EnterPinchDistance must be between 0.015 and 0.1, please change Enter Pinch Distance in the Leap Motion Device Manager Profile");
+                    Debug.LogError($"EnterPinchDistance must be between {MinimumPinchDistance} and {MaximumPinchDistance}.");
                 }
             }
         }
@@ -82,13 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get => exitPinchDistance;
             set
             {
-                if (value >= minimumPinchDistance && value <= maximumPinchDistance)
+                if (value >= MinimumPinchDistance && value <= MaximumPinchDistance)
                 {
                     exitPinchDistance = value;
                 }
                 else
                 {
-                    Debug.LogError("ExitPinchDistance must be between 0.015 and 0.1, please change Exit Pinch Distance in the Leap Motion Device Manager Profile");
+                    Debug.LogError($"ExitPinchDistance must be between {MinimumPinchDistance} and {MaximumPinchDistance}.");
                 }
             }
         }
@@ -326,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker UpdateCurrentTeleportPosePerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateCurrentTeleportPose");
 
         /// <summary>
-        /// Updates the MixedRealityInteractionMapping with the lastest teleport pose status and fires an event when appropriate
+        /// Updates the MixedRealityInteractionMapping with the latest teleport pose status and fires an event when appropriate
         /// </summary>
         /// <param name="interactionMapping">The teleport action's interaction mapping.</param>
         public void UpdateCurrentTeleportPose(MixedRealityInteractionMapping interactionMapping)
@@ -385,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Updates the MixedRealityInteractionMapping with the lastest pointer pose status and fires a corresponding pose event.
+        /// Updates the MixedRealityInteractionMapping with the latest pointer pose status and fires a corresponding pose event.
         /// </summary>
         /// <param name="interactionMapping">The pointer pose's interaction mapping.</param>
         public void UpdatePointerPose(MixedRealityInteractionMapping interactionMapping)
