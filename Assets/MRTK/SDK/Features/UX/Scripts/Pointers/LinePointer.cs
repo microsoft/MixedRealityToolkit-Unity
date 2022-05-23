@@ -115,7 +115,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnPreSceneQueryPerfMarker.Auto())
             {
-                if (!IsInteractionEnabled) return;
+                if (!IsInteractionEnabled)
+                {
+                    return;
+                }
 
                 PreUpdateLineRenderers();
                 UpdateRays();

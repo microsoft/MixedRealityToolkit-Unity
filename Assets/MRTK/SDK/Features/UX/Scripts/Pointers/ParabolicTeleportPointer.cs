@@ -72,7 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             using (OnPreSceneQueryPerfMarker.Auto())
             {
-                if (!IsInteractionEnabled) return;
+                if (!IsInteractionEnabled)
+                {
+                    return;
+                }
 
                 stabilizationRay.origin = transform.position;
                 stabilizationRay.direction = transform.forward;

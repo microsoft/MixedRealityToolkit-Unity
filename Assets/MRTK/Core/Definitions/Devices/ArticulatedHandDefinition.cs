@@ -164,7 +164,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (unityJointPoses == null) return false;
+                if (unityJointPoses == null)
+                {
+                    return false;
+                }
 
                 Camera mainCamera = CameraCache.Main;
 
@@ -279,7 +282,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 unityJointPoses = jointPoses;
 
-                if (unityJointPoses == null) return;
+                if (unityJointPoses == null)
+                {
+                    return;
+                }
 
                 currentIndexPose = unityJointPoses[IndexTipIndex];
                 currentPalmNormal = unityJointPoses[PalmIndex].Rotation * Vector3.down;
