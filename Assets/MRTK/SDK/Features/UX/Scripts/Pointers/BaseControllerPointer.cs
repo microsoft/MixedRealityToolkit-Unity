@@ -508,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsFocusLocked = false;
         }
 
-#endregion IMixedRealityPointer Implementation
+        #endregion IMixedRealityPointer Implementation
 
         #region IEquality Implementation
 
@@ -556,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-#endregion IEquality Implementation
+        #endregion IEquality Implementation
 
         #region IMixedRealitySourcePoseHandler Implementation
 
@@ -592,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-#endregion IMixedRealitySourcePoseHandler Implementation
+        #endregion IMixedRealitySourcePoseHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
@@ -679,6 +679,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-#endregion  IMixedRealityInputHandler Implementation
+        #endregion  IMixedRealityInputHandler Implementation
     }
 }

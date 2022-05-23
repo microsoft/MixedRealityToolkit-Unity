@@ -233,6 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 246407676}
   voice: 1
+  customVoice: 
 --- !u!82 &246407676
 AudioSource:
   m_ObjectHideFlags: 0
@@ -349,7 +350,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 0}
@@ -798,6 +799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alignmentType: 0
+  containerObject: {fileID: 0}
 --- !u!1 &431339710
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,6 +1007,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1491288376}
   voice: 3
+  customVoice: 
 --- !u!82 &1491288376
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1121,7 +1124,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 0}
@@ -1416,6 +1419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1911547035}
   voice: 2
+  customVoice: 
 --- !u!82 &1911547035
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1532,7 +1536,7 @@ MonoBehaviour:
   startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
+  voiceCommand: 
   voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 0}

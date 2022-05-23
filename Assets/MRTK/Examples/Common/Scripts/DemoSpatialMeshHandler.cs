@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         protected void AddToData(int eventDataId)
         {
             // A new mesh has been added.
-            Debug.Log($"Tracking mesh {eventDataId}");
+            Debug.Log($"Started tracking mesh {eventDataId}");
             meshUpdateData.Add(eventDataId, 0);
         }
 

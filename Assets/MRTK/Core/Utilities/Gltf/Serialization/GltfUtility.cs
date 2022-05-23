@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 
-#if WINDOWS_UWP
+#if ENABLE_WINMD_SUPPORT
 using Windows.Storage;
 using Windows.Storage.Streams;
 #else
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             {
                 byte[] glbData;
 
-#if WINDOWS_UWP
+#if ENABLE_WINMD_SUPPORT
                 if (useBackgroundThread)
                 {
                     try

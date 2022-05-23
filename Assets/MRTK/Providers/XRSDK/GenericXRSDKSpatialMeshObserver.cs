@@ -407,8 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             using (RemoveMeshObjectPerfMarker.Auto())
             {
-                SpatialAwarenessMeshObject mesh;
-                if (meshes.TryGetValue(id, out mesh))
+                if (meshes.TryGetValue(id, out SpatialAwarenessMeshObject mesh))
                 {
                     // Remove the mesh object from the collection.
                     meshes.Remove(id);
@@ -438,8 +437,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     // Do not destroy the game object, destroy the meshes.
                     SpatialAwarenessMeshObject.Cleanup(availableMeshObject, false);
 
-                    availableMeshObject.GameObject.name = "Unused Spatial Mesh";
-                    availableMeshObject.GameObject.SetActive(false);
+                    if (availableMeshObject.GameObject != null)
+                    {
+                        availableMeshObject.GameObject.name = "Unused Spatial Mesh";
+                        availableMeshObject.GameObject.SetActive(false);
+                    }
 
                     spareMeshObject = availableMeshObject;
                 }

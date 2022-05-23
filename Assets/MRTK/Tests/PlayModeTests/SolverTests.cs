@@ -144,8 +144,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
 
             // Test orbital with both hands visible
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Left, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, leftHandPos);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, rightHandPos);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Left, inputSimulationService, ArticulatedHandPose.GestureId.Open, leftHandPos);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, rightHandPos);
 
             // Give time for cube to float to hand
             yield return WaitForFrames(2);
@@ -1312,7 +1312,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay
                 || testData.handler.TrackedTargetType == TrackedObjectType.HandJoint, "TestHandSolver supports on ControllerRay and HandJoint tracked target types");
 
-            yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, handPos);
+            yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, ArticulatedHandPose.GestureId.Open, handPos);
 
             // Give time for cube to float to hand
             yield return WaitForFrames(2);
