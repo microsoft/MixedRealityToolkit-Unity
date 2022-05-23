@@ -84,11 +84,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // input meshes and not crash (which is required on some platforms)
 
             GameObject baseHandVisualizerGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            var baseHandVisualizer = baseHandVisualizerGameObject.AddComponent<BaseHandVisualizer>();
+            BaseHandVisualizer baseHandVisualizer = baseHandVisualizerGameObject.AddComponent<BaseHandVisualizer>();
             baseHandVisualizer.Controller = new MockController();
 
-            baseHandVisualizer.OnHandMeshUpdated(CreateQuadInputEventData());
-            baseHandVisualizer.OnHandMeshUpdated(CreateTriangleInputEventData());
+            if (baseHandVisualizer is IMixedRealityHandMeshHandler handMeshHandler)
+            {
+                handMeshHandler.OnHandMeshUpdated(CreateQuadInputEventData());
+                handMeshHandler.OnHandMeshUpdated(CreateTriangleInputEventData());
+            }
+
             yield return null;
 
             Object.Destroy(baseHandVisualizer);

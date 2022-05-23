@@ -790,7 +790,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thumbRoot: {fileID: 7993839106062047049}
+  isTouchable: 0
+  snapToPosition: 0
+  thumbCollider: {fileID: 4759724201994911970}
+  touchCollider: {fileID: 0}
   sliderValue: 0.5
+  useSliderStepDivisions: 0
+  sliderStepDivisions: 1
   trackVisuals: {fileID: 0}
   tickMarks: {fileID: 0}
   thumbVisuals: {fileID: 0}
@@ -879,10 +885,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db568ff594a361d4e9a9ac960905ddd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playSoundsOnlyOnInteract: 0
   interactionStartSound: {fileID: 8300000, guid: 6c0efce9e4f4243449555af66e975f27,
     type: 3}
   interactionEndSound: {fileID: 8300000, guid: 32c013149113ba24cb267e1e3f6725c7, type: 3}
   playTickSounds: 1
+  alignWithStepSlider: 1
   passNotchSound: {fileID: 8300000, guid: 0632575a55cf09349a999a10968f6395, type: 3}
   tickEvery: 0.1
   startPitch: 0.75

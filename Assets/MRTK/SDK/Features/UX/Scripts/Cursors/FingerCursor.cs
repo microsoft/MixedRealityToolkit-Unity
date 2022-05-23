@@ -51,24 +51,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // When the pointer has a IMixedRealityNearPointer interface we don't call base.UpdateCursorTransform because we handle 
             // cursor transformation a bit differently.
-            if (nearPointer != null)
+            if (nearPointer.IsNotNull())
             {
                 float deltaTime = UseUnscaledTime
                     ? Time.unscaledDeltaTime
                     : Time.deltaTime;
 
-                Vector3 indexFingerPosition;
-                Quaternion indexFingerRotation;
                 // If we are unable to get the hand joint default to the Near Pointer's position and rotation
-                if (!TryGetJoint(TrackedHandJoint.IndexTip, out indexFingerPosition, out indexFingerRotation))
+                if (!TryGetJoint(TrackedHandJoint.IndexTip, out Vector3 indexFingerPosition, out Quaternion indexFingerRotation))
                 {
                     indexFingerPosition = Pointer.Position;
                     indexFingerRotation = Pointer.Rotation;
                 }
 
-                Vector3 indexKnucklePosition;
                 // If we are unable to get the hand joint default to the Near Pointer's position
-                if (!TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnucklePosition, out _)) // knuckle rotation not used
+                if (!TryGetJoint(TrackedHandJoint.IndexKnuckle, out Vector3 indexKnucklePosition, out _)) // knuckle rotation not used
                 {
                     indexKnucklePosition = Pointer.Position;
                 }
@@ -79,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 bool surfaceNormalFound = false;
                 bool showVisual = true;
                 bool nearPokeable = nearPointer.IsNearObject;
-
 
                 // Show the cursor if we are deemed to be near an object or if it is near a grabbable object
                 if (nearPokeable)
@@ -145,6 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ringRenderer.SetPropertyBlock(materialPropertyBlock);
         }
 
+        private SpherePointer cachedSpherePointer = null;
+
         /// <summary>
         /// Gets if the associated sphere pointer on this controller is near any grabbable objects.
         /// </summary>
@@ -152,20 +150,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="dist">Out parameter gets the distance to the grabbable.</param>
         protected virtual bool IsNearGrabbableObject()
         {
-            var focusProvider = CoreServices.InputSystem?.FocusProvider;
-            if (focusProvider != null)
+            if (cachedSpherePointer == null || cachedSpherePointer.Controller != Pointer.Controller)
             {
-                var spherePointers = focusProvider.GetPointers<SpherePointer>();
-                foreach (var spherePointer in spherePointers)
+                IMixedRealityFocusProvider focusProvider = CoreServices.InputSystem?.FocusProvider;
+                if (focusProvider.IsNotNull())
                 {
-                    if (spherePointer.Controller == Pointer.Controller)
+                    var spherePointers = focusProvider.GetPointers<SpherePointer>();
+                    foreach (var spherePointer in spherePointers)
                     {
-                        return spherePointer.IsNearObject;
+                        if (spherePointer.Controller == Pointer.Controller)
+                        {
+                            cachedSpherePointer = spherePointer;
+                            break;
+                        }
                     }
                 }
             }
 
-            return false;
+            return cachedSpherePointer != null && cachedSpherePointer.IsNearObject;
         }
 
         /// <summary>

@@ -19,6 +19,7 @@ MonoBehaviour:
   raycastProviderType:
     reference: 
   focusQueryBufferSize: 128
+  shouldUseGraphicsRaycast: 1
   focusIndividualCompoundCollider: 0
   inputActionsProfile: {fileID: 11400000, guid: 723eb97b02944311b92861f473eee53e,
     type: 2}

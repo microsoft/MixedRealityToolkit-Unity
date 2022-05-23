@@ -95,6 +95,7 @@ MonoBehaviour:
   clippingSide: -1
   useOnPreRender: 0
   applyToSharedMaterial: 0
+  cacheSharedMaterialsFromRenderer: 0
 --- !u!1 &241817367976372379
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +587,9 @@ MonoBehaviour:
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 1
   moveLerpTime: 0.001
@@ -666,6 +670,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 3
   proximityType: 3
+  executionOrder: 0
   constraintOnRotation: 5
   useLocalSpaceForConstraint: 0
 --- !u!114 &4147023346962729550
@@ -774,6 +779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMaterials:
   - {fileID: 2100000, guid: 1427cd2949bb6c94ca4958f6da5d9826, type: 2}
+  cacheSharedMaterialsFromRenderer: 0
 --- !u!1 &7980448365335647764
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,7 +845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedTargetType: 0
-  trackedHandness: 3
+  trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}

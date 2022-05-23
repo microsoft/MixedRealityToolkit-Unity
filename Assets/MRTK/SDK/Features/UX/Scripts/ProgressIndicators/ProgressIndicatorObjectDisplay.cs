@@ -146,6 +146,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc/>
+        public void CloseImmediate()
+        {
+            if (closeCurve.length == 0)
+            {
+                Debug.LogWarning("Open curve length is zero - this may result in an infinite loop.");
+            }
+
+            float minScale = closeCurve.Evaluate(Mathf.Infinity);
+            if (minScale > 0)
+            {
+                Debug.LogWarning("Open curve value never reaches 0 - this may result in an infinite loop.");
+            }
+
+            if (state != ProgressIndicatorState.Open)
+            {
+                throw new System.Exception("Can't close in state " + state);
+            }
+
+            scaleTargetObject.transform.localScale = Vector3.zero;
+            state = ProgressIndicatorState.Closed;
+            gameObject.SetActive(false);
+        }
+
+        /// <inheritdoc/>
         public async Task AwaitTransitionAsync()
         {
             while (isActiveAndEnabled)

@@ -471,6 +471,9 @@ MonoBehaviour:
   oneHandRotationModeNear: 0
   oneHandRotationModeFar: 0
   releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 1
   moveLerpTime: 0.001
@@ -589,6 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: -1
   proximityType: 3
+  executionOrder: 0
   constraintOnMovement: 2
   useLocalSpaceForConstraint: 0
 --- !u!114 &1964729684629225087
@@ -605,6 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: -1
   proximityType: -1
+  executionOrder: 0
   constraintOnRotation: -1
   useLocalSpaceForConstraint: 1
 --- !u!114 &9158958684978563827
