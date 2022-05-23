@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class RiggedHandVisualizer : BaseHandVisualizer
     {
-        // This bool is used to track whether or not we are recieving hand mesh data from the platform itself
+        // This bool is used to track whether or not we are receiving hand mesh data from the platform itself
         // If we aren't we will use our own rigged hand visualizer to render the hand mesh
         private bool ReceivingPlatformHandMesh => handMeshFilter != null;
 
@@ -287,15 +287,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (UpdateHandJointsPerfMarker.Auto())
             {
                 // The base class takes care of updating all of the joint data
+                _ = base.UpdateHandJoints();
+
                 // Exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform
-                if (!base.UpdateHandJoints() || ReceivingPlatformHandMesh)
+                if (ReceivingPlatformHandMesh || MixedRealityHand.IsNull())
                 {
                     HandRenderer.enabled = false;
                     return false;
                 }
 
                 IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
-                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
 
                 // Only runs if render hand mesh is true
                 bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization;
@@ -314,8 +316,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             continue;
                         }
-                        Transform jointTransform = riggedVisualJointsArray[i];
 
+                        Transform jointTransform = riggedVisualJointsArray[i];
                         if (jointTransform != null)
                         {
                             if (handJoint == TrackedHandJoint.Palm)
