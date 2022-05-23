@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -62,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The hand mesh prefab to use to render the hand
         /// </summary>
+        [Obsolete("The GameObject which generates the system handmesh is now created at runtime. This prefab is not used")]
         public GameObject HandMeshPrefab => handMeshPrefab;
 
         /// <summary>
