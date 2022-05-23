@@ -3,13 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 using Microsoft.MixedReality.OpenXR;
-#endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
+#else
+using System.Collections.Generic;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -31,11 +32,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private readonly List<Bone> fingerBones = new List<Bone>();
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
 
-        public void UpdateHandJoints(InputDevice inputDevice, Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
+        public void UpdateHandJoints(Hand hand, ref MixedRealityPose[] jointPoses)
         {
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
             if (handTracker != null && handTracker.TryLocateHandJoints(FrameTime.OnUpdate, locations))
             {
+                if (jointPoses == null)
+                {
+                    jointPoses = new MixedRealityPose[ArticulatedHandPose.JointCount];
+                }
+
                 foreach (HandJoint handJoint in HandJoints)
                 {
                     HandJointLocation handJointLocation = locations[(int)handJoint];
@@ -45,26 +51,28 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     Vector3 position = MixedRealityPlayspace.TransformPoint(handJointLocation.Pose.position);
                     Quaternion rotation = MixedRealityPlayspace.Rotation * handJointLocation.Pose.rotation;
 
-                    jointPoses[ConvertToTrackedHandJoint(handJoint)] = new MixedRealityPose(position, rotation);
+                    jointPoses[ConvertToArrayIndex(handJoint)] = new MixedRealityPose(position, rotation);
                 }
 #else
-            if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out Hand hand))
+            if (jointPoses == null)
             {
-                foreach (HandFinger finger in HandFingers)
-                {
-                    if (hand.TryGetRootBone(out Bone rootBone) && TryReadHandJoint(rootBone, out MixedRealityPose rootPose))
-                    {
-                        jointPoses[TrackedHandJoint.Palm] = rootPose;
-                    }
+                jointPoses = new MixedRealityPose[ArticulatedHandPose.JointCount];
+            }
 
-                    if (hand.TryGetFingerBones(finger, fingerBones))
+            foreach (HandFinger finger in HandFingers)
+            {
+                if (hand.TryGetRootBone(out Bone rootBone) && TryReadHandJoint(rootBone, out MixedRealityPose rootPose))
+                {
+                    jointPoses[(int)TrackedHandJoint.Palm] = rootPose;
+                }
+
+                if (hand.TryGetFingerBones(finger, fingerBones))
+                {
+                    for (int i = 0; i < fingerBones.Count; i++)
                     {
-                        for (int i = 0; i < fingerBones.Count; i++)
+                        if (TryReadHandJoint(fingerBones[i], out MixedRealityPose pose))
                         {
-                            if (TryReadHandJoint(fingerBones[i], out MixedRealityPose pose))
-                            {
-                                jointPoses[ConvertToTrackedHandJoint(finger, i)] = pose;
-                            }
+                            jointPoses[ConvertToArrayIndex(finger, i)] = pose;
                         }
                     }
                 }
@@ -73,44 +81,48 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         }
 
 #if MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
-        private TrackedHandJoint ConvertToTrackedHandJoint(HandJoint handJoint)
+        private int ConvertToArrayIndex(HandJoint handJoint)
         {
+            TrackedHandJoint trackedHandJoint;
+
             switch (handJoint)
             {
-                case HandJoint.Palm: return TrackedHandJoint.Palm;
-                case HandJoint.Wrist: return TrackedHandJoint.Wrist;
+                case HandJoint.Palm: trackedHandJoint = TrackedHandJoint.Palm; break;
+                case HandJoint.Wrist: trackedHandJoint = TrackedHandJoint.Wrist; break;
 
-                case HandJoint.ThumbMetacarpal: return TrackedHandJoint.ThumbMetacarpalJoint;
-                case HandJoint.ThumbProximal: return TrackedHandJoint.ThumbProximalJoint;
-                case HandJoint.ThumbDistal: return TrackedHandJoint.ThumbDistalJoint;
-                case HandJoint.ThumbTip: return TrackedHandJoint.ThumbTip;
+                case HandJoint.ThumbMetacarpal: trackedHandJoint = TrackedHandJoint.ThumbMetacarpalJoint; break;
+                case HandJoint.ThumbProximal: trackedHandJoint = TrackedHandJoint.ThumbProximalJoint; break;
+                case HandJoint.ThumbDistal: trackedHandJoint = TrackedHandJoint.ThumbDistalJoint; break;
+                case HandJoint.ThumbTip: trackedHandJoint = TrackedHandJoint.ThumbTip; break;
 
-                case HandJoint.IndexMetacarpal: return TrackedHandJoint.IndexMetacarpal;
-                case HandJoint.IndexProximal: return TrackedHandJoint.IndexKnuckle;
-                case HandJoint.IndexIntermediate: return TrackedHandJoint.IndexMiddleJoint;
-                case HandJoint.IndexDistal: return TrackedHandJoint.IndexDistalJoint;
-                case HandJoint.IndexTip: return TrackedHandJoint.IndexTip;
+                case HandJoint.IndexMetacarpal: trackedHandJoint = TrackedHandJoint.IndexMetacarpal; break;
+                case HandJoint.IndexProximal: trackedHandJoint = TrackedHandJoint.IndexKnuckle; break;
+                case HandJoint.IndexIntermediate: trackedHandJoint = TrackedHandJoint.IndexMiddleJoint; break;
+                case HandJoint.IndexDistal: trackedHandJoint = TrackedHandJoint.IndexDistalJoint; break;
+                case HandJoint.IndexTip: trackedHandJoint = TrackedHandJoint.IndexTip; break;
 
-                case HandJoint.MiddleMetacarpal: return TrackedHandJoint.MiddleMetacarpal;
-                case HandJoint.MiddleProximal: return TrackedHandJoint.MiddleKnuckle;
-                case HandJoint.MiddleIntermediate: return TrackedHandJoint.MiddleMiddleJoint;
-                case HandJoint.MiddleDistal: return TrackedHandJoint.MiddleDistalJoint;
-                case HandJoint.MiddleTip: return TrackedHandJoint.MiddleTip;
+                case HandJoint.MiddleMetacarpal: trackedHandJoint = TrackedHandJoint.MiddleMetacarpal; break;
+                case HandJoint.MiddleProximal: trackedHandJoint = TrackedHandJoint.MiddleKnuckle; break;
+                case HandJoint.MiddleIntermediate: trackedHandJoint = TrackedHandJoint.MiddleMiddleJoint; break;
+                case HandJoint.MiddleDistal: trackedHandJoint = TrackedHandJoint.MiddleDistalJoint; break;
+                case HandJoint.MiddleTip: trackedHandJoint = TrackedHandJoint.MiddleTip; break;
 
-                case HandJoint.RingMetacarpal: return TrackedHandJoint.RingMetacarpal;
-                case HandJoint.RingProximal: return TrackedHandJoint.RingKnuckle;
-                case HandJoint.RingIntermediate: return TrackedHandJoint.RingMiddleJoint;
-                case HandJoint.RingDistal: return TrackedHandJoint.RingDistalJoint;
-                case HandJoint.RingTip: return TrackedHandJoint.RingTip;
+                case HandJoint.RingMetacarpal: trackedHandJoint = TrackedHandJoint.RingMetacarpal; break;
+                case HandJoint.RingProximal: trackedHandJoint = TrackedHandJoint.RingKnuckle; break;
+                case HandJoint.RingIntermediate: trackedHandJoint = TrackedHandJoint.RingMiddleJoint; break;
+                case HandJoint.RingDistal: trackedHandJoint = TrackedHandJoint.RingDistalJoint; break;
+                case HandJoint.RingTip: trackedHandJoint = TrackedHandJoint.RingTip; break;
 
-                case HandJoint.LittleMetacarpal: return TrackedHandJoint.PinkyMetacarpal;
-                case HandJoint.LittleProximal: return TrackedHandJoint.PinkyKnuckle;
-                case HandJoint.LittleIntermediate: return TrackedHandJoint.PinkyMiddleJoint;
-                case HandJoint.LittleDistal: return TrackedHandJoint.PinkyDistalJoint;
-                case HandJoint.LittleTip: return TrackedHandJoint.PinkyTip;
+                case HandJoint.LittleMetacarpal: trackedHandJoint = TrackedHandJoint.PinkyMetacarpal; break;
+                case HandJoint.LittleProximal: trackedHandJoint = TrackedHandJoint.PinkyKnuckle; break;
+                case HandJoint.LittleIntermediate: trackedHandJoint = TrackedHandJoint.PinkyMiddleJoint; break;
+                case HandJoint.LittleDistal: trackedHandJoint = TrackedHandJoint.PinkyDistalJoint; break;
+                case HandJoint.LittleTip: trackedHandJoint = TrackedHandJoint.PinkyTip; break;
 
-                default: return TrackedHandJoint.None;
+                default: trackedHandJoint = TrackedHandJoint.None; break;
             }
+
+            return (int)trackedHandJoint;
         }
 #else
         private bool TryReadHandJoint(Bone bone, out MixedRealityPose pose)
@@ -143,17 +155,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// <param name="finger">The Unity classification of the current finger.</param>
         /// <param name="index">The Unity index of the current finger bone.</param>
         /// <returns>The current Unity finger bone converted into an MRTK joint.</returns>
-        private TrackedHandJoint ConvertToTrackedHandJoint(HandFinger finger, int index)
+        private int ConvertToArrayIndex(HandFinger finger, int index)
         {
+            TrackedHandJoint trackedHandJoint;
+
             switch (finger)
             {
-                case HandFinger.Thumb: return (index == 0) ? TrackedHandJoint.Wrist : TrackedHandJoint.ThumbMetacarpalJoint + index - 1;
-                case HandFinger.Index: return TrackedHandJoint.IndexMetacarpal + index;
-                case HandFinger.Middle: return TrackedHandJoint.MiddleMetacarpal + index;
-                case HandFinger.Ring: return TrackedHandJoint.RingMetacarpal + index;
-                case HandFinger.Pinky: return TrackedHandJoint.PinkyMetacarpal + index;
-                default: return TrackedHandJoint.None;
+                case HandFinger.Thumb: trackedHandJoint = (index == 0) ? TrackedHandJoint.Wrist : TrackedHandJoint.ThumbMetacarpalJoint + index - 1; break;
+                case HandFinger.Index: trackedHandJoint = TrackedHandJoint.IndexMetacarpal + index; break;
+                case HandFinger.Middle: trackedHandJoint = TrackedHandJoint.MiddleMetacarpal + index; break;
+                case HandFinger.Ring: trackedHandJoint = TrackedHandJoint.RingMetacarpal + index; break;
+                case HandFinger.Pinky: trackedHandJoint = TrackedHandJoint.PinkyMetacarpal + index; break;
+                default: trackedHandJoint = TrackedHandJoint.None; break;
             }
+
+            return (int)trackedHandJoint;
         }
 #endif // MSFT_OPENXR && (UNITY_STANDALONE_WIN || UNITY_WSA)
     }

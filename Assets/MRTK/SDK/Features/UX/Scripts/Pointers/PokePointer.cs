@@ -138,10 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public virtual bool IsNearObject
-        {
-            get => closestProximityTouchable != null;
-        }
+        public virtual bool IsNearObject => closestProximityTouchable != null;
 
         /// <inheritdoc />
         public override bool IsInteractionEnabled => base.IsInteractionEnabled && IsNearObject;
