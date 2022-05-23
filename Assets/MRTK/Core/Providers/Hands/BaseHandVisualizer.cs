@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
 
         protected IMixedRealityHand MixedRealityHand { get; private set; } = null;
-        protected Transform[] JointsArray { get; } = new Transform[ArticulatedHandPose.JointCount];
+        protected Transform[] JointsArray { get; private set; } = new Transform[ArticulatedHandPose.JointCount];
         protected MeshFilter handMeshFilter;
 
         // This member stores the last count of hand mesh vertices, to avoid using
@@ -68,6 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Destroy(joint.gameObject);
                 }
+
+                JointsArray = System.Array.Empty<Transform>();
             }
 
             if (handMeshFilter != null)
@@ -165,7 +167,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
 
-                    return false;
+                    JointsArray = System.Array.Empty<Transform>();
+
+                    // Even though the base class isn't handling joint visualization, we still received new joints.
+                    // Return true here in case any derived classes want to update.
+                    return true;
+                }
+
+                if (JointsArray.Length != ArticulatedHandPose.JointCount)
+                {
+                    JointsArray = new Transform[ArticulatedHandPose.JointCount];
                 }
 
                 // This starts at 1 to skip over TrackedHandJoint.None.
