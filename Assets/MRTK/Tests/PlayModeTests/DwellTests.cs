@@ -11,6 +11,7 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Dwell;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -129,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.None, "Unexpected dwell state!");
 
             // Show the hand to make the cube in focus (via hand ray) and verify the state
-            TestHand hand = new TestHand(Utilities.Handedness.Right);
+            TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(focusOnCubeHandPosition);
             yield return null;
             Assert.IsTrue(dwellHandler.CurrentDwellState == DwellStateType.FocusGained, "Unexpected dwell state!");

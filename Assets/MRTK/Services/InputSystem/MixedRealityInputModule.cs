@@ -240,8 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (pointer.Controller != null && pointer.Controller.IsRotationAvailable)
                 {
-                    RaycastCamera.transform.position = pointer.Rays[0].Origin;
-                    RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+                    RaycastCamera.transform.SetPositionAndRotation(pointer.Rays[0].Origin, Quaternion.LookRotation(pointer.Rays[0].Direction));
                 }
                 else
                 {
@@ -249,8 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // In this case pointer.Rays[0].Origin will be the head position, but we want the 
                     // hand to do drag operations, not the head.
                     // pointer.Position gives the position of the hand, use that to compute drag deltas.
-                    RaycastCamera.transform.position = pointer.Position;
-                    RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+                    RaycastCamera.transform.SetPositionAndRotation(pointer.Position, Quaternion.LookRotation(pointer.Rays[0].Direction));
                 }
 
                 // Populate eventDataLeft

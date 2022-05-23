@@ -20,6 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions)
+        { }
+
+        public GenericXRSDKController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null,
             IMixedRealityInputSourceDefinition definition = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)

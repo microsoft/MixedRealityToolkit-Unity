@@ -3,14 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-#if PLANE_FINDING_PRESENT
+#if PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 using Microsoft.MixedReality.Toolkit.SpatialAwareness.Processing;
+using System;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             set => destroyPlanesMask = value;
         }
 
-#if PLANE_FINDING_PRESENT
+#if PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
         /// <summary>
         /// Delegate which is called when the MakePlanesCompleted event is triggered.
         /// </summary>
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// EventHandler which is triggered when the MakePlanesRoutine is finished.
         /// </summary>
         public event EventHandler MakePlanesComplete;
-#endif // PLANE_FINDING_PRESENT
+#endif // PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 
         /// <summary>
         /// Indicates whether or not the project contains the required components for SurfaceMeshesToPlanes
@@ -177,11 +177,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// must be imported.
         /// </remarks>
         public static bool CanCreatePlanes =>
-#if PLANE_FINDING_PRESENT
+#if PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
             true;
 #else
             false;
-#endif // PLANE_FINDING_PRESENT
+#endif // PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 
         #endregion
 
@@ -191,11 +191,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         private bool makingPlanes = false;
         private CancellationTokenSource tokenSource;
 
-#if PLANE_FINDING_PRESENT
+#if PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
         private float floorYPosition;
         private float ceilingYPosition;
         private const float SnapToGravityThreshold = 5.0f;
-#endif // PLANE_FINDING_PRESENT
+#endif // PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 
         #endregion
 
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         {
             await new WaitForUpdate();
 
-#if PLANE_FINDING_PRESENT
+#if PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
             List<PlaneFinding.MeshData> meshData = new List<PlaneFinding.MeshData>();
             List<MeshFilter> filters = new List<MeshFilter>();
 
@@ -307,11 +307,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
             // We are done creating planes, trigger an event.
             MakePlanesComplete?.Invoke(this, EventArgs.Empty);
-#endif // PLANE_FINDING_PRESENT
+#endif // PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
             makingPlanes = false;
         }
 
-#if PLANE_FINDING_PRESENT
+#if PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
         /// <summary>
         /// Create game objects to represent bounded planes in scene
         /// </summary>
@@ -456,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         {
             plane.GameObject.SetActive((drawPlanesMask & plane.SurfaceType) == plane.SurfaceType);
         }
-#endif // PLANE_FINDING_PRESENT
+#endif // PLANE_FINDING_PRESENT && (UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 
         #endregion
     }
