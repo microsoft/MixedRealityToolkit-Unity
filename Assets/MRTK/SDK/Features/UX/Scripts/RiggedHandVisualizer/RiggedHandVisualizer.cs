@@ -101,13 +101,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public SkinnedMeshRenderer HandRenderer => handRenderer;
 
-        [SerializeField]
-        [Tooltip("Hand material to use for hand tracking hand mesh.")]
+        /// <summary>
+        /// Caching the hand material from CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial
+        /// </summary>
         private Material handMaterial = null;
 
         /// <summary>
         /// Hand material to use for hand tracking hand mesh.
         /// </summary>
+        [Obsolete("Use the CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial instead")]
         public Material HandMaterial => handMaterial;
 
         /// <summary>
@@ -265,7 +267,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
-            var handMaterialInstance = new Material(handMaterial);
+            MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
+
+            handMaterial = handTrackingProfile.RiggedHandMeshMaterial;
+            Material handMaterialInstance = new Material(handMaterial);
             handRenderer.sharedMaterial = handMaterialInstance;
             handRendererInitialized = true;
         }

@@ -192,12 +192,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 bool newMesh = handMeshFilter == null;
 
+                IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
                 if (newMesh &&
-                    CoreServices.InputSystem?.InputSystemProfile != null &&
-                    CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile != null &&
-                    CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
+                    handTrackingProfile != null &&
+                    handTrackingProfile.SystemHandMeshMaterial != null)
                 {
-                    handMeshFilter = Instantiate(CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
+                    // Create the hand mesh in the scene and assign the proper material to it
+                    handMeshFilter = new GameObject("System Hand Mesh").EnsureComponent<MeshFilter>();
+                    handMeshFilter.EnsureComponent<MeshRenderer>().material = CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.SystemHandMeshMaterial;
+                    
                     lastHandMeshVerticesCount = handMeshFilter.mesh.vertices.Length;
                 }
 
@@ -236,6 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
 
                     handMeshFilter.transform.SetPositionAndRotation(eventData.InputData.position, eventData.InputData.rotation);
+                    handMeshFilter.transform.parent = transform;
                 }
             }
         }
