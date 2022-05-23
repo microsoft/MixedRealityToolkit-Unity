@@ -185,15 +185,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <returns>The current Unity finger bone converted into an MRTK joint.</returns>
         private int ConvertToArrayIndex(HandFinger finger, int index)
         {
+            TrackedHandJoint trackedHandJoint;
+
             switch (finger)
             {
-                case HandFinger.Thumb: return (index == 0) ? (int)TrackedHandJoint.Wrist : (int)TrackedHandJoint.ThumbMetacarpalJoint + index - 1;
-                case HandFinger.Index: return (int)TrackedHandJoint.IndexMetacarpal + index;
-                case HandFinger.Middle: return (int)TrackedHandJoint.MiddleMetacarpal + index;
-                case HandFinger.Ring: return (int)TrackedHandJoint.RingMetacarpal + index;
-                case HandFinger.Pinky: return (int)TrackedHandJoint.PinkyMetacarpal + index;
-                default: return (int)TrackedHandJoint.None;
+                case HandFinger.Thumb: trackedHandJoint = (index == 0) ? TrackedHandJoint.Wrist : TrackedHandJoint.ThumbMetacarpalJoint + index - 1; break;
+                case HandFinger.Index: trackedHandJoint = TrackedHandJoint.IndexMetacarpal + index; break;
+                case HandFinger.Middle: trackedHandJoint = TrackedHandJoint.MiddleMetacarpal + index; break;
+                case HandFinger.Ring: trackedHandJoint = TrackedHandJoint.RingMetacarpal + index; break;
+                case HandFinger.Pinky: trackedHandJoint = TrackedHandJoint.PinkyMetacarpal + index; break;
+                default: trackedHandJoint = TrackedHandJoint.None; break;
             }
+
+            return (int)trackedHandJoint;
         }
 
         #endregion Update data functions
