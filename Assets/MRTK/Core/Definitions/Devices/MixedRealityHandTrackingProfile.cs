@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -38,12 +39,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public GameObject FingerTipPrefab => fingertipPrefab;
 
         [SerializeField]
+        [Tooltip("The hand mesh material to use for system generated hand meshes")]
+        private Material systemHandMeshMaterial;
+
+        /// <summary>
+        /// The hand mesh material to use for system generated hand meshes
+        /// </summary>
+        public Material SystemHandMeshMaterial => systemHandMeshMaterial;
+
+        [SerializeField]
+        [Tooltip("The hand mesh material to use for rigged hand meshes")]
+        private Material riggedHandMeshMaterial;
+
+        /// <summary>
+        /// The hand mesh material to use for rigged hand meshes
+        /// </summary>
+        public Material RiggedHandMeshMaterial => riggedHandMeshMaterial;
+
+        [SerializeField]
         [Tooltip("If this is not null and hand system supports hand meshes, use this mesh to render hand mesh.")]
         private GameObject handMeshPrefab = null;
 
         /// <summary>
         /// The hand mesh prefab to use to render the hand
         /// </summary>
+        [Obsolete("The GameObject which generates the system handmesh is now created at runtime. This prefab is not used")]
         public GameObject HandMeshPrefab => handMeshPrefab;
 
         /// <summary>
