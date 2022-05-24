@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Defines a pointer option to assign to a controller.
     /// </summary>
     [Serializable]
-    public struct PointerOption
+    public struct PointerOption : ISerializationCallbackReceiver
     {
         /// <summary>
         /// Constructor.
@@ -60,6 +61,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The LayerMasks, in prioritized order, which are used to determine the target
         /// </summary>
-        public LayerMask[] PrioritizedLayerMasks => prioritizedLayerMasks;
+        public LayerMask[] PrioritizedLayerMasks
+        {
+            get => prioritizedLayerMasks;
+            internal set => prioritizedLayerMasks = value;
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            if (pointerPrefab == null)
+            {
+                return;
+            }
+
+            IMixedRealityPointer pointer = pointerPrefab.GetComponent<IMixedRealityPointer>();
+            if (pointer.IsNull()
+                || pointer.PrioritizedLayerMasksOverride == null
+                || pointer.PrioritizedLayerMasksOverride.Length == 0
+                || (prioritizedLayerMasks != null && pointer.PrioritizedLayerMasksOverride.SequenceEqual(prioritizedLayerMasks)))
+            {
+                return;
+            }
+
+            int pointerPrioritizedLayerMasksOverrideCount = pointer.PrioritizedLayerMasksOverride.Length;
+            if (prioritizedLayerMasks?.Length != pointerPrioritizedLayerMasksOverrideCount)
+            {
+                prioritizedLayerMasks = new LayerMask[pointerPrioritizedLayerMasksOverrideCount];
+            }
+            Array.Copy(pointer.PrioritizedLayerMasksOverride, prioritizedLayerMasks, pointerPrioritizedLayerMasksOverrideCount);
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() { }
     }
 }

@@ -83,10 +83,12 @@ MonoBehaviour:
   nearObjectSmoothingFactor: 0.4
   grabLayerMasks:
   - serializedVersion: 2
-    m_Bits: 563
+    m_Bits: 51
   triggerInteraction: 0
   sceneQueryBufferSize: 64
   ignoreCollidersNotInFOV: 1
+  graspPointPlacement: 0
+  nearInteractableCacheCapacity: 50
 --- !u!114 &7376459786343609486
 MonoBehaviour:
   m_ObjectHideFlags: 0

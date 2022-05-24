@@ -64,18 +64,22 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] ParabolicTeleportPointer.OnPreSceneQuery");
 
-
         private StabilizedRay stabilizedRay = new StabilizedRay(0.5f);
         private Ray stabilizationRay = new Ray();
+
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
             using (OnPreSceneQueryPerfMarker.Auto())
             {
+                if (!IsInteractionEnabled)
+                {
+                    return;
+                }
+
                 stabilizationRay.origin = transform.position;
                 stabilizationRay.direction = transform.forward;
                 stabilizedRay.AddSample(stabilizationRay);
-
 
                 parabolicLineData.LineTransform.rotation = Quaternion.identity;
                 parabolicLineData.Direction = stabilizedRay.StabilizedDirection;
@@ -91,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                 // If we're pointing below the horizon, always use the minimum modifiers.
                 // We use square angle so that the velocity change is less noticeable the closer the teleport point
-                // is to the user            
+                // is to the user
                 if (sqr_angle > 0)
                 {
                     velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, sqr_angle);

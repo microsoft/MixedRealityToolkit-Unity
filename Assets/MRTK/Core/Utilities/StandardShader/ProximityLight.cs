@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// Utility component to animate and visualize a light that can be used with 
+    /// Utility component to animate and visualize a light that can be used with
     /// the "MixedRealityToolkit/Standard" shader "_ProximityLight" feature.
     /// </summary>
     [ExecuteInEditMode]
@@ -17,10 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [AddComponentMenu("Scripts/MRTK/Core/ProximityLight")]
     public class ProximityLight : MonoBehaviour
     {
-        // Two proximity lights are supported at this time.
+        // Two proximity lights are supported at this time. Excess lights will
+        // be held in a queue and addded to the shader in a first-in, first-out
+        // manner.
         private const int proximityLightCount = 2;
+        private const int proximityLightQueueSize = 6;
         private const int proximityLightDataSize = 6;
-        private static List<ProximityLight> activeProximityLights = new List<ProximityLight>(proximityLightCount);
+        private static List<ProximityLight> activeProximityLights = new List<ProximityLight>(proximityLightQueueSize);
         private static Vector4[] proximityLightData = new Vector4[proximityLightCount * proximityLightDataSize];
         private static int proximityLightDataID;
         private static int lastProximityLightUpdate = -1;
@@ -213,11 +216,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private static void AddProximityLight(ProximityLight light)
         {
-            if (activeProximityLights.Count >= proximityLightCount)
-            {
-                Debug.LogWarningFormat("Max proximity light count ({0}) exceeded.", proximityLightCount);
-            }
-
             activeProximityLights.Add(light);
         }
 
@@ -243,13 +241,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            for (int i = 0; i < proximityLightCount; ++i)
+            int lightIndex, queueIndex;
+            for (lightIndex = queueIndex = 0; queueIndex < activeProximityLights.Count && lightIndex < proximityLightCount; ++queueIndex)
             {
-                ProximityLight light = (i >= activeProximityLights.Count) ? null : activeProximityLights[i];
-                int dataIndex = i * proximityLightDataSize;
+                ProximityLight light = activeProximityLights[queueIndex];
 
                 if (light)
                 {
+                    int dataIndex = lightIndex++ * proximityLightDataSize;
+
                     proximityLightData[dataIndex] = new Vector4(light.transform.position.x,
                                                                 light.transform.position.y,
                                                                 light.transform.position.z,
@@ -267,10 +267,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     proximityLightData[dataIndex + 4] = light.Settings.MiddleColor;
                     proximityLightData[dataIndex + 5] = light.Settings.OuterColor;
                 }
-                else
-                {
-                    proximityLightData[dataIndex] = Vector4.zero;
-                }
+            }
+
+            for (; lightIndex < proximityLightCount; ++lightIndex)
+            {
+                int dataIndex = lightIndex * proximityLightDataSize;
+                proximityLightData[dataIndex] = Vector4.zero;
             }
 
             Shader.SetGlobalVectorArray(proximityLightDataID, proximityLightData);

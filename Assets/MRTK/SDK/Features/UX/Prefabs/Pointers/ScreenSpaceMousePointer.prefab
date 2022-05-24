@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyOnSourceLost: 0
   useSourcePoseData: 1
+  useSourcePoseAsFallback: 1
   poseAction:
     id: 12
     description: Mouse Delta

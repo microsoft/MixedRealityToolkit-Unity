@@ -71,10 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public IMixedRealityFocusProvider FocusProvider => CoreServices.FocusProvider;
+        public IMixedRealityFocusProvider FocusProvider => focusProvider != null ? focusProvider : focusProvider = CoreServices.FocusProvider;
+        private IMixedRealityFocusProvider focusProvider = null;
 
         /// <inheritdoc />
-        public IMixedRealityRaycastProvider RaycastProvider => CoreServices.RaycastProvider;
+        public IMixedRealityRaycastProvider RaycastProvider => raycastProvider != null ? raycastProvider : raycastProvider = CoreServices.RaycastProvider;
+        private IMixedRealityRaycastProvider raycastProvider = null;
 
         /// <inheritdoc />
         public IMixedRealityGazeProvider GazeProvider { get; private set; }
