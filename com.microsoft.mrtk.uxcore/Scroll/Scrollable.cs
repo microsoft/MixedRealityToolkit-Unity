@@ -56,17 +56,35 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     touchPoints[interactor] = thisFrame;
                 }
 
-                float contentHeight = scrollRect.content.sizeDelta.y - scrollRect.viewport.rect.height;
-                float contentWidth = scrollRect.content.sizeDelta.x - scrollRect.viewport.rect.width;
+                float contentHeight = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
+                float contentWidth = scrollRect.content.rect.width - scrollRect.viewport.rect.width;
 
                 scrollRect.verticalNormalizedPosition -= (dragDelta.y / contentHeight) * Selectedness();
-                scrollRect.horizontalNormalizedPosition -= (dragDelta.x / contentWidth) * Selectedness();;
+                scrollRect.horizontalNormalizedPosition -= (dragDelta.x / contentWidth) * Selectedness();
+
+                Vector2 previousVelocity = scrollRect.velocity;
+
+                
+
+                // scrollRect.velocity = new Vector2((dragDelta.x / contentWidth) * Selectedness(), (dragDelta.y / contentHeight) * Selectedness());
             }
         }
 
         protected override void OnSelectExited(XRBaseInteractor interactor)
         {
             base.OnSelectExited(interactor);
+
+            if (interactorsSelecting.Count == 0)
+            {
+                if (touchPoints.ContainsKey(interactor))
+                {
+                    Vector2 lastFrame = touchPoints[interactor];
+                    Vector2 thisFrame = scrollRect.transform.InverseTransformPoint(interactor.GetAttachTransform(this).position);
+
+                    scrollRect.velocity = (thisFrame - lastFrame) * (1.0f / Time.deltaTime) * 2.0f;
+                }
+            }
+            
             touchPoints.Remove(interactor);
         }
 
