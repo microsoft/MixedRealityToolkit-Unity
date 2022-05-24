@@ -252,13 +252,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 bool newMesh = handMeshFilter == null;
 
-                if (newMesh &&
-                    CoreServices.InputSystem?.InputSystemProfile != null &&
-                    CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile != null &&
-                    CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
+                IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
+                if (newMesh &&  handTrackingProfile != null)
                 {
-                    handMeshFilter = Instantiate(CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
-                    lastHandMeshVerticesCount = handMeshFilter.mesh.vertices.Length;
+                    // Create the hand mesh in the scene and assign the proper material to it
+                    if(handTrackingProfile.SystemHandMeshMaterial.IsNotNull())
+                    {
+                        handMeshFilter = new GameObject("System Hand Mesh").EnsureComponent<MeshFilter>();
+                        handMeshFilter.EnsureComponent<MeshRenderer>().material = handTrackingProfile.SystemHandMeshMaterial;
+                    }
+#pragma warning disable 0618
+                    else if (handTrackingProfile.HandMeshPrefab.IsNotNull())
+                    {
+                        handMeshFilter = Instantiate(handTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
+                    }
+#pragma warning restore 0618
+
+                    // Initialize the hand mesh if we generated it successfully
+                    if (handMeshFilter != null)
+                    {
+                        lastHandMeshVerticesCount = handMeshFilter.mesh.vertices.Length;
+                        handMeshFilter.transform.parent = transform;
+                    }
                 }
 
                 if (handMeshFilter != null)
