@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Maximum distance at which all pointers can collide with a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>, unless it has an override extent.
         /// </summary>
-        protected float PointerExtent
+        public float PointerExtent
         {
             get
             {
@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The length of the pointer when nothing is hit.
         /// </summary>
-        protected float DefaultPointerExtent
+        public float DefaultPointerExtent
         {
             get => Mathf.Min(defaultPointerExtent, PointerExtent);
             set => defaultPointerExtent = value;
@@ -389,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Ray stabilizer used when calculating position of pointer end point.
         /// </summary>
-        protected IBaseRayStabilizer RayStabilizer { get; set; }
+        public IBaseRayStabilizer RayStabilizer { get; set; }
 
         /// <inheritdoc />
         public virtual SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;

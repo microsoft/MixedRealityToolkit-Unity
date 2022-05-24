@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Parent object centered at rotation center.
         /// </summary>
-        private Transform CenteredParent
+        public Transform CenteredParent
         {
             get
             {
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Hand hint parent to rotate inverse to centeredParent to keep hand orientation the same.
         /// </summary>
-        private Transform InverseParent
+        public Transform InverseParent
         {
             get
             {
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Point to start movement at.
         /// </summary>
-        private Transform PivotPosition
+        public Transform PivotPosition
         {
             get
             {
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Duration of rotation around the CenteredParent in seconds.
         /// </summary>
-        private float Duration
+        public float Duration
         {
             get
             {
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Lerp curve that controls the animation rotation over time.
         /// </summary>
-        private AnimationCurve AnimationCurve
+        public AnimationCurve AnimationCurve
         {
             get
             {
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// How many degrees to rotate along each axis.
         /// </summary>
-        private Vector3 RotationVector
+        public Vector3 RotationVector
         {
             get
             {

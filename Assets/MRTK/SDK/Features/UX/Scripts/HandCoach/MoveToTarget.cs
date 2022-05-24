@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Target to move to.
         /// </summary>
-        private GameObject TargetObject
+        public GameObject TargetObject
         {
             get
             {
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Shared parent between tracking and target objects used for relative local positions.
         /// </summary>
-        private GameObject RootObject
+        public GameObject RootObject
         {
             get
             {
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Duration of move from tracking object to target object in seconds.
         /// </summary>
-        private float Duration
+        public float Duration
         {
             get
             {
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Tunable offset to get the GameObject to arrive at the right target position.
         /// </summary>
-        private Vector3 TargetOffset
+        public Vector3 TargetOffset
         {
             get
             {
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
         /// <summary>
         /// Lerp curve that controls the animation position over time from the trackingObject to the targetObject.
         /// </summary>
-        private AnimationCurve AnimationCurve
+        public AnimationCurve AnimationCurve
         {
             get
             {
