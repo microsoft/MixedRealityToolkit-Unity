@@ -107,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     wasGrabPressed = IsGrabPressed;
 
                     var currentMaterial = IsSelectPressed || IsGrabPressed ? lineMaterialSelected : lineMaterialNoTarget;
-                    
                     foreach (var lr in LineRenderers)
                     {
                         var lineRenderer = lr as MixedRealityLineRenderer;
