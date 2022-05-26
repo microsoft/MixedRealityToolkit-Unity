@@ -577,6 +577,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public virtual void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             if (eventData.used ||
+                    eventData.Pointer == null ||
+                    eventData.Pointer.Result == null ||
                     (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null))
             {
                 return;
