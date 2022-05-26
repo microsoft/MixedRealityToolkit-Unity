@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.UX
@@ -169,6 +170,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private const float selectednessEpsilon = 0.00001f;
 
+        /// <summary>
+        /// A reference to a ScrollRect in the parent hierarchy, if one exists.
+        /// </summary>
+        private ScrollRect scrollRect;
+
+        /// <summary>
+        /// The local-space position of the button when first selected.
+        /// </summary>
+        private Vector3 localPositionOnSelect;
+
         #endregion Private Members
 
         /// <inheritdoc />
@@ -237,6 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             base.Awake();
             ApplyRequiredSettings();
+            scrollRect = GetComponentInParent<ScrollRect>();
         }
 
         protected override void OnDisable()
@@ -455,6 +467,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <inheritdoc />
+        protected override void OnSelectEntered(SelectEnterEventArgs args)
+        {
+            base.OnSelectEntered(args);
+
+            if (interactorsSelecting.Count == 1 && scrollRect != null)
+            {
+                localPositionOnSelect = scrollRect.transform.InverseTransformPoint(transform.position);
+            }
+        }
+
         #endregion XRI events
 
         #region Public Transform Utilities
@@ -547,6 +570,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Get the interactor that is responsible for the current release/interaction.
             IPokeInteractor farthestInteractor = TryGetFarthestPressDistance(out float pressDistance);
             float pressAmount = MapToPressedness(pressDistance);
+
+            if (scrollRect != null &&
+               (scrollRect.transform.InverseTransformPoint(transform.position) - localPositionOnSelect).magnitude > 5)
+            {
+                return true;
+            }
 
             if (farthestInteractor != null)
             {
