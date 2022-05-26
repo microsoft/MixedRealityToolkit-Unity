@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         protected LayerMask InvalidTeleportationLayers
         {
-            get 
+            get
             {
                 LayerMask raycastedLayerMasks = new LayerMask();
                 for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
                 return ~ValidTeleportationLayers & raycastedLayerMasks;
             }
-        }            
+        }
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         private Vector2 currentInputPosition = Vector2.zero;
 
-        private bool isTeleportRequestActive = false;
+        protected bool isTeleportRequestActive = false;
 
         private bool lateRegisterTeleport = true;
 
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         private bool canMove = false;
 
-        private Gradient GetLineGradient(TeleportSurfaceResult targetResult)
+        protected Gradient GetLineGradient(TeleportSurfaceResult targetResult)
         {
             switch (targetResult)
             {
