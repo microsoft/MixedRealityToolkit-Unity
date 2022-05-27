@@ -183,6 +183,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Begin the follow coroutine when enabled.
             AutoFollowAtDistance = autoFollowAtDistance;
         }
+        
+        private void OnDisable() {
+            autoFollowDistanceCheck = null;
+        }
 
         #endregion MonoBehaviour Implementation
 
