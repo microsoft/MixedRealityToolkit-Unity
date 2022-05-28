@@ -13,7 +13,7 @@ param(
 
 function GetEncoding($Path)
 {
-    [System.Byte[]]$Byte = Get-Content -Encoding byte -ReadCount 4 -TotalCount 4 -Path $Path
+    [System.Byte[]]$Byte = Get-Content -AsByteStream -ReadCount 4 -TotalCount 4 -Path $Path
     if ($Byte[0] -eq 0xef -and $Byte[1] -eq 0xbb -and $Byte[2] -eq 0xbf)
     {
         return 'UTF8'
