@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private readonly ArticulatedHandDefinition handDefinition;
         private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
 
-        private readonly MixedRealityPose[] unityJointPoses = null;
+        private MixedRealityPose[] jointPoses = null;
 
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
         private readonly List<Bone> fingerBones = new List<Bone>();
@@ -66,9 +66,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc/>
         public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
         {
-            if (unityJointPoses != null)
+            if (jointPoses != null)
             {
-                pose = unityJointPoses[(int)joint];
+                pose = jointPoses[(int)joint];
                 return pose != default(MixedRealityPose);
             }
 
@@ -136,6 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
                 if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out Hand hand))
                 {
+                    if (jointPoses == null)
+                    {
+                        jointPoses = new MixedRealityPose[ArticulatedHandPose.JointCount];
+                    }
+
                     foreach (HandFinger finger in handFingers)
                     {
                         if (hand.TryGetFingerBones(finger, fingerBones))
@@ -157,18 +162,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                     position = MixedRealityPlayspace.TransformPoint(position);
                                     rotation = MixedRealityPlayspace.Rotation * rotation;
 
-                                    unityJointPoses[ConvertToArrayIndex(finger, i)] = new MixedRealityPose(position, rotation);
+                                    jointPoses[ConvertToArrayIndex(finger, i)] = new MixedRealityPose(position, rotation);
                                 }
                             }
 
                             // Unity doesn't provide a palm joint, so we synthesize one here
                             MixedRealityPose palmPose = CurrentControllerPose;
                             palmPose.Rotation *= (ControllerHandedness == Handedness.Left ? leftPalmOffset : rightPalmOffset);
-                            unityJointPoses[(int)TrackedHandJoint.Palm] = palmPose;
+                            jointPoses[(int)TrackedHandJoint.Palm] = palmPose;
                         }
                     }
 
-                    handDefinition?.UpdateHandJoints(unityJointPoses);
+                    handDefinition?.UpdateHandJoints(jointPoses);
                 }
             }
         }
