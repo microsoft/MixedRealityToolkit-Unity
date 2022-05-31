@@ -302,9 +302,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (CreatePointerPerfMarker.Auto())
             {
-                var pointerObject = Object.Instantiate(option.PointerPrefab);
-                MixedRealityPlayspace.AddChild(pointerObject.transform);
-                var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+                GameObject pointerObject = Object.Instantiate(option.PointerPrefab, MixedRealityPlayspace.Transform);
+                IMixedRealityPointer pointer = pointerObject.GetComponent<IMixedRealityPointer>();
                 if (pointer == null)
                 {
                     Debug.LogError($"Ensure that the prefab '{option.PointerPrefab.name}' listed under Input -> Pointers -> Pointer Options has an {typeof(IMixedRealityPointer).Name} component.\nThis prefab can't be used as a pointer as configured and won't be instantiated.");
