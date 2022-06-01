@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             {
                 platformVisualization = deviceManager.leftControllerHelper.gameObject;
             }
-            if (ControllerHandedness == Handedness.Right)
+            else if (ControllerHandedness == Handedness.Right)
             {
                 platformVisualization = deviceManager.rightControllerHelper.gameObject;
             }
