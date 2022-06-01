@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private List<Matrix4x4> jointMatrices = new List<Matrix4x4>();
 
 
-        #region riggedhand variables
+        #region RiggedHand variables
         // This bool is used to track whether or not we are recieving hand mesh data from the platform itself
         // If we aren't we will use our own rigged hand visualizer to render the hand mesh
         //private bool receivingPlatformHandMesh => handMeshFilter != null;
@@ -53,94 +53,106 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Wrist Transform
         /// </summary>
-        public Transform Wrist;
+        [SerializeField]
+        private Transform Wrist;
         /// <summary>
         /// Palm transform
         /// </summary>
-        public Transform Palm;
+        [SerializeField]
+        private Transform Palm;
         /// <summary>
         /// Thumb metacarpal transform  (thumb root)
         /// </summary>
-        public Transform ThumbRoot;
+        [SerializeField]
+        private Transform ThumbRoot;
 
         [Tooltip("First finger node is metacarpal joint.")]
-        public bool ThumbRootIsMetacarpal = true;
+        [SerializeField]
+        private bool ThumbRootIsMetacarpal = true;
 
         /// <summary>
         /// Index metacarpal transform (index finger root)
         /// </summary>
-        public Transform IndexRoot;
+        [SerializeField]
+        private Transform IndexRoot;
 
         [Tooltip("First finger node is metacarpal joint.")]
-        public bool IndexRootIsMetacarpal = true;
+        [SerializeField]
+        private bool IndexRootIsMetacarpal = true;
 
         /// <summary>
         /// Middle metacarpal transform (middle finger root)
         /// </summary>
-        public Transform MiddleRoot;
+        [SerializeField]
+        private Transform MiddleRoot;
 
         [Tooltip("First finger node is metacarpal joint.")]
-        public bool MiddleRootIsMetacarpal = true;
+        [SerializeField]
+        private bool MiddleRootIsMetacarpal = true;
 
         /// <summary>
         /// Ring metacarpal transform (ring finger root)
         /// </summary>
-        public Transform RingRoot;
+        [SerializeField]
+        private Transform RingRoot;
 
         [Tooltip("Ring finger node is metacarpal joint.")]
-        public bool RingRootIsMetacarpal = true;
+        [SerializeField]
+        private bool RingRootIsMetacarpal = true;
 
         /// <summary>
         /// Little metacarpal transform (Little finger root)
         /// </summary>
-        public Transform LittleRoot;
+        [SerializeField]
+        private Transform LittleRoot;
 
         [Tooltip("First finger node is metacarpal joint.")]
-        public bool LittleRootIsMetacarpal = true;
+        [SerializeField]
+        private bool LittleRootIsMetacarpal = true;
 
         //[Tooltip("Hands are typically rigged in 3D packages with the palm transform near the wrist. Uncheck this if your model's palm transform is at the center of the palm similar to Leap API hands.")]
-        public bool ModelPalmAtLeapWrist = true;
+        [SerializeField]
+        private bool ModelPalmAtLeapWrist = true;
 
         //[Tooltip("Allows the mesh to be stretched to align with finger joint positions.")]
-        public bool DeformPosition = true;
+        [SerializeField]
+        private bool DeformPosition = true;
 
         //[Tooltip("Because bones only exist at their roots in model rigs, the length " +
         //  "of the last fingertip bone is lost when placing bones at positions in the " +
         //  "tracked hand. " +
         //  "This option scales the last bone along its X axis (length axis) to match " +
         //  "its bone length to the tracked bone length.")]
-        public bool ScaleLastFingerBone = true;
+        [SerializeField]
+        private bool ScaleLastFingerBone = true;
 
         [Tooltip("If non-zero, this vector and the modelPalmFacing vector " +
         "will be used to re-orient the Transform bones in the hand rig, to " +
         "compensate for bone axis discrepancies between Leap Bones and model " +
         "bones.")]
-        public Vector3 ModelFingerPointing;
+        [SerializeField]
+        private Vector3 ModelFingerPointing;
 
         [Tooltip("If non-zero, this vector and the modelFingerPointing vector " +
           "will be used to re-orient the Transform bones in the hand rig, to " +
           "compensate for bone axis discrepancies between Leap Bones and model " +
           "bones.")]
-        public Vector3 ModelPalmFacing;
+        [SerializeField]
+        private Vector3 ModelPalmFacing;
 
         [SerializeField]
         [Tooltip("Hand material to use for hand tracking hand mesh.")]
         private Material handMaterial = null;
 
         /// <summary>
-        /// Hand material to use for hand tracking hand mesh.
+        /// The property block which is used to modify the press intensity property on the material
         /// </summary>
-        public Material HandMaterial => handMaterial;
+        private MaterialPropertyBlock propertyBlock = null;
 
         /// <summary>
         /// Property name for modifying the mesh's appearance based on pinch strength
         /// </summary>
         private const string pinchStrengthMaterialProperty = "_PressIntensity";
-
-        /// <summary>
-        /// Property name for modifying the mesh's appearance based on pinch strength
-        /// </summary>
-        public string PinchStrengthMaterialProperty => pinchStrengthMaterialProperty;
 
         /// <summary>
         /// Precalculated values for LeapMotion testhand fingertip lengths
@@ -463,9 +475,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (handMaterial != null && handRendererInitialized)
             {
+                // This can be propertyBlock.HasFloat(), but that is only in unity 2021+
                 if (handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
                 {
-                    handRenderer.sharedMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
+                    // Set the property on the handRenderer
+                    handRenderer.GetPropertyBlock(propertyBlock);
+                    propertyBlock.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
+                    handRenderer.SetPropertyBlock(propertyBlock);
                 }
                 // Only show this warning once
                 else if (!displayedMaterialPropertyWarning)
