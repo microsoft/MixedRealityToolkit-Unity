@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+
 using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
@@ -167,13 +168,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Precalculated fingertip lengths used for scaling the fingertips of the skinnedmesh
         /// to match with tracked hand fingertip size 
         /// </summary>
-        private Dictionary<HandJoint, float> fingerTipLengths = new Dictionary<HandJoint, float>()
+        private Dictionary<TrackedHandJoint, float> fingerTipLengths = new Dictionary<TrackedHandJoint, float>()
         {
-            {HandJoint.ThumbTip, thumbFingerTipLength },
-            {HandJoint.IndexTip, indexingerTipLength },
-            {HandJoint.MiddleTip, middleFingerTipLength },
-            {HandJoint.RingTip, ringFingerTipLength },
-            {HandJoint.LittleTip, LittleFingerTipLength }
+            {TrackedHandJoint.ThumbTip, thumbFingerTipLength },
+            {TrackedHandJoint.IndexTip, indexingerTipLength },
+            {TrackedHandJoint.MiddleTip, middleFingerTipLength },
+            {TrackedHandJoint.RingTip, ringFingerTipLength },
+            {TrackedHandJoint.LittleTip, LittleFingerTipLength }
         };
 
         /// <summary>
@@ -199,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private Transform RetrieveChild(HandJoint parentJoint)
+        private Transform RetrieveChild(TrackedHandJoint parentJoint)
         {
             Transform parentJointTransform = riggedVisualJointsArray[(int)parentJoint];
             if (parentJointTransform != null && parentJointTransform.childCount > 0)
@@ -220,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public SkinnedMeshRenderer HandRenderer => handRenderer;
 
-        protected readonly Transform[] riggedVisualJointsArray = new Transform[HandTracker.JointCount];
+        protected readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
 
         /// <summary>
         /// flag checking that the handRenderer was initialized with its own material
@@ -240,39 +241,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
             HandRenderer.enabled = enableHandMesh;
 
             // Initialize joint dictionary with their corresponding joint transforms
-            riggedVisualJointsArray[(int)HandJoint.Wrist] = Wrist;
-            riggedVisualJointsArray[(int)HandJoint.Palm] = Palm;
+            riggedVisualJointsArray[(int)TrackedHandJoint.Palm] = Palm;
+            riggedVisualJointsArray[(int)TrackedHandJoint.Wrist] = Wrist;
 
             // Thumb riggedVisualJointsArray, first node is user assigned, note that there are only 4 riggedVisualJointsArray in the thumb
             if (ThumbRoot)
             {
                 if (ThumbRootIsMetacarpal)
                 {
-                    riggedVisualJointsArray[(int)HandJoint.ThumbMetacarpal] = ThumbRoot;
-                    riggedVisualJointsArray[(int)HandJoint.ThumbProximal] = RetrieveChild(HandJoint.ThumbMetacarpal);
+                    riggedVisualJointsArray[(int)TrackedHandJoint.ThumbMetacarpal] = ThumbRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.ThumbProximal] = RetrieveChild(TrackedHandJoint.ThumbMetacarpal);
                 }
                 else
                 {
-                    riggedVisualJointsArray[(int)HandJoint.ThumbProximal] = ThumbRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.ThumbProximal] = ThumbRoot;
                 }
-                riggedVisualJointsArray[(int)HandJoint.ThumbDistal] = RetrieveChild(HandJoint.ThumbProximal);
-                riggedVisualJointsArray[(int)HandJoint.ThumbTip] = RetrieveChild(HandJoint.ThumbDistal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.ThumbDistal] = RetrieveChild(TrackedHandJoint.ThumbProximal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.ThumbTip] = RetrieveChild(TrackedHandJoint.ThumbDistal);
             }
             // Look up index finger riggedVisualJointsArray below the index finger root joint
             if (IndexRoot)
             {
                 if (IndexRootIsMetacarpal)
                 {
-                    riggedVisualJointsArray[(int)HandJoint.IndexMetacarpal] = IndexRoot;
-                    riggedVisualJointsArray[(int)HandJoint.IndexProximal] = RetrieveChild(HandJoint.IndexMetacarpal);
+                    riggedVisualJointsArray[(int)TrackedHandJoint.IndexMetacarpal] = IndexRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.IndexProximal] = RetrieveChild(TrackedHandJoint.IndexMetacarpal);
                 }
                 else
                 {
-                    riggedVisualJointsArray[(int)HandJoint.IndexProximal] = IndexRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.IndexProximal] = IndexRoot;
                 }
-                riggedVisualJointsArray[(int)HandJoint.IndexIntermediate] = RetrieveChild(HandJoint.IndexProximal);
-                riggedVisualJointsArray[(int)HandJoint.IndexDistal] = RetrieveChild(HandJoint.IndexIntermediate);
-                riggedVisualJointsArray[(int)HandJoint.IndexTip] = RetrieveChild(HandJoint.IndexDistal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.IndexIntermediate] = RetrieveChild(TrackedHandJoint.IndexProximal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.IndexDistal] = RetrieveChild(TrackedHandJoint.IndexIntermediate);
+                riggedVisualJointsArray[(int)TrackedHandJoint.IndexTip] = RetrieveChild(TrackedHandJoint.IndexDistal);
             }
 
             // Look up middle finger riggedVisualJointsArray below the middle finger root joint
@@ -280,16 +281,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (MiddleRootIsMetacarpal)
                 {
-                    riggedVisualJointsArray[(int)HandJoint.MiddleMetacarpal] = MiddleRoot;
-                    riggedVisualJointsArray[(int)HandJoint.MiddleProximal] = RetrieveChild(HandJoint.MiddleMetacarpal);
+                    riggedVisualJointsArray[(int)TrackedHandJoint.MiddleMetacarpal] = MiddleRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.MiddleProximal] = RetrieveChild(TrackedHandJoint.MiddleMetacarpal);
                 }
                 else
                 {
-                    riggedVisualJointsArray[(int)HandJoint.MiddleProximal] = MiddleRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.MiddleProximal] = MiddleRoot;
                 }
-                riggedVisualJointsArray[(int)HandJoint.MiddleIntermediate] = RetrieveChild(HandJoint.MiddleProximal);
-                riggedVisualJointsArray[(int)HandJoint.MiddleDistal] = RetrieveChild(HandJoint.MiddleIntermediate);
-                riggedVisualJointsArray[(int)HandJoint.MiddleTip] = RetrieveChild(HandJoint.MiddleDistal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.MiddleIntermediate] = RetrieveChild(TrackedHandJoint.MiddleProximal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.MiddleDistal] = RetrieveChild(TrackedHandJoint.MiddleIntermediate);
+                riggedVisualJointsArray[(int)TrackedHandJoint.MiddleTip] = RetrieveChild(TrackedHandJoint.MiddleDistal);
             }
 
             // Look up ring finger riggedVisualJointsArray below the ring finger root joint
@@ -297,16 +298,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (RingRootIsMetacarpal)
                 {
-                    riggedVisualJointsArray[(int)HandJoint.RingMetacarpal] = RingRoot;
-                    riggedVisualJointsArray[(int)HandJoint.RingProximal] = RetrieveChild(HandJoint.RingMetacarpal);
+                    riggedVisualJointsArray[(int)TrackedHandJoint.RingMetacarpal] = RingRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.RingProximal] = RetrieveChild(TrackedHandJoint.RingMetacarpal);
                 }
                 else
                 {
-                    riggedVisualJointsArray[(int)HandJoint.RingProximal] = RingRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.RingProximal] = RingRoot;
                 }
-                riggedVisualJointsArray[(int)HandJoint.RingIntermediate] = RetrieveChild(HandJoint.RingProximal);
-                riggedVisualJointsArray[(int)HandJoint.RingDistal] = RetrieveChild(HandJoint.RingIntermediate);
-                riggedVisualJointsArray[(int)HandJoint.RingTip] = RetrieveChild(HandJoint.RingDistal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.RingIntermediate] = RetrieveChild(TrackedHandJoint.RingProximal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.RingDistal] = RetrieveChild(TrackedHandJoint.RingIntermediate);
+                riggedVisualJointsArray[(int)TrackedHandJoint.RingTip] = RetrieveChild(TrackedHandJoint.RingDistal);
             }
 
             // Look up Little riggedVisualJointsArray below the Little root joint
@@ -314,16 +315,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (LittleRootIsMetacarpal)
                 {
-                    riggedVisualJointsArray[(int)HandJoint.LittleMetacarpal] = LittleRoot;
-                    riggedVisualJointsArray[(int)HandJoint.LittleProximal] = RetrieveChild(HandJoint.LittleMetacarpal);
+                    riggedVisualJointsArray[(int)TrackedHandJoint.LittleMetacarpal] = LittleRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.LittleProximal] = RetrieveChild(TrackedHandJoint.LittleMetacarpal);
                 }
                 else
                 {
-                    riggedVisualJointsArray[(int)HandJoint.LittleProximal] = LittleRoot;
+                    riggedVisualJointsArray[(int)TrackedHandJoint.LittleProximal] = LittleRoot;
                 }
-                riggedVisualJointsArray[(int)HandJoint.LittleIntermediate] = RetrieveChild(HandJoint.LittleProximal);
-                riggedVisualJointsArray[(int)HandJoint.LittleDistal] = RetrieveChild(HandJoint.LittleIntermediate);
-                riggedVisualJointsArray[(int)HandJoint.LittleTip] = RetrieveChild(HandJoint.LittleDistal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.LittleIntermediate] = RetrieveChild(TrackedHandJoint.LittleProximal);
+                riggedVisualJointsArray[(int)TrackedHandJoint.LittleDistal] = RetrieveChild(TrackedHandJoint.LittleIntermediate);
+                riggedVisualJointsArray[(int)TrackedHandJoint.LittleTip] = RetrieveChild(TrackedHandJoint.LittleDistal);
             }
 
             // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
@@ -344,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                for (int i = 0; i < HandTracker.JointCount; i++)
+                for (int i = 0; i < (int)TrackedHandJoint.TotalJoints; i++)
                 {
                     jointMatrices.Add(new Matrix4x4());
                 }
@@ -404,52 +405,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             for (int i = 0; i < joints.Count; i++)
             {
-                HandJoint handJoint = (HandJoint)i;
-                HandJointPose handJointPose = joints[i];
+                TrackedHandJoint TrackedHandJoint = (TrackedHandJoint)i;
+                HandJointPose HandJointPose = joints[i];
                 Transform jointTransform = riggedVisualJointsArray[i];
 
                 if (jointTransform != null)
                 {
-                    if (handJoint == HandJoint.Palm)
+                    if (TrackedHandJoint == TrackedHandJoint.Palm)
                     {
                         if (ModelPalmAtLeapWrist)
                         {
-                            Palm.position = joints[(int)HandJoint.Wrist].Position;
+                            Palm.position = joints[(int)TrackedHandJoint.Wrist].Position;
 
 
-                            jointMatrices[i] = Matrix4x4.TRS(joints[(int)HandJoint.Wrist].Position, joints[(int)HandJoint.Wrist].Rotation.normalized, Vector3.one * joints[i].Radius * 3.0f);
+                            jointMatrices[i] = Matrix4x4.TRS(joints[(int)TrackedHandJoint.Wrist].Position, joints[(int)TrackedHandJoint.Wrist].Rotation.normalized, Vector3.one * joints[i].Radius * 3.0f);
                         }
                         else
                         {
-                            Palm.position = handJointPose.Position;
+                            Palm.position = HandJointPose.Position;
                         }
-                        Palm.rotation = handJointPose.Rotation * UserBoneRotation;
+                        Palm.rotation = HandJointPose.Rotation * UserBoneRotation;
                     }
-                    if (handJoint == HandJoint.Wrist)
+                    if (TrackedHandJoint == TrackedHandJoint.Wrist)
                     {
                         if (!ModelPalmAtLeapWrist)
                         {
-                          Wrist.position = handJointPose.Position;
+                          Wrist.position = HandJointPose.Position;
                         }
                     }
                     else
                     {
                         // Finger riggedVisualJointsArray
-                        jointTransform.rotation = handJointPose.Rotation * Reorientation;
+                        jointTransform.rotation = HandJointPose.Rotation * Reorientation;
 
                         if (DeformPosition)
                         {
-                            jointTransform.position = handJointPose.Position;
+                            jointTransform.position = HandJointPose.Position;
                         }
 
                         if (ScaleLastFingerBone &&
-                            (handJoint == HandJoint.ThumbDistal ||
-                            handJoint == HandJoint.IndexDistal ||
-                            handJoint == HandJoint.MiddleDistal ||
-                            handJoint == HandJoint.RingDistal ||
-                            handJoint == HandJoint.LittleDistal))
+                            (TrackedHandJoint == TrackedHandJoint.ThumbDistal ||
+                            TrackedHandJoint == TrackedHandJoint.IndexDistal ||
+                            TrackedHandJoint == TrackedHandJoint.MiddleDistal ||
+                            TrackedHandJoint == TrackedHandJoint.RingDistal ||
+                            TrackedHandJoint == TrackedHandJoint.LittleDistal))
                         {
-                            ScaleFingerTip(joints, jointTransform, handJoint + 1, jointTransform.position);
+                            ScaleFingerTip(joints, jointTransform, TrackedHandJoint + 1, jointTransform.position);
                         }
                     }
                 }
@@ -493,7 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         // Private methods for finger tip scaling
-        private void ScaleFingerTip(IReadOnlyList<HandJointPose> joints, Transform jointTransform, HandJoint fingerTipJoint, Vector3 boneRootPos)
+        private void ScaleFingerTip(IReadOnlyList<HandJointPose> joints, Transform jointTransform, TrackedHandJoint fingerTipJoint, Vector3 boneRootPos)
         {
             // Set fingertip base bone scale to match the bone length to the fingertip.
             // This will only scale correctly if the model was constructed to match
