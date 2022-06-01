@@ -2,22 +2,20 @@
 // Licensed under the MIT License.
 
 
-using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Basic hand joint visualizer that draws an instanced mesh on each hand joint.
     /// </summary>
-    [AddComponentMenu("MRTK/Input/Hand Visualizer")]
-    public class HandVisualizer : MonoBehaviour
+    [AddComponentMenu("Scripts/Microsoft/MRTK/Hands/Rigged Hand Mesh Visualizer")]
+    public class RiggedHandMeshVisualizer : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The XRNode on which this hand is located.")]
@@ -26,25 +24,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary> The XRNode on which this hand is located. </summary>
         public XRNode HandNode { get => handNode; set => handNode = value; }
 
-        [SerializeField]
-        [Tooltip("Joint visualization mesh.")]
-        private Mesh jointMesh;
-
-        /// <summary> Joint visualization mesh. </summary>
-        public Mesh JointMesh { get => jointMesh; set => jointMesh = value; }
-
-        [SerializeField]
-        [Tooltip("Joint visualization material.")]
-        private Material jointMaterial;
-
-        /// <summary> Joint visualization material. </summary>
-        public Material JointMaterial { get => jointMaterial; set => jointMaterial = value; }
-
-        private HandsAggregatorSubsystem handsSubsystem;
-
         // Transformation matrix for each joint.
         private List<Matrix4x4> jointMatrices = new List<Matrix4x4>();
 
+        // Caching local references 
+        private HandsAggregatorSubsystem handsSubsystem;
+        private ArticulatedHandController controller;
 
         #region RiggedHand variables
         // This bool is used to track whether or not we are recieving hand mesh data from the platform itself
@@ -52,15 +37,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         //private bool receivingPlatformHandMesh => handMeshFilter != null;
 
         /// <summary>
-        /// Wrist Transform
-        /// </summary>
-        [SerializeField]
-        private Transform Wrist;
-        /// <summary>
         /// Palm transform
         /// </summary>
         [SerializeField]
         private Transform Palm;
+
+        /// <summary>
+        /// Wrist Transform
+        /// </summary>
+        [SerializeField]
+        private Transform Wrist;
+
         /// <summary>
         /// Thumb metacarpal transform  (thumb root)
         /// </summary>
@@ -79,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Tooltip("First finger node is metacarpal joint.")]
         [SerializeField]
-        private bool IndexRootIsMetacarpal = true;
+        private bool IndexRootIsMetacarpal = false;
 
         /// <summary>
         /// Middle metacarpal transform (middle finger root)
@@ -89,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Tooltip("First finger node is metacarpal joint.")]
         [SerializeField]
-        private bool MiddleRootIsMetacarpal = true;
+        private bool MiddleRootIsMetacarpal = false;
 
         /// <summary>
         /// Ring metacarpal transform (ring finger root)
@@ -99,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Tooltip("Ring finger node is metacarpal joint.")]
         [SerializeField]
-        private bool RingRootIsMetacarpal = true;
+        private bool RingRootIsMetacarpal = false;
 
         /// <summary>
         /// Little metacarpal transform (Little finger root)
@@ -109,35 +96,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Tooltip("First finger node is metacarpal joint.")]
         [SerializeField]
-        private bool LittleRootIsMetacarpal = true;
-
-        //[Tooltip("Hands are typically rigged in 3D packages with the palm transform near the wrist. Uncheck this if your model's palm transform is at the center of the palm similar to Leap API hands.")]
-        [SerializeField]
-        private bool ModelPalmAtLeapWrist = true;
+        private bool LittleRootIsMetacarpal = false;
 
         //[Tooltip("Allows the mesh to be stretched to align with finger joint positions.")]
         [SerializeField]
         private bool DeformPosition = true;
 
-        //[Tooltip("Because bones only exist at their roots in model rigs, the length " +
-        //  "of the last fingertip bone is lost when placing bones at positions in the " +
-        //  "tracked hand. " +
-        //  "This option scales the last bone along its X axis (length axis) to match " +
-        //  "its bone length to the tracked bone length.")]
-        [SerializeField]
-        private bool ScaleLastFingerBone = true;
-
-        [Tooltip("If non-zero, this vector and the modelPalmFacing vector " +
-        "will be used to re-orient the Transform bones in the hand rig, to " +
-        "compensate for bone axis discrepancies between Leap Bones and model " +
-        "bones.")]
+        [Tooltip("If non-zero, this vector and the ModelPalmFacing vector " +
+          "will be used to re-orient the rigged hand's bones in the hand rig, to " +
+          "compensate for bone axis discrepancies with the data " +
+          "provided by the platform.")]
         [SerializeField]
         private Vector3 ModelFingerPointing;
 
-        [Tooltip("If non-zero, this vector and the modelFingerPointing vector " +
-          "will be used to re-orient the Transform bones in the hand rig, to " +
-          "compensate for bone axis discrepancies between Leap Bones and model " +
-          "bones.")]
+        [Tooltip("If non-zero, this vector and the ModelFingerPointing vector " +
+          "will be used to re-orient the rigged hand's bones in the hand rig, to " +
+          "compensate for bone axis discrepancies with the data " +
+          "provided by the platform.")]
         [SerializeField]
         private Vector3 ModelPalmFacing;
 
@@ -154,28 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Property name for modifying the mesh's appearance based on pinch strength
         /// </summary>
         private const string pinchStrengthMaterialProperty = "_PressIntensity";
-
-        /// <summary>
-        /// Precalculated values for LeapMotion testhand fingertip lengths
-        /// </summary>
-        private const float thumbFingerTipLength = 0.02167f;
-        private const float indexingerTipLength = 0.01582f;
-        private const float middleFingerTipLength = 0.0174f;
-        private const float ringFingerTipLength = 0.0173f;
-        private const float LittleFingerTipLength = 0.01596f;
-
-        /// <summary>
-        /// Precalculated fingertip lengths used for scaling the fingertips of the skinnedmesh
-        /// to match with tracked hand fingertip size 
-        /// </summary>
-        private Dictionary<TrackedHandJoint, float> fingerTipLengths = new Dictionary<TrackedHandJoint, float>()
-        {
-            {TrackedHandJoint.ThumbTip, thumbFingerTipLength },
-            {TrackedHandJoint.IndexTip, indexingerTipLength },
-            {TrackedHandJoint.MiddleTip, middleFingerTipLength },
-            {TrackedHandJoint.RingTip, ringFingerTipLength },
-            {TrackedHandJoint.LittleTip, LittleFingerTipLength }
-        };
 
         /// <summary>
         /// Rotation derived from the `modelFingerPointing` and
@@ -210,8 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return null;
         }
 
-        public bool enableHandMesh;
-
         [SerializeField]
         [Tooltip("Renderer of the hand mesh")]
         private SkinnedMeshRenderer handRenderer = null;
@@ -223,11 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
 
-        /// <summary>
-        /// flag checking that the handRenderer was initialized with its own material
-        /// </summary>
-        private bool handRendererInitialized = false;
-
         ///// <summary>
         ///// Flag to only show a only show a warning once
         ///// </summary>
@@ -237,9 +183,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Initializing rigged visuals stuff
         protected virtual void Start()
         {
-            // Ensure hand is not visible until we can update position first time.
-            HandRenderer.enabled = enableHandMesh;
-
             // Initialize joint dictionary with their corresponding joint transforms
             riggedVisualJointsArray[(int)TrackedHandJoint.Palm] = Palm;
             riggedVisualJointsArray[(int)TrackedHandJoint.Wrist] = Wrist;
@@ -326,10 +269,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 riggedVisualJointsArray[(int)TrackedHandJoint.LittleDistal] = RetrieveChild(TrackedHandJoint.LittleIntermediate);
                 riggedVisualJointsArray[(int)TrackedHandJoint.LittleTip] = RetrieveChild(TrackedHandJoint.LittleDistal);
             }
+
+            // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
+            handRenderer.material = handMaterial;
+            propertyBlock = new MaterialPropertyBlock();
         }
 
         protected void OnEnable()
         {
+            // Ensure hand is not visible until we can update position first time.
+            HandRenderer.enabled = false;
+
             Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
 
             handsSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
@@ -345,6 +295,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     jointMatrices.Add(new Matrix4x4());
                 }
             }
+        }
+
+        protected void OnDisable()
+        {
+            // Disable the rigged hand renderer when this component is disabled
+            HandRenderer.enabled = false;
         }
 
         /// <summary>
@@ -370,33 +326,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            RenderJoints(joints);
             RenderMesh(joints);
-        }
-
-        private void RenderJoints(IReadOnlyList<HandJointPose> joints)
-        {
-            for (int i = 0; i < joints.Count; i++)
-            {
-                // Skip joints with uninitialized quaternions.
-                // This is temporary; eventually the HandsSubsystem will
-                // be robust enough to never give us broken joints.
-                if (joints[i].Rotation.Equals(new Quaternion(0, 0, 0, 0)))
-                {
-                    continue;
-                }
-
-                // Fill the matrices list with TRSs from the joint poses.
-                jointMatrices[i] = Matrix4x4.TRS(joints[i].Position, joints[i].Rotation.normalized, Vector3.one * joints[i].Radius);
-            }
-
-            // Draw the joints.
-            Graphics.DrawMeshInstanced(jointMesh, 0, jointMaterial, jointMatrices);
         }
 
         private void RenderMesh(IReadOnlyList<HandJointPose> joints)
         {
-            HandRenderer.enabled = enableHandMesh;
+            // Enable the hand mesh after once we have joint data
+            handRenderer.enabled = true;
 
             for (int i = 0; i < joints.Count; i++)
             {
@@ -406,47 +342,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (jointTransform != null)
                 {
-                    if (TrackedHandJoint == TrackedHandJoint.Palm)
+                    switch (TrackedHandJoint)
                     {
-                        if (ModelPalmAtLeapWrist)
-                        {
-                            Palm.position = joints[(int)TrackedHandJoint.Wrist].Position;
-
-
-                            jointMatrices[i] = Matrix4x4.TRS(joints[(int)TrackedHandJoint.Wrist].Position, joints[(int)TrackedHandJoint.Wrist].Rotation.normalized, Vector3.one * joints[i].Radius * 3.0f);
-                        }
-                        else
-                        {
-                            Palm.position = HandJointPose.Position;
-                        }
-                        Palm.rotation = HandJointPose.Rotation * UserBoneRotation;
-                    }
-                    if (TrackedHandJoint == TrackedHandJoint.Wrist)
-                    {
-                        if (!ModelPalmAtLeapWrist)
-                        {
-                          Wrist.position = HandJointPose.Position;
-                        }
-                    }
-                    else
-                    {
-                        // Finger riggedVisualJointsArray
-                        jointTransform.rotation = HandJointPose.Rotation * Reorientation;
-
-                        if (DeformPosition)
-                        {
+                        case TrackedHandJoint.Palm:
+                            // We use the palm's  joint pose solely to control the orientation of the palm transform
+                            jointTransform.rotation = HandJointPose.Rotation * UserBoneRotation;
+                            break;
+                        case TrackedHandJoint.Wrist:
+                            // We use the wrist's  joint pose solely to control the orientation of the wrist transform
                             jointTransform.position = HandJointPose.Position;
-                        }
+                            break;
+                        default:
+                            // For the rest of the joints, match the transform to the Joint Pose
+                            jointTransform.rotation = HandJointPose.Rotation * Reorientation;
 
-                        if (ScaleLastFingerBone &&
-                            (TrackedHandJoint == TrackedHandJoint.ThumbDistal ||
-                            TrackedHandJoint == TrackedHandJoint.IndexDistal ||
-                            TrackedHandJoint == TrackedHandJoint.MiddleDistal ||
-                            TrackedHandJoint == TrackedHandJoint.RingDistal ||
-                            TrackedHandJoint == TrackedHandJoint.LittleDistal))
-                        {
-                            ScaleFingerTip(joints, jointTransform, TrackedHandJoint + 1, jointTransform.position);
-                        }
+                            if (DeformPosition)
+                            {
+                                jointTransform.position = HandJointPose.Position;
+                            }
+                            break;
                     }
                 }
             }
@@ -454,8 +368,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Update the hand material based on selectedness value
             UpdateHandMaterial();
         }
-
-        private ArticulatedHandController controller;
 
         private void UpdateHandMaterial()
         {
@@ -469,13 +381,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Update the hand material
             float pinchStrength = Mathf.Pow(selectedness, 2.0f);
 
-            if (handMaterial != null && handRendererInitialized)
+            if (handMaterial != null)
             {
                 // This can be propertyBlock.HasFloat(), but that is only in unity 2021+
                 if (handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
                 {
                     // Set the property on the handRenderer
-                    handRenderer.GetPropertyBlock(propertyBlock);
+                    handRenderer.GetPropertyBlock(propertyBlock);  
                     propertyBlock.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
                     handRenderer.SetPropertyBlock(propertyBlock);
                 }
@@ -486,41 +398,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     displayedMaterialPropertyWarning = true;
                 }
             }
-        }
-
-        // Private methods for finger tip scaling
-        private void ScaleFingerTip(IReadOnlyList<HandJointPose> joints, Transform jointTransform, TrackedHandJoint fingerTipJoint, Vector3 boneRootPos)
-        {
-            // Set fingertip base bone scale to match the bone length to the fingertip.
-            // This will only scale correctly if the model was constructed to match
-            // the standard "test" edit-time hand model from the LeapMotion TestHandFactory.
-            var boneTipPos = joints[(int)fingerTipJoint].Position;
-            var boneVec = boneTipPos - boneRootPos;
-
-            if (transform.lossyScale.x != 0f && transform.lossyScale.x != 1f)
-            {
-                boneVec /= transform.lossyScale.x;
-            }
-            var newScale = jointTransform.transform.localScale;
-            var lengthComponentIdx = GetLargestComponentIndex(ModelFingerPointing);
-            newScale[lengthComponentIdx] = boneVec.magnitude / fingerTipLengths[fingerTipJoint];
-            jointTransform.transform.localScale = newScale;
-        }
-
-        private int GetLargestComponentIndex(Vector3 pointingVector)
-        {
-            var largestValue = 0f;
-            var largestIdx = 0;
-            for (int i = 0; i < 3; i++)
-            {
-                var testValue = pointingVector[i];
-                if (Mathf.Abs(testValue) > largestValue)
-                {
-                    largestIdx = i;
-                    largestValue = Mathf.Abs(testValue);
-                }
-            }
-            return largestIdx;
         }
     }
 }
