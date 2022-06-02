@@ -156,15 +156,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (GetOrAddControllerPerfMarker.Auto())
             {
+                InputDeviceCharacteristics inputDeviceCharacteristics = inputDevice.characteristics;
+
                 // If this is a new input device, search if an existing input device has matching characteristics
                 if (!ActiveControllers.ContainsKey(inputDevice))
                 {
                     foreach (InputDevice device in ActiveControllers.Keys)
                     {
-                        if (((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
-                            || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
-                            && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left))
-                            || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
+                        InputDeviceCharacteristics deviceCharacteristics = device.characteristics;
+
+                        if (((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
+                            || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
+                            && ((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left))
+                            || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
                         {
                             ActiveControllers.Add(inputDevice, ActiveControllers[device]);
                             break;
@@ -172,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     }
                 }
 
-                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)
+                if (inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)
                     && inputDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked)
                     && !isTracked)
                 {
@@ -194,13 +198,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (RemoveControllerPerfMarker.Auto())
             {
+                InputDeviceCharacteristics inputDeviceCharacteristics = inputDevice.characteristics;
+
                 foreach (InputDevice device in ActiveControllers.Keys)
                 {
+                    InputDeviceCharacteristics deviceCharacteristics = device.characteristics;
+
                     if (device != inputDevice
-                        && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
-                        || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
-                        && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left))
-                        || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
+                        && ((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
+                        || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
+                        && ((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left))
+                        || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
                     {
                         ActiveControllers.Remove(inputDevice);
                         // Since an additional device exists, return so a lost source isn't reported
