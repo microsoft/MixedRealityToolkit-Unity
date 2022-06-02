@@ -1471,8 +1471,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.Assert(step.Direction != Vector3.zero, "RayStep Direction is Invalid.");
 
                 // Move the uiRaycast camera to the current pointer's position.
-                UIRaycastCamera.transform.position = step.Origin;
-                UIRaycastCamera.transform.rotation = Quaternion.LookRotation(step.Direction, Vector3.up);
+                UIRaycastCamera.transform.SetPositionAndRotation(step.Origin, Quaternion.LookRotation(step.Direction, Vector3.up));
 
                 // We always raycast from the center of the camera.
                 graphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
