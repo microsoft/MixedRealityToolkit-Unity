@@ -577,9 +577,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public virtual void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             if (eventData.used ||
-                    eventData.Pointer == null ||
-                    eventData.Pointer.Result == null ||
-                    (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null))
+                eventData.Pointer == null ||
+                eventData.Pointer.Result == null ||
+                (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null))
             {
                 return;
             }
@@ -629,6 +629,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        bool hasFirstPointerDraggedThisFrame = false;
+
         public virtual void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             // Call manipulation updated handlers
@@ -638,7 +640,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else if (IsTwoHandedManipulationEnabled)
             {
-                HandleTwoHandManipulationUpdated();
+                if (hasFirstPointerDraggedThisFrame)
+                {
+                    HandleTwoHandManipulationUpdated();
+                    hasFirstPointerDraggedThisFrame = false;
+                }
+                else
+                {
+                    hasFirstPointerDraggedThisFrame = true;
+                }
             }
         }
 
@@ -663,6 +673,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (manipulationType.IsMaskSet(ManipulationHandFlags.OneHanded))
                 {
                     HandleOneHandMoveStarted();
+                    hasFirstPointerDraggedThisFrame = false;
                 }
                 else
                 {
@@ -680,9 +691,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Hand Event Handlers
 
         #region Private Event Handlers
+
         private void HandleTwoHandManipulationStarted()
         {
-            var handPositionArray = GetHandPositionArray();
+            Vector3[] handPositionArray = GetHandPositionArray();
 
             if (twoHandedManipulationType.IsMaskSet(TransformFlags.Rotate))
             {
@@ -707,7 +719,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
-            var handPositionArray = GetHandPositionArray();
+            Vector3[] handPositionArray = GetHandPositionArray();
 
             if (twoHandedManipulationType.IsMaskSet(TransformFlags.Scale))
             {
@@ -833,6 +845,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleManipulationEnded(Vector3 pointerGrabPoint, Vector3 pointerVelocity, Vector3 pointerAnglularVelocity)
         {
             isManipulationStarted = false;
+            hasFirstPointerDraggedThisFrame = false;
             // TODO: If we are on HoloLens 1, push and pop modal input handler so that we can use old
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
             if (OnManipulationEnded != null)
@@ -930,11 +943,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        private Vector3[] handPositionMap = null;
+
         private Vector3[] GetHandPositionArray()
         {
-            var handPositionMap = new Vector3[pointerIdToPointerMap.Count];
+            if (handPositionMap?.Length != pointerIdToPointerMap.Count)
+            {
+                handPositionMap = new Vector3[pointerIdToPointerMap.Count];
+            }
+
             int index = 0;
-            foreach (var item in pointerIdToPointerMap)
+            foreach (KeyValuePair<uint, PointerData> item in pointerIdToPointerMap)
             {
                 handPositionMap[index++] = item.Value.pointer.Position;
             }
