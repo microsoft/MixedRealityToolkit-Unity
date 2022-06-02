@@ -24,9 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary> The XRNode on which this hand is located. </summary>
         public XRNode HandNode { get => handNode; set => handNode = value; }
 
-        // Transformation matrix for each joint.
-        private List<Matrix4x4> jointMatrices = new List<Matrix4x4>();
-
         // Caching local references 
         private HandsAggregatorSubsystem handsSubsystem;
         private ArticulatedHandController controller;
@@ -287,13 +284,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (handsSubsystem == null)
             {
                 StartCoroutine(EnableWhenSubsystemAvailable());
-            }
-            else
-            {
-                for (int i = 0; i < (int)TrackedHandJoint.TotalJoints; i++)
-                {
-                    jointMatrices.Add(new Matrix4x4());
-                }
             }
         }
 
