@@ -29,10 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ArticulatedHandController controller;
 
         #region RiggedHand variables
-        // This bool is used to track whether or not we are recieving hand mesh data from the platform itself
-        // If we aren't we will use our own rigged hand visualizer to render the hand mesh
-        //private bool receivingPlatformHandMesh => handMeshFilter != null;
-
         /// <summary>
         /// Palm transform
         /// </summary>
@@ -95,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private bool LittleRootIsMetacarpal = false;
 
-        //[Tooltip("Allows the mesh to be stretched to align with finger joint positions.")]
+        [Tooltip("Allows the mesh to be stretched to align with finger joint positions.")]
         [SerializeField]
         private bool DeformPosition = true;
 
