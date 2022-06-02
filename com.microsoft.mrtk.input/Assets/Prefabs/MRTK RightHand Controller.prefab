@@ -283,6 +283,10 @@ PrefabInstance:
       propertyPath: handNode
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5622072183809274356, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5800974241175000424, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: settings.isLeftHanded
       value: 0

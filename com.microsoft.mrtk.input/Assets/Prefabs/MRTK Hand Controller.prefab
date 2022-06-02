@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 1948193615953854875}
   - component: {fileID: 6164080946324827545}
   - component: {fileID: 1173925932019795335}
+  - component: {fileID: 5622072183809274356}
   m_Layer: 0
   m_Name: MRTK Hand Controller
   m_TagString: Untagged
@@ -579,10 +580,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handNode: 4
-  jointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  jointMaterial: {fileID: 2100000, guid: f115122e8379c044faecfec013fda057, type: 2}
-  Wrist: {fileID: 0}
   Palm: {fileID: 0}
+  Wrist: {fileID: 0}
   ThumbRoot: {fileID: 0}
   ThumbRootIsMetacarpal: 1
   IndexRoot: {fileID: 0}
@@ -593,14 +592,26 @@ MonoBehaviour:
   RingRootIsMetacarpal: 1
   LittleRoot: {fileID: 0}
   LittleRootIsMetacarpal: 1
-  ModelPalmAtLeapWrist: 1
   DeformPosition: 1
-  ScaleLastFingerBone: 1
   ModelFingerPointing: {x: 0, y: 0, z: 0}
   ModelPalmFacing: {x: 0, y: 0, z: 0}
   handMaterial: {fileID: 0}
-  enableHandMesh: 0
   handRenderer: {fileID: 0}
+--- !u!114 &5622072183809274356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948193615953854874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e215b983dafa1a9448e9229954ea3468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handNode: 4
+  jointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  jointMaterial: {fileID: 2100000, guid: f115122e8379c044faecfec013fda057, type: 2}
 --- !u!1 &1948193616346090105
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,6 +622,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1948193616346090106}
   - component: {fileID: 1948193616346090107}
+  - component: {fileID: 1010411701791335190}
   m_Layer: 0
   m_Name: IndexTip PokeInteractor
   m_TagString: Untagged
@@ -1516,11 +1528,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
---- !u!1 &8086910922498750391 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 1009008764017234214}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4299642553587339576 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
@@ -1529,6 +1536,11 @@ Transform:
 --- !u!1 &4299642553587339577 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 1009008764017234214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8086910922498750391 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &943052423812839532
@@ -1545,6 +1557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detector: {fileID: 8326700373702288692}
   magnetRange: 0.1
+  colliderThicknessCutoff: 0.04
   positionSmoothingCurve:
     serializedVersion: 2
     m_Curve:
