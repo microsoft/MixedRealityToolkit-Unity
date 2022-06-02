@@ -77,6 +77,27 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
+        public override void Enable()
+        {
+            base.Enable();
+
+            inputDevices.Clear();
+            foreach (InputDeviceCharacteristics inputDeviceCharacteristics in DesiredInputCharacteristics)
+            {
+                InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
+                foreach (InputDevice device in inputDevicesSubset)
+                {
+                    if (!inputDevices.Contains(device))
+                    {
+                        inputDevices.Add(device);
+                    }
+                }
+            }
+
+            InputDevices.deviceConnected += InputDevices_deviceConnected;
+            InputDevices.deviceDisconnected += InputDevices_deviceDisconnected;
+        }
+
         /// <inheritdoc/>
         public override void Update()
         {
@@ -92,19 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.running)
                 {
                     return;
-                }
-
-                inputDevices.Clear();
-                foreach (InputDeviceCharacteristics inputDeviceCharacteristics in DesiredInputCharacteristics)
-                {
-                    InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
-                    foreach (InputDevice device in inputDevicesSubset)
-                    {
-                        if (!inputDevices.Contains(device))
-                        {
-                            inputDevices.Add(device);
-                        }
-                    }
                 }
 
                 foreach (InputDevice device in inputDevices)
@@ -137,6 +145,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <inheritdoc/>
         public override void Disable()
         {
+            InputDevices.deviceConnected -= InputDevices_deviceConnected;
+            InputDevices.deviceDisconnected -= InputDevices_deviceDisconnected;
+
             var controllersCopy = ActiveControllers.ToReadOnlyCollection();
             foreach (var controller in controllersCopy)
             {
@@ -144,6 +155,20 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             }
 
             base.Disable();
+        }
+
+        private void InputDevices_deviceConnected(InputDevice obj)
+        {
+            bool characteristicsMatch = (obj.characteristics & (InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking)) > 0;
+            if (characteristicsMatch && !inputDevices.Contains(obj))
+            {
+                inputDevices.Add(obj);
+            }
+        }
+
+        private void InputDevices_deviceDisconnected(InputDevice obj)
+        {
+            inputDevices.Remove(obj);
         }
 
         #region Controller Utilities
