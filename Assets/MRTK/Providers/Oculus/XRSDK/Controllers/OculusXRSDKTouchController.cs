@@ -110,9 +110,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
         private void TryRenderControllerModelFromOculus()
         {
+#if OCULUSINTEGRATION_PRESENT
             OculusXRSDKDeviceManager deviceManager = CoreServices.GetInputSystemDataProvider<OculusXRSDKDeviceManager>();
 
-            if(deviceManager.IsNotNull())
+            if (deviceManager.IsNotNull())
             {
                 GameObject platformVisualization = null;
                 if (ControllerHandedness == Handedness.Left)
@@ -125,6 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 }
                 RegisterControllerVisualization(platformVisualization);
             }
+#endif
 
             if (this != null)
             {
