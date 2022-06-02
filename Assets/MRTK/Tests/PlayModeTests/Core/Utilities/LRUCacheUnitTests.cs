@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             Assert.IsFalse(result, "Get operation should be unsuccessful.");
             Assert.Null(retrievedValue, "Retrieved value should be null.");
             Assert.IsTrue(didRemoveFirstItem, "First remove operation should be successful for in cache item.");
-            Assert.IsFalse(didRemoveSecondItem, "Second remove operations hould be unsuccessful for out of cache item.");
+            Assert.IsFalse(didRemoveSecondItem, "Second remove operations should be unsuccessful for out of cache item.");
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             {
                 var result = cache.TryGetValue(i, out var retrievedValue);
                 Assert.IsFalse(result, "Get operation should be unsuccessful.");
-                Assert.Null(retrievedValue, "Retrieved value should be null after clearning cache.");
+                Assert.Null(retrievedValue, "Retrieved value should be null after clearing cache.");
             }
 
             Assert.AreEqual(cache.Count, 0, "Cache should be empty.");
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             var cache = new LRUCache<int, string>(capacity);
 
             // Act
-            // Fill cache with sequential from 0 - 5, then add another entry 10 to cause an eviction of least recent entry
+            // Fill cache with sequential from 0 - 4, then add another entry 10 to cause an eviction of least recent entry
             AddItems(cache, capacity);
             cache.Add(10, "10");
 
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             }
         }
 
-        private void VerifyEntrySequence(LRUCache<int, string> cache, params int[] entryKeySequence )
+        private void VerifyEntrySequence(LRUCache<int, string> cache, params int[] entryKeySequence)
         {
             var entryList = cache.ToList();
 
