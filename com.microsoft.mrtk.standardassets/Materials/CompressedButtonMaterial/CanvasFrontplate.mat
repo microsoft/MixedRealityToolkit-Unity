@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CanvasFrontplate
+  m_Shader: {fileID: 4800000, guid: 45e7207db23579b4985a9d28edfef6f1, type: 3}
+  m_ShaderKeywords: _BLOB_ENABLE_ _BLOB_ENABLE_2_ _UI_CLIP_RECT_ROUNDED _USE_GLOBAL_LEFT_INDEX__ON
+    _USE_GLOBAL_RIGHT_INDEX__ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Blob_Texture_:
+        m_Texture: {fileID: 2800000, guid: 25e7d0b9c6af4790ad54956f4d688118, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Blob_Enable_: 1
+    - _Blob_Enable_2_: 1
+    - _Blob_Fade_: 1
+    - _Blob_Fade_2_: 1
+    - _Blob_Fade_Length_: 0.08
+    - _Blob_Far_Distance_: 0.08
+    - _Blob_Far_Size_: 0.05
+    - _Blob_Inner_Fade_: 0.01
+    - _Blob_Inner_Fade_2_: 0.1
+    - _Blob_Intensity_: 0.5
+    - _Blob_Near_Distance_: 0
+    - _Blob_Near_Size_: 0.025
+    - _Blob_Near_Size_2_: 0.025
+    - _Blob_Pulse_: 0
+    - _Blob_Pulse_2_: 0
+    - _Blob_Pulse_Max_Size_: 0.05
+    - _DstBlend: 1
+    - _Fade_Out_: 1
+    - _Filter_Width_: 1
+    - _Fixed_Unit_Multiplier_: 1
+    - _Gaze_Focus_: 0
+    - _Gaze_Intensity_: 1
+    - _Line_Width_: 1
+    - _Pinched_: 0
+    - _Proximity_Anisotropy_: 1
+    - _Proximity_Far_Distance_: 0.16
+    - _Proximity_Max_Intensity_: 0.45
+    - _Proximity_Near_Radius_: 0.03
+    - _Radius_: 10
+    - _Relative_To_Height_: 0
+    - _Selected_: 0
+    - _Selected_Distance_: 0.08
+    - _Selected_Fade_Length_: 0.08
+    - _Selection_Fade_: 0
+    - _Selection_Fade_Size_: 0.3
+    - _Selection_Fuzz_: 0.5
+    - _SrcBlend: 1
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
+    - _Use_Global_Left_Index_: 1
+    - _Use_Global_Right_Index_: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    m_Colors:
+    - Global_Left_Index_Tip_Position: {r: 0, g: 0, b: 0, a: 1}
+    - Global_Right_Index_Tip_Position: {r: 0, g: 0, b: 0, a: 1}
+    - _Blob_Position_: {r: 0.5, g: 0, b: 0.2, a: 1}
+    - _Blob_Position_2_: {r: 10, g: 10.1, b: -0.6, a: 1}
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _ClipRectRadii: {r: 10, g: 10, b: 10, a: 10}
+    - _Edge_Color_: {r: 0.53, g: 0.53, b: 0.53, a: 1}
+  m_BuildTextureStacks: []

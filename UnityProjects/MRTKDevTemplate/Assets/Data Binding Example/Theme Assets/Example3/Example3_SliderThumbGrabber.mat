@@ -1,0 +1,327 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Example3_SliderThumbGrabber
+  m_Shader: {fileID: 4800000, guid: 779835e0a5652024fb34a171d6dd6e92, type: 3}
+  m_ShaderKeywords: _BLOB_ENABLE_2_ _DECAL_FRONT_ONLY__ON _FRESNEL_ENABLED_ _IRIDESCENCE_ENABLED_
+    _SKY_ENABLED_
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Blob_Texture_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ChannelMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Decal_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Indirect_Environment_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Iridescence_Ramp_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Iridescence_Texture_:
+        m_Texture: {fileID: 2800000, guid: 2f057d54b26f4d84d867b1b3ec845ad3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IridescentSpectrumMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Reflection_Map_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Rim_Texture_:
+        m_Texture: {fileID: 2800000, guid: 2f057d54b26f4d84d867b1b3ec845ad3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Use_Global_Left_Index: 0
+    - Use_Global_Right_Index: 0
+    - _AlbedoAlphaMode: 1
+    - _AlbedoAssignedAtRuntime: 0
+    - _Angle_: -45
+    - _Bevel_Back_: 0.031
+    - _Bevel_Back_Stretch_: 0
+    - _Bevel_Front_: 0.035
+    - _Bevel_Front_Stretch_: 0.077
+    - _BlendOp: 0
+    - _BlendedClippingWidth: 1
+    - _Blob_Enable_: 0
+    - _Blob_Enable_2_: 1
+    - _Blob_Fade_: 1
+    - _Blob_Fade_2_: 1
+    - _Blob_Fade_Length_: 0.576
+    - _Blob_Far_Distance_: 0.08
+    - _Blob_Far_Size_: 0.03
+    - _Blob_Inner_Fade_: 0.01
+    - _Blob_Inner_Fade_2_: 0.1
+    - _Blob_Intensity_: 0.5
+    - _Blob_Near_Distance_: 0
+    - _Blob_Near_Size_: 0.01
+    - _Blob_Near_Size_2_: 0.01
+    - _Blob_Pulse_: 0
+    - _Blob_Pulse_2_: 0
+    - _BorderLight: 0
+    - _BorderLightOpaque: 0
+    - _BorderLightOpaqueAlpha: 1
+    - _BorderLightReplacesAlbedo: 0
+    - _BorderLightUsesHoverColor: 0
+    - _BorderMinValue: 0.1
+    - _BorderWidth: 0.1
+    - _Bulge_Enabled_: 0
+    - _Bulge_Height_: -0.323
+    - _Bulge_Radius_: 0.73
+    - _BumpScale: 1
+    - _Clip_Fade_: 0.01
+    - _ClippingBorder: 0
+    - _ClippingBorderWidth: 0.025
+    - _ColorWriteMask: 15
+    - _CullMode: 2
+    - _CustomMode: 0
+    - _Cutoff: 0.5
+    - _Decal_Enable_: 0
+    - _Decal_Front_Only_: 1
+    - _DetailNormalMapScale: 1
+    - _DirectionalLight: 1
+    - _DstBlend: 0
+    - _EdgeSmoothingValue: 0
+    - _Edge_Reflect_: 0.09
+    - _Edge_Width_: 0.04
+    - _EnableChannelMap: 0
+    - _EnableEmission: 0
+    - _EnableHoverColorOverride: 0
+    - _EnableLocalSpaceTriplanarMapping: 0
+    - _EnableNormalMap: 0
+    - _EnableProximityLightColorOverride: 0
+    - _EnableTriplanarMapping: 0
+    - _Enable_Fade_: 1
+    - _Env_Enable_: 0
+    - _EnvironmentColorIntensity: 0.603
+    - _EnvironmentColorThreshold: 0.55
+    - _EnvironmentColoring: 1
+    - _FadeBeginDistance: 0.85
+    - _FadeCompleteDistance: 0.5
+    - _FadeMinValue: 0
+    - _Fade_Out_: 1
+    - _Fade_Width_: 1.5
+    - _Filter_Width_: 1
+    - _FluentLightIntensity: 1
+    - _Fresnel_Enabled_: 1
+    - _Front_Reflect_: 0
+    - _Fuzz_: 0.5
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Highlight_Width_: 1
+    - _Horizon_Power_: 1
+    - _HoverLight: 0
+    - _Hue_Shift_: 0
+    - _IgnoreZScale: 0
+    - _IndependentCorners: 0
+    - _Indirect_Diffuse_: 1
+    - _InnerGlow: 0
+    - _InnerGlowPower: 4
+    - _InstancedColor: 0
+    - _Iridescence: 0
+    - _IridescenceAngle: -0.78
+    - _IridescenceIntensity: 0.5
+    - _IridescenceThreshold: 0.05
+    - _Iridescence_Enabled_: 1
+    - _Iridescence_Intensity_: 0
+    - _Left_X0_: 0
+    - _Left_X1_: 0.95
+    - _Line_Width_: 0.092
+    - _Margin_: 0.005
+    - _Metallic: 0
+    - _Min_Fuzz_: 0.001
+    - _Mode: 0
+    - _NearLightFade: 0
+    - _NearPlaneFade: 0
+    - _NormalMapScale: 1
+    - _OcclusionStrength: 1
+    - _Occlusion_Enabled_: 0
+    - _Parallax: 0.02
+    - _Power_: 8.13
+    - _ProximityLight: 0
+    - _ProximityLightSubtractive: 0
+    - _ProximityLightTwoSided: 0
+    - _Proximity_Far_Distance_: 0.16
+    - _Proximity_Max_Intensity_: 0.45
+    - _Proximity_Near_Radius_: 1.5
+    - _Radius_: 0.16
+    - _Radius_Bottom_Left_: 1
+    - _Radius_Bottom_Right_: 1
+    - _Radius_Top_Left_: 1
+    - _Radius_Top_Right_: 1
+    - _Rate_: 0.09
+    - _Reflection_: 0.749
+    - _Reflections: 0
+    - _Refraction: 0
+    - _RefractiveIndex: 0
+    - _Relative_Width_: 1
+    - _RenderQueueOverride: -1
+    - _Right_X0_: 0.05
+    - _Right_X1_: 1
+    - _RimLight: 1
+    - _RimPower: 1.54
+    - _Rim_Hue_Shift_: 0
+    - _Rim_Intensity_: 0.287
+    - _Rim_Power_: 1
+    - _Rim_Saturation_Shift_: 0
+    - _Rim_Spread_Texture_: 0
+    - _Rim_Value_Shift_: -1
+    - _Rim_View_Shift_: 0.013
+    - _RoundCornerMargin: 0.0344
+    - _RoundCornerRadius: 0.5
+    - _RoundCorners: 1
+    - _SSS_Distance_: 0.003
+    - _Saturation_Shift_: 0
+    - _Selected_: 0
+    - _Selected_Distance_: 0.08
+    - _Selected_Fade_Length_: 0.08
+    - _Selection_Fade_: 0
+    - _Selection_Fade_Size_: 0.3
+    - _Selection_Fuzz_: 0.5
+    - _Sharpness_: 0
+    - _Shininess_: 10
+    - _Show_Frame_: 0
+    - _Sky_Enabled_: 1
+    - _Smooth_Active_Face_: 1
+    - _Smooth_Edges_: 1
+    - _Smoothness: 0.277
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _Specular_: 0
+    - _SphericalHarmonics: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
+    - _Subsurface_: 0.31
+    - _Sun_Intensity_: 0.707
+    - _Sun_Phi_: 0.775
+    - _Sun_Theta_: 0.286
+    - _Texture_Enable_: 0
+    - _TriplanarMappingBlendSharpness: 4
+    - _UVSec: 0
+    - _Value_Shift_: 0
+    - _VertexColors: 0
+    - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
+    - _VertexExtrusionValue: 0
+    - _Width_: 0.02
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _Active_Face_Dir_: {r: 0, g: 0, b: -1, a: 1}
+    - _Albedo_: {r: 0.5660378, g: 0.5647059, b: 0.5647059, a: 1}
+    - _Base_Color_: {r: 0.98039216, g: 0.98039216, b: 0.98039216, a: 1}
+    - _Blob_Position_: {r: 0, g: 0, b: 0.1, a: 1}
+    - _Blob_Position_2_: {r: 0.2, g: 0, b: 0.1, a: 1}
+    - _Box_Center_: {r: 0, g: 0, b: 0, a: 1}
+    - _Box_Size_: {r: 1, g: 1, b: 0.1, a: 1}
+    - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Decal_Scale_XY_: {r: 1.5, g: 1.5, b: 0, a: 0}
+    - _Edge_Color_: {r: 0.592157, g: 0.592157, b: 0.592157, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
+    - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
+    - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _Ground_Color_: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    - _Highlight_Color_: {r: 1, g: 1, b: 1, a: 1}
+    - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
+    - _Horizon_Color_: {r: 0.34509805, g: 0.34509805, b: 0.34509805, a: 1}
+    - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
+    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
+    - _Left_Color_: {r: 0.011764707, g: 0.5058824, b: 0.9960785, a: 1}
+    - _Left_Index_Middle_Pos_: {r: 0, g: 0, b: 0, a: 1}
+    - _Left_Index_Pos_: {r: 0, g: 0, b: 1, a: 1}
+    - _Line_Color_: {r: 0.98039216, g: 0.98039216, b: 0.98039216, a: 1}
+    - _Origin_XY_: {r: 0, g: 0, b: 0, a: 0}
+    - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
+    - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
+    - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
+    - _Right_Color_: {r: 0.011764707, g: 0.5058824, b: 0.9960785, a: 1}
+    - _Right_Index_Middle_Pos_: {r: 0, g: 0, b: 0, a: 1}
+    - _Right_Index_Pos_: {r: -1, g: -1, b: -1, a: 1}
+    - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Rim_Color_: {r: 1, g: 1, b: 1, a: 1}
+    - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _Size_XY_: {r: 1, g: 1, b: 0, a: 0}
+    - _Sky_Color_: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+  m_BuildTextureStacks: []

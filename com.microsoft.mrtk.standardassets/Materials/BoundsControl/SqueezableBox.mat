@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SqueezableBox
+  m_Shader: {fileID: 4800000, guid: a68807ff3cc42b24b88efce2b72e9f16, type: 3}
+  m_ShaderKeywords: _ENABLE_EDGE_ _SHOW_INTERNAL__ON _SHRINK_ON_PINCH__ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - _Affordance_Line_Scale_: 2.667
+    - _Always_Show_Internal_: 0
+    - _Bevel_Radius_: 0.01
+    - _Clip_Threshold_: 0.01
+    - _Corner_Affordance_Length_: 0
+    - _Corner_Affordance_Round_: 0.5
+    - _Edge_Affordance_Length_: 0.008
+    - _Edge_Affordance_Round_: 0.5
+    - _Edge_Offset_: -0.002
+    - _Edge_Width_: 0.11
+    - _Enable_Edge_: 1
+    - _Extra_Input_Progress_: 0
+    - _Finger_Tip_Glow_: 0.704
+    - _Finger_Tip_Proximity_Radius_: 0.07
+    - _Focus_Fuzz_: 0.02
+    - _Focus_Max_Intensity_: 0.7
+    - _Focus_Start_: 0
+    - _Gaze_Focus_: 0
+    - _InnerGlowPower: 5.8
+    - _Inner_Line_Fraction_: 0.75
+    - _Input_Radius_: 0
+    - _Internal_Back_Edges_Only_: 0
+    - _Line_Fraction_: 1
+    - _Line_Radius_: 0.0012
+    - _Output_Radius_: 0.011
+    - _Pinch_Start_: 0
+    - _Pinched_: 0
+    - _Proximity_Fuzz_: 0.08
+    - _Proximity_Max_Intensity_: 0.7
+    - _ScreenSpaceLine_: 0
+    - _Selection_Inner_Intensity_: 0.8
+    - _Show_All_Internal_On_Focus_: 0
+    - _Show_Internal_: 1
+    - _Show_Internal_Back_: 0
+    - _Show_Internal_Front_: 0
+    - _Show_Internal_On_Focus_: 0
+    - _Shrink_On_Pinch_: 1
+    - _Shrunk_Radius_Fraction_: 0.06
+    - _Xray_Alpha_Multiplier_: 0.5
+    - _Xray_Intensity_: 0.2
+    - __dirty: 1
+    m_Colors:
+    - _Affordance_Color_: {r: 0.96, g: 0.96, b: 0.96, a: 1}
+    - _Affordance_Selection_Color_: {r: 0.49, g: 0.56000006, b: 1, a: 1}
+    - _Color_: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    - _Color_At_0_: {r: 0, g: 0, b: 0, a: 0}
+    - _Color_At_1_: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+    - _Focus_Cube_Center_: {r: 0, g: 0, b: 0, a: 1}
+    - _Focus_Cube_Size_: {r: 1, g: 1, b: 1, a: 1}
+    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
+    - _Inner_Color_: {r: 0.4, g: 0.4, b: 0.4, a: 0.16078432}
+    - _Selected_Corner_: {r: 0, g: 0, b: 0, a: 1}
+    - _Selection_Color_: {r: 0.011764706, g: 0.5058824, b: 0.99607843, a: 1}
+    - _Size_: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

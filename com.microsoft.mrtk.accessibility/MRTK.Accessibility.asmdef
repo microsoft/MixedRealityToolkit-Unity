@@ -1,0 +1,18 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Accessibility",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.Accessibility",
+    "references": [
+        "Microsoft.MixedReality.GraphicsTools",
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

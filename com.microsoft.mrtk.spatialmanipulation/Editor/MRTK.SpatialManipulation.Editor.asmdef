@@ -1,0 +1,24 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Microsoft.MixedReality.Toolkit.Core.Editor",
+        "Microsoft.MixedReality.Toolkit.Input",
+        "Microsoft.MixedReality.Toolkit.Input.Editor",
+        "Microsoft.MixedReality.Toolkit.SpatialManipulation",
+        "Unity.XR.Interaction.Toolkit",
+        "Unity.XR.Interaction.Toolkit.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

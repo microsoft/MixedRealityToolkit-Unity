@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd272d88294d1fd45a02f04b941a0beb, type: 3}
+  m_Name: Example_Piano1_MusicInformation_Profile
+  m_EditorClassIdentifier: 
+  notes:
+  - name: C
+    musicalNote: {fileID: 8300000, guid: 752f42bf6dfcb57438f951a7ea68cc60, type: 3}
+  - name: D
+    musicalNote: {fileID: 8300000, guid: b2d1103908324c34389d82e719b448e2, type: 3}
+  - name: E
+    musicalNote: {fileID: 8300000, guid: 163c64a21f29e7141a99be24c2a6515e, type: 3}
+  - name: F
+    musicalNote: {fileID: 8300000, guid: b31b2e6932d89e24f8b486cc4da10655, type: 3}
+  - name: G
+    musicalNote: {fileID: 8300000, guid: 891f1aa637d913e4dbb10c3c403e17d0, type: 3}
+  - name: A
+    musicalNote: {fileID: 8300000, guid: 94293738b8642e3488ebda142b01390c, type: 3}
+  - name: B
+    musicalNote: {fileID: 8300000, guid: 6a443adb97d99dc4abc87af23f807484, type: 3}

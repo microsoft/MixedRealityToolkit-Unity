@@ -1,0 +1,27 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Input",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.Input",
+    "references": [
+        "Microsoft.MixedReality.OpenXR",
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Unity.InputSystem",
+        "Unity.XR.CoreUtils",
+        "Unity.XR.Interaction.Toolkit",
+        "Unity.XR.OpenXR"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "",
+            "define": "MROPENXR_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
+}

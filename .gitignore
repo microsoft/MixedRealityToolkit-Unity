@@ -1,0 +1,60 @@
+# ============ #
+# Certificates #
+# ============ #
+*.cert
+*.privkey
+*.pfx
+*.pfx.meta
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+.vs/
+.vsconfig
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.csproj
+*.pidb
+*.suo
+/*.sln
+*.sln
+*.user
+*.unityproj
+*.ipch
+*.opensdf
+*.sdf
+*.tlog
+*.log
+*.idb
+*.opendb
+
+# ============================ #
+# Visual Studio Code Generated #
+# ============================ #
+.vscode/
+
+# ===================== #
+# Project Specific List #
+# ===================== #
+artifacts/
+--Version/
+
+# =============== #
+# DocFX Generated #
+# =============== #
+doc/
+
+# This is only needed because docfx chooses the first alphabetically occurring
+# .cs file's folder to create an obj/xdoc cache folder inside.
+# When https://github.com/dotnet/docfx/issues/1156 is addressed, it should be
+# possible to remove the rule on the following line and update our docfx
+# configuration to place its cache in a deterministic folder.
+[Oo]bj.meta
+
+# =========== #
+# Other files #
+# =========== #
+.DS_Store

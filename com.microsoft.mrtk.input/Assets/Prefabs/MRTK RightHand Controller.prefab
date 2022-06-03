@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7898662983119667484
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 561979269048154137, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.isLeftHanded
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854874, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_Name
+      value: MRTK RightHand Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_SelectAction.m_Reference
+      value: 
+      objectReference: {fileID: 187161793506945269, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_UIPressAction.m_Reference
+      value: 
+      objectReference: {fileID: 3279264004350380116, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_ActivateAction.m_Reference
+      value: 
+      objectReference: {fileID: 83097790271614945, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_PositionAction.m_Reference
+      value: 
+      objectReference: {fileID: -3326005586356538449, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_RotationAction.m_Reference
+      value: 
+      objectReference: {fileID: 5101698808175986029, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_HapticDeviceAction.m_Reference
+      value: 
+      objectReference: {fileID: -8222252007134549311, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_RotateAnchorAction.m_Reference
+      value: 
+      objectReference: {fileID: -5913262927076077117, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193615953854876, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_TranslateAnchorAction.m_Reference
+      value: 
+      objectReference: {fileID: 875253871413052681, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082243679387671466, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572330550550829917, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250628447449090491, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.isLeftHanded
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299642553989019654, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5800974241175000424, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.isLeftHanded
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_SelectAction.m_Reference
+      value: 
+      objectReference: {fileID: 187161793506945269, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_UIPressAction.m_Reference
+      value: 
+      objectReference: {fileID: 3279264004350380116, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_ActivateAction.m_Reference
+      value: 
+      objectReference: {fileID: 83097790271614945, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_PositionAction.m_Reference
+      value: 
+      objectReference: {fileID: -3326005586356538449, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_RotationAction.m_Reference
+      value: 
+      objectReference: {fileID: 5101698808175986029, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_SelectActionValue.m_Reference
+      value: 
+      objectReference: {fileID: 2995356199736570127, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_HapticDeviceAction.m_Reference
+      value: 
+      objectReference: {fileID: -8222252007134549311, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_RotateAnchorAction.m_Reference
+      value: 
+      objectReference: {fileID: -5913262927076077117, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_SelectActionValue.m_UseReference
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_TranslateAnchorAction.m_Reference
+      value: 
+      objectReference: {fileID: 875253871413052681, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 7215522641424853407, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7553629106862130715, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7678414244376504105, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: hand
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326700373702288692, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8354567151308182574, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8354567151308182574, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.isLeftHanded
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948397257098906273, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.isLeftHanded
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}

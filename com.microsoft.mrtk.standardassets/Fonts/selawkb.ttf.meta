@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 3fa3a351e0ae62a44948b05c0e4beaea
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Selawik
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 68a6df7cc298b65448dbb27b620cdb74, type: 3}
+  - {fileID: 12800000, guid: 52767c1f1dd45304da1f49570e5e91ea, type: 3}
+  - {fileID: 12800000, guid: 18144349ca910ef40bd5e4487cadce52, type: 3}
+  - {fileID: 12800000, guid: c090e1a3263a6914693f828f80a9f953, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

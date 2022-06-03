@@ -1,0 +1,17 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Data",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.Data",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

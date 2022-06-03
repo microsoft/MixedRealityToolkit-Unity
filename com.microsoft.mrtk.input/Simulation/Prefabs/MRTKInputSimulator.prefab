@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7585035320575375756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3493013819197874656}
+  - component: {fileID: 2471102458936864900}
+  - component: {fileID: 8173594956480335970}
+  m_Layer: 0
+  m_Name: MRTKInputSimulator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3493013819197874656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7585035320575375756}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2471102458936864900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7585035320575375756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ca381bcb5d40f4aacc5a817013e9d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlSet: 0
+  cameraSettings:
+    simulationEnabled: 1
+    originOffset: {x: 0, y: 0, z: 0}
+    isMovementSmoothed: 1
+    moveDepth: {fileID: 7299012687604269993, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    moveHorizontal: {fileID: 8718149717473967433, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    moveVertical: {fileID: 8557015737124631664, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    moveSpeed: 1
+    rotationSensitivity: 1
+    roll: {fileID: 8489548663522219587, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    pitch: {fileID: 2456286265664290993, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    yaw: {fileID: 7162356020669401171, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    invertPitch: 0
+  eyeGazeSettings:
+    simulationEnabled: 1
+    eyeOriginOffset: {x: 0, y: 0, z: 0}
+    lookHorizontal: {fileID: -7345170528461143681, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    lookVertical: {fileID: -4223466768389085971, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    sensitivity: 1
+  leftControllerSettings:
+    simulationMode: 1
+    anchorPoint: 0
+    changeNeutralPose: {fileID: -1599196918749775551, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    defaultPosition: {x: -0.25, y: 0, z: 0.5}
+    track: {fileID: -7375025743082985399, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    toggle: {fileID: -1821415106711856085, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    depthSensitivity: 1
+    jitterStrength: 0
+    isMovementSmoothed: 1
+    moveDepth: {fileID: -5267809750672040652, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    moveHorizontal: {fileID: 4483224600902060913, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    moveVertical: {fileID: -6560558444935668334, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    roll: {fileID: -1609917552046445164, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    pitch: {fileID: 2934691147409726869, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    yaw: {fileID: -3635213825055628297, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    invertPitch: 0
+    faceTheCamera: {fileID: -3464755530298322375, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    triggerAxis: {fileID: 1252292630270556985, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    triggerButton: {fileID: 3656792388885193888, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    gripAxis: {fileID: -737936298204536619, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    gripButton: {fileID: -3526819263525005143, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+  rightControllerSettings:
+    simulationMode: 1
+    anchorPoint: 0
+    changeNeutralPose: {fileID: -1040645400157157469, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    defaultPosition: {x: 0.25, y: 0, z: 0.5}
+    track: {fileID: -4319582668609697866, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    toggle: {fileID: 7677260744920439143, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    depthSensitivity: 1
+    jitterStrength: 0
+    isMovementSmoothed: 1
+    moveDepth: {fileID: -5085426165658736758, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    moveHorizontal: {fileID: 1224412753233153404, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    moveVertical: {fileID: 7279293947812093548, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    roll: {fileID: 8623410012940978455, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    pitch: {fileID: -8219984990603162505, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    yaw: {fileID: 4781290023593216104, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    invertPitch: 0
+    faceTheCamera: {fileID: -4313581616622894791, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    triggerAxis: {fileID: -8445668217222168300, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    triggerButton: {fileID: -5963926856265715503, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    gripAxis: {fileID: -2106122626610995820, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    gripButton: {fileID: 5138476479549876314, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+--- !u!114 &8173594956480335970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7585035320575375756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017c5e3933235514c9520e1dace2a4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ActionAssets:
+  - {fileID: -944628639613478452, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}

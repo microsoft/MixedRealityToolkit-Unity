@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae888ae4ef9ef7046a03a3685a097687, type: 3}
+  m_Name: Example_2_CoreUX_ThemeProfile
+  m_EditorClassIdentifier: 
+  ux:
+    common:
+      textStyleSheet: {fileID: 11400000, guid: 512685f9bac9be948a73935a87440d7d, type: 2}
+    button:
+      backplateHighlightMaterial: {fileID: 2100000, guid: a85a2c2eb4d9f7d4d85cf4c3de548569, type: 2}
+      frontplateHighlightMaterial: {fileID: 2100000, guid: 3733a6c83f868534db3b68dbb3d13421, type: 2}
+      seeItSayItBackplateQuadMaterial: {fileID: 0}
+      backplateOuterGeometryMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+      backplateQuadMaterial: {fileID: 2100000, guid: b6fc4d81476b92c48b877aa508764bb7, type: 2}
+      backplateToggleQuadMaterial: {fileID: 2100000, guid: 30d95386a8410bd46afbbf41fc51b8e6, type: 2}
+      textStyleSheetName: StyleSheets/StyleExample2_StyleSheet
+    slider:
+      trackBaseVisualMaterial: {fileID: 2100000, guid: 325658bc7bb0e6645b117289046111ce, type: 2}
+      trackFilledVisualMaterial: {fileID: 2100000, guid: 172959e9d71a0d34b8f9d04ece8ece46, type: 2}
+      thumbVisualMaterial: {fileID: 2100000, guid: b200a3dcb7fe93d4390b810427c67a0e, type: 2}
+      backplateMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+    dialog:
+      backplateMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+    handMenu:
+      backplateMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+    listMenu:
+      backplateMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+    objectBar:
+      backplateMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+    slate:
+      titleBackplateMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+      contentBackplateMaterial: {fileID: 2100000, guid: f7c6f77f9842a67478d92add8aef6b9c, type: 2}
+    toggle:
+      backplateMaterial: {fileID: 2100000, guid: c5665c4dac76d554ab970b72d56d96c6, type: 2}
+      thumbMaterial: {fileID: 2100000, guid: a5e18561b49fc5148824ed7c16d531f5, type: 2}
+      thumbShadowSprite: {fileID: 21300000, guid: 0f8101cb6d4e05e498451658c75b2e2e, type: 3}

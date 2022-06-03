@@ -1,0 +1,23 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Core.TestUtilities",
+    "rootNamespace": "",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Unity.InputSystem",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,30 @@
+{
+  "name": "com.microsoft.mrtk.uxcore",
+  "version": "3.0.0-development",
+  "description": "Core interaction and visualization scripts for building MR user interface components.\n\nNote: this is intended to be consumed in order to build UX libraries. To build MR interfaces with a pre-existing library of components, see com.microsoft.mrtk.uxcomponents.",
+  "displayName": "MRTK UX Core Scripts",
+  "msftFeatureCategory": "MRTK3",
+  "author": "Microsoft",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+  },
+  "unity": "2020.3",
+  "dependencies": {
+    "com.microsoft.mrtk.core": "3.0.0-development",
+    "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+    "com.unity.inputsystem": "1.3.0",
+    "com.unity.textmeshpro": "3.0.6",
+    "com.unity.xr.interaction.toolkit": "2.0.0"
+  },
+  "msftOptionalPackages": {
+    "com.microsoft.mrtk.data": "1.0.0-development"
+  },
+  "msftTestDependencies": {
+    "com.microsoft.mrtk.input": "3.0.0-development"
+  }
+}

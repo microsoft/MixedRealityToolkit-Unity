@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: HandleBevel
+  m_Shader: {fileID: 4800000, guid: 29b058829dc4dbf449bc59c038dfa631, type: 3}
+  m_ShaderKeywords: _DECAL_FRONT_ONLY__ON _REFLECTED__ON _SKY_ENABLED_
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Decal_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Indirect_Environment_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Iridescence_Texture_:
+        m_Texture: {fileID: 2800000, guid: d898ba0df32e5da43850db9ebcc9f4f0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Iridescent_Map_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OccludedTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Reflection_Map_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Angle_: -13.7
+    - _Decal_Enable_: 0
+    - _Decal_Front_Only_: 1
+    - _DstBlend: 0
+    - _Edge_Only_: 0
+    - _Edge_Power_: 0
+    - _Edge_Reflect_: 1
+    - _Edge_Width_: 0.444
+    - _Fade_Out_: 1
+    - _Filter_Width_: 1
+    - _Frequency_: 1.89
+    - _Fresnel_Disabled_: 0
+    - _Front_Reflect_: 0
+    - _Gradient_Disabled_: 0
+    - _GridScale: 0.02
+    - _Highlight_: 0
+    - _Highlight_Width_: 0.25
+    - _Horizon_Power_: 1
+    - _Indirect_Diffuse_: 0.51
+    - _Iridescence_Edge_Intensity_: 0.56
+    - _Iridescence_Enable_: 0
+    - _Iridescence_Enabled_: 0
+    - _Iridescence_Intensity_: 0.549
+    - _Line_Disabled_: 0
+    - _Line_Gradient_Blend_: 0
+    - _Line_Width_: 1
+    - _Mapped_Environment_Enabled_: 0
+    - _Power_: 1
+    - _Rate_: 0
+    - _Reflected_: 1
+    - _Reflection_: 0
+    - _Sharpness_: 0
+    - _Shininess_: 10
+    - _Sky_Enabled_: 1
+    - _Specular_: 0
+    - _SrcBlend: 1
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
+    - _Subsurface_: 0
+    - _Sun_Intensity_: 0
+    - _Sun_Phi_: 0.48
+    - _Sun_Theta_: 0.73
+    - _Vertical_Offset_: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _Albedo_: {r: 1, g: 1, b: 1, a: 1}
+    - _Base_Color_: {r: 0, g: 0, b: 0, a: 1}
+    - _Bottom_Left_: {r: 0.62352943, g: 0.63529414, b: 0.9882353, a: 1}
+    - _Bottom_Right_: {r: 0.3647059, g: 0.35686275, b: 0.83137256, a: 1}
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 0}
+    - _ClipRectRadii: {r: 10, g: 10, b: 10, a: 0}
+    - _Decal_Scale_XY_: {r: 1.5, g: 1.5, b: 0, a: 0}
+    - _Gradient_Color_: {r: 1, g: 1, b: 1, a: 1}
+    - _Ground_Color_: {r: 0.603922, g: 0.611765, b: 0.764706, a: 1}
+    - _Highlight_Color_: {r: 0.98, g: 0.98, b: 0.98, a: 1}
+    - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
+    - _Horizon_Color_: {r: 0.843137, g: 0.87451, b: 1, a: 1}
+    - _Iridescence_Tint_: {r: 1, g: 1, b: 1, a: 1}
+    - _Line_Color_: {r: 0.078431375, g: 0.08627451, b: 0.16078432, a: 1}
+    - _OccludedColor: {r: 0, g: 0.5, b: 1, a: 1}
+    - _Sky_Color_: {r: 0.866667, g: 0.917647, b: 1, a: 1}
+    - _Top_Left_: {r: 0.827044, g: 0.83262324, b: 1, a: 1}
+    - _Top_Right_: {r: 0.3647059, g: 0.35686275, b: 0.83137256, a: 1}
+  m_BuildTextureStacks: []

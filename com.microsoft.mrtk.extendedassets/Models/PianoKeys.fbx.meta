@@ -1,0 +1,265 @@
+fileFormatVersion: 2
+guid: aafe2432fe2b1a745b6b324e7fc3d415
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: PianoKey-A
+  - first:
+      1: 100002
+    second: PianoKey-B
+  - first:
+      1: 100004
+    second: PianoKey-C
+  - first:
+      1: 100006
+    second: PianoKey-D
+  - first:
+      1: 100008
+    second: PianoKey-E
+  - first:
+      1: 100010
+    second: PianoKey-F
+  - first:
+      1: 100012
+    second: PianoKey-G
+  - first:
+      1: 100014
+    second: PianoKeyBlack
+  - first:
+      1: 100016
+    second: //RootNode
+  - first:
+      1: 100018
+    second: Velvet
+  - first:
+      4: 400000
+    second: PianoKey-A
+  - first:
+      4: 400002
+    second: PianoKey-B
+  - first:
+      4: 400004
+    second: PianoKey-C
+  - first:
+      4: 400006
+    second: PianoKey-D
+  - first:
+      4: 400008
+    second: PianoKey-E
+  - first:
+      4: 400010
+    second: PianoKey-F
+  - first:
+      4: 400012
+    second: PianoKey-G
+  - first:
+      4: 400014
+    second: PianoKeyBlack
+  - first:
+      4: 400016
+    second: //RootNode
+  - first:
+      4: 400018
+    second: Velvet
+  - first:
+      21: 2100000
+    second: PianoOctave
+  - first:
+      21: 2100002
+    second: No Name
+  - first:
+      23: 2300000
+    second: PianoKey-A
+  - first:
+      23: 2300002
+    second: PianoKey-B
+  - first:
+      23: 2300004
+    second: PianoKey-C
+  - first:
+      23: 2300006
+    second: PianoKey-D
+  - first:
+      23: 2300008
+    second: PianoKey-E
+  - first:
+      23: 2300010
+    second: PianoKey-F
+  - first:
+      23: 2300012
+    second: PianoKey-G
+  - first:
+      23: 2300014
+    second: PianoKeyBlack
+  - first:
+      23: 2300016
+    second: Velvet
+  - first:
+      33: 3300000
+    second: PianoKey-A
+  - first:
+      33: 3300002
+    second: PianoKey-B
+  - first:
+      33: 3300004
+    second: PianoKey-C
+  - first:
+      33: 3300006
+    second: PianoKey-D
+  - first:
+      33: 3300008
+    second: PianoKey-E
+  - first:
+      33: 3300010
+    second: PianoKey-F
+  - first:
+      33: 3300012
+    second: PianoKey-G
+  - first:
+      33: 3300014
+    second: PianoKeyBlack
+  - first:
+      33: 3300016
+    second: Velvet
+  - first:
+      43: 4300000
+    second: PianoKeyBlack
+  - first:
+      43: 4300002
+    second: PianoKey-C
+  - first:
+      43: 4300004
+    second: PianoKey-D
+  - first:
+      43: 4300006
+    second: PianoKey-E
+  - first:
+      43: 4300008
+    second: PianoKey-F
+  - first:
+      43: 4300010
+    second: PianoKey-G
+  - first:
+      43: 4300012
+    second: PianoKey-A
+  - first:
+      43: 4300014
+    second: PianoKey-B
+  - first:
+      43: 4300016
+    second: Velvet
+  - first:
+      74: 7400000
+    second: Take 001
+  - first:
+      95: 9500000
+    second: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: db61b94b23e5fb444b86c231d13e46ef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PianoOctave
+    second: {fileID: 2100000, guid: f62f188dc6a5f55458ac47e93b3951f4, type: 2}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 0
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

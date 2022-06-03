@@ -1,0 +1,21 @@
+{
+  "name": "com.microsoft.mrtk.diagnostics",
+  "version": "3.0.0-development",
+  "description": "Subsystems and utilities for common diagnostic and performance monitoring tasks.",
+  "displayName": "MRTK Diagnostics",
+  "msftFeatureCategory": "MRTK3",
+  "author": "Microsoft",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+  },
+  "unity": "2020.3",
+  "dependencies": {
+    "com.microsoft.mrtk.core": "3.0.0-development",
+    "com.unity.xr.management": "4.2.1"
+  }
+}

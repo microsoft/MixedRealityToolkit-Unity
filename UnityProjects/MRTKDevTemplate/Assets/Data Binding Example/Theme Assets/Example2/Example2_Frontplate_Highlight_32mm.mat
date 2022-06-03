@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Example2_Frontplate_Highlight_32mm
+  m_Shader: {fileID: 4800000, guid: 3dee60a1b8e777e4f8b15a53c35077c0, type: 3}
+  m_ShaderKeywords: USE_GLOBAL_EXTRA_INPUT_ON USE_GLOBAL_LEFT_INDEX_ON USE_GLOBAL_RIGHT_INDEX_ON
+    _BLOB_ENABLE_2__ON _BLOB_ENABLE_3__ON _BLOB_ENABLE__ON _SMOOTH_EDGES__ON _USE_GLOBAL_PROGRESS__ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Blob_Texture_:
+        m_Texture: {fileID: 2800000, guid: 25e7d0b9c6af4790ad54956f4d688118, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Use_Global_Extra_Input: 1
+    - Use_Global_Left_Index: 1
+    - Use_Global_Right_Index: 1
+    - _Blob_Enable_: 1
+    - _Blob_Enable_2_: 1
+    - _Blob_Enable_3_: 1
+    - _Blob_Fade_: 1
+    - _Blob_Fade_2_: 1
+    - _Blob_Fade_3_: 1
+    - _Blob_Fade_Length_: 0.04
+    - _Blob_Far_Distance_: 0.064
+    - _Blob_Far_Size_: 0.048
+    - _Blob_Inner_Fade_: 0.01
+    - _Blob_Inner_Fade_2_: 0.1
+    - _Blob_Inner_Fade_3_: 0.1
+    - _Blob_Intensity_: 0.5
+    - _Blob_Intensity_3_: 0
+    - _Blob_Near_Distance_: 0.008
+    - _Blob_Near_Size_: 0.032
+    - _Blob_Near_Size_2_: 0.008
+    - _Blob_Near_Size_3_: 0.0125
+    - _Blob_Pulse_: 0
+    - _Blob_Pulse_2_: 0
+    - _Blob_Pulse_3_: 0
+    - _Blob_Pulse_Max_Size_: 0.05
+    - _Extra_Input_Progress_: 0
+    - _Extra_Input_Strength_: 0
+    - _Fade_Out_: 1
+    - _Filter_Width_: 1.5
+    - _Gaze_Focus_: 0
+    - _Gaze_Intensity_: 0.8
+    - _Line_Width_: 0.001
+    - _Motion_: 0
+    - _Outline_Highlight_Threshold_: 0.95
+    - _Pinched_: 0
+    - _Progress_Ramp_: 0.1
+    - _Proximity_Anisotropy_: 1
+    - _Proximity_Far_Distance_: 0.16
+    - _Proximity_Max_Intensity_: 0.45
+    - _Proximity_Near_Radius_: 0.016
+    - _Pulse_Line_Width_3_: 0.0025
+    - _Radius_: 0.005
+    - _Relative_To_Height_: 0
+    - _Selected_: 0
+    - _Selected_Distance_: 0.08
+    - _Selected_Fade_Length_: 0.08
+    - _Selection_Fade_: 0.2
+    - _Selection_Fade_Size_: 0
+    - _Selection_Fuzz_: 0.5
+    - _Smooth_Edges_: 1
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
+    - _Use_Global_Left_Index_: 1
+    - _Use_Global_Progress_: 1
+    - _Use_Global_Right_Index_: 1
+    m_Colors:
+    - _Blob_Position_: {r: 0.5, g: 0, b: -0.55, a: 1}
+    - _Blob_Position_2_: {r: 10, g: 10.1, b: -0.6, a: 1}
+    - _Blob_Position_3_: {r: 10, g: 10.1, b: -0.6, a: 1}
+    - _Edge_Color_: {r: 0.53, g: 0.53, b: 0.53, a: 1}
+    - _Edge_Color_3_: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
+    - _Edge_Pulse_Color_3_: {r: 0.43137255, g: 0.3529412, b: 0.86274, a: 1}
+  m_BuildTextureStacks: []

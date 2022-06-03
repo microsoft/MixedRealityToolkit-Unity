@@ -1,0 +1,27 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.UXCore",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.UX",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Microsoft.MixedReality.Toolkit.Data",
+        "Microsoft.MixedReality.GraphicsTools",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "Unity.XR.Interaction.Toolkit"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mrtk.data",
+            "expression": "",
+            "define": "MRTK_DATA_PRESENT"
+        }
+    ],
+    "noEngineReferences": false
+}

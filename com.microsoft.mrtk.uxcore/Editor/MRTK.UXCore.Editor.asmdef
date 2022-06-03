@@ -1,0 +1,23 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.UXCore.Editor",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.UX.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Microsoft.MixedReality.Toolkit.Core.Editor",
+        "Microsoft.MixedReality.Toolkit.UXCore",
+        "Unity.XR.Interaction.Toolkit",
+        "Unity.XR.Interaction.Toolkit.Editor",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

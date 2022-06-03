@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9287a99b4362a284289e6baf5cd74d12, type: 3}
+  m_Name: Example FontIconSet
+  m_EditorClassIdentifier: 
+  glyphIconsByName:
+    entries:
+    - key: Menu
+      value: 59136
+    - key: Pause
+      value: 59241
+    - key: Play
+      value: 59240
+    - key: Search
+      value: 59166
+    - key: Trash
+      value: 59213
+    - key: Previous
+      value: 59243
+    - key: Next
+      value: 59244
+    - key: Add
+      value: 59152
+    - key: Home
+      value: 59407
+    - key: Close
+      value: 59153
+    - key: Rewind
+      value: 60318
+    - key: FastForward
+      value: 60317
+    - key: Update
+      value: 59180
+    - key: Pin
+      value: 59160
+  iconFontAsset: {fileID: 11400000, guid: 8a921d5b694150349b142ca0e18d0e97, type: 2}
+  optionalEditorMaterial: {fileID: 0}

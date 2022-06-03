@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffb513bebfbe6a742bac96b0613c77c9, type: 3}
+  m_Name: Example_BatteryInformation_Profile
+  m_EditorClassIdentifier: 
+  batteryLevel:
+    normalStateIcons:
+    - {fileID: 21300000, guid: bca152ef42b6ec94d908bd05027ea62b, type: 3}
+    - {fileID: 21300000, guid: d411ca7e2df84f24793b134b21cadc3f, type: 3}
+    - {fileID: 21300000, guid: 1c0f628ff3061c345b2074ec4cd12ab6, type: 3}
+    - {fileID: 21300000, guid: 0692de7eada6bdd449edbecf42f9bd19, type: 3}
+    - {fileID: 21300000, guid: ffe3271c3c14bb847a2b93d556b5fcb6, type: 3}
+    - {fileID: 21300000, guid: 352fea780b10eaa468d8e2591dd1d3a5, type: 3}
+    - {fileID: 21300000, guid: 5877dbff88b37254298b37a73a7b3850, type: 3}
+    - {fileID: 21300000, guid: 6d2445a06ef5d2146b01ab4b71a27e83, type: 3}
+    - {fileID: 21300000, guid: b021b0179ad85f64383b7f0fc2952261, type: 3}
+    - {fileID: 21300000, guid: 956d069bc015a4e48913555dc738ffd5, type: 3}
+    - {fileID: 21300000, guid: ac1dd1124de17174db77d9acaeb81f28, type: 3}
+    chargingStateIcons:
+    - {fileID: 21300000, guid: ace84d8d0bc25ce4099245c378535272, type: 3}
+    - {fileID: 21300000, guid: 47759682baf13ee45bc889ea2c5d7375, type: 3}
+    - {fileID: 21300000, guid: 70cc9019d58e6cd479f0b691733dfdd0, type: 3}
+    - {fileID: 21300000, guid: 488d7ab0ccf3b354b910e328d79366e7, type: 3}
+    - {fileID: 21300000, guid: ceee9e0716979b74c824b6af0c48fb03, type: 3}
+    - {fileID: 21300000, guid: 2fd32314dfc63a5449da3d12fd42b85c, type: 3}
+    - {fileID: 21300000, guid: 37376d931cf46a341abd60a0e0ff5ae0, type: 3}
+    - {fileID: 21300000, guid: 90e8027313a74774c88f3ee5fcf037de, type: 3}
+    - {fileID: 21300000, guid: 2b3ec448b16547d449bb6d20233394fd, type: 3}
+    - {fileID: 21300000, guid: aed72bf6cd9123046a4caf7f3180ba05, type: 3}
+    - {fileID: 21300000, guid: 0cd3a2054e3938d40a19cd2964016b09, type: 3}

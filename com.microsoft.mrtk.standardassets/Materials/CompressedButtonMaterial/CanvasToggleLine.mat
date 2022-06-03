@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CanvasToggleLine
+  m_Shader: {fileID: 4800000, guid: a63777aadcf3d544a888e67f06d176e6, type: 3}
+  m_ShaderKeywords: _ALPHABLEND_ON _SPECULAR_HIGHLIGHTS
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Bevel_Radius_: 0.01
+    - _Bias_: 0.5
+    - _Blend_Exponent_: 1
+    - _Falloff_: 2.5
+    - _Filter_Width_: 2
+    - _Fixed_Radius_: 0
+    - _Glow_Falloff_: 2.72
+    - _Glow_Fraction_: 0.5
+    - _Glow_Max_: 0.252
+    - _Intensity_Fade_In_Exponent_: 2
+    - _Line_Width_: 0.01
+    - _Max_Intensity_: 0.746
+    - _Motion_: 0
+    - _Outer_Fuzz_End_: 0.001
+    - _Outer_Fuzz_Start_: 0.0021
+    - _Radius_: 0.5
+    - _Relative_To_Height_: 0
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
+    - _ZWrite: 0
+    m_Colors:
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _ClipRectRadii: {r: 9, g: 10, b: 10, a: 10}
+    - _Color_: {r: 0.52156866, g: 0.64705884, b: 0.9607843, a: 1}
+    - _Inner_Color_: {r: 0.007999993, g: 0.404, b: 0.8, a: 1}
+  m_BuildTextureStacks: []

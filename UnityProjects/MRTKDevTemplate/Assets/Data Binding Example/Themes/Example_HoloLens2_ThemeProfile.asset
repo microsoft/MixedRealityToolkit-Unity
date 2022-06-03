@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae888ae4ef9ef7046a03a3685a097687, type: 3}
+  m_Name: Example_HoloLens2_ThemeProfile
+  m_EditorClassIdentifier: 
+  ux:
+    common:
+      textStyleSheet: {fileID: 11400000, guid: 40c06904582c8394db855c0fd747b6f3, type: 2}
+    button:
+      backplateHighlightMaterial: {fileID: 2100000, guid: e161049134a4b074b98ea8dd1492b095, type: 2}
+      frontplateHighlightMaterial: {fileID: 2100000, guid: 9f0f030aa44b4c74fad6e316372a9b8a, type: 2}
+      seeItSayItBackplateQuadMaterial: {fileID: 0}
+      backplateOuterGeometryMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+      backplateQuadMaterial: {fileID: 2100000, guid: 8d221c9d6a17a6a40908f2cf1d67cdc5, type: 2}
+      backplateToggleQuadMaterial: {fileID: 2100000, guid: f2c7fce4cc061e041b90ea33990e0834, type: 2}
+      circularBackplateHighlightMaterial: {fileID: 2100000, guid: fa3a68e48044fb246aea097ddfaf703a, type: 2}
+      circularFrontplateHighlightMaterial: {fileID: 2100000, guid: ecfb7819665d9af46a4731e0905bd6bc, type: 2}
+      circularBackplateOuterGeometryMaterial: {fileID: 2100000, guid: 1f5a9b81eb5dd114fa15b357117e4815, type: 2}
+      circularBackplateQuadMaterial: {fileID: 2100000, guid: 91ae37ead80d0cc4c9b5ec7bd620d849, type: 2}
+      circularBackplateToggleQuadMaterial: {fileID: 2100000, guid: 88dd674b03fae8b4ca697008e5ffe943, type: 2}
+      textStyleSheetName: StyleSheets/StyleExample4_StyleSheet
+    slider:
+      trackBaseVisualMaterial: {fileID: 2100000, guid: 3286e035cb51480478119b1e55b1192f, type: 2}
+      trackFilledVisualMaterial: {fileID: 2100000, guid: f2c17e25db4707d4bb4b75a67e21bef9, type: 2}
+      thumbVisualMaterial: {fileID: 2100000, guid: 8314a24aab03923449f02f5f25ffe427, type: 2}
+      backplateMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+    dialog:
+      backplateMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+    handMenu:
+      backplateMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+    listMenu:
+      backplateMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+    objectBar:
+      backplateMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+    slate:
+      titleBackplateMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+      contentBackplateMaterial: {fileID: 2100000, guid: 3c71c8468ef9b794f8d9da0de713234d, type: 2}
+      innerQuadBackplateMaterial: {fileID: 2100000, guid: deffd8106e09f3343ba9b32b0ee25d54, type: 2}
+    toggle:
+      backplateMaterial: {fileID: 2100000, guid: 00fa7c79032633e48bdff799c4fed3ad, type: 2}
+      thumbMaterial: {fileID: 2100000, guid: 1f6dff9b44b1cc640a7d16410cad140f, type: 2}
+      thumbShadowSprite: {fileID: 21300000, guid: 0f8101cb6d4e05e498451658c75b2e2e, type: 3}

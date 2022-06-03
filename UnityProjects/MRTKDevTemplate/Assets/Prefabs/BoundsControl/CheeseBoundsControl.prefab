@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5990324192171936426
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.078
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.866
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8710413
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.31018856
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.34966365
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.15101469
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -40.239
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -42.474
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590675683978192152, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -3.467
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670630427193237415, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+      propertyPath: m_Name
+      value: CheeseBoundsControl
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+--- !u!1 &7048514885650584845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3670630427193237415, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+  m_PrefabInstance: {fileID: 5990324192171936426}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3915192362586130041 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7310580969362328787, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+  m_PrefabInstance: {fileID: 5990324192171936426}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048514885650584845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50cdab0cd5a0916419324bb54314773d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &8114860545119125154 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2574984449296839688, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+  m_PrefabInstance: {fileID: 5990324192171936426}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &628273542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048514885650584845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f85af46f9bddd4ea78f11cee5e3b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handType: 3
+  proximityType: 3
+  executionOrder: 0
+  minimumScale: {x: 0.2, y: 0.2, z: 0.2}
+  maximumScale: {x: 2, y: 2, z: 2}
+  relativeToInitialState: 1
+--- !u!114 &628273543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048514885650584845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3f2652d4ff14543be4d1ece28036a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boundsVisualsPrefab: {fileID: 5671351296789090341, guid: 7b542306e34a62f4c9a822fcb19b7d99, type: 3}
+  boundsCalculationMethod: 0
+  includeInactiveObjects: 0
+  overrideBounds: 0
+  boundsOverride: {fileID: 0}
+  flattenMode: 1
+  boundsPadding: 0.02
+  interactable: {fileID: 0}
+  toggleHandlesOnClick: 1
+  dragToggleThreshold: 0.005
+  target: {fileID: 0}
+  handlesActive: 0
+  enabledHandles: 3
+  rotateAnchor: 1
+  scaleBehavior: 0
+  smoothingActive: 1
+  rotateLerpTime: 0.0001
+  scaleLerpTime: 0.0001
+  translateLerpTime: 0.0001
+  enableConstraints: 1
+  constraintsManager: {fileID: 3915192362586130041}
+  manipulationStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8114860545119125154}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 29437a55b95f2eb489a5ec8574f185e9, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  manipulationEnded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8114860545119125154}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 9f512430eba32d845aab8de9ba5e393c, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
