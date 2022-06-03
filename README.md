@@ -40,7 +40,7 @@ MRTK3 is currently in public preview and it is not recommended for use in produc
 
 ## Early preview packages
 
-Some parts of MRTK3 are at earlier stages of the development process than others. Early preview packages can be identified in the Mixed Reality Feature Tool and Unity Package Manager by the `[Early Preview]` designation in their names.
+Some parts of MRTK3 are at earlier stages of the development process than others. Early preview packages can be identified in the Mixed Reality Feature Tool and Unity Package Manager by the `Early Preview` designation in their names.
 
 As of June 2022, the following components are considered to be in early preview.
 
