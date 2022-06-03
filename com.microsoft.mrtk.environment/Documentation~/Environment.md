@@ -13,6 +13,6 @@ The boundary subsystem centralizes data from the Unity XR subsystems to simplify
 >![NOTE]
 >The boundary subsystem is an early implementation for which we are requesting feedback. If the community determines it is not useful, it may be removed in a future preview release.
 
-## Spatial awareness visualizations
+## Visualizations
 
-In a future preview release, components will be added that enable visually compelling and easy to use visualizations of spatial awareness data (ex: meshes).
+An initial collection of spatial awareness visualizations are provided in the `Visualizers/SpatialMesh` folder.

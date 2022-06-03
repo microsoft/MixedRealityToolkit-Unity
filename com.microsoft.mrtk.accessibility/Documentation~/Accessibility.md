@@ -11,7 +11,7 @@ The accessibility package contains features that enable developers to create mix
 ### DescribableObject
 
 >![NOTE]
->DescriableObject is in the early stages of development and is provided to allow review and to gather feedback.
+>DescribableObject is in the early stages of development and is provided to allow review and to gather feedback.
 
 `DescribableObject` is a script that can be added to user interface elements and scene objects to enable a future assistive reader
 to understand the role of the object as well as to provide details for the user.
