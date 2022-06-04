@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             var cache = new LRUCache<int, string>(capacity);
 
             // Assert
-            Assert.AreEqual(cache.Capacity, capacity, "Incorrect cache capacity");
+            Assert.AreEqual(capacity, cache.Capacity, "Incorrect cache capacity");
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             AddItems(cache, capacity);
 
             // Assert
-            Assert.AreEqual(cache.Count, capacity, "Incorrect item count.");
+            Assert.AreEqual(capacity, cache.Count, "Incorrect item count.");
 
             for (var i = 0; i < capacity; i++)
             {
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
 
                 // Assert
                 Assert.IsTrue(result, "Get operation should be successful.");
-                Assert.AreEqual(retrievedValue, i.ToString(), "Incorrect item value retrieved.");
+                Assert.AreEqual(i.ToString(), retrievedValue, "Incorrect item value retrieved.");
             }
         }
 
@@ -59,13 +59,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             }
 
             // Assert
-            Assert.AreEqual(cache.Count, capacity, "Incorrect item count.");
+            Assert.AreEqual(capacity, cache.Count, "Incorrect item count.");
 
             for (var i = 0; i < capacity; i++)
             {
                 string retrievedValue = string.Empty;
                 Assert.DoesNotThrow(() => retrievedValue = cache[i]);
-                Assert.AreEqual(retrievedValue, i.ToString(), "Incorrect item value retrieved.");
+                Assert.AreEqual(i.ToString(), retrievedValue, "Incorrect item value retrieved.");
             }
 
             Assert.Throws<KeyNotFoundException>(() => _ = cache[capacity]);
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
 
             // Assert
             Assert.IsTrue(result, "Get operation should be successful.");
-            Assert.AreEqual(retrievedValue, string1, "Incorrect cached value.");
+            Assert.AreEqual(string1, retrievedValue, "Incorrect cached value.");
 
             // Act
             var string2 = "test string 2";
@@ -107,8 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
 
             // Assert
             Assert.IsTrue(result, "Get operation should be successful.");
-            Assert.AreEqual(cache.Count, 1, "There should only be one item in the cache.");
-            Assert.AreEqual(retrievedValue, string2, "Incorrect cached value.");
+            Assert.AreEqual(1, cache.Count, "There should only be one item in the cache.");
+            Assert.AreEqual(string2, retrievedValue, "Incorrect cached value.");
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
                 Assert.Null(retrievedValue, "Retrieved value should be null after clearing cache.");
             }
 
-            Assert.AreEqual(cache.Count, 0, "Cache should be empty.");
+            Assert.AreEqual(0, cache.Count, "Cache should be empty.");
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
 
             // Assert
             // Expected in cache item (Most recent -> least recent): 10, 4, 3, 2, 1
-            Assert.AreEqual(cache.Count, capacity, "Cache count should be full.");
+            Assert.AreEqual(capacity, cache.Count, "Cache count should be full.");
             VerifyEntrySequence(cache, 10, 4, 3, 2, 1);
         }
 
@@ -189,7 +189,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
 
             // Assert
             // Expected in cache items: 10, 0, 4, 3, 2
-            Assert.AreEqual(cache.Count, capacity, "Cache count should be full.");
+            Assert.AreEqual(capacity, cache.Capacity, "Cache capacity doesn't match the constructor.");
+            Assert.AreEqual(capacity, cache.Count, "Cache count should be full.");
             VerifyEntrySequence(cache, 10, 0, 4, 3, 2);
         }
 
@@ -208,7 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
 
             // Assert
             // Expected in cache item (Most recent -> least recent): 10, 0, 4, 3, 2
-            Assert.AreEqual(cache.Count, cache.Capacity, "Cache should be at max capacity.");
+            Assert.AreEqual(capacity, cache.Capacity, "Cache capacity doesn't match the constructor.");
+            Assert.AreEqual(capacity, cache.Count, "Cache should be at max capacity.");
             VerifyEntrySequence(cache, 10, 0, 4, 3, 2);
         }
 
@@ -228,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
 
                 // Assert
                 Assert.IsTrue(result, "Get operation should be successful.");
-                Assert.AreEqual(retrievedValue, i.ToString(), "Cache entry value mismatch.");
+                Assert.AreEqual(i.ToString(), retrievedValue, "Cache entry value mismatch.");
             }
 
             // Assert
@@ -253,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Utilities
             var index = 0;
             foreach (var kvp in entryList)
             {
-                Assert.AreEqual(kvp.Key, entryKeySequence[index++], "Cached item sequence does not meet expected sequence.");
+                Assert.AreEqual(entryKeySequence[index++], kvp.Key, "Cached item sequence does not meet expected sequence.");
             }
         }
     }
