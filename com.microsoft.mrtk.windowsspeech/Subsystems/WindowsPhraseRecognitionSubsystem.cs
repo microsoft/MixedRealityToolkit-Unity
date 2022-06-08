@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 {
                     if (keywordListChanged)
                     {
+                        keywordListChanged = false;
                         Destroy();
                         keywordRecognizer = new KeywordRecognizer(phraseDictionary.Keys.ToArray());
                         Start();
