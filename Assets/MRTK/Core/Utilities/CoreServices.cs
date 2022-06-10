@@ -95,7 +95,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Resets all cached system references to null
         /// </summary>
-        public static void ResetCacheReferences() => serviceCache.Clear();
+        public static void ResetCacheReferences()
+        {
+            serviceCache.Clear();
+            boundarySystem = null;
+            cameraSystem = null;
+            diagnosticsSystem = null;
+            focusProvider = null;
+            inputSystem = null;
+            raycastProvider = null;
+            sceneSystem = null;
+            spatialAwarenessSystem = null;
+            teleportSystem = null;
+        } 
 
         /// <summary>
         /// Clears the cache of the reference with key of given type if present and applicable
@@ -109,6 +121,7 @@ namespace Microsoft.MixedReality.Toolkit
                 if (serviceCache.ContainsKey(serviceType))
                 {
                     serviceCache.Remove(serviceType);
+                    ResetCacheReferenceFromType(serviceType);
                     return true;
                 }
             }
@@ -118,6 +131,46 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             return false;
+        }
+
+        private static void ResetCacheReferenceFromType(Type serviceType)
+        {
+            if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(serviceType))
+            {
+                boundarySystem = null;
+            }
+            if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(serviceType))
+            {
+                cameraSystem = null;
+            }
+            if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(serviceType))
+            {
+                diagnosticsSystem = null;
+            }
+            if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(serviceType))
+            {
+                focusProvider = null;
+            }
+            if (typeof(IMixedRealityInputSystem).IsAssignableFrom(serviceType))
+            {
+                inputSystem = null;
+            }
+            if (typeof(IMixedRealityRaycastProvider).IsAssignableFrom(serviceType))
+            {
+                raycastProvider = null;
+            }
+            if (typeof(IMixedRealitySceneSystem).IsAssignableFrom(serviceType))
+            {
+                sceneSystem = null;
+            }
+            if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(serviceType))
+            {
+                sceneSystem = null;
+            }
+            if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(serviceType))
+            {
+                teleportSystem = null;
+            }
         }
 
         /// <summary>
