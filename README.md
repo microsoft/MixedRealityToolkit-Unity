@@ -20,6 +20,9 @@ MRTK-Unity is a Microsoft-driven project that provides a set of components and f
 | Ultraleap Hand Tracking | Ultraleap Leap Motion controller |
 | Mobile | iOS and Android |
 
+| NOTE: We have introduced the public preview of MRTK3, the next chapter of MRTK. For documentation, please go to the [MRTK3 documentation](https://aka.ms/mrtk3). For code, please go to the [mrtk3 branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk3). |
+| --- |
+
 # Getting started with MRTK
 
 If you're new to MRTK or Mixed Reality development in Unity, **we recommend you start at the beginning of our** [Unity development journey](https://docs.microsoft.com/windows/mixed-reality/unity-development-overview?tabs=mrtk%2Chl2) in the Microsoft Docs. The Unity development journey is specifically tailored to walk new developers through the installation, core concepts, and usage of MRTK.
@@ -106,7 +109,7 @@ See [Examples Hub README page](https://docs.microsoft.com/windows/mixed-reality/
 
 # Session videos from Mixed Reality Dev Days 2020
 
-| [![MRDevDays](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRDevDays_Session1.png)](https://channel9.msdn.com/Shows/Docs-Mixed-Reality/Intro-to-MRTK-Unity)| [![MRDevDays](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRDevDays_Session2.png)](https://channel9.msdn.com/Shows/Docs-Mixed-Reality/MRTKs-UX-Building-Blocks)| [![MRDevDays](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRDevDays_Session3.png)](https://channel9.msdn.com/Shows/Docs-Mixed-Reality/MRTK-Performance-and-Shaders)|
+| [![MRDevDays](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRDevDays_Session1.png)](https://docs.microsoft.com/shows/Mixed-Reality/Intro-to-MRTK-Unity)| [![MRDevDays](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRDevDays_Session2.png)](https://docs.microsoft.com/shows/Mixed-Reality/MRTKs-UX-Building-Blocks)| [![MRDevDays](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/images/MRDevDays_Session3.png)](https://docs.microsoft.com/shows/Mixed-Reality/MRTK-Performance-and-Shaders)|
 |:--- | :--- | :--- |
 | Tutorial on how to create a simple MRTK app from start to finish. Learn about interaction concepts and MRTK’s multi-platform capabilities. | Deep dive on the MRTK’s UX building blocks that help you build beautiful mixed reality experiences. | An introduction to performance tools, both in MRTK and external, as well as an overview of the MRTK Standard Shader. |
 
