@@ -204,6 +204,7 @@ MonoBehaviour:
   defaultPointerExtent: 10
   sphereCastRadius: 0.15
   touchableDistance: 0.2
+  sourcePoseOffset: 0.075
   sceneQueryBufferSize: 64
   ignoreCollidersNotInFOV: 1
   pokeLayerMasks:

@@ -110,11 +110,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await GetDeviceOsInfoAsync(targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return null;
             }
 
-            return JsonUtility.FromJson<DeviceOsInfo>(await response.GetResponseBody());
+            return JsonUtility.FromJson<DeviceOsInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -136,11 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await GetMachineNameAsync(targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return null;
             }
 
-            return JsonUtility.FromJson<MachineName>(await response.GetResponseBody());
+            return JsonUtility.FromJson<MachineName>(response.ResponseBody);
         }
 
         /// <summary>
@@ -162,11 +162,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await GetBatteryStateAsync(targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return null;
             }
 
-            return JsonUtility.FromJson<BatteryInfo>(await response.GetResponseBody());
+            return JsonUtility.FromJson<BatteryInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 return null;
             }
 
-            return JsonUtility.FromJson<PowerStateInfo>(await response.GetResponseBody());
+            return JsonUtility.FromJson<PowerStateInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                             continue;
                         }
 
-                        Debug.LogError(await response.GetResponseBody());
+                        Debug.LogError(response.ResponseBody);
                         return false;
                     }
 
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 await RestartAsync(targetDevice);
             }
 
-            Debug.LogError(await response.GetResponseBody());
+            Debug.LogError(response.ResponseBody);
             return false;
         }
 
@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await ShutdownAsync(targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return false;
             }
 
@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
             if (response.Successful)
             {
-                var processList = JsonUtility.FromJson<ProcessList>(await response.GetResponseBody());
+                var processList = JsonUtility.FromJson<ProcessList>(response.ResponseBody);
                 for (int i = 0; i < processList.Processes.Length; ++i)
                 {
                     if (processList.Processes[i].ImageName.Contains(appInfo.Name))
@@ -315,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 return await IsAppRunningAsync(packageName, targetDevice, appInfo);
             }
 
-            Debug.LogError($"{await response.GetResponseBody()}");
+            Debug.LogError($"{response.ResponseBody}");
             return false;
         }
 
@@ -358,11 +358,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await GetAllInstalledAppsAsync(targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return null;
             }
 
-            return JsonUtility.FromJson<InstalledApps>(await response.GetResponseBody());
+            return JsonUtility.FromJson<InstalledApps>(response.ResponseBody);
         }
 
         /// <summary>
@@ -485,7 +485,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
             if (response.Successful)
             {
-                var status = JsonUtility.FromJson<InstallStatus>(await response.GetResponseBody());
+                var status = JsonUtility.FromJson<InstallStatus>(response.ResponseBody);
 
                 if (status == null)
                 {
@@ -545,7 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 }
 
                 Debug.LogError($"Failed to uninstall {packageName} on {targetDevice.ToString()}");
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return false;
             }
 
@@ -582,7 +582,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await LaunchAppAsync(packageName, targetDevice);
                 }
 
-                Debug.LogError($"{response.ResponseCode}|{await response.GetResponseBody()}");
+                Debug.LogError($"{response.ResponseCode}|{response.ResponseBody}");
                 return false;
             }
 
@@ -624,7 +624,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await StopAppAsync(packageName, targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return false;
             }
 
@@ -666,11 +666,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await DownloadLogFileAsync(packageName, targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return string.Empty;
             }
 
-            File.WriteAllText(logFile, await response.GetResponseBody());
+            File.WriteAllText(logFile, response.ResponseBody);
             return logFile;
 
         }
@@ -694,11 +694,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await GetIpConfigInfoAsync(targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return null;
             }
 
-            return JsonUtility.FromJson<IpConfigInfo>(await response.GetResponseBody());
+            return JsonUtility.FromJson<IpConfigInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -721,11 +721,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await GetAvailableWiFiNetworksAsync(targetDevice, interfaceInfo);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return null;
             }
 
-            return JsonUtility.FromJson<AvailableWiFiNetworks>(await response.GetResponseBody());
+            return JsonUtility.FromJson<AvailableWiFiNetworks>(response.ResponseBody);
         }
 
         /// <summary>
@@ -766,11 +766,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await GetWiFiNetworkInterfacesAsync(targetDevice);
                 }
 
-                Debug.LogError(await response.GetResponseBody());
+                Debug.LogError(response.ResponseBody);
                 return null;
             }
 
-            return JsonUtility.FromJson<NetworkInterfaces>(await response.GetResponseBody());
+            return JsonUtility.FromJson<NetworkInterfaces>(response.ResponseBody);
         }
 
         /// <summary>
@@ -827,9 +827,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 {
                     // If null, authentication succeeded but we had no cookie token in the response.
                     // This usually means Unity has a cached token, so it can be ignored.
-                    if (await response.GetResponseBody() != null)
+                    if (response.ResponseBody != null)
                     {
-                        targetDevice.CsrfToken = await response.GetResponseBody();
+                        targetDevice.CsrfToken = response.ResponseBody;
 
                         // Strip the beginning of the cookie header
                         targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
@@ -837,7 +837,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 }
                 else
                 {
-                    Debug.LogError($"Authentication failed! {await response.GetResponseBody()}");
+                    Debug.LogError($"Authentication failed! {response.ResponseBody}");
                 }
 
                 if (!string.IsNullOrEmpty(targetDevice.CsrfToken))
@@ -898,15 +898,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
-
-                byte[] downloadHandlerData = webRequest.downloadHandler?.data;
-                string downloadHandlerText = await ResponseUtils.BytesToString(downloadHandlerData);
-
+                string downloadHandlerText = webRequest.downloadHandler?.text;
                 Debug.LogError($"REST Auth Error: {responseCode}\n{downloadHandlerText}{responseHeaders}");
-                return new Response(false, $"{downloadHandlerText}", downloadHandlerData, responseCode);
+                return new Response(false, $"{downloadHandlerText}", webRequest.downloadHandler?.data, responseCode);
             }
 
-            return new Response(true, new Task<string>(() => webRequest.GetResponseHeader("Set-Cookie")), () => webRequest.downloadHandler?.data, responseCode);
+            return new Response(true, () => webRequest.GetResponseHeader("Set-Cookie"), () => webRequest.downloadHandler?.data, responseCode);
         }
     }
 }

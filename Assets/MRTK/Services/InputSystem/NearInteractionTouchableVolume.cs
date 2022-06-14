@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using UnityEngine;
@@ -52,9 +52,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // inside object, use vector to centre as normal
                 normal = samplePoint - TouchableCollider.bounds.center;
                 normal.Normalize();
-                // Return value less than zero so that when poke pointer is inside
-                // object, it will not raise a touch up event.
-                return -1;
+
+                // Try to calculate the proper penetration distance, to allow more accurate processing of touchable volumes.
+                // Return value less than zero so that when poke pointer is inside object, it will not raise a touch up event.
+                float rayScale = 1.1f;
+                Vector3 outsidePoint = TouchableCollider.bounds.center + normal * (TouchableCollider.bounds.extents.magnitude * rayScale);
+                if (TouchableCollider.Raycast(new Ray(outsidePoint, -normal), out RaycastHit raycastHit, TouchableCollider.bounds.size.magnitude * rayScale))
+                {
+                    return -Vector3.Distance(raycastHit.point, samplePoint);
+                }
+                else
+                {
+                    // Somehow we didn't hit the object, although we're touching it.
+                    // Fallback to the max possible value, so other volumes may get favored over this.
+                    return -TouchableCollider.bounds.extents.magnitude;
+                }
             }
             else
             {

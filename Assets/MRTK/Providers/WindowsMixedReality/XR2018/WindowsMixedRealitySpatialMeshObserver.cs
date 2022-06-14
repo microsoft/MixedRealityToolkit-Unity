@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         protected override void CreateObserver()
         {
-            if (SpatialAwarenessSystem == null) { return; }
+            if (Service == null) { return; }
 
 #if UNITY_WSA
             if (observer == null)
@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
-            if (SpatialAwarenessSystem == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
+            if (Service == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
 
             using (UpdateObserverPerfMarker.Auto())
             {
@@ -525,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
                     // Send the mesh removed event
                     meshEventData.Initialize(this, id, null);
-                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                    Service?.HandleEvent(meshEventData, OnMeshRemoved);
                 }
             }
         }
@@ -545,8 +545,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     // Do not destroy the game object, destroy the meshes.
                     SpatialAwarenessMeshObject.Cleanup(availableMeshObject, false);
 
-                    availableMeshObject.GameObject.name = "Unused Spatial Mesh";
-                    availableMeshObject.GameObject.SetActive(false);
+                    if (availableMeshObject.GameObject != null)
+                    {
+                        availableMeshObject.GameObject.name = "Unused Spatial Mesh";
+                        availableMeshObject.GameObject.SetActive(false);
+                    }
 
                     spareMeshObject = availableMeshObject;
                 }
@@ -713,11 +716,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 meshEventData.Initialize(this, meshObject.Id, meshObject);
                 if (isMeshUpdate)
                 {
-                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
+                    Service?.HandleEvent(meshEventData, OnMeshUpdated);
                 }
                 else
                 {
-                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
+                    Service?.HandleEvent(meshEventData, OnMeshAdded);
                 }
             }
         }

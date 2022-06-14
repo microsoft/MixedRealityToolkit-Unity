@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -11,26 +12,40 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     [AddComponentMenu("Scripts/MRTK/Examples/TetheredPlacement")]
     public class TetheredPlacement : MonoBehaviour
     {
-        [Tooltip("The distance from the GameObject's spawn position at which will trigger a respawn ")]
-        public float DistanceThreshold = 20.0f;
+        [SerializeField, Tooltip("The distance from the GameObject's spawn position at which will trigger a respawn."), FormerlySerializedAs("DistanceThreshold")]
+        private float distanceThreshold = 20.0f;
 
-        private Vector3 RespawnPoint;
-        private Quaternion RespawnOrientation;
+        /// <summary>
+        /// The distance from the GameObject's spawn position at which will trigger a respawn.
+        /// </summary>
+        /// <remarks>Also updates a local cache of this value squared for performant distance checking.</remarks>
+        public float DistanceThreshold
+        {
+            get => distanceThreshold;
+            set
+            {
+                distanceThreshold = value;
+                distanceThresholdSquared = distanceThreshold * distanceThreshold;
+            }
+        }
 
+        private Vector3 localRespawnPosition;
+        private Quaternion localRespawnRotation;
         private Rigidbody rigidBody;
+        private float distanceThresholdSquared;
 
         private void Start()
         {
             rigidBody = GetComponent<Rigidbody>();
-
             LockSpawnPoint();
+            distanceThresholdSquared = distanceThreshold * distanceThreshold;
         }
 
         private void LateUpdate()
         {
-            float distanceSqr = (RespawnPoint - this.transform.position).sqrMagnitude;
+            float distanceSqr = (localRespawnPosition - transform.localPosition).sqrMagnitude;
 
-            if (distanceSqr > DistanceThreshold * DistanceThreshold)
+            if (distanceSqr > distanceThresholdSquared)
             {
                 // Reset any velocity from falling or moving when respawning to original location
                 if (rigidBody != null)
@@ -39,15 +54,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     rigidBody.angularVelocity = Vector3.zero;
                 }
 
-                this.transform.SetPositionAndRotation(RespawnPoint, RespawnOrientation);
+                transform.localPosition = localRespawnPosition;
+                transform.localRotation = localRespawnRotation;
             }
         }
 
+        /// <summary>
+        /// Updates the local respawn pose to the objects current pose.
+        /// </summary>
         public void LockSpawnPoint()
         {
-            RespawnPoint = this.transform.position;
-            RespawnOrientation = this.transform.rotation;
+            localRespawnPosition = transform.localPosition;
+            localRespawnRotation = transform.localRotation;
         }
     }
-
 }

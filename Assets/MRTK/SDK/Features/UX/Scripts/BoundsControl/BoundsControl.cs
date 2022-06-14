@@ -950,9 +950,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
             {
                 MeshFilter meshFilter = childTransform.GetComponent<MeshFilter>();
+                SkinnedMeshRenderer skinnedMeshRenderer = childTransform.GetComponent<SkinnedMeshRenderer>();
                 if (meshFilter != null && meshFilter.sharedMesh != null)
                 {
                     rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, meshFilter.sharedMesh.bounds);
+                }
+                else if (skinnedMeshRenderer != null && skinnedMeshRenderer.sharedMesh != null)
+                {
+                    rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, skinnedMeshRenderer.sharedMesh.bounds);
                 }
                 else
                 {

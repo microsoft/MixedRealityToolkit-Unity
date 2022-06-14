@@ -48,8 +48,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         public override void Initialize()
         {
             base.Initialize();
+#if !UNITY_2020_1_OR_NEWER
             UnityEngine.Debug.Log(@"Detected a potential deployment issue for the Oculus Quest. In order to use hand tracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
 The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
+#endif
         }
 #endif
 
@@ -57,8 +59,8 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         private readonly Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
 
         private OVRCameraRig cameraRig;
-        private OVRControllerHelper leftControllerHelper;
-        private OVRControllerHelper rightControllerHelper;
+        internal OVRControllerHelper leftControllerHelper;
+        internal OVRControllerHelper rightControllerHelper;
 
         private OVRHand rightHand;
         private OVRSkeleton rightSkeleton;
@@ -90,34 +92,6 @@ The tool can be found under <i>Mixed Reality > Toolkit > Utilities > Oculus > In
         #endregion IMixedRealityCapabilityCheck Implementation
 
         #region Controller Utilities
-
-#if OCULUSINTEGRATION_PRESENT
-        /// <inheritdoc />
-        protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
-        {
-            GenericXRSDKController controller = base.GetOrAddController(inputDevice);
-
-            if (!cameraRig.IsNull() && controller is OculusXRSDKTouchController oculusTouchController && oculusTouchController.OculusControllerVisualization == null)
-            {
-                GameObject platformVisualization = null; 
-                if (oculusTouchController.ControllerHandedness == Handedness.Left)
-                {
-                    platformVisualization = leftControllerHelper.gameObject;
-                }
-                if (oculusTouchController.ControllerHandedness == Handedness.Right)
-                {
-                    platformVisualization = rightControllerHelper.gameObject;
-                }
-
-                if(platformVisualization != null)
-                {
-                    oculusTouchController.RegisterControllerVisualization(platformVisualization);
-                }
-            }
-
-            return controller;
-        }
-#endif
 
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)

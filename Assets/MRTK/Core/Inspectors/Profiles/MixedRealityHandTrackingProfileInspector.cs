@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty jointPrefab;
         private SerializedProperty palmPrefab;
         private SerializedProperty fingertipPrefab;
-        private SerializedProperty handMeshPrefab;
+        private SerializedProperty systemHandMeshMaterial;
+        private SerializedProperty riggedHandMeshMaterial;
         private SerializedProperty handMeshVisualizationModes;
         private SerializedProperty handJointVisualizationModes;
 
@@ -27,7 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             jointPrefab = serializedObject.FindProperty("jointPrefab");
             fingertipPrefab = serializedObject.FindProperty("fingertipPrefab");
             palmPrefab = serializedObject.FindProperty("palmPrefab");
-            handMeshPrefab = serializedObject.FindProperty("handMeshPrefab");
+            systemHandMeshMaterial = serializedObject.FindProperty("systemHandMeshMaterial");
+            riggedHandMeshMaterial = serializedObject.FindProperty("riggedHandMeshMaterial");
             handMeshVisualizationModes = serializedObject.FindProperty("handMeshVisualizationModes");
             handJointVisualizationModes = serializedObject.FindProperty("handJointVisualizationModes");
         }
@@ -47,7 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(jointPrefab);
                 EditorGUILayout.PropertyField(palmPrefab);
                 EditorGUILayout.PropertyField(fingertipPrefab);
-                EditorGUILayout.PropertyField(handMeshPrefab);
+                EditorGUILayout.PropertyField(systemHandMeshMaterial);
+                EditorGUILayout.PropertyField(riggedHandMeshMaterial);
 
                 EditorGUILayout.LabelField("Visualization settings", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(handMeshVisualizationModes);

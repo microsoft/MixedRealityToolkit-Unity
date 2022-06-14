@@ -1,0 +1,96 @@
+fileFormatVersion: 2
+guid: cc5d8ddb263e1fb4fa64b4865e68d9e4
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: main/glTF Scene right
+    100002: main/glTF Scene right/root
+    100004: main/glTF Scene right/root/a_button_pressed_max
+    100006: main/glTF Scene right/root/a_button_pressed_min
+    100008: main/glTF Scene right/root/a_button_pressed_value
+    100010: main/glTF Scene right/root/a_button_pressed_value/a_button
+    100012: main/glTF Scene right/root/b_button_pressed_max
+    100014: main/glTF Scene right/root/b_button_pressed_min
+    100016: main/glTF Scene right/root/b_button_pressed_value
+    100018: main/glTF Scene right/root/b_button_pressed_value/b_button
+    100020: main/glTF Scene right/root/controller
+    100022: main/glTF Scene right/root/thumbrest_pressed_max
+    100024: main/glTF Scene right/root/thumbrest_pressed_min
+    100026: main/glTF Scene right/root/thumbrest_pressed_value
+    100028: main/glTF Scene right/root/xr_standard_squeeze_pressed_max
+    100030: main/glTF Scene right/root/xr_standard_squeeze_pressed_min
+    100032: main/glTF Scene right/root/xr_standard_squeeze_pressed_value
+    100034: main/glTF Scene right/root/xr_standard_squeeze_pressed_value/squeeze
+    100036: main/glTF Scene right/root/xr_standard_thumbstick_pressed_max
+    100038: main/glTF Scene right/root/xr_standard_thumbstick_pressed_min
+    100040: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value
+    100042: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_max
+    100044: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_min
+    100046: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value
+    100048: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_max
+    100050: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_min
+    100052: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_value
+    100054: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_value/thumbstick
+    100056: main/glTF Scene right/root/xr_standard_trigger_pressed_max
+    100058: main/glTF Scene right/root/xr_standard_trigger_pressed_min
+    100060: main/glTF Scene right/root/xr_standard_trigger_pressed_value
+    100062: main/glTF Scene right/root/xr_standard_trigger_pressed_value/trigger
+    400000: main/glTF Scene right/Transform
+    400002: main/glTF Scene right/root/Transform
+    400004: main/glTF Scene right/root/a_button_pressed_max/Transform
+    400006: main/glTF Scene right/root/a_button_pressed_min/Transform
+    400008: main/glTF Scene right/root/a_button_pressed_value/Transform
+    400010: main/glTF Scene right/root/a_button_pressed_value/a_button/Transform
+    400012: main/glTF Scene right/root/b_button_pressed_max/Transform
+    400014: main/glTF Scene right/root/b_button_pressed_min/Transform
+    400016: main/glTF Scene right/root/b_button_pressed_value/Transform
+    400018: main/glTF Scene right/root/b_button_pressed_value/b_button/Transform
+    400020: main/glTF Scene right/root/controller/Transform
+    400022: main/glTF Scene right/root/thumbrest_pressed_max/Transform
+    400024: main/glTF Scene right/root/thumbrest_pressed_min/Transform
+    400026: main/glTF Scene right/root/thumbrest_pressed_value/Transform
+    400028: main/glTF Scene right/root/xr_standard_squeeze_pressed_max/Transform
+    400030: main/glTF Scene right/root/xr_standard_squeeze_pressed_min/Transform
+    400032: main/glTF Scene right/root/xr_standard_squeeze_pressed_value/Transform
+    400034: main/glTF Scene right/root/xr_standard_squeeze_pressed_value/squeeze/Transform
+    400036: main/glTF Scene right/root/xr_standard_thumbstick_pressed_max/Transform
+    400038: main/glTF Scene right/root/xr_standard_thumbstick_pressed_min/Transform
+    400040: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/Transform
+    400042: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_max/Transform
+    400044: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_min/Transform
+    400046: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/Transform
+    400048: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_max/Transform
+    400050: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_min/Transform
+    400052: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_value/Transform
+    400054: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_value/thumbstick/Transform
+    400056: main/glTF Scene right/root/xr_standard_trigger_pressed_max/Transform
+    400058: main/glTF Scene right/root/xr_standard_trigger_pressed_min/Transform
+    400060: main/glTF Scene right/root/xr_standard_trigger_pressed_value/Transform
+    400062: main/glTF Scene right/root/xr_standard_trigger_pressed_value/trigger/Transform
+    2100000: skel_controller_materials_controllerMTL
+    2300000: main/glTF Scene right/root/a_button_pressed_value/a_button/MeshRenderer
+    2300002: main/glTF Scene right/root/b_button_pressed_value/b_button/MeshRenderer
+    2300004: main/glTF Scene right/root/controller/MeshRenderer
+    2300006: main/glTF Scene right/root/xr_standard_squeeze_pressed_value/squeeze/MeshRenderer
+    2300008: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_value/thumbstick/MeshRenderer
+    2300010: main/glTF Scene right/root/xr_standard_trigger_pressed_value/trigger/MeshRenderer
+    2800000: Texture_0
+    2800002: Texture_1
+    3300000: main/glTF Scene right/root/a_button_pressed_value/a_button/MeshFilter
+    3300002: main/glTF Scene right/root/b_button_pressed_value/b_button/MeshFilter
+    3300004: main/glTF Scene right/root/controller/MeshFilter
+    3300006: main/glTF Scene right/root/xr_standard_squeeze_pressed_value/squeeze/MeshFilter
+    3300008: main/glTF Scene right/root/xr_standard_thumbstick_pressed_value/xr_standard_thumbstick_xaxis_pressed_value/xr_standard_thumbstick_yaxis_pressed_value/thumbstick/MeshFilter
+    3300010: main/glTF Scene right/root/xr_standard_trigger_pressed_value/trigger/MeshFilter
+    4300000: controller_plyShape.004
+    4300002: controller_plyShape.005
+    4300004: controller_plyShape
+    4300006: controller_plyShape.002
+    4300008: controller_plyShape.003
+    4300010: controller_plyShape.001
+    11400000: glTF data
+    100100000: main
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 75911c45f303c8f45927f5efeaa50cc4, type: 3}

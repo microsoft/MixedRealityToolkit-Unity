@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class RiggedHandVisualizer : BaseHandVisualizer
     {
-        // This bool is used to track whether or not we are recieving hand mesh data from the platform itself
+        // This bool is used to track whether or not we are receiving hand mesh data from the platform itself
         // If we aren't we will use our own rigged hand visualizer to render the hand mesh
-        private bool receivingPlatformHandMesh => handMeshFilter != null;
+        private bool ReceivingPlatformHandMesh => handMeshFilter != null;
 
         /// <summary>
         /// Wrist Transform
@@ -101,13 +101,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public SkinnedMeshRenderer HandRenderer => handRenderer;
 
-        [SerializeField]
-        [Tooltip("Hand material to use for hand tracking hand mesh.")]
+        /// <summary>
+        /// Caching the hand material from CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial
+        /// </summary>
         private Material handMaterial = null;
 
         /// <summary>
         /// Hand material to use for hand tracking hand mesh.
         /// </summary>
+        [Obsolete("Use the CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial instead")]
         public Material HandMaterial => handMaterial;
 
         /// <summary>
@@ -265,7 +267,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
-            var handMaterialInstance = new Material(handMaterial);
+            MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
+
+            handMaterial = handTrackingProfile.RiggedHandMeshMaterial;
+            Material handMaterialInstance = new Material(handMaterial);
             handRenderer.sharedMaterial = handMaterialInstance;
             handRendererInitialized = true;
         }
@@ -280,32 +285,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return null;
         }
 
-        private static readonly ProfilerMarker OnHandJointsUpdatedPerfMarker = new ProfilerMarker("[MRTK] RiggedHandVisualizer.OnHandJointsUpdated");
+        private static readonly ProfilerMarker UpdateHandJointsPerfMarker = new ProfilerMarker("[MRTK] RiggedHandVisualizer.UpdateHandJoints");
 
-        /// <inheritdoc/>
-        public override void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
+        protected override bool UpdateHandJoints()
         {
-            using (OnHandJointsUpdatedPerfMarker.Auto())
+            using (UpdateHandJointsPerfMarker.Auto())
             {
                 // The base class takes care of updating all of the joint data
-                base.OnHandJointsUpdated(eventData);
+                _ = base.UpdateHandJoints();
 
-                // exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform
-                if (receivingPlatformHandMesh)
+                // Exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform
+                if (ReceivingPlatformHandMesh || MixedRealityHand.IsNull())
                 {
                     HandRenderer.enabled = false;
-                    return;
+                    return false;
                 }
-
-                // Ensures that the hand only renders when the event data matches the controller this visualizer represents
-                if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
-                {
-                    return;
-                }
-                Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
 
                 IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
-                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
+                MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
 
                 // Only runs if render hand mesh is true
                 bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization;
@@ -320,20 +317,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         TrackedHandJoint handJoint = (TrackedHandJoint)i;
                         // Skip this hand joint if the event data doesn't have an entry for it
-                        if (!eventData.InputData.ContainsKey(handJoint))
+                        if (!MixedRealityHand.TryGetJoint(handJoint, out MixedRealityPose handJointPose))
                         {
                             continue;
                         }
-                        MixedRealityPose handJointPose = eventData.InputData[handJoint];
-                        Transform jointTransform = riggedVisualJointsArray[i];
 
+                        Transform jointTransform = riggedVisualJointsArray[i];
                         if (jointTransform != null)
                         {
                             if (handJoint == TrackedHandJoint.Palm)
                             {
-                                if (ModelPalmAtLeapWrist)
+                                if (ModelPalmAtLeapWrist && MixedRealityHand.TryGetJoint(TrackedHandJoint.Wrist, out MixedRealityPose wristPose))
                                 {
-                                    Palm.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
+                                    Palm.position = wristPose.Position;
                                 }
                                 else
                                 {
@@ -365,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                     handJoint == TrackedHandJoint.RingDistalJoint ||
                                     handJoint == TrackedHandJoint.PinkyDistalJoint))
                                 {
-                                    ScaleFingerTip(eventData, jointTransform, handJoint + 1, jointTransform.position);
+                                    ScaleFingerTip(jointTransform, handJoint + 1, jointTransform.position);
                                 }
                             }
                         }
@@ -400,6 +396,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
                 }
+
+                return true;
             }
         }
 
@@ -408,12 +406,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return Quaternion.Inverse(Quaternion.LookRotation(ModelFingerPointing, -ModelPalmFacing));
         }
 
-        private void ScaleFingerTip(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData, Transform jointTransform, TrackedHandJoint fingerTipJoint, Vector3 boneRootPos)
+        private void ScaleFingerTip(Transform jointTransform, TrackedHandJoint fingerTipJoint, Vector3 boneRootPos)
         {
             // Set fingertip base bone scale to match the bone length to the fingertip.
             // This will only scale correctly if the model was constructed to match
             // the standard "test" edit-time hand model from the LeapMotion TestHandFactory.
-            var boneTipPos = eventData.InputData[fingerTipJoint].Position;
+            if (!MixedRealityHand.TryGetJoint(fingerTipJoint, out MixedRealityPose pose))
+            {
+                return;
+            }
+
+            var boneTipPos = pose.Position;
             var boneVec = boneTipPos - boneRootPos;
 
             if (transform.lossyScale.x != 0f && transform.lossyScale.x != 1f)
