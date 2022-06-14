@@ -19,6 +19,8 @@ jobs:
   timeoutInMinutes: 90
   pool:
     name: Analog-Unity
+    demands:
+      - ImageVersionOverride -equals 20220218.0.1
   steps:
   - template: templates/common.yml
     parameters:
@@ -34,11 +36,13 @@ jobs:
       buildUWPArm: false
       buildUWPDotNet: false
       UnityVersion: $(Unity2019VersionInternal)
-  
+
 - job: Unity2020Validation
   timeoutInMinutes: 90
   pool:
     name: Analog-Unity
+    demands:
+      - ImageVersionOverride -equals 20220218.0.1
   steps:
   - template: templates/common.yml
     parameters:

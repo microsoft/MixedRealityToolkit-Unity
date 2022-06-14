@@ -14,7 +14,7 @@ jobs:
   - checkout: self
     clean: true
     fetchDepth: 1
-  
+
   - task: NuGetToolInstaller@1
 
   - task: PowerShell@2
@@ -42,7 +42,7 @@ jobs:
   - checkout: self
     clean: true
     fetchDepth: 1
-  
+
   - task: NuGetToolInstaller@1
 
   - task: PowerShell@2
