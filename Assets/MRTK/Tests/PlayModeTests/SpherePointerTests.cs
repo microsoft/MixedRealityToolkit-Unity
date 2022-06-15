@@ -14,7 +14,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 

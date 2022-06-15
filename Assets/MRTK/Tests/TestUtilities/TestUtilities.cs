@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -273,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeCamera()
         {
-            Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
+            Camera[] cameras = Object.FindObjectsOfType<Camera>();
 
             if (cameras.Length == 0)
             {
@@ -284,6 +285,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
+
+            // Ensure the AsyncCoroutineRunner is added to avoid log spam in the tests
+            if (Object.FindObjectOfType<AsyncCoroutineRunner>() == null)
+            {
+                new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
+            }
+
 #if UNITY_EDITOR
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene(configuration, true);
 #endif
