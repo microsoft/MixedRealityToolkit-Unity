@@ -373,16 +373,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Holds the pointer and the initial intersection point of the pointer ray
         /// with the object on pointer down in pointer space
         /// </summary>
-        private struct PointerData
+        private readonly struct PointerData
         {
-            private Vector3 initialGrabPointInPointer;
-
             public PointerData(IMixedRealityPointer pointer, Vector3 worldGrabPoint) : this()
             {
                 initialGrabPointInPointer = Quaternion.Inverse(pointer.Rotation) * (worldGrabPoint - pointer.Position);
                 Pointer = pointer;
                 IsNearPointer = pointer is IMixedRealityNearPointer;
             }
+
+            private readonly Vector3 initialGrabPointInPointer;
 
             public IMixedRealityPointer Pointer { get; }
 
@@ -575,14 +575,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 GetPointerGrabPoint(uint pointerId)
         {
-            int pointerDataListCount = pointerDataList.Count;
-            for (int i = 0; i < pointerDataListCount; i++)
+            if (TryGetPointerDataWithId(pointerId, out PointerData pointerData))
             {
-                PointerData pointerData = pointerDataList[i];
-                if (pointerData.Pointer.PointerId == pointerId)
-                {
-                    return pointerData.GrabPoint;
-                }
+                return pointerData.GrabPoint;
             }
             return Vector3.zero;
         }
@@ -605,20 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // If we only allow one handed manipulations, check there is no hand interacting yet.
             if (manipulationType != ManipulationHandFlags.OneHanded || pointerDataList.Count == 0)
             {
-                uint id = eventData.Pointer.PointerId;
-                bool pointerPresent = false;
-                int pointerDataListCount = pointerDataList.Count;
-                for (int i = 0; i < pointerDataListCount; i++)
-                {
-                    PointerData pointerData = pointerDataList[i];
-                    if (pointerData.Pointer.PointerId == id)
-                    {
-                        pointerPresent = true;
-                        break;
-                    }
-                }
-
-                if (!pointerPresent)
+                if (!TryGetPointerDataWithId(eventData.Pointer.PointerId, out _))
                 {
                     pointerDataList.Add(new PointerData(eventData.Pointer, eventData.Pointer.Result.Details.Point));
 
@@ -688,22 +670,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 velocity = GetPointersVelocity();
             Vector3 angularVelocity = GetPointersAngularVelocity();
 
-            uint id = eventData.Pointer.PointerId;
-            PointerData pointerDataToRemove = default;
-            bool removePointerData = false;
-            int pointerDataListCount = pointerDataList.Count;
-            for (int i = 0; i < pointerDataListCount; i++)
-            {
-                PointerData pointerData = pointerDataList[i];
-                if (pointerData.Pointer.PointerId == id)
-                {
-                    pointerDataToRemove = pointerData;
-                    removePointerData = true;
-                    break;
-                }
-            }
-
-            if (removePointerData)
+            if (TryGetPointerDataWithId(eventData.Pointer.PointerId, out PointerData pointerDataToRemove))
             {
                 pointerDataList.Remove(pointerDataToRemove);
             }
@@ -909,13 +876,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Private Event Handlers
 
         #region Unused Event Handlers
+
         /// <inheritdoc />
         public virtual void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+        /// <inheritdoc />
         public void OnBeforeFocusChange(FocusEventData eventData) { }
 
         #endregion Unused Event Handlers
 
         #region Private methods
+
+        private bool TryGetPointerDataWithId(uint id, out PointerData pointerData)
+        {
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
+            {
+                PointerData data = pointerDataList[i];
+                if (data.Pointer.PointerId == id)
+                {
+                    pointerData = data;
+                    return true;
+                }
+            }
+
+            pointerData = default(PointerData);
+            return false;
+        }
 
         private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
@@ -1080,6 +1066,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region Source Pose Handler Implementation
+
         /// <summary>
         /// Raised when the source pose tracking state is changed.
         /// </summary>
