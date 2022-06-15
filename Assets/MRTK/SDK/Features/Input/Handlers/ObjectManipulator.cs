@@ -462,8 +462,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3 GetPointersGrabPoint()
         {
             Vector3 sum = Vector3.zero;
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
+                PointerData pointerData = pointerDataList[i];
                 sum += pointerData.GrabPoint;
             }
             return sum / Math.Max(1, pointerDataList.Count);
@@ -484,8 +486,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 sumPos = Vector3.zero;
             Vector3 sumDir = Vector3.zero;
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
+                PointerData pointerData = pointerDataList[i];
                 sumPos += pointerData.Pointer.Position;
                 sumDir += pointerData.Pointer.Rotation * Vector3.forward;
             }
@@ -502,9 +506,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 sum = Vector3.zero;
             int numControllers = 0;
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
-                IMixedRealityController controller = pointerData.Pointer.Controller;
+                IMixedRealityController controller = pointerDataList[i].Pointer.Controller;
                 // Check pointer has a valid controller (e.g. gaze pointer doesn't)
                 if (controller != null)
                 {
@@ -519,9 +524,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 sum = Vector3.zero;
             int numControllers = 0;
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
-                IMixedRealityController controller = pointerData.Pointer.Controller;
+                IMixedRealityController controller = pointerDataList[i].Pointer.Controller;
                 // Check pointer has a valid controller (e.g. gaze pointer doesn't)
                 if (controller != null)
                 {
@@ -534,9 +540,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool IsNearManipulation()
         {
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
-                if (pointerData.IsNearPointer)
+                if (pointerDataList[i].IsNearPointer)
                 {
                     return true;
                 }
@@ -568,8 +575,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public Vector3 GetPointerGrabPoint(uint pointerId)
         {
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
+                PointerData pointerData = pointerDataList[i];
                 if (pointerData.Pointer.PointerId == pointerId)
                 {
                     return pointerData.GrabPoint;
@@ -598,8 +607,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 uint id = eventData.Pointer.PointerId;
                 bool pointerPresent = false;
-                foreach (PointerData pointerData in pointerDataList)
+                int pointerDataListCount = pointerDataList.Count;
+                for (int i = 0; i < pointerDataListCount; i++)
                 {
+                    PointerData pointerData = pointerDataList[i];
                     if (pointerData.Pointer.PointerId == id)
                     {
                         pointerPresent = true;
@@ -680,8 +691,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uint id = eventData.Pointer.PointerId;
             PointerData pointerDataToRemove = default;
             bool removePointerData = false;
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
+                PointerData pointerData = pointerDataList[i];
                 if (pointerData.Pointer.PointerId == id)
                 {
                     pointerDataToRemove = pointerData;
@@ -979,9 +992,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             uint index = 0;
-            foreach (PointerData pointerData in pointerDataList)
+            int pointerDataListCount = pointerDataList.Count;
+            for (int i = 0; i < pointerDataListCount; i++)
             {
-                handPositionMap[index++] = pointerData.Pointer.Position;
+                handPositionMap[index++] = pointerDataList[i].Pointer.Position;
             }
             return handPositionMap;
         }
