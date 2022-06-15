@@ -597,7 +597,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (currentGrabbable == null)
                     {
-                        // Remove it from the cache if the grabbable is no longer valid for the object
+                        // Only remove the grabbable from the cache if it's gone null.
+                        // If we instead remove all invalid grabbables, we get stuck in a cycle of
+                        // calling GetComponent the next time this method is called, just to re-add
+                        // and immediately re-remove the invalid component from the cache, invalidating
+                        // any perf benefits of using the cache to avoid GetComponent.
                         _ = componentCache.Remove(instanceId);
                     }
 
