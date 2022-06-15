@@ -27,7 +27,7 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class PlayModeTestUtilities
+    public static class PlayModeTestUtilities
     {
         // Unity's default scene name for a recently created scene
         const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
