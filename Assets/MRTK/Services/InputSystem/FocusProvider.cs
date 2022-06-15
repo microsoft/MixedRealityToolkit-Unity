@@ -492,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private event PrimaryPointerChangedHandler PrimaryPointerChanged;
 
-        private IMixedRealityInputSystem InputSystem => inputSystem != null ? inputSystem : inputSystem = CoreServices.InputSystem;
+        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = CoreServices.InputSystem);
         private IMixedRealityInputSystem inputSystem = null;
 
         #region IMixedRealityService Implementation
