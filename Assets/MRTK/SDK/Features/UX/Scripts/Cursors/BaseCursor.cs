@@ -152,9 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Vector3 targetScale;
         protected Quaternion targetRotation;
 
-        private static IMixedRealityInputSystem inputSystem;
-        private static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = CoreServices.InputSystem);
-
         #region IMixedRealityCursor Implementation
 
         /// <inheritdoc />
@@ -357,13 +354,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void Update()
         {
             // Skip Update if the input system is missing during a runtime profile switch
-            if (InputSystem == null || InputSystem.FocusProvider == null)
+            if (CoreServices.InputSystem == null ||
+                CoreServices.InputSystem.FocusProvider == null)
             {
                 return;
             }
 
-            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails)
-                && InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+            if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails)
+                && CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
             {
                 Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
                 return;
@@ -393,16 +391,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void RegisterManagers()
         {
-            if (InputSystem == null)
+            IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+            if (inputSystem == null)
             {
                 return;
             }
 
             // Register the cursor as a listener, so that it can always get input events it cares about
-            InputSystem.RegisterHandler<IMixedRealityCursor>(this);
+            inputSystem.RegisterHandler<IMixedRealityCursor>(this);
 
             // Setup the cursor to be able to respond to input being globally enabled / disabled
-            if (InputSystem.IsInputEnabled)
+            if (inputSystem.IsInputEnabled)
             {
                 OnInputEnabled();
             }
@@ -411,8 +410,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 OnInputDisabled();
             }
 
-            InputSystem.InputEnabled += OnInputEnabled;
-            InputSystem.InputDisabled += OnInputDisabled;
+            inputSystem.InputEnabled += OnInputEnabled;
+            inputSystem.InputDisabled += OnInputDisabled;
         }
 
         /// <summary>
@@ -420,14 +419,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            if (InputSystem == null)
+            IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+            if (inputSystem != null)
             {
-                return;
+                inputSystem.InputEnabled -= OnInputEnabled;
+                inputSystem.InputDisabled -= OnInputDisabled;
+                inputSystem.UnregisterHandler<IMixedRealityCursor>(this);
             }
-
-            InputSystem.InputEnabled -= OnInputEnabled;
-            InputSystem.InputDisabled -= OnInputDisabled;
-            InputSystem.UnregisterHandler<IMixedRealityCursor>(this);
         }
 
         /// <summary>
@@ -441,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            GameObject newTargetedObject = InputSystem?.FocusProvider.GetFocusedObject(Pointer);
+            GameObject newTargetedObject = CoreServices.InputSystem?.FocusProvider.GetFocusedObject(Pointer);
             Vector3 lookForward;
 
             // If no game object is hit, put the cursor at the default distance
@@ -545,10 +543,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             SourceDownIds.Clear();
             VisibleSourcesCount = 0;
-            if (IsPointerValid && InputSystem != null)
+            if (IsPointerValid && CoreServices.InputSystem != null)
             {
                 uint cursorPointerId = Pointer.PointerId;
-                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
+                foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem.DetectedInputSources)
                 {
                     if (inputSource.SourceType != InputSourceType.Head && inputSource.SourceType != InputSourceType.Eyes)
                     {
