@@ -1119,6 +1119,14 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     UnregisterService<IMixedRealitySpatialAwarenessSystem>();
                 }
+                else if (typeof(IMixedRealitySceneSystem).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealitySceneSystem>();
+                }
+                else if (typeof(IMixedRealityRaycastProvider).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityRaycastProvider>();
+                }
                 else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityTeleportSystem>();
