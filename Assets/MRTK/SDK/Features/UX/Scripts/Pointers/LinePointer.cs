@@ -117,11 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (!IsInteractionEnabled)
                 {
-                    LineBase.enabled = false;
-                    if (BaseCursor != null)
-                    {
-                        BaseCursor.SetVisibility(false);
-                    }
                     return;
                 }
 
