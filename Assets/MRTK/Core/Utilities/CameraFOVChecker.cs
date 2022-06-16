@@ -15,8 +15,12 @@ namespace Microsoft.MixedReality.Toolkit
     {
         // Help to clear caches when new frame runs
         private static int inFOVLastCalculatedFrame = -1;
+#if !NETFX_CORE
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
         private static Dictionary<ValueTuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<ValueTuple<Collider, Camera>, bool>();
+#else
+        private static Dictionary<Tuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<Tuple<Collider, Camera>, bool>();
+#endif
         // List of corners shared across all sphere pointer query instances --
         // used to store list of corners for a bounds. Shared and static
         // to avoid allocating memory each frame
@@ -37,7 +41,12 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
+#if !NETFX_CORE
             ValueTuple<Collider, Camera> cameraColliderPair = ValueTuple.Create(myCollider, cam);
+#else
+            Tuple<Collider, Camera> cameraColliderPair = Tuple.Create(myCollider, cam);
+#endif
+
             bool result;
             if (inFOVLastCalculatedFrame != Time.frameCount)
             {
