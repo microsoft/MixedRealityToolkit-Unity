@@ -139,35 +139,35 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 boundarySystem = null;
             }
-            if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealityCameraSystem).IsAssignableFrom(serviceType))
             {
                 cameraSystem = null;
             }
-            if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(serviceType))
             {
                 diagnosticsSystem = null;
             }
-            if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealityFocusProvider).IsAssignableFrom(serviceType))
             {
                 focusProvider = null;
             }
-            if (typeof(IMixedRealityInputSystem).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(serviceType))
             {
                 inputSystem = null;
             }
-            if (typeof(IMixedRealityRaycastProvider).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealityRaycastProvider).IsAssignableFrom(serviceType))
             {
                 raycastProvider = null;
             }
-            if (typeof(IMixedRealitySceneSystem).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealitySceneSystem).IsAssignableFrom(serviceType))
             {
                 sceneSystem = null;
             }
-            if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(serviceType))
             {
                 sceneSystem = null;
             }
-            if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(serviceType))
+            else if (typeof(IMixedRealityTeleportSystem).IsAssignableFrom(serviceType))
             {
                 teleportSystem = null;
             }

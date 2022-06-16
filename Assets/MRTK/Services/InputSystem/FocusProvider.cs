@@ -492,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private event PrimaryPointerChangedHandler PrimaryPointerChanged;
 
-        private IMixedRealityInputSystem InputSystem => inputSystem != null ? inputSystem : inputSystem = CoreServices.InputSystem;
+        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = CoreServices.InputSystem);
         private IMixedRealityInputSystem inputSystem = null;
 
         #region IMixedRealityService Implementation
@@ -800,7 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (RegisterPointersPerfMarker.Auto())
             {
                 // If our input source does not have any pointers, then skip.
-                if (inputSource.Pointers == null)
+                if (inputSource.Pointers == null || inputSource.Pointers.Length == 0)
                 {
                     return;
                 }
@@ -845,9 +845,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // Special Registration for Gaze
                     // Refreshes gazeProviderPointingData to a new reference to the current EventSystem 
-                    if (!gazeProvider.IsNull()
-                        && inputSource.SourceId == gazeProvider.GazeInputSource.SourceId
-                        && gazeProviderPointingData == null)
+                    if (gazeProviderPointingData == null
+                        && !gazeProvider.IsNull()
+                        && inputSource.SourceId == gazeProvider.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData = new PointerEventData(EventSystem.current);
                     }
@@ -967,7 +967,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 ReconcilePointers();
 
-                foreach (var pointerMediator in pointerMediators)
+                foreach (KeyValuePair<uint, IMixedRealityPointerMediator> pointerMediator in pointerMediators)
                 {
                     // This will be handled by the new pointer mediator ideally...
                     pointerMediator.Value.UpdatePointers();
@@ -976,7 +976,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #if UNITY_EDITOR
                 int pointerCount = 0;
 #endif
-                foreach (var pointerData in pointersList)
+                foreach (PointerData pointerData in pointersList)
                 {
                     UpdatePointer(pointerData);
 
@@ -1433,25 +1433,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float totalDistance = 0.0f;
                 for (int i = 0; i < pointer.Rays.Length; i++)
                 {
-                    if (RaycastGraphicsStep(graphicEventData, pointer.Rays[i], prioritizedLayerMasks, out raycastResult))
+                    if (RaycastGraphicsStep(graphicEventData, pointer.Rays[i], prioritizedLayerMasks, out raycastResult) &&
+                        raycastResult.isValid &&
+                        raycastResult.distance < pointer.Rays[i].Length &&
+                        raycastResult.module != null &&
+                        raycastResult.module.eventCamera == UIRaycastCamera)
                     {
-                        if (raycastResult.isValid &&
-                            raycastResult.distance < pointer.Rays[i].Length &&
-                            raycastResult.module != null &&
-                            raycastResult.module.eventCamera == UIRaycastCamera)
-                        {
-                            totalDistance += raycastResult.distance;
+                        totalDistance += raycastResult.distance;
 
-                            newUiRaycastPosition.x = raycastResult.screenPosition.x;
-                            newUiRaycastPosition.y = raycastResult.screenPosition.y;
-                            newUiRaycastPosition.z = raycastResult.distance;
+                        newUiRaycastPosition.x = raycastResult.screenPosition.x;
+                        newUiRaycastPosition.y = raycastResult.screenPosition.y;
+                        newUiRaycastPosition.z = raycastResult.distance;
 
-                            Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
-                            Vector3 normal = -raycastResult.gameObject.transform.forward;
+                        Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
+                        Vector3 normal = -raycastResult.gameObject.transform.forward;
 
-                            hit.Set(raycastResult, worldPos, normal, pointer.Rays[i], i, totalDistance);
-                            return;
-                        }
+                        hit.Set(raycastResult, worldPos, normal, pointer.Rays[i], i, totalDistance);
+                        return;
                     }
 
                     totalDistance += pointer.Rays[i].Length;
@@ -1471,8 +1469,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.Assert(step.Direction != Vector3.zero, "RayStep Direction is Invalid.");
 
                 // Move the uiRaycast camera to the current pointer's position.
-                UIRaycastCamera.transform.position = step.Origin;
-                UIRaycastCamera.transform.rotation = Quaternion.LookRotation(step.Direction, Vector3.up);
+                UIRaycastCamera.transform.SetPositionAndRotation(step.Origin, Quaternion.LookRotation(step.Direction, Vector3.up));
 
                 // We always raycast from the center of the camera.
                 graphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
@@ -1656,14 +1653,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion
 
         #region IPointerPreferences Implementation
+
         private List<PointerPreferences> customPointerBehaviors = new List<PointerPreferences>();
 
         /// <inheritdoc />
         public PointerBehavior GetPointerBehavior(IMixedRealityPointer pointer)
         {
+            IMixedRealityController controller = pointer.Controller;
+            IMixedRealityInputSource inputSourceParent = pointer.InputSourceParent;
+
             // Assumption: all pointers have controllers, input sources, except the gaze pointers
             // if the controller, input source is null, return the gaze pointer behavior here.
-            if (pointer.Controller == null || pointer.InputSourceParent == null)
+            if (controller == null || inputSourceParent == null)
             {
                 // gazepointer means input source is null
                 return GazePointerBehavior;
@@ -1671,8 +1672,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return GetPointerBehavior(
                 pointer.GetType(),
-                pointer.Controller.ControllerHandedness,
-                pointer.InputSourceParent.SourceType);
+                controller.ControllerHandedness,
+                inputSourceParent.SourceType);
         }
 
         /// <summary>
@@ -1691,7 +1692,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private PointerBehavior GetPointerBehavior(Type type, Handedness handedness, InputSourceType sourceType)
         {
-            for (int i = 0; i < customPointerBehaviors.Count; i++)
+            int customPointerBehaviorsCount = customPointerBehaviors.Count;
+            for (int i = 0; i < customPointerBehaviorsCount; i++)
             {
                 if (customPointerBehaviors[i].Matches(type, sourceType))
                 {
@@ -1708,7 +1710,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void SetPointerBehavior<T>(Handedness handedness, InputSourceType inputType, PointerBehavior pointerBehavior) where T : class, IMixedRealityPointer
         {
             PointerPreferences preference = null;
-            for (int i = 0; i < customPointerBehaviors.Count; i++)
+            int customPointerBehaviorsCount = customPointerBehaviors.Count;
+            for (int i = 0; i < customPointerBehaviorsCount; i++)
             {
                 if (customPointerBehaviors[i].Matches(typeof(T), inputType))
                 {
@@ -1725,22 +1728,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private class PointerPreferences
         {
-            public InputSourceType InputSourceType;
-            public Type PointerType;
+            public InputSourceType InputSourceType { get; }
+            public Type PointerType { get; }
 
             public bool Matches(Type queryType, InputSourceType queryInputType)
             {
-                return Matches(queryType) && queryInputType == InputSourceType;
+                return queryInputType == InputSourceType && queryType.IsAssignableFrom(PointerType);
             }
 
-            public bool Matches(Type queryType)
-            {
-                return queryType.IsAssignableFrom(PointerType);
-            }
+            public PointerBehavior Left { get; private set; }
+            public PointerBehavior Right { get; private set; }
+            public PointerBehavior Other { get; private set; }
 
-            public PointerBehavior Left;
-            public PointerBehavior Right;
-            public PointerBehavior Other;
             public PointerBehavior GetBehaviorForHandedness(Handedness h)
             {
                 if ((h & Handedness.Right) != 0)
@@ -1757,6 +1756,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 return PointerBehavior.Default;
             }
+
             public void SetBehaviorForHandedness(
                 Handedness h,
                 PointerBehavior b)
@@ -1774,6 +1774,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Other = b;
                 }
             }
+
             public PointerPreferences(Type pointerType, InputSourceType inputType)
             {
                 Left = PointerBehavior.Default;
@@ -1783,6 +1784,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 PointerType = pointerType;
             }
         }
+
         #endregion
     }
 }
