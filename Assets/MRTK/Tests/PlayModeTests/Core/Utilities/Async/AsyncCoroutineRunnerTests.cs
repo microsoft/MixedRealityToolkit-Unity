@@ -27,10 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestNonRootParenting()
         {
-            // Set up the AsyncCoroutineRunner to be parented under the MixedRealityWorkspace,
+            // Set up the AsyncCoroutineRunner to be parented under the MixedRealityPlayspace,
             // to validate that the runner will correctly unparent it.
-            GameObject asyncCoroutineRunner = new GameObject("AsyncCoroutineRunner");
-            asyncCoroutineRunner.AddComponent<AsyncCoroutineRunner>();
+            AsyncCoroutineRunner asyncCoroutineRunner = Object.FindObjectOfType<AsyncCoroutineRunner>();
+            if (asyncCoroutineRunner == null)
+            {
+                asyncCoroutineRunner = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
+            }
             GameObject mixedRealityPlayspace = GameObject.Find("MixedRealityPlayspace");
             asyncCoroutineRunner.transform.parent = mixedRealityPlayspace.transform;
 

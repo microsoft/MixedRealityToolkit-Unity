@@ -1671,7 +1671,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
-            Quaternion initialObjectRotation = testObject.transform.rotation;
             testObject.transform.position = initialObjectPosition;
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
