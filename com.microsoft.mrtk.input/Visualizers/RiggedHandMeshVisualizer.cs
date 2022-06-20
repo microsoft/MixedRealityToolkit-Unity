@@ -293,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnEnable();
         }
 
-        private void LateUpdate()
+        private void Update()
         {
             if (handsSubsystem == null)
             {

@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: modelFingerPointing.x
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: LittleRootIsMetacarpal

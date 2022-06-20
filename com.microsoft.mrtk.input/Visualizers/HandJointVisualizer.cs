@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnEnable();
         }
 
-        private void LateUpdate()
+        private void Update()
         {
             // Query all joints in the hand.
             if (handsSubsystem == null || !handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
