@@ -112,7 +112,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5563719874692974202}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: palm
+      value: 
+      objectReference: {fileID: 5563719874692974202}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: Wrist
+      value: 
+      objectReference: {fileID: 5563719874692974202}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: wrist
       value: 
       objectReference: {fileID: 5563719874692974202}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
@@ -124,6 +132,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: ringRoot
+      value: 
+      objectReference: {fileID: 5563719874692974154}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: IndexRoot
       value: 
       objectReference: {fileID: 5563719874692974146}
@@ -132,11 +144,27 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5563719874692974194}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: indexRoot
+      value: 
+      objectReference: {fileID: 5563719874692974146}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: thumbRoot
+      value: 
+      objectReference: {fileID: 5563719874692974194}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: LittleRoot
       value: 
       objectReference: {fileID: 5563719874692974170}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: MiddleRoot
+      value: 
+      objectReference: {fileID: 5563719874692974162}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: littleRoot
+      value: 
+      objectReference: {fileID: 5563719874692974170}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: middleRoot
       value: 
       objectReference: {fileID: 5563719874692974162}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
@@ -160,6 +188,10 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: modelPalmFacing.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: ScaleLastFingerBone
       value: 0
       objectReference: {fileID: 0}
@@ -177,6 +209,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: ModelFingerPointing.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: modelFingerPointing.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}

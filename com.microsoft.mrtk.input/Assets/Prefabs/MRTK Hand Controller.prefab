@@ -580,21 +580,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handNode: 4
-  Palm: {fileID: 0}
-  Wrist: {fileID: 0}
-  ThumbRoot: {fileID: 0}
+  palm: {fileID: 0}
+  wrist: {fileID: 0}
+  thumbRoot: {fileID: 0}
   ThumbRootIsMetacarpal: 1
-  IndexRoot: {fileID: 0}
+  indexRoot: {fileID: 0}
   IndexRootIsMetacarpal: 1
-  MiddleRoot: {fileID: 0}
+  middleRoot: {fileID: 0}
   MiddleRootIsMetacarpal: 1
-  RingRoot: {fileID: 0}
+  ringRoot: {fileID: 0}
   RingRootIsMetacarpal: 1
-  LittleRoot: {fileID: 0}
+  littleRoot: {fileID: 0}
   LittleRootIsMetacarpal: 1
-  DeformPosition: 1
-  ModelFingerPointing: {x: 0, y: 0, z: 0}
-  ModelPalmFacing: {x: 0, y: 0, z: 0}
+  deformPosition: 0
+  modelFingerPointing: {x: 0, y: 0, z: 0}
+  modelPalmFacing: {x: 0, y: 0, z: 0}
   handMaterial: {fileID: 0}
   handRenderer: {fileID: 0}
 --- !u!114 &5622072183809274356

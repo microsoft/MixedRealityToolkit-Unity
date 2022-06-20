@@ -16066,7 +16066,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3969343301381823962, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.004999995
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 4042998139036849030, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
       propertyPath: m_TextStyleHashCode
