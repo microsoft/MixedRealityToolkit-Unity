@@ -196,8 +196,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return (frequency < 0.0f) ? (Time.time / 0.000001f) * -1.0f : (Time.time / frequency) * -1.0f;
                 }
-                
-                return (frequency < 0.0f) ? Time.time / 0.000001f : Time.time / frequency;
+                else
+                {
+                    return (frequency < 0.0f) ? Time.time / 0.000001f : Time.time / frequency;
+                }
             }
         }
 
