@@ -142,9 +142,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         pointer.IsActive = true;
                         unassignedPointers.Remove(pointer);
 
-                        if (pointer.InputSourceParent != null)
+                        HashSet<IMixedRealityPointer> children;
+
+                        if (pointer.InputSourceParent != null && pointerByInputSourceParent.TryGetValue(pointer.InputSourceParent, out children))
                         {
-                            foreach (IMixedRealityPointer otherPointer in pointerByInputSourceParent[pointer.InputSourceParent])
+                            foreach (IMixedRealityPointer otherPointer in children)
                             {
                                 if (!unassignedPointers.Contains(otherPointer))
                                 {
@@ -172,9 +174,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         pointer.IsActive = true;
                         unassignedPointers.Remove(pointer);
 
-                        if (pointer.InputSourceParent != null)
+                        HashSet<IMixedRealityPointer> children;
+
+                        if (pointer.InputSourceParent != null && pointerByInputSourceParent.TryGetValue(pointer.InputSourceParent, out children))
                         {
-                            foreach (IMixedRealityPointer otherPointer in pointerByInputSourceParent[pointer.InputSourceParent])
+                            foreach (IMixedRealityPointer otherPointer in children)
                             {
                                 if (!unassignedPointers.Contains(otherPointer))
                                 {
@@ -210,9 +214,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         pointer.IsActive = true;
                         unassignedPointers.Remove(pointer);
 
-                        if (pointer.InputSourceParent != null)
+                        HashSet<IMixedRealityPointer> children;
+
+                        if (pointer.InputSourceParent != null && pointerByInputSourceParent.TryGetValue(pointer.InputSourceParent, out children))
                         {
-                            foreach (IMixedRealityPointer otherPointer in pointerByInputSourceParent[pointer.InputSourceParent])
+                            foreach (IMixedRealityPointer otherPointer in children)
                             {
                                 if (!unassignedPointers.Contains(otherPointer) || !farInteractPointers.Contains(otherPointer))
                                 {
