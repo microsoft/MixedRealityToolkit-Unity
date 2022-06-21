@@ -16,6 +16,7 @@ using UnityEngine.XR.OpenXR;
 #if MSFT_OPENXR && WINDOWS_UWP
 using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
+using Windows.UI.Input.Spatial;
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
@@ -80,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
 #if MSFT_OPENXR && WINDOWS_UWP
             CreateGestureRecognizers();
+            SpatialInteractionManager.SourcePressed += SpatialInteractionManager_SourcePressed;
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
             base.Enable();
@@ -114,6 +116,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             base.Update();
 
             CheckForGestures();
+
+            if (shouldSendVoiceEvents)
+            {
+                MicrosoftOpenXRGGVHand controller = GetOrAddVoiceController();
+                if (controller != null)
+                {
+                    // RaiseOnInputDown for "select"
+                    controller.UpdateVoiceState(true);
+                    // RaiseOnInputUp for "select"
+                    controller.UpdateVoiceState(false);
+
+                    // On WMR, the voice recognizer does not actually register the phrase 'select'
+                    // when you add it to the speech commands profile. Therefore, simulate
+                    // the "select" voice command running to ensure that we get a select voice command
+                    // registered. This is used by FocusProvider to detect when the select pointer is active.
+                    Service?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+                }
+
+                shouldSendVoiceEvents = false;
+            }
         }
 
         /// <inheritdoc />
@@ -139,6 +161,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             navigationGestureRecognizer?.Dispose();
 #endif
             navigationGestureRecognizer = null;
+
+            SpatialInteractionManager.SourcePressed -= SpatialInteractionManager_SourcePressed;
+
+            if (voiceController != null)
+            {
+                RemoveControllerFromScene(voiceController);
+                voiceController = null;
+            }
 
             base.Disable();
         }
@@ -529,5 +559,75 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
         #endregion Gesture implementation
+
+        #region SpatialInteractionManager event and helpers
+
+#if MSFT_OPENXR && WINDOWS_UWP
+        /// <summary>
+        /// SDK Interaction Source Pressed Event handler. Used only for voice.
+        /// </summary>
+        /// <param name="args">SDK source pressed event arguments</param>
+        private void SpatialInteractionManager_SourcePressed(SpatialInteractionManager sender, SpatialInteractionSourceEventArgs args)
+        {
+            if (args.State.Source.Kind == SpatialInteractionSourceKind.Voice)
+            {
+                shouldSendVoiceEvents = true;
+            }
+        }
+
+        private MicrosoftOpenXRGGVHand voiceController = null;
+        private bool shouldSendVoiceEvents = false;
+
+        private MicrosoftOpenXRGGVHand GetOrAddVoiceController()
+        {
+            if (voiceController != null)
+            {
+                return voiceController;
+            }
+
+            IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource("Mixed Reality Voice", sourceType: InputSourceType.Voice);
+            MicrosoftOpenXRGGVHand detectedController = new MicrosoftOpenXRGGVHand(TrackingState.NotTracked, Utilities.Handedness.None, inputSource);
+
+            if (!detectedController.Enabled)
+            {
+                // Controller failed to be setup correctly.
+                // Return null so we don't raise the source detected.
+                return null;
+            }
+
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
+
+            Service?.RaiseSourceDetected(detectedController.InputSource, detectedController);
+
+            voiceController = detectedController;
+            return voiceController;
+        }
+
+        private SpatialInteractionManager spatialInteractionManager = null;
+
+        /// <summary>
+        /// Provides access to the current native SpatialInteractionManager.
+        /// </summary>
+        private SpatialInteractionManager SpatialInteractionManager
+        {
+            get
+            {
+                if (spatialInteractionManager == null)
+                {
+                    UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+                    {
+                        spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
+                    }, true);
+                }
+
+                return spatialInteractionManager;
+            }
+        }
+#endif // MSFT_OPENXR && WINDOWS_UWP
+
+        #endregion SpatialInteractionManager events
     }
 }
