@@ -1,4 +1,4 @@
-name: CodeValidation
+name: Code Validation (MRTK2)
 
 on:
   push:
