@@ -8,7 +8,7 @@ variables:
 jobs:
 - job: CodeValidation
   pool:
-      vmImage: windows-2019
+      vmImage: windows-latest
   steps:
     - template: templates/validation.yml
     
