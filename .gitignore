@@ -1,14 +1,15 @@
 # =============== #
 # Unity generated #
 # =============== #
-[Tt]emp/
-[Oo]bj/
-[Bb]in/
-[Bb]uilds/
-[Bb]uild/
-[Ll]ibrary/
-[Aa]pp/
-[Uu]serSettings/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Bb]in/
+**/[Bb]uilds/
+**/[Bb]uild/
+**/[Ll]ibrary/
+**/[Aa]pp/
+**/[Uu]serSettings/
+**/[Ll]ogs/
 UWP/
 WindowsStoreApp/
 WSA/
@@ -64,8 +65,8 @@ obj/
 # Project Specific List #
 # ===================== #
 artifacts/
-Assets/ThirdParty*
-Assets/TextMesh Pro*
+**/Assets/ThirdParty*
+**/Assets/TextMesh Pro*
 --Version/
 Assets/StreamingAssets/GltfModels/
 Assets/StreamingAssets/GltfModels.meta
