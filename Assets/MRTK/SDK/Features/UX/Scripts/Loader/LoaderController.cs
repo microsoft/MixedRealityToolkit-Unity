@@ -209,13 +209,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Transform dot01;
         private Vector3 dot01NewPos = Vector3.zero;
-        private Vector3 dot01NewScale = Vector3.zero;
-        private Vector3 dot01NewRot = Vector3.zero;
 
         private Transform dot02;
         private Vector3 dot02NewPos = Vector3.zero;
-        private Vector3 dot02NewScale = Vector3.zero;
-        private Vector3 dot02NewRot = Vector3.zero;
 
         private const float tau = Mathf.PI * 2.0f;
 

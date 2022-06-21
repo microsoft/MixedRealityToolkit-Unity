@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         protected LayerMask InvalidTeleportationLayers
         {
-            get 
+            get
             {
                 LayerMask raycastedLayerMasks = new LayerMask();
                 for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
                 return ~ValidTeleportationLayers & raycastedLayerMasks;
             }
-        }            
+        }
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     }
                 }
                 lateRegisterTeleport = false;
-                CoreServices.TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
+                CoreServices.TeleportSystem?.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
