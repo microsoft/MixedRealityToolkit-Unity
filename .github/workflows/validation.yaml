@@ -1,0 +1,32 @@
+name: CodeValidation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validation:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Get Pull Request changes
+      if: github.event_name == 'pull_request'
+      run: |
+        ./scripts/ci/gitchanges.ps1 -TargetBranch '${{ github.base_ref }}' -OutputFile '${{ runner.temp }}/build/changed_files.txt' -RepoRoot '${{ github.workspace }}'
+      shell: pwsh
+
+    - name: Scoped code validation
+      if: github.event_name == 'pull_request'
+      run: |
+        ./scripts/ci/validatecode.ps1 -Directory '${{ github.workspace }}/Assets' -ChangesFile '${{ runner.temp }}/build/changed_files.txt' -RepoRoot '${{ github.workspace }}'
+      shell: pwsh
+
+    - name: Global code validation
+      if: github.event_name == 'push'
+      run: |
+        ./scripts/ci/validatecode.ps1 -Directory '${{ github.workspace }}/Assets' -RepoRoot '${{ github.workspace }}'
+      shell: pwsh

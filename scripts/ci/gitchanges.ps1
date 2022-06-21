@@ -24,7 +24,7 @@
     In particular, this will checkout (via this command:
     git fetch --force --tags --prune --progress --no-recurse-submodules origin $(System.PullRequest.TargetBranch))
 .EXAMPLE
-    .\githubchanges.ps1 -OutputFile c:\path\to\changes\file.txt -RepoRoot c:\path\to\mrtk -TargetBranch main
+    .\gitchanges.ps1 -OutputFile c:\path\to\changes\file.txt -RepoRoot c:\path\to\mrtk -TargetBranch main
 #>
 param(
     # The target branch that the pull request will merge into (e.g. main)
@@ -64,6 +64,10 @@ $gitDir = Join-Path -Path $RepoRoot -ChildPath ".git"
 # needed to do the diff.
 git --git-dir=$gitDir --work-tree=$RepoRoot fetch --depth=1 --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
 
+if ($TargetBranch.StartsWith("refs/heads/")) {
+    $TargetBranch = $TargetBranch.Substring(11); # The length of "refs/heads/", which is pre-pended when the repo is in ADO.
+}
+
 # The set of changed files is the diff between the target branch and the pull request
 # branch that was checked out locally.
 $changedFiles = $(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only ..origin/$TargetBranch 2>&1)
@@ -74,6 +78,7 @@ foreach ($changedFile in $changedFiles) {
     # of the file, in case this set of information is used later in the pipeline on a different
     # machine/context.
     if (Test-Path $joinedPath -PathType leaf) {
+        Write-Host $changedFile
         Add-Content -Path $OutputFile -Value $changedFile
     }
 }
