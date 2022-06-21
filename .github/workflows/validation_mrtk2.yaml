@@ -25,8 +25,22 @@ jobs:
         ./scripts/ci/validatecode.ps1 -Directory '${{ github.workspace }}/Assets' -ChangesFile '${{ runner.temp }}/build/changed_files.txt' -RepoRoot '${{ github.workspace }}'
       shell: pwsh
 
+    # todo: uncomment when #8944 is implemented
+    # - name: Scoped asset dependency validation
+    #   if: github.event_name == 'pull_request'
+    #   run: |
+    #     ./scripts/ci/validateassets.ps1 -Directory '${{ github.workspace }}/Assets' -ChangesFile '${{ runner.temp }}/build/changed_files.txt' -RepoRoot '${{ github.workspace }}'
+    #   shell: pwsh
+
     - name: Global code validation
       if: github.event_name == 'push'
       run: |
-        ./scripts/ci/validatecode.ps1 -Directory '${{ github.workspace }}/Assets' -RepoRoot '${{ github.workspace }}'
+        ./scripts/ci/validatecode.ps1 -Directory '${{ github.workspace }}/Assets'
+      shell: pwsh
+
+    - name: Global asset dependency validation
+      # todo: uncomment when #8944 is implemented
+      # if: github.event_name == 'push'
+      run: |
+        ./scripts/ci/validateassets.ps1 -Directory '${{ github.workspace }}/Assets'
       shell: pwsh
