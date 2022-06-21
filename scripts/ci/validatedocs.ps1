@@ -261,10 +261,9 @@ if (($ChangesFile) -and (Test-Path $Output -PathType leaf)) {
 else {
     Write-Host "Checking $Directory for common doc issues:"
 
-    $docFiles = Get-ChildItem $Directory *.md -Recurse | Select-Object FullName
-    foreach ($docFile in $docFiles) {
-        Write-Host $docFile.FullName
-        if (CheckDocument $docFile.FullName) {
+    Get-ChildItem $Directory *.md -Recurse | ForEach-Object {
+        Write-Host $_
+        if (CheckDocument $_) {
             $containsIssue = $true
         }
     }
