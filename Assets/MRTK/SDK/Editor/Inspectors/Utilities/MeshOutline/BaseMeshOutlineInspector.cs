@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
 {
     /// <summary>
     /// A custom inspector for BaseMeshOutline.
-    /// Used for create && fix outline material
+    /// Used for create or fix outline material
     /// </summary>
     [CustomEditor(typeof(BaseMeshOutline), true)]
     public class BaseMeshOutlineInspector : UnityEditor.Editor
