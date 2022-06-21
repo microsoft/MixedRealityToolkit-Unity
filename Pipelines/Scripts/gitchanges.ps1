@@ -65,7 +65,7 @@ $gitDir = Join-Path -Path $RepoRoot -ChildPath ".git"
 git --git-dir=$gitDir --work-tree=$RepoRoot fetch --depth=1 --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
 
 if ($TargetBranch.StartsWith("refs/heads/")) {
-    $TargetBranch = $TargetBranch.Substring(11); # The length of "refs/heads/", which is prepended when the repo is in ADO.
+    $TargetBranch = $TargetBranch.Substring(11); # The length of "refs/heads/", which is pre-pended when the repo is in ADO.
 }
 
 # The set of changed files is the diff between the target branch and the pull request
