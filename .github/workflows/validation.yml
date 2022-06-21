@@ -1,0 +1,34 @@
+name: CodeValidation
+
+on:
+  push:
+    branches: [ "mrtk3" ]
+  pull_request:
+    branches: [ "mrtk3" ]
+
+jobs:
+  validation:
+    runs-on: windows-latest
+    env:
+      CHANGED_FILE: '${{ runner.temp }}/build/changed_files.txt'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Get Pull Request changes
+      if: github.event_name == 'pull_request'
+      run: |
+        ./pipelines/scripts/gitchanges/ps1 -TargetBranch '${{ github.base_ref }}' -OutputFile $CHANGED_FILE -RepoRoot '${{ github.workspace }}'
+      shell: pwsh
+
+    - name: Scoped code validation
+      if: github.event_name == 'pull_request'
+      run: |
+        ./pipelines/scripts/validatecode.ps1 -Directory '${{ github.workspace }}' -ChangesFile $CHANGED_FILE
+      shell: pwsh
+
+    - name: Global code validation
+      if: github.event_name == 'push'
+      run: |
+        ./pipelines/scripts/validatecode.ps1 -Directory '${{ github.workspace }}'
+      shell: pwsh
