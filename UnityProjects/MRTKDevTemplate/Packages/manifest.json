@@ -62,12 +62,15 @@
   "testables": [
     "com.microsoft.mrtk.accessibility",
     "com.microsoft.mrtk.core",
-    "com.microsoft.mrtk.uxcore",
-    "com.microsoft.mrtk.uxcomponents",
     "com.microsoft.mrtk.data",
     "com.microsoft.mrtk.diagnostics",
     "com.microsoft.mrtk.environment",
+    "com.microsoft.mrtk.extendedassets",
     "com.microsoft.mrtk.input",
-    "com.microsoft.mrtk.spatialmanipulation"
+    "com.microsoft.mrtk.spatialmanipulation",
+    "com.microsoft.mrtk.standardassets",
+    "com.microsoft.mrtk.uxcomponents",
+    "com.microsoft.mrtk.uxcore",
+    "com.microsoft.mrtk.windowsspeech"
   ]
 }
