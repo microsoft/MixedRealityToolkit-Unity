@@ -8,7 +8,7 @@ steps:
   displayName: 'Get PullRequest Changes'
   inputs:
     targetType: filePath
-    filePath: ./scripts/ci/githubchanges.ps1
+    filePath: ./scripts/ci/gitchanges.ps1
     arguments: >
       -TargetBranch: '$(System.PullRequest.TargetBranch)'
       -OutputFile: '${{ parameters.changesFile }}'

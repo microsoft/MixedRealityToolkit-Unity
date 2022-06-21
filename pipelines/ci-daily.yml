@@ -6,12 +6,6 @@ variables:
   value: false
 
 jobs:
-- job: CodeValidation
-  pool:
-      vmImage: windows-2019
-  steps:
-    - template: templates/validation.yml
-    
 - job: Unity2019Validation
   timeoutInMinutes: 120
   pool:
