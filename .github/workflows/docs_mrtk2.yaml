@@ -1,0 +1,22 @@
+name: Docs Validation (MRTK2)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validation:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Validate docs
+      run: |
+        ./scripts/ci/validatedocs.ps1 -Directory: '${{ github.workspace }}/Documentation'
+
+    - name: Validate experimental docs
+      run: |
+        ./scripts/ci/validatedocs.ps1 -Directory: '${{ github.workspace }}/Assets'
