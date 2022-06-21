@@ -252,17 +252,18 @@ if (($ChangesFile) -and (Test-Path $Output -PathType leaf)) {
     $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
 
     foreach ($changedFile in $changedFiles) {
+        Write-Host $changedFile
         if ((IsMarkdownFile -Filename $changedFile) -and (CheckDocument $changedFile)) {
             $containsIssue = $true;
         }
     }
 }
 else {
-    Write-Host "Checking $Directory for common doc issues"
+    Write-Host "Checking $Directory for common doc issues:"
 
-    $docFiles = Get-ChildItem $Directory *.md -Recurse | Select-Object FullName
-    foreach ($docFile in $docFiles) {
-        if (CheckDocument $docFile.FullName) {
+    Get-ChildItem $Directory *.md -Recurse | ForEach-Object {
+        Write-Host $_
+        if (CheckDocument $_) {
             $containsIssue = $true
         }
     }
