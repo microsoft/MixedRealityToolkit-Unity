@@ -489,7 +489,7 @@ function CheckAsmDef {
         #         $assetFileName = GetProjectRelativePath($FileName)
         #         if (-Not $AsmDefExceptions.Contains($assetFileName)) {
         #             Write-Warning @"
-        # New Assembly Definition asset was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions "
+        # New Assembly Definition asset was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions
         # after a discussion with the rest of the team determining if the asmdef is necessary.
         # "@
         #             $containsIssue = $true
