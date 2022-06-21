@@ -403,8 +403,10 @@ function CheckInitializeOnLoad {
                 ($FileContent[$LineNumber] -notmatch "^\s*//")) {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
-                Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
-                Write-Warning "to `$InitializeOnLoadExceptions after discussion with the rest of the team."
+                Write-Warning @"
+A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added
+to `$InitializeOnLoadExceptions after discussion with the rest of the team.
+"@
                 $hasIssue = $true
 
                 Write-Host "`"$assetFileName`","
@@ -653,8 +655,10 @@ function CheckAsmDef {
         $containsIssue = $false
         $assetFileName = GetProjectRelativePath($FileName)
         if (-Not $AsmDefExceptions.Contains($assetFileName)) {
-            Write-Warning "New Asmdef was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions "
-            Write-Warning "after a discussion with the rest of the team determining if the asmdef is necessary."
+            Write-Warning @"
+New Assembly Definition asset was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions
+after a discussion with the rest of the team determining if the asmdef is necessary.
+"@
             $containsIssue = $true
         }
         $containsIssue
