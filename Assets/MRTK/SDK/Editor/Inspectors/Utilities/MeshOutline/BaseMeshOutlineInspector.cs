@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
                 }
             }
 
-            //Draw other properties
+            // Draw other properties
             DrawPropertiesExcluding(serializedObject, nameof(m_Script), nameof(outlineMaterial));
 
             if (EditorGUI.EndChangeCheck())
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
                             return !material.IsKeywordEnabled(x.Key);
                         }
                     default:
-                        //default return value
+                        // Default return value
                         return false;
                 }
             });
