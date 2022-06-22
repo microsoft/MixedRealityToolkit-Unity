@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
         private SerializedProperty m_Script;
         private SerializedProperty outlineMaterial;
 
-        private readonly string standardShaderName = "Mixed Reality Toolkit/Standard";
+        private string MrtkStandardShaderName => StandardShaderUtility.MrtkStandardShaderName;
 
         private readonly Dictionary<string, object> defaultOutlineMaterialSettings = new Dictionary<string, object>()
         {
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
 
         private Material CreateNewMaterial()
         {
-            var material = new Material(Shader.Find(standardShaderName));
+            var material = new Material(Shader.Find(MrtkStandardShaderName));
             ForceUpdateToDefaultOutlineMaterial(ref material);
             AssetDatabase.CreateAsset(material, $"Assets/{Selection.activeGameObject.name}Mat.mat");
             return material;
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
         {
             if (!IsCorrectShader(material))
             {
-                material.shader = Shader.Find(standardShaderName);
+                material.shader = Shader.Find(MrtkStandardShaderName);
             }
 
             foreach (var pair in defaultOutlineMaterialSettings)
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
 
         private bool IsCorrectShader(Material material)
         {
-            return material.shader.name.Equals(standardShaderName);
+            return material.shader.name.Equals(MrtkStandardShaderName);
         }
         private void DrawReadonlyPropertyField(SerializedProperty property, params GUILayoutOption[] options)
         {
