@@ -109,9 +109,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private Vector3 modelPalmFacing;
 
+        /// <summary>
+        /// Used to track whether the hand material has the appropriate property
+        /// </summary>
+        [SerializeField]
+        [HideInInspector]
+        private bool showMissingPropertyWarning = true;
+
         [SerializeField]
         [Tooltip("Hand material to use for hand tracking hand mesh.")]
+        [ShowInfoIf(UnityEditor.MessageType.Warning, "provided material is missing property " + pinchStrengthMaterialProperty, "showMissingPropertyWarning")]
         private Material handMaterial = null;
+
+        /// <summary>
+        /// Used to track whether the hand renderer was provided
+        /// </summary>
+        [SerializeField]
+        [HideInInspector]
+        private bool showMissingRendererWarning = false;
+
+        [SerializeField]
+        [Tooltip("Renderer of the hand mesh")]
+        [ShowInfoIf(UnityEditor.MessageType.Warning, "Rigged Mesh Renderer is missing", "showMissingRendererWarning")]
+        private SkinnedMeshRenderer handRenderer = null;
 
         /// <summary>
         /// The property block which is used to modify the press intensity property on the material
@@ -156,16 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return null;
         }
 
-        [SerializeField]
-        [Tooltip("Renderer of the hand mesh")]
-        private SkinnedMeshRenderer handRenderer = null;
-
         protected readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
-
-        ///// <summary>
-        ///// Flag to only show a only show a warning once
-        ///// </summary>
-        private bool displayedMaterialPropertyWarning = false;
         #endregion
 
         // Initializing rigged visuals stuff
@@ -260,7 +271,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
             handRenderer.material = handMaterial;
-            propertyBlock = new MaterialPropertyBlock();
         }
 
         protected void OnEnable()
@@ -282,6 +292,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Disable the rigged hand renderer when this component is disabled
             handRenderer.enabled = false;
+        }
+
+        protected void OnValidate()
+        {
+            // Skip these steps if the handRenderer is null
+            if (handRenderer == null)
+            {
+                showMissingRendererWarning = true;
+                return;
+            }
+            else
+            {
+                showMissingRendererWarning = false;
+            }
+
+            // Set the handRenderer's material to the provided material if applicable
+            if (handMaterial != null)
+            {
+                handRenderer.sharedMaterial = handMaterial;
+            }
+
+            // Check if the handRenderer's material has the pinchStrengthMaterialProperty
+            if (!handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
+            {
+                Debug.LogWarning(String.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchStrengthMaterialProperty));
+                showMissingPropertyWarning = true;
+            }
+            else
+            {
+                showMissingPropertyWarning = false;
+            }
         }
 
         /// <summary>
@@ -362,23 +403,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Update the hand material
             float pinchStrength = Mathf.Pow(selectedness, 2.0f);
 
-            if (handMaterial != null)
-            {
-                // This can be propertyBlock.HasFloat(), but that is only in unity 2021+
-                if (handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
-                {
-                    // Set the property on the handRenderer
-                    handRenderer.GetPropertyBlock(propertyBlock);  
-                    propertyBlock.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
-                    handRenderer.SetPropertyBlock(propertyBlock);
-                }
-                // Only show this warning once
-                else if (!displayedMaterialPropertyWarning)
-                {
-                    Debug.LogWarning(String.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchStrengthMaterialProperty));
-                    displayedMaterialPropertyWarning = true;
-                }
-            }
+
+            handRenderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
+            handRenderer.SetPropertyBlock(propertyBlock);
         }
     }
 }

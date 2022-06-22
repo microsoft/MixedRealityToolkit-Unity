@@ -595,7 +595,7 @@ MonoBehaviour:
   deformPosition: 0
   modelFingerPointing: {x: 0, y: 0, z: 0}
   modelPalmFacing: {x: 0, y: 0, z: 0}
-  handMaterial: {fileID: 0}
+  handMaterial: {fileID: 2100000, guid: 46180a965b426614f97a7239d1248a1a, type: 2}
   handRenderer: {fileID: 0}
 --- !u!114 &5622072183809274356
 MonoBehaviour:

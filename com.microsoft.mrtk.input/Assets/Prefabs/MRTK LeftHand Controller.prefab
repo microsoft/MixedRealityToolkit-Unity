@@ -59,6 +59,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: 95fdbeee899cda941a9083788b822772, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 46180a965b426614f97a7239d1248a1a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95fdbeee899cda941a9083788b822772, type: 3}
 --- !u!137 &3018685200774398680 stripped
@@ -217,6 +221,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: MiddleRootIsMetacarpal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: showMissingPropertyWarning
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: showMissingRendererWarning
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1173925932019795335, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
