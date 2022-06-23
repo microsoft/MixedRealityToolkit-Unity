@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using static Microsoft.MixedReality.Toolkit.Utilities.StandardShaderUtility;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
 {
@@ -18,8 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
         private BaseMeshOutline instance;
         private SerializedProperty m_Script;
         private SerializedProperty outlineMaterial;
-
-        private string MrtkStandardShaderName => StandardShaderUtility.MrtkStandardShaderName;
 
         private readonly Dictionary<string, object> defaultOutlineMaterialSettings = new Dictionary<string, object>()
         {
@@ -76,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
 
         private Material CreateNewMaterial()
         {
-            var material = new Material(Shader.Find(MrtkStandardShaderName));
+            var material = new Material(MrtkStandardShader);
             ForceUpdateToDefaultOutlineMaterial(ref material);
             AssetDatabase.CreateAsset(material, $"Assets/{Selection.activeGameObject.name}Mat.mat");
             return material;
@@ -84,9 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
 
         private void ForceUpdateToDefaultOutlineMaterial(ref Material material)
         {
-            if (!IsCorrectShader(material))
+            if (!IsUsingMrtkStandardShader(material))
             {
-                material.shader = Shader.Find(MrtkStandardShaderName);
+                material.shader = MrtkStandardShader;
             }
 
             foreach (var pair in defaultOutlineMaterialSettings)
@@ -115,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
 
         private bool IsCorrectMaterial(Material material)
         {
-            if (!IsCorrectShader(material))
+            if (!IsUsingMrtkStandardShader(material))
             {
                 return false;
             }
@@ -143,10 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
             });
         }
 
-        private bool IsCorrectShader(Material material)
-        {
-            return material.shader.name.Equals(MrtkStandardShaderName);
-        }
         private void DrawReadonlyPropertyField(SerializedProperty property, params GUILayoutOption[] options)
         {
             GUI.enabled = false;
