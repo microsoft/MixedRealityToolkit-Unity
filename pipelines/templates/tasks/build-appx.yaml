@@ -14,6 +14,9 @@ parameters:
 - name: BuildFolderPath
   type: string
 
+- name: Version
+  type: string
+
 steps:
 - ${{ each arch in parameters.Architectures }}:
   - task: MSBuild@1
@@ -27,7 +30,7 @@ steps:
     displayName: Copy ${{ arch }} AppX to artifacts staging directory
     inputs:
       ${{ if eq(arch, 'x86') }}:
-        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(MRTKVersion).0_Win32_Master_Test
+        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_${{ parameters.Version }}.0_Win32_Master_Test
       ${{ if not(eq(arch, 'x86')) }}:
-        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_$(MRTKVersion).0_${{ arch }}_Master_Test
+        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_${{ parameters.Version }}.0_${{ arch }}_Master_Test
       targetFolder: $(Build.ArtifactStagingDirectory)/Apps/uwp-${{ arch }}

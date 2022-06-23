@@ -50,6 +50,7 @@ steps:
         ProjectName: MixedRealityToolkit
         Architectures: [x86]
         BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+        Version: $(MRTKVersion)
 
     - task: PublishBuildArtifacts@1
       displayName: Publish x86 AppX
@@ -64,6 +65,7 @@ steps:
         ProjectName: MixedRealityToolkit
         Architectures: [ARM]
         BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+        Version: $(MRTKVersion)
 
     - task: PublishBuildArtifacts@1
       displayName: Publish ARM AppX
@@ -78,6 +80,7 @@ steps:
         ProjectName: MixedRealityToolkit
         Architectures: [ARM64]
         BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+        Version: $(MRTKVersion)
 
     - task: PublishBuildArtifacts@1
       displayName: Publish ARM64 AppX
