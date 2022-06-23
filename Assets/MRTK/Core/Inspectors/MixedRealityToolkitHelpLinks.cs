@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class MixedRealityToolkitHelpLinks : MonoBehaviour
     {
         internal const string MRTKIssuePageUrl = "https://github.com/microsoft/MixedRealityToolkit-Unity/issues";
-        internal const string MRTKDocsUrl = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/";
-        internal const string MRTKAPIRefUrl = "https://docs.microsoft.com/dotnet/api/microsoft.mixedreality.toolkit";
+        internal const string MRTKDocsUrl = "https://aka.ms/mrtk2docs";
+        internal const string MRTKAPIRefUrl = "https://aka.ms/mrtk2api";
 
         [MenuItem("Mixed Reality/Toolkit/Help/Show Documentation", false)]
         private static void ShowDocumentation()
