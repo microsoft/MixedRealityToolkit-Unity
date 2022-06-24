@@ -35,3 +35,5 @@ jobs:
       buildNumber: $(Version.Revision)
       previewNumber: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
       # publishToFeed: true
+
+  - template: Templates/unity.yaml
