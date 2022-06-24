@@ -31,6 +31,9 @@ parameters:
   default: false
 
 steps:
+- powershell: Install-Module PowerShellGet -Force
+  displayName: Update PowerShellGet
+
 - powershell: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
   displayName: Install unitysetup.powershell
 
