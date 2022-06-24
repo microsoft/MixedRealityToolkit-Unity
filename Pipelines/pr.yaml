@@ -14,5 +14,6 @@ jobs:
   steps:
   - checkout: self
     clean: true
+    fetchDepth: 3
 
   - template: Templates/unity.yaml
