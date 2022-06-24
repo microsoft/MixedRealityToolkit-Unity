@@ -31,7 +31,7 @@ steps:
 - powershell: |
     $logFile = Join-Path $(Agent.TempDirectory) "build_${{ parameters.BuildTarget }}.log"
     New-Item -Path $logFile -ItemType File -Force
-    if (${{ parameters.UnityVersion }} -eq "Latest") {
+    if ("${{ parameters.UnityVersion }}" -eq "Latest") {
       $proc = Start-UnityEditor -Project ${{ parameters.PathToProject }} -Latest -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -PassThru -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath ${{ parameters.OutputPath }} -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     }
     else {
