@@ -1,0 +1,37 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# CI build producing developer packages.
+
+variables:
+- template: Config/settings.yaml
+- name: Version.Revision
+  value: $[counter(variables['MRTKVersion'], 1)]
+- name: Version.PreReleaseTag
+  value: $[format('pre.{0}', variables['MRTKReleaseTag'])]
+- name: Version.PreReleaseRevision
+  value: $[counter(variables['Version.PreReleaseTag'], 1)]
+
+pr: none # disable PR validation
+
+jobs:
+- job: UnityValidation
+  pool: Unity_2021.3.3f1_Pool
+  steps:
+  - checkout: self
+    clean: true
+
+  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(Version.PreReleaseTag).$(Version.PreReleaseRevision)"
+    displayName: 'Set Build Number'
+  
+  - task: ComponentGovernanceComponentDetection@0
+    inputs:
+      scanType: 'Register'
+      alertWarningLevel: 'Medium'
+      failOnAlert: true
+ 
+  - template: Templates/upm.yaml
+    parameters:
+      buildNumber: $(Version.Revision)
+      previewNumber: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
+      # publishToFeed: true
