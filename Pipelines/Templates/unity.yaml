@@ -4,6 +4,7 @@
 parameters:
 - name: UnityVersion
   type: string
+  default: Latest
 
 - name: ProjectName
   type: string
