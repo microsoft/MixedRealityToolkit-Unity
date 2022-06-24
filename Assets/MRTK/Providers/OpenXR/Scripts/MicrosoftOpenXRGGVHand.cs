@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     [MixedRealityController(
         SupportedControllerType.GGVHand,
         new[] { Handedness.Left, Handedness.Right, Handedness.None })]
-    public class MicrosoftOpenXRGGVHand : GenericXRSDKController
+    internal class MicrosoftOpenXRGGVHand : GenericXRSDKController
     {
         public MicrosoftOpenXRGGVHand(
             TrackingState trackingState,
