@@ -6,12 +6,6 @@
 variables:
 - template: Config/settings.yaml
 
-resources:
-  repositories:
-  - repository: BuildTools
-    type: git
-    name: tools.internal
-
 trigger: none # disable CI
 
 jobs:
@@ -22,7 +16,7 @@ jobs:
     clean: true
     fetchDepth: 3
 
-  - checkout: BuildTools
+  - checkout: git://MRTK/tools.internal
 
   - script: dir $(Build.SourcesDirectory)
 
