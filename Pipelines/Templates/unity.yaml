@@ -37,8 +37,6 @@ steps:
 - powershell: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
   displayName: Install unitysetup.powershell
 
-- powershell: Get-UnitySetupInstance
-  displayName: Print supported Unity versions
 
   # Standalone x64 tasks
 - ${{ if eq(parameters.BuildStandalone, true) }}:
