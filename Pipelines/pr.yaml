@@ -6,6 +6,12 @@
 variables:
 - template: Config/settings.yaml
 
+resources:
+  repositories:
+  - repository: BuildTools
+    type: git
+    name: tools.internal
+
 trigger: none # disable CI
 
 jobs:
@@ -16,4 +22,8 @@ jobs:
     clean: true
     fetchDepth: 3
 
-  - template: Templates/unity.yaml
+  - checkout: BuildTools
+
+  - script: dir $(Build.SourcesDirectory)
+
+  # - template: Templates/unity.yaml
