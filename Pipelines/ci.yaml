@@ -8,7 +8,7 @@ variables:
 - name: Version.Revision
   value: $[counter(variables['MRTKVersion'], 1)]
 - name: Version.PreReleaseTag
-  value: $[format('pre.{0}', variables['MRTKReleaseTag'])]
+  value: $[variables['MRTKReleaseTag']]
 - name: Version.PreReleaseRevision
   value: $[counter(variables['Version.PreReleaseTag'], 1)]
 
@@ -37,5 +37,5 @@ jobs:
   - template: Templates/upm.yaml
     parameters:
       buildNumber: $(Version.Revision)
-      previewNumber: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
+      previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
       # publishToFeed: true

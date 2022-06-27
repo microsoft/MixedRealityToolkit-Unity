@@ -15,9 +15,7 @@
 .PARAMETER BuildNumber
     The fourth digit (revision) for the full version.
 .PARAMETER PreviewTag
-    The tag to append after the version but before the preview number (e.g. "internal" or "pre")
-.PARAMETER PreviewNumber
-    The preview number to append to the version. Note: Exclude this parameter to create non-preview packages.
+    The tag to append after the version, including the preview number (e.g. "internal.0" or "pre.100")
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -31,17 +29,15 @@ param(
     [ValidatePattern("\d+")]
     [string]$BuildNumber,
 
-    [string]$PreviewTag = "pre",
-
-    [ValidatePattern("\d+?[\.\d+]*")]
-    [string]$PreviewNumber
+    [ValidatePattern("[A-Za-z]+\.\d+[\.\d+]*")]
+    [string]$PreviewTag
 )
 
 $ProjectRoot = Resolve-Path -Path $ProjectRoot
 
-if ($PreviewNumber) {
-    $PreviewNumber = "-$PreviewTag.$PreviewNumber"
-    Write-Output "Version preview: $PreviewNumber"
+if ($PreviewTag) {
+    $PreviewTag = "-$PreviewTag"
+    Write-Output "Version preview: $PreviewTag"
 }
 
 if ($BuildNumber) {
@@ -92,13 +88,13 @@ try {
             $Version = $inlineVersion.Matches.Groups[1].Value
         }
 
-        Write-Output "Patching package version to $Version$PreviewNumber"
-        ((Get-Content -Path $_ -Raw) -Replace '("version": |"com\.microsoft\.mrtk\.\w+" *: *)"(?:[0-9.]+|%version%)-?[a-zA-Z0-9.]*', "`$1`"$Version$PreviewNumber") | Set-Content -Path $_ -NoNewline
+        Write-Output "Patching package version to $Version$PreviewTag"
+        ((Get-Content -Path $_ -Raw) -Replace '("version": |"com\.microsoft\.mrtk\.\w+" *: *)"(?:[0-9.]+|%version%)-?[a-zA-Z0-9.]*', "`$1`"$Version$PreviewTag") | Set-Content -Path $_ -NoNewline
 
         Write-Output "Patching assembly version to $Version$BuildNumber"
         Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
             Add-Content -Path $_ -Value "[assembly: AssemblyFileVersion(`"$Version$BuildNumber`")]"
-            Add-Content -Path $_ -Value "[assembly: AssemblyInformationalVersion(`"$Version$PreviewNumber`")]"
+            Add-Content -Path $_ -Value "[assembly: AssemblyInformationalVersion(`"$Version$PreviewTag`")]"
         }
 
         Write-Output "Packing $packageFriendlyName"
