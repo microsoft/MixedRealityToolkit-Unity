@@ -16,7 +16,7 @@ jobs:
     clean: true
     fetchDepth: 3
 
-  - checkout: git://MRTK/tools.internal
+  # - checkout: git://MRTK/tools.internal
 
   - script: dir $(Build.SourcesDirectory)
 
