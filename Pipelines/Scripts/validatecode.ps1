@@ -522,7 +522,7 @@ if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
         if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
             ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
             ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
-            # ((IsAsmDef -Filename $changedFile) -and (CheckAsmDef $changedFile)) -or
+            ((IsAsmDef -Filename $changedFile) -and (CheckAsmDef $changedFile)) -or
             ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile))) {
             $containsIssue = $true;
         }
