@@ -31,13 +31,12 @@ steps:
 - powershell: |
     $logFile = Join-Path $(Agent.TempDirectory) "build_${{ parameters.BuildTarget }}.log"
     New-Item -Path $logFile -ItemType File -Force
-    if (${{ parameters.UnityVersion }}) {
-      $proc = Start-UnityEditor -Project ${{ parameters.PathToProject }} -Version ${{ parameters.UnityVersion }} -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -PassThru -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath ${{ parameters.OutputPath }} -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+    if ("${{ parameters.UnityVersion }}" -eq "Latest") {
+      $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -PassThru -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath "${{ parameters.OutputPath }}" -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     }
     else {
-      $proc = Start-UnityEditor -Project ${{ parameters.PathToProject }} -Latest -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -PassThru -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath ${{ parameters.OutputPath }} -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+      $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -PassThru -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath "${{ parameters.OutputPath }}" -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     }
-    $proc = Start-UnityEditor -Project ${{ parameters.PathToProject }} $versionParam -ExecuteMethod ${{ parameters.CommandLineBuildMethod }} -BatchMode -Quit -PassThru -LogFile $logFile -BuildTarget ${{ parameters.BuildTarget }} -OutputPath ${{ parameters.OutputPath }} -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile
 
     while (-not $proc.HasExited -and $ljob.HasMoreData) {

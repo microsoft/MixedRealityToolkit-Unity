@@ -14,5 +14,10 @@ jobs:
   steps:
   - checkout: self
     clean: true
+    fetchDepth: 3
 
-  - template: Templates/unity.yaml
+  # - checkout: git://MRTK/tools.internal
+
+  - script: dir $(Build.SourcesDirectory)
+
+  # - template: Templates/unity.yaml

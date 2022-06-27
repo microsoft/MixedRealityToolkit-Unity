@@ -4,6 +4,7 @@
 parameters:
 - name: UnityVersion
   type: string
+  default: Latest
 
 - name: ProjectName
   type: string
@@ -30,11 +31,13 @@ parameters:
   default: false
 
 steps:
+- powershell: Install-Module PowerShellGet -Force
+  displayName: Update PowerShellGet
+
 - powershell: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
   displayName: Install unitysetup.powershell
 
-- powershell: Get-UnitySetupInstance
-  displayName: Print supported Unity versions
+- template: $(Build.SourcesDirectory)/tools.internal/Templates/license-unity.yaml
 
   # Standalone x64 tasks
 - ${{ if eq(parameters.BuildStandalone, true) }}:

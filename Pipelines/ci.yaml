@@ -8,7 +8,7 @@ variables:
 - name: Version.Revision
   value: $[counter(variables['MRTKVersion'], 1)]
 - name: Version.PreReleaseTag
-  value: $[format('pre.{0}', variables['MRTKReleaseTag'])]
+  value: $[variables['MRTKReleaseTag']]
 - name: Version.PreReleaseRevision
   value: $[counter(variables['Version.PreReleaseTag'], 1)]
 
@@ -21,19 +21,21 @@ jobs:
   - checkout: self
     clean: true
 
+  # - checkout: git://MRTK/tools.internal
+
   - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(Version.PreReleaseTag).$(Version.PreReleaseRevision)"
     displayName: 'Set Build Number'
-  
+
   - task: ComponentGovernanceComponentDetection@0
     inputs:
       scanType: 'Register'
       alertWarningLevel: 'Medium'
       failOnAlert: true
- 
+
+  # - template: Templates/unity.yaml
+
   - template: Templates/upm.yaml
     parameters:
       buildNumber: $(Version.Revision)
-      previewNumber: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
+      previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
       # publishToFeed: true
-
-  - template: Templates/unity.yaml

@@ -7,8 +7,7 @@ parameters:
   projectRoot: $(Build.SourcesDirectory)
   outputDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
   buildNumber: $(Build.BuildNumber)
-  previewTag: pre
-  previewNumber: $(MRTKReleaseTag)
+  previewTag: $(MRTKReleaseTag)
   publishToArtifacts: true
   publishToFeed: false
 
@@ -24,7 +23,6 @@ steps:
       -OutputDirectory: ${{ parameters.outputDirectory }}
       -BuildNumber: ${{ parameters.buildNumber }}
       -PreviewTag: ${{ parameters.previewTag }}
-      -PreviewNumber: ${{ parameters.previewNumber }}
 
 - ${{ if eq(parameters.publishToArtifacts, true) }}:
   - task: PublishBuildArtifacts@1
