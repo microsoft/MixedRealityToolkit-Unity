@@ -7,10 +7,8 @@ variables:
 - template: Config/settings.yaml
 - name: Version.Revision
   value: $[counter(variables['MRTKVersion'], 1)]
-- name: Version.PreReleaseTag
-  value: $[variables['MRTKReleaseTag']]
 - name: Version.PreReleaseRevision
-  value: $[counter(variables['Version.PreReleaseTag'], 1)]
+  value: $[counter(variables['MRTKReleaseTag'], 1)]
 
 pr: none # disable PR validation
 
@@ -23,7 +21,7 @@ jobs:
 
   # - checkout: git://MRTK/tools.internal
 
-  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(Version.PreReleaseTag).$(Version.PreReleaseRevision)"
+  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.PreReleaseRevision)"
     displayName: 'Set Build Number'
 
   - task: ComponentGovernanceComponentDetection@0
