@@ -38,4 +38,4 @@ jobs:
     parameters:
       buildNumber: $(Version.Revision)
       previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
-      # publishToFeed: true
+      publishToFeed: true
