@@ -1,0 +1,93 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+parameters:
+- name: UnityVersion
+  type: string
+  default: Latest
+
+- name: ProjectName
+  type: string
+  default: MRTK3 Sample
+
+- name: CommandLineBuildMethod
+  type: string
+  default: Microsoft.MixedReality.Toolkit.Examples.Build.BuildApp.StartCommandLineBuild
+
+- name: PathToProject
+  type: string
+  default: $(Build.SourcesDirectory)/UnityProjects/MRTKDevTemplate
+
+- name: BuildStandalone
+  type: boolean
+  default: true
+
+- name: BuildUWP
+  type: boolean
+  default: true
+
+- name: BuildAndroid
+  type: boolean
+  default: false
+
+steps:
+- powershell: Install-Module PowerShellGet -Force
+  displayName: Update PowerShellGet
+
+- powershell: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
+  displayName: Install unitysetup.powershell
+
+- template: $(Build.SourcesDirectory)/tools.internal/Templates/license-unity.yaml
+
+  # Standalone x64 tasks
+
+- ${{ if eq(parameters.BuildStandalone, true) }}:
+  - template: Tasks/build-unity.yaml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
+      BuildTarget: StandaloneWindows64
+      CommandLineBuildMethod: ${{ parameters.CommandLineBuildMethod }}
+      PathToProject: ${{ parameters.PathToProject }}
+      OutputPath: $(Build.ArtifactStagingDirectory)/Apps/exe-x64/${{ parameters.ProjectName }}.exe
+
+  # UWP tasks
+
+- ${{ if eq(parameters.BuildUWP, true) }}:
+  - template: Tasks/build-unity.yaml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
+      BuildTarget: WSAPlayer
+      CommandLineBuildMethod: ${{ parameters.CommandLineBuildMethod }}
+      PathToProject: ${{ parameters.PathToProject }}
+      OutputPath: $(Agent.TempDirectory)/build/uwp
+
+  - pwsh: |
+      $manifestPath = "$(Agent.TempDirectory)/build/uwp/${{ parameters.ProjectName }}/Package.appxmanifest"
+      ((Get-Content -Path $manifestPath -Raw) -Replace '(<Identity[^\>]*Version=)"[0-9.]+', '$1"$(MRTKVersion).0') | Set-Content -Path $manifestPath -NoNewline
+    displayName: Patch UWP AppX version
+
+  - template: Tasks/build-appx.yaml
+    parameters:
+      ProjectName: ${{ parameters.ProjectName }}
+      BuildFolderPath: $(Agent.TempDirectory)/build/uwp
+      Architectures: [x64,ARM64]
+      Version: $(MRTKVersion)
+
+  # Android tasks
+
+- ${{ if eq(parameters.BuildAndroid, true) }}:
+  - template: Tasks/build-unity.yaml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
+      BuildTarget: Android
+      CommandLineBuildMethod: ${{ parameters.CommandLineBuildMethod }}
+      PathToProject: ${{ parameters.PathToProject }}
+      OutputPath: $(Build.ArtifactStagingDirectory)/Apps/apk/${{ parameters.ProjectName }}.apk
+
+  # Publishing tasks
+
+- task: PublishPipelineArtifact@1
+  displayName: Publish apps
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)/Apps
+    artifactName: Apps-${{ parameters.ProjectName }}

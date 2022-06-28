@@ -1,0 +1,50 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# [Template] Publish packages to UPM registry
+
+parameters:
+- name: packageDirectory
+  type: string
+
+- name: registryPath
+  type: string
+
+- name: authenticationEndpoint
+  type: string
+
+steps:
+- task: NodeTool@0
+  displayName: 'Use Node 6.x'
+
+- pwsh: |
+    Out-File -FilePath ".npmrc" -InputObject "registry=${{ parameters.registryPath }}`nalways-auth=true" -Encoding utf8
+    Write-Output "Writing file to $(Resolve-Path -Path ".npmrc")..."
+    Get-Content ".npmrc"
+  displayName: 'Create the .npmrc file'
+
+- task: npmAuthenticate@0
+  displayName: 'Authenticate the .npmrc'
+  inputs:
+    workingFile: .npmrc
+    customEndpoint: ${{ parameters.authenticationEndpoint }}
+
+- task: PowerShell@2
+  displayName: 'UPM packages to ${{ parameters.registryPath }}'
+  inputs:
+    pwsh: true
+    targetType: filePath
+    filePath: ./Pipelines/Scripts/publish-upm.ps1
+    arguments: >
+      -PackageDirectory: ${{ parameters.packageDirectory }}
+
+- pwsh: |
+    if (Test-Path ".npmrc") {
+      Write-Output "Deleting file from $(Resolve-Path -Path ".npmrc")..."
+      Remove-Item -Path ".npmrc"
+    }
+    else {
+      Write-Output "Nothing to clean up."
+    }
+  condition: always()
+  displayName: 'Delete the .npmrc file'

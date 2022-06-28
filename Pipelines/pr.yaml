@@ -1,0 +1,23 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# Build for PR validation
+
+variables:
+- template: Config/settings.yaml
+
+trigger: none # disable CI
+
+jobs:
+- job: UnityValidation
+  pool: Unity_2021.3.3f1_Pool
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 3
+
+  # - checkout: git://MRTK/tools.internal
+
+  - script: dir $(Build.SourcesDirectory)
+
+  # - template: Templates/unity.yaml
