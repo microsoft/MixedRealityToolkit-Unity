@@ -494,7 +494,7 @@ function CheckAsmDef {
         # "@
         #             $containsIssue = $true
         #         }
-        if (-not (Test-Path (Join-Path (Split-Path $FileName) "AssemblyInfo.cs"))) {
+        if ($FileName -match "com.microsoft.mrtk" -and -not (Test-Path (Join-Path (Split-Path $FileName) "AssemblyInfo.cs"))) {
             Write-Warning @"
 New Assembly Definition asset was added but a corresponding AssemblyInfo.cs wasn't committed.
 Please run create-assemblyinfo.ps1 from the Tooling folder in the repo, open the project in Unity to generate a meta, and commit the resulting files.
