@@ -40,6 +40,7 @@ steps:
 - template: $(Build.SourcesDirectory)/tools.internal/Templates/license-unity.yaml
 
   # Standalone x64 tasks
+
 - ${{ if eq(parameters.BuildStandalone, true) }}:
   - template: Tasks/build-unity.yaml
     parameters:
@@ -50,6 +51,7 @@ steps:
       OutputPath: $(Build.ArtifactStagingDirectory)/Apps/exe-x64/${{ parameters.ProjectName }}.exe
 
   # UWP tasks
+
 - ${{ if eq(parameters.BuildUWP, true) }}:
   - template: Tasks/build-unity.yaml
     parameters:
