@@ -276,8 +276,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsFalse(sv.Animator.enabled, "The animator should be disabled after the keepAliveTime has elapsed.");
 
             yield return rightHand.MoveTo(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetGesture(GestureId.Pinch);
-
+            
+            Assert.IsTrue(interactable.isSelected && interactable.IsGrabSelected, "Interactable wasn't selected");
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when selected.");
 
             // Wait for far longer than the keepAliveTime.
@@ -290,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return rightHand.MoveTo(Vector3.zero);
 
             // Wait for longer than the keepAliveTime. The hand is still selecting, and so the stateviz shouldn't go back to sleep.
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.5f);
 
             Assert.IsTrue(sv.Animator.enabled, "The animator should remain awake throughout a select.");
 

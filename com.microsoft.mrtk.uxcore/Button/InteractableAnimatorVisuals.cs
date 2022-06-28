@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// by the StateVisualizer architecture.
     /// </summary>
     [RequireComponent(typeof(StatefulInteractable))]
+    [AddComponentMenu("MRTK/UX/Interactable Animator Visuals")]
     internal class InteractableAnimatorVisuals : MonoBehaviour
     {
         [SerializeField]

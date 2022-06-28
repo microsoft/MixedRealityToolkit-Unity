@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// with near, far, and gaze interaction.
     /// </summary>
     [RequireComponent(typeof(ConstraintManager))]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Object Manipulator")]
     public class ObjectManipulator : StatefulInteractable
     {
         #region Public Enums

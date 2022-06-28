@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// Handling click event and dismiss dialog
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Dialog Button")]
     public class DialogButton : MonoBehaviour
     {
         [SerializeField, Tooltip("The TextMeshPro component for displaying text on the button itself.")]

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// <summary>
     /// Test DataController that logs a message event to the console
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Data Binding/Data Controller Test")]
     public class DataControllerTest : DataControllerGOBase
     {
         [Tooltip("A keypath for the data item that will be set to the message.")]

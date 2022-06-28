@@ -12,7 +12,8 @@ AudioManager:
   m_DSPBufferSize: 1024
   m_VirtualVoiceCount: 512
   m_RealVoiceCount: 32
-  m_SpatializerPlugin: 
+  m_EnableOutputSuspension: 1
+  m_SpatializerPlugin: Microsoft Spatializer
   m_AmbisonicDecoderPlugin: 
   m_DisableAudio: 0
   m_VirtualizeEffects: 1

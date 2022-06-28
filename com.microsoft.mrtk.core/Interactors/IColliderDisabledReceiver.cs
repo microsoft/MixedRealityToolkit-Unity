@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// in <see cref="XRDirectInteractor"/>. This interface is marked
     /// internal as it may be removed in the future if/when Unity fixes
     /// the bug. If the bug will not be fixed, the interface may be
-    // made public.
+    /// made public.
     /// </remarks>
     internal interface IColliderDisabledReceiver
     {

@@ -253,6 +253,25 @@ function IsNamespace {
     }
 }
 
+$HeaderRegex = [regex]::Escape("// Copyright (c) Microsoft Corporation.")
+
+$HeaderExceptions = [System.Collections.Generic.HashSet[String]]@(
+
+)
+
+function IsHeader {
+    [CmdletBinding()]
+    param(
+        [string]$Line
+    )
+    process {
+        if ($Line -match $HeaderRegex) {
+            $true;
+        }
+        $false;
+    }
+}
+
 <#
 .SYNOPSIS
     Given a full filename path, this returns the MRTK project relative path
@@ -308,7 +327,7 @@ function CheckInitializeOnLoad {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
                 Write-Warning @"
-A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added 
+A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added
 to `$InitializeOnLoadExceptions after discussion with the rest of the team.
 "@
                 $hasIssue = $true
@@ -370,6 +389,7 @@ function CheckScript {
         # re-running the script
         $containsIssue = $false
         $containsNamespaceDeclaration = $false;
+        $containsLicenseHeader = $false;
         $fileContent = Get-Content $FileName
         for ($i = 0; $i -lt $fileContent.Length; $i++) {
             if (CheckBooLang $FileName $fileContent $i) {
@@ -391,12 +411,19 @@ function CheckScript {
                 $containsIssue = $true
             }
             $containsNamespaceDeclaration = $containsNamespaceDeclaration -or (IsNamespace $fileContent[$i])
+            $containsLicenseHeader = $containsLicenseHeader -or (IsHeader $fileContent[$i].Trim())
         }
 
         # Only validate that there is a namespace declaration if it's not an AssemblyInfo.cs file.
         # These do not contain namespace declarations.
         if ((-not $containsNamespaceDeclaration) -and ($FileName -notmatch "AssemblyInfo.cs$")) {
             Write-Warning "$FileName is missing a namespace declaration (i.e. missing namespace Microsoft.MixedReality.Toolkit.*)"
+            $containsIssue = $true;
+        }
+
+        # TODO: Remove before going public?
+        if (-not $containsLicenseHeader -and -not $HeaderExceptions.Contains((GetProjectRelativePath($FileName)))) {
+            Write-Warning "$FileName is missing a Microsoft license header. Please either add one or add this file to `$HeaderExceptions in validatecode.ps1."
             $containsIssue = $true;
         }
 
@@ -489,7 +516,7 @@ function CheckAsmDef {
         #         $assetFileName = GetProjectRelativePath($FileName)
         #         if (-Not $AsmDefExceptions.Contains($assetFileName)) {
         #             Write-Warning @"
-        # New Assembly Definition asset was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions
+        # New Assembly Definition asset was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions "
         # after a discussion with the rest of the team determining if the asmdef is necessary.
         # "@
         #             $containsIssue = $true

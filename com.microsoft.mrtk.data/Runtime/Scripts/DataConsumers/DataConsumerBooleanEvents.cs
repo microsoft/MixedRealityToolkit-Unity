@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// 2) Looking to bind true/false events to a BOOLEAN bound variable.
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Boolean Events")]
     public class DataConsumerBooleanEvents : DataConsumerGOBase
     {
         [Serializable]

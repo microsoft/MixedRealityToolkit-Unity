@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Provides a solver that overlaps with the tracked object.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Solvers/Overlap")]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Overlap")]
     public class Overlap : Solver
     {
         private static readonly ProfilerMarker SolverUpdatePerfMarker =

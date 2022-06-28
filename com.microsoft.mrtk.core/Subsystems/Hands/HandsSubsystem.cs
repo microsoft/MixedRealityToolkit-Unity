@@ -53,15 +53,15 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// Registers a hands subsystem implementation based on the given subsystem parameters.
         /// </summary>
-        /// <param name="HandsSubsystemParams">The parameters defining the hands subsystem functionality implemented
+        /// <param name="handsSubsystemParams">The parameters defining the hands subsystem functionality implemented
         /// by the subsystem provider.</param>
         /// <returns>
         /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
         /// </returns>
-        public static bool Register(HandsSubsystemCinfo HandsSubsystemParams)
+        public static bool Register(HandsSubsystemCinfo handsSubsystemParams)
         {
-            HandsSubsystemDescriptor HandsSubsystemDescriptor = HandsSubsystemDescriptor.Create(HandsSubsystemParams);
-            SubsystemDescriptorStore.RegisterDescriptor(HandsSubsystemDescriptor);
+            HandsSubsystemDescriptor descriptor = HandsSubsystemDescriptor.Create(handsSubsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }
     }

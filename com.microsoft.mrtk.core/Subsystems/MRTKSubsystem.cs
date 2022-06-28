@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] MRTKSubsystem.Update");
 
-        public void Update()
+        void IMRTKManagedSubsystem.Update()
         {
             using (UpdatePerfMarker.Auto())
             {
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker LateUpdatePerfMarker =
             new ProfilerMarker("[MRTK] MRTKSubsystem.LateUpdate");
 
-        public void LateUpdate()
+        void IMRTKManagedSubsystem.LateUpdate()
         {
             using (LateUpdatePerfMarker.Auto())
             {
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker FixedUpdatePerfMarker =
             new ProfilerMarker("[MRTK] MRTKSubsystem.FixedUpdate");
 
-        public void FixedUpdate()
+        void IMRTKManagedSubsystem.FixedUpdate()
         {
             using (FixedUpdatePerfMarker.Auto())
             {

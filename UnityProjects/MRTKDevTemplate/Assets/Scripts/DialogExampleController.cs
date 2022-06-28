@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// This class is used as an example controller to show how to instantiate and launch two different kind of Dialog.
     /// Each one of the public methods are called by the buttons in the scene at the OnClick event.
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Dialog Example Controller")]
     public class DialogExampleController : MonoBehaviour
     {
         [SerializeField]

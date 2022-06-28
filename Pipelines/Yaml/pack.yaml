@@ -1,0 +1,31 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# Manual packing of adhoc packages for testing.
+
+variables:
+- template: Config/settings.yaml
+- name: Version.Revision
+  value: $[counter(variables['MRTKVersion'], 1)]
+- name: Version.PreReleaseRevision
+  value: $[counter(variables['MRTKReleaseTag'], 1)]
+
+parameters:
+- name: PreviewTag
+  type: string
+  default: adhoc
+
+trigger: none # disable CI
+pr: none # disable PR validation
+
+jobs:
+- job: Packing
+  pool:
+    vmImage: windows-latest
+  steps:
+  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.PreReleaseRevision)"
+    displayName: 'Set Build Number'
+  - template: Templates/upm.yaml
+    parameters:
+      buildNumber: $(Version.Revision)
+      previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)

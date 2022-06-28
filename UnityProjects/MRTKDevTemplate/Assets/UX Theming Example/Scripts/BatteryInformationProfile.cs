@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
-    [CreateAssetMenu(fileName = "Example_BatteryInformation_Profile", menuName = "MRTK/Examples/DataBinding_BatteryInformation_Profile")]
+    [CreateAssetMenu(fileName = "Example_BatteryInformation_Profile", menuName = "MRTK/Examples/Battery Information Profile")]
     [Serializable]
     public class BatteryInformationProfile : ScriptableObject
     {

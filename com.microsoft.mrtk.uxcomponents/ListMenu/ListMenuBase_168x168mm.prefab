@@ -183,7 +183,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 11400000, guid: 2e1d97432d13a9045a0dea8c7cb345bc, type: 2}
-  m_TextStyleHashCode: 2451216
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PressableButton_160x32mm_SingleLineText (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5691419710203942171, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
 --- !u!4 &6602941568602202712 stripped
@@ -468,6 +472,10 @@ PrefabInstance:
     - target: {fileID: 5691419709616440555, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
       propertyPath: m_Name
       value: PressableButton_160x32mm_SingleLineText (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691419710203942171, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
@@ -613,6 +621,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PressableButton_160x32mm_SingleLineText
       objectReference: {fileID: 0}
+    - target: {fileID: 5691419710203942171, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
 --- !u!4 &439186310055540550 stripped
@@ -678,6 +690,10 @@ PrefabInstance:
     - target: {fileID: 5691419709616440555, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
       propertyPath: m_Name
       value: PressableButton_160x32mm_SingleLineText (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691419710203942171, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e816bc244e720a44bdea29af72e0b8b, type: 3}

@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <summary>
         /// Registers a PerformanceStats subsystem implementation based on the given subsystem parameters.
         /// </summary>
-        /// <param name="PerrformanceStatsSubsystemParams">The parameters defining the PerformanceStats subsystem
+        /// <param name="performanceStatsSubsystemParams">The parameters defining the PerformanceStats subsystem
         /// functionality implemented by the subsystem provider.</param>
         /// <returns>
         /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
@@ -81,10 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </item>
         /// </list>
         /// </exception>
-        public static bool Register(PerformanceStatsSubsystemCinfo PerrformanceStatsSubsystemParams)
+        public static bool Register(PerformanceStatsSubsystemCinfo performanceStatsSubsystemParams)
         {
-            PerformanceStatsSubsystemDescriptor Descriptor = PerformanceStatsSubsystemDescriptor.Create(PerrformanceStatsSubsystemParams);
-            SubsystemDescriptorStore.RegisterDescriptor(Descriptor);
+            PerformanceStatsSubsystemDescriptor descriptor = PerformanceStatsSubsystemDescriptor.Create(performanceStatsSubsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }
     }

@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// consider using DataSourceProviderSingletion.
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Sources/Data Source Theme Provider")]
     public class DataSourceThemeProvider : DataSourceGOBase
     {
         [Tooltip("A scriptable object that provides the theme to use for any specific UI theming needs. This can be unique to the application, or derived from or structured similarly to UXComponentsThemeProfile.")]

@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// to simplify the integration of generic view prefabs that are populated from
     /// external information.
     /// </remarks>
+    [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Image Url Test")]
     public class DataSourceImageUrlTest : DataSourceGOBase
     {
         [Tooltip("A URL for a cloud service that provides a random URL in return, typically for an image.")]

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-
+    [AddComponentMenu("MRTK/Examples/Toggle Collection Object Activate")]
     public class ToggleCollectionObjectActivate : MonoBehaviour
     {
         [Tooltip("The ToggleCollection")]

@@ -1,0 +1,46 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+parameters:
+  folderPath: $(Build.SourcesDirectory)
+  patternToSign: '*.ps1'
+
+steps:
+- task: ComponentGovernanceComponentDetection@0
+  inputs:
+    scanType: 'Register'
+    alertWarningLevel: 'Medium'
+    failOnAlert: true
+
+- task: EsrpCodeSigning@1
+  inputs:
+    connectedServiceName: 'MRTK Codesign'
+    folderPath: ${{ parameters.folderPath }}
+    pattern: ${{ parameters.patternToSign }}
+    signConfigType: 'inlineSignParams'
+    inlineOperation: |
+      [
+          {
+              "KeyCode" : "CP-230012",
+              "OperationCode" : "SigntoolSign",
+              "Parameters" : {
+                  "OpusName" : "Microsoft",
+                  "OpusInfo" : "http://www.microsoft.com",
+                  "FileDigest" : "/fd \"SHA256\"",
+                  "PageHash" : "/NPH",
+                  "TimeStamp" : "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+              },
+              "ToolName" : "sign",
+              "ToolVersion" : "1.0"
+          },
+          {
+              "KeyCode" : "CP-230012",
+              "OperationCode" : "SigntoolVerify",
+              "Parameters" : {},
+              "ToolName" : "sign",
+              "ToolVersion" : "1.0"
+          }
+      ]
+    sessionTimeout: '60'
+    maxConcurrency: '50'
+    maxRetryAttempts: '5'

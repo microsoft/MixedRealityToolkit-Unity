@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// using the offsets provided in the inspector. The starting point is resetFReq
     /// each time a new placement session is started using StartPlacement().
     /// </summary>
+    [AddComponentMenu("MRTK/Data Binding/Data Collection Item Placer Offset")]
     public class DataCollectionItemPlacerOffset : DataCollectionItemPlacerGOBase
     {
         [Tooltip("Place each item in a collection at successive offsets relative to parent GameObject, with the first item spawning at 0,0,0.")]

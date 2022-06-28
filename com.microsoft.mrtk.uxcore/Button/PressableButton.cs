@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// script can listen to the <see cref="Selectedness"/> value, or call <see cref="PushPlaneLocalPosition">
     /// to obtain a 0...1 selectedness value or a local displacement, respectively, to implement a visual layer.
     /// </remarks>
+    [AddComponentMenu("MRTK/UX/Pressable Button")]
     public class PressableButton : StatefulInteractable
     {
         [SerializeField]

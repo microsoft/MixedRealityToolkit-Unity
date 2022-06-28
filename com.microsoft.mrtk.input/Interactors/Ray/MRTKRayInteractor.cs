@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A wrapper for the XRRayInteractor which stores extra information for MRTK management/services
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Input/MRTK Ray Interactor")]
+    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor")]
     public class MRTKRayInteractor : XRRayInteractor, IRayInteractor, IHandedInteractor, IVariableSelectInteractor
     {
         /// <summary>

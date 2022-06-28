@@ -15,10 +15,14 @@ param(
     [string]
     [ValidateScript({ Test-Path $_ -PathType Container })]
     $outFolder = "$PSScriptRoot/out/",
+    # Unity version override
+    [Parameter(Mandatory = $false)]
+    [string]
+    $unityVersion = "2020.3.35f1",
     # Path to your Unity Executable
     [ValidateScript({ [System.IO.File]::Exists($_) -and $_.EndsWith(".exe") })]
     [string]
-    $unityExePath = "C:\Program Files\Unity\Hub\Editor\2020.3.35f1\Editor\Unity.exe",
+    $unityExePath = "C:\Program Files\Unity\Hub\Editor\$unityVersion\Editor\Unity.exe",
     # Optional test filter
     [Parameter(Mandatory = $false)]
     [string]

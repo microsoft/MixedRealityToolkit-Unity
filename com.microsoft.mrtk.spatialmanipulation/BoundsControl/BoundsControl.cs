@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// to this script, allowing for handle-based manipulation of the target object.
     /// </summary>
     [RequireComponent(typeof(ConstraintManager))]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Bounds Control")]
     public class BoundsControl : MonoBehaviour
     {
         #region Serialized Fields/Properties

@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// corners and a 3D occlusion effect. It also "squeezes" with variable selection input,
     /// giving physical feedback to users as they select/grab/pinch the object.
     /// </summary>
+    [AddComponentMenu("MRTK/Spatial Manipulation/Squeezable Box Visuals")]
     internal class SqueezableBoxVisuals : MonoBehaviour
     {
         // The box will snap to this thickness whenever IsFlat = true.

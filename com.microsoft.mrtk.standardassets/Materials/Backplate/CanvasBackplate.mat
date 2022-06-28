@@ -48,7 +48,7 @@ Material:
     - _Highlight_Width_: 0.25
     - _Iridescence_Edge_Intensity_: 1
     - _Iridescence_Enable_: 1
-    - _Iridescence_Intensity_: 0.255
+    - _Iridescence_Intensity_: 0.35
     - _Line_Disabled_: 0
     - _Line_Enable_: 1
     - _Line_Gradient_Blend_: 0
@@ -65,7 +65,7 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _Base_Color_: {r: 0.08398186, g: 0.06742858, b: 0.177, a: 1}
+    - _Base_Color_: {r: 0.11372549, g: 0.11372549, b: 0.32156864, a: 1}
     - _Bottom_Left_: {r: 0, g: 0.33, b: 0.88, a: 1}
     - _Bottom_Right_: {r: 1, g: 1, b: 1, a: 1}
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}

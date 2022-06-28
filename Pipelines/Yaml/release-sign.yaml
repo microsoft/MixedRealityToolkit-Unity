@@ -1,0 +1,39 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+variables:
+- template: Config/settings.yaml
+
+parameters:
+- name: PatternToSign
+  type: string
+  default: Edit-UpmConfig*.ps1
+- name: OutputFolder
+  type: string
+  default: $(Build.ArtifactStagingDirectory)/Scripts
+- name: ArtifactName
+  type: string
+  default: Scripts
+
+trigger: none # disable CI
+pr: none # disable PR validation
+
+jobs:
+- job: Sign
+  pool:
+    name: EDT-1ES-WindowsLatest
+  steps:
+  - template: Templates/Tasks/sign.yaml
+    parameters:
+      patternToSign: ${{ parameters.PatternToSign }}
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)
+      contents: '**/${{ parameters.PatternToSign }}'
+      targetFolder: ${{ parameters.OutputFolder }}
+      flattenFolders: true
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish signed artifacts"
+    inputs:
+      pathToPublish: ${{ parameters.OutputFolder }}
+      artifactName: ${{ parameters.ArtifactName }}

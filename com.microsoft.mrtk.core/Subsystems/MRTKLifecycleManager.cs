@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// This class is responsible for managing and coordinating the lifecycle of
     /// Mixed Reality Toolkit subsystems.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Subsystems/MRTK Lifecycle Manager")]
+    [AddComponentMenu("MRTK/Core/MRTK Lifecycle Manager")]
     [DisallowMultipleComponent]
     public class MRTKLifecycleManager :
         MonoBehaviour,

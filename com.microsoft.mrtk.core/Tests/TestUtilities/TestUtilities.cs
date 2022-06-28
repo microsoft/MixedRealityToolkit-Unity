@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Tests
 {
-    public class TestUtilities : MonoBehaviour
+    public static class TestUtilities
     {
         public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message, float tolerance = 0.01f)
         {

@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Material")]
     public class DataConsumerMaterial : DataConsumerThemableBase<Material>
     {
         [Serializable]

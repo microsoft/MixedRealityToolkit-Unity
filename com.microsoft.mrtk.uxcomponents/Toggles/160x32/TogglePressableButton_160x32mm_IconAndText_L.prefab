@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6886011466861285793, guid: a69170382c049914c9866f5914e0adee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1623
+      objectReference: {fileID: 0}
     - target: {fileID: 8290906168760161102, guid: a69170382c049914c9866f5914e0adee, type: 3}
       propertyPath: m_Name
       value: TogglePressableButton_160x32mm_IconAndText_L

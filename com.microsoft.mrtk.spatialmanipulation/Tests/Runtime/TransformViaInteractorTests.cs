@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.AreEqual(1, hoverEnterCount, $"ObjectManipulator did not receive hover enter event, count is {hoverEnterCount}");
 
             // Select the cube with a pinch
-            Vector3 initialHandPosition = new Vector3(0.3f, 0.0f, 0.3f);
+            Vector3 initialHandPosition = new Vector3(0.1f, 0.0f, 0.3f);
             TestHand hand = new TestHand(Handedness.Right);
 
             yield return hand.Show(initialHandPosition);
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             objectManipulator.SmoothingFar = false; // by default scale changes have smoothing but disabling makes testing quicker
 
             // Select the cube with a pinch
-            Vector3 initialHandPosition = new Vector3(0.3f, 0.0f, 0.3f);
+            Vector3 initialHandPosition = new Vector3(0.1f, 0.0f, 0.3f);
             TestHand hand = new TestHand(Handedness.Right);
 
             yield return hand.Show(initialHandPosition);
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             objectManipulator.SmoothingFar = false; // by default scale changes have smoothing but disabling makes testing quicker
 
             // Select the cube with a pinch
-            Vector3 initialHandPosition = new Vector3(0.3f, 0.0f, 0.3f);
+            Vector3 initialHandPosition = new Vector3(0.1f, 0.0f, 0.3f);
             TestHand hand = new TestHand(Handedness.Right);
 
 

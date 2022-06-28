@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// </summary>
     [RequireComponent(typeof(PressableButton))]
     [ExecuteAlways]
+    [AddComponentMenu("MRTK/UX/Basic Pressable Button Visuals")]
     public class BasicPressableButtonVisuals : MonoBehaviour
     {
         private PressableButton buttonState;

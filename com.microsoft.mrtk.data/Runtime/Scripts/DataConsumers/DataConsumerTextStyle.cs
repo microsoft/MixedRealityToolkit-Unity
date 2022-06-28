@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// of text components so long as they are being populated by
     /// the same data source.
     /// </summary>
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Text Style")]
     public class DataConsumerTextStyle : DataConsumerThemableBase<TMP_StyleSheet>
     {
         /// </inheritdoc/>

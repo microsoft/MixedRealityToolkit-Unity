@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
+    [AddComponentMenu("MRTK/Examples/Data Binding/Theme Setter")]
     public class ThemeSetter : MonoBehaviour
     {
         [Tooltip("The data source to use for setting the current theme.")]

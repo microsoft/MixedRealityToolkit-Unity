@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A slider that can be moved by grabbing / pinching a slider thumb
     /// </summary>
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/sliders")]
-    [AddComponentMenu("Scripts/MRTK/SDK/Slider")]
+    [AddComponentMenu("MRTK/UX/Slider")]
     public class Slider : StatefulInteractable, ISnapInteractable
     {
         #region Serialized Fields and Public Properties

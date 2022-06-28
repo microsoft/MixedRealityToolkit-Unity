@@ -59,6 +59,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         }
 
         [SerializeField]
+        [Tooltip("The initial pose of the simulated hand")]
+        private SimulatedHandPose defaultPose = SimulatedHandPose.Neutral;
+
+        /// <summary>
+        /// The initial pose of the simulated hand.
+        /// </summary>
+        public SimulatedHandPose DefaultPose
+        {
+            get => defaultPose;
+            set => defaultPose = value;
+        }
+
+        [SerializeField]
         [Tooltip("The initial position, relative to the camera, at which the controller will appear (when tracking is toggled).")]
         private Vector3 defaultPosition = new Vector3(0f, 0f, 0.5f);
 

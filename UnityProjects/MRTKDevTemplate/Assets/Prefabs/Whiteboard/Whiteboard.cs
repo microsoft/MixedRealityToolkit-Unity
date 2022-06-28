@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// Basic example of how to use interactors to create a simple whiteboard-like drawing system.
     /// Uses MRTKBaseInteractable, but not StatefulInteractable.
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Whiteboard")]
     internal class Whiteboard : MRTKBaseInteractable
     {
         // Preferably power of two!

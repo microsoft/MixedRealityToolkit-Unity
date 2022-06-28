@@ -1,0 +1,39 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# [Template] Pack and optionally publish UPM packages.
+
+parameters:
+  projectRoot: $(Build.SourcesDirectory)
+  outputDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
+  buildNumber: $(Build.BuildNumber)
+  previewTag: $(MRTKReleaseTag)
+  publishToArtifacts: true
+  publishToFeed: false
+
+steps:
+- task: PowerShell@2
+  displayName: 'Pack preview UPM packages'
+  inputs:
+    pwsh: true
+    targetType: filePath
+    filePath: ./Pipelines/Scripts/pack-upm.ps1
+    arguments: >
+      -ProjectRoot: ${{ parameters.projectRoot }}
+      -OutputDirectory: ${{ parameters.outputDirectory }}
+      -BuildNumber: ${{ parameters.buildNumber }}
+      -PreviewTag: ${{ parameters.previewTag }}
+
+- ${{ if eq(parameters.publishToArtifacts, true) }}:
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish UPM artifacts'
+    inputs:
+      pathToPublish: ${{ parameters.outputDirectory }}
+      artifactName: "mrtk-upm"
+
+- ${{ if eq(parameters.publishToFeed, true) }}:
+  - template: Tasks/publish-upm.yaml
+    parameters:
+      packageDirectory: ${{ parameters.outputDirectory }}
+      registryPath: https://pkgs.dev.azure.com/EDT/EDT/_packaging/mr.upm/npm/registry/
+      authenticationEndpoint: "EDT Package Publishing"

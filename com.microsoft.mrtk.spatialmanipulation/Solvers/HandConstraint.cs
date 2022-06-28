@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// to work with articulated hands, it also works with motion controllers. 
     /// </summary>
     [RequireComponent(typeof(HandBounds))]
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Solvers/Hand Constraint")]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Hand Constraint")]
     public class HandConstraint : Solver
     {
         // This array intentionally leaves out AtopPalm. The zones of interest reside

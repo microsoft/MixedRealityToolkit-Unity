@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43ca381bcb5d40f4aacc5a817013e9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlSet: 0
+  controlSet: {fileID: 11400000, guid: 127098fdf4960d147a381dde2be46053, type: 2}
   cameraSettings:
     simulationEnabled: 1
     originOffset: {x: 0, y: 0, z: 0}

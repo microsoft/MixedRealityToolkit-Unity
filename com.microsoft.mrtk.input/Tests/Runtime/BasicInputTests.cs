@@ -156,6 +156,38 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
+        /// Simple smoketest to ensure basic gaze-pinch selection functionality.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator GazePinchSmokeTest()
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            StatefulInteractable interactable = cube.AddComponent<StatefulInteractable>();
+            cube.transform.position = new Vector3(0,0,1);
+            cube.transform.localScale = Vector3.one * 0.1f;
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(interactable.isHovered);
+            Assert.IsTrue(interactable.IsGazeHovered);
+            Assert.IsFalse(interactable.IsGazePinchHovered);
+
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0.1f, 0, 0.5f));
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(interactable.isHovered);
+            Assert.IsTrue(interactable.IsGazePinchHovered);
+
+            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(interactable.isSelected);
+            Assert.IsTrue(interactable.IsGazePinchSelected);
+        }
+
+        /// <summary>
         /// A dummy interactor used to test basic selection/toggle logic.
         /// </summary>
         private class TestInteractor : XRBaseInteractor { }

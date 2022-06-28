@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Change the color of the material on a renderer.  Useful for visualizing button presses.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Examples/ColorChanger")]
+    [AddComponentMenu("MRTK/Examples/Color Changer")]
     public class ColorChanger : MonoBehaviour
     {
         [SerializeField]

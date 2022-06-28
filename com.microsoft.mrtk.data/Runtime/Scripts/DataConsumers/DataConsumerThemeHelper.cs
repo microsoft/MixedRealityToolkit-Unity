@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// status icon for the current status.  That icon can then be further themed to adopt the desired, branding or
     /// other specific look and feel appropriate for the currently active theme.
     /// </summary>
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Theme Helper")]
     public class DataConsumerThemeHelper : DataConsumerGOBase
     {
         [Tooltip("(Optional) Specific theme data source to use for retrieving theme information. If not provided, the first matching data source of specified type will be used.")]

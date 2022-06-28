@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-$root = (Get-Item $PSScriptRoot).Parent.Parent # Move up to the repo root
+$root = (Get-Item $PSScriptRoot).Parent # Move up to the repo root
 
 Get-ChildItem -Path $root/*/package.json | ForEach-Object {
     $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1

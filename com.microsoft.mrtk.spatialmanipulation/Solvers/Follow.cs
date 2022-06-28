@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// The element can be loosely constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves
     /// beyond user defined bounds.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Solvers/Follow")]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Follow")]
     public class Follow : Solver
     {
         // todo: consider merging with Radial solver

@@ -1,0 +1,24 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# Build for PR validation
+
+variables:
+- template: Config/settings.yaml
+
+trigger: none # disable CI
+
+jobs:
+- job: CodeValidation
+  pool:
+    vmImage: windows-latest
+  steps:
+  - checkout: self
+    clean: true
+    persistCredentials: true # This is needed for the scoped validation below. It needs to fetch the main branch to compare.
+  - template: Templates/validation.yaml
+    parameters:
+      # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
+      # the set of changed files, so that we can save some time. There's no need to
+      # check unchanged files for code style/doc style violations.
+      scopedValidation: true

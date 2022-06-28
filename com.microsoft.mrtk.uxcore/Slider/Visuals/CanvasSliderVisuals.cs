@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A canvas-based visuals script to provide a visual layer on top of
     /// <see cref="Slider"/>.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Canvas Slider Visuals")]
     public class CanvasSliderVisuals : MonoBehaviour
     {
         /// <summary>

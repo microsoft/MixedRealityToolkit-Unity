@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// float        realLevel     Analog level from 0..1
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/Examples/Battery Level Data Source")]
     public class BatteryLevelDataSource : DataSourceGOBase
     {
         [SerializeField]

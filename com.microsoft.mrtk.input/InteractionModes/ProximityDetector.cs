@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// An <see cref="IInteractionModeDetector"/> that detects nearby interactables.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Input/Proximity Detector")]
+    [AddComponentMenu("MRTK/Input/Proximity Detector")]
     public class ProximityDetector : MonoBehaviour, IInteractionModeDetector
     {
         [SerializeField]

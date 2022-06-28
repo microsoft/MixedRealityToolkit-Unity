@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Class that applies the appropriate camera settings based on the display type.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Core Definitions/Camera Settings Manager")]
+    [AddComponentMenu("MRTK/Core/Camera Settings Manager")]
     public class CameraSettingsManager : MonoBehaviour
     {
         [SerializeField]

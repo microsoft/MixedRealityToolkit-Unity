@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
     /// </summary>
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/solvers/solver")]
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Solvers/Solver Handler")]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Solver Handler")]
     public class SolverHandler : MonoBehaviour
     {
         [SerializeField]

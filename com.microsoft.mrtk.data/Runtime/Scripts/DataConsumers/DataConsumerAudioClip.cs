@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// TODO: Allow for a default AudioClip if no look up can be found.
     /// </remarks>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Audio Clip", -10)]
     public class DataConsumerAudioClip : DataConsumerThemableBase<AudioClip>
     {
         /// </inheritdoc/>

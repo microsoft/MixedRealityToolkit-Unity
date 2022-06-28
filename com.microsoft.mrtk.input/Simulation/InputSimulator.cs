@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     /// <summary>
     /// Input device and HMD navigation simulator.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Simulation/Input Simulator")]
+    [AddComponentMenu("MRTK/Input/Input Simulator")]
     public class InputSimulator : MonoBehaviour
     {
         #region MonoBehaviour
@@ -111,13 +111,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private SimulatedCamera simulatedCamera = null;
 
         [SerializeField]
-        [Tooltip("Input simulation control compatibility set.")]
-        private InputSimulatorControlSet controlSet = InputSimulatorControlSet.MrtkV3;
+        [Tooltip("Input simulation control compatibility set")]
+        private SimulatorControlScheme controlSet = null;
 
         /// <summary>
         /// Input simulation control compatibility set.
         /// </summary>
-        public InputSimulatorControlSet ControlSet
+        public SimulatorControlScheme ControlSet
         {
             get => controlSet;
             set => controlSet = value;
@@ -336,6 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </returns>
         private SimulatedController EnableSimulatedController(
             Handedness handedness,
+            SimulatedHandPose defaultPose,
             Vector3 startPosition)
         {
             if (!IsSupportedHandedness(handedness))
@@ -346,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
             ref SimulatedController simCtrl = ref GetControllerReference(handedness);
             if (simCtrl != null) { return simCtrl; }
-            simCtrl = new SimulatedController(handedness, startPosition);
+            simCtrl = new SimulatedController(handedness, defaultPose, startPosition);
 
             ControllerControls controls = GetControllerControls(handedness);
             controls.Reset();
@@ -431,7 +432,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                         }
 
                         // Create the simulated controller.
-                        simCtrl = EnableSimulatedController(handedness, startPosition);
+                        simCtrl = EnableSimulatedController(
+                            handedness,
+                            ctrlSettings.DefaultPose,
+                            startPosition);
                     }
                 }
                 else
@@ -681,8 +685,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Applies the users selected control compatibility set.
         /// </summary>
-        /// <param name="set">the <see cref="InputSimulatorControlSet"/> to be applied.</param>
-        private void ApplyControlSet(InputSimulatorControlSet set)
+        /// <param name="set">the <see cref="SimulatorControlScheme"/> to be applied.</param>
+        private void ApplyControlSet(SimulatorControlScheme set)
         {
             if (actionManager == null)
             {
@@ -710,14 +714,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Gets the display name for the simulator control set.
         /// </summary>
-        /// <param name="set">the <see cref="InputSimulatorControlSet"/> for which the name is being requested.</param>
-        /// <returns>The <see cref="InputSimulatorControlSet"/>'s display name.</returns>
-        private string GetControlSetName(InputSimulatorControlSet set)
+        /// <param name="set">the <see cref="SimulatorControlScheme"/> for which the name is being requested.</param>
+        /// <returns>The <see cref="SimulatorControlScheme"/>'s display name.</returns>
+        private string GetControlSetName(SimulatorControlScheme set)
         {
-            Type t = typeof(InputSimulatorControlSet);
-            MemberInfo[] mInfos = t.GetMember(set.ToString());
-            InspectorNameAttribute nameAttrib = mInfos[0].GetCustomAttributes(typeof(InspectorNameAttribute), false).FirstOrDefault() as InspectorNameAttribute;
-            return nameAttrib.displayName;
+            return set.name;
         }
 
         #endregion Helpers

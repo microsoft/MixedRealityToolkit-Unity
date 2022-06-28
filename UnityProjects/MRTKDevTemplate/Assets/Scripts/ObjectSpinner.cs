@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Spins object on events
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Object Spinner")]
     public class ObjectSpinner : MonoBehaviour
     {
         private Quaternion initialRotation;

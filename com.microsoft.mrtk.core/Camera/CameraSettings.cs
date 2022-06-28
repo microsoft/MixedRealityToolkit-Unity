@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     [Serializable]
+    [AddComponentMenu("MRTK/Core/Camera Settings")]
     public class CameraSettings
     {
         /// <summary>

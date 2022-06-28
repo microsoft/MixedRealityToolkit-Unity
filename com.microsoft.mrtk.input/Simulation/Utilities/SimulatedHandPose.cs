@@ -9,13 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     public enum SimulatedHandPose
     {
         /// <summary>
-        /// Relaxed, fingers up, palm facing away from the camera.
+        /// Hand open, relaxed.
         /// </summary>
         Neutral = 0,
 
         /// <summary>
-        /// Relaxed, fingers up, palm facing the camera.
+        /// Hand closed, index finger raised.
         /// </summary>
-        PalmUp = 1
+        Ready = 1
     }
 }

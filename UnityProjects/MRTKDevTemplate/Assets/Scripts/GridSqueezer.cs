@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// a grid layout to fit a fixed number of columns, while
     /// resizing children to fit.
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Grid Squeezer")]
     public class GridSqueezer : MonoBehaviour
     {
         [SerializeField]

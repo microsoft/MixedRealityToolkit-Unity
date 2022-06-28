@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// Dynamic collection of objects positioned in a horizontal or vertical stack with an auto sized back plate. 
     /// </summary>
     [ExecuteAlways]
+    [AddComponentMenu("MRTK/UX/Object Bar")]
     public class ObjectBar : MonoBehaviour
     {
         [SerializeField]

@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// to controllers.
     /// </summary>
     [DisallowMultipleComponent]
+    [AddComponentMenu("MRTK/Core/Controller Lookup")]
     public class ControllerLookup : MonoBehaviour
     {
         // Gaze

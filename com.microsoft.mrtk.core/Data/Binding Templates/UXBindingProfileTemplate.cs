@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// to automatically configure all Data Consumers that will be needed to make those game objects data bindable
     /// and themable.
     /// </summary>
-    [CreateAssetMenu(fileName = "MRTK_UX_BindingProfile", menuName = "MRTK/DataBinding/UXBindingProfile")]
+    [CreateAssetMenu(fileName = "MRTK_UX_BindingProfile", menuName = "MRTK/Data Binding/UXBindingProfile")]
     public class UXBindingProfileTemplate : ScriptableObject
     {
         [Tooltip("Optional type specifiers for data sources to be injected into data consumers. This will typically be one data and one theme data source. If left empty, the default 'data' and 'theme' data sources will be used.")]

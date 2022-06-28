@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// the prefab is instantiated and modified via data from the data source associated with this data consumer,
     /// whenever a request for one of the list items is made.
     /// </remarks>
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Collection")]
     public class DataConsumerCollection : DataConsumerGOBase, IDataConsumerCollection
     {
         [Tooltip("Keypath of this collection in the originating data source. For collections within collections, this would be relative to outer collection.")]

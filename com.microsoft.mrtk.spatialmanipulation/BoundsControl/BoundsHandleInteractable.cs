@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// An interactable for the handles of a <see cref="BoundsControl"/>.
     /// Scale handles subclass this to implement custom occlusion + reorientation logic.
     /// </summary>
+    [AddComponentMenu("MRTK/Spatial Manipulation/Bounds Handle Interactable")]
     internal class BoundsHandleInteractable : StatefulInteractable, ISnapInteractable
     {
         private BoundsControl boundsControlRoot;

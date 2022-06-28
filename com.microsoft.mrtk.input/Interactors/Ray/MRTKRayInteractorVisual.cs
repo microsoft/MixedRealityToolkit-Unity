@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(LineRenderer))]
+    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
     public class MRTKRayInteractorVisual : MonoBehaviour, IXRCustomReticleProvider
     {
         [Header("Visual Settings")]

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Basic hand joint visualizer that draws an instanced mesh on each hand joint.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Hands/Hand Visualizer")]
+    [AddComponentMenu("MRTK/Input/Hand Visualizer")] 
     public class HandVisualizer : MonoBehaviour
     {
         [SerializeField]

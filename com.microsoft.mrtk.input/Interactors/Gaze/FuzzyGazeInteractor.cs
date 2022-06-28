@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// that update the current set of valid targets for this interactor.
     /// </summary>
     [DisallowMultipleComponent]
+    [AddComponentMenu("MRTK/Input/Fuzzy Gaze Interactor")]
     public class FuzzyGazeInteractor : GazeInteractor
     {
         // TODO: these fields need to override their respective equivalents in the underlying XRRayInteractor class

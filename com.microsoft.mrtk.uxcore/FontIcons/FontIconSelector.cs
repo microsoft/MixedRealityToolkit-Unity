@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A Component that can be used to select a specific icon for display via a TextMeshPro component.
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/UX/Font Icon Selector")]
     public class FontIconSelector : MonoBehaviour
     {
         [Tooltip("The FontIconSet scriptable object that contains the icons available for use.")]

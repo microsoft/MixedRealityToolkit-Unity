@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// Component subclassed from TMP_InputField to account for XR interactions.
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/SDK/MRTKTMPInputField")]
+    [AddComponentMenu("MRTK/UX/MRTK TMP Input Field")]
     public class MRTKTMPInputField : TMP_InputField
     {
         /// <summary>

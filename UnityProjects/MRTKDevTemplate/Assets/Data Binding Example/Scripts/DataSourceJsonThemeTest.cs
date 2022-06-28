@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///
     /// Note: The theme can be changed by pressing theme buttons at http://TryMRTK.com
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Json Theme Test")]
     public class DataSourceJsonThemeTest : DataSourceGOJson
     {
         [Tooltip("URL for a json data source")]

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// Abstract class that presents a Dialog object.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Dialog")]
     public abstract class Dialog : MonoBehaviour
     {
         /// <summary>

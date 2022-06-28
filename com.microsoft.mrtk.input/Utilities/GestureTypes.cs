@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Flat,
 
             /// <summary>
-            /// Relaxed hand pose
+            /// Relaxed hand pose in the 'ready' position
             /// </summary>
             Open,
 

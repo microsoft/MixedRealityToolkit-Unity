@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// Component subclassed from InputField to account for XR interactions.
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/SDK/MRTKUGUIInputField")]
+    [AddComponentMenu("MRTK/UX/MRTK UGUI Input Field")]
     public class MRTKUGUIInputField : InputField
     {
         /// <summary>

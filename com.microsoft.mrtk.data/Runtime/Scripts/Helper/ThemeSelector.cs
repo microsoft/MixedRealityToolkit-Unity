@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
+    [AddComponentMenu("MRTK/Data Binding/Theme Selector")]
     public class ThemeSelector : MonoBehaviour
     {
 

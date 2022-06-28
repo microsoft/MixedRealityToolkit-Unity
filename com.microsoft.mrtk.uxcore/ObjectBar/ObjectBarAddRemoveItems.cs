@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// Adds and removes objects from a given Object Bar to demonstrate the back plate auto adjust behavior. 
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Object Bar Add\\Remove Items")]
     public class ObjectBarAddRemoveItems : MonoBehaviour
     {
         [SerializeField]

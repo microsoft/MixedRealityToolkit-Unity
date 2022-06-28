@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [AddComponentMenu("Scripts/MRTK/Input/BezierDataProvider")]
+    [AddComponentMenu("MRTK/Input/Bezier Data Provider")]
     internal class BezierDataProvider : BaseMixedRealityLineDataProvider
     {
         [Serializable]

@@ -623,7 +623,7 @@
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -634,7 +634,7 @@
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -656,7 +656,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -667,7 +667,7 @@
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -755,7 +755,7 @@
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Trigger Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -766,7 +766,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Trigger Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -788,7 +788,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Trigger Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -799,7 +799,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Trigger Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -887,7 +887,7 @@
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -898,7 +898,7 @@
                     "path": "<Mouse>/delta/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.4)",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -920,7 +920,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -931,7 +931,7 @@
                     "path": "<Mouse>/delta/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.1)",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -953,7 +953,7 @@
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -964,7 +964,7 @@
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.05)",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -986,7 +986,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -997,7 +997,7 @@
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.05)",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1052,7 +1052,7 @@
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1063,7 +1063,7 @@
                     "path": "<Mouse>/delta/x",
                     "interactions": "",
                     "processors": "Scale(factor=0.1)",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1085,7 +1085,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1096,7 +1096,7 @@
                     "path": "<Mouse>/delta/x",
                     "interactions": "",
                     "processors": "Scale(factor=0.1)",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1118,7 +1118,7 @@
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Track",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1129,7 +1129,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Track",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1718,7 +1718,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1729,7 +1729,7 @@
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1751,7 +1751,7 @@
                     "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1762,7 +1762,7 @@
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Grip Button",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1850,7 +1850,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1861,7 +1861,7 @@
                     "path": "<Mouse>/delta/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.4)",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1883,7 +1883,7 @@
                     "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1894,7 +1894,7 @@
                     "path": "<Mouse>/delta/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.1)",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1916,7 +1916,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1927,7 +1927,7 @@
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.05)",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1949,7 +1949,7 @@
                     "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -1960,7 +1960,7 @@
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "Scale(factor=0.05)",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -2015,7 +2015,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -2026,7 +2026,7 @@
                     "path": "<Mouse>/delta/x",
                     "interactions": "",
                     "processors": "Scale(factor=0.1)",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -2048,7 +2048,7 @@
                     "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -2059,7 +2059,7 @@
                     "path": "<Mouse>/delta/x",
                     "interactions": "",
                     "processors": "Scale(factor=0.1)",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Yaw",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -2081,7 +2081,7 @@
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v3",
+                    "groups": "MRTK3",
                     "action": "Track",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -2092,7 +2092,7 @@
                     "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "MRTK v2",
+                    "groups": "MRTKv2",
                     "action": "Track",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -2249,13 +2249,13 @@
     ],
     "controlSchemes": [
         {
-            "name": "MRTK v2",
-            "bindingGroup": "MRTK v2",
+            "name": "MRTKv2",
+            "bindingGroup": "MRTKv2",
             "devices": []
         },
         {
-            "name": "MRTK v3",
-            "bindingGroup": "MRTK v3",
+            "name": "MRTK3",
+            "bindingGroup": "MRTK3",
             "devices": []
         },
         {

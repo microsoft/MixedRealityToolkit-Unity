@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// DialogShell class manages a dialog object that can have one or two option buttons.
     /// If you try to open a dialog with more than two option buttons, it will show the first two.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Dialog Shell")]
     public class DialogShell : Dialog
     {
         [SerializeField]

@@ -1168,6 +1168,12 @@ MonoBehaviour:
   onClicked:
     m_PersistentCalls:
       m_Calls: []
+  onEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisabled:
+    m_PersistentCalls:
+      m_Calls: []
   smoothSelectedness: 1
   distanceSpaceMode: 1
   startPushPlane: -0.003838122
@@ -1175,6 +1181,7 @@ MonoBehaviour:
   returnSpeed: 0.25
   enforceFrontPush: 1
   rejectXYRolloff: 1
+  rolloffXYDepth: 3
   rejectZRolloff: 0
   extendSpeed: 0.5
 --- !u!114 &954131435394119071
@@ -1250,6 +1257,8 @@ MonoBehaviour:
         clip: {fileID: 7400000, guid: c2cf5b5995f793f4d85cb696ef43cbb5, type: 2}
         speed: 1
         playbackMode: 0
+        weightMode: 0
+        transitionDuration: 0
     00000003:
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
@@ -1257,6 +1266,8 @@ MonoBehaviour:
         clip: {fileID: 7400000, guid: 4601d63e0c1b50442af76f234651f8a7, type: 2}
         speed: 1
         playbackMode: 0
+        weightMode: 0
+        transitionDuration: 0
     00000004:
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
@@ -1264,6 +1275,8 @@ MonoBehaviour:
         clip: {fileID: 7400000, guid: df1fdf2e763ac6d4281d5894f5fab7e4, type: 2}
         speed: 1
         playbackMode: 0
+        weightMode: 0
+        transitionDuration: 0
     00000005:
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
@@ -1271,6 +1284,8 @@ MonoBehaviour:
         clip: {fileID: 7400000, guid: 4f51b3f10e946db4fb9e1d234e168a43, type: 2}
         speed: 1
         playbackMode: 1
+        weightMode: 0
+        transitionDuration: 0
     00000006:
       type: {class: SetTargetsActiveEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
@@ -1539,7 +1554,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 2451216
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -1690,6 +1705,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8829903862454882072}
     m_Modifications:
+    - target: {fileID: 3148769097004162997, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f32fb793f8a4656469db1040ccf2cffb, type: 2}
     - target: {fileID: 4125495309553998321, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_Name
       value: UIBackplateOuterGeo
@@ -1748,11 +1767,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7759758375038403720, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.132
+      value: 0.136
       objectReference: {fileID: 0}
     - target: {fileID: 7759758375038403720, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.036
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 7759758375038403720, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1844,11 +1863,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1132637073067987526, guid: e3ee2968344c0ee41b950a4d2ab94b4c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.131
+      value: 0.1303
       objectReference: {fileID: 0}
     - target: {fileID: 1132637073067987526, guid: e3ee2968344c0ee41b950a4d2ab94b4c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.035
+      value: 0.0343
       objectReference: {fileID: 0}
     - target: {fileID: 5209440517997471518, guid: e3ee2968344c0ee41b950a4d2ab94b4c, type: 3}
       propertyPath: m_RootOrder
