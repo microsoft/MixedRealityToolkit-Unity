@@ -26,12 +26,13 @@ steps:
 
 - ${{ if eq(parameters.publishToArtifacts, true) }}:
   - task: PublishBuildArtifacts@1
-    displayName: "Publish UPM artifacts"
+    displayName: 'Publish UPM artifacts'
     inputs:
       pathToPublish: ${{ parameters.outputDirectory }}
       artifactName: "mrtk-upm"
 
-# - ${{ if eq(parameters.publishToFeed, true) }}:
-#   - template: Tasks/publish-upm.yaml
-#     parameters:
-#       packageDirectory: ${{ parameters.outputDirectory }}
+- ${{ if eq(parameters.publishToFeed, true) }}:
+  - template: Tasks/publish-upm.yaml
+    parameters:
+      packageDirectory: ${{ parameters.outputDirectory }}
+      registryPath: $(UpmRegistry)
