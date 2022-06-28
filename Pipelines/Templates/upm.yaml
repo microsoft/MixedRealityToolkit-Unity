@@ -36,3 +36,4 @@ steps:
     parameters:
       packageDirectory: ${{ parameters.outputDirectory }}
       registryPath: $(UpmRegistry)
+      authenticationEndpoint: $(ServiceConnectionName)

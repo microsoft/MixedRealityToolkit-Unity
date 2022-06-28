@@ -4,8 +4,14 @@
 # [Template] Publish packages to UPM registry
 
 parameters:
-  packageDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
-  registryPath: ""
+- name: packageDirectory
+  type: string
+
+- name: registryPath
+  type: string
+
+- name: authenticationEndpoint
+  type: string
 
 steps:
 - task: NodeTool@0
@@ -21,6 +27,7 @@ steps:
   displayName: 'Authenticate the .npmrc'
   inputs:
     workingFile: .npmrc
+    customEndpoint: ${{ parameters.authenticationEndpoint }}
 
 - task: PowerShell@2
   displayName: 'UPM packages to ${{ parameters.registryPath }}'
