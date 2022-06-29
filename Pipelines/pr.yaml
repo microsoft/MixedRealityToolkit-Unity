@@ -25,6 +25,4 @@ jobs:
 
   - checkout: PipelineTools
 
-  - script: dir $(Build.SourcesDirectory)
-
   - template: Templates/unity.yaml
