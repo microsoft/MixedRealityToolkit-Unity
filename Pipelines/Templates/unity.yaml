@@ -37,7 +37,7 @@ steps:
 - powershell: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
   displayName: Install unitysetup.powershell
 
-- template: $(Build.SourcesDirectory)/tools.internal/Templates/license-unity.yaml
+- template: Templates/license-unity.yaml@PipelineTools
 
   # Standalone x64 tasks
 
