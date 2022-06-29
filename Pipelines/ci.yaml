@@ -38,6 +38,10 @@ jobs:
       failOnAlert: true
 
   - template: Templates/unity.yaml
+    parameters:
+      BuildStandalone: true
+      BuildUWP: true
+      BuildAndroid: true
 
   - template: Templates/upm.yaml
     parameters:

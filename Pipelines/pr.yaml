@@ -26,3 +26,6 @@ jobs:
   - checkout: PipelineTools
 
   - template: Templates/unity.yaml
+    parameters:
+      BuildStandalone: true
+      BuildUWP: true

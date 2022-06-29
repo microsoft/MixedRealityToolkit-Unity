@@ -20,11 +20,11 @@ parameters:
 
 - name: BuildStandalone
   type: boolean
-  default: true
+  default: false
 
 - name: BuildUWP
   type: boolean
-  default: true
+  default: false
 
 - name: BuildAndroid
   type: boolean
