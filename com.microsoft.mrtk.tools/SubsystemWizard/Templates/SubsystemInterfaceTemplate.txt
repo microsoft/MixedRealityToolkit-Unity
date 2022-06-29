@@ -1,0 +1,10 @@
+namespace %NAMESPACE%
+{
+    /// <summary>
+    /// Interface defining the functionality of the #SUBSYSTEMNAME#.
+    /// </summary>
+    internal interface I%SUBSYSTEMNAME%
+    {
+        // TODO: Add subsystem specific properties and/or methods.
+    }
+}

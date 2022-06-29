@@ -1,0 +1,15 @@
+using UnityEngine;
+
+namespace %NAMESPACE%
+{
+    /// <summary>
+    /// The configuration object for all %SUBSYSTEMNAME% implementations.
+    /// </summary>
+    [CreateAssetMenu(
+        fileName = "%SUBSYSTEMNAME%Config.asset",
+        menuName = "Custom/Subsystems/%SUBSYSTEMNAME% Config")]
+    public class %SUBSYSTEMNAME%Config : BaseSubsystemConfig
+    {
+        // TODO: Add subsystem specific configuration properties.
+    }
+}

@@ -1,0 +1,56 @@
+using Microsoft.MixedReality.Toolkit.Subsystems;
+using UnityEngine.SubsystemsImplementation;
+
+namespace %NAMESPACE%
+{
+    public class %SUBSYSTEMNAME% :
+        MRTKSubsystem<%SUBSYSTEMNAME%, %SUBSYSTEMNAME%Descriptor, %SUBSYSTEMNAME%.Provider>,
+        I#SUBSYSEMNAME#
+    {
+        /// <summary>
+        /// Construct the <c>%SUBSYSTEMNAME%</c>.
+        /// </summary>
+        public %SUBSYSTEMNAME%()
+        { }
+
+        public abstract class Provider : MRTKSubsystemProvider<%SUBSYSTEMNAME%>, I%SUBSYSTEMNAME%
+        {
+            // TODO: Abstract implementation of the %SUBSYSTEMNAME% interface
+        }
+
+        // TODO: Subsystem implementation of the %SUBSYSTEMNAME% interface.
+        // This typically forwards calls into the provider.
+        // ex: public int MaxValue => provider.MaxValue;
+
+        /// <summary>
+        /// Registers a %SUBSYSTEMNAME% implementation based on the given subsystem parameters.
+        /// </summary>
+        /// <param name="subsystemParams">The parameters defining the %SUBSYSTEMNAME%
+        /// functionality implemented by the subsystem provider.</param>
+        /// <returns>
+        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="System.ArgumentException">Thrown when the values specified in the
+        /// <see cref="%SUBSYSTEMNAME%Cinfo"/> parameter are invalid. Typically, this will occur
+        /// <list type="bullet">
+        /// <item>
+        /// <description>if <see cref="%SUBSYSTEMNAME%Cinfo.id"/> is <c>null</c> or empty</description>
+        /// </item>
+        /// <item>
+        /// <description>if <see cref="%SUBSYSTEMNAME%Cinfo.implementationType"/> is <c>null</c></description>
+        /// </item>
+        /// <item>
+        /// <description>if <see cref="%SUBSYSTEMNAME%Cinfo.implementationType"/> does not derive from the
+        /// <see cref="%SUBSYSTEMNAME%"/> class
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </exception>
+        public static bool Register(%SUBSYSTEMNAME%Cinfo subsystemParams)
+        {
+            %SUBSYSTEMNAME%Descriptor Descriptor = %SUBSYSTEMNAME%Descriptor.Create(subsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(Descriptor);
+            return true;
+        }
+    }
+}
