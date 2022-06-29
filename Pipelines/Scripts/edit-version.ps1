@@ -45,11 +45,9 @@ function ReplaceVersionInFile($Path, $NewVersion, $Patterns, $Strict = $False) {
     return $errors
 }
 
-$gitRoot = (git -C $PSScriptRoot rev-parse --show-toplevel) | Out-String
-$gitRoot = ($gitRoot -replace "/", "\").Trim()
-
 $errors = @()
 
+$gitRoot = ((git -C $PSScriptRoot rev-parse --show-toplevel) | Out-String).Trim()
 $pipelinesDir = Get-Item (Join-Path $gitRoot "Pipelines")
 
 foreach ($file in (Get-ChildItem -Path $gitRoot -Recurse)) {

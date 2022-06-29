@@ -1,9 +1,9 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-$root = (Get-Item $PSScriptRoot).Parent # Move up to the repo root
+$gitRoot = ((git -C $PSScriptRoot rev-parse --show-toplevel) | Out-String).Trim()
 
-Get-ChildItem -Path $root/*/package.json | ForEach-Object {
+Get-ChildItem -Path (Join-Path $gitRoot * package.json) | ForEach-Object {
     $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
 
     if (-not $packageName) {
@@ -56,11 +56,9 @@ using System.Reflection;
 [assembly: AssemblyVersion("3.0.0.0")]
 "@
 
-            Write-Host $assemblyName
-
             Set-Content -Path $filename -Value $copyright
             Add-Content -Path $filename -Value $content
-            Write-Host "Added AssemblyInfo.cs at $filename"
+            Write-Host "Added AssemblyInfo.cs for $assemblyName at $filename"
         }
     }
 }
