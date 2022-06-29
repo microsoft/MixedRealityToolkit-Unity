@@ -69,19 +69,16 @@ foreach ($file in (Get-ChildItem -Path $gitRoot -Recurse)) {
         elseif ($file.Name -eq "ProjectSettings.asset") {
             $errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns @("(?<=bundleVersion:\s+)(\d+\.\d+\.\d+)", "(?<=metroPackageVersion:\s+)(\d+\.\d+\.\d+)(?=\.\d+)")
         }
-        elseif ($file.Name -eq "UwpAppxBuildToolsTest.cs") {
-            $errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=\sVersion=')(\d+\.\d+\.\d+)(?=\.\d+\')") -Strict $True
-        }
     }
 
     if ($NewPreview) {
         if ($file.Directory.FullName.StartsWith($PipelinesDir.FullName)) {
             if (($file.Extension -eq ".yml") -or ($file.Extension -eq ".yaml")) {
-                $errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewPreview -Patterns @("(?<=MRTKReleaseTag:\s+')(\d+)")
+                $errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewPreview -Patterns @("(?<=MRTKReleaseTag:\s+')([\w.]+)")
             }
         }
         elseif ($file.Name -eq "ProjectSettings.asset") {
-            $errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewPreview -Patterns @("(?<=bundleVersion:\s+\d+\.\d+\.\d+-\w+.)(\d+)")
+            $errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewPreview -Patterns @("(?<=bundleVersion:\s+\d+\.\d+\.\d+-)(\w+.\d+)")
         }
     }
 }
