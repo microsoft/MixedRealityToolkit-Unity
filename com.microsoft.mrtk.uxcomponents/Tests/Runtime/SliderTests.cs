@@ -107,26 +107,27 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             // This should not throw exception
             AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
-            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            Assert.IsTrue(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.0f, 0, 0.5f);
+            Vector3 initialPos = new Vector3(0.05f, -0.08f, 0.3f);
             yield return rightHand.Show(initialPos);
-            // Use more frames for better gaze-pinch reliability
-            yield return rightHand.SetGesture(GestureId.Pinch, 30);
+            yield return rightHand.MoveTo(new Vector3(0.05f, -0.08f, 0.3f), 60);
+
+            yield return rightHand.SetGesture(GestureId.Pinch);
 
             yield return RuntimeTestUtilities.WaitForUpdates();
-            Debug.Assert(slider.isSelected, "Slider wasn't selected");
-            Debug.Assert(slider.IsGazePinchSelected, "Slider wasn't gaze pinch selected");
-            Debug.Assert(slider.interactorsSelecting.Count == 1, "Something else was selecting the slider, too! Should only have one selecting.");
+            Assert.IsTrue(slider.isSelected, "Slider wasn't selected");
+            Assert.IsTrue(slider.IsGazePinchSelected, "Slider wasn't gaze pinch selected");
+            Assert.IsTrue(slider.interactorsSelecting.Count == 1, "Something else was selecting the slider, too! Should only have one selecting.");
+            
             yield return rightHand.Move(new Vector3(0.1f, 0, 0));
-            // Use more frames for better gaze-pinch reliability
-            yield return rightHand.SetGesture(GestureId.Open, 10);
+            yield return rightHand.SetGesture(GestureId.Open);
             yield return rightHand.Hide();
 
             yield return RuntimeTestUtilities.WaitForUpdates();
-            Debug.Assert(!slider.isSelected, "Slider wasn't deselected");
-            Debug.Assert(!slider.IsGazePinchSelected, "Slider wasn't de-gaze-pinch-selected");
+            Assert.IsTrue(!slider.isSelected, "Slider wasn't deselected");
+            Assert.IsTrue(!slider.IsGazePinchSelected, "Slider wasn't de-gaze-pinch-selected");
 
             Assert.That(slider.SliderValue, Is.GreaterThan(0.5), "Slider didn't move after gaze-pinch manipulation.");
 
@@ -265,8 +266,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             Vector3 initialPos = new Vector3(0.3f, 0, 0.0f);
+
             yield return rightHand.Show(initialPos);
             yield return rightHand.SetGesture(GestureId.Open);
+
             yield return rightHand.Move(new Vector3(0, 0, 1.0f));
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -352,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         /// <summary>
-        /// Tests that interactable has the correct values when snapping to a position
+        /// Tests that interactable has the correct values when *not* snapping to the touch point
         /// </summary>
         [UnityTest]
         public IEnumerator TestAssembleTouchNoSnapSlider()
@@ -364,13 +367,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             // This should not throw exception
             AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
-            // Set the slider to use step divisions
-            slider.UseSliderStepDivisions = true;
-            slider.SliderStepDivisions = 100;
-
             // Set slider to not snap with touch
             slider.SnapToPosition = false;
             slider.IsTouchable = true;
+
+            Assert.AreEqual(0.5f, slider.SliderValue, "Slider did not initialize to the correct value");
 
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -380,22 +381,30 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.0f, 0, 1.00f);
+            yield return rightHand.Show();
 
-            yield return rightHand.Show(initialPos);
+            // Poke the slider at the 20% point. It shouldn't snap to the finger.
+            Vector3 firstPoint = Vector3.Lerp(slider.SliderStart.position, slider.SliderEnd.position, 0.2f);
 
-            yield return rightHand.Move(new Vector3(0.3f, 0, 0), 60);
-            Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
-            Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
+            yield return rightHand.MoveTo(firstPoint, 60);
+            Assert.IsFalse(interactionStarted, "Slider started interactdion when we didn't touch the handle and snapToPosition = false");
+            Assert.IsFalse(interactionUpdated, "Slider upated value when we didn't touch the handle and snapToPosition = false");
+            Assert.AreEqual(0.5f, slider.SliderValue, "Slider shouldn't have snapped to the finger point when SnapToPosition = false");
 
-            yield return rightHand.SetGesture(GestureId.Open);
+            yield return rightHand.MoveTo(Vector3.zero, 60);
 
-            yield return rightHand.Move(new Vector3(-0.6f, 0, 0), 60);
-            yield return rightHand.SetGesture(GestureId.Open);
+            Vector3 middlePoint = Vector3.Lerp(slider.SliderStart.position, slider.SliderEnd.position, 0.5f);
+            yield return rightHand.MoveTo(middlePoint, 60);
 
-            yield return rightHand.Hide();
+            Assert.IsTrue(interactionStarted, "Slider didn't start interaction when we poked the handle");
+            Assert.IsTrue(interactionUpdated, "Slider didn't invoke OnValueUpdated when we poked the handle");
+            Assert.AreEqual(0.5f, slider.SliderValue, 0.001f, "Slider should still be roughly the same value");
 
-            Assert.AreEqual(0.20f, slider.SliderValue, 0.005f);
+            interactionUpdated = false;
+            yield return rightHand.MoveTo(firstPoint, 60);
+
+            Assert.IsTrue(interactionUpdated, "Slider didn't invoke OnValueUpdated when we dragged the handle");
+            Assert.AreEqual(0.2f, slider.SliderValue, 0.001f, "Slider value should roughly be 0.2");
 
             GameObject.Destroy(sliderObject);
         }

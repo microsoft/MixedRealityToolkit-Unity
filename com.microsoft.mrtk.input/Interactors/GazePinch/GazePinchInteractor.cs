@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The valid targets of this interactor are harvested from the valid targets of the specified
     /// <see cref="GazePinchInteractor.dependentInteractor">.
     /// </summary>
+    [AddComponentMenu("MRTK/Input/Gaze Pinch Interactor")]
     public class GazePinchInteractor : XRBaseControllerInteractor, IGazePinchInteractor, IHandedInteractor
     {
         [SerializeField]

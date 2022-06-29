@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Helper script to implement the demo scene hand menu actions.
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Sample Scene Hand Menu")]
     internal class SampleSceneHandMenu : MonoBehaviour
     {
         [SerializeField]

@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// This handle supports occlusion + reorientation to maintain
     /// a particular flattened/occluded visual look + feel.
     /// </summary>
+    [AddComponentMenu("MRTK/Spatial Manipulation/Scale Handle Interactable")]
     internal class ScaleHandleInteractable : BoundsHandleInteractable
     {
         #region Private Fields

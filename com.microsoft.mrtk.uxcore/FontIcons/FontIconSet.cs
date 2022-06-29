@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// When using a stylesheet, it is important to use a style that maps to the desired TMP Font Asset (by its name)
     /// and any other styling desired when rendered, such as size and color.
     /// </summary>
-    [CreateAssetMenu(fileName = "MRTK_UX_FontIconSet_New", menuName = "MRTK/UX/FontIconSet")]
+    [CreateAssetMenu(fileName = "MRTK_UX_FontIconSet_New", menuName = "MRTK/UX/Font Icon Set")]
     public class FontIconSet : ScriptableObject
     {
         [SerializeField]

@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     [Serializable]
+    [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Theme Test")]
     public class DataSourceThemeTest : DataSourceGOBase
     {
         [SerializeField]

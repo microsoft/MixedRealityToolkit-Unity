@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// command from the "Edit" and "Delete" button prefabs that is automatically bound to the correct "contactID"
     /// field so that the command receiver is able to invoke the appropriate functionality for the specific
     /// contact associated with the contact ID.</remarks>
-
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Command Dispatcher")]
     public class DataConsumerCommandDispatcher : DataConsumerGOBase
     {
         [Tooltip("Local key path for the data to provide with a command, typically a unique identifier field.")]

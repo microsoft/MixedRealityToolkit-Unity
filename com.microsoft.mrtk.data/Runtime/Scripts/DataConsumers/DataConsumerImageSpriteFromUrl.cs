@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// object.
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Image Sprite From Url")]
     public class DataConsumerImageSpriteFromUrl : DataConsumerImageTextureFromUrl
     {
         [Tooltip("(Optional) Specific sprite renderer to populate with a retrieved image. If not specified, first SpriteRenderer found in this or children will be used.")]

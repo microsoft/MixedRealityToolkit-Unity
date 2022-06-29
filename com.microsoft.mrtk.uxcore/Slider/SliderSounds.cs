@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// Component that plays sounds to communicate the state of a pinch slider
     /// </summary>
     [RequireComponent(typeof(Slider))]
-    [AddComponentMenu("Scripts/MRTK/SDK/SliderSounds")]
+    [AddComponentMenu("MRTK/UX/Slider Sounds")]
     public class SliderSounds : MonoBehaviour
     {
         [SerializeField]

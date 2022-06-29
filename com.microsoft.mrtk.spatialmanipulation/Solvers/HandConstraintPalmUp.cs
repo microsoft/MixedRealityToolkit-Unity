@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// This solver only works with articulated hands, with other controller types this solver will
     /// behave the same as <see cref="HandConstraint"/>.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Solvers/Hand Constraint (Palm Up)")]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Hand Constraint (Palm Up)")]
     public class HandConstraintPalmUp : HandConstraint
     {
         [Header("Palm Up")]

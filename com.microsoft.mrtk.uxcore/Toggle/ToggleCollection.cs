@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A custom list of interactables can be set; if none is set at edit-time, all direct
     /// StatefulInteractable children will be added.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Toggle Collection")]
     public class ToggleCollection : MonoBehaviour
     {
         [SerializeField]

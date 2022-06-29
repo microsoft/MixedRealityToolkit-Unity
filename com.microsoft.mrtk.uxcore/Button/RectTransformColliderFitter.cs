@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// Works in both Edit and Play modes. Only fits the X and Y axes, and preserves the Z axis.
     /// </summary>
     [ExecuteAlways]
+    [AddComponentMenu("MRTK/UX/Rect Transform Collider Fitter")]
     public class RectTransformColliderFitter : UIBehaviour, IClippable
     {
         [SerializeField]

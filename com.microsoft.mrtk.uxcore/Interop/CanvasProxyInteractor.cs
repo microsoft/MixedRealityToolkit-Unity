@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// A simple proxy interactor which will select + hover things on our behalf, for canvas input.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Canvas Proxy Interactor")]
     public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor
     {
         protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();

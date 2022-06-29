@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// By creating multiple profiles out of this ScriptableObject, each profile can contain a different instrument, or a different octave.
     /// These can then be easily swapped via helper scripts such as the ThemeSelector.
     /// </remarks>
-    [CreateAssetMenu(fileName = "Example_MusicInformation_Profile", menuName = "MRTK/Examples/DataBinding_MusicInformation_Profile")]
+    [CreateAssetMenu(fileName = "Example_MusicInformation_Profile", menuName = "MRTK/Examples/Music Information Profile")]
     [Serializable]
     public class MusicInformationProfile : ScriptableObject
     {

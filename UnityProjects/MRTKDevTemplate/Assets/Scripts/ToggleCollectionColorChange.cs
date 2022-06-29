@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("MRTK/Examples/Toggle Collection Color Change")]
     public class ToggleCollectionColorChange : MonoBehaviour
     {
         [Tooltip("The ToggleCollection for this color changer.")]

@@ -10,6 +10,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    [AddComponentMenu("MRTK/Core/Stateful Interactable")]
     public class StatefulInteractable : MRTKBaseInteractable
     {
         #region Settings

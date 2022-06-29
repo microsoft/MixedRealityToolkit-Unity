@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Applies acceleration/velocity/friction to simulate momentum for an object being moved by other solvers/components
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Solvers/Momentum")]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Momentum")]
     public class Momentum : Solver
     {
         #region Momentum Parameters

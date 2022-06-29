@@ -308,7 +308,7 @@ function CheckInitializeOnLoad {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
                 Write-Warning @"
-A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added 
+A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added
 to `$InitializeOnLoadExceptions after discussion with the rest of the team.
 "@
                 $hasIssue = $true

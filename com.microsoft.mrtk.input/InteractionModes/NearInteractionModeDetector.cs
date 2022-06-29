@@ -7,6 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [AddComponentMenu("MRTK/Input/Near Interaction Mode Detector")]
     public class NearInteractionModeDetector : ProximityDetector
     {
         [SerializeField]

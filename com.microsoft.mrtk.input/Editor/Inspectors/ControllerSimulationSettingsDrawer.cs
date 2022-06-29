@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 
         private readonly GUIContent anchorPointContent = new GUIContent("Anchor point");
         private readonly GUIContent defaultPositionContent = new GUIContent("Default position");
+        private readonly GUIContent defaultPoseContent = new GUIContent("Default pose");
 
         private readonly GUIContent trackContent = new GUIContent("Momentary tracking");
         private readonly GUIContent toggleContent = new GUIContent("Toggle tracking");
@@ -45,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             SerializedProperty property,
             GUIContent label)
         {
-            return PropertyDrawerUtilities.CalculatePropertyHeight(25);
+            return PropertyDrawerUtilities.CalculatePropertyHeight(26);
         }
 
         public override void OnGUI(
@@ -71,6 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             SerializedProperty simMode = property.FindPropertyRelative("simulationMode");
             SerializedProperty anchorPoint = property.FindPropertyRelative("anchorPoint");
             SerializedProperty defaultPosition = property.FindPropertyRelative("defaultPosition");
+            SerializedProperty defaultPose = property.FindPropertyRelative("defaultPose");
 
             SerializedProperty track = property.FindPropertyRelative("track");
             SerializedProperty toggle = property.FindPropertyRelative("toggle");
@@ -96,6 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
                 defaultPosition, defaultPositionContent);
+            EditorGUI.PropertyField(
+                PropertyDrawerUtilities.GetPosition(
+                    position,
+                    PropertyDrawerUtilities.VerticalSpacing,
+                    ++rowMultiplier,
+                    PropertyDrawerUtilities.Height),
+                defaultPose, defaultPoseContent);
 
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(

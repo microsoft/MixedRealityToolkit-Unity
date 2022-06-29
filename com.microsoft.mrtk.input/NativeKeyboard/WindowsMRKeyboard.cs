@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Class allowing for launching and hiding a system keyboard specifically for Windows Mixed Reality
     /// devices (HoloLens 2, Windows Mixed Reality).
     /// </summary>
+    [AddComponentMenu("MRTK/Input/Windows MR Keyboard")]
     public class WindowsMRKeyboard : MonoBehaviour
     {
         #region Properties

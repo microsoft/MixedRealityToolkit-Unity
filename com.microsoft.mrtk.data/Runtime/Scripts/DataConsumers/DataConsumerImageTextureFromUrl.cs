@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///     protected abstract void PlaceImageTexture(Texture imageTexture);
     /// </remarks>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Image Texture From Url")]
     public abstract class DataConsumerImageTextureFromUrl : DataConsumerGOBase
     {
         [Tooltip("Manage images in child game objects as well as this one.")]

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// Class enabling assistive technologies to provide descriptive data (ex: purpose,
     /// description, role, etc.) for an object in the scene.
     /// </summary>
+    [AddComponentMenu("MRTK/Accessibility/Describable Object")]
     public class DescribableObject : MonoBehaviour
     {
         [SerializeField]

@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5329792983942521890, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.164
+      value: 0.168
       objectReference: {fileID: 0}
     - target: {fileID: 6026828403977934991, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: isStatefulToggled.onExited.m_PersistentCalls.m_Calls.Array.size
@@ -82,6 +82,10 @@ PrefabInstance:
     - target: {fileID: 6059181787491541573, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.064
+      objectReference: {fileID: 0}
+    - target: {fileID: 6080572341111065694, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.016
       objectReference: {fileID: 0}
     - target: {fileID: 6366612887842050153, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: m_LocalScale.x
@@ -153,7 +157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8414396982058245383, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.163
+      value: 0.1623
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}

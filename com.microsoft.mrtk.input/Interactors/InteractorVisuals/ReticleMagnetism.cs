@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// the reticle's parents, the <see cref="IPokeInteractor.PokeRadius"/> will be taken
     /// into account when rendering the reticle.
     /// </summary>
+    [AddComponentMenu("MRTK/Input/Reticle Magnetism")]
     internal class ReticleMagnetism : MonoBehaviour
     {
         [SerializeField]

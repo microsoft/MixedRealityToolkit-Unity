@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// NOTE: For improved rendering performance you can optionally include the 
     /// "Hidden/Instanced-Colored" shader in your project along with the VisualProfiler.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Performance/Visual Profiler")]
+    [AddComponentMenu("MRTK/Diagnostics/Visual Profiler")]
     public class VisualProfiler : MonoBehaviour
     {
         private static readonly int maxStringLength = 32;

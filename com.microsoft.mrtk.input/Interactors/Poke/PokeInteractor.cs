@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// An interactor that is used for poking/pressing near interactions.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Input/Poke Interactor")]
+    [AddComponentMenu("MRTK/Input/Poke Interactor")]
     public class PokeInteractor : XRBaseControllerInteractor, IPokeInteractor, IHandedInteractor, IMRTKInteractorVisuals
     {
         #region IHandedInteractor

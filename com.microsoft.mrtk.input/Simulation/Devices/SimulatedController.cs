@@ -145,9 +145,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         public SimulatedController(
             Handedness handedness,
+            SimulatedHandPose defaultPose,
             Vector3 initialRelativePosition)
         {
             Handedness = handedness;
+
+            // Set the default hand pose when initially tracked.
+            XRNode? handNode = Handedness.ToXRNode();
+            if (handNode.HasValue && SynthHands != null)
+            {
+                SynthHands.SetNeutralPose(handNode.Value,
+                    defaultPose == SimulatedHandPose.Ready ? GestureId.Open : GestureId.Flat);
+            }
+
             simulatedController = InputSystem.AddDevice<MRTKSimulatedController>();
             if (simulatedController == null)
             {

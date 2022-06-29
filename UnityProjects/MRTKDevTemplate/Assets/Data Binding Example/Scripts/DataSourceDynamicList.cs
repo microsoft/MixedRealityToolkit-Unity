@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// Simple data source that generates a large list of randomly generated entries.
     /// This can be used to test paging and virtualization.
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Dynamic List")]
     public class DataSourceDynamicList : DataSourceGOBase
     {
         [Tooltip("The number of random image entries to generate for image collection.")]

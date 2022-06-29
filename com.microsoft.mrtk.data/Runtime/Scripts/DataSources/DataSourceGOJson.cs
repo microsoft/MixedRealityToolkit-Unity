@@ -3,6 +3,7 @@
 
 using System.Collections;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -20,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///       data consumer notifications to only this keypaths that have actually
     ///       changed since the last data fetch.
     /// </summary>
+    [AddComponentMenu("MRTK/Data Binding/Sources/Data Source JSON")]
     public class DataSourceGOJson : DataSourceGOBase
     {
         public delegate void RequestSuccessDelegate(string jsonText, object requestRef);

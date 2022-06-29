@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Helper script to respawn objects if they go too far from their original position. Useful for objects that will fall forever etc.
     /// </summary>
+    [AddComponentMenu("MRTK/Examples/Tethered Placement")]
     internal class TetheredPlacement : MonoBehaviour
     {
         [SerializeField, Tooltip("The distance from the GameObject's spawn position at which will trigger a respawn.")]

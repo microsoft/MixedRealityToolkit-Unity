@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A visuals script to provide a visual layer on top of
     /// <see cref="Slider"/>.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Slider Visuals")]
     public class SliderVisuals : MonoBehaviour
     {
         [SerializeField]

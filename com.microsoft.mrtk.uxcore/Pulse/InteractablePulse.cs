@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A script to enable pulse effect on <see cref="StatefulInteractable"/>.
     /// </summary>
     [RequireComponent(typeof(StatefulInteractable))]
+    [AddComponentMenu("MRTK/UX/Interactable Pulse")]
     public class InteractablePulse : MonoBehaviour
     {
         [SerializeField]

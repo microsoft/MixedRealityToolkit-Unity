@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 91ddf1a8cf8c577499fe347cd46a5d05, type: 3}
+    - target: {fileID: 3919892041988259205, guid: 32fa8a656cfcde24da6a4ec1fdc0bdef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6363725149706197446, guid: 32fa8a656cfcde24da6a4ec1fdc0bdef, type: 3}
       propertyPath: m_Name
       value: TogglePressableButton_32x32mm_Radio

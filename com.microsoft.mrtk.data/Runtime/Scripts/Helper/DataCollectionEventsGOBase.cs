@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// monobehaviour that can accept any subclass of this class. Each subclass can offer
     /// a different subset (or all) UnityEvents that trigger these "event" method calls.
     /// </summary>
+    [AddComponentMenu("MRTK/Data Binding/Data Collection Events Base")]
     public class DataCollectionEventsGOBase : MonoBehaviour, IDataCollectionEvents
     {
         /// <summmary>

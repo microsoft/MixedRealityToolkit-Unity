@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// to simplify the integration of generic view prefabs that are populated from
     /// external information.
     /// </remarks>
+    [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Reflection List Test")]
     public class DataSourceReflectionListTest : MonoBehaviour, IDataSourceProvider
     {
         [Tooltip("(Optional) Data source type. Can be used by data consumers to automatically find and attach to the correct data source. E.g. This is useful for differentiating between 'data' and 'theme' data sources.")]

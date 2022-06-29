@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
+    [AddComponentMenu("MRTK/Data Binding/Sources/Data Source Dictionary")]
     public class DataSourceGODictionary : DataSourceGOBase
     {
         public delegate void NotifyKeypathValueChangedDelegate(string keyPath, string value);

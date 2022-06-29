@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// After entering the trigger selection state the interactor will keep selecting before <see cref="dwellTriggerTime"/> passes, after which the selection ends.
     /// </remarks>
     [RequireComponent(typeof(XRBaseInteractor))]
+    [AddComponentMenu("MRTK/Input/Interactor Dwell Manager")]
     public class InteractorDwellManager : MonoBehaviour
     {
         [SerializeField]

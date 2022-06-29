@@ -91,15 +91,15 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// Registers a hands subsystem implementation based on the given subsystem parameters.
         /// </summary>
-        /// <param name="HandsAggregatorSubsystemParams">The parameters defining the hands subsystem functionality implemented
+        /// <param name="handsAggregatorSubsystemParams">The parameters defining the hands subsystem functionality implemented
         /// by the subsystem provider.</param>
         /// <returns>
         /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
         /// </returns>
-        public static bool Register(HandsAggregatorSubsystemCinfo HandsAggregatorSubsystemParams)
+        public static bool Register(HandsAggregatorSubsystemCinfo handsAggregatorSubsystemParams)
         {
-            HandsAggregatorSubsystemDescriptor HandsAggregatorSubsystemDescriptor = HandsAggregatorSubsystemDescriptor.Create(HandsAggregatorSubsystemParams);
-            SubsystemDescriptorStore.RegisterDescriptor(HandsAggregatorSubsystemDescriptor);
+            HandsAggregatorSubsystemDescriptor descriptor = HandsAggregatorSubsystemDescriptor.Create(handsAggregatorSubsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }
     }

@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// An input adapter that translates UnityUI input events
     /// into XRI-compatible interactions.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/UGUI Input Adapter")]
     public class UGUIInputAdapter : Selectable, ISubmitHandler
     {
         private IXRInteractable thisInteractable;

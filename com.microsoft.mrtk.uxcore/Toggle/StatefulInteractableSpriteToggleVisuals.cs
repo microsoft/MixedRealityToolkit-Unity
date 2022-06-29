@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <see cref="StatefulInteractable"/>.
     /// </summary>
     [RequireComponent(typeof(SpriteRenderer))]
+    [AddComponentMenu("MRTK/UX/Stateful Interactable Sprite Toggle Visuals")]
     public class StatefulInteractableSpriteToggleVisuals : MonoBehaviour
     {
         #region Serialized Fields

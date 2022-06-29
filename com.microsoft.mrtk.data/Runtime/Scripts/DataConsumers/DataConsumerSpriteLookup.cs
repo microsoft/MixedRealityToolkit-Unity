@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// TODO: Allow for a default sprite if no look up can be found.
     /// </remarks>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Sprite Lookup")]
     public class DataConsumerSpriteLookup : DataConsumerGOBase
     {
         [Serializable]

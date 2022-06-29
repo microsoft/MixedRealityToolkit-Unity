@@ -135,8 +135,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // See comments for UseSlowTestController for why this is reset to false on each test case.
             UseSlowTestController = false;
 
-            leftController = new SimulatedController(Handedness.Left, Vector3.zero);
-            rightController = new SimulatedController(Handedness.Right, Vector3.zero);
+            leftController = new SimulatedController(
+                Handedness.Left, SimulatedHandPose.Neutral, Vector3.zero);
+            rightController = new SimulatedController(
+                Handedness.Right, SimulatedHandPose.Neutral, Vector3.zero);
 
             leftControllerSettings = new ControllerSimulationSettings();
             rightControllerSettings = new ControllerSimulationSettings();

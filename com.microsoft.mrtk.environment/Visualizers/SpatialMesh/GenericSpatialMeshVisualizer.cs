@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Environment
 {
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Environment/Generic Spatial Mesh Visualizer")]
+    [AddComponentMenu("MRTK/Environment/Generic Spatial Mesh Visualizer")]
     public class GenericSpatialMeshVisualizer : BaseSpatialMeshVisualizer
     {
 

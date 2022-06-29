@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// elements in a prefab
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/UX/UX Binding Configurator")]
     public class UXBindingConfigurator : MonoBehaviour
     {
         [Tooltip("The binding profile scriptable object that defines a standard set of keypath mappings for data sources and theme sources across all themable and bindable elements.")]

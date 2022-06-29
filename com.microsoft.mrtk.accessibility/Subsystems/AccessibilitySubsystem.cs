@@ -94,8 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </exception>
         public static bool Register(AccessibilitySubsystemCinfo accessibilitySubsystemParams)
         {
-            AccessibilitySubsystemDescriptor accessibilitySubsystemDescriptor = AccessibilitySubsystemDescriptor.Create(accessibilitySubsystemParams);
-            SubsystemDescriptorStore.RegisterDescriptor(accessibilitySubsystemDescriptor);
+            AccessibilitySubsystemDescriptor descriptor = AccessibilitySubsystemDescriptor.Create(accessibilitySubsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }
     }

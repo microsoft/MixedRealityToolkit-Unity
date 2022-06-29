@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// e.g. public class MyClassName : Singleton<MyClassName> {}
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Sources/Data Source Provider Singleton")]
     public class DataSourceProviderSingleton : MonoBehaviour, IDataSourceProvider
     {
         [Tooltip("Array of data sources that this provider can provide.")]

@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A ring-like reticle that expands/contracts.
     /// </summary>
+    [AddComponentMenu("MRTK/Input/Ring Reticle")]
     internal class RingReticle : MonoBehaviour, IVariableReticle
     {
         [SerializeField]

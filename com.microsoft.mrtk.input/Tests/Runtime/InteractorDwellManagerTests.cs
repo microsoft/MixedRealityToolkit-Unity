@@ -22,8 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // Instantiate a cube and attach the StatefulInteractable component
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             StatefulInteractable interactable = cube.AddComponent<StatefulInteractable>();
-            cube.transform.position = new Vector3(0, 0, 1);
-            cube.transform.localScale = Vector3.one * 0.1f;
+            cube.transform.position = new Vector3(0, 0, 2);
 
             // Configure the StatefulInteractable component to use far ray dwell
             const float dwellTime = 1f;

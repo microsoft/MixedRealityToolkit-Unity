@@ -198,7 +198,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     UpdateGesture();
 
-                    if (positionAction.action?.activeControl?.device is TrackedDevice positionTrackedDevice)
+                    // ActiveControl will be null if the position/pose has not yet been "actuated".
+                    // Thus, if there's no "recently actuated control", we just manually resolve the
+                    // binding and grab the control list ourselves, and assume the first control is
+                    // the one we want.
+                    InputControl positionControl = positionAction.action?.activeControl ??
+                                                    (positionAction.action?.controls.Count > 0 ? positionAction.action?.controls[0] : null);
+
+                    if (positionControl?.device is TrackedDevice positionTrackedDevice)
                     {
                         var trackingState = (InputTrackingState)positionTrackedDevice.trackingState.ReadValue();
                         if ((trackingState & InputTrackingState.Position) != 0)
@@ -215,7 +222,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         FullQueryValid = false;
                     }
 
-                    if (rotationAction.action?.activeControl?.device is TrackedDevice rotationTrackedDevice)
+                    // ActiveControl will be null if the rotation/pose has not yet been "actuated".
+                    // Thus, if there's no "recently actuated control", we just manually resolve the
+                    // binding and grab the control list ourselves, and assume the first control is
+                    // the one we want.
+                    InputControl rotationControl = rotationAction.action?.activeControl ??
+                                                    (rotationAction.action?.controls.Count > 0 ? rotationAction.action?.controls[0] : null);
+
+                    if (rotationControl?.device is TrackedDevice rotationTrackedDevice)
                     {
                         var trackingState = (InputTrackingState)rotationTrackedDevice.trackingState.ReadValue();
                         if ((trackingState & InputTrackingState.Position) != 0)

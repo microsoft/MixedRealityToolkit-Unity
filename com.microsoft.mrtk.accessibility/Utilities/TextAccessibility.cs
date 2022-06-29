@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// <summary>
     /// Script that applies accessibility enhancements to an attached Text Mesh Pro object.
     /// </summary>
+    [AddComponentMenu("MRTK/Accessibility/Text Accessibility")]
     public class TextAccessibility : MonoBehaviour
     {
         private AccessibilitySubsystem accessibilitySubsystem = null;

@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// which reports the specified hover and select modes whenever the associated
     /// interactor has a valid hover or select target.
     /// </summary>
+    [AddComponentMenu("MRTK/Input/Interaction Detector")]
     public class InteractionDetector : MonoBehaviour, IInteractionModeDetector
     {
         [SerializeField]

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A visuals script to provide a visual layer on top of a
     /// <see cref="StatefulInteractable"/>.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Stateful Interactable Switch Toggle Visuals")]
     public class StatefulInteractableSwitchToggleVisuals : MonoBehaviour
     {
         #region Serialized Fields

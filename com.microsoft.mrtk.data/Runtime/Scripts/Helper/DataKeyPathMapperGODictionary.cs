@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///
     /// TODO: consider refactoring using SerializableDictionary class once core utilities are separable.
     /// </summary>
+    [AddComponentMenu("MRTK/Data Binding/Data Key Path Mapper Dictionary")]
     public class DataKeyPathMapperGODictionary : MonoBehaviour, IDataKeyPathMapper
     {
         [Serializable]

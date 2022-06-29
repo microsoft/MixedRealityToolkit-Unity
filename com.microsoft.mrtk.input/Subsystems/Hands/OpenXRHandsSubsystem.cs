@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 
-#if MROPENXR_PRESENT
+#if MROPENXR_PRESENT && (UNITY_EDITOR_WIN || UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_ANDROID)
 using Microsoft.MixedReality.OpenXR;
 using System.Collections.Generic;
 using Unity.Profiling;
@@ -14,7 +14,7 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-#if MROPENXR_PRESENT
+#if MROPENXR_PRESENT && (UNITY_EDITOR_WIN || UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_ANDROID)
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mixedreality.openxrhands",
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #endif // MROPENXR_PRESENT
     public class OpenXRHandsSubsystem : HandsSubsystem
     {
-#if MROPENXR_PRESENT
+#if MROPENXR_PRESENT && (UNITY_EDITOR_WIN || UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_ANDROID)
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Register()
         {

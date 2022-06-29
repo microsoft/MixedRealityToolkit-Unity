@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Tap to place is a far interaction component used to place objects on a surface.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Solvers/Tap To Place")]
+    [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Tap To Place")]
     public class TapToPlace : Solver
     {
         [SerializeField]

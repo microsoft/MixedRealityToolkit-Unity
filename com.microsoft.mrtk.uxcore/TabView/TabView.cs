@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// Collection of toggles that control the visibility of associated game objects.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/Tab View")]
     public class TabView : MonoBehaviour
     {
         [Tooltip("Toggle collection for this Tab View.")]

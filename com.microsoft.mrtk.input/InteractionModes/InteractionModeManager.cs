@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Used to manage interactors and ensure that each several interactors for an XR controller aren't clashing and firing at the same time
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Input/Interaction Mode Manager")]
+    [AddComponentMenu("MRTK/Input/Interaction Mode Manager")]
     public class InteractionModeManager : MonoBehaviour
     {
         /// <summary>

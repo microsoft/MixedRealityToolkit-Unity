@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// Utility behavior to access the axis aligned bounds of an articulated hand
     /// (or the proxy visualizer of a motion controller).
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Hand Bounds")]
+    [AddComponentMenu("MRTK/Core/Hand Bounds")]
     public class HandBounds : MonoBehaviour // todo, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
     {
         /// <summary>

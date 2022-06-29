@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// Registers a PhraseRecognition subsystem implementation based on the given subsystem parameters.
         /// </summary>
-        /// <param name="PhraseRecognitionSubsystemParams">The parameters defining the PhraseRecognition subsystem functionality implemented
+        /// <param name="phraseRecognitionSubsystemParams">The parameters defining the PhraseRecognition subsystem functionality implemented
         /// by the subsystem provider.</param>
         /// <returns>
         /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
@@ -89,10 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// </item>
         /// </list>
         /// </exception>
-        public static bool Register(PhraseRecognitionSubsystemCinfo PhraseRecognitionSubsystemParams)
+        public static bool Register(PhraseRecognitionSubsystemCinfo phraseRecognitionSubsystemParams)
         {
-            PhraseRecognitionSubsystemDescriptor PhraseRecognitionSubsystemDescriptor = PhraseRecognitionSubsystemDescriptor.Create(PhraseRecognitionSubsystemParams);
-            SubsystemDescriptorStore.RegisterDescriptor(PhraseRecognitionSubsystemDescriptor);
+            PhraseRecognitionSubsystemDescriptor descriptor = PhraseRecognitionSubsystemDescriptor.Create(phraseRecognitionSubsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }
     }

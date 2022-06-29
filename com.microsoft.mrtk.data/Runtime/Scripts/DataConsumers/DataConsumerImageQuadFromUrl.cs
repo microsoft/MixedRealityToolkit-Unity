@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// object.
     /// </summary>
     [Serializable]
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Image Quad From Url")]
     public class DataConsumerImageQuadFromUrl : DataConsumerImageTextureFromUrl
     {
         [Tooltip("(Optional) Specific mesh renderer to populate with a retrieved image. If not specified, first MeshRenderer found in this or children will be used.")]

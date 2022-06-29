@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// <summary>
     /// Script to display performance statistics as simple text objects.
     /// </summary>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Performance/Simple Profiler")]
+    [AddComponentMenu("MRTK/Diagnostics/Simple Profiler")]
     public class SimpleProfiler : MonoBehaviour
     {
         #region Frame properties

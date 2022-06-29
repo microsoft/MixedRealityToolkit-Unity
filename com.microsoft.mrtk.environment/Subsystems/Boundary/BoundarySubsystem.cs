@@ -86,8 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Environment
         /// </exception>
         public static bool Register(BoundarySubsystemCinfo boundarySubsystemParams)
         {
-            BoundarySubsystemDescriptor boundarySubsystemDescriptor = BoundarySubsystemDescriptor.Create(boundarySubsystemParams);
-            SubsystemDescriptorStore.RegisterDescriptor(boundarySubsystemDescriptor);
+            BoundarySubsystemDescriptor descriptor = BoundarySubsystemDescriptor.Create(boundarySubsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }
     }

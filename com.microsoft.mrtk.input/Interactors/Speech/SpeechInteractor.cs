@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <para>As XRI does not support selecting more than one interactable at a time,
     /// drop part of the selection lifecycle management provided by XRI and manually tell the interaction manager to enter/exit selection</para>
     /// </remarks>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Input/Speech Interactor")]
+    [AddComponentMenu("MRTK/Input/Speech Interactor")]
     public class SpeechInteractor : XRBaseInteractor, ISpeechInteractor
     {
         [SerializeField]

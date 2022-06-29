@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// interactables. For higher fidelity intersections, consider using a spherecast
     /// system like PokeInteractor.
     /// </remarks>
+    [AddComponentMenu("MRTK/Examples/Pen Interactor")]
     internal class PenInteractor : XRBaseInteractor, IPokeInteractor
     {
         #region IPokeInteractor Implementation

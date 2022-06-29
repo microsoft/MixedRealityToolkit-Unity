@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// more efficient, all data changes within a single data set are cached and then applied
     /// at once at the DataSetEnd() method call.
     /// </summary>
+    [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Text")]
     public class DataConsumerText : DataConsumerGOBase
     {
         protected class ComponentInformation

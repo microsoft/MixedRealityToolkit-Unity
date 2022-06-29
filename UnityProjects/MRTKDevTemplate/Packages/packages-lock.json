@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.0.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.1.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
         "com.unity.xr.arfoundation": "4.1.7",
         "com.unity.xr.management": "4.2.0",
-        "com.unity.xr.openxr": "1.3.1"
+        "com.unity.xr.openxr": "1.4.2"
       }
     },
     "com.microsoft.mixedreality.visualprofiler": {
@@ -25,6 +25,14 @@
         "com.microsoft.mrtk.core": "3.0.0-development",
         "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
         "com.unity.textmeshpro": "3.0.6"
+      }
+    },
+    "com.microsoft.mrtk.audio": {
+      "version": "file:../../../com.microsoft.mrtk.audio",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.microsoft.mrtk.core": "3.0.0-development"
       }
     },
     "com.microsoft.mrtk.core": {
@@ -73,10 +81,11 @@
       }
     },
     "com.microsoft.mrtk.graphicstools.unity": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mrtk.graphicstools.unity-0.3.15.tgz",
+      "version": "https://github.com/microsoft/MixedReality-GraphicsTools-Unity.git?path=/com.microsoft.mrtk.graphicstools.unity#v0.4.0",
       "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "385952c3e0c59b934f7846cb2b815977cb22dcda"
     },
     "com.microsoft.mrtk.input": {
       "version": "file:../../../com.microsoft.mrtk.input",
@@ -141,8 +150,14 @@
         "com.microsoft.mrtk.core": "3.0.0-development"
       }
     },
+    "com.microsoft.spatialaudio.spatializer.unity": {
+      "version": "file:../../../ExternalDependencies/com.microsoft.spatialaudio.spatializer.unity-1.0.246.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.unity.collab-proxy": {
-      "version": "1.15.17",
+      "version": "1.15.18",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -183,13 +198,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "https://github.com/Unity-Technologies/InputSystem.git?path=Packages/com.unity.inputsystem#1.4.0",
+      "version": "1.4.1",
       "depth": 0,
-      "source": "git",
+      "source": "registry",
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0"
       },
-      "hash": "de42130ad10833301b005e93fe30c903bac25f8a"
+      "url": "https://packages.unity.com"
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.10.1",
@@ -201,6 +216,13 @@
     "com.unity.nuget.newtonsoft-json": {
       "version": "2.0.2",
       "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.performance.profile-analyzer": {
+      "version": "1.1.1",
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -285,7 +307,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.arsubsystems": {
-      "version": "4.1.9",
+      "version": "4.1.10",
       "depth": 2,
       "source": "registry",
       "dependencies": {
@@ -341,7 +363,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.openxr": {
-      "version": "1.4.1",
+      "version": "1.4.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {

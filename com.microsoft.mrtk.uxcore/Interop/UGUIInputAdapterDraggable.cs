@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -10,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// An extension of the <see cref="UGUIInputAdapter"/> that allows the interception of drag events.
     /// Add to any XRI interactable you wish to recieve drags, such as sliders, handles, or even ObjectManipulators.
     /// </summary>
+    [AddComponentMenu("MRTK/UX/UGUI Input Adapter Draggable")]
     public class UGUIInputAdapterDraggable : UGUIInputAdapter, IDragHandler
     {
         // Map Drag to moving the interactor's attachTransform (or whatever else it decides to do in UpdateSelect)

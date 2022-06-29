@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Extended version of XRBaseInteractable to enable multi-hand interactions.
     /// </summary>
-    [UnityEngine.AddComponentMenu("Scripts/Microsoft/MRTK/XRI/MRTK Base Interactable")]
+    [AddComponentMenu("MRTK/Core/MRTK Base Interactable")]
     public class MRTKBaseInteractable : XRBaseInteractable, ISerializationCallbackReceiver
     {
         #region Gaze

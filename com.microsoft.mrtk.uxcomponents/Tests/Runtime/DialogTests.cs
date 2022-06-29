@@ -41,9 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestDialogPrefabInitializations()
         {
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.OK, true);
             yield return RuntimeTestUtilities.WaitForUpdates();
             // near distances determined by relevant properties on the dialog component
@@ -51,7 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(DialogButtonType.OK, dialogComponent.Property.ButtonContexts[0].ButtonType);
             Assert.AreEqual("This is an example dialog", dialogComponent.Property.Message);
             Assert.AreEqual("Test Dialog", dialogComponent.Property.Title);
-            Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceNear && dialogDistance < dialogComponent.FollowMaxDistanceNear);
+
+            // TODO: Reinstate when properly-scaling Dialogs are reintroduced.
+            // Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceNear && dialogDistance < dialogComponent.FollowMaxDistanceNear);
 
             Object.Destroy(dialogGameObject);
             Object.Destroy(dialogComponent);
@@ -64,7 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             dialogDistance = dialogGameObject.transform.position.magnitude;
             Assert.AreEqual(DialogButtonType.Yes, dialogComponent.Property.ButtonContexts[0].ButtonType);
             Assert.AreEqual(DialogButtonType.No, dialogComponent.Property.ButtonContexts[1].ButtonType);
-            Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceNear && dialogDistance < dialogComponent.FollowMaxDistanceNear);
+
+            // TODO: Reinstate when properly-scaling Dialogs are reintroduced.
+            // Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceNear && dialogDistance < dialogComponent.FollowMaxDistanceNear);
 
             Object.Destroy(dialogGameObject);
             Object.Destroy(dialogComponent);
@@ -76,7 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             dialogDistance = dialogGameObject.transform.position.magnitude;
             Assert.AreEqual(DialogButtonType.Yes, dialogComponent.Property.ButtonContexts[0].ButtonType);
             Assert.AreEqual(DialogButtonType.No, dialogComponent.Property.ButtonContexts[1].ButtonType);
-            Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceFar && dialogDistance < dialogComponent.FollowMaxDistanceFar);
+
+            // TODO: Reinstate when properly-scaling Dialogs are reintroduced.
+            // Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceFar && dialogDistance < dialogComponent.FollowMaxDistanceFar);
 
             Object.Destroy(dialogGameObject);
             Object.Destroy(dialogComponent);
@@ -89,10 +92,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         public IEnumerator TestDialogPrefabResults()
         {
             TestHand handRight = new TestHand(Handedness.Right);
-            int handsteps = 60;
+            yield return handRight.Show(Vector3.zero);
 
             // Testing near interactions
-            yield return handRight.Show(new Vector3(0.0f, -0.06f, 0.3f));
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.OK, true);
 
             // Wait for the dialog to move to a stable position
@@ -100,15 +102,15 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.AreEqual(DialogState.WaitingForInput, dialogComponent.State);
-            yield return handRight.MoveTo(new Vector3(0.0f, -0.06f, 0.5f), handsteps);
-            yield return WaitForDialogClosedAndCheckResult(DialogButtonType.OK);
+
+            // Make sure the OK button works.
+            yield return PokeAndCheckResult(handRight, DialogButtonType.OK);
 
             Object.Destroy(dialogGameObject);
             Object.Destroy(dialogComponent);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // The dialog only supports displaying up to two options
-            yield return handRight.MoveTo(new Vector3(0.0f, -0.03f, 0.3f));
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.YesNo, true);
 
             // Wait for the dialog to move to a stable position
@@ -116,31 +118,28 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.AreEqual(DialogState.WaitingForInput, dialogComponent.State);
-            yield return handRight.MoveTo(new Vector3(0.07f, -0.03f, 0.5f), handsteps);
-            yield return WaitForDialogClosedAndCheckResult(DialogButtonType.No);
+
+            // Makes sure the No button works.
+            yield return PokeAndCheckResult(handRight, DialogButtonType.No);
 
             Object.Destroy(dialogGameObject);
             Object.Destroy(dialogComponent);
-            yield return RuntimeTestUtilities.WaitForUpdates();
 
-            // Testing far interactions
-            // The dialog only supports displaying up to two options
-            yield return handRight.MoveTo(new Vector3(0.0f, -0.03f, 0.3f));
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.YesNo, false);
+            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.YesNo, true);
 
             // Wait for the dialog to move to a stable position
             yield return new WaitForSeconds(DialogStabilizationTime);
 
-            Assert.AreEqual(DialogState.WaitingForInput, dialogComponent.State);
-            // moving the hand to an appropriate position to click on the dialog
-            yield return handRight.MoveTo(new Vector3(0.04f, -0.14f, 0.3f), handsteps);
-            yield return handRight.SetGesture(GestureId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
-            yield return handRight.SetGesture(GestureId.Open);
-            yield return WaitForDialogClosedAndCheckResult(DialogButtonType.Yes);
+            Assert.AreEqual(DialogState.WaitingForInput, dialogComponent.State);
+
+            // Makes sure the Yes button works.
+            yield return PokeAndCheckResult(handRight, DialogButtonType.Yes);
 
             Object.Destroy(dialogGameObject);
             Object.Destroy(dialogComponent);
+
+            // TODO: Re-introduce far-interaction tests for Dialogs once properly-scaling dialogs are reintroduced.
         }
 
         /// <summary>
@@ -169,6 +168,21 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         private void OnClosedDialogEvent(DialogProperty obj)
         {
             dialogResult = obj.ResultContext.ButtonType;
+        }
+
+        private IEnumerator PokeAndCheckResult(TestHand hand, DialogButtonType dialogButtonType)
+        {
+            // Go find the button so we know where to poke with the finger.
+            foreach (DialogButton button in dialogComponent.GetComponentsInChildren<DialogButton>())
+            {
+                if (button.ButtonContext.ButtonType == dialogButtonType)
+                {
+                    yield return hand.MoveTo(button.transform.position - button.transform.forward * 0.05f);
+                    yield return hand.MoveTo(button.transform.position + button.transform.forward * 0.05f);
+                    yield return WaitForDialogClosedAndCheckResult(dialogButtonType);
+                    break;
+                }
+            }
         }
 
         private IEnumerator WaitForDialogClosedAndCheckResult(DialogButtonType dialogButtonType)
