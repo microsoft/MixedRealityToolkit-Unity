@@ -147,9 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             switch (KeyPathToObject(resolvedKeyPath))
             {
-                case Array arr:  return arr.Length;
+                case Array arr: return arr.Length;
                 case IList list: return list.Count;
-                default:         return 0;
+                default: return 0;
             }
         }
 
@@ -282,14 +282,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (_lruKeyPathToObjectCache.ContainsKey(resolvedKeyPath))
             {
                 LRUItem item = _lruKeyPathToObjectCache.FindByKey(resolvedKeyPath);
-                memberInfoOut       = item.memberInfo;
+                memberInfoOut = item.memberInfo;
                 containingObjectOut = item.containingObject;
                 return item.value;
             }
             else
             {
                 object currentObject = _dataSourceObject;
-                string keyPath       = resolvedKeyPath;
+                string keyPath = resolvedKeyPath;
 
                 containingObjectOut = null;
                 memberInfoOut = null;
@@ -353,8 +353,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                             {
                                 string key = keyPath.Substring(tokenStart, tokenEnd - tokenStart);
                                 containingObjectOut = currentObject;
-                                memberInfoOut       = GetNamedFieldOrPropertyInfo(currType, key);
-                                currentObject       = GetValueFromFieldOrProperty(containingObjectOut, memberInfoOut);
+                                memberInfoOut = GetNamedFieldOrPropertyInfo(currType, key);
+                                currentObject = GetValueFromFieldOrProperty(containingObjectOut, memberInfoOut);
                             }
 
                             amountToSkip = tokenEnd - tokenStart;
@@ -437,8 +437,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
             switch (memberInfo)
             {
                 case PropertyInfo info: return info.GetValue(containingObject);
-                case FieldInfo    info: return info.GetValue(containingObject);
-                default:                return null;
+                case FieldInfo info: return info.GetValue(containingObject);
+                default: return null;
             }
         }
 
@@ -447,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             switch (memberInfo)
             {
                 case PropertyInfo info: info.SetValue(containingObject, value); break;
-                case FieldInfo    info: info.SetValue(containingObject, value); break;
+                case FieldInfo info: info.SetValue(containingObject, value); break;
             }
         }
 

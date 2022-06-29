@@ -315,41 +315,41 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             set => value = faceTheCamera;
         }
 
-/* todo
-        /// <summary>
-        /// The shortest interval, in seconds, during which a pose transition will occur.
-        /// </summary>
-        public const float MinimumHandPoseTransitionTime = 0f;
+        /* todo
+                /// <summary>
+                /// The shortest interval, in seconds, during which a pose transition will occur.
+                /// </summary>
+                public const float MinimumHandPoseTransitionTime = 0f;
 
-        /// <summary>
-        /// The longest interval, in seconds, during which a pose transition will occur.
-        /// </summary>
-        public const float MaximumHandPoseTransitionTime = 10f;
+                /// <summary>
+                /// The longest interval, in seconds, during which a pose transition will occur.
+                /// </summary>
+                public const float MaximumHandPoseTransitionTime = 10f;
 
 
-        [SerializeField]
-        [Tooltip("The time, in seconds, to transition from the current to the desired pose.")]
-        [Range(MinimumHandPoseTransitionTime, MaximumHandPoseTransitionTime)]
-        private float handPoseTransitionTime = 1f;
+                [SerializeField]
+                [Tooltip("The time, in seconds, to transition from the current to the desired pose.")]
+                [Range(MinimumHandPoseTransitionTime, MaximumHandPoseTransitionTime)]
+                private float handPoseTransitionTime = 1f;
 
-        /// <summary>
-        /// The time, in seconds, to transition from the current to the desired pose.
-        /// </summary>
-        public float HandPoseTransitionTime
-        {
-            get => handPoseTransitionTime;
-            set
-            {
-                if ((value < MinimumHandPoseTransitionTime) ||
-                    (value > MaximumHandPoseTransitionTime))
+                /// <summary>
+                /// The time, in seconds, to transition from the current to the desired pose.
+                /// </summary>
+                public float HandPoseTransitionTime
                 {
-                    Debug.LogWarning($"{nameof(HandPoseTransitionTime)} out of range, altering to be {MinimumHandPoseTransitionTime} <= value <= {MaximumHandPoseTransitionTime}.");
-                }
+                    get => handPoseTransitionTime;
+                    set
+                    {
+                        if ((value < MinimumHandPoseTransitionTime) ||
+                            (value > MaximumHandPoseTransitionTime))
+                        {
+                            Debug.LogWarning($"{nameof(HandPoseTransitionTime)} out of range, altering to be {MinimumHandPoseTransitionTime} <= value <= {MaximumHandPoseTransitionTime}.");
+                        }
 
-                handPoseTransitionTime = Mathf.Clamp(value, MinimumHandPoseTransitionTime, MaximumHandPoseTransitionTime);
-            }
-        }
-*/
+                        handPoseTransitionTime = Mathf.Clamp(value, MinimumHandPoseTransitionTime, MaximumHandPoseTransitionTime);
+                    }
+                }
+        */
 
         #endregion Pose controls
 

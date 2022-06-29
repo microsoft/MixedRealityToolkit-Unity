@@ -9,8 +9,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
-
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {
     /// <summary>

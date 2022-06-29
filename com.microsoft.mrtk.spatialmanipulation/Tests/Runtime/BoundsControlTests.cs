@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 
 
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;

@@ -8,7 +8,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEngine.UIElements;
 using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
@@ -205,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             TestHand hand = new TestHand(Handedness.Right);
 
             yield return hand.Show(initialHandPosition);
-            yield return hand.SetGesture(GestureId.Pinch); 
+            yield return hand.SetGesture(GestureId.Pinch);
 
             // Change the attachTransform of the selecting Interator
             var rayInteractor = (MRTKRayInteractor)objectManipulator.firstInteractorSelecting;

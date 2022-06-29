@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     [AddComponentMenu("MRTK/UX/Virtualized Scroll Rect List")]
     public class VirtualizedScrollRectList : MonoBehaviour
     {
-#region Inspector and Private Fields
+        #region Inspector and Private Fields
 
         /// <summary>
         /// The direction the cell layout should flow in, top to bottom, or
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [Tooltip("Should the layout cells scroll horizontally on the X axis, or vertically on the Y axis?")]
         [SerializeField]
         private Layout layoutDirection = Layout.Vertical;
-    
+
         [Tooltip("If using a Vertical layout, this represents the number of Columns for the layout. When using Horizontal, this represents Rows.")]
         [SerializeField]
         private int layoutRowsOrColumns = 1;
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [Tooltip("(Optional) The size of each layout cell. If an axis is 0, VirualizedList will pull this dimension directly from the prefab's RectTransform.")]
         [SerializeField]
         private Vector2 cellSize;
-    
+
         [Tooltip("This is the spacing between each layout cell in local units.")]
         [SerializeField]
         private float gutter;
@@ -98,22 +98,22 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private float scroll = 0;
         private float requestScroll;
 
-        private int   screenCount;
+        private int screenCount;
         private float viewSize;
         private float contentStart;
         private float layoutPrefabSize;
-        private bool  initialized = false;
+        private bool initialized = false;
 
-        private int   visibleStart;
-        private int   visibleEnd;
-        private bool  visibleValid;
+        private int visibleStart;
+        private int visibleEnd;
+        private bool visibleValid;
 
-        private Queue<GameObject>           pool     = new Queue<GameObject>();
+        private Queue<GameObject> pool = new Queue<GameObject>();
         private Dictionary<int, GameObject> poolDict = new Dictionary<int, GameObject>();
 
-#endregion
+        #endregion
 
-#region Public properties and fields
+        #region Public properties and fields
 
         /// <summary>
         /// This is the index based scroll value of the list. You can set this,
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// able scroll directly to the last element. Scroll will be clamped
         /// between 0 and MaxScroll.
         /// </summary>
-        public float Scroll 
+        public float Scroll
         {
             get => scroll;
             set
@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public float MaxScroll => layoutDirection == Layout.Vertical
             ? ((scrollRect.content.rect.height - viewSize) / layoutPrefabSize) * layoutRowsOrColumns
-            : ((scrollRect.content.rect.width  - viewSize) / layoutPrefabSize) * layoutRowsOrColumns;
+            : ((scrollRect.content.rect.width - viewSize) / layoutPrefabSize) * layoutRowsOrColumns;
 
         /// <summary>
         /// When a pooled prefab instance is just made visible on the scroll
@@ -196,9 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public Action<GameObject, int> OnInvisible { get; set; }
 
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
 
         /// <summary>
         /// Given an index, this calculates the position of the associated
@@ -235,8 +235,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// A scroll index value representing the itemCount index at the
         /// position. Not bounded to the 0-itemCount range at all.
         /// </returns>
-        private float PosToScroll(float pos) => layoutDirection == Layout.Vertical 
-            ? (( pos - (margin - gutter)) / layoutPrefabSize) * layoutRowsOrColumns
+        private float PosToScroll(float pos) => layoutDirection == Layout.Vertical
+            ? ((pos - (margin - gutter)) / layoutPrefabSize) * layoutRowsOrColumns
             : ((-pos - (margin - gutter)) / layoutPrefabSize) * layoutRowsOrColumns;
 
         /// <summary>
@@ -251,8 +251,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// A position on the ScrollRect viewport, this value matches the axis
         /// indicated by layoutDirection.
         /// </returns>
-        private float ScrollToPos(float scroll) => layoutDirection == Layout.Vertical 
-            ? ( scroll * (layoutPrefabSize / layoutRowsOrColumns)) + (margin - gutter)
+        private float ScrollToPos(float scroll) => layoutDirection == Layout.Vertical
+            ? (scroll * (layoutPrefabSize / layoutRowsOrColumns)) + (margin - gutter)
             : (-scroll * (layoutPrefabSize / layoutRowsOrColumns)) + (margin - gutter);
 
         private void OnValidate()
@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void Start()
         {
             visibleValid = false;
-            scrollRect   = scrollRect == null ? GetComponent<ScrollRect>() : scrollRect;
+            scrollRect = scrollRect == null ? GetComponent<ScrollRect>() : scrollRect;
             BakeCachedValues();
 
             // Unity RectTransforms don't know anything about sizes until after
@@ -296,37 +296,37 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void Initialize()
         {
             BakeCachedValues();
-        
+
             if (layoutDirection == Layout.Vertical)
             {
                 Vector2 topCenter = new Vector2(0.5f, 1);
                 scrollRect.content.anchorMin = topCenter;
                 scrollRect.content.anchorMax = topCenter;
-                scrollRect.content.pivot     = topCenter;
+                scrollRect.content.pivot = topCenter;
                 scrollRect.content.sizeDelta = new Vector2(
                     2 * margin + layoutRowsOrColumns * cellSize.x + (layoutRowsOrColumns - 1) * gutter,
                     2 * margin + (itemCount / layoutRowsOrColumns) * layoutPrefabSize + trailingSpace);
-                viewSize                     = scrollRect.viewport.rect.height;
-                contentStart                 = scrollRect.content.rect.yMax;
+                viewSize = scrollRect.viewport.rect.height;
+                contentStart = scrollRect.content.rect.yMax;
             }
             else
             {
                 Vector2 midLeft = new Vector2(0, 0.5f);
                 scrollRect.content.anchorMin = midLeft;
                 scrollRect.content.anchorMax = midLeft;
-                scrollRect.content.pivot     = midLeft;
+                scrollRect.content.pivot = midLeft;
                 scrollRect.content.sizeDelta = new Vector2(
                     2 * margin + (itemCount / layoutRowsOrColumns) * layoutPrefabSize + trailingSpace,
-                    2 * margin + layoutRowsOrColumns * cellSize.y + (layoutRowsOrColumns - 1)*gutter);
-                viewSize                     = scrollRect.viewport.rect.width;
-                contentStart                 = 0;
+                    2 * margin + layoutRowsOrColumns * cellSize.y + (layoutRowsOrColumns - 1) * gutter);
+                viewSize = scrollRect.viewport.rect.width;
+                contentStart = 0;
             }
             screenCount = Mathf.CeilToInt(viewSize / layoutPrefabSize) * layoutRowsOrColumns;
 
             InitializePool();
 
             initialized = true;
-            scrollRect.onValueChanged.AddListener(v => UpdateScroll( PosToScroll( layoutDirection == Layout.Vertical
+            scrollRect.onValueChanged.AddListener(v => UpdateScroll(PosToScroll(layoutDirection == Layout.Vertical
                 ? scrollRect.content.localPosition.y
                 : scrollRect.content.localPosition.x)));
 
@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 Destroy(pool.Dequeue());
             }
             visibleStart = -1;
-            visibleEnd   = -1;
+            visibleEnd = -1;
 
             // Create the pool of prefabs
             int poolSize = screenCount + layoutRowsOrColumns;
@@ -372,23 +372,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void UpdateScroll(float newScroll)
         {
             if ((scroll == newScroll && visibleValid == true) || initialized == false) { return; }
-            scroll       = newScroll;
+            scroll = newScroll;
             visibleValid = true;
 
             // Based on this scroll, calculate the new relevant ranges of
             // indices
-            float paddedScroll    = newScroll - (margin/layoutPrefabSize);
-            int   newVisibleStart = Math.Max(0,         ((int)paddedScroll / layoutRowsOrColumns) * layoutRowsOrColumns);
-            int   newVisibleEnd   = Math.Min(itemCount, Mathf.CeilToInt(paddedScroll / layoutRowsOrColumns + (viewSize / layoutPrefabSize)) * layoutRowsOrColumns);
+            float paddedScroll = newScroll - (margin / layoutPrefabSize);
+            int newVisibleStart = Math.Max(0, ((int)paddedScroll / layoutRowsOrColumns) * layoutRowsOrColumns);
+            int newVisibleEnd = Math.Min(itemCount, Mathf.CeilToInt(paddedScroll / layoutRowsOrColumns + (viewSize / layoutPrefabSize)) * layoutRowsOrColumns);
 
             // If it's the same as we already have, then we can just stop here!
             if (newVisibleStart == visibleStart &&
-                newVisibleEnd   == visibleEnd) return;
+                newVisibleEnd == visibleEnd) return;
 
             // Demote all items that are no longer relevant
             for (int i = visibleStart; i < visibleEnd; i++)
             {
-                bool wasVisible     = i >= visibleStart    && i < visibleEnd;
+                bool wasVisible = i >= visibleStart && i < visibleEnd;
                 bool remainsVisible = i >= newVisibleStart && i < newVisibleEnd;
                 if (wasVisible == true && remainsVisible == false) { MakeInvisible(i); }
             }
@@ -396,25 +396,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Promote all items that are now relevant
             for (int i = newVisibleStart; i < newVisibleEnd; i++)
             {
-                bool wasVisible = i >= visibleStart    && i < visibleEnd;
+                bool wasVisible = i >= visibleStart && i < visibleEnd;
                 bool nowVisible = i >= newVisibleStart && i < newVisibleEnd;
                 if (wasVisible == false && nowVisible == true) { MakeVisible(i); }
             }
 
             // These are now the current index ranges!
             visibleStart = newVisibleStart;
-            visibleEnd   = newVisibleEnd;
+            visibleEnd = newVisibleEnd;
         }
 
         private void MakeInvisible(int i)
         {
             if (TryGetVisible(i, out GameObject go) == false) { return; }
 
-            OnInvisible?.Invoke (go, i);
-            poolDict    .Remove (i);
-            pool        .Enqueue(go);
+            OnInvisible?.Invoke(go, i);
+            poolDict.Remove(i);
+            pool.Enqueue(go);
         }
-    
+
         private void MakeVisible(int i)
         {
             GameObject go = pool.Dequeue();
@@ -423,9 +423,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             OnVisible?.Invoke(go, i);
         }
 
-#endregion
+        #endregion
 
-#region Public Methods
+        #region Public Methods
 
         /// <summary>
         /// This will get the prefab instance representing the given index, if
@@ -443,7 +443,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </returns>
         public bool TryGetVisible(int i, out GameObject visibleObject)
         {
-            if (i >= visibleStart && i < visibleEnd) {
+            if (i >= visibleStart && i < visibleEnd)
+            {
                 visibleObject = poolDict[i];
                 return true;
             }
@@ -462,13 +463,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </param>
         public void SetItemCount(int newCount)
         {
-            itemCount                    = newCount;
+            itemCount = newCount;
             scrollRect.content.sizeDelta = new Vector2(scrollRect.content.sizeDelta.x, margin + itemCount * layoutPrefabSize + trailingSpace);
-            contentStart                 = scrollRect.content.rect.yMax;
+            contentStart = scrollRect.content.rect.yMax;
 
             visibleValid = false;
             UpdateScrollView(scroll);
         }
-#endregion
+        #endregion
     }
 }
