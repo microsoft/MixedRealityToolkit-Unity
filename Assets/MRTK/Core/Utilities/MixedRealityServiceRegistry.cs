@@ -80,13 +80,12 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-            Type interfaceType = typeof(T);
-            T existingService;
-
-            if (TryGetService<T>(out existingService, serviceInstance.Name))
+            if (TryGetService<T>(out _, serviceInstance.Name))
             {
                 return false;
             }
+
+            Type interfaceType = typeof(T);
 
             // Ensure we have a place to put our newly registered service.
             if (!registry.ContainsKey(interfaceType))
@@ -269,8 +268,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             Type interfaceType = typeof(T);
 
-            IMixedRealityService tempService;
-            if (TryGetServiceInternal(interfaceType, out tempService, out registrar, name))
+            if (TryGetServiceInternal(interfaceType, out IMixedRealityService tempService, out registrar, name))
             {
                 Debug.Assert(tempService is T, "The service in the registry does not match the expected type.");
                 serviceInstance = (T)tempService;

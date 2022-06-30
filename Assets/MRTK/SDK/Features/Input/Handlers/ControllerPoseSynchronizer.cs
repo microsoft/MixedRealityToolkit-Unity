@@ -185,8 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (SourcePoseDataUsable(eventData))
             {
                 TrackingState = eventData.Controller.TrackingState;
-                transform.position = eventData.SourceData.Position;
-                transform.rotation = eventData.SourceData.Rotation;
+                transform.SetPositionAndRotation(eventData.SourceData.Position, eventData.SourceData.Rotation);
             }
         }
 
@@ -235,8 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 poseActionDetected = true;
                 TrackingState = TrackingState.Tracked;
-                transform.position = eventData.InputData.Position;
-                transform.rotation = eventData.InputData.Rotation;
+                transform.SetPositionAndRotation(eventData.InputData.Position, eventData.InputData.Rotation);
             }
         }
 

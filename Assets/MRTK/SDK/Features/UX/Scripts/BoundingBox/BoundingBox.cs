@@ -1581,6 +1581,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     b.Encapsulate(currentMesh.bounds);
                 }
             }
+            foreach (SkinnedMeshRenderer r in g.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                if ((currentMesh = r.sharedMesh) == null) { continue; }
+
+                if (b.size == Vector3.zero)
+                {
+                    b = currentMesh.bounds;
+                }
+                else
+                {
+                    b.Encapsulate(currentMesh.bounds);
+                }
+            }
             return b;
         }
 
@@ -1888,9 +1901,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
             {
                 MeshFilter meshFilter = childTransform.GetComponent<MeshFilter>();
+                SkinnedMeshRenderer skinnedMeshRenderer = childTransform.GetComponent<SkinnedMeshRenderer>();
                 if (meshFilter != null && meshFilter.sharedMesh != null)
                 {
                     rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, meshFilter.sharedMesh.bounds);
+                }
+                else if (skinnedMeshRenderer != null && skinnedMeshRenderer.sharedMesh != null)
+                {
+                    rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, skinnedMeshRenderer.sharedMesh.bounds);
                 }
                 else
                 {

@@ -27,10 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The distance from the hit surface to place the cursor")]
         private float surfaceCursorDistance = 0.02f;
 
-        public float SurfaceCursorDistance
-        {
-            get { return surfaceCursorDistance; }
-        }
+        public float SurfaceCursorDistance => surfaceCursorDistance;
 
         /// <summary>
         /// When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.
@@ -142,19 +139,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Visual that is displayed when cursor is active normally")]
         protected Transform PrimaryCursorVisual = null;
 
-        protected bool IsSourceDetected => visibleSourcesCount > 0;
+        protected bool IsSourceDetected => VisibleSourcesCount > 0;
 
         public List<uint> SourceDownIds = new List<uint>();
         public bool IsPointerDown => SourceDownIds.Count > 0;
 
         protected GameObject TargetedObject = null;
 
-        private uint visibleSourcesCount = 0;
-        public uint VisibleSourcesCount
-        {
-            get { return visibleSourcesCount; }
-            set { visibleSourcesCount = value; }
-        }
+        public uint VisibleSourcesCount { get; set; } = 0;
 
         protected Vector3 targetPosition;
         protected Vector3 targetScale;
@@ -256,9 +248,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // If a source is detected that's using this cursor's pointer, we increment the count to set the cursor state properly.
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
-                        visibleSourcesCount++;
+                        VisibleSourcesCount++;
 
-                        if (SetVisibilityOnSourceDetected && visibleSourcesCount == 1)
+                        if (SetVisibilityOnSourceDetected && VisibleSourcesCount == 1)
                         {
                             SetVisibility(true);
                         }
@@ -279,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // If a source is lost that's using this cursor's pointer, we decrement the count to set the cursor state properly.
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
-                        visibleSourcesCount--;
+                        VisibleSourcesCount--;
                         break;
                     }
                 }
@@ -362,17 +354,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void Update()
         {
             // Skip Update if the input system is missing during a runtime profile switch
-            if ((CoreServices.InputSystem == null) ||
-                (CoreServices.InputSystem.FocusProvider == null))
+            if (CoreServices.InputSystem == null ||
+                CoreServices.InputSystem.FocusProvider == null)
             {
                 return;
             }
-            if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+
+            if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails)
+                && CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
             {
-                if (CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
-                {
-                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
-                }
+                Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
+                return;
             }
 
             UpdateCursorState();
@@ -388,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual void OnDisable()
         {
             TargetedObject = null;
-            visibleSourcesCount = 0;
+            VisibleSourcesCount = 0;
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
 
@@ -399,7 +391,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void RegisterManagers()
         {
-            var inputSystem = CoreServices.InputSystem;
+            IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
+            if (inputSystem == null)
+            {
+                return;
+            }
+
             // Register the cursor as a listener, so that it can always get input events it cares about
             inputSystem.RegisterHandler<IMixedRealityCursor>(this);
 
@@ -422,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            var inputSystem = CoreServices.InputSystem;
+            IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
             if (inputSystem != null)
             {
                 inputSystem.InputEnabled -= OnInputEnabled;
@@ -442,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            GameObject newTargetedObject = CoreServices.InputSystem.FocusProvider.GetFocusedObject(Pointer);
+            GameObject newTargetedObject = CoreServices.InputSystem?.FocusProvider.GetFocusedObject(Pointer);
             Vector3 lookForward;
 
             // If no game object is hit, put the cursor at the default distance
@@ -519,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnInputDisabled()
         {
             // Reset visible hands on disable
-            visibleSourcesCount = 0;
+            VisibleSourcesCount = 0;
 
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
@@ -545,8 +542,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void ResetInputSourceState()
         {
             SourceDownIds.Clear();
-            visibleSourcesCount = 0;
-            if (IsPointerValid)
+            VisibleSourcesCount = 0;
+            if (IsPointerValid && CoreServices.InputSystem != null)
             {
                 uint cursorPointerId = Pointer.PointerId;
                 foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem.DetectedInputSources)
@@ -557,7 +554,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             if (inputSourcePointer.PointerId == cursorPointerId)
                             {
-                                ++visibleSourcesCount;
+                                ++VisibleSourcesCount;
                                 break;
                             }
                         }

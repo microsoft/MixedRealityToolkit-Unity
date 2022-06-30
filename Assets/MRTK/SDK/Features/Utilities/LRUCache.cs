@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// <summary>
             /// Cached item key.
             /// </summary>
-            public TKey Key { get; }
+            public TKey Key { get; set; }
 
             /// <summary>.
             /// Cached item value
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </exception>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (keyToEntryTable.TryGetValue(key, out var cacheEntry))
+            if (keyToEntryTable.TryGetValue(key, out CacheEntry cacheEntry))
             {
                 MakeCacheEntryRecent(cacheEntry);
                 value = cacheEntry.Value;
@@ -158,31 +158,45 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public void Add(TKey key, TValue value)
         {
             // Retrieve of create cached entry
-            if (keyToEntryTable.TryGetValue(key, out var cacheEntry))
+            if (keyToEntryTable.TryGetValue(key, out CacheEntry cacheEntry))
             {
                 cacheEntry.Value = value;
             }
             else
             {
-                cacheEntry = new CacheEntry(key, value);
+                if (keyToEntryTable.Count >= Capacity && leastRecentEntry != null)
+                {
+                    // Handle overcapacity by removing least recent entry
+                    keyToEntryTable.Remove(leastRecentEntry.Key);
+
+                    // Cache the new leastRecentEntry before reuse
+                    CacheEntry newLeastRecentEntry = leastRecentEntry.Previous;
+
+                    // Reuse the leastRecentEntry CacheEntry to avoid new allocations
+                    cacheEntry = leastRecentEntry;
+                    cacheEntry.Key = key;
+                    cacheEntry.Value = value;
+                    cacheEntry.Next = null;
+                    cacheEntry.Previous = null;
+
+                    // Rotate leastRecentEntry
+                    leastRecentEntry = newLeastRecentEntry;
+                    leastRecentEntry.Next = null;
+                }
+                else
+                {
+                    cacheEntry = new CacheEntry(key, value);
+                    // Assign least recent entry if this is the first entry in the cache
+                    if (leastRecentEntry == null)
+                    {
+                        leastRecentEntry = cacheEntry;
+                    }
+                }
                 keyToEntryTable.Add(key, cacheEntry);
             }
 
             // Make the entry the most recently accessed entry in the list
             MakeCacheEntryRecent(cacheEntry);
-
-            // Assign least recent entry if this is the first entry in the cache
-            if (leastRecentEntry == null)
-            {
-                leastRecentEntry = cacheEntry;
-            }
-            // handle overcapacity by removing least recent entry
-            else if (keyToEntryTable.Count > Capacity)
-            {
-                keyToEntryTable.Remove(leastRecentEntry.Key);
-                leastRecentEntry = leastRecentEntry.Previous;
-                leastRecentEntry.Next = null;
-            }
         }
 
         /// <summary>
@@ -271,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 RemoveEntryFromList(entry);
 
-                // Update leastRecentyEntry value if neccessary
+                // Update leastRecentyEntry value if necessary
                 if (entry == leastRecentEntry && entry.Previous != null)
                 {
                     leastRecentEntry = entry.Previous;

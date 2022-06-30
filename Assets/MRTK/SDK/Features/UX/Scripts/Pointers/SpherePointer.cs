@@ -493,9 +493,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
             public GameObject GetClosestValidGrabbable(Vector3 pointerPosition, Vector3 pointerAxis, bool ignoreCollidersNotInFOV, out Vector3 hitPosition, LRUCache<int, NearInteractionGrabbable> componentCache)
             {
-                Vector3 colliderHitPoint = pointerPosition; ;
-                NearInteractionGrabbable currentGrabbable = null;
-
                 NearInteractionGrabbable closestGrabbable = null;
                 Vector3 closestColliderHitPosition = pointerPosition;
                 float closestDistance = Mathf.Infinity;
@@ -504,8 +501,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < numColliders; i++)
                 {
                     Collider collider = queryBuffer[i];
-                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out currentGrabbable, componentCache)
-                        && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out colliderHitPoint))
+                    if (IsColliderValidGrabbable(collider, ignoreCollidersNotInFOV, out NearInteractionGrabbable currentGrabbable, componentCache)
+                        && IsColliderPositionValid(collider, pointerPosition, pointerAxis, queryAngle, queryMinDistance, out Vector3 colliderHitPoint))
                     {
                         float currentDistance = (pointerPosition - colliderHitPoint).sqrMagnitude;
                         float currentVolume = collider.bounds.Transform(collider.transform.localToWorldMatrix).Volume();
@@ -598,8 +595,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (!isValidGrabbable)
                 {
-                    // Remove it from the cache if the grabbable is no longer valid for the object
-                    componentCache.Remove(instanceId);
+                    if (currentGrabbable == null)
+                    {
+                        // Only remove the grabbable from the cache if it's gone null.
+                        // If we instead remove all invalid grabbables, we get stuck in a cycle of
+                        // calling GetComponent the next time this method is called, just to re-add
+                        // and immediately re-remove the invalid component from the cache, invalidating
+                        // any perf benefits of using the cache to avoid GetComponent.
+                        _ = componentCache.Remove(instanceId);
+                    }
+
                     return false;
                 }
 
@@ -610,11 +615,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return false;
                 }
 
-                Camera mainCam = CameraCache.Main;
                 // Additional check: is grabbable in the camera frustum
                 // We do this so that if grabbable is not visible it is not accidentally grabbed
                 // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
-                if (ignoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
+                if (ignoreCollidersNotInFOV && !CameraCache.Main.IsInFOVCached(collider))
                 {
                     return false;
                 }

@@ -16,6 +16,7 @@ using UnityEngine.XR.OpenXR;
 #if MSFT_OPENXR && WINDOWS_UWP
 using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
+using Windows.UI.Input.Spatial;
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
@@ -80,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
 #if MSFT_OPENXR && WINDOWS_UWP
             CreateGestureRecognizers();
+            SpatialInteractionManager.SourcePressed += SpatialInteractionManager_SourcePressed;
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
             base.Enable();
@@ -114,6 +116,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             base.Update();
 
             CheckForGestures();
+
+            if (shouldSendVoiceEvents)
+            {
+                MicrosoftOpenXRGGVHand controller = GetOrAddVoiceController();
+                if (controller != null)
+                {
+                    // RaiseOnInputDown for "select"
+                    controller.UpdateVoiceState(true);
+                    // RaiseOnInputUp for "select"
+                    controller.UpdateVoiceState(false);
+
+                    // On WMR, the voice recognizer does not actually register the phrase 'select'
+                    // when you add it to the speech commands profile. Therefore, simulate
+                    // the "select" voice command running to ensure that we get a select voice command
+                    // registered. This is used by FocusProvider to detect when the select pointer is active.
+                    Service?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+                }
+
+                shouldSendVoiceEvents = false;
+            }
         }
 
         /// <inheritdoc />
@@ -140,6 +162,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 #endif
             navigationGestureRecognizer = null;
 
+            SpatialInteractionManager.SourcePressed -= SpatialInteractionManager_SourcePressed;
+
+            if (voiceController != null)
+            {
+                RemoveControllerFromScene(voiceController);
+                voiceController = null;
+            }
+
             base.Disable();
         }
 #endif // MSFT_OPENXR && WINDOWS_UWP
@@ -156,15 +186,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (GetOrAddControllerPerfMarker.Auto())
             {
+                InputDeviceCharacteristics inputDeviceCharacteristics = inputDevice.characteristics;
+
                 // If this is a new input device, search if an existing input device has matching characteristics
                 if (!ActiveControllers.ContainsKey(inputDevice))
                 {
                     foreach (InputDevice device in ActiveControllers.Keys)
                     {
-                        if (((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
-                            || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
-                            && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left))
-                            || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
+                        InputDeviceCharacteristics deviceCharacteristics = device.characteristics;
+
+                        if (((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
+                            || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
+                            && ((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left))
+                            || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
                         {
                             ActiveControllers.Add(inputDevice, ActiveControllers[device]);
                             break;
@@ -172,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     }
                 }
 
-                if (inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)
+                if (inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)
                     && inputDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked)
                     && !isTracked)
                 {
@@ -194,13 +228,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (RemoveControllerPerfMarker.Auto())
             {
+                InputDeviceCharacteristics inputDeviceCharacteristics = inputDevice.characteristics;
+
                 foreach (InputDevice device in ActiveControllers.Keys)
                 {
+                    InputDeviceCharacteristics deviceCharacteristics = device.characteristics;
+
                     if (device != inputDevice
-                        && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
-                        || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
-                        && ((device.characteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Left))
-                        || (device.characteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDevice.characteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
+                        && ((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
+                        || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
+                        && ((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left))
+                        || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
                     {
                         ActiveControllers.Remove(inputDevice);
                         // Since an additional device exists, return so a lost source isn't reported
@@ -521,5 +559,75 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 #endif // MSFT_OPENXR && WINDOWS_UWP
 
         #endregion Gesture implementation
+
+        #region SpatialInteractionManager event and helpers
+
+#if MSFT_OPENXR && WINDOWS_UWP
+        /// <summary>
+        /// SDK Interaction Source Pressed Event handler. Used only for voice.
+        /// </summary>
+        /// <param name="args">SDK source pressed event arguments</param>
+        private void SpatialInteractionManager_SourcePressed(SpatialInteractionManager sender, SpatialInteractionSourceEventArgs args)
+        {
+            if (args.State.Source.Kind == SpatialInteractionSourceKind.Voice)
+            {
+                shouldSendVoiceEvents = true;
+            }
+        }
+
+        private MicrosoftOpenXRGGVHand voiceController = null;
+        private bool shouldSendVoiceEvents = false;
+
+        private MicrosoftOpenXRGGVHand GetOrAddVoiceController()
+        {
+            if (voiceController != null)
+            {
+                return voiceController;
+            }
+
+            IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource("Mixed Reality Voice", sourceType: InputSourceType.Voice);
+            MicrosoftOpenXRGGVHand detectedController = new MicrosoftOpenXRGGVHand(TrackingState.NotTracked, Utilities.Handedness.None, inputSource);
+
+            if (!detectedController.Enabled)
+            {
+                // Controller failed to be setup correctly.
+                // Return null so we don't raise the source detected.
+                return null;
+            }
+
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
+
+            Service?.RaiseSourceDetected(detectedController.InputSource, detectedController);
+
+            voiceController = detectedController;
+            return voiceController;
+        }
+
+        private SpatialInteractionManager spatialInteractionManager = null;
+
+        /// <summary>
+        /// Provides access to the current native SpatialInteractionManager.
+        /// </summary>
+        private SpatialInteractionManager SpatialInteractionManager
+        {
+            get
+            {
+                if (spatialInteractionManager == null)
+                {
+                    UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+                    {
+                        spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
+                    }, true);
+                }
+
+                return spatialInteractionManager;
+            }
+        }
+#endif // MSFT_OPENXR && WINDOWS_UWP
+
+        #endregion SpatialInteractionManager events
     }
 }

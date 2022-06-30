@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -29,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         protected Gradient LineColorLockFocus = new Gradient();
 
-        [SerializeField]
-        private BaseMixedRealityLineDataProvider lineBase;
+        [SerializeField, FormerlySerializedAs("lineBase")]
+        private BaseMixedRealityLineDataProvider lineDataProvider;
 
         /// <summary>
         /// The Line Data Provider driving this pointer.
         /// </summary>
-        public BaseMixedRealityLineDataProvider LineBase => lineBase;
+        public BaseMixedRealityLineDataProvider LineBase => lineDataProvider;
 
         [SerializeField]
         [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
@@ -60,19 +61,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void CheckInitialization()
         {
-            if (lineBase == null)
+            if (lineDataProvider == null)
             {
-                lineBase = GetComponent<BaseMixedRealityLineDataProvider>();
+                lineDataProvider = GetComponent<BaseMixedRealityLineDataProvider>();
             }
 
-            if (lineBase == null)
+            if (lineDataProvider == null)
             {
                 Debug.LogError($"No Mixed Reality Line Data Provider found on {gameObject.name}. Did you forget to add a Line Data provider?");
             }
 
-            if (lineBase != null && (lineRenderers == null || lineRenderers.Length == 0))
+            if (lineDataProvider != null && (lineRenderers == null || lineRenderers.Length == 0))
             {
-                lineRenderers = lineBase.GetComponentsInChildren<BaseMixedRealityLineRenderer>();
+                lineRenderers = lineDataProvider.GetComponentsInChildren<BaseMixedRealityLineRenderer>();
             }
 
             if (lineRenderers == null || lineRenderers.Length == 0)
@@ -135,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 base.OnPostSceneQuery();
 
                 bool isEnabled = IsInteractionEnabled;
-                LineBase.enabled = isEnabled;
+                lineDataProvider.enabled = isEnabled;
                 if (BaseCursor != null)
                 {
                     BaseCursor.SetVisibility(isEnabled);
@@ -151,9 +152,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (PreUpdateLineRenderersPerfMarker.Auto())
             {
-                Debug.Assert(lineBase != null);
+                Debug.Assert(lineDataProvider != null);
 
-                lineBase.UpdateMatrix();
+                lineDataProvider.UpdateMatrix();
 
                 // Set our first and last points on the Line Renderer
                 if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
@@ -221,13 +222,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // So don't clamp the world length, the line data's end point is already set to the world cursor
                 if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
                 {
-                    LineBase.LineEndClamp = 1;
+                    lineDataProvider.LineEndClamp = 1;
                 }
                 else
                 {
                     // Otherwise clamp the line end by the clear distance
-                    float clearLocalLength = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength - cursorOffsetWorldLength, maxClampLineSteps);
-                    LineBase.LineEndClamp = clearLocalLength;
+                    float clearLocalLength = lineDataProvider.GetNormalizedLengthFromWorldLength(clearWorldLength - cursorOffsetWorldLength, maxClampLineSteps);
+                    lineDataProvider.LineEndClamp = clearLocalLength;
                 }
             }
         }
@@ -255,8 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             lineStartPoint = startPoint;
             lineEndPoint = endPoint;
 
-            lineBase.FirstPoint = startPoint;
-            lineBase.LastPoint = endPoint;
+            lineDataProvider.FirstPoint = startPoint;
+            lineDataProvider.LastPoint = endPoint;
         }
 
 
