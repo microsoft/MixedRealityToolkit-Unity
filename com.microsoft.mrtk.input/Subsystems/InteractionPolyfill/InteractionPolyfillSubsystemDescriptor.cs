@@ -92,8 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Specifies a functionality description that may be registered for each implementation that provides the
     /// <see cref="InteractionPolyfillSubsystem"/> interface.
     /// </summary>
-    public class InteractionPolyfillSubsystemDescriptor :
-        SubsystemDescriptorWithProvider<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.Provider>,
+    internal class InteractionPolyfillSubsystemDescriptor :
+        SubsystemDescriptorWithProvider<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.BaseProvider>,
         IMRTKSubsystemDescriptor
     {
         /// <summary>
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UnityEngine.Debug.Log("Descriptor Create()");
             // Validates cinfo.
-            if (!XRSubsystemHelpers.CheckTypes<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.Provider>(cinfo.Name,
+            if (!XRSubsystemHelpers.CheckTypes<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.BaseProvider>(cinfo.Name,
                                                                                         cinfo.SubsystemTypeOverride,
                                                                                         cinfo.ProviderType))
             {
