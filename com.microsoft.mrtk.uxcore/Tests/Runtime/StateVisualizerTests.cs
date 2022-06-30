@@ -6,8 +6,6 @@ using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.TestTools;
@@ -38,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             cube.transform.localScale = Vector3.one * 0.1f;
 
             GameObject cubeToToggle = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            
+
             // Attach a toggle effect to the Select state.
             SetTargetsActiveEffect toggleEffect = new SetTargetsActiveEffect(new List<GameObject>() { cubeToToggle });
             sv.AddEffect("Select", toggleEffect);
@@ -278,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetGesture(GestureId.Pinch);
-            
+
             Assert.IsTrue(interactable.isSelected && interactable.IsGrabSelected, "Interactable wasn't selected");
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when selected.");
 
