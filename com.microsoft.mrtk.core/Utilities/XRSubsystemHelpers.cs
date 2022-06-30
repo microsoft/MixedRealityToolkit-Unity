@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             if (providerType == null
-                || !providerType.IsSubclassOf(typeof(ProviderT)))
+                || (!providerType.IsSubclassOf(typeof(ProviderT)) && providerType != typeof(ProviderT)))
             {
                 throw new ArgumentException("Cannot create descriptor because providerType doesn't inherit from base provider type.");
             }
