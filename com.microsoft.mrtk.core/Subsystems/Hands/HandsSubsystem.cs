@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// </returns>
         public static bool Register(HandsSubsystemCinfo handsSubsystemParams)
         {
-            HandsSubsystemDescriptor descriptor = HandsSubsystemDescriptor.Create(handsSubsystemParams);
+            var descriptor = HandsSubsystemDescriptor.Create(handsSubsystemParams);
             SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }
