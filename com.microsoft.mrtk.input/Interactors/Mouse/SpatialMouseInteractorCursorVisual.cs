@@ -76,7 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // reusable vectors for determining the raycast hit data
         private Vector3 reticlePosition;
         private Vector3 reticleNormal;
+        private float reticleDistance;
         private int endPositionInLine;
+
+        protected void Start()
+        {
+            reticleDistance = defaultDistance;
+        }
 
         public void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
@@ -200,6 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (mouseInteractor.interactablesSelected.Count > 0)
             {
                 reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
+                reticleDistance = Vector3.Distance(mouseInteractor.rayOriginTransform.position, reticlePosition);
                 rayHasHit = true;
             }
             else
@@ -208,6 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (isValidTarget && endPositionInLine > 0 && endPositionInLine < rayPositionsCount)
                     {
+                        reticleDistance = Vector3.Distance(mouseInteractor.rayOriginTransform.position, reticlePosition);
                         rayHasHit = true;
                     }
                     else
@@ -217,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    reticlePosition = mouseInteractor.rayOriginTransform.position + mouseInteractor.rayOriginTransform.forward * defaultDistance;
+                    reticlePosition = mouseInteractor.rayOriginTransform.position + mouseInteractor.rayOriginTransform.forward * reticleDistance;
                     rayHasHit = false;
                 }
             }
