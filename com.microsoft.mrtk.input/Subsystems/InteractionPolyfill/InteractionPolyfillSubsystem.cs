@@ -17,12 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
          Name = "com.microsoft.mixedreality.interactionpolyfill",
          DisplayName = "MRTK Interaction Polyfill Subsystem",
          Author = "Microsoft",
-         ProviderType = typeof(Provider),
+         ProviderType = typeof(DerivedProvider),
          ConfigType = typeof(MRTKHandsAggregatorConfig))]
     internal class InteractionPolyfillSubsystem :
         MRTKSubsystem<InteractionPolyfillSubsystem,
             InteractionPolyfillSubsystemDescriptor,
-            InteractionPolyfillSubsystem.Provider>
+            InteractionPolyfillSubsystem.DerivedProvider>
     {
         /// <summary>
         /// Construct the <c>InteractionPolyfillSubsystem</c>.
@@ -30,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public InteractionPolyfillSubsystem()
         { }
 
-        public class BaseProvider : MRTKSubsystemProvider<InteractionPolyfillSubsystem>
+        public class Provider : MRTKSubsystemProvider<InteractionPolyfillSubsystem>
         { }
 
         /// <summary>
         /// Provider for <c>InteractionPolyfillSubsystem</c>.
         /// </summary>
-        public class Provider : BaseProvider
+        public class DerivedProvider : Provider
         {
             public override void Start()
             {

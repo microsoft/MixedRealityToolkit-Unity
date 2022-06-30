@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <see cref="InteractionPolyfillSubsystem"/> interface.
     /// </summary>
     internal class InteractionPolyfillSubsystemDescriptor :
-        SubsystemDescriptorWithProvider<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.BaseProvider>,
+        SubsystemDescriptorWithProvider<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.Provider>,
         IMRTKSubsystemDescriptor
     {
         /// <summary>
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             UnityEngine.Debug.Log("Descriptor Create()");
             // Validates cinfo.
-            if (!XRSubsystemHelpers.CheckTypes<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.BaseProvider>(cinfo.Name,
+            if (!XRSubsystemHelpers.CheckTypes<InteractionPolyfillSubsystem, InteractionPolyfillSubsystem.Provider>(cinfo.Name,
                                                                                         cinfo.SubsystemTypeOverride,
                                                                                         cinfo.ProviderType))
             {
