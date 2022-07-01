@@ -17,7 +17,7 @@ steps:
   inputs:
     pwsh: true
     targetType: filePath
-    filePath: ./Pipelines/Scripts/pack-upm.ps1
+    filePath: ${{ parameters.projectRoot }}/Pipelines/Scripts/pack-upm.ps1
     arguments: >
       -ProjectRoot: ${{ parameters.projectRoot }}
       -OutputDirectory: ${{ parameters.outputDirectory }}
