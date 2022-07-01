@@ -8,17 +8,21 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - ADP-JoNeff
 - afarchy
 - Against Lightning (AgainstLightning)
+- Agredek
 - alandergrouse (alandergrouse)
 - Alex Floyd (elbuhofantasma)
 - Alexander Seeck (Alexees)
 - Andrew Hall (ryzngard)
 - Anton Zachesov (googlan)
 - Anuraag Puri (anuraag016)
+- Arsen (arsdever)
 - artsouflMS
 - Ben Godard (genbod)
 - Bernadette Thalhammer (thalbern)
 - Bertrand Oustrière (BertrandOustriere)
+- Billy Franscois (BillyFrcs)
 - Blake Gross (blgrossMS)
+- Bowen Zhang (BerwinZ)
 - Brandon Furtwangler (brandf)
 - Bryan Truong (bhtruong93)
 - C. M. Barth (chrisfromwork)
@@ -28,8 +32,10 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - CDiaz-MS
 - cefoot
 - cellarmation
+- CharlesWanMS
 - cihankurt98
-- CoPrez
+- CoPres (CoPrez)
+- Craig (Craig-J)
 - Cristiano Carvalheiro (ccarvalheiro)
 - Daniel Hofmann (danielhofmann-ms)
 - David Evans (phosphoer)
@@ -40,16 +46,18 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Derek (derekfreed)
 - Dino Fejzagić (FejZa)
 - Dirk Songür (DirkSonguer)
-- DominicAglialoro
+- Dominic Aglialoro (DominicAglialoro)
+- ErianVazquez-Microsoft
 - Eric Carter (Ecnassianer)
 - Eric Fiscus (MRW-Eric)
 - Eric O'Brien (ericob)
-- Eric Provencher (provencher)
+- Eric prvncher (provencher)
 - etiennemargraff (meulta)
 - Eusebiu Marcu (eusebiu)
 - Evan Tice (in2dair)
 - Finn Sinclair (Zee2)
 - Florian Jasche (FlorianJa)
+- flufy3d (flufy3d)
 - Forrest Trepte (ForrestTrepte)
 - Francesco Clasadonte (klasaf)
 - gauravb4
@@ -62,22 +70,27 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - hybridherbst
 - Hyung-il Kim (hyungilkim)
 - Jack Yang (jackyangzzh)
+- James Provan (JamesProvan-UL)
 - Jared Bienz [MSFT] (jbienzms)
-- Jarod (Jarodshow)
+- Jarod (jshowacre)
 - Jerome Humbert (djee-ms)
 - Jesse Vander Does (FreakTheMighty)
 - John (johnppella)
 - Jon Palmer (JonathanPalmerGD)
 - Jonathan Dana (Nakda)
 - Jonathan Palmer (JPalmerDev)
+- Jonathon Cobb (jonathoncobb)
 - Joost van Schaik (LocalJoost)
 - Josh Wittner (jwittner)
 - julesra
 - Julia Schwarz (julenka)
+- Julian Löhr (jloehr)
 - julianloehr-kg
 - JungJik Lee (fnwinter)
+- jverral
 - Ken Jakubzak (KenJakubzak)
 - Kent1 (Kent1LG)
+- Kevin Foley (kevinfoley)
 - Kevin Kennedy (KevinKennedy)
 - Kevin Semple (polar-kev)
 - kircher1
@@ -86,30 +99,40 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Kurtis (keveleigh)
 - LaneMax
 - Lars Simkins (Railboy)
+- Lei (idea-lei)
+- Luboš Vonásek (lvonasek)
 - Luis Valverde (luval-microsoft)
 - Luis Valverde (luis-valverde-ms)
 - Lukas Tönne (lukastoenneMS)
 - Maciej Borowik (macborow)
 - Malcolm Tyrrell (MalcolmTyrrell)
+- maleicacid (kazuki0824)
+- malnas01
 - Marek Stój (marek-stoj)
 - Mark Finch (fast-slow-still)
 - Matteo Valoriani (mvaloriani)
 - Matthew Johnson (matthejo)
+- MaxPalmer-UH
 - MaxWang-MS
 - mbeagley-MS
-- michael (insominx)
+- Michael Hoffman (m-the-hoff)
 - Michael House (michael-house)
 - Michael Kozlowski (mpkoz)
+- Michael Notter (mikenotter)
+- michael-g (insominx)
 - ms738
 - Myranda (myrandaGoesToSpace)
 - Nathan Ostrander (naostranMS)
 - Niall Milsom (MenelvagorMilsom)
+- NoTuxNoBux (NoTuxNoBux)
 - omanuke
 - Oscar Salandin (ossala)
 - PatientEz
 - Patrick Cook (darax)
 - Philipp (AllBecomesGood)
+- Proton-V
 - ritijain
+- Robert Butterworth (RobertButterworthMS)
 - Robert Onulak (Ziugy)
 - Roberto Sonnino (robertos)
 - RogPodge
@@ -118,7 +141,6 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - rwinj
 - SabinMGeorge
 - Sarah (SarahSexton)
-- SGHolospace
 - Shawn Gwin (sgwin)
 - Shinya Tachihara (decoc)
 - Simon (Darkside) Jackson (SimonDarksideJ)
@@ -132,10 +154,10 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Tim Gerken (timGerken)
 - Todd Williams (killerantz)
 - Troy Ferrell (Troy-Ferrell)
-- Tux (NoTuxNoBux)
 - Vanessa Oliva (vaoliva)
 - Weasy (Weasy666)
 - Will (wiwei)
 - William Tian (witian)
+- Wonkee (wonkee-kim)
 - Yoon Park (cre8ivepark)
 - yoyo (Yoyozilla)
