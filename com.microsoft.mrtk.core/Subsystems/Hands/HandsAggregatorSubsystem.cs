@@ -17,7 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// </summary>
     [Preserve]
     public class HandsAggregatorSubsystem :
-        MRTKSubsystem<HandsAggregatorSubsystem, HandsAggregatorSubsystemDescriptor, HandsAggregatorSubsystem.Provider>,
+        MRTKSubsystem<HandsAggregatorSubsystem,
+                      MRTKSubsystemDescriptor<HandsAggregatorSubsystem,
+                                              HandsAggregatorSubsystem.Provider>,
+                      HandsAggregatorSubsystem.Provider>,
         IHandsAggregatorSubsystem
     {
         /// <summary>
@@ -96,9 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <returns>
         /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
         /// </returns>
-        public static bool Register(HandsAggregatorSubsystemCinfo handsAggregatorSubsystemParams)
+        public static bool Register(MRTKSubsystemCinfo cinfo)
         {
-            HandsAggregatorSubsystemDescriptor descriptor = HandsAggregatorSubsystemDescriptor.Create(handsAggregatorSubsystemParams);
+            var descriptor = MRTKSubsystemDescriptor<HandsAggregatorSubsystem, Provider>.Create(cinfo);
             SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }

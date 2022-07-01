@@ -6,8 +6,11 @@ using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Collections;
 using UnityEngine.TestTools;
 
+
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
+    using AggregatorDescriptor = MRTKSubsystemDescriptor<HandsAggregatorSubsystem, HandsAggregatorSubsystem.Provider>;
+
     /// <summary>
     /// Tests for verifying the behavior of the various input-related subsystems.
     /// </summary>
@@ -16,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         [UnityTest]
         public IEnumerator MRTKAggregatorSmoke()
         {
-            var subsystem = SubsystemTestUtilities.CreateAndEnsureExists<MRTKHandsAggregatorSubsystem, HandsAggregatorSubsystemDescriptor>();
+            var subsystem = SubsystemTestUtilities.CreateAndEnsureExists<MRTKHandsAggregatorSubsystem, AggregatorDescriptor>();
             SubsystemTestUtilities.TestStart<MRTKHandsAggregatorSubsystem>();
             yield return null;
         }
