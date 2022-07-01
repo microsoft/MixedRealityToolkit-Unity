@@ -16,15 +16,15 @@ parameters:
 
 - name: PathToProject
   type: string
-  default: $(Build.SourcesDirectory)/UnityProjects/MRTKDevTemplate
+  default: $(Build.SourcesDirectory)/MixedRealityToolkit-Unity/UnityProjects/MRTKDevTemplate
 
 - name: BuildStandalone
   type: boolean
-  default: true
+  default: false
 
 - name: BuildUWP
   type: boolean
-  default: true
+  default: false
 
 - name: BuildAndroid
   type: boolean
@@ -37,7 +37,7 @@ steps:
 - powershell: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
   displayName: Install unitysetup.powershell
 
-- template: $(Build.SourcesDirectory)/tools.internal/Templates/license-unity.yaml
+- template: Templates/license-unity.yaml@PipelineTools
 
   # Standalone x64 tasks
 

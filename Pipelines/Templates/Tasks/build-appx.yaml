@@ -17,6 +17,10 @@ parameters:
 - name: Version
   type: string
 
+- name: AdditionalSteps
+  type: stepList
+  default: []
+
 steps:
 - ${{ each arch in parameters.Architectures }}:
   - task: MSBuild@1
@@ -25,6 +29,9 @@ steps:
       solution: ${{ parameters.BuildFolderPath }}/${{ parameters.ProjectName }}.sln
       platform: ${{ arch }}
       configuration: Master
+
+  - ${{ each additionalStep in parameters.AdditionalSteps }}:
+    - ${{ additionalStep }}
 
   - task: CopyFiles@2
     displayName: Copy ${{ arch }} AppX to artifacts staging directory
