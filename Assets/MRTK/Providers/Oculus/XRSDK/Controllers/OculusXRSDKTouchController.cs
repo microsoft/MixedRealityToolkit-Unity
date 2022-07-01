@@ -108,9 +108,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             }
         }
 
-        private async void TryRenderControllerModelFromOculus()
+        private void TryRenderControllerModelFromOculus()
         {
-            await WaitForOculusVisuals();
+#if OCULUSINTEGRATION_PRESENT
+            OculusXRSDKDeviceManager deviceManager = CoreServices.GetInputSystemDataProvider<OculusXRSDKDeviceManager>();
+
+            if (deviceManager.IsNotNull())
+            {
+                GameObject platformVisualization = null;
+                if (ControllerHandedness == Handedness.Left)
+                {
+                    platformVisualization = deviceManager.leftControllerHelper.gameObject;
+                }
+                else if (ControllerHandedness == Handedness.Right)
+                {
+                    platformVisualization = deviceManager.rightControllerHelper.gameObject;
+                }
+                RegisterControllerVisualization(platformVisualization);
+            }
+#endif
 
             if (this != null)
             {
@@ -127,18 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             }
         }
 
-        private const int ControllerInitializationTimeout = 1000;
-        private async Task WaitForOculusVisuals()
-        {
-            int timeWaited = 0;
-            while (OculusControllerVisualization == null || timeWaited > ControllerInitializationTimeout)
-            {
-                await Task.Delay(100);
-                timeWaited += 100;
-            }
-        }
-
-        internal void RegisterControllerVisualization(GameObject visualization)
+        private void RegisterControllerVisualization(GameObject visualization)
         {
             OculusControllerVisualization = visualization;
             if (GetControllerVisualizationProfile() != null &&

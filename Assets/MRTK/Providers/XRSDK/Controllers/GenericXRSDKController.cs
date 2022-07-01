@@ -73,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 {
                     Debug.LogError($"No interaction configuration for {GetType().Name}");
                     Enabled = false;
+                    return;
                 }
 
                 UpdateSixDofData(inputDevice);

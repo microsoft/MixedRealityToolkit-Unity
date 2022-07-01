@@ -51,6 +51,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     b.Encapsulate(currentMesh.bounds);
                 }
             }
+            foreach (SkinnedMeshRenderer r in g.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                if ((currentMesh = r.sharedMesh) == null) { continue; }
+
+                if (b.size == Vector3.zero)
+                {
+                    b = currentMesh.bounds;
+                }
+                else
+                {
+                    b.Encapsulate(currentMesh.bounds);
+                }
+            }
             return b;
         }
 

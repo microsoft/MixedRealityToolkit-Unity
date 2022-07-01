@@ -131,6 +131,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private Material[] AcquireMaterials(Renderer renderer, bool instance = true)
         {
+            if (renderer == null)
+            {
+                return null;
+            }
+
             if (applyToSharedMaterial)
             {
                 return renderer.sharedMaterials;

@@ -298,6 +298,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                             CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
                         }
                         break;
+                    // IndexFinger is handled in ArticulatedHandDefinition, so we can safely skip this case.
+                    case DeviceInputType.IndexFinger:
+                        break;
                     default:
                         base.UpdatePoseData(interactionMapping, inputDevice);
                         break;
