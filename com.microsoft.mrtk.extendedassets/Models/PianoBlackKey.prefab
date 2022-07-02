@@ -369,13 +369,20 @@ MonoBehaviour:
   onClicked:
     m_PersistentCalls:
       m_Calls: []
+  onEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisabled:
+    m_PersistentCalls:
+      m_Calls: []
   smoothSelectedness: 1
   distanceSpaceMode: 1
-  startPushPlane: -0.057481147
+  startPushPlane: -0.05986045
   endPushPlane: -0.034528702
   returnSpeed: 0.25
   enforceFrontPush: 1
   rejectXYRolloff: 1
+  rolloffXYDepth: 3
   rejectZRolloff: 0
   extendSpeed: 0.5
 --- !u!114 &7572946120017069296
