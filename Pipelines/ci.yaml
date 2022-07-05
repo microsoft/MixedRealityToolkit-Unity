@@ -7,10 +7,16 @@ variables:
 - template: Config/settings.yaml
 - name: Version.Revision
   value: $[counter(variables['MRTKVersion'], 1)]
-- name: Version.PreReleaseTag
-  value: $[variables['MRTKReleaseTag']]
 - name: Version.PreReleaseRevision
-  value: $[counter(variables['Version.PreReleaseTag'], 1)]
+  value: $[counter(variables['MRTKReleaseTag'], 1)]
+
+resources:
+  repositories:
+  - repository: PipelineTools
+    type: git
+    endpoint: ToolsAccess
+    name: tools.internal
+    ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
 
 pr: none # disable PR validation
 
@@ -19,11 +25,10 @@ jobs:
   pool: Unity_2021.3.3f1_Pool
   steps:
   - checkout: self
-    clean: true
 
-  # - checkout: git://MRTK/tools.internal
+  - checkout: PipelineTools
 
-  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(Version.PreReleaseTag).$(Version.PreReleaseRevision)"
+  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.PreReleaseRevision)"
     displayName: 'Set Build Number'
 
   - task: ComponentGovernanceComponentDetection@0
@@ -32,7 +37,11 @@ jobs:
       alertWarningLevel: 'Medium'
       failOnAlert: true
 
-  # - template: Templates/unity.yaml
+  - template: Templates/unity.yaml
+    parameters:
+      BuildStandalone: true
+      BuildUWP: true
+      BuildAndroid: true
 
   - template: Templates/upm.yaml
     parameters:

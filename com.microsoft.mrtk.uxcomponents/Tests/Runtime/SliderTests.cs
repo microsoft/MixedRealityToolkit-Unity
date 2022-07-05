@@ -8,7 +8,6 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEngine.XR.Interaction.Toolkit;
 
 using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
 
@@ -120,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(slider.isSelected, "Slider wasn't selected");
             Assert.IsTrue(slider.IsGazePinchSelected, "Slider wasn't gaze pinch selected");
             Assert.IsTrue(slider.interactorsSelecting.Count == 1, "Something else was selecting the slider, too! Should only have one selecting.");
-            
+
             yield return rightHand.Move(new Vector3(0.1f, 0, 0));
             yield return rightHand.SetGesture(GestureId.Open);
             yield return rightHand.Hide();

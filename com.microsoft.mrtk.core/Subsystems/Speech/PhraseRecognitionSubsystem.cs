@@ -73,25 +73,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <returns>
         /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="System.ArgumentException">Thrown when the values specified in the
-        /// <see cref="PhraseRecognitionSubsystemCinfo"/> parameter are invalid. Typically, this will occur
-        /// <list type="bullet">
-        /// <item>
-        /// <description>if <see cref="PhraseRecognitionSubsystemCinfo.id"/> is <c>null</c> or empty</description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="PhraseRecognitionSubsystemCinfo.implementationType"/> is <c>null</c></description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="PhraseRecognitionSubsystemCinfo.implementationType"/> does not derive from the
-        /// <see cref="PhraseRecognitionSubsystem"/> class
-        /// </description>
-        /// </item>
-        /// </list>
-        /// </exception>
         public static bool Register(PhraseRecognitionSubsystemCinfo phraseRecognitionSubsystemParams)
         {
-            PhraseRecognitionSubsystemDescriptor descriptor = PhraseRecognitionSubsystemDescriptor.Create(phraseRecognitionSubsystemParams);
+            var descriptor = PhraseRecognitionSubsystemDescriptor.Create(phraseRecognitionSubsystemParams);
             SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }

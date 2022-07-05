@@ -23,15 +23,22 @@ namespace Microsoft.MixedReality.Toolkit.UX
             /// <inheritdoc />
             protected override void ApplyColor(Color color)
             {
+                if (Tintables == null) { return; }
+
                 foreach (Graphic graphic in Tintables)
                 {
-                    graphic.color = color;
+                    if (graphic != null)
+                    {
+                        graphic.color = color;
+                    }
                 }
             }
 
             /// <inheritdoc />
             protected override Color GetColor()
             {
+                if (Tintables == null) { return default; }
+
                 if (Tintables.Count > 0 && Tintables[0] != null)
                 {
                     return Tintables[0].color;

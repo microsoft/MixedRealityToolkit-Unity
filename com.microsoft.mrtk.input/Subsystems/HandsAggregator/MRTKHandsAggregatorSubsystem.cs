@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static void Register()
         {
             // Fetch subsystem metadata from the attribute.
-            var cinfo = XRSubsystemHelpers.ConstructCinfo<MRTKHandsAggregatorSubsystem, HandsAggregatorSubsystemCinfo>();
+            var cinfo = XRSubsystemHelpers.ConstructCinfo<MRTKHandsAggregatorSubsystem, MRTKSubsystemCinfo>();
 
             if (!Register(cinfo))
             {

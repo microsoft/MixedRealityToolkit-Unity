@@ -1,17 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.XR.Interaction.Toolkit;
-
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
 
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {
@@ -143,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 Assert.IsTrue(toggle.ToggleMode == StatefulInteractable.ToggleType.Toggle, "ToggleCollection should have set all the toggle types to Toggle when we set AllowSwitchOff true.");
             }
 
-             // Try to toggle the same one. Now, it should detoggle!
+            // Try to toggle the same one. Now, it should detoggle!
             testInteractor.StartManualInteraction(toggleCollection.Toggles[5] as IXRSelectInteractable);
             yield return null;
             yield return null;

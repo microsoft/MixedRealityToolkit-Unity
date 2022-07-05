@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class InterfaceSelectorDrawer : PropertyDrawer
     {
         private GUIContent dropLabel;
-        private GUIStyle   labelStyle;
+        private GUIStyle labelStyle;
         public InterfaceSelectorDrawer()
         {
             // Cache some items used frequently in OnGUI
-            dropLabel  = EditorGUIUtility.IconContent("Linked");
+            dropLabel = EditorGUIUtility.IconContent("Linked");
             labelStyle = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).label;
 
             dropLabel.tooltip = "This will search the project for classes that match this property's interface, and create an instance of that class.";
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Get a nice readable name for the property's instance type
             string typeName = property.managedReferenceFullTypename;
-            int    split    = typeName.IndexOf(' ');
+            int split = typeName.IndexOf(' ');
             if (split != -1)
             {
                 split += 1;
@@ -44,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // Add a dropdown menu to select an interface, and generate an instance of it
-            float labelWidth   = labelStyle.CalcSize(label).x + EditorGUIUtility.singleLineHeight;
-            Rect  dropdownRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, EditorGUIUtility.singleLineHeight);
+            float labelWidth = labelStyle.CalcSize(label).x + EditorGUIUtility.singleLineHeight;
+            Rect dropdownRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, EditorGUIUtility.singleLineHeight);
             dropLabel.text = $"{fieldInfo.FieldType.Name} - {typeName}";
             if (EditorGUI.DropdownButton(dropdownRect, dropLabel, FocusType.Passive))
             {
@@ -53,8 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // field's type.
                 List<Type> allInterfaces = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(assembly => assembly.GetLoadableTypes())
-                    .Where     (type     => type != fieldInfo.FieldType && fieldInfo.FieldType.IsAssignableFrom(type))
-                    .ToList    ();
+                    .Where(type => type != fieldInfo.FieldType && fieldInfo.FieldType.IsAssignableFrom(type))
+                    .ToList();
 
                 GenericMenu menu = new GenericMenu();
                 // Add a menu item for each valid type
