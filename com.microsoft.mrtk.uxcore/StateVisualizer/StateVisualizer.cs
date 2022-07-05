@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// Requires <see cref="StatefulInteractable"/> and an <see cref="Animator"/>.
     /// </summary>
     [AddComponentMenu("MRTK/UX/State Visualizer")]
+    [RequireComponent(typeof(Animator))]
     public class StateVisualizer : MonoBehaviour
     {
         // How long to wait after effects report they're done
