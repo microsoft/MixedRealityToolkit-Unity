@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TransparentOutlinedHand
-  m_Shader: {fileID: 4800000, guid: f8aacb29a3a59de438066034678e8989, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7e5190cdaf0ecda4c8cd1c9d0c6e017b, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -66,9 +66,9 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OutlineExponent: 4.5
-    - _OutlineSmoothing: 0.0302
-    - _OutlineThreshold: 0.397
+    - _OutlineExponent: 3.85
+    - _OutlineSmoothing: 0.0605
+    - _OutlineThreshold: 0.064
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -78,6 +78,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HandColor: {r: 0, g: 0, b: 0, a: 0.27058825}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0.57254905}
+    - _HandColor: {r: 0, g: 0, b: 0, a: 0.35686275}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0.3882353}
   m_BuildTextureStacks: []

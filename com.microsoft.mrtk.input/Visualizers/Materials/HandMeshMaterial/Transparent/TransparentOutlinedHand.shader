@@ -41,9 +41,9 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
             v2f vert(appdata v)
             {
                 v2f o;
-                UNITY_SETUP_INSTANCE_ID(v); //Insert
-                UNITY_INITIALIZE_OUTPUT(v2f, o); //Insert
-                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); //Insert
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2f, o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
@@ -55,7 +55,6 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
             ENDCG
         }
 
-        // Actually draw hands
         Pass {
             ZWrite Off
             Blend SrcAlpha OneMinusSrcAlpha
@@ -89,8 +88,15 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.normal = UnityObjectToWorldNormal(v.normal);
-                o.viewDir = UnityWorldSpaceViewDir(mul(UNITY_MATRIX_M, v.vertex));
 
+                // Distance-invariant view pos. Create "normalized view point"
+                // offset from object origin, then construct a new view vector
+                // from the synthetic view point.
+                float3 objectOrigin = mul(unity_ObjectToWorld, float4(0.0, 0.0, 0.0, 1.0)).xyz;
+                float3 cameraToObjectOrigin = normalize(objectOrigin - _WorldSpaceCameraPos);
+                float3 offsetViewPos = objectOrigin - cameraToObjectOrigin * 1.0f;
+                o.viewDir = mul(unity_ObjectToWorld, v.vertex) - offsetViewPos;
+                
                 return o;
             }
 
@@ -104,11 +110,8 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
             fixed4 frag(v2f i) : SV_Target
             {
                 half rim = 1.0 - abs(dot(i.viewDir, i.normal));
-
                 rim = pow(rim, _OutlineExponent);
-
                 half amt = smoothstep(_OutlineThreshold, _OutlineThreshold + _OutlineSmoothing, rim);
-                
                 return lerp(_HandColor, _OutlineColor, amt);
             }
 
