@@ -26,6 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty onClicked;
         private SerializedProperty onToggled;
         private SerializedProperty onDetoggled;
+        private SerializedProperty onEnabled;
+        private SerializedProperty onDisabled;
+        private static bool advancedFoldout = false;
+        private static bool enabledEventsFoldout = false;
 
         protected override void OnEnable()
         {
@@ -51,12 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             onClicked = SetUpProperty(nameof(onClicked));
 
+            onEnabled = SetUpProperty(nameof(onEnabled));
+            onDisabled = SetUpProperty(nameof(onDisabled));
+
             // OnToggle/Detoggle aliases to IsToggled.OnEntered/IsToggled.OnExited
             onToggled = isToggled.FindPropertyRelative("onEntered");
             onDetoggled = isToggled.FindPropertyRelative("onExited");
         }
-
-        static bool advancedFoldout = false;
 
         protected override void DrawProperties()
         {
@@ -171,6 +176,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.Space();
 
                 DrawTimedFlag(isToggled, interactable.IsToggled, previousGUIColor, Color.cyan);
+                
+                enabledEventsFoldout = EditorGUILayout.Foldout(enabledEventsFoldout, "OnEnable/Disable", true);
+                
+                if (enabledEventsFoldout)
+                {
+                    EditorGUILayout.PropertyField(onEnabled);
+                    EditorGUILayout.PropertyField(onDisabled);
+                }
             }
 
             EditorGUILayout.Space();
