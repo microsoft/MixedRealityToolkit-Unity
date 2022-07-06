@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.1.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.2.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
