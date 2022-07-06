@@ -95,7 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     GUILayout.MaxHeight(buttonHeight),
                     GUILayout.MaxWidth(buttonWidth)))
                 {
+                    Undo.RecordObjects(new UnityEngine.Object[]{fontIconSelector, fontIconSelector.TextMeshProComponent}, "Changed icon");
                     fontIconSelector.CurrentIconName = iconName;
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(fontIconSelector);
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(fontIconSelector.TextMeshProComponent);
                 }
                 Rect textureRect = GUILayoutUtility.GetLastRect();
                 FontIconSetInspector.EditorDrawTMPGlyph(textureRect, unicodeValue, fontAsset, selected);
