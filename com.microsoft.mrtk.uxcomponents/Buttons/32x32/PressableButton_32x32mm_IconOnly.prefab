@@ -35,6 +35,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2667316837219457015, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2691048264859322108, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00056501105
@@ -75,6 +79,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -0.013496991
       objectReference: {fileID: 0}
+    - target: {fileID: 7156395073114111734, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7721390834142343731, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.04
@@ -93,7 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8614915488467384402, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8829903862420055378, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: m_Mesh

@@ -237,8 +237,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7156395073114111734}
   - component: {fileID: 624329646436594517}
-  - component: {fileID: 2485390326591454477}
   - component: {fileID: 4424429222014533572}
+  - component: {fileID: 691632574343698980}
   m_Layer: 0
   m_Name: UX.Button.Icon.Char
   m_TagString: Untagged
@@ -284,7 +284,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: -4805830539449684796, guid: 91279d220f9b5dc46b33287a9fd5fa55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -306,14 +306,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!222 &2485390326591454477
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2667316837219457015}
-  m_CullTransparentMesh: 0
 --- !u!114 &4424429222014533572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,10 +326,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uEBD2"
+  m_text: "\uF710"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+  m_sharedMaterial: {fileID: -4805830539449684796, guid: 91279d220f9b5dc46b33287a9fd5fa55, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -361,8 +353,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.085
-  m_fontSizeBase: 0.085
+  m_fontSize: 0.1
+  m_fontSizeBase: 0.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -406,6 +398,22 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+--- !u!114 &691632574343698980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2667316837219457015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 258623d14a250c648b5b9f7b96354ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fontIcons: {fileID: 11400000, guid: b490f983baa13694cb7e5ecc6bd0dae3, type: 2}
+  currentIconName: Icon 133
+  textMeshProComponent: {fileID: 4424429222014533572}
+  iconFontAsset: {fileID: 0}
 --- !u!1 &4099849804743059182
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,8 +968,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.128, y: 0.032, z: 0.019479036}
-  m_Center: {x: 0, y: 0, z: 0.0055834055}
+  m_Size: {x: 0.128, y: 0.032, z: 0.031322923}
+  m_Center: {x: 0, y: 0, z: -0.00033853762}
 --- !u!114 &8174955776655707806
 MonoBehaviour:
   m_ObjectHideFlags: 0
