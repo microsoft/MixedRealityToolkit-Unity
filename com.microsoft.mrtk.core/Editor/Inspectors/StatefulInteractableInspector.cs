@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty onDetoggled;
         private SerializedProperty onEnabled;
         private SerializedProperty onDisabled;
-        static bool advancedFoldout = false;
-        static bool enabledEventsFoldout = false;
+        private static bool advancedFoldout = false;
+        private static bool enabledEventsFoldout = false;
 
         protected override void OnEnable()
         {
