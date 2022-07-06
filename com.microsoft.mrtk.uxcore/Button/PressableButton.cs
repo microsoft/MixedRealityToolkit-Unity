@@ -425,6 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         protected override void OnHoverEntered(HoverEnterEventArgs args)
         {
             base.OnHoverEntered(args);
+
             // If we decide this interactor has begun its hover in a well-behaved way,
             // we add it to our hashset of valid pokes.
             if (args.interactorObject is IPokeInteractor pokeInteractor && !IsOutsideFootprint(pokeInteractor.PokeTrajectory.End, 0.0001f))
@@ -445,6 +446,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <inheritdoc />
         protected override void OnHoverExited(HoverExitEventArgs args)
         {
+            base.OnHoverExited(args);
+
             if (args.interactorObject is IPokeInteractor pokeInteractor)
             {
                 // Remove from our valid poke hashset if it was registered there.
