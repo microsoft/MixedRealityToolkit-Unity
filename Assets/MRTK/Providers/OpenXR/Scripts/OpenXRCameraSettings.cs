@@ -87,7 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public override bool IsOpaque => XRSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
+        public override bool IsOpaque =>
+            XRSubsystemHelpers.DisplaySubsystem == null
+            || !XRSubsystemHelpers.DisplaySubsystem.running
+            || XRSubsystemHelpers.DisplaySubsystem.displayOpaque;
 
         #endregion IMixedRealityCameraSettings
 
