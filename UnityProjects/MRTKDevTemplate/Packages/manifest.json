@@ -13,6 +13,7 @@
     "com.microsoft.mrtk.input": "file:../../../com.microsoft.mrtk.input",
     "com.microsoft.mrtk.spatialmanipulation": "file:../../../com.microsoft.mrtk.spatialmanipulation",
     "com.microsoft.mrtk.standardassets": "file:../../../com.microsoft.mrtk.standardassets",
+    "com.microsoft.mrtk.tools": "file:../../../com.microsoft.mrtk.tools",
     "com.microsoft.mrtk.uxcomponents": "file:../../../com.microsoft.mrtk.uxcomponents",
     "com.microsoft.mrtk.uxcore": "file:../../../com.microsoft.mrtk.uxcore",
     "com.microsoft.mrtk.windowsspeech": "file:../../../com.microsoft.mrtk.windowsspeech",

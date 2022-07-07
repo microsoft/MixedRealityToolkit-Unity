@@ -55,17 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public static readonly Texture2D LogoLightTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoLightThemeGuid));
         public static readonly Texture2D LogoDarkTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoDarkThemeGuid));
 
-        private const string CloneProfileHelpLabel = "Currently viewing a MRTK default profile. It is recommended to clone defaults and modify a custom profile.";
-        private const string CloneProfileHelpLockedLabel = "Clone this default profile to edit properties below";
-
-        private static readonly GUIStyle ProductNameStyle = new GUIStyle(EditorStyles.boldLabel)
+        public static readonly GUIStyle ProductNameStyle = new GUIStyle(EditorStyles.boldLabel)
         {
             fontSize = 26,
             alignment = TextAnchor.UpperCenter,
             fixedHeight = 32
         };
 
-        internal static bool IsMixedRealityToolkitLogoAssetPresent()
+        public static bool IsMixedRealityToolkitLogoAssetPresent()
         {
             return EditorGUIUtility.isProSkin ? LogoDarkTheme != null : LogoLightTheme != null;
         }

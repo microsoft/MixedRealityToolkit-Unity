@@ -120,6 +120,14 @@
         "com.microsoft.mrtk.graphicstools.unity": "0.3.15"
       }
     },
+    "com.microsoft.mrtk.tools": {
+      "version": "file:../../../com.microsoft.mrtk.tools",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.microsoft.mrtk.core": "3.0.0-development"
+      }
+    },
     "com.microsoft.mrtk.uxcomponents": {
       "version": "file:../../../com.microsoft.mrtk.uxcomponents",
       "depth": 0,
