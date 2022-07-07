@@ -31,14 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 // If the cached camera is null, search for main
-                var mainCamera = Camera.main;
+                Camera mainCamera = Camera.main;
 
                 if (mainCamera == null)
                 {
                     Debug.Log("No main camera found. Searching for cameras in the scene.");
 
                     // If no main camera was found, try to determine one.
-                    Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
+                    Camera[] cameras = Object.FindObjectsOfType<Camera>();
                     if (cameras.Length == 0)
                     {
                         Debug.LogWarning("No cameras found. Creating a \"MainCamera\".");
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
                     else
                     {
-                        Debug.LogWarning("The Mixed Reality Toolkit was unable to determine a main camera. Please tag the scene's primary camera as \"MainCamera\", in the hierarchy.");
+                        Debug.LogError("The Mixed Reality Toolkit was unable to determine a main camera. Please tag the scene's primary camera as \"MainCamera\", in the hierarchy.");
                     }
                 }
 

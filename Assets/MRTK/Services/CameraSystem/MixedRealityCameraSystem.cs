@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             get
             {
-                currentDisplayType = DisplayType.Opaque;
+                DisplayType currentDisplayType = DisplayType.Opaque;
 
                 IReadOnlyList<IMixedRealityCameraSettingsProvider> dataProviders = GetDataProviders<IMixedRealityCameraSettingsProvider>();
                 if (dataProviders.Count > 0)
@@ -87,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc/>
         public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
 
-        private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
         /// <summary>
@@ -141,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 cameraOpaqueLastFrame = IsOpaque;
 
-                if (IsOpaque)
+                if (cameraOpaqueLastFrame)
                 {
                     ApplySettingsForOpaqueDisplay();
                 }
@@ -213,11 +212,13 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 base.Update();
 
-                if (IsOpaque != cameraOpaqueLastFrame)
-                {
-                    cameraOpaqueLastFrame = IsOpaque;
+                bool cameraOpaqueThisFrame = IsOpaque;
 
-                    if (IsOpaque)
+                if (cameraOpaqueThisFrame != cameraOpaqueLastFrame)
+                {
+                    cameraOpaqueLastFrame = cameraOpaqueThisFrame;
+
+                    if (cameraOpaqueThisFrame)
                     {
                         ApplySettingsForOpaqueDisplay();
                     }
