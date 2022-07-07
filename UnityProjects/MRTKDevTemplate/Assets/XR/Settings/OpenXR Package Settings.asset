@@ -108,6 +108,7 @@ MonoBehaviour:
   priority: 0
   required: 1
   disableFirstPersonObserver: 0
+  enablePoseUpdateOnBeforeRender: 0
 --- !u!114 &-7232978043429515688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,6 +165,7 @@ MonoBehaviour:
   priority: 0
   required: 1
   disableFirstPersonObserver: 0
+  enablePoseUpdateOnBeforeRender: 0
 --- !u!114 &-6481664739586093490
 MonoBehaviour:
   m_ObjectHideFlags: 0

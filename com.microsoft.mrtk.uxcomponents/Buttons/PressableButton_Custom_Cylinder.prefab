@@ -127,8 +127,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1.0616211}
-  m_Center: {x: 0, y: 0, z: -0.030810215}
+  m_Size: {x: 1, y: 1, z: 0.8885529}
+  m_Center: {x: 0, y: -0.000000007855584, z: 0.055723984}
 --- !u!114 &2712310172936119071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +311,12 @@ MonoBehaviour:
   onClicked:
     m_PersistentCalls:
       m_Calls: []
+  onEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisabled:
+    m_PersistentCalls:
+      m_Calls: []
   smoothSelectedness: 1
   distanceSpaceMode: 1
   startPushPlane: -0.37946695
@@ -318,6 +324,7 @@ MonoBehaviour:
   returnSpeed: 0.25
   enforceFrontPush: 1
   rejectXYRolloff: 1
+  rolloffXYDepth: 3
   rejectZRolloff: 0
   extendSpeed: 0.5
 --- !u!114 &3298454244601473750

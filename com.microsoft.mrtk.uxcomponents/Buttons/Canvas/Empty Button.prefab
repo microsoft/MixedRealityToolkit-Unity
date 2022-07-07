@@ -145,7 +145,7 @@ MonoBehaviour:
   _Edge_Color_: {r: 0.53, g: 0.53, b: 0.53, a: 1}
   _Fade_Out_: 1
   _Blob_Enable_: 1
-  _Blob_Position_: {x: 0.5, y: 0, z: 0.2}
+  _Blob_Position_: {x: 0.5, y: 0, z: 0.2, w: 0}
   _Blob_Intensity_: 0.5
   _Blob_Near_Size_: 0.025
   _Blob_Far_Size_: 0.05
@@ -157,7 +157,7 @@ MonoBehaviour:
   _Blob_Fade_: 1
   _Blob_Pulse_Max_Size_: 0.05
   _Blob_Enable_2_: 1
-  _Blob_Position_2_: {x: 0.3827049, y: 0.06663658, z: 0.48826474}
+  _Blob_Position_2_: {x: 0.3827049, y: 0.06663658, z: 0.48826474, w: 0}
   _Blob_Near_Size_2_: 0.025
   _Blob_Inner_Fade_2_: 0.1
   _Blob_Pulse_2_: 0
@@ -186,8 +186,8 @@ MonoBehaviour:
   _ZTest: 4
   _ZWrite: 0
   _MainTex: {fileID: 0}
-  _ClipRect: {x: -32767, y: -32767, z: 32767}
-  _ClipRectRadii: {x: 10, y: 10, z: 10}
+  _ClipRect: {x: -32767, y: -32767, z: 32767, w: 0}
+  _ClipRectRadii: {x: 10, y: 10, z: 10, w: 0}
 --- !u!114 &5941796002839870304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,8 +323,8 @@ MonoBehaviour:
   _ZTest: 4
   _ZWrite: 0
   _MainTex: {fileID: 0}
-  _ClipRect: {x: 0, y: 0, z: 0}
-  _ClipRectRadii: {x: 0, y: 0, z: 0}
+  _ClipRect: {x: 0, y: 0, z: 0, w: 0}
+  _ClipRectRadii: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3705378105823492738
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,8 +648,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 32, y: 32, z: 35.6}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 32, y: 32, z: 26.38652}
+  m_Center: {x: 0, y: 0, z: 4.6067348}
 --- !u!114 &3705378105823492761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -665,6 +665,7 @@ MonoBehaviour:
   thisCollider: {fileID: 3705378105823492760}
   attachedRectTransform: {fileID: 3705378105823492765}
   padding: {x: 0, y: 0}
+  forceUpdateEveryFrame: 0
 --- !u!95 &3705378105823492766
 Animator:
   serializedVersion: 3

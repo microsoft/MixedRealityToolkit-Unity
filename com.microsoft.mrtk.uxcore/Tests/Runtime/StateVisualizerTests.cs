@@ -301,5 +301,20 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Assert.IsFalse(sv.Animator.enabled, "StateVisualizer did not go back to sleep!");
         }
+
+        [UnityTest]
+        /// <summary>
+        /// Makes sure an Animator component is added when necessary.
+        /// </summary>
+        public IEnumerator TestAnimatorMissing()
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<StatefulInteractable>();
+            cube.AddComponent<StateVisualizer>();
+
+            yield return null;
+
+            Assert.IsTrue(cube.GetComponent<Animator>() != null, "An animator wasn't automatically added when it was missing!");
+        }
     }
 }

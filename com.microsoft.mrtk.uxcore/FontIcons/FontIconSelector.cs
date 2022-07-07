@@ -8,26 +8,32 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// A Component that can be used to select a specific icon for display via a TextMeshPro component.
+    /// Allows the user to select a specific icon for display via a TextMeshPro component.
+    /// See <see cref="FontIconSelectorInspector"/> for the majority of the user-facing editor code.
     /// </summary>
-    [Serializable]
     [AddComponentMenu("MRTK/UX/Font Icon Selector")]
     public class FontIconSelector : MonoBehaviour
     {
         [Tooltip("The FontIconSet scriptable object that contains the icons available for use.")]
         [SerializeField]
         private FontIconSet fontIcons;
+
+        /// <summary>
+        /// The FontIconSet ScriptableObject that contains the icons
+        /// available for use, and their human-readable names.
+        /// </summary>
         public FontIconSet FontIcons => fontIcons;
 
-        [Tooltip("The currently selected icon by name.")]
+        [Tooltip("The currently selected icon's name, as defined by the FontIconSet ScriptableObject.")]
         [SerializeField]
         private string currentIconName;
+
+        /// <summary>
+        /// The currently selected icon's name, as defined by the FontIconSet ScriptableObject.
+        /// </summary>
         public string CurrentIconName
         {
-            get
-            {
-                return currentIconName;
-            }
+            get => currentIconName;
 
             set
             {
@@ -38,12 +44,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        [Tooltip("The TextMeshPro Component to be used to show the icon.")]
+        [Tooltip("The TextMeshPro used to show the icon.")]
         [SerializeField]
         private TMP_Text textMeshProComponent;
+
+        /// <summary>
+        /// The TextMeshPro used to show the icon.
+        /// </summary>
         public TMP_Text TextMeshProComponent => textMeshProComponent;
 
-        protected void Awake()
+        private void Awake()
         {
             if (textMeshProComponent == null)
             {
@@ -57,15 +67,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             SetIcon(currentIconName);
         }
 
-        /// <summary>
-        /// A TextMeshPro Font Asset that contains the desired icons as glyphs that map to Unicode character values.
-        /// </summary>
-        public TMP_FontAsset IconFontAsset => iconFontAsset;
-
         [Tooltip("Any TextMeshPro Font Asset that contains the desired icons as glyphs that map to Unicode character values.")]
         [SerializeField]
         private TMP_FontAsset iconFontAsset = null;
 
+        /// <summary>
+        /// A TextMeshPro Font Asset that contains the desired icons as glyphs that map to Unicode character values.
+        /// </summary>
+        public TMP_FontAsset IconFontAsset => iconFontAsset;
 
         private void SetIcon(string newIconName)
         {

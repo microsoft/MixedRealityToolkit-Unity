@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.microsoft.mixedreality.openxr": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.1.tgz",
+    "com.microsoft.mixedreality.openxr": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.2.tgz",
     "com.microsoft.mixedreality.visualprofiler": "https://github.com/microsoft/VisualProfiler-Unity.git",
     "com.microsoft.mrtk.accessibility": "file:../../../com.microsoft.mrtk.accessibility",
     "com.microsoft.mrtk.audio": "file:../../../com.microsoft.mrtk.audio",
