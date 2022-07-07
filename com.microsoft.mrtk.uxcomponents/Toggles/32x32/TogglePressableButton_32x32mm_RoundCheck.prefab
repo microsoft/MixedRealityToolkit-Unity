@@ -201,6 +201,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 90244099029470759, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 1811028555225687572, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2925659611650432089, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -221,6 +229,10 @@ PrefabInstance:
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[0].tintables.Array.data[1]
       value: 
       objectReference: {fileID: 2111029842618737434}
+    - target: {fileID: 3786461762529493686, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 5092507605265006331, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
       propertyPath: m_RootOrder
       value: 0
