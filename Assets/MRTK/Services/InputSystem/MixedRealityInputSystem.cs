@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
         {
-            if (pointerProfile != null && pointerProfile.GazeProviderType?.Type != null)
+            if (pointerProfile != null && pointerProfile.GazeProviderType?.Type != null && CameraCache.Main != null)
             {
                 IMixedRealityGazeProvider existingGazeProvider = CameraCache.Main.gameObject.GetComponent<IMixedRealityGazeProvider>();
                 if (existingGazeProvider != null && existingGazeProvider.GetType() != pointerProfile.GazeProviderType.Type)
@@ -336,7 +336,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 Debug.LogError("The input system is missing the required GazeProviderType!");
-                return;
             }
         }
 
