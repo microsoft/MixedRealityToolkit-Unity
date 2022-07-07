@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
@@ -40,6 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
         /// <inheritdoc/>
         public override bool IsOpaque =>
+            (Application.isEditor && !Application.isPlaying) ?
+            base.IsOpaque :
 #if UNITY_WSA
             HolographicSettings.IsDisplayOpaque;
 #else

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityCameraProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  editTimeDisplayType: 1
   settingsConfigurations:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings,

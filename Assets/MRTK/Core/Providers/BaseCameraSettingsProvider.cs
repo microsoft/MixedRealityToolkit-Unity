@@ -20,34 +20,41 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             string name = null,
             uint priority = DefaultPriority,
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
-        { }
+        {
+            CameraProfile = cameraSystem?.CameraProfile;
+        }
+
+        protected MixedRealityCameraProfile CameraProfile { get; }
 
         /// <inheritdoc/>
-        public virtual bool IsOpaque { get; } = false;
+        public virtual bool IsOpaque =>
+            Application.isEditor
+            && !Application.isPlaying
+            && CameraProfile != null
+            && CameraProfile.EditTimeDisplayType == DisplayType.Opaque;
 
         /// <inheritdoc/>
         public virtual void ApplyConfiguration()
         {
             // It is the responsibility of the camera settings provider to set the display settings (this allows overriding the
             // default values with per-camera provider values).
-            MixedRealityCameraProfile cameraProfile = Service?.CameraProfile;
-            if (cameraProfile == null) { return; }
+            if (CameraProfile == null || CameraCache.Main == null) { return; }
 
             if (IsOpaque)
             {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsOpaqueDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneOpaqueDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneOpaqueDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorOpaqueDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.OpaqueQualityLevel, false);
+                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
+                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
+                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
+                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
+                QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
             }
             else
             {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsTransparentDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorTransparentDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneTransparentDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneTransparentDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.TransparentQualityLevel, false);
+                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
+                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
+                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
+                QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
             }
         }
     }

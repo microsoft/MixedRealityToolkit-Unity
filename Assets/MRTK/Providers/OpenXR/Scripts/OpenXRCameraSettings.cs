@@ -88,6 +88,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
         /// <inheritdoc/>
         public override bool IsOpaque =>
+            (Application.isEditor && !Application.isPlaying) ?
+            base.IsOpaque :
             XRSubsystemHelpers.DisplaySubsystem == null
             || !XRSubsystemHelpers.DisplaySubsystem.running
             || XRSubsystemHelpers.DisplaySubsystem.displayOpaque;

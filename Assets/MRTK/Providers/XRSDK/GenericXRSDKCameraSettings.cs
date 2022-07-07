@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 #if SPATIALTRACKING_ENABLED
 using UnityEngine.SpatialTracking;
@@ -42,6 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
         /// <inheritdoc/>
         public override bool IsOpaque =>
+            (Application.isEditor && !Application.isPlaying) ?
+            base.IsOpaque :
             XRSubsystemHelpers.DisplaySubsystem == null
             || !XRSubsystemHelpers.DisplaySubsystem.running
             || XRSubsystemHelpers.DisplaySubsystem.displayOpaque;

@@ -20,6 +20,12 @@ namespace Microsoft.MixedReality.Toolkit
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         [SerializeField]
+        [Tooltip("The camera settings to apply at edit time, for ease of building a specific type of experience.")]
+        private DisplayType editTimeDisplayType = DisplayType.Transparent;
+
+        internal DisplayType EditTimeDisplayType => editTimeDisplayType;
+
+        [SerializeField]
         [Tooltip("Configuration objects describing the registered settings providers.")]
         private MixedRealityCameraSettingsConfiguration[] settingsConfigurations = new MixedRealityCameraSettingsConfiguration[0];
 

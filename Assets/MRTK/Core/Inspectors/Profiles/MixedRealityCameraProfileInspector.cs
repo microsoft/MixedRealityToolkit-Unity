@@ -19,6 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private bool showDisplaySettings = false;
         private const string showDisplaySettingsPreferenceKey = "ShowCameraSystem_DisplaySettings_PreferenceKey";
 
+        private SerializedProperty editTimeDisplayType;
+
         private SerializedProperty opaqueNearClip;
         private SerializedProperty opaqueFarClip;
         private SerializedProperty opaqueClearFlags;
@@ -48,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
+            editTimeDisplayType = serializedObject.FindProperty("editTimeDisplayType");
+
             opaqueNearClip = serializedObject.FindProperty("nearClipPlaneOpaqueDisplay");
             opaqueFarClip = serializedObject.FindProperty("farClipPlaneOpaqueDisplay");
             opaqueClearFlags = serializedObject.FindProperty("cameraClearFlagsOpaqueDisplay");
@@ -72,6 +76,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
+
+                EditorGUILayout.PropertyField(editTimeDisplayType);
 
                 RenderFoldout(ref showProviders, "Camera Settings Providers", () =>
                 {
