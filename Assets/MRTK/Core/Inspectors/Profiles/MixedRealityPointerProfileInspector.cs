@@ -110,18 +110,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     EditorGUILayout.Space();
 
-                    var gazeProvider = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>();
-                    CreateCachedEditor((Object)gazeProvider, null, ref gazeProviderEditor);
                     showGazeProviderProperties = EditorGUILayout.Foldout(showGazeProviderProperties, "Gaze Provider Settings", true, boldFoldout);
-                    if (showGazeProviderProperties && !gazeProviderEditor.IsNull())
+                    if (showGazeProviderProperties && CameraCache.Main != null)
                     {
+                        var gazeProvider = CameraCache.Main.GetComponent<IMixedRealityGazeProvider>();
+                        CreateCachedEditor((Object)gazeProvider, null, ref gazeProviderEditor);
+
                         // Provide a convenient way to toggle the gaze provider as enabled/disabled via editor
                         gazeProvider.Enabled = EditorGUILayout.Toggle("Enable Gaze Provider", gazeProvider.Enabled);
 
-                        using (new EditorGUI.IndentLevelScope())
+                        if (gazeProviderEditor != null)
                         {
-                            // Draw out the rest of the Gaze Provider's settings
-                            gazeProviderEditor.OnInspectorGUI();
+                            using (new EditorGUI.IndentLevelScope())
+                            {
+                                // Draw out the rest of the Gaze Provider's settings
+                                gazeProviderEditor.OnInspectorGUI();
+                            }
                         }
                     }
                 }

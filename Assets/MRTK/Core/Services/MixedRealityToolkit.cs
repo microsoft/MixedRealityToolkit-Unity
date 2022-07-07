@@ -564,10 +564,10 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void EnsureEditorSetup()
         {
-            if (ActiveProfile.RenderDepthBuffer)
+            if (ActiveProfile.RenderDepthBuffer && CameraCache.Main != null)
             {
-                CameraCache.Main.gameObject.EnsureComponent<DepthBufferRenderer>();
-                DebugUtilities.LogVerbose("Added a DepthBufferRenderer to the main camera");
+                CameraCache.Main.EnsureComponent<DepthBufferRenderer>();
+                DebugUtilities.LogVerbose("Added a DepthBufferRenderer to the main camera.");
             }
         }
 
@@ -575,20 +575,22 @@ namespace Microsoft.MixedReality.Toolkit
         {
             // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
             // We'll enforce that here, then tracking can update it to the appropriate position later.
-            CameraCache.Main.transform.position = Vector3.zero;
-            CameraCache.Main.transform.rotation = Quaternion.identity;
+            if (CameraCache.Main != null)
+            {
+                CameraCache.Main.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            }
 
             // This will create the playspace
             _ = MixedRealityPlayspace.Transform;
 
             bool addedComponents = false;
-            if (!Application.isPlaying)
+            if (!Application.isPlaying && CameraCache.Main != null)
             {
-                var eventSystems = FindObjectsOfType<EventSystem>();
+                EventSystem[] eventSystems = FindObjectsOfType<EventSystem>();
 
                 if (eventSystems.Length == 0)
                 {
-                    CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
+                    CameraCache.Main.EnsureComponent<EventSystem>();
                     addedComponents = true;
                 }
                 else
@@ -611,10 +613,10 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
 
-            if (!addedComponents)
+            if (!addedComponents && CameraCache.Main != null)
             {
-                CameraCache.Main.gameObject.EnsureComponent<EventSystem>();
-                DebugUtilities.LogVerbose("Added an EventSystem to the main camera");
+                CameraCache.Main.EnsureComponent<EventSystem>();
+                DebugUtilities.LogVerbose("Added an EventSystem to the main camera.");
             }
         }
 
