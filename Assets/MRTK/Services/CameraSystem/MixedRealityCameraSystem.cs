@@ -102,13 +102,14 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             base.Initialize();
 
-            MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
+            MixedRealityCameraProfile profile = CameraProfile;
             var cameraSettingProviders = GetDataProviders<IMixedRealityCameraSettingsProvider>();
 
             if ((cameraSettingProviders.Count == 0) && (profile != null))
             {
+                int settingsConfigurationsLength = profile.SettingsConfigurations.Length;
                 // Register the settings providers.
-                for (int i = 0; i < profile.SettingsConfigurations.Length; i++)
+                for (int i = 0; i < settingsConfigurationsLength; i++)
                 {
                     MixedRealityCameraSettingsConfiguration configuration = profile.SettingsConfigurations[i];
 
