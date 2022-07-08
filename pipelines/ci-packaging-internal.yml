@@ -23,3 +23,6 @@ jobs:
     parameters:
       publishPackagesToFeed: true
       UnityVersion: $(Unity2019VersionInternal)
+
+  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-preview.$(Build.BuildNumber)"
+    displayName: Set build number
