@@ -2,7 +2,7 @@
 
 parameters:
   projectRoot: $(Get-Location)
-  outputDirectory: $(Build.ArtifactStagingDirectory)\build\upm\output
+  outputDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
   version: $(MRTKVersion)
   previewNumber: $(Build.BuildNumber)
   repack: false

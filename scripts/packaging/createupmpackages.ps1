@@ -18,23 +18,22 @@
     Add this switch if ProjectRoot represents a folder with existing tarballs to be patched and repacked.
 #>
 param(
+    [Parameter(Mandatory = $true)]
     [string]$ProjectRoot,
+
     [string]$OutputDirectory = "./artifacts/upm",
+
+    [Parameter(Mandatory = $true)]
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$Version,
+
     [ValidatePattern("^\d+?[\.\d+]*$")]
     [string]$PreviewNumber,
+
     [switch]$Repack
 )
 
-if (-not $ProjectRoot) {
-    throw "Missing required parameter: -ProjectRoot."
-}
 $ProjectRoot = Resolve-Path -Path $ProjectRoot
-
-if (-not $Version) {
-    throw "Missing required parameter: -Version."
-}
 
 if ($PreviewNumber) {
     $Version = "$Version-preview.$PreviewNumber"
@@ -54,8 +53,8 @@ $product = "toolkit"
 # This hashtable contains mappings of the packages (by name) to the folder which contains
 # the package contents.
 #
-# The keys of this hashtable will be combined with the scope and product to create the 
-# final name of the package (for example, com.microsoft.mixedreality.toolkit.foundation 
+# The keys of this hashtable will be combined with the scope and product to create the
+# final name of the package (for example, com.microsoft.mixedreality.toolkit.foundation
 # will use the packaging file contained in the folder associated with the foundation key).
 #
 # Note that capitalization below in the key itself is significant. Capitalization
@@ -63,12 +62,12 @@ $product = "toolkit"
 #
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
-    "foundation" = "Assets/MRTK";
+    "foundation"     = "Assets/MRTK";
     "standardassets" = "Assets/MRTK/StandardAssets";
-    "extensions" = "Assets/MRTK/Extensions";
-    "tools" = "Assets/MRTK/Tools";
-    "testutilities" = "Assets/MRTK/Tests/TestUtilities";
-    "examples" = "Assets/MRTK/Examples";
+    "extensions"     = "Assets/MRTK/Extensions";
+    "tools"          = "Assets/MRTK/Tools";
+    "testutilities"  = "Assets/MRTK/Tests/TestUtilities";
+    "examples"       = "Assets/MRTK/Examples";
 }
 
 # Beginning of the upm packaging script main section
@@ -185,7 +184,7 @@ foreach ($entry in $packages.GetEnumerator()) {
             # A samples folder was created. Remove it.
             Remove-Item -Path $samplesFolder -Recurse -Force
         }
-        
+
         if ($packageName -eq "foundation") {
             # The foundation package MOVES some content around. This restores the moved files.
             Start-Process -FilePath "git" -ArgumentList "checkout */Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
