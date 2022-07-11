@@ -398,33 +398,5 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         #endregion
-
-        // Workaround for bug 1582. Waiting on fixes on the XRDirectInteractor.
-        #region Workaround for XRDirectInteractor Missing OnTriggerExits
-
-        protected override void OnDisable()
-        {
-            // Iterate over all hovering interactors.
-            foreach (var interactor in interactorsHovering)
-            {
-                if (interactor is IColliderDisabledReceiver receiver)
-                {
-                    // Manually notify the interactor that every collider on this
-                    // object has been disabled. This is necessary because when an object
-                    // is disabled/un-registered, OnTriggerExits are not called, resulting
-                    // in "phantom hovers". This is caused by the base XRDirectInteractor
-                    // not removing unregistered interactables from its TriggerContactMonitor.
-                    foreach (var collider in colliders)
-                    {
-                        receiver.NotifyColliderDisabled(collider);
-                    }
-                }
-            }
-
-            base.OnDisable();
-        }
-
-        // Workaround for bug 1582. Waiting on fixes on the XRDirectInteractor.
-        #endregion Workaround for XRDirectInteractor Missing OnTriggerExits
     }
 }
