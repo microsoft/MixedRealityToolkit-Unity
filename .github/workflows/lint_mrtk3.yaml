@@ -20,6 +20,6 @@ jobs:
     - name: Lint
       uses: github/super-linter@v4
       env:
-        VALIDATE_ALL_CODEBASE: true
+        VALIDATE_ALL_CODEBASE: false
         DEFAULT_BRANCH: mrtk3
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
