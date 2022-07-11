@@ -18,8 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class HandJointInteractor :
         XRDirectInteractor,
         IHandedInteractor,
-        IMRTKInteractorVisuals,
-        IColliderDisabledReceiver
+        IMRTKInteractorVisuals
     {
         [SerializeField]
         [Tooltip("The XRNode on which this hand is located.")]
@@ -176,11 +175,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion
-
-        /// <inheritdoc/>
-        void IColliderDisabledReceiver.NotifyColliderDisabled(Collider collider)
-        {
-            OnTriggerExit(collider);
-        }
     }
 }
