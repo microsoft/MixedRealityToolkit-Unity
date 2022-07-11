@@ -1,0 +1,302 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9287a99b4362a284289e6baf5cd74d12, type: 3}
+  m_Name: MRTK_FluentIconSet
+  m_EditorClassIdentifier: 
+  glyphIconsByName:
+    entries:
+    - key: Icon 137
+      value: 63518
+    - key: Icon 136
+      value: 63357
+    - key: Icon 135
+      value: 63323
+    - key: Icon 134
+      value: 63252
+    - key: Icon 133
+      value: 63248
+    - key: Icon 132
+      value: 63146
+    - key: Icon 131
+      value: 63130
+    - key: Icon 130
+      value: 63120
+    - key: Icon 129
+      value: 63104
+    - key: Icon 128
+      value: 63074
+    - key: Icon 127
+      value: 63033
+    - key: Icon 126
+      value: 63022
+    - key: Icon 125
+      value: 63019
+    - key: Icon 124
+      value: 62991
+    - key: Icon 123
+      value: 62984
+    - key: Icon 122
+      value: 62982
+    - key: Icon 121
+      value: 62980
+    - key: Icon 120
+      value: 62978
+    - key: Icon 119
+      value: 62950
+    - key: Icon 118
+      value: 62945
+    - key: Icon 117
+      value: 62910
+    - key: Icon 116
+      value: 62893
+    - key: Icon 115
+      value: 62889
+    - key: Icon 114
+      value: 62858
+    - key: Icon 113
+      value: 62856
+    - key: Icon 112
+      value: 62831
+    - key: Icon 111
+      value: 62828
+    - key: Icon 110
+      value: 62822
+    - key: Icon 109
+      value: 62817
+    - key: Icon 108
+      value: 62815
+    - key: Icon 107
+      value: 62810
+    - key: Icon 106
+      value: 62807
+    - key: Icon 105
+      value: 62785
+    - key: Icon 104
+      value: 62727
+    - key: Icon 103
+      value: 62713
+    - key: Icon 102
+      value: 62700
+    - key: Icon 101
+      value: 62693
+    - key: Icon 100
+      value: 62679
+    - key: Icon 99
+      value: 62649
+    - key: Icon 98
+      value: 62632
+    - key: Icon 97
+      value: 62628
+    - key: Icon 96
+      value: 62624
+    - key: Icon 95
+      value: 62601
+    - key: Icon 94
+      value: 62593
+    - key: Icon 93
+      value: 62591
+    - key: Icon 92
+      value: 62586
+    - key: Icon 91
+      value: 62578
+    - key: Icon 90
+      value: 62555
+    - key: Icon 89
+      value: 62489
+    - key: Icon 88
+      value: 62476
+    - key: Icon 87
+      value: 62450
+    - key: Icon 86
+      value: 62433
+    - key: Icon 85
+      value: 62430
+    - key: Icon 84
+      value: 62427
+    - key: Icon 83
+      value: 62343
+    - key: Icon 82
+      value: 62329
+    - key: Icon 81
+      value: 62326
+    - key: Icon 80
+      value: 62318
+    - key: Icon 79
+      value: 62314
+    - key: Icon 78
+      value: 62303
+    - key: Icon 77
+      value: 62298
+    - key: Icon 76
+      value: 62285
+    - key: Icon 75
+      value: 62277
+    - key: Icon 74
+      value: 62274
+    - key: Icon 73
+      value: 62269
+    - key: Icon 72
+      value: 62267
+    - key: Icon 71
+      value: 62240
+    - key: Icon 70
+      value: 62233
+    - key: Icon 69
+      value: 62229
+    - key: Icon 68
+      value: 62208
+    - key: Icon 67
+      value: 62198
+    - key: Icon 66
+      value: 62194
+    - key: Icon 65
+      value: 62181
+    - key: Icon 64
+      value: 62178
+    - key: Icon 63
+      value: 62174
+    - key: Icon 62
+      value: 62166
+    - key: Icon 61
+      value: 62135
+    - key: Icon 60
+      value: 62129
+    - key: Icon 59
+      value: 62123
+    - key: Icon 58
+      value: 62116
+    - key: Icon 57
+      value: 62101
+    - key: Icon 56
+      value: 62087
+    - key: Icon 55
+      value: 62061
+    - key: Icon 54
+      value: 62059
+    - key: Icon 53
+      value: 62037
+    - key: Icon 52
+      value: 62024
+    - key: Icon 51
+      value: 61972
+    - key: Icon 50
+      value: 61967
+    - key: Icon 49
+      value: 61942
+    - key: Icon 48
+      value: 61923
+    - key: Icon 47
+      value: 61919
+    - key: Icon 46
+      value: 61877
+    - key: Icon 45
+      value: 61866
+    - key: Icon 44
+      value: 61852
+    - key: Icon 43
+      value: 61835
+    - key: Icon 42
+      value: 61826
+    - key: Icon 41
+      value: 61810
+    - key: Icon 40
+      value: 61801
+    - key: Icon 39
+      value: 61788
+    - key: Icon 38
+      value: 61769
+    - key: Icon 37
+      value: 61760
+    - key: Icon 36
+      value: 61758
+    - key: Icon 35
+      value: 61752
+    - key: Icon 34
+      value: 61733
+    - key: Icon 33
+      value: 61731
+    - key: Icon 32
+      value: 61721
+    - key: Icon 31
+      value: 61717
+    - key: Icon 30
+      value: 61709
+    - key: Icon 29
+      value: 61706
+    - key: Icon 28
+      value: 60390
+    - key: Icon 27
+      value: 60235
+    - key: Icon 26
+      value: 60227
+    - key: Icon 25
+      value: 59977
+    - key: Icon 24
+      value: 59846
+    - key: Icon 23
+      value: 59532
+    - key: Icon 22
+      value: 59531
+    - key: Icon 21
+      value: 59529
+    - key: Icon 20
+      value: 59527
+    - key: Icon 19
+      value: 59526
+    - key: Icon 18
+      value: 59525
+    - key: Icon 17
+      value: 59524
+    - key: Icon 16
+      value: 59523
+    - key: Icon 15
+      value: 59522
+    - key: Icon 14
+      value: 59521
+    - key: Icon 13
+      value: 59519
+    - key: Icon 12
+      value: 59518
+    - key: Icon 11
+      value: 59517
+    - key: Icon 10
+      value: 59512
+    - key: Icon 9
+      value: 59511
+    - key: Icon 8
+      value: 59508
+    - key: Icon 7
+      value: 59476
+    - key: Icon 6
+      value: 59461
+    - key: Icon 2
+      value: 59416
+    - key: Icon 3
+      value: 59440
+    - key: Icon 4
+      value: 59456
+    - key: Icon 1
+      value: 59407
+    - key: Icon 5
+      value: 59460
+    - key: Icon 138
+      value: 63520
+    - key: Icon 139
+      value: 63565
+    - key: Icon 140
+      value: 63594
+    - key: Icon 141
+      value: 63703
+    - key: Icon 142
+      value: 63742
+  iconFontAsset: {fileID: 11400000, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+  optionalEditorMaterial: {fileID: 0}
