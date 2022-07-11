@@ -151,8 +151,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2624031095332604921}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.100000024, y: 0.002, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000000012922101}
+  m_LocalScale: {x: 0.099999905, y: 0.002, z: 1}
   m_Children:
   - {fileID: 7661392059221250966}
   - {fileID: 480074433283511613}
@@ -293,7 +293,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4713996577027406645}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000000012922101}
   m_LocalScale: {x: 0.004, y: 0.011999998, z: 0.062525995}
   m_Children:
   - {fileID: 4326098741687393202}
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 7429095020531837143}
   - component: {fileID: 7429095020531837141}
   - component: {fileID: 4552659453827628730}
-  - component: {fileID: 7429095020531837140}
+  - component: {fileID: 5234196699703300340}
   m_Layer: 0
   m_Name: NonCanvasSliderBase
   m_TagString: Untagged
@@ -532,6 +532,12 @@ MonoBehaviour:
   onClicked:
     m_PersistentCalls:
       m_Calls: []
+  onEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisabled:
+    m_PersistentCalls:
+      m_Calls: []
   isTouchable: 1
   snapToPosition: 1
   handleTransform: {fileID: 4713996577027893013}
@@ -581,7 +587,7 @@ MonoBehaviour:
   startPitch: 0.75
   endPitch: 1.25
   minSecondsBetweenTicks: 0.01
---- !u!114 &7429095020531837140
+--- !u!114 &5234196699703300340
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -590,7 +596,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7429095020531837142}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b46a074d0bbb314e8a7e54a567c3e83, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a1bf44e2291e8741ab3dec75055d9db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -622,7 +628,7 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 0}
-  movableAxes: 1
+  movableAxes: 0
   onMoveDelta: 0.01
 --- !u!1001 &4326098741687517490
 PrefabInstance:
