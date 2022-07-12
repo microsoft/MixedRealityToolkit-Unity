@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 // subsystems we're listening to, we can consider ourselves
                                 // to have valid data this frame.
                                 FullQueryValid |= true;
-                                Array.Copy((HandJointPose[])data, handJoints, (int)TrackedHandJoint.TotalJoints);
+                                Array.Copy((HandJointPose[])data, handJoints, HandTracker.JointCount);
                             }
 
                             if (gotPhysicalData) { break; }
@@ -173,9 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     // Otherwise, we compute a fresh finger length.
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexKnuckle, out HandJointPose indexKnuckle);
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexMiddleJoint, out HandJointPose indexMiddle);
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexDistalJoint, out HandJointPose indexDistal);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexProximal, out HandJointPose indexKnuckle);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexIntermediate, out HandJointPose indexMiddle);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexDistal, out HandJointPose indexDistal);
 
                     if (gotData)
                     {

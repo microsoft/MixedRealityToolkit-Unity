@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit
             return XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
         }
 
-        internal static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
+        internal static readonly HandFinger[] HandFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
 
         internal static readonly InputDeviceCharacteristics LeftHandCharacteristics =
             InputDeviceCharacteristics.HandTracking | InputDeviceCharacteristics.Left;
@@ -45,11 +45,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             switch (finger)
             {
-                case HandFinger.Thumb: return (index == 0) ? TrackedHandJoint.Wrist : TrackedHandJoint.ThumbMetacarpalJoint + index - 1;
+                case HandFinger.Thumb: return (index == 0) ? TrackedHandJoint.Wrist : TrackedHandJoint.ThumbMetacarpal + index - 1;
                 case HandFinger.Index: return TrackedHandJoint.IndexMetacarpal + index;
                 case HandFinger.Middle: return TrackedHandJoint.MiddleMetacarpal + index;
                 case HandFinger.Ring: return TrackedHandJoint.RingMetacarpal + index;
-                case HandFinger.Pinky: return TrackedHandJoint.PinkyMetacarpal + index;
+                case HandFinger.Pinky: return TrackedHandJoint.LittleMetacarpal + index;
                 default: throw new ArgumentOutOfRangeException(nameof(finger));
             }
         }
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         internal static int ConvertToIndex(TrackedHandJoint joint)
         {
-            return (int)joint - 1;
+            return (int)joint;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         internal static TrackedHandJoint ConvertFromIndex(int index)
         {
-            return (TrackedHandJoint)(index + 1);
+            return (TrackedHandJoint)(index);
         }
 
         /// <summary>
@@ -78,11 +78,10 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>The HandFinger on which the joint exists.</returns>
         internal static HandFinger GetFingerFromJoint(TrackedHandJoint joint)
         {
-            Debug.Assert(joint != TrackedHandJoint.None &&
-                         joint != TrackedHandJoint.Palm,
+            Debug.Assert(joint != TrackedHandJoint.Palm,
                          "GetFingerFromJoint passed a non-finger joint");
 
-            if (joint == TrackedHandJoint.Wrist || (joint >= TrackedHandJoint.ThumbMetacarpalJoint && joint <= TrackedHandJoint.ThumbTip))
+            if (joint == TrackedHandJoint.Wrist || (joint >= TrackedHandJoint.ThumbMetacarpal && joint <= TrackedHandJoint.ThumbTip))
             {
                 return HandFinger.Thumb;
             }
@@ -112,17 +111,16 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>Index offset from the metacarpal/base of the finger.</returns>
         internal static int GetOffsetFromBase(TrackedHandJoint joint)
         {
-            Debug.Assert(joint != TrackedHandJoint.None &&
-                         joint != TrackedHandJoint.Palm,
+            Debug.Assert(joint != TrackedHandJoint.Palm,
                          "GetOffsetFromBase passed a non-finger joint");
 
             if (joint == TrackedHandJoint.Wrist)
             {
                 return 0;
             }
-            else if (joint >= TrackedHandJoint.ThumbMetacarpalJoint && joint <= TrackedHandJoint.ThumbTip)
+            else if (joint >= TrackedHandJoint.ThumbMetacarpal && joint <= TrackedHandJoint.ThumbTip)
             {
-                return joint - TrackedHandJoint.ThumbMetacarpalJoint + 1; // Add one to account for wrist at the base
+                return joint - TrackedHandJoint.ThumbMetacarpal + 1; // Add one to account for wrist at the base
             }
             else if (joint >= TrackedHandJoint.IndexMetacarpal && joint <= TrackedHandJoint.IndexTip)
             {
@@ -138,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-                return joint - TrackedHandJoint.PinkyMetacarpal;
+                return joint - TrackedHandJoint.LittleMetacarpal;
             }
         }
 
@@ -177,20 +175,17 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 get
                 {
-                    int nameIndex = Array.FindIndex(JointNames, IsJointName);
-                    if (nameIndex < 0)
+                    if (!Enum.TryParse<TrackedHandJoint>(Joint, out var handJointEnum))
                     {
                         Debug.LogError($"Joint name {Joint} not in TrackedHandJoint enum");
-                        return TrackedHandJoint.None;
+                        return TrackedHandJoint.Palm;
                     }
-                    return (TrackedHandJoint)nameIndex;
+                    else
+                    {
+                        return handJointEnum;
+                    }
                 }
                 set { joint = JointNames[(int)value]; }
-            }
-
-            private bool IsJointName(string s)
-            {
-                return s == Joint;
             }
 
             /// <summary>
@@ -242,12 +237,6 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 foreach (var item in items)
                 {
-                    if (item.JointIndex == TrackedHandJoint.None)
-                    {
-                        // Serialized joints have data on the "None" joint. What??
-                        continue;
-                    }
-
                     int index = ConvertToIndex(item.JointIndex);
                     jointPoses[index].Position = item.Pose.position;
                     jointPoses[index].Rotation = item.Pose.rotation;
