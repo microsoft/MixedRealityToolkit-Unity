@@ -1,0 +1,13 @@
+{
+	"registrations": [
+		{
+			"component": {
+				"type": "git",
+				"git": {
+					"name": "atteneder/glTFast",
+					"repositoryUrl": "https://github.com/atteneder/glTFast"
+				}
+			}
+		}
+    ]
+}
