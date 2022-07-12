@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RiggedHand
-  m_Shader: {fileID: 4800000, guid: 6a1480e6da7ca8e409be9596ad447719, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7e5190cdaf0ecda4c8cd1c9d0c6e017b, type: 3}
   m_ShaderKeywords: _ENABLE_
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -18,7 +18,11 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Blur_: 0.307
     - _Displacement_: 0
@@ -26,9 +30,19 @@ Material:
     - _Exponent_: 2.16
     - _Fade_In_End_: 0
     - _Fade_In_Start_: 0
+    - _IlluminationAmount: 0.2
+    - _IlluminationExponent: 1.73
     - _Intensity_: 0.81
+    - _Metallic: 0
+    - _OutlineExponent: 1
+    - _OutlineSmoothing: 0.05
+    - _OutlineThreshold: 0.474
     - _Radius_: 0.09
     - _Soften_: 0.312
     m_Colors:
     - _Center_: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Color_: {r: 1, g: 1, b: 1, a: 1}
+    - _HandColor: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 0.6313726}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0.27450982}
+    - _OutlineColorPinching: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

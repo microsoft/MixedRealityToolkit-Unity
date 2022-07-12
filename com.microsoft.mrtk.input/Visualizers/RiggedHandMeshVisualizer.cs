@@ -25,6 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public XRNode HandNode { get => handNode; set => handNode = value; }
 
         [SerializeField]
+        [Range(0.8f, 1.2f)]
+        [Tooltip("Scale")]
+        private float handScale = 1.0f;
+
+        [SerializeField]
         [Tooltip("The transform of the wrist joint.")]
         private Transform wrist;
 
@@ -79,6 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
 
+        private readonly float[] initialTipLengths = new float[(int)TrackedHandJoint.TotalJoints];
+
         // Initializing rigged visuals stuff
         protected virtual void Start()
         {
@@ -86,7 +93,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             foreach (Transform child in wrist.GetComponentsInChildren<Transform>())
             {
                 if (child.name.Contains("end")) { continue; }
-                Debug.Log("Adding " + child.name + " as " + (TrackedHandJoint)index);
+                
+                if (child.name.Contains("tip"))
+                {
+                    // World-space, absolute, length of the tip-to-tip_end bone.
+                    initialTipLengths[index] = child.GetChild(0).localPosition.z * child.lossyScale.z;
+                }
+
                 riggedVisualJointsArray[index++] = child;
             }
 
@@ -169,6 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
+            transform.localScale = new Vector3(handNode == XRNode.LeftHand ? -handScale : handScale, handScale, handScale);
+
             RenderMesh(joints);
         }
 
@@ -198,19 +213,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         case TrackedHandJoint.MiddleMetacarpal:
                         case TrackedHandJoint.RingMetacarpal:
                         case TrackedHandJoint.LittleMetacarpal:
-                            // For the rest of the joints, match the transform to the Joint Pose
+                            // Special case this, because Wrist is not always i-1.
                             jointTransform.rotation = Quaternion.LookRotation(HandJointPose.Position - joints[(int)TrackedHandJoint.Wrist].Position, HandJointPose.Up);
                             break;
-                        case TrackedHandJoint.ThumbProximal:
-                        case TrackedHandJoint.IndexProximal:
-                        case TrackedHandJoint.MiddleProximal:
-                        case TrackedHandJoint.RingProximal:
-                        case TrackedHandJoint.LittleProximal:
+                        case TrackedHandJoint.ThumbTip:
+                        case TrackedHandJoint.IndexTip:
+                        case TrackedHandJoint.MiddleTip:
+                        case TrackedHandJoint.RingTip:
+                        case TrackedHandJoint.LittleTip:
+
                             jointTransform.rotation = joints[i-1].Rotation;
+
+                            // Calculate the actual length from the joint data to the end of the rigged finger.
+                            // This will be different from the actual joint data's fingertip length due to IK/size inaccuracies
+                            float tipLength = (joints[i].Position - jointTransform.position).magnitude;
+                            jointTransform.localScale = new Vector3(jointTransform.localScale.x, jointTransform.localScale.y, tipLength / initialTipLengths[i]);
+                            // jointTransform.rotation = Quaternion.LookRotation(HandJointPose.Position - jointTransform.position, joints[i-1].Up);
                             // jointTransform.localPosition = new Vector3(jointTransform.localPosition.x, jointTransform.localPosition.y, (joints[i-1].Position - joints[(int)TrackedHandJoint.Wrist].Position).magnitude * 0.01f);
                             break;
+                        // case TrackedHandJoint.ThumbTip:
+                        //     jointTransform.rotation = joints[i-1].Rotation;
+                        //     break;
                         default:
-                            jointTransform.rotation = joints[i-1].Rotation;
+                            
+                            jointTransform.rotation = Quaternion.LookRotation(HandJointPose.Position - jointTransform.position, joints[i-1].Up);
+                        //     jointTransform.rotation = joints[i-1].Rotation;
                             // jointTransform.localPosition = new Vector3(jointTransform.localPosition.x, jointTransform.localPosition.y, (joints[i-1].Position - joints[i-2].Position).magnitude * 0.01f);
                             // if (deformPosition)
                             // {

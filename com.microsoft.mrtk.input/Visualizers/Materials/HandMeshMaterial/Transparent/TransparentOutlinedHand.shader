@@ -5,10 +5,13 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
     Properties {
         _HandColor ("Hand Color", Color) = (1,1,1,1)
         _OutlineColor ("Outline Color", Color) = (1,1,1,1)
+        _OutlineColorPinching ("Outline Color (Pinching)", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _OutlineThreshold ("_OutlineThreshold", Range(0.0,1)) = 0.95
         _OutlineSmoothing ("_OutlineSmoothing", Range(0,0.1)) = 0.05
         _OutlineExponent ("_OutlineExponent", Range(0,10)) = 1
+        _IlluminationExponent ("Illumination Exponent", Range(0,10)) = 1
+        _IlluminationAmount ("Illumination Amount", Range(0,10)) = 1
         _Metallic ("Metallic", Range(0,1)) = 0.0
     }
 
@@ -67,6 +70,7 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
             struct appdata
             {
                 float4 vertex : POSITION;
+                float4 color : COLOR;
                 float4 normal : NORMAL;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
@@ -74,6 +78,7 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
             struct v2f
             {
                 float4 vertex : POSITION;
+                float4 color : COLOR;
                 float3 normal : NORMAL;
                 float3 viewDir: TEXCOORD1;
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -88,6 +93,7 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.normal = UnityObjectToWorldNormal(v.normal);
+                o.color = v.color;
 
                 // Distance-invariant view pos. Create "normalized view point"
                 // offset from object origin, then construct a new view vector
@@ -104,15 +110,33 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
             uniform float _OutlineSmoothing;
             uniform float _OutlineExponent;
 
+            uniform float _IlluminationAmount;
+            uniform float _IlluminationExponent;
+
             uniform float4 _HandColor;
             uniform float4 _OutlineColor;
+            uniform float4 _OutlineColorPinching;
 
             fixed4 frag(v2f i) : SV_Target
             {
                 half rim = 1.0 - abs(dot(i.viewDir, i.normal));
+                half spotlight = 1.0 - rim;
+
                 rim = pow(rim, _OutlineExponent);
                 half amt = smoothstep(_OutlineThreshold, _OutlineThreshold + _OutlineSmoothing, rim);
-                return lerp(_HandColor, _OutlineColor, amt);
+
+                // Vertex color green channel controls whether the non-pinching outline color or the
+                // pinch color is used. This determines where the pinch "glow" effect appears on the
+                // hand; generally, the tips of the forefinger and thumb.
+                float4 blendedOutlineColor = lerp(_OutlineColor, _OutlineColorPinching, i.color.g);
+                
+                // Lerp betwen the normal transparent hand color and the outline color, based on the
+                // rimlight amount determined earlier.
+                float4 blended = lerp(_HandColor, blendedOutlineColor, amt) + pow(spotlight, _IlluminationExponent) * _IlluminationAmount;
+                
+                // Fade the entire result based on the red channel. This is used to fade the hand
+                // out by the wrist, so the abrupt edge of the hand model is not visible.
+                return float4(blended.r, blended.g, blended.b, blended.a * i.color.r);
             }
 
             ENDCG
