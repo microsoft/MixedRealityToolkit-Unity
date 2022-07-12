@@ -1,16 +1,17 @@
 {
   "dependencies": {
     "com.atteneder.gltfast": {
-      "version": "https://github.com/atteneder/glTFast.git",
+      "version": "https://github.com/atteneder/glTFast.git#v4.8.3",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.modules.jsonserialize": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequesttexture": "1.0.0",
         "com.unity.mathematics": "1.2.6",
         "com.unity.burst": "1.6.6"
       },
-      "hash": "ee77f17485a69efc12f80dd52580aadf76a08c03"
+      "hash": "04962b47618cdab46943217d30c6c6de33d3c3f7"
     },
     "com.microsoft.mixedreality.openxr": {
       "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.2.tgz",
