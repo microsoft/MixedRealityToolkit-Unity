@@ -1,13 +1,13 @@
 {
-	"registrations": [
-		{
-			"component": {
-				"type": "git",
-				"git": {
-					"name": "atteneder/glTFast",
-					"repositoryUrl": "https://github.com/atteneder/glTFast"
-				}
-			}
-		}
-    ]
+  "registrations": [
+    {
+      "component": {
+        "type": "git",
+          "git": {
+            "repositoryUrl": "https://github.com/atteneder/glTFast",
+            "commitHash": "04962b47618cdab46943217d30c6c6de33d3c3f7"
+          }
+      }
+    }
+  ]
 }
