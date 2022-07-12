@@ -123,8 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => interactionManager = value;
         }
 
+#if UNITY_EDITOR
         protected override void OnValidate()
-        {
+        {   
             base.OnValidate();
             
             // Validate that no transition type is set. You shouldn't be using this
@@ -132,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // StateVisualizer instead, even for UI.
             transition = UnityEngine.UI.Selectable.Transition.None;
         }
+#endif
 
         protected override void Awake()
         {
