@@ -62,6 +62,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        void OnDrawGizmos()
+        {
+            if (!enabled) { return; }
+            
+            // Query all joints in the hand.
+            if (handsSubsystem == null || !handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
+            {
+                return;
+            }
+
+            for (int i = 0; i < joints.Count; i++)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawRay(joints[i].Position, joints[i].Forward * 0.01f);
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(joints[i].Position, joints[i].Right * 0.01f);
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(joints[i].Position, joints[i].Up * 0.01f);
+            }
+        }
+
         /// <summary>
         /// Coroutine to wait until subsystem becomes available.
         /// </summary>
