@@ -12,7 +12,7 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
         _OutlineExponent ("_OutlineExponent", Range(0,10)) = 1
         _IlluminationExponent ("Illumination Exponent", Range(0,10)) = 1
         _IlluminationAmount ("Illumination Amount", Range(0,10)) = 1
-        _Metallic ("Metallic", Range(0,1)) = 0.0
+        [PerRendererData]_PinchAmount ("Pinch Amount", Float) = 0
     }
 
     SubShader {
@@ -117,6 +117,8 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
             uniform float4 _OutlineColor;
             uniform float4 _OutlineColorPinching;
 
+            uniform float _PinchAmount;
+
             fixed4 frag(v2f i) : SV_Target
             {
                 half rim = 1.0 - abs(dot(i.viewDir, i.normal));
@@ -128,7 +130,7 @@ Shader "Mixed Reality Toolkit/Transparent Outlined Hand" {
                 // Vertex color green channel controls whether the non-pinching outline color or the
                 // pinch color is used. This determines where the pinch "glow" effect appears on the
                 // hand; generally, the tips of the forefinger and thumb.
-                float4 blendedOutlineColor = lerp(_OutlineColor, _OutlineColorPinching, i.color.g);
+                float4 blendedOutlineColor = lerp(_OutlineColor, _OutlineColorPinching, _PinchAmount * i.color.g);
                 
                 // Lerp betwen the normal transparent hand color and the outline color, based on the
                 // rimlight amount determined earlier.
