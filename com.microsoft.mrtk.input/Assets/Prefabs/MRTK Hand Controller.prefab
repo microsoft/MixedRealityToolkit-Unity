@@ -857,7 +857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: 0
-  joint: 12
+  joint: 10
 --- !u!1 &5224294193116514423
 GameObject:
   m_ObjectHideFlags: 0

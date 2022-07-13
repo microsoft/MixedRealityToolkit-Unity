@@ -23,6 +23,18 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1704435255437050517, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: currentIconName
+      value: Icon 56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2547005575123347317, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_text
+      value: "\uF287"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4267798865849110342, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7256543900600860856, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_text
       value: Icon and Text
@@ -93,7 +105,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7615623265951277283, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9038422756440434247, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}

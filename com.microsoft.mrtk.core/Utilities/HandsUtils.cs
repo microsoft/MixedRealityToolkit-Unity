@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// Utility class to serialize hand pose as a dictionary with full joint names
         [Serializable]
-        internal struct ArticulatedHandPoseItem
+        private struct ArticulatedHandPoseItem
         {
             // Helper list of joint names.
             private static readonly string[] JointNames = Enum.GetNames(typeof(TrackedHandJoint));
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// Utility class to serialize hand pose as a dictionary with full joint names
         [Serializable]
-        internal class ArticulatedHandPoseDictionary
+        private class ArticulatedHandPoseDictionary
         {
             /// <summary>
             /// The list of ArticulatedHandPoseItems, (de)serialized from JSON.
