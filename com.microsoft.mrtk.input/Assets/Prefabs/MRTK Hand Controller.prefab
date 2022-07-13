@@ -694,7 +694,7 @@ MonoBehaviour:
   m_HapticHoverCancelDuration: 0
   touchVisuals: {fileID: 4299642553587339577}
   handNode: 4
-  joint: 11
+  joint: 10
 --- !u!1 &2574534496695087052
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: 0
-  joint: 11
+  joint: 10
 --- !u!1 &5224294193116514423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,6 +1525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detector: {fileID: 8326700373702288692}
   magnetRange: 0.1
+  colliderThicknessCutoff: 0.04
   positionSmoothingCurve:
     serializedVersion: 2
     m_Curve:

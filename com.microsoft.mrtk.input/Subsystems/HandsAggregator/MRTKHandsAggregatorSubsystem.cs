@@ -173,9 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     // Otherwise, we compute a fresh finger length.
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexKnuckle, out HandJointPose indexKnuckle);
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexMiddleJoint, out HandJointPose indexMiddle);
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexDistalJoint, out HandJointPose indexDistal);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexProximal, out HandJointPose indexKnuckle);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexIntermediate, out HandJointPose indexMiddle);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexDistal, out HandJointPose indexDistal);
 
                     if (gotData)
                     {
