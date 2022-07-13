@@ -62,7 +62,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6675957057147064831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.08049999, y: 0, z: 0}
+  m_LocalPosition: {x: 0.08050001, y: 0, z: 0}
   m_LocalScale: {x: 0.001, y: 0.016, z: 1}
   m_Children: []
   m_Father: {fileID: 6675957056742955635}
@@ -186,7 +186,7 @@ MonoBehaviour:
   objectBarFlowDirection: 0
   spacingBetween: {x: 0, y: 0}
   backPlateObject: {fileID: 624060170706142410}
-  borderSpacing: {x: 0.004, y: 0.004}
+  borderSpacing: {x: 0.008, y: 0.008}
   backPlateZOffset: -0.005
   onObjectBarUpdated:
     m_PersistentCalls:
@@ -215,13 +215,29 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 3656eebc947757d4da0e5ce408a3e13b, type: 3}
+    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: currentIconName
+      value: Icon 68
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_text
+      value: "\uF300"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.063999996
+      value: 0.064
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.y
@@ -336,19 +352,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7759758375038403720, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.13299999
+      value: 0.13700001
       objectReference: {fileID: 0}
     - target: {fileID: 7759758375038403720, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.036000006
+      value: 0.040000003
       objectReference: {fileID: 0}
     - target: {fileID: 7759758375038403720, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.048499994
+      value: 0.0485
       objectReference: {fileID: 0}
     - target: {fileID: 7759758375038403720, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.005000001
+      value: 0.005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2f49d0d909d3fc4bbc20d1cb743ab1d, type: 3}
@@ -373,13 +389,29 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 5a39c30123bcca8468df62db5f18f470, type: 3}
+    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: currentIconName
+      value: Icon 92
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_text
+      value: "\uF47A"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.031999998
+      value: 0.032
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.y
@@ -444,6 +476,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 56c8c6c45b38d7e41875a67169668f53, type: 3}
+    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: currentIconName
+      value: Icon 107
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_text
+      value: "\uF55A"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -539,13 +587,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6675957056742955635}
     m_Modifications:
+    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: currentIconName
+      value: Icon 94
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_text
+      value: "\uF481"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.09699999
+      value: 0.09700001
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.y
