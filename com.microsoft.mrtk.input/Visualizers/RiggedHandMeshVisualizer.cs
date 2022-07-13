@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -33,10 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The transform of the wrist joint.")]
         private Transform wrist;
 
-        // Caching local references 
-        private HandsAggregatorSubsystem handsSubsystem;
-        private ArticulatedHandController controller;
-
         /// <summary>
         /// Used to track whether the hand material has the appropriate property
         /// </summary>
@@ -46,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Hand material to use for hand tracking hand mesh.")]
-        [ShowInfoIf(UnityEditor.MessageType.Warning, "provided material is missing property " + pinchStrengthMaterialProperty, "showMissingPropertyWarning")]
+        [ShowInfoIf(UnityEditor.MessageType.Warning, "provided material is missing property " + pinchAmountMaterialProperty, "showMissingPropertyWarning")]
         private Material handMaterial = null;
 
         /// <summary>
@@ -61,39 +58,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [ShowInfoIf(UnityEditor.MessageType.Warning, "Rigged Mesh Renderer is missing", "showMissingRendererWarning")]
         private SkinnedMeshRenderer handRenderer = null;
 
-        /// <summary>
-        /// The property block which is used to modify the press intensity property on the material
-        /// </summary>
+        // The property block used to modify the pinch amount property on the material
         private MaterialPropertyBlock propertyBlock = null;
 
         /// <summary>
         /// Property name for modifying the mesh's appearance based on pinch strength
         /// </summary>
-        private const string pinchStrengthMaterialProperty = "_PressIntensity";
+        private const string pinchAmountMaterialProperty = "_PinchAmount";
 
+        // Caching local references 
+        private HandsAggregatorSubsystem handsSubsystem;
+        private XRBaseController controller;
 
-        private Transform RetrieveChild(TrackedHandJoint parentJoint)
-        {
-            Transform parentJointTransform = riggedVisualJointsArray[(int)parentJoint];
-            if (parentJointTransform != null && parentJointTransform.childCount > 0)
-            {
-                return parentJointTransform.GetChild(0);
-            }
-            return null;
-        }
+        // The actual, physical, rigged joints that drive the skinned mesh.
+        // Otherwise referred to as "armature". Must be in OpenXR order.
+        private readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
 
-        protected readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
-
+        // Record the initial, intrinsic lengths of the tip bones of the skinned mesh.
+        // Used later to adjust the length of the skinned mesh's fingertips for improved accuracy.
         private readonly float[] initialTipLengths = new float[(int)TrackedHandJoint.TotalJoints];
 
-        // Initializing rigged visuals stuff
-        protected virtual void Start()
+        protected virtual void Awake()
         {
+            propertyBlock = new MaterialPropertyBlock();
+
+            // Start the depth-first-traversal at the wrist index.
             int index = (int)TrackedHandJoint.Wrist;
+
+            // This performs a depth-first-traversal of the armature. Ensure
+            // the provided armature's bones/joints are in OpenXR order.
             foreach (Transform child in wrist.GetComponentsInChildren<Transform>())
             {
+                // The "leaf joints" are excluded
                 if (child.name.Contains("end")) { continue; }
-                
+
+                // Measure the intrinsic length of the fingertip bone. Used later to
+                // adjust the length of the skinned mesh's fingertips for improved accuracy.
                 if (child.name.Contains("tip"))
                 {
                     // World-space, absolute, length of the tip-to-tip_end bone.
@@ -102,9 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 riggedVisualJointsArray[index++] = child;
             }
-
-            // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
-            // handRenderer.material = handMaterial;
         }
 
         protected void OnEnable()
@@ -141,16 +138,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 showMissingRendererWarning = false;
             }
 
-            // Set the handRenderer's material to the provided material if applicable
-            if (handMaterial != null)
+            // Check if the handRenderer's material has the pinchAmountMaterialProperty
+            if (!handRenderer.sharedMaterial.HasProperty(pinchAmountMaterialProperty))
             {
-                handRenderer.sharedMaterial = handMaterial;
-            }
-
-            // Check if the handRenderer's material has the pinchStrengthMaterialProperty
-            if (!handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
-            {
-                Debug.LogWarning(String.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchStrengthMaterialProperty));
+                Debug.LogWarning(String.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchAmountMaterialProperty));
                 showMissingPropertyWarning = true;
             }
             else
@@ -194,56 +185,55 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             for (int i = 0; i < joints.Count; i++)
             {
-                TrackedHandJoint TrackedHandJoint = (TrackedHandJoint)i;
-                HandJointPose HandJointPose = joints[i];
+                HandJointPose jointPose = joints[i];
+
+                // The actual, physical, rigged joint on the armature.
+                // This actually corresponds to the "base" of the bone;
+                // as an example, riggedVisualJointsArray[IndexMetacarpal] actually
+                // corresponds to a transform that is located at the wrist joint,
+                // but points towards the metacarpal joint location.
+                // This discrepancy is because OpenXR uses joint locations/rotations,
+                // whereas armatures/Unity/Blender use *bones*.
                 Transform jointTransform = riggedVisualJointsArray[i];
 
                 if (jointTransform != null)
                 {
-                    switch (TrackedHandJoint)
+                    switch ((TrackedHandJoint)i)
                     {
                         case TrackedHandJoint.Palm:
+                            // Don't track the palm. The hand mesh shouldn't have a "palm bone".
                             break;
                         case TrackedHandJoint.Wrist:
-                            jointTransform.position = HandJointPose.Position;
-                            jointTransform.rotation = HandJointPose.Rotation;
+                            // Set the wrist directly from the joint data.
+                            jointTransform.position = jointPose.Position;
+                            jointTransform.rotation = jointPose.Rotation;
                             break;
                         case TrackedHandJoint.ThumbMetacarpal:
                         case TrackedHandJoint.IndexMetacarpal:
                         case TrackedHandJoint.MiddleMetacarpal:
                         case TrackedHandJoint.RingMetacarpal:
                         case TrackedHandJoint.LittleMetacarpal:
-                            // Special case this, because Wrist is not always i-1.
-                            jointTransform.rotation = Quaternion.LookRotation(HandJointPose.Position - joints[(int)TrackedHandJoint.Wrist].Position, HandJointPose.Up);
+                            // Special case metacarpals, because Wrist is not always i-1.
+                            // This is the same "simple IK" as the default case, but with special index logic.
+                            jointTransform.rotation = Quaternion.LookRotation(jointPose.Position - joints[(int)TrackedHandJoint.Wrist].Position, jointPose.Up);
                             break;
                         case TrackedHandJoint.ThumbTip:
                         case TrackedHandJoint.IndexTip:
                         case TrackedHandJoint.MiddleTip:
                         case TrackedHandJoint.RingTip:
                         case TrackedHandJoint.LittleTip:
-
+                            // Tip bones use the exact rotation from the joint data, so that if the finger length is slightly mismatched,
+                            // the tip orientation is still correct.
                             jointTransform.rotation = joints[i-1].Rotation;
-
                             // Calculate the actual length from the joint data to the end of the rigged finger.
-                            // This will be different from the actual joint data's fingertip length due to IK/size inaccuracies
+                            // This may be different from the actual joint data's fingertip length due to IK/size inaccuracies.
                             float tipLength = (joints[i].Position - jointTransform.position).magnitude;
+                            // Scale the tip bone according to the required distance to match the tip joint from the hand joint data.
                             jointTransform.localScale = new Vector3(jointTransform.localScale.x, jointTransform.localScale.y, tipLength / initialTipLengths[i]);
-                            // jointTransform.rotation = Quaternion.LookRotation(HandJointPose.Position - jointTransform.position, joints[i-1].Up);
-                            // jointTransform.localPosition = new Vector3(jointTransform.localPosition.x, jointTransform.localPosition.y, (joints[i-1].Position - joints[(int)TrackedHandJoint.Wrist].Position).magnitude * 0.01f);
                             break;
-                        // case TrackedHandJoint.ThumbTip:
-                        //     jointTransform.rotation = joints[i-1].Rotation;
-                        //     break;
                         default:
-                            
-                            jointTransform.rotation = Quaternion.LookRotation(HandJointPose.Position - jointTransform.position, joints[i-1].Up);
-                        //     jointTransform.rotation = joints[i-1].Rotation;
-                            // jointTransform.localPosition = new Vector3(jointTransform.localPosition.x, jointTransform.localPosition.y, (joints[i-1].Position - joints[i-2].Position).magnitude * 0.01f);
-                            // if (deformPosition)
-                            // {
-                                // jointTransform.position = HandJointPose.Position;
-                            // }
-                            
+                            // For all other bones, do a simple "IK" from the rigged joint to the joint data's position.
+                            jointTransform.rotation = Quaternion.LookRotation(jointPose.Position - jointTransform.position, joints[i-1].Up);
                             break;
                     }
                 }
@@ -255,20 +245,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdateHandMaterial()
         {
-            // if (controller == null)
-            // {
-            //     controller = GetComponent<ArticulatedHandController>();
-            // }
+            if (controller == null)
+            {
+                controller = GetComponentInParent<XRBaseController>();
+            }
 
-            // float selectedness = controller.selectInteractionState.value;
+            if (controller == null || handRenderer == null) { return; }
 
-            // // Update the hand material
-            // float pinchStrength = Mathf.Pow(selectedness, 2.0f);
-
-
-            // handRenderer.GetPropertyBlock(propertyBlock);
-            // propertyBlock.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
-            // handRenderer.SetPropertyBlock(propertyBlock);
+            // Update the hand material
+            float pinchAmount = Mathf.Pow(controller.selectInteractionState.value, 2.0f);
+            handRenderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetFloat(pinchAmountMaterialProperty, pinchAmount);
+            handRenderer.SetPropertyBlock(propertyBlock);
         }
     }
 }
