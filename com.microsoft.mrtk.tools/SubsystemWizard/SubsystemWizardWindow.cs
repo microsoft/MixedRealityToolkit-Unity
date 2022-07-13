@@ -4,8 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEngine;
 using UnityEditor;
-using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Tools
 {
@@ -16,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     public class SubsystemWizardWindow : EditorWindow
     {
         private static SubsystemWizardWindow window = null;
-        private static SubsystemGenerator subsystemWizard = new SubsystemGenerator();
+        private static SubsystemGenerator subsystemGenerator = new SubsystemGenerator();
 
         private static readonly Vector2 WindowSizeWithoutLogo = new Vector2(600, 250);
         private static readonly Vector2 WindowSizeWithLogo = new Vector2(600, 320);
@@ -57,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             {
                 RenderCommonElements();
 
-                switch (subsystemWizard.State)
+                switch (subsystemGenerator.State)
                 {
                     case SubsystemWizardState.Start:
                         RenderWizardStartPage();
@@ -123,17 +121,17 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
                 EditorGUILayout.Space(6);
                 EditorGUILayout.LabelField("Please enter a name for the new subsystem.");
-                subsystemWizard.SubsystemName = EditorGUILayout.TextField(
+                subsystemGenerator.SubsystemName = EditorGUILayout.TextField(
                     "Subsystem name",
-                    subsystemWizard.SubsystemName);
+                    subsystemGenerator.SubsystemName);
                 EditorGUILayout.Space(4);
                 EditorGUILayout.LabelField("In which namespace should the new subsystem be contained?");
-                subsystemWizard.SubsystemNamespace = EditorGUILayout.TextField("Namespace", subsystemWizard.SubsystemNamespace);
+                subsystemGenerator.SubsystemNamespace = EditorGUILayout.TextField("Namespace", subsystemGenerator.SubsystemNamespace);
                 EditorGUILayout.Space(4);
                 EditorGUILayout.LabelField("Subsystems can optionally support configuration via the MRTK3 project settings.");
                 float labelWidth = EditorGUIUtility.labelWidth;
                 EditorGUIUtility.labelWidth = 200f;
-                subsystemWizard.CreateConfiguration = EditorGUILayout.Toggle("Add subsystem configuration", subsystemWizard.CreateConfiguration);
+                subsystemGenerator.CreateConfiguration = EditorGUILayout.Toggle("Add subsystem configuration", subsystemGenerator.CreateConfiguration);
                 EditorGUIUtility.labelWidth = labelWidth;
                 EditorGUILayout.Space(4);
                 GUILayout.FlexibleSpace();
@@ -148,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             {
                 if (GUILayout.Button("Next"))
                 {
-                    subsystemWizard.State = SubsystemWizardState.PreGenerate;
+                    subsystemGenerator.State = SubsystemWizardState.PreGenerate;
                 }
             }
         }
@@ -160,30 +158,30 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             using (new EditorGUI.IndentLevelScope())
             {
                 // todo: factor out the folder name
-                EditorGUILayout.LabelField($"The new subsystem will be created in your project's MRTK.Generated/{subsystemWizard.SubsystemName} folder.", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField($"The new subsystem will be created in your project's MRTK.Generated/{subsystemGenerator.SubsystemName} folder.", EditorStyles.boldLabel);
 
                 EditorGUILayout.Space(6);
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem interface:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemWizard.InterfaceName}.cs");
+                    EditorGUILayout.LabelField($"{subsystemGenerator.InterfaceName}.cs");
                 }
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem class:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemWizard.SubsystemName}.cs");
+                    EditorGUILayout.LabelField($"{subsystemGenerator.SubsystemName}.cs");
                 }
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem descriptor:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemWizard.DescriptorName}.cs");
+                    EditorGUILayout.LabelField($"{subsystemGenerator.DescriptorName}.cs");
                 }
-                if (subsystemWizard.CreateConfiguration)
+                if (subsystemGenerator.CreateConfiguration)
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
                         EditorGUILayout.LabelField("Configuration class:", GUILayout.Width(160));
-                        EditorGUILayout.LabelField($"{subsystemWizard.SubsystemName}Configuration.cs");
+                        EditorGUILayout.LabelField($"{subsystemGenerator.ConfigurationName}.cs");
                     }
                 }
                 EditorGUILayout.Space(6);
@@ -202,13 +200,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 {
                     if (GUILayout.Button("Go back"))
                     {
-                        subsystemWizard.State = SubsystemWizardState.Start;
+                        subsystemGenerator.State = SubsystemWizardState.Start;
                     }
 
                     if (GUILayout.Button("Next"))
                     {
-                        subsystemWizard.State = SubsystemWizardState.Generating;
-                        subsystemWizard.Generate();
+                        subsystemGenerator.State = SubsystemWizardState.Generating;
                     }
                 }
             }
@@ -228,6 +225,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             // todo
             GUILayout.FlexibleSpace();
 
+            subsystemGenerator.Generate();
+            subsystemGenerator.State = SubsystemWizardState.Complete;
         }
 
         /// <summary>
@@ -247,12 +246,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             {
                 if (GUILayout.Button("Start Over"))
                 {
-                    subsystemWizard.Reset();                    
+                    subsystemGenerator.Reset();                    
                 }
 
                 if (GUILayout.Button("Close"))
                 {
-                    subsystemWizard.Reset();
+                    subsystemGenerator.Reset();
                     window.Close();
                 }
             }

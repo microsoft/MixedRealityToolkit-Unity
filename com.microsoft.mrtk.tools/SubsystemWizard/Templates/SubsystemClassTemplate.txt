@@ -5,7 +5,7 @@ namespace %NAMESPACE%
 {
     public class %SUBSYSTEMNAME% :
         MRTKSubsystem<%SUBSYSTEMNAME%, %SUBSYSTEMNAME%Descriptor, %SUBSYSTEMNAME%.Provider>,
-        I#SUBSYSEMNAME#
+        I%SUBSYSTEMNAME%
     {
         /// <summary>
         /// Construct the <c>%SUBSYSTEMNAME%</c>.
@@ -19,7 +19,7 @@ namespace %NAMESPACE%
 
             // TODO: Abstract implementation of the %SUBSYSTEMNAME% interface
 
-            #nedregion I%SUBSYSTEMNAME% implementation
+            #endregion I%SUBSYSTEMNAME% implementation
         }
 
         #region I%SUBSYSTEMNAME% implementation
