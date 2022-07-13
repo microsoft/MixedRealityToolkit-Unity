@@ -123,6 +123,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => interactionManager = value;
         }
 
+#if UNITY_EDITOR
+        protected override void OnValidate()
+        {   
+            base.OnValidate();
+            
+            // Validate that no transition type is set. You shouldn't be using this
+            // for any sort of UI visuals; use a StatefulInteractable and a 
+            // StateVisualizer instead, even for UI.
+            transition = UnityEngine.UI.Selectable.Transition.None;
+        }
+#endif
+
         protected override void Awake()
         {
             base.Awake();
@@ -246,7 +258,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (ThisInteractable is IXRSelectInteractable selectInteractable)
             {
-                ProxyInteractor.EndSelect(selectInteractable, pointerEventData.dragging);
+                // Cancel the click if the event is a drag event, or if we've stopped hovering the interactable
+                // (i.e., we've rolled off)
+                bool shouldCancel = pointerEventData.dragging || !ProxyInteractor.IsHovering(ThisInteractable as IXRHoverInteractable);
+
+                ProxyInteractor.EndSelect(selectInteractable, shouldCancel);
             }
         }
 
