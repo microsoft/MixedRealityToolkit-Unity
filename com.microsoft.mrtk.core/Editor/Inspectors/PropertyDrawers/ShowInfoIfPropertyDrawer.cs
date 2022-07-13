@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            //EditorGUI.BeginProperty(position, label, property);
             EditorGUI.PropertyField(position, property, label, true);
 
             if (ShouldShow(property))
@@ -35,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit
                 };
                 EditorGUI.HelpBox(infoRect, showInfoIf.Message, showInfoIf.MessageType);
             }
-            //EditorGUI.EndProperty();
         }
 
         /// <inheritdoc />
