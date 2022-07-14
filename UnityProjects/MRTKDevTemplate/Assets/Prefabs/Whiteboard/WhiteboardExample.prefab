@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443995631}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0798, y: 0.0127, z: -0.003}
-  m_LocalScale: {x: 0.17406, y: 0.17406, z: 0.29999998}
+  m_LocalPosition: {x: 0.0788, y: 0.0122, z: -0.003}
+  m_LocalScale: {x: 0.18400957, y: 0.18527487, z: 0.29999998}
   m_Children:
   - {fileID: 1663635294}
   m_Father: {fileID: 8468582706564339464}
@@ -297,13 +297,37 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8468582706564339464}
     m_Modifications:
+    - target: {fileID: 1627033656759102436, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 1704435255437050517, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: currentIconName
+      value: Icon 76
+      objectReference: {fileID: 0}
+    - target: {fileID: 2547005575123347317, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_text
+      value: "\uF34D"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2547005575123347317, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 2875849561365526523, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4267798865849110342, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7256543900600860856, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_text
       value: Clear Drawing
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256543900600860859, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.0054
       objectReference: {fileID: 0}
     - target: {fileID: 7256543901087109448, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_Name
@@ -315,11 +339,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7256543901607729065, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0603
+      value: -0.0593
       objectReference: {fileID: 0}
     - target: {fileID: 7256543901607729065, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0905
+      value: -0.0657
       objectReference: {fileID: 0}
     - target: {fileID: 7256543901607729065, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
       propertyPath: m_LocalPosition.z
@@ -381,6 +405,10 @@ PrefabInstance:
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 9038422756440434247, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.023
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc7ef7d5625c3454ab5097673a207485, type: 3}
 --- !u!1001 &3333465060153340673
@@ -402,9 +430,21 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 743655233813477688, guid: 2c4cecf25adbc2f4c88bc2752a9c3264, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 743655233813477688, guid: 2c4cecf25adbc2f4c88bc2752a9c3264, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1379536339617406536, guid: 2c4cecf25adbc2f4c88bc2752a9c3264, type: 3}
       propertyPath: m_text
       value: Whiteboard/Drawing Example
+      objectReference: {fileID: 0}
+    - target: {fileID: 1379536339617406536, guid: 2c4cecf25adbc2f4c88bc2752a9c3264, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 1579271233971449938, guid: 2c4cecf25adbc2f4c88bc2752a9c3264, type: 3}
       propertyPath: m_Size.x
@@ -426,6 +466,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4583912424509175209, guid: 2c4cecf25adbc2f4c88bc2752a9c3264, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 6537991271105786375, guid: 2c4cecf25adbc2f4c88bc2752a9c3264, type: 3}
       propertyPath: m_IsActive
       value: 0
