@@ -13,8 +13,14 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Basic hand joint visualizer that draws an instanced mesh on each hand joint.
+    /// Hand visualizer that uses a rigged mesh/armature to render high-quality hand meshes.
+    /// Not recommended for AR platforms like HoloLens, both for performance and design reasons. 
     /// </summary>
+    /// <remarks>
+    /// For augmented reality platforms such as HoloLens, we recommend not using any hand visualizations,
+    /// as the conflict between the user's real hand and the slightly delayed holographic visualization
+    /// can be more distracting than it's worth. However, for opaque platforms, this is a great solution.
+    /// </remarks>
     [AddComponentMenu("Scripts/Microsoft/MRTK/Hands/Rigged Hand Mesh Visualizer")]
     public class RiggedHandMeshVisualizer : MonoBehaviour
     {
@@ -27,7 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Range(0.8f, 1.2f)]
-        [Tooltip("Scale")]
+        [Tooltip("The overall hand mesh will be scaled by this amount to fit the user's real hand size.")]
+        // Will be automatically calculated in the future.
         private float handScale = 1.0f;
 
         [SerializeField]
@@ -172,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handRenderer.enabled = false;
                 return;
             }
-
+            
             transform.localScale = new Vector3(handNode == XRNode.LeftHand ? -handScale : handScale, handScale, handScale);
 
             RenderMesh(joints);
@@ -216,20 +223,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             // Special case metacarpals, because Wrist is not always i-1.
                             // This is the same "simple IK" as the default case, but with special index logic.
                             jointTransform.rotation = Quaternion.LookRotation(jointPose.Position - joints[(int)TrackedHandJoint.Wrist].Position, jointPose.Up);
-                            break;
-                        case TrackedHandJoint.ThumbTip:
-                        case TrackedHandJoint.IndexTip:
-                        case TrackedHandJoint.MiddleTip:
-                        case TrackedHandJoint.RingTip:
-                        case TrackedHandJoint.LittleTip:
-                            // Tip bones use the exact rotation from the joint data, so that if the finger length is slightly mismatched,
-                            // the tip orientation is still correct.
-                            jointTransform.rotation = joints[i-1].Rotation;
-                            // Calculate the actual length from the joint data to the end of the rigged finger.
-                            // This may be different from the actual joint data's fingertip length due to IK/size inaccuracies.
-                            float tipLength = (joints[i].Position - jointTransform.position).magnitude;
-                            // Scale the tip bone according to the required distance to match the tip joint from the hand joint data.
-                            jointTransform.localScale = new Vector3(jointTransform.localScale.x, jointTransform.localScale.y, tipLength / initialTipLengths[i]);
                             break;
                         default:
                             // For all other bones, do a simple "IK" from the rigged joint to the joint data's position.
