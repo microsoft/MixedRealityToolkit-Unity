@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3507431783398283103, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
       propertyPath: handScale
-      value: 1
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: 3973969148631863464, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
       propertyPath: m_RootOrder

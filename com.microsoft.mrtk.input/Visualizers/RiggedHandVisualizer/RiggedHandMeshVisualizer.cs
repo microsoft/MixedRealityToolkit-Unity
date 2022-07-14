@@ -215,6 +215,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             jointTransform.position = jointPose.Position;
                             jointTransform.rotation = jointPose.Rotation;
                             break;
+                        case TrackedHandJoint.ThumbTip:
+                        case TrackedHandJoint.IndexTip:
+                        case TrackedHandJoint.MiddleTip:
+                        case TrackedHandJoint.RingTip:
+                        case TrackedHandJoint.LittleTip:
+                            // The tip bone uses the joint rotation directly.
+                            jointTransform.rotation = joints[i-1].Rotation;
+                            break;
                         case TrackedHandJoint.ThumbMetacarpal:
                         case TrackedHandJoint.IndexMetacarpal:
                         case TrackedHandJoint.MiddleMetacarpal:

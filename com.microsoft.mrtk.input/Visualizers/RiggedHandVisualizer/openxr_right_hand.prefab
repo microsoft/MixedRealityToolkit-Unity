@@ -585,7 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handNode: 5
-  handScale: 1
+  handScale: 0.95
   wrist: {fileID: 5446693289115484214}
   showMissingPropertyWarning: 0
   handMaterial: {fileID: 0}
