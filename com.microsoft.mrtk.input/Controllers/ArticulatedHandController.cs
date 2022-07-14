@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
+using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
@@ -55,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Properties
 
+        private bool pinchedLastFrame = false;
+
         // Awake() override to prevent the base class
         // from using the base controller state instead of our
         // derived state. TODO: Brought up with Unity, may be
@@ -100,6 +103,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gotPinchData)
                 {
                     controllerState.selectInteractionState.value = pinchAmount;
+
+                    // Workaround for missing select actions on devices without interaction profiles
+                    // for hands, such as Varjo and Quest. Should be removed once we have universal
+                    // hand interaction profile(s) across vendors.
+                    
+                    // Debounced.
+                    bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);
+
+                    controllerState.selectInteractionState.active = isPinched;
+                    controllerState.selectInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
+                    controllerState.selectInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+
+                    pinchedLastFrame = isPinched;
                 }
 
                 handControllerState.PinchSelectReady = isPinchReady;
