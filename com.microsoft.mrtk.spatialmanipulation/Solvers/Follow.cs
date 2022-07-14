@@ -655,15 +655,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             if (FaceUserDefinedTargetTransform)
             {
                 Vector3 directionToTarget = TargetToFace != null ? goalPosition - TargetToFace.position : Vector3.zero;
-                if (!PivotAxis.HasFlag(AxisFlags.XAxis))
+                if ((PivotAxis | AxisFlags.XAxis) != PivotAxis)
                 {
                     directionToTarget.x = 0;
                 }
-                if (!PivotAxis.HasFlag(AxisFlags.YAxis))
+                if ((PivotAxis & AxisFlags.YAxis) != PivotAxis)
                 {
                     directionToTarget.y = 0;
                 }
-                if (!PivotAxis.HasFlag(AxisFlags.ZAxis))
+                if ((PivotAxis & AxisFlags.ZAxis) != PivotAxis)
                 {
                     directionToTarget.z = 0;
                 }
