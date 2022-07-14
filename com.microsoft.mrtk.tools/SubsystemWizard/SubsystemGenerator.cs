@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.CSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tools
 {
@@ -96,10 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             set => subsystemNamespace = value;
         }
 
-        // todo - abstract provider (default to true)?
-        // todo - provider name
-        // todo - generate platform implementation?
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -111,50 +108,109 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// 
         /// </summary>
-        public void Generate()
+        public bool Generate(List<string> errors)
         {
-            DirectoryInfo outputFolder = new DirectoryInfo(Path.Combine(OutputFolderRoot, SubsystemName));
+            errors.Clear();
+
+            // Ensure the package is not corrupted / missing files.
+            if (!GetFileFromGuid(DescriptorTemplateGuid, out FileInfo descriptorTemplate) ||
+                !GetFileFromGuid(InterfaceTemplateGuid, out FileInfo interfaceTemplate) ||
+                !GetFileFromGuid(ClassTemplateGuid, out FileInfo classTemplate) ||
+                !GetFileFromGuid(ConfigTemplateGuid, out FileInfo configTemplate))
+            {
+                errors.Add($"Package error: Unable to locate one or more subsystem template files.");
+                return false;
+            }
+
+            // Validate the subsystem name.
+            if (!ValidateName(SubsystemName, out string error))
+            {
+                errors.Add(error);
+            }
+
+            // Validate the namespace.
+            if (!ValidateName(SubsystemNamespace, out error))
+            {
+                errors.Add(error);
+            }
+
+            // Make sure there is a folder in which to create the new files.
+            DirectoryInfo outputFolder = new DirectoryInfo(
+                Path.Combine(OutputFolderRoot, SubsystemName));
             if (!outputFolder.Exists)
             {
                 outputFolder.Create();
             }
 
-            // Descriptor
+            // If we already have one or more errors, abort.
+            if (errors.Count > 0)
+            {
+                errors.Add("Aborting subsystem creation");
+                return false;
+            }
+
+            // Create subsystem descriptor file
+            // todo: skip?
             FileInfo descriptorFile = new FileInfo(
                 Path.Combine(outputFolder.FullName, $"{DescriptorName}.cs"));
-            if (!CreateFile(DescriptorTemplateGuid, descriptorFile))
+            if (!CreateFile(descriptorTemplate, descriptorFile, out error))
             {
-                // todo: fail
+                errors.Add(error);
             }
 
-            // Interface
+            // If we failed creating the previous file, abort.
+            if (errors.Count > 0)
+            {
+                errors.Add("Aborting subsystem creation");
+                return false;
+            }
+
+            // Create subsystem interface file
+            // todo: skip?
             FileInfo interfaceFile = new FileInfo(
                 Path.Combine(outputFolder.FullName, $"{InterfaceName}.cs"));
-            if (!CreateFile(InterfaceTemplateGuid, interfaceFile))
+            if (!CreateFile(interfaceTemplate, interfaceFile, out error))
             {
-                // todo: fail
+                errors.Add(error);
             }
 
-            // Class
+            // If we failed creating the previous file, abort.
+            if (errors.Count > 0)
+            {
+                errors.Add("Aborting subsystem creation");
+                return false;
+            }
+
+            // Create subsystem class file
+            // todo: skip?
             FileInfo classFile = new FileInfo(
                 Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
-            if (!CreateFile(ClassTemplateGuid, classFile))
+            if (!CreateFile(classTemplate, classFile, out error))
             {
-                // todo: fail
+                errors.Add(error);
             }
 
-            // Configuration
+            // Create subsystem configuration file
             if (CreateConfiguration)
             {
+                // If we failed creating the previous file, abort.
+                if (errors.Count > 0)
+                {
+                    errors.Add("Aborting subsystem creation");
+                    return false;
+                }
+
                 FileInfo configurationFile = new FileInfo(
                     Path.Combine(outputFolder.FullName, $"{ConfigurationName}.cs"));
-                if (!CreateFile(ConfigTemplateGuid, configurationFile))
+                if (!CreateFile(configTemplate, configurationFile, out error))
                 {
-                    // todo: fail
+                    errors.Add(error);
                 }
             }
 
             AssetDatabase.Refresh();
+
+            return (errors.Count == 0);
         }
 
         /// <summary>
@@ -171,28 +227,25 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="templateGuid"></param>
+        /// <param name="templateFile"></param>
         /// <param name="outputFile"></param>
+        /// <param name="error"></param>
         /// <returns></returns>
-        private bool CreateFile(string templateGuid, FileInfo outputFile)
+        private bool CreateFile(
+            FileInfo templateFile,
+            FileInfo outputFile,
+            out string error)
         {
-            // The generator does not support overwriting existing files.
-            // todo: consider checking existence of all files up-front before any are created
+            error = string.Empty;
+
             if (outputFile.Exists)
             {
-                // todo: error
+                error = $"Unable to create {outputFile.FullName}, overwriting existing files is not supported.";
                 return false;
             }
 
             try
             {
-                FileInfo templateFile = new FileInfo(AssetDatabase.GUIDToAssetPath(templateGuid));
-                if (!templateFile.Exists)
-                {
-                    // todo error
-                    return false;
-                }
-
                 string template = null;
 
                 using (FileStream fs = templateFile.OpenRead())
@@ -209,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
                 if (template == null)
                 {
-                    // todo: error
+                    error = $"Failed to read the contents of {templateFile.FullName}";
                     return false;
                 }
 
@@ -224,11 +277,58 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             }
             catch (Exception e)
             {
-                Debug.LogError("[SubsystemGenerator] Failed to create file.");
+                error = $"Failed to create {outputFile.FullName} - {e.Message} ({e.GetType()})";
                 return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        private bool ValidateName(string name, out string error)
+        {
+            error = string.Empty;
+
+            // Ensure a name was provided.
+            if (string.IsNullOrWhiteSpace(SubsystemName))
+            {
+                SubsystemNamespace = DefaultSubsystemName;
+            }
+
+            // Verify that the name is valid within C#
+            if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name))
+            {
+                error = $"{name} is not a valid C# identifier";
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <param name="fileInfo"></param>
+        /// <returns></returns>
+        private bool GetFileFromGuid(
+            string guid,
+            out FileInfo fileInfo)
+        {
+            fileInfo = null;
+
+            FileInfo fi = new FileInfo(AssetDatabase.GUIDToAssetPath(guid));
+            if (fi.Exists)
+            {
+                fileInfo = fi;
+                return true;
+            }
+
+            return false;
         }
     }
 
@@ -246,11 +346,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// The wizard is ready to generate, waiting for confirmation from the user.
         /// </summary>
         PreGenerate,
-
-        /// <summary>
-        /// The wizard is in the process of creating the subsystem.
-        /// </summary>
-        Generating,
 
         /// <summary>
         /// The wizard is complete.

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -28,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 return;
             }
 
-            // Dock it next to the Scene View.
             window = GetWindow<SubsystemWizardWindow>();
             window.titleContent = new GUIContent("MRTK3 Subsystem Wizard", EditorGUIUtility.IconContent("d_CustomTool").image); ;
 
@@ -40,8 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             {
                 window.minSize = WindowSizeWithoutLogo;
             }
-
-            // todo window.ResetCreator();
         }
 
         private void OnGUI()
@@ -63,10 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
                     case SubsystemWizardState.PreGenerate:
                         RenderWizardPreGeneratePage();
-                        break;
-
-                    case SubsystemWizardState.Generating:
-                        RenderWizardGeneratingPage();
                         break;
 
                     case SubsystemWizardState.Complete:
@@ -205,7 +199,16 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
                     if (GUILayout.Button("Next"))
                     {
-                        subsystemGenerator.State = SubsystemWizardState.Generating;
+                        // todo
+                        List<string> errors = new List<string>();
+
+                        // todo: need to capture error(s)
+                        if (!subsystemGenerator.Generate(errors));
+
+                        if (errors.Count == 0)
+                        {
+                            subsystemGenerator.State = SubsystemWizardState.Complete;
+                        }
                     }
                 }
             }
@@ -214,32 +217,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// 
         /// </summary>
-        private void RenderWizardGeneratingPage()
-        {
-
-            EditorGUILayout.HelpBox(
-                "todo",
-                MessageType.Info);
-
-            EditorGUILayout.Space(6);
-            // todo
-            GUILayout.FlexibleSpace();
-
-            subsystemGenerator.Generate();
-            subsystemGenerator.State = SubsystemWizardState.Complete;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         private void RenderWizardCompletePage()
         {
-            EditorGUILayout.HelpBox(
-                "todo",
-                MessageType.Info);
+            EditorGUILayout.LabelField($"Your subsystem has been successfully created.");
 
             EditorGUILayout.Space(6);
-            // todo
+            // todo: next steps
             GUILayout.FlexibleSpace();
 
             using (new EditorGUILayout.HorizontalScope())
