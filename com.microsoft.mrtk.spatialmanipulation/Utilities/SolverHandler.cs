@@ -193,7 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         protected readonly List<Solver> solvers = new List<Solver>();
-        private bool updateSolversList = false;
 
         /// <summary>
         /// List of solvers that this handler will manage and update.
@@ -346,14 +345,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void LateUpdate()
         {
-            if (updateSolversList)
-            {
-                IEnumerable<Solver> inspectorOrderedSolvers = GetComponents<Solver>().Intersect(solvers);
-                Solvers = inspectorOrderedSolvers.Union(Solvers).ToReadOnlyCollection();
-
-                updateSolversList = false;
-            }
-
             if (UpdateSolvers)
             {
                 // Before calling solvers, update goal to be the transform so that working and transform will match
@@ -400,7 +391,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             if (!solvers.Contains(solver))
             {
                 solvers.Add(solver);
-                updateSolversList = true;
+                IEnumerable<Solver> inspectorOrderedSolvers = GetComponents<Solver>().Intersect(solvers);
+                Solvers = inspectorOrderedSolvers.Union(Solvers).ToReadOnlyCollection();
             }
         }
 

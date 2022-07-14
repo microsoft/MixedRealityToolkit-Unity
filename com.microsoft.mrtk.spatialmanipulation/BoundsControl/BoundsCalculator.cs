@@ -69,9 +69,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             totalBoundsCorners.Clear();
             childTransforms.Clear();
             containsCanvas = false;
+            target.GetComponentsInChildren<Transform>(includeInactiveObjects, childTransforms);
 
             // Iterate transforms and collect bound volumes
-            foreach (Transform childTransform in target.GetComponentsInChildren<Transform>(includeInactiveObjects))
+            foreach (Transform childTransform in childTransforms)
             {
                 // Reject if child of exclude 
                 if (childTransform.IsChildOf(exclude)) { continue; }
