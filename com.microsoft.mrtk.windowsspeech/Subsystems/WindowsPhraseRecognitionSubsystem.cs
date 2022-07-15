@@ -11,6 +11,9 @@ using UnityEngine.Events;
 using UnityEngine.Scripting;
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
+#if MSFT_OPENXR_1_5_0_OR_NEWER
+using Microsoft.MixedReality.OpenXR;
+#endif // MSFT_OPENXR_1_5_0_OR_NEWER
 using UnityEngine.Windows.Speech;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
@@ -42,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
             private KeywordRecognizer keywordRecognizer;
+#if MSFT_OPENXR_1_5_0_OR_NEWER
+            private SelectKeywordRecognizer selectKeywordRecognizer;
+#endif // MSFT_OPENXR_1_5_0_OR_NEWER
             private ConcurrentQueue<UnityEvent> eventQueue;
             private bool keywordListChanged;
 #endif
@@ -68,6 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     keywordRecognizer.OnPhraseRecognized += Recognizer_OnPhraseRecognized;
                     keywordRecognizer.Start();
                 }
+#if MSFT_OPENXR_1_5_0_OR_NEWER
+                if (selectKeywordRecognizer != null)
+                {
+                    selectKeywordRecognizer.OnPhraseRecognized += Recognizer_OnPhraseRecognized;
+                    selectKeywordRecognizer.Start();
+                }
+#endif // MSFT_OPENXR_1_5_0_OR_NEWER
             }
 
             private static readonly ProfilerMarker UpdatePerfMarker =
@@ -83,6 +96,12 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                         keywordListChanged = false;
                         Destroy();
                         keywordRecognizer = new KeywordRecognizer(phraseDictionary.Keys.ToArray());
+#if MSFT_OPENXR_1_5_0_OR_NEWER
+                        if (SelectKeywordRecognizer.IsSupported)
+                        {
+                            selectKeywordRecognizer = new SelectKeywordRecognizer();
+                        }
+#endif // MSFT_OPENXR_1_5_0_OR_NEWER
                         Start();
                     }
                     while (eventQueue.TryDequeue(out UnityEvent unityEvent))
@@ -99,6 +118,12 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 {
                     keywordRecognizer.Stop();
                 }
+#if MSFT_OPENXR_1_5_0_OR_NEWER
+                if (selectKeywordRecognizer != null)
+                {
+                    selectKeywordRecognizer.Stop();
+                }
+#endif // MSFT_OPENXR_1_5_0_OR_NEWER
             }
 
             /// <inheritdoc/>
@@ -109,6 +134,13 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     keywordRecognizer.OnPhraseRecognized -= Recognizer_OnPhraseRecognized;
                     keywordRecognizer.Dispose();
                 }
+#if MSFT_OPENXR_1_5_0_OR_NEWER
+                if (selectKeywordRecognizer != null)
+                {
+                    selectKeywordRecognizer.OnPhraseRecognized -= Recognizer_OnPhraseRecognized;
+                    selectKeywordRecognizer.Dispose();
+                }
+#endif // MSFT_OPENXR_1_5_0_OR_NEWER
             }
 #endif
 
