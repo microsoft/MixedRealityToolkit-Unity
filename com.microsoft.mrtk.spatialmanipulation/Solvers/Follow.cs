@@ -659,11 +659,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     directionToTarget.x = 0;
                 }
-                if ((PivotAxis & AxisFlags.YAxis) != PivotAxis)
+                if ((PivotAxis | AxisFlags.YAxis) != PivotAxis)
                 {
                     directionToTarget.y = 0;
                 }
-                if ((PivotAxis & AxisFlags.ZAxis) != PivotAxis)
+                if ((PivotAxis | AxisFlags.ZAxis) != PivotAxis)
                 {
                     directionToTarget.z = 0;
                 }
