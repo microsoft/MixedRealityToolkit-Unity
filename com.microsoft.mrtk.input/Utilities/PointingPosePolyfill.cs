@@ -46,10 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If the position/pose action on the controller is unbound, we need
             // to polyfill with a fake pointing pose. (For now, until we have
             // universal hand interaction profiles.)
-            if (controller.positionAction.action?.activeControl?.device == null)
+            if (controller?.positionAction.action?.activeControl?.device == null)
             {
-                if (controller == null) { return; }
-
                 if (handsAggregator == null)
                 {
                     handsAggregator = HandsUtils.GetSubsystem();
@@ -57,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (handsAggregator == null || !handsAggregator.TryGetEntireHand(controller.HandNode, out IReadOnlyList<HandJointPose> joints))
                 {
+                    ResetIfDirty();
                     return;
                 }
 
@@ -73,16 +72,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 transformDirty = true;
             }
             else
-            {
-                // Reset the transform back to where we found it.
-                if (transformDirty)
-                {
-                    transform.localPosition = originalTransform.position;
-                    transform.localRotation = originalTransform.rotation;
+            {   
+                ResetIfDirty();
+            }
+        }
 
-                    // But don't keep doing it.
-                    transformDirty = false;
-                }
+        private void ResetIfDirty()
+        {
+            // Reset the transform back to where we found it.
+            if (transformDirty)
+            {
+                transform.localPosition = originalTransform.position;
+                transform.localRotation = originalTransform.rotation;
+
+                // But don't keep doing it.
+                transformDirty = false;
             }
         }
     }
