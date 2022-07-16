@@ -343,7 +343,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1368405060192439308}
   - component: {fileID: 8403178449795797941}
-  - component: {fileID: 3640021095786666145}
   - component: {fileID: 425099612498107043}
   m_Layer: 0
   m_Name: TextMeshPro
@@ -412,14 +411,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!222 &3640021095786666145
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4099849804743059182}
-  m_CullTransparentMesh: 0
 --- !u!114 &425099612498107043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,7 +642,7 @@ GameObject:
   - component: {fileID: 7796493364810442153}
   - component: {fileID: 4119412881057886056}
   m_Layer: 0
-  m_Name: UX.Button.BackplateOuterGeometry (1)
+  m_Name: UX.Button.SeeItSayItLabelBackplateGeometry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
