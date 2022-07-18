@@ -44,6 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
         #region IMixedRealityHand Implementation
 
+        /// <inheritdoc />
+        public override bool IsJointDataAvailable => jointPoses.Count > 0;
+
         /// <inheritdoc/>
         public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => jointPoses.TryGetValue(joint, out pose);
 

@@ -82,6 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         #region IMixedRealityHand Implementation
 
         protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
+
+        /// <inheritdoc/>
+        public override bool IsJointDataAvailable => jointPoses.Count > 0;
+
         /// <inheritdoc/>
         public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
         {

@@ -51,6 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         #region IMixedRealityHand Implementation
 
         /// <inheritdoc/>
+        public bool IsJointDataAvailable => unityJointPoses != null;
+
+        /// <inheritdoc/>
         public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
         {
             if (unityJointPoses != null)
