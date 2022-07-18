@@ -223,6 +223,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             currentLifetime = 0;
+
+            // Register the solver with it's solver hander
+            if (SolverHandler != null)
+            {
+                SolverHandler.RegisterSolver(this);
+            }
+        }
+
+        protected virtual void OnDisable()
+        {
+            // Unregister the solver with it's solver hander
+            if (SolverHandler != null)
+            {
+                SolverHandler.UnregisterSolver(this);
+            }
         }
 
         protected virtual void Start()
@@ -248,18 +263,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     controllerLookup = lookups[0];
                 }
-            }
-
-            if (SolverHandler != null)
-            {
-                SolverHandler.RegisterSolver(this);
-            }
-        }
-        protected virtual void OnDestroy()
-        {
-            if (SolverHandler != null)
-            {
-                SolverHandler.UnregisterSolver(this);
             }
         }
 
