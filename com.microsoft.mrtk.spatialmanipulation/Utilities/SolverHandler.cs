@@ -389,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Adds <paramref name="solver"/> to the list of <see cref="Solvers"/> guaranteeing inspector ordering.
         /// </summary>
-        public void RegisterSolver(Solver solver)
+        internal void RegisterSolver(Solver solver)
         {
             if (!solvers.Contains(solver))
             {
@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Removes <paramref name="solver"/> from the list of <see cref="Solvers"/>.
         /// </summary>
-        public void UnregisterSolver(Solver solver)
+        internal void UnregisterSolver(Solver solver)
         {
             solvers.Remove(solver);
         }
