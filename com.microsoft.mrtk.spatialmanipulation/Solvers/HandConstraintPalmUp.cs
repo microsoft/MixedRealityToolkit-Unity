@@ -358,13 +358,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 // Generate the hand plane that we're using to generate a distance value.
                 // This is done by using the index knuckle, pinky knuckle, and wrist
-                HandJointPose indexKnuckle;
-                HandJointPose pinkyKnuckle;
-                HandJointPose wrist;
-
-                if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexKnuckle, hand, out indexKnuckle) &&
-                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.PinkyKnuckle, hand, out pinkyKnuckle) &&
-                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Wrist, hand, out wrist))
+                if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexProximal, hand, out HandJointPose indexKnuckle) &&
+                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.LittleProximal, hand, out HandJointPose pinkyKnuckle) &&
+                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Wrist, hand, out HandJointPose wrist))
                 {
                     handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
                     Vector3 generatedActivationPoint;
@@ -435,13 +431,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         break;
 
                     case SolverSafeZone.RadialSide:
-                        referenceJoint1 = TrackedHandJoint.IndexKnuckle;
-                        referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
+                        referenceJoint1 = TrackedHandJoint.IndexProximal;
+                        referenceJoint2 = TrackedHandJoint.ThumbProximal;
                         break;
 
                     case SolverSafeZone.UlnarSide:
                     default:
-                        referenceJoint1 = TrackedHandJoint.PinkyKnuckle;
+                        referenceJoint1 = TrackedHandJoint.LittleProximal;
                         referenceJoint2 = TrackedHandJoint.Wrist;
                         break;
                 }
