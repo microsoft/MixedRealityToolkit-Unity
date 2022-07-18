@@ -539,7 +539,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 }
 
                 if (shouldUseRayVector && Handedness.ToXRNode().HasValue && HandSubsystem != null &&
-                        HandSubsystem.TryGetHandCenter(Handedness.ToXRNode().Value, out HandJointPose palmPose))
+                        HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose))
                 {
                     handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, CameraCache.Main.transform, Handedness);
                     Ray ray = handRay.Ray;

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine.XR;
 
@@ -35,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// needed. This will return the controller position if no hand data is
         /// available on the platform.
         /// </summary>
+        [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
         bool TryGetHandCenter(XRNode hand, out HandJointPose jointPose);
 
         /// <summary>

@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If the position/pose action on the controller is unbound, we need
             // to polyfill with a fake pointing pose. (For now, until we have
             // universal hand interaction profiles.)
-            if (controller?.positionAction.action?.activeControl?.device == null)
+            if (controller != null && controller.positionAction.action?.activeControl?.device == null)
             {
                 if (handsAggregator == null)
                 {
@@ -59,9 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                // Tick the hand ray generator function.
+                // Tick the hand ray generator function. Uses index knuckle for position.
+                HandJointPose knuckle = joints[(int)TrackedHandJoint.IndexProximal];
                 HandJointPose palm = joints[(int)TrackedHandJoint.Palm];
-                handRay.Update(palm.Position, -palm.Up, CameraCache.Main.transform, controller.HandNode.ToHandedness());
+                handRay.Update(knuckle.Position, -palm.Up, CameraCache.Main.transform, controller.HandNode.ToHandedness());
                 
                 Ray ray = handRay.Ray;
                 transform.SetPositionAndRotation(ray.origin, Quaternion.LookRotation(ray.direction, palm.Up));

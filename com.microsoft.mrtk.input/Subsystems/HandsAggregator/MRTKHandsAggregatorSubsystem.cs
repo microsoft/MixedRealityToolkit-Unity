@@ -235,6 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <inheritdoc/>
+            [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
             public override bool TryGetHandCenter(XRNode handNode, out HandJointPose jointPose)
             {
                 return TryGetJoint(TrackedHandJoint.Palm, handNode, out jointPose);
