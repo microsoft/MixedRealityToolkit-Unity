@@ -1145,7 +1145,7 @@ PrefabInstance:
     - target: {fileID: 3705378105823492766, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: e3404cf816858784985fd5888cefbbb1, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.size
       value: 2
