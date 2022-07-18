@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -382,16 +383,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             AttachToNewTrackedObject();
         }
 
+        // Used to cache and reduce allocs for getting the solver components on this gameobject
+        private List<Solver> inspectorOrderedSolvers;
+
         /// <summary>
         /// Adds <paramref name="solver"/> to the list of <see cref="Solvers"/> guaranteeing inspector ordering.
         /// </summary>
         public void RegisterSolver(Solver solver)
         {
-            GetComponents<Solver>(solvers);
-
             if (!solvers.Contains(solver))
             {
-                solvers.Add(solver);
+                // Make sure we only process solvers which are located on the same gameobject.
+                GetComponents<Solver>(inspectorOrderedSolvers);
+                if(inspectorOrderedSolvers.Contains(solver))
+                {
+                    solvers.Add(solver);
+                    // Ensure that the solvers list obeys inspector ordering afterwards
+                    solvers = inspectorOrderedSolvers.Intersect(solvers).ToList();
+                }
             }
         }
 
