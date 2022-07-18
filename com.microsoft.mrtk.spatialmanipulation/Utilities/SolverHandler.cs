@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -192,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => updateSolvers = value;
         }
 
-        protected readonly List<Solver> solvers = new List<Solver>();
+        protected List<Solver> solvers = new List<Solver>();
 
         /// <summary>
         /// List of solvers that this handler will manage and update.
@@ -388,11 +387,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public void RegisterSolver(Solver solver)
         {
+            GetComponents<Solver>(solvers);
+
             if (!solvers.Contains(solver))
             {
                 solvers.Add(solver);
-                IEnumerable<Solver> inspectorOrderedSolvers = GetComponents<Solver>().Intersect(solvers);
-                Solvers = inspectorOrderedSolvers.Union(Solvers).ToReadOnlyCollection();
             }
         }
 
