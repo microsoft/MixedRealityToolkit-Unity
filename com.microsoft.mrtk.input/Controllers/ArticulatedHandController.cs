@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Workaround for missing select actions on devices without interaction profiles
                     // for hands, such as Varjo and Quest. Should be removed once we have universal
                     // hand interaction profile(s) across vendors.
-                    if (selectAction.action?.activeControl?.device == null)
+                    if ((selectAction.action?.controls.Count ?? 0) == 0)
                     {
                         // Debounced.
                         bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);

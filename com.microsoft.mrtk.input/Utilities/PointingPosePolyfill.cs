@@ -26,27 +26,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             handRay = new HandRay();
             controller = GetComponentInParent<ArticulatedHandController>();
-            originalTransform = new Pose(transform.localPosition, transform.localRotation);
         }
 
         private void OnEnable()
         {
-            Application.onBeforeRender += OnBeforeRender;
+            originalTransform = new Pose(transform.localPosition, transform.localRotation);
         }
 
         private void OnDisable()
         {
-            Application.onBeforeRender -= OnBeforeRender;
             transform.localPosition = originalTransform.position;
             transform.localRotation = originalTransform.rotation;
         }
 
-        private void OnBeforeRender()
+        private void LateUpdate()
         {
             // If the position/pose action on the controller is unbound, we need
             // to polyfill with a fake pointing pose. (For now, until we have
             // universal hand interaction profiles.)
-            if (controller != null && controller.positionAction.action?.activeControl?.device == null)
+            if (controller != null && (controller.positionAction.action?.controls.Count ?? 0) <= 0)
             {
                 if (handsAggregator == null)
                 {

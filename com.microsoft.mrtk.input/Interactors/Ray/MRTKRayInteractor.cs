@@ -164,6 +164,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
                     }
+                    else
+                    {
+                        // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
+                        if (handsAggregator == null)
+                        {
+                            handsAggregator = HandsUtils.GetSubsystem();
+                        }
+                        if (handsAggregator != null &&
+                            xrController is ArticulatedHandController handController &&
+                            handsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
+                        {
+                            attachTransform.rotation = palmPose.Rotation;
+                        }
+                    }
 
                     if (hasSelection)
                     {
