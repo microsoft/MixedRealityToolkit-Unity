@@ -107,6 +107,14 @@ PrefabInstance:
       propertyPath: handNode
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4032301647702797930, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: handNode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032301647702797930, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: fallbackControllerModel
+      value: 
+      objectReference: {fileID: 7911776768169869908, guid: dfbbcb460e00b5e4db823b4290b09c88, type: 3}
     - target: {fileID: 4250628447449090491, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: settings.isLeftHanded
       value: 0

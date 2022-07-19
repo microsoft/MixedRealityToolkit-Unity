@@ -25,15 +25,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary> The XRNode on which this hand is located. </summary>
         public XRNode HandNode { get => handNode; set => handNode = value; }
 
+        [SerializeField]
+        [Tooltip("A fallback controller model to render in case the platform model fails to load")]
+        private GameObject fallbackControllerModel;
+
         // caching the controller we belong to
-        private XRBaseController baseController;
+        private XRBaseController xrController;
+
+        // caching the controller model provider we are using we belong to
+        private ControllerModel controllerModelProvider;
+
+        // The controller characteristics we want the input device to have;
+        private InputDeviceCharacteristics controllerCharacteristics;
+
+        /// <inheritdoc />
+        protected bool isControllerTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
 
         protected void OnEnable()
         {
             Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
 
             ControllerLookup[] lookups = GameObject.FindObjectsOfType(typeof(ControllerLookup)) as ControllerLookup[];
-            baseController = lookups[0].LeftHandController;
+
+            switch (handNode)
+            {
+                case XRNode.LeftHand:
+                    controllerModelProvider = ControllerModel.Left;
+                    xrController = lookups[0].LeftHandController;
+                    controllerCharacteristics = InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left;
+                    break;
+                case XRNode.RightHand:
+                    controllerModelProvider = ControllerModel.Right;
+                    xrController = lookups[0].RightHandController;
+                    controllerCharacteristics = InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right;
+                    break;
+                default:
+                    break;
+            }
 
             InputDevices.deviceConnected += CheckToShowVisuals;
         }
@@ -41,125 +69,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void OnDisable()
         {
             InputDevices.deviceConnected -= CheckToShowVisuals;
-            baseController.hideControllerModel = true;
-        }
 
-        private const InputDeviceCharacteristics controllerCharacteristics = InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left;
+            // Hide the controller model
+            xrController.hideControllerModel = true;
+        }
 
         private void CheckToShowVisuals(InputDevice inputDevice)
         {
             if (inputDevice.isValid && (inputDevice.characteristics & controllerCharacteristics) == controllerCharacteristics)
             {
-                TryGenerateControllerModelFromPlatformSDK(ControllerModel.Left);
-                baseController.hideControllerModel = false;
-            }
-            else
-            {
-                baseController.hideControllerModel = false;
+                InstantiateControllerVisuals(); 
             }
         }
 
-        public async Task<GameObject> TryGenerateControllerModelFromPlatformSDK(ControllerModel controllerModelProvider)
+        private async void InstantiateControllerVisuals()
         {
-            GameObject gltfGameObject = null;
-
-#if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
-            if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
+            if (controllerModelProvider != null)
             {
-                Debug.LogError("Failed to obtain controller model key from platform.");
-                return null;
-            }
-
-            if (ControllerModelDictionary.TryGetValue(modelKey, out gltfGameObject))
-            {
-                gltfGameObject.SetActive(true);
-                return gltfGameObject;
-            }
-
-            byte[] modelStream = await controllerModelProvider.TryGetControllerModel(modelKey);
-
-            if (modelStream == null || modelStream.Length == 0)
-            {
-                Debug.LogError("Failed to obtain controller model from platform.");
-                return null;
-            }
-
-            Utilities.Gltf.Schema.GltfObject gltfObject = GltfUtility.GetGltfObjectFromGlb(modelStream);
-            gltfGameObject = await gltfObject.ConstructAsync();
-
-            if (gltfGameObject != null)
-            {
-                // After all the awaits, double check that another task didn't finish earlier
-                if (ControllerModelDictionary.TryGetValue(modelKey, out GameObject existingGameObject))
+                GameObject ControllerGameObject = await OpenXRControllerModelSubsystem.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
+                if(ControllerGameObject != null)
                 {
-                    Object.Destroy(gltfGameObject);
-                    return existingGameObject;
+                    xrController.model = ControllerGameObject.transform;
                 }
                 else
                 {
-                    ControllerModelDictionary.Add(modelKey, gltfGameObject);
+                    xrController.model = Instantiate(fallbackControllerModel).transform;
                 }
             }
-#endif //MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
-
-            return gltfGameObject;
+            xrController.model.transform.parent = xrController.modelParent;
         }
 
-
-        /// <inheritdoc />
-        public virtual void OnSourceDetected(SourceStateEventData eventData) { }
-
-        /// <inheritdoc />
-        public virtual void OnSourceLost(SourceStateEventData eventData)
+        public void Update()
         {
-            if (eventData.SourceId == Controller?.InputSource.SourceId &&
-                eventData.Controller?.ControllerHandedness == Handedness)
+            if (xrController.model == null)
             {
-                poseActionDetected = false;
-                TrackingState = TrackingState.NotTracked;
-
-                if (DestroyOnSourceLost)
-                {
-                    GameObjectExtensions.DestroyGameObject(gameObject);
-                }
+                xrController.model = Instantiate(fallbackControllerModel).transform;
+                xrController.model.transform.parent = xrController.modelParent;
             }
-        }
-
-
-        protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
-        {
-            using (GetOrAddControllerPerfMarker.Auto())
-            {
-                InputDeviceCharacteristics inputDeviceCharacteristics = inputDevice.characteristics;
-
-                // If this is a new input device, search if an existing input device has matching characteristics
-                if (!ActiveControllers.ContainsKey(inputDevice))
-                {
-                    foreach (InputDevice device in ActiveControllers.Keys)
-                    {
-                        InputDeviceCharacteristics deviceCharacteristics = device.characteristics;
-
-                        if (((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Controller))
-                            || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)))
-                            && ((deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Left))
-                            || (deviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right) && inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.Right))))
-                        {
-                            ActiveControllers.Add(inputDevice, ActiveControllers[device]);
-                            break;
-                        }
-                    }
-                }
-
-                if (inputDeviceCharacteristics.IsMaskSet(InputDeviceCharacteristics.HandTracking)
-                    && inputDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked)
-                    && !isTracked)
-                {
-                    // If this is an input device from the Microsoft Hand Interaction profile, it doesn't go invalid but instead goes untracked. Ignore it if untracked.
-                    return null;
-                }
-
-                return base.GetOrAddController(inputDevice);
-            }
+            xrController.hideControllerModel = !isControllerTracked;
         }
     }
 }
