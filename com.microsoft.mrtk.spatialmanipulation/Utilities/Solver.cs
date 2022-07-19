@@ -224,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             currentLifetime = 0;
 
-            // Register the solver with it's solver hander
+            // Register the solver with its solver hander
             if (SolverHandler != null)
             {
                 SolverHandler.RegisterSolver(this);
@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         protected virtual void OnDisable()
         {
-            // Unregister the solver with it's solver hander
+            // Unregister the solver with its solver hander
             if (SolverHandler != null)
             {
                 SolverHandler.UnregisterSolver(this);
