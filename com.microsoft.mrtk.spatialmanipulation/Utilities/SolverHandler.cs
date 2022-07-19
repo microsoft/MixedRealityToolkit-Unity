@@ -383,8 +383,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             AttachToNewTrackedObject();
         }
 
-        // Used to cache and reduce allocs for getting the solver components on this gameobject
-        private List<Solver> inspectorOrderedSolvers;
+        // Used to cache and reduce allocs for getting the solver components on this GameObject
+        private List<Solver> inspectorOrderedSolvers = new List<Solver>();
 
         /// <summary>
         /// Adds <paramref name="solver"/> to the list of <see cref="Solvers"/> guaranteeing inspector ordering.
@@ -393,9 +393,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             if (!solvers.Contains(solver))
             {
-                // Make sure we only process solvers which are located on the same gameobject.
-                GetComponents<Solver>(inspectorOrderedSolvers);
-                if(inspectorOrderedSolvers.Contains(solver))
+                // Make sure we only process solvers which are located on the same GameObject.
+                GetComponents(inspectorOrderedSolvers);
+                if (inspectorOrderedSolvers.Contains(solver))
                 {
                     solvers.Add(solver);
                     // Ensure that the solvers list obeys inspector ordering afterwards
