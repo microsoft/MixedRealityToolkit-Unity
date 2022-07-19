@@ -192,8 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => updateSolvers = value;
         }
 
-        protected readonly List<Solver> solvers = new List<Solver>();
-        private bool updateSolversList = false;
+        protected List<Solver> solvers = new List<Solver>();
 
         /// <summary>
         /// List of solvers that this handler will manage and update.
@@ -346,14 +345,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void LateUpdate()
         {
-            if (updateSolversList)
-            {
-                IEnumerable<Solver> inspectorOrderedSolvers = GetComponents<Solver>().Intersect(solvers);
-                Solvers = inspectorOrderedSolvers.Union(Solvers).ToReadOnlyCollection();
-
-                updateSolversList = false;
-            }
-
             if (UpdateSolvers)
             {
                 // Before calling solvers, update goal to be the transform so that working and transform will match
@@ -392,22 +383,31 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             AttachToNewTrackedObject();
         }
 
+        // Used to cache and reduce allocs for getting the solver components on this gameobject
+        private List<Solver> inspectorOrderedSolvers;
+
         /// <summary>
         /// Adds <paramref name="solver"/> to the list of <see cref="Solvers"/> guaranteeing inspector ordering.
         /// </summary>
-        public void RegisterSolver(Solver solver)
+        internal void RegisterSolver(Solver solver)
         {
             if (!solvers.Contains(solver))
             {
-                solvers.Add(solver);
-                updateSolversList = true;
+                // Make sure we only process solvers which are located on the same gameobject.
+                GetComponents<Solver>(inspectorOrderedSolvers);
+                if(inspectorOrderedSolvers.Contains(solver))
+                {
+                    solvers.Add(solver);
+                    // Ensure that the solvers list obeys inspector ordering afterwards
+                    solvers = inspectorOrderedSolvers.Intersect(solvers).ToList();
+                }
             }
         }
 
         /// <summary>
         /// Removes <paramref name="solver"/> from the list of <see cref="Solvers"/>.
         /// </summary>
-        public void UnregisterSolver(Solver solver)
+        internal void UnregisterSolver(Solver solver)
         {
             solvers.Remove(solver);
         }
