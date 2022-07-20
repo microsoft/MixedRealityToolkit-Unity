@@ -175,8 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 if (constraint.isActiveAndEnabled &&
                     constraint.ConstraintType == transformType &&
-                    constraint.HandType.HasFlag(handMode) &&
-                    constraint.ProximityType.HasFlag(proximityMode))
+                    (constraint.HandType & handMode) == handMode &&
+                    (constraint.ProximityType & proximityMode) == proximityMode)
                 {
                     constraint.ApplyConstraint(ref transform);
                 }

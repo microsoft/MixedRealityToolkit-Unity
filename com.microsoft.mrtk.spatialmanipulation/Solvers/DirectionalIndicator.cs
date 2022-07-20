@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 
@@ -51,6 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private bool indicatorShown = false;
 
+        // Private scratchpad to reduce allocs.
+        private static List<Renderer> childRenderers = new List<Renderer>();
+
         protected override void Start()
         {
             base.Start();
@@ -88,8 +92,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private void SetIndicatorVisibility(bool showIndicator)
         {
             SolverHandler.UpdateSolvers = showIndicator;
+            childRenderers.Clear();
+            GetComponentsInChildren<Renderer>(childRenderers);
 
-            foreach (var renderer in GetComponentsInChildren<Renderer>())
+            foreach (var renderer in childRenderers)
             {
                 renderer.enabled = showIndicator;
             }

@@ -237,6 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private bool placementRequested;
 
         #region MonoBehaviour Implementation
+
         protected override void Start()
         {
             base.Start();
@@ -262,9 +263,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
             UnregisterPlacementAction();
+            base.OnDisable();
         }
 
         #endregion

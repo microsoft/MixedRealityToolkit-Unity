@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
 
                     FullQueryValid = true;
-                    foreach (HandFinger finger in HandsUtils.handFingers)
+                    foreach (HandFinger finger in HandsUtils.HandFingers)
                     {
                         if (handDevice.Value.TryGetFingerBones(finger, fingerBones))
                         {
