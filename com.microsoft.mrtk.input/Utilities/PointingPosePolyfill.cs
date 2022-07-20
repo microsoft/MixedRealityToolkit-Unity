@@ -60,10 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Tick the hand ray generator function. Uses index knuckle for position.
                 HandJointPose knuckle = joints[(int)TrackedHandJoint.IndexProximal];
                 HandJointPose palm = joints[(int)TrackedHandJoint.Palm];
-                handRay.Update(knuckle.Position, -palm.Up, CameraCache.Main.transform, controller.HandNode.ToHandedness());
+                handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(knuckle.Position), PlayspaceUtilities.ReferenceTransform.TransformVector(-palm.Up), CameraCache.Main.transform, controller.HandNode.ToHandedness());
                 
                 Ray ray = handRay.Ray;
-                transform.SetPositionAndRotation(ray.origin, Quaternion.LookRotation(ray.direction, palm.Up));
+                transform.SetPositionAndRotation(ray.origin, Quaternion.LookRotation(ray.direction, PlayspaceUtilities.ReferenceTransform.TransformVector(palm.Up)));
                 
                 // Remember that we modified the transform. If the action becomes bound later on,
                 // say, if motion controllers are suddenly connected, we will reset the transform

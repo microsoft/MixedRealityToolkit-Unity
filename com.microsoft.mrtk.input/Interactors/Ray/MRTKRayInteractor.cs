@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             xrController is ArticulatedHandController handController &&
                             handsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
                         {
-                            attachTransform.rotation = palmPose.Rotation;
+                            attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
                         }
                     }
 

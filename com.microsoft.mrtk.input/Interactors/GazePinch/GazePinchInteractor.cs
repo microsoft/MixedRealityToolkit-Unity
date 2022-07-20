@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 if (handsAggregator != null && handsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
                 {
-                    rotationToApply = palmPose.Rotation;
+                    rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
                 }
             }
 
