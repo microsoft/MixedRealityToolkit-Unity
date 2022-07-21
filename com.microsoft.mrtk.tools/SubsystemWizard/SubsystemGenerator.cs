@@ -1,27 +1,32 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Codice.CM.Common.Tree.Partial;
+using Codice.CM.SEIDInfo;
 using Microsoft.CSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tools
 {
     /// <summary>
-    /// 
+    /// Class which generates subsystem source files from templates contained within
+    /// the package.
     /// </summary>
     internal class SubsystemGenerator
     {
         // SubsystemWizard/Templates/SubsystemClassTemplate.txt
-        private const string ClassTemplateGuid = "2cb3a153fb7b8b142a1dac1bcfc3b38c";
+        public const string ClassTemplateGuid = "2cb3a153fb7b8b142a1dac1bcfc3b38c";
         // SubsystemWizard/Templates/SubsystemConfigTemplate.txt
-        private const string ConfigTemplateGuid = "ab5924fb380e64d47bdbd9fed4c08910";
+        public const string ConfigTemplateGuid = "ab5924fb380e64d47bdbd9fed4c08910";
         // SubsystemWizard/Templates/SubsystemDescriptorTemplate.txt
-        private const string DescriptorTemplateGuid = "8e1afb29fbaf1c2419511d266f49b976";
+        public const string DescriptorTemplateGuid = "8e1afb29fbaf1c2419511d266f49b976";
         // SubsystemWizard/Templates/SubsystemInterfaceTemplate.txt
-        private const string InterfaceTemplateGuid = "9bac30e514266984d947e360cfd17b05";
+        public const string InterfaceTemplateGuid = "9bac30e514266984d947e360cfd17b05";
 
         private const bool DefaultCreateConfiguration = false;
         private static readonly string DefaultSubsystemName = "NewSubsystem";
@@ -31,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private SubsystemWizardState state = SubsystemWizardState.Start;
 
         /// <summary>
-        /// 
+        /// The current state of the wizard.
         /// </summary>
         public SubsystemWizardState State
         {
@@ -42,7 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private bool createConfiguration = DefaultCreateConfiguration;
 
         /// <summary>
-        /// 
+        /// Inidcates whether or not the wizard should generate a subsystem configuration
+        /// source file.
         /// </summary>
         public bool CreateConfiguration
         {
@@ -105,9 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             Reset();
         }
 
+        private const string abortMessage = "Aborting subsystem generation";
+
         /// <summary>
-        /// 
+        /// Creates the subsystem source files based off of the templates in the
+        /// package.
         /// </summary>
+        /// <param name="errors">Collection of errors encountered in the generation process.</param>
+        /// <returns>True if successful, or false.</returns>
         public bool Generate(List<string> errors)
         {
             errors.Clear();
@@ -122,18 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 return false;
             }
 
-            // Validate the subsystem name.
-            if (!ValidateName(SubsystemName, out string error))
-            {
-                errors.Add(error);
-            }
-
-            // Validate the namespace.
-            if (!ValidateName(SubsystemNamespace, out error))
-            {
-                errors.Add(error);
-            }
-
             // Make sure there is a folder in which to create the new files.
             DirectoryInfo outputFolder = new DirectoryInfo(
                 Path.Combine(OutputFolderRoot, SubsystemName));
@@ -142,18 +141,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 outputFolder.Create();
             }
 
-            // If we already have one or more errors, abort.
-            if (errors.Count > 0)
-            {
-                errors.Add("Aborting subsystem creation");
-                return false;
-            }
-
             // Create subsystem descriptor file
             // todo: skip?
             FileInfo descriptorFile = new FileInfo(
                 Path.Combine(outputFolder.FullName, $"{DescriptorName}.cs"));
-            if (!CreateFile(descriptorTemplate, descriptorFile, out error))
+            if (!CreateFile(descriptorTemplate, descriptorFile, out string error))
             {
                 errors.Add(error);
             }
@@ -161,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             // If we failed creating the previous file, abort.
             if (errors.Count > 0)
             {
-                errors.Add("Aborting subsystem creation");
+                errors.Add(abortMessage);
                 return false;
             }
 
@@ -177,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             // If we failed creating the previous file, abort.
             if (errors.Count > 0)
             {
-                errors.Add("Aborting subsystem creation");
+                errors.Add(abortMessage);
                 return false;
             }
 
@@ -196,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 // If we failed creating the previous file, abort.
                 if (errors.Count > 0)
                 {
-                    errors.Add("Aborting subsystem creation");
+                    errors.Add(abortMessage);
                     return false;
                 }
 
@@ -290,23 +282,69 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <param name="name"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-        private bool ValidateName(string name, out string error)
+        public bool ValidateSubsystemName(string name, out string error)
         {
-            error = string.Empty;
-
             // Ensure a name was provided.
             if (string.IsNullOrWhiteSpace(SubsystemName))
             {
-                SubsystemNamespace = DefaultSubsystemName;
+                SubsystemName = DefaultSubsystemName;
             }
 
-            // Verify that the name is valid within C#
-            if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name))
+            bool success = ValidateName(name);
+
+            error = success ? string.Empty :
+                $"Subsystem name: {name} is not a valid C# identifier.";
+
+            return success;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        public bool ValidateNamespace(string name, out string error)
+        {
+            // Ensure a name was provided.
+            if (string.IsNullOrWhiteSpace(SubsystemNamespace))
             {
-                error = $"{name} is not a valid C# identifier";
+                SubsystemNamespace = DefaultSubsystemNamespace;
             }
 
-            return true;
+            bool success = true;
+            StringBuilder sb = new StringBuilder();
+
+            string[] namespaceComponents = SubsystemNamespace.Split('.');
+
+            foreach (string s in namespaceComponents)
+            {
+                if (!ValidateName(s))
+                {
+                    if (sb.Length > 0)
+                    {
+                        sb.Append(", ");
+                    }
+                    sb.Append(s);
+                    success = false;
+                }
+            }
+
+            error = (sb.Length == 0) ? string.Empty :
+                $"Namespace: {sb} is/are invalid C# identifier(s)";
+            return success;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool ValidateName(string name)
+        {
+            // Verify that the name is valid within C#
+            bool isValid = CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
+            return isValid;
         }
 
         /// <summary>

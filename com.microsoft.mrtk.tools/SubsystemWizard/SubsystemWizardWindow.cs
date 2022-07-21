@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Editor;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Text;
 
 namespace Microsoft.MixedReality.Toolkit.Tools
 {
@@ -104,9 +105,28 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="errors"></param>
+        private void RenderErrorLog(List<string> errors)
+        {
+            EditorGUILayout.LabelField("Errors");
+            EditorGUILayout.Space(4);
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string s in errors)
+            {
+                sb.AppendLine(s); 
+            }
+
+            EditorGUILayout.HelpBox(sb.ToString(), MessageType.Error);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void RenderWizardStartPage()
         {
-            bool hasErrors = false;
+            List<string> errors = new List<string>();
 
             using (new EditorGUI.IndentLevelScope())
             {
@@ -128,15 +148,32 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 subsystemGenerator.CreateConfiguration = EditorGUILayout.Toggle("Add subsystem configuration", subsystemGenerator.CreateConfiguration);
                 EditorGUIUtility.labelWidth = labelWidth;
                 EditorGUILayout.Space(4);
-                GUILayout.FlexibleSpace();
-                
-                if (hasErrors)
+
+                // Validate the subsystem name.
+                if (!subsystemGenerator.ValidateSubsystemName(
+                    subsystemGenerator.SubsystemName,
+                    out string error))
                 {
-                    // todo RenderErrorLog();
+                    errors.Add(error);
                 }
+
+                // Validate the namespace.
+                if (!subsystemGenerator.ValidateNamespace(
+                    subsystemGenerator.SubsystemNamespace,
+                    out error))
+                {
+                    errors.Add(error);
+                }
+
+                if (errors.Count > 0)
+                {
+                    RenderErrorLog(errors);
+                }
+
+                GUILayout.FlexibleSpace();
             }
 
-            using (new EditorGUI.DisabledGroupScope(hasErrors))
+            using (new EditorGUI.DisabledGroupScope(errors.Count > 0))
             {
                 if (GUILayout.Button("Next"))
                 {
@@ -202,13 +239,13 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                         // todo
                         List<string> errors = new List<string>();
 
-                        // todo: need to capture error(s)
-                        if (!subsystemGenerator.Generate(errors));
+                        //// todo: need to capture error(s)
+                        //if (!subsystemGenerator.Generate(errors));
 
-                        if (errors.Count == 0)
-                        {
-                            subsystemGenerator.State = SubsystemWizardState.Complete;
-                        }
+                        //if (errors.Count == 0)
+                        //{
+                        //    subsystemGenerator.State = SubsystemWizardState.Complete;
+                        //}
                     }
                 }
             }
