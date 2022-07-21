@@ -168,7 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                HandNode.ToHandedness());
                 
                 Ray ray = handRay.Ray;
-                transform.SetPositionAndRotation(ray.origin, Quaternion.LookRotation(ray.direction, PlayspaceUtilities.ReferenceTransform.TransformVector(palm.Up)));
+                controllerState.position = ray.origin;
+                controllerState.rotation = Quaternion.LookRotation(ray.direction, PlayspaceUtilities.ReferenceTransform.TransformVector(palm.Up));
             }
         }
     }
