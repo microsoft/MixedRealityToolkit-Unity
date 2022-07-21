@@ -58,6 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private bool pinchedLastFrame = false;
 
+        // For pointing pose polyfill only.
+        // Remove once we have reliable cross-vendor aim pose from hands.
+        private HandRay handRay;
+
         // Awake() override to prevent the base class
         // from using the base controller state instead of our
         // derived state. TODO: Brought up with Unity, may be
@@ -65,6 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void Awake()
         {
             base.Awake();
+
+            // For pointing pose polyfill.
+            handRay = new HandRay();
 
             currentControllerState = new ArticulatedHandControllerState();
         }
@@ -132,6 +139,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handControllerState.PinchPose.position = controllerState.position;
                     handControllerState.PinchPose.rotation = controllerState.rotation;
                 }
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void UpdateTrackingInput(XRControllerState controllerState)
+        {
+            base.UpdateTrackingInput(controllerState);
+
+            // Workaround for missing aim/pointing-pose on devices without interaction profiles
+            // for hands, such as Varjo and Quest. Should be removed once we have universal
+            // hand interaction profile(s) across vendors.
+            if (handsAggregator != null && (positionAction.action?.controls.Count ?? 0) == 0)
+            {
+                if (!handsAggregator.TryGetJoint(TrackedHandJoint.IndexProximal, HandNode, out HandJointPose knuckle))
+                {
+                    return;
+                }
+                if (!handsAggregator.TryGetJoint(TrackedHandJoint.Palm, HandNode, out HandJointPose palm))
+                {
+                    return;
+                }
+
+                // Tick the hand ray generator function. Uses index knuckle for position.
+                handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(knuckle.Position),
+                               PlayspaceUtilities.ReferenceTransform.TransformVector(-palm.Up),
+                               CameraCache.Main.transform,
+                               HandNode.ToHandedness());
+                
+                Ray ray = handRay.Ray;
+                transform.SetPositionAndRotation(ray.origin, Quaternion.LookRotation(ray.direction, PlayspaceUtilities.ReferenceTransform.TransformVector(palm.Up)));
             }
         }
     }

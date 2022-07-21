@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2940030942784507886}
   - component: {fileID: 1180895169275043612}
   - component: {fileID: 2105872328799679035}
-  - component: {fileID: 5253881778346564948}
   m_Layer: 0
   m_Name: Far Ray
   m_TagString: Untagged
@@ -179,18 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dwellTriggerTime: 0.3
---- !u!114 &5253881778346564948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33891623947274355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8283d2605e0565d4baff78feb5af8df7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &313520819636509231
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,7 +885,6 @@ GameObject:
   - component: {fileID: 9148848192675160673}
   - component: {fileID: 3419360757097544916}
   - component: {fileID: 6618093373316033540}
-  - component: {fileID: 3657872164446927150}
   m_Layer: 0
   m_Name: GazePinchInteractor
   m_TagString: Untagged
@@ -1025,18 +1011,6 @@ MonoBehaviour:
     priority: 4
   controllers:
   - {fileID: 6164080946324827545}
---- !u!114 &3657872164446927150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5224294193116514423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8283d2605e0565d4baff78feb5af8df7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6406844254730761679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,11 +1496,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
---- !u!1 &4299642553587339577 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 1009008764017234214}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8086910922498750391 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
@@ -1535,6 +1504,11 @@ GameObject:
 --- !u!4 &4299642553587339576 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 1009008764017234214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4299642553587339577 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &943052423812839532
