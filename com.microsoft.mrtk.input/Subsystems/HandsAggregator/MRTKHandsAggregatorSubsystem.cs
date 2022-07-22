@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // If we are tracked and also have a cached finger length, return that.
-                if (indexFingerLength.HasValue)
+                if (indexFingerLength.HasValue && indexFingerLength.Value != 0.0f)
                 {
                     length = indexFingerLength.Value;
                     return true;
@@ -235,6 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <inheritdoc/>
+            [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
             public override bool TryGetHandCenter(XRNode handNode, out HandJointPose jointPose)
             {
                 return TryGetJoint(TrackedHandJoint.Palm, handNode, out jointPose);
