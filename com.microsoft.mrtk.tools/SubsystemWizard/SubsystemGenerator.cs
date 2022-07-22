@@ -4,6 +4,7 @@
 using Codice.CM.Common.Tree.Partial;
 using Codice.CM.SEIDInfo;
 using Microsoft.CSharp;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -114,25 +115,14 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private const string abortMessage = "Aborting subsystem generation";
 
         /// <summary>
-        /// Creates the subsystem source files based off of the templates in the
-        /// package.
+        /// Creates the subsystem source files based off of the provided templates.
         /// </summary>
-        /// <param name="errors">Collection of errors encountered in the generation process.</param>
-        /// <returns>True if successful, or false.</returns>
-        public bool Generate(List<string> errors)
+        public void Generate(
+            FileInfo descriptorTemplate,
+            FileInfo interfaceTemplate,
+            FileInfo classTemplate,
+            FileInfo configTemplate)
         {
-            errors.Clear();
-
-            // Ensure the package is not corrupted / missing files.
-            if (!GetFileFromGuid(DescriptorTemplateGuid, out FileInfo descriptorTemplate) ||
-                !GetFileFromGuid(InterfaceTemplateGuid, out FileInfo interfaceTemplate) ||
-                !GetFileFromGuid(ClassTemplateGuid, out FileInfo classTemplate) ||
-                !GetFileFromGuid(ConfigTemplateGuid, out FileInfo configTemplate))
-            {
-                errors.Add($"Package error: Unable to locate one or more subsystem template files.");
-                return false;
-            }
-
             // Make sure there is a folder in which to create the new files.
             DirectoryInfo outputFolder = new DirectoryInfo(
                 Path.Combine(OutputFolderRoot, SubsystemName));
@@ -141,68 +131,20 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 outputFolder.Create();
             }
 
-            // Create subsystem descriptor file
-            // todo: skip?
-            FileInfo descriptorFile = new FileInfo(
+            // todo: skip / allow overwrite files?
+            CreateFile(descriptorTemplate,
                 Path.Combine(outputFolder.FullName, $"{DescriptorName}.cs"));
-            if (!CreateFile(descriptorTemplate, descriptorFile, out string error))
-            {
-                errors.Add(error);
-            }
-
-            // If we failed creating the previous file, abort.
-            if (errors.Count > 0)
-            {
-                errors.Add(abortMessage);
-                return false;
-            }
-
-            // Create subsystem interface file
-            // todo: skip?
-            FileInfo interfaceFile = new FileInfo(
+            CreateFile(interfaceTemplate,
                 Path.Combine(outputFolder.FullName, $"{InterfaceName}.cs"));
-            if (!CreateFile(interfaceTemplate, interfaceFile, out error))
-            {
-                errors.Add(error);
-            }
-
-            // If we failed creating the previous file, abort.
-            if (errors.Count > 0)
-            {
-                errors.Add(abortMessage);
-                return false;
-            }
-
-            // Create subsystem class file
-            // todo: skip?
-            FileInfo classFile = new FileInfo(
+            CreateFile(classTemplate,
                 Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
-            if (!CreateFile(classTemplate, classFile, out error))
-            {
-                errors.Add(error);
-            }
-
-            // Create subsystem configuration file
             if (CreateConfiguration)
             {
-                // If we failed creating the previous file, abort.
-                if (errors.Count > 0)
-                {
-                    errors.Add(abortMessage);
-                    return false;
-                }
-
-                FileInfo configurationFile = new FileInfo(
+                CreateFile(configTemplate,
                     Path.Combine(outputFolder.FullName, $"{ConfigurationName}.cs"));
-                if (!CreateFile(configTemplate, configurationFile, out error))
-                {
-                    errors.Add(error);
-                }
             }
 
             AssetDatabase.Refresh();
-
-            return (errors.Count == 0);
         }
 
         /// <summary>
@@ -220,82 +162,45 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// 
         /// </summary>
         /// <param name="templateFile"></param>
-        /// <param name="outputFile"></param>
-        /// <param name="error"></param>
-        /// <returns></returns>
-        private bool CreateFile(
+        /// <param name="outputFilePath"></param>
+        private void CreateFile(
             FileInfo templateFile,
-            FileInfo outputFile,
-            out string error)
+            string outputFilePath)
         {
-            error = string.Empty;
-
+            FileInfo outputFile = new FileInfo(outputFilePath);
             if (outputFile.Exists)
             {
-                error = $"Unable to create {outputFile.FullName}, overwriting existing files is not supported.";
-                return false;
+                throw new IOException($"Unable to create {outputFile.FullName}, overwriting existing files is not supported.");
             }
 
-            try
+            // Read the template file.
+            string template = null;
+            using (FileStream fs = templateFile.OpenRead())
             {
-                string template = null;
-
-                using (FileStream fs = templateFile.OpenRead())
+                using (StreamReader reader = new StreamReader(fs))
                 {
-                    using (StreamReader reader = new StreamReader(fs))
-                    {
-                        template = reader.ReadToEnd();
+                    template = reader.ReadToEnd();
 
-                        // Insert namespace and subsystem name
-                        template = template.Replace("%NAMESPACE%", SubsystemNamespace);
-                        template = template.Replace("%SUBSYSTEMNAME%", SubsystemName);
-                    }
-                }
-
-                if (template == null)
-                {
-                    error = $"Failed to read the contents of {templateFile.FullName}";
-                    return false;
-                }
-
-                using (FileStream fs = outputFile.OpenWrite())
-                {
-                    using (StreamWriter writer = new StreamWriter(fs))
-                    {
-                        writer.AutoFlush = true;
-                        writer.Write(template);
-                    }
+                    // Insert namespace and subsystem name
+                    template = template.Replace("%NAMESPACE%", SubsystemNamespace);
+                    template = template.Replace("%SUBSYSTEMNAME%", SubsystemName);
                 }
             }
-            catch (Exception e)
+
+            if (template == null)
             {
-                error = $"Failed to create {outputFile.FullName} - {e.Message} ({e.GetType()})";
-                return false;
+                throw new IOException($"Failed to read the contents of {templateFile.FullName}");
             }
 
-            return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="error"></param>
-        /// <returns></returns>
-        public bool ValidateSubsystemName(string name, out string error)
-        {
-            // Ensure a name was provided.
-            if (string.IsNullOrWhiteSpace(SubsystemName))
+            // Write the new source file.
+            using (FileStream fs = outputFile.OpenWrite())
             {
-                SubsystemName = DefaultSubsystemName;
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.AutoFlush = true;
+                    writer.Write(template);
+                }
             }
-
-            bool success = ValidateName(name);
-
-            error = success ? string.Empty :
-                $"Subsystem name: {name} is not a valid C# identifier.";
-
-            return success;
         }
 
         /// <summary>
@@ -339,12 +244,79 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// 
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="error"></param>
         /// <returns></returns>
-        private bool ValidateName(string name)
+        public bool ValidateSubsystemName(string name, out string error)
         {
-            // Verify that the name is valid within C#
-            bool isValid = CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
-            return isValid;
+            // Ensure a name was provided.
+            if (string.IsNullOrWhiteSpace(SubsystemName))
+            {
+                SubsystemName = DefaultSubsystemName;
+            }
+
+            bool success = ValidateName(name);
+
+            error = success ? string.Empty :
+                $"Subsystem name: {name} is not a valid C# identifier.";
+
+            return success;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="descriptorTemplate"></param>
+        /// <param name="interfaceTemplate"></param>
+        /// <param name="classTemplate"></param>
+        /// <param name="configTemplate"></param>
+        /// <returns></returns>
+        public bool ValidateTemplates(List<string> errors,
+            out FileInfo descriptorTemplate,
+            out FileInfo interfaceTemplate,
+            out FileInfo classTemplate,
+            out FileInfo configTemplate)
+        {
+            bool success = true;
+
+            if (!ValidateTemplate(
+                DescriptorTemplateGuid,
+                out descriptorTemplate,
+                out string error))
+            {
+                errors.Add($"Descriptor template - {error}");
+                success = false;
+            }
+            if (!ValidateTemplate(
+                InterfaceTemplateGuid,
+                out interfaceTemplate,
+                out error))
+            {
+                errors.Add($"Interface template - {error}");
+                success = false;
+            }
+            if (!ValidateTemplate(
+                ClassTemplateGuid,
+                out classTemplate,
+                out error))
+            {
+                errors.Add($"Class template - {error}");
+                success = false;
+            }
+            configTemplate = null;
+            if (CreateConfiguration)
+            {
+                if (!ValidateTemplate(
+                    ClassTemplateGuid,
+                    out configTemplate,
+                    out error))
+                {
+                    errors.Add($"Configuration template - {error}");
+                    success = false;
+                }
+            }
+
+            return success;
         }
 
         /// <summary>
@@ -352,21 +324,44 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// </summary>
         /// <param name="guid"></param>
         /// <param name="fileInfo"></param>
+        /// <param name="error"></param>
         /// <returns></returns>
-        private bool GetFileFromGuid(
+        private bool ValidateTemplate(
             string guid,
-            out FileInfo fileInfo)
+            out FileInfo fileInfo,
+            out string error)
         {
             fileInfo = null;
+            error = string.Empty;
 
-            FileInfo fi = new FileInfo(AssetDatabase.GUIDToAssetPath(guid));
-            if (fi.Exists)
+            string filePath = AssetDatabase.GUIDToAssetPath(guid);
+            if (string.IsNullOrWhiteSpace(filePath))
             {
-                fileInfo = fi;
-                return true;
+                error = "Unable to resolve template asset, please file an MRTK3 bug.";
+                return false;
             }
 
-            return false;
+            FileInfo fi = new FileInfo(filePath);
+            if (!fi.Exists)
+            {
+                error = $"Template file {fi.Name} could not be located, please file an MRTK3 bug.";
+                return false;
+            }
+
+            fileInfo = fi;
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool ValidateName(string name)
+        {
+            // Verify that the name is valid within C#
+            bool isValid = CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
+            return isValid;
         }
     }
 
