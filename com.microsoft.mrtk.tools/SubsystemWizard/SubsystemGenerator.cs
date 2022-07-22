@@ -1,13 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Codice.CM.Common.Tree.Partial;
-using Codice.CM.SEIDInfo;
 using Microsoft.CSharp;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -21,13 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     internal class SubsystemGenerator
     {
         // SubsystemWizard/Templates/SubsystemClassTemplate.txt
-        public const string ClassTemplateGuid = "2cb3a153fb7b8b142a1dac1bcfc3b38c";
+        private const string ClassTemplateGuid = "2cb3a153fb7b8b142a1dac1bcfc3b38c";
         // SubsystemWizard/Templates/SubsystemConfigTemplate.txt
-        public const string ConfigTemplateGuid = "ab5924fb380e64d47bdbd9fed4c08910";
+        private const string ConfigTemplateGuid = "ab5924fb380e64d47bdbd9fed4c08910";
         // SubsystemWizard/Templates/SubsystemDescriptorTemplate.txt
-        public const string DescriptorTemplateGuid = "8e1afb29fbaf1c2419511d266f49b976";
+        private const string DescriptorTemplateGuid = "8e1afb29fbaf1c2419511d266f49b976";
         // SubsystemWizard/Templates/SubsystemInterfaceTemplate.txt
-        public const string InterfaceTemplateGuid = "9bac30e514266984d947e360cfd17b05";
+        private const string InterfaceTemplateGuid = "9bac30e514266984d947e360cfd17b05";
 
         private const bool DefaultCreateConfiguration = false;
         private static readonly string DefaultSubsystemName = "NewSubsystem";
@@ -82,6 +77,42 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             get => $"I{SubsystemName}";
         }
 
+        private bool dontCreateDescriptor = false;
+
+        /// <summary>
+        /// Indicates if the user wishes to skip the creation of the subsystem
+        /// descriptor source code file.
+        /// </summary>
+        public bool DontCreateDescriptor
+        {
+            get => dontCreateDescriptor;
+            set => dontCreateDescriptor = value;
+        }
+
+        private bool dontCreateInterface = false;
+
+        /// <summary>
+        /// Indicates if the user wishes to skip the creation of the subsystem
+        /// interface source code file.
+        /// </summary>
+        public bool DontCreateInterface
+        {
+            get => dontCreateInterface;
+            set => dontCreateInterface = value;
+        }
+
+        private bool dontCreateClass = false;
+
+        /// <summary>
+        /// Indicates if the user wishes to skip the creation of the subsystem
+        /// class source code file.
+        /// </summary>
+        public bool DontCreateClass
+        {
+            get => dontCreateClass;
+            set => dontCreateClass = value;
+        }
+
         private string subsystemName = DefaultSubsystemName;
 
         /// <summary>
@@ -112,8 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             Reset();
         }
 
-        private const string abortMessage = "Aborting subsystem generation";
-
         /// <summary>
         /// Creates the subsystem source files based off of the provided templates.
         /// </summary>
@@ -131,19 +160,29 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 outputFolder.Create();
             }
 
-            // todo: skip / allow overwrite files?
-            CreateFile(descriptorTemplate,
-                Path.Combine(outputFolder.FullName, $"{DescriptorName}.cs"));
-            CreateFile(interfaceTemplate,
-                Path.Combine(outputFolder.FullName, $"{InterfaceName}.cs"));
-            CreateFile(classTemplate,
-                Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
+            // Create the source files.
+            if (!DontCreateDescriptor)
+            {
+                CreateFile(descriptorTemplate,
+                    Path.Combine(outputFolder.FullName, $"{DescriptorName}.cs"));
+            }
+            if (!DontCreateInterface)
+            {
+                CreateFile(interfaceTemplate,
+                    Path.Combine(outputFolder.FullName, $"{InterfaceName}.cs"));
+            }
+            if (!DontCreateClass)
+            {
+                CreateFile(classTemplate,
+                    Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
+            }
             if (CreateConfiguration)
             {
                 CreateFile(configTemplate,
                     Path.Combine(outputFolder.FullName, $"{ConfigurationName}.cs"));
             }
 
+            // Update Unity's asset database to ensure the new files appear.
             AssetDatabase.Refresh();
         }
 
@@ -155,14 +194,19 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             CreateConfiguration = DefaultCreateConfiguration;
             SubsystemName = DefaultSubsystemName;
             SubsystemNamespace = DefaultSubsystemNamespace;
+
+            DontCreateClass = false;
+            DontCreateDescriptor = false;
+            dontCreateInterface = false;
+
             State = SubsystemWizardState.Start;
         }
 
         /// <summary>
-        /// 
+        /// Creates the specified subsystem source code file from the provided template.
         /// </summary>
-        /// <param name="templateFile"></param>
-        /// <param name="outputFilePath"></param>
+        /// <param name="templateFile">The template to use for the specified file.</param>
+        /// <param name="outputFilePath">The fully qualified path for the resulting source code file.</param>
         private void CreateFile(
             FileInfo templateFile,
             string outputFilePath)
@@ -204,12 +248,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Ensures that the value of <see cref="SubsystemNamespace"/> is valid for the
+        /// C# language.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="error"></param>
-        /// <returns></returns>
-        public bool ValidateNamespace(string name, out string error)
+        /// <param name="error">String describing the encountered error.</param>
+        /// <returns>True of successful, or false.</returns>
+        public bool ValidateNamespace(out string error)
         {
             // Ensure a name was provided.
             if (string.IsNullOrWhiteSpace(SubsystemNamespace))
@@ -241,12 +285,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Ensures that the value of <see cref="SubsystemName"/> is valid for the
+        /// C# language.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="error"></param>
-        /// <returns></returns>
-        public bool ValidateSubsystemName(string name, out string error)
+        /// <param name="error">String describing the encountered error.</param>
+        /// <returns>True of successful, or false.</returns>
+        public bool ValidateSubsystemName(out string error)
         {
             // Ensure a name was provided.
             if (string.IsNullOrWhiteSpace(SubsystemName))
@@ -254,23 +298,31 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 SubsystemName = DefaultSubsystemName;
             }
 
-            bool success = ValidateName(name);
+            bool success = ValidateName(SubsystemName);
 
             error = success ? string.Empty :
-                $"Subsystem name: {name} is not a valid C# identifier.";
+                $"Subsystem name: {SubsystemName} is not a valid C# identifier.";
 
             return success;
         }
 
         /// <summary>
-        /// 
+        /// Ensures that the necessary templates can be located and successfully loaded.
         /// </summary>
-        /// <param name="errors"></param>
-        /// <param name="descriptorTemplate"></param>
-        /// <param name="interfaceTemplate"></param>
-        /// <param name="classTemplate"></param>
-        /// <param name="configTemplate"></param>
-        /// <returns></returns>
+        /// <param name="errors">List to which any encountered errors will be added.</param>
+        /// <param name="descriptorTemplate">
+        /// <see cref="FileInfo"/> object representing the subsystem descriptor template file.
+        /// </param>
+        /// <param name="interfaceTemplate">
+        /// <see cref="FileInfo"/> object representing the subsystem interface template file.
+        /// </param>
+        /// <param name="classTemplate">
+        /// <see cref="FileInfo"/> object representing the subsystem class template file.
+        /// </param>
+        /// <param name="configTemplate">
+        /// <see cref="FileInfo"/> object representing the subsystem configuration template file.
+        /// </param>
+        /// <returns>True if the collection of templates can all be validated, or false.</returns>
         public bool ValidateTemplates(List<string> errors,
             out FileInfo descriptorTemplate,
             out FileInfo interfaceTemplate,
@@ -279,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             bool success = true;
 
-            if (!ValidateTemplate(
+            if (!GetAsset(
                 DescriptorTemplateGuid,
                 out descriptorTemplate,
                 out string error))
@@ -287,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 errors.Add($"Descriptor template - {error}");
                 success = false;
             }
-            if (!ValidateTemplate(
+            if (!GetAsset(
                 InterfaceTemplateGuid,
                 out interfaceTemplate,
                 out error))
@@ -295,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 errors.Add($"Interface template - {error}");
                 success = false;
             }
-            if (!ValidateTemplate(
+            if (!GetAsset(
                 ClassTemplateGuid,
                 out classTemplate,
                 out error))
@@ -306,8 +358,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             configTemplate = null;
             if (CreateConfiguration)
             {
-                if (!ValidateTemplate(
-                    ClassTemplateGuid,
+                if (!GetAsset(
+                    ConfigTemplateGuid,
                     out configTemplate,
                     out error))
                 {
@@ -320,13 +372,13 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Attempts to acquire a <see cref="FileInfo"/> object representing the requested asset.
         /// </summary>
-        /// <param name="guid"></param>
-        /// <param name="fileInfo"></param>
-        /// <param name="error"></param>
+        /// <param name="guid">The guid that represents the asset.</param>
+        /// <param name="fileInfo"><see cref="FileInfo"/> object representing the asset.</param>
+        /// <param name="error">Error message.</param>
         /// <returns></returns>
-        private bool ValidateTemplate(
+        private bool GetAsset(
             string guid,
             out FileInfo fileInfo,
             out string error)
@@ -353,10 +405,10 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Validates that the specified name is a valid indentifier for C#.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The name to validate/</param>
+        /// <returns>True if the name is a valid C# identifier, or false.</returns>
         private bool ValidateName(string name)
         {
             // Verify that the name is valid within C#

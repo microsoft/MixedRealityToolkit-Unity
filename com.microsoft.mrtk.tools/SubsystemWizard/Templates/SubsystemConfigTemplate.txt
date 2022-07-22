@@ -1,4 +1,4 @@
-using Microsoft.MixedReality.Toolkit.Subsystems;
+using Microsoft.MixedReality.Toolkit;
 using UnityEngine;
 
 namespace %NAMESPACE%

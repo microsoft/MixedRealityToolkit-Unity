@@ -1,6 +1,6 @@
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
-using UnityEngine.SubsystemsImplementation;
 
 namespace %NAMESPACE%
 {

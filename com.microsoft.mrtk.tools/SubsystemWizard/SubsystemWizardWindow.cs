@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private static SubsystemWizardWindow window = null;
         private static SubsystemGenerator subsystemGenerator = new SubsystemGenerator();
 
-        private static readonly Vector2 WindowSizeWithoutLogo = new Vector2(600, 250);
-        private static readonly Vector2 WindowSizeWithLogo = new Vector2(600, 320);
+        private static readonly Vector2 WindowSizeWithoutLogo = new Vector2(600, 290);
+        private static readonly Vector2 WindowSizeWithLogo = new Vector2(600, 360);
 
         [MenuItem("Mixed Reality/MRTK3/Utilities/Subsystem Wizard...", false)]
         private static void Init()
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Renders common wizard UI elements.
         /// </summary>
         private void RenderCommonElements()
         {
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Renders the contents of the provided errors list.
         /// </summary>
         /// <param name="errors"></param>
         private void RenderErrorLog(List<string> errors)
@@ -124,7 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Renders the start page of the wizard. This is the page that collects the
+        /// user's desired names.
         /// </summary>
         private void RenderWizardStartPage()
         {
@@ -152,17 +153,13 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 EditorGUILayout.Space(4);
 
                 // Validate the subsystem name.
-                if (!subsystemGenerator.ValidateSubsystemName(
-                    subsystemGenerator.SubsystemName,
-                    out string error))
+                if (!subsystemGenerator.ValidateSubsystemName(out string error))
                 {
                     errors.Add(error);
                 }
 
                 // Validate the namespace.
-                if (!subsystemGenerator.ValidateNamespace(
-                    subsystemGenerator.SubsystemNamespace,
-                    out error))
+                if (!subsystemGenerator.ValidateNamespace(out error))
                 {
                     errors.Add(error);
                 }
@@ -185,7 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Renders the wizard ui indicating that it is ready to generate the user's
+        /// subsystem. It also provides the option to skip generating select files.
         /// </summary>
         private void RenderWizardPreGeneratePage()
         {
@@ -201,27 +199,46 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
             using (new EditorGUI.IndentLevelScope())
             {
-                // todo: factor out the folder name
-                EditorGUILayout.LabelField($"The new subsystem will be created in your project's MRTK.Generated/{subsystemGenerator.SubsystemName} folder.", EditorStyles.boldLabel);
+                if (subsystemGenerator.DontCreateClass ||
+                    subsystemGenerator.DontCreateDescriptor ||
+                    subsystemGenerator.DontCreateInterface)
+                {
+                    EditorGUILayout.HelpBox(
+                        "Skipping generation of one or more files may result in compilation errors, such as one or more missing types.",
+                        MessageType.Warning);
+                }
+
+                EditorGUILayout.LabelField(
+                    $"The new subsystem will be created in your project's MRTK.Generated/{subsystemGenerator.SubsystemName} folder.",
+                    EditorStyles.boldLabel);
 
                 EditorGUILayout.Space(6);
-                // todo: if !skip
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem interface:", GUILayout.Width(160));
                     EditorGUILayout.LabelField($"{subsystemGenerator.InterfaceName}.cs");
+                    subsystemGenerator.DontCreateInterface = EditorGUILayout.ToggleLeft(
+                        "Skip",
+                        subsystemGenerator.DontCreateInterface);
+                    GUILayout.FlexibleSpace();
                 }
-                // todo: if !skip
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem class:", GUILayout.Width(160));
                     EditorGUILayout.LabelField($"{subsystemGenerator.SubsystemName}.cs");
+                    subsystemGenerator.DontCreateClass   = EditorGUILayout.ToggleLeft(
+                        "Skip",
+                        subsystemGenerator.DontCreateClass);
+                    GUILayout.FlexibleSpace();
                 }
-                // todo: if !skip
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem descriptor:", GUILayout.Width(160));
                     EditorGUILayout.LabelField($"{subsystemGenerator.DescriptorName}.cs");
+                    subsystemGenerator.DontCreateDescriptor = EditorGUILayout.ToggleLeft(
+                        "Skip",
+                        subsystemGenerator.DontCreateDescriptor);
+                    GUILayout.FlexibleSpace();
                 }
                 if (subsystemGenerator.CreateConfiguration)
                 {
@@ -266,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                         {
                             EditorUtility.DisplayDialog(
                                 "MRTK3 Subsystem Wizard",
-                                $"Unable to create {subsystemGenerator.SubsystemName} - {e.Message} ({e.GetType()})",
+                                $"Unable to create {subsystemGenerator.SubsystemName}\n\n{e.Message} ({e.GetType()})",
                                 "Ok");
                         }
                     }
@@ -275,15 +292,34 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Renders the wizard complete page and provides users with recommended next steps.
         /// </summary>
         private void RenderWizardCompletePage()
         {
-            EditorGUILayout.LabelField($"Your new subsystem {subsystemGenerator.SubsystemName} has been successfully created.");
+            using (new EditorGUI.IndentLevelScope())
+            {
+                EditorGUILayout.LabelField($"Your new subsystem {subsystemGenerator.SubsystemName} has been successfully created.");
 
-            EditorGUILayout.Space(6);
-            // todo: next steps
-            GUILayout.FlexibleSpace();
+                EditorGUILayout.Space(6);
+                EditorGUILayout.LabelField("Next steps:", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField($" 1. In the Project view, navigate to Assets/MRTK.Generated/{subsystemGenerator.SubsystemName}");
+                EditorGUILayout.LabelField($" 2. Open {subsystemGenerator.DescriptorName}.cs");
+                EditorGUILayout.LabelField($" 3. Define subsystem specific properties in the {subsystemGenerator.SubsystemName}CInfo class");
+                EditorGUILayout.LabelField($" 4. Add and initialize subsystem specific properties in the {subsystemGenerator.DescriptorName} class");
+                EditorGUILayout.LabelField($" 5. Open {subsystemGenerator.InterfaceName}.cs");
+                EditorGUILayout.LabelField($" 6. Add subsystem specific properties and/or methods");
+                EditorGUILayout.LabelField($" 7. Open {subsystemGenerator.SubsystemName}.cs");
+                EditorGUILayout.LabelField($" 8. Implement {subsystemGenerator.InterfaceName} in abstract Provider class");
+                EditorGUILayout.LabelField($" 9. Implement {subsystemGenerator.InterfaceName} in {subsystemGenerator.SubsystemName} class");
+                if (subsystemGenerator.CreateConfiguration)
+                {
+                    EditorGUILayout.LabelField($"10. Open {subsystemGenerator.ConfigurationName}.cs");
+                    EditorGUILayout.LabelField($"11. Add subsystem configuration properties");
+                    EditorGUILayout.LabelField($"12. Return to {subsystemGenerator.SubsystemName}.cs");
+                    EditorGUILayout.LabelField($"11. Read configuration and initialize properties");
+                }
+                GUILayout.FlexibleSpace();
+            }
 
             using (new EditorGUILayout.HorizontalScope())
             {

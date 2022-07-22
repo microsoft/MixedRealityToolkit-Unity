@@ -17,14 +17,14 @@ namespace %NAMESPACE%
         {
             #region I%SUBSYSTEMNAME% implementation
 
-            // TODO: Abstract implementation of the %SUBSYSTEMNAME% interface
+            // TODO: Implement abstract Provider class.
 
             #endregion I%SUBSYSTEMNAME% implementation
         }
 
         #region I%SUBSYSTEMNAME% implementation
 
-        // TODO: This typically forwards calls into the provider (ex: public int MaxValue => provider.MaxValue;
+        // TODO: Calls into abstract Provider (ex: public int MaxValue => provider.MaxValue;
 
         #endregion I%SUBSYSTEMNAME% implementation
 
