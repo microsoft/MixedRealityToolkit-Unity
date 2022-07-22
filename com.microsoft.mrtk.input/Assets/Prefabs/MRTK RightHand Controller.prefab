@@ -160,6 +160,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -5913262927076077117, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
     - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_TrackingStateAction.m_Reference
+      value: 
+      objectReference: {fileID: 3239510804178183174, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: m_SelectActionValue.m_UseReference
       value: 1
       objectReference: {fileID: 0}
