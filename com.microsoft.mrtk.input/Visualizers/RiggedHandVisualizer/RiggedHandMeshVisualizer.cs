@@ -32,6 +32,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public XRNode HandNode { get => handNode; set => handNode = value; }
 
         [SerializeField]
+        [Tooltip("When true, this visualizer will render rigged hands even on XR devices with transparent displays.")]
+        private bool showHandsOnTransparentDisplays;
+
+        /// <summary>
+        /// When true, this visualizer will render rigged hands even on XR devices with transparent displays.
+        /// Usually, it's recommended not to show hand visualization on transparent displays as it can
+        /// distract from the user's real hands, and cause a "double image" effect that can be disconcerting.
+        /// </summary>
+        public bool ShowHandsOnTransparentDisplays
+        {
+            get => showHandsOnTransparentDisplays;
+            set => showHandsOnTransparentDisplays = value;
+        }
+
+        [SerializeField]
         [Range(0.8f, 1.2f)]
         [Tooltip("The overall hand mesh will be scaled by this amount to fit the user's real hand size.")]
         // Will be automatically calculated in the future.
@@ -75,6 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // Caching local references 
         private HandsAggregatorSubsystem handsSubsystem;
+
+        // Scratch list for checking for the presence of display subsystems.
+        private List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
+
         private XRBaseController controller;
 
         // The actual, physical, rigged joints that drive the skinned mesh.
@@ -179,6 +198,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handRenderer.enabled = false;
                 return;
             }
+
+            if (displaySubsystems.Count == 0)
+            {
+                SubsystemManager.GetSubsystems(displaySubsystems);
+            }
+
+            // Are we running on an XR display and it happens to be transparent?
+            // Probably shouldn't be showing rigged hands!
+            if (displaySubsystems.Count > 0 &&
+                displaySubsystems[0].running &&
+                !displaySubsystems[0].displayOpaque &&
+                !showHandsOnTransparentDisplays)
+            {
+                handRenderer.enabled = false;
+                return;
+            }
             
             transform.localScale = new Vector3(handNode == XRNode.LeftHand ? -handScale : handScale, handScale, handScale);
 
@@ -189,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Enable the hand mesh after once we have joint data
             handRenderer.enabled = true;
+
+            float error = 0.0f;
 
             for (int i = 0; i < joints.Count; i++)
             {
@@ -205,6 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (jointTransform != null)
                 {
+                    
                     switch ((TrackedHandJoint)i)
                     {
                         case TrackedHandJoint.Palm:
@@ -222,6 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         case TrackedHandJoint.LittleTip:
                             // The tip bone uses the joint rotation directly.
                             jointTransform.rotation = joints[i-1].Rotation;
+                            error += Vector3.Dot((jointTransform.position - joints[i-1].Position), jointTransform.forward);
                             break;
                         case TrackedHandJoint.ThumbMetacarpal:
                         case TrackedHandJoint.IndexMetacarpal:
@@ -239,6 +278,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
+
+            Debug.Log(error.ToString("F3"));
+
+            handScale += -error * 0.1f;
 
             // Update the hand material based on selectedness value
             UpdateHandMaterial();
