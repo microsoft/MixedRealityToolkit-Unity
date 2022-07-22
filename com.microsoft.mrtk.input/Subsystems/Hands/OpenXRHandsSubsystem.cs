@@ -102,7 +102,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return false;
                         }
 
-                        thisQueryValid |= TryUpdateJoint(index, HandJointLocations[HandJointIndexFromTrackedHandJointIndex[index]], playspaceTransform);
+                        var jointLocation = HandJointLocations[HandJointIndexFromTrackedHandJointIndex[index]];
+                        UpdateJoint(index, jointLocation, playspaceTransform);
+                        
+                        thisQueryValid |= jointLocation.IsTracked;
                     }
                     else
                     {
@@ -147,7 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     FullQueryValid = true;
                     for (int i = 0; i < HandTracker.JointCount; i++)
                     {
-                        FullQueryValid &= TryUpdateJoint(TrackedHandJointIndexFromHandJointIndex[i], HandJointLocations[i], playspaceTransform);
+                        UpdateJoint(TrackedHandJointIndexFromHandJointIndex[i], HandJointLocations[i], playspaceTransform);
+                        FullQueryValid &= HandJointLocations[i].IsTracked;
                     }
 
                     // Mark this hand as having been fully queried this frame.
@@ -157,16 +161,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            private static readonly ProfilerMarker TryUpdateJointPerfMarker =
-                new ProfilerMarker("[MRTK] OpenXRHandsSubsystem.TryUpdateJoint");
+            private static readonly ProfilerMarker UpdateJointPerfMarker =
+                new ProfilerMarker("[MRTK] OpenXRHandsSubsystem.UpdateJoint");
 
             /// <summary/>
             /// Given a destination jointID, apply the Bone info to the correct struct
             /// in the handJoints collection.
             /// </summary>
-            private bool TryUpdateJoint(int jointIndex, in HandJointLocation handJointLocation, Transform playspaceTransform)
+            private bool UpdateJoint(int jointIndex, in HandJointLocation handJointLocation, Transform playspaceTransform)
             {
-                using (TryUpdateJointPerfMarker.Auto())
+                using (UpdateJointPerfMarker.Auto())
                 {
                     handJoints[jointIndex] = new HandJointPose(
                         playspaceTransform.TransformPoint(handJointLocation.Pose.position),
