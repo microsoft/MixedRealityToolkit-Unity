@@ -279,9 +279,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            Debug.Log(error.ToString("F3"));
-
             handScale += -error * 0.1f;
+            handScale = Mathf.Clamp(handScale, 0.8f, 1.1f);
 
             // Update the hand material based on selectedness value
             UpdateHandMaterial();
