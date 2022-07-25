@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -26,9 +25,20 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Types of info messages.
+        /// </summary>
+        public enum InfoType
+        {
+            None,
+            Info,
+            Warning,
+            Error
+        }
+
+        /// <summary>
         /// The type of info to show if the property is true
         /// </summary>
-        public MessageType MessageType;
+        public InfoType InfoBoxType;
 
         /// <summary>
         /// The message to show if the property is true
@@ -56,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="comparedPropertyName">The name of the property that is being compared (case sensitive).</param>
         /// <param name="compareAgainst">The value the property is being compared to.</param>
         /// <param name="comparisonMode">Whether to check equality or inequality.</param>
-        public ShowInfoIfAttribute(MessageType messageType, string message, string comparedPropertyName, object compareAgainst = null, ComparisonType comparisonMode = ComparisonType.Equal)
+        public ShowInfoIfAttribute(InfoType infoType, string message, string comparedPropertyName, object compareAgainst = null, ComparisonType comparisonMode = ComparisonType.Equal)
         {
             // Because we can't use default parameters for reference types other than string.
             if (compareAgainst == null)
@@ -64,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit
                 compareAgainst = true;
             }
 
-            MessageType = messageType;
+            InfoBoxType = infoType;
             Message = message;
             ComparedPropertyName = comparedPropertyName;
             CompareAgainst = compareAgainst;
