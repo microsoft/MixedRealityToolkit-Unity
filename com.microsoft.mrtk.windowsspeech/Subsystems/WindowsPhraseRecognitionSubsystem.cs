@@ -133,12 +133,14 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 {
                     keywordRecognizer.OnPhraseRecognized -= Recognizer_OnPhraseRecognized;
                     keywordRecognizer.Dispose();
+                    keywordRecognizer = null;
                 }
 #if MSFT_OPENXR_1_5_0_OR_NEWER
                 if (selectKeywordRecognizer != null)
                 {
                     selectKeywordRecognizer.OnPhraseRecognized -= Recognizer_OnPhraseRecognized;
                     selectKeywordRecognizer.Dispose();
+                    selectKeywordRecognizer = null;
                 }
 #endif // MSFT_OPENXR_1_5_0_OR_NEWER
             }
