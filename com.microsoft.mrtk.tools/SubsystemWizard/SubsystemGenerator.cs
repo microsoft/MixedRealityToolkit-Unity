@@ -25,8 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private const string InterfaceTemplateGuid = "9bac30e514266984d947e360cfd17b05";
 
         private const bool DefaultCreateConfiguration = false;
-        private static readonly string DefaultSubsystemName = "NewSubsystem";
-        private static readonly string DefaultSubsystemNamespace = "Custom.MRTK3.Subsystems";
+        private static readonly string DefaultBaseSubsystemName = $"NewSubsystem";
+        private static readonly string DefaultCompanyName = "Custom";
+        private static readonly string DefaultDisplayName = ""; // todo
+        private static readonly string DefaultSubsystemName = $"{DefaultCompanyName}NewSubsystem";
+        private static readonly string DefaultSubsystemNamespace = $"{DefaultCompanyName}.MRTK3.Subsystems";
         private static readonly string OutputFolderRoot = Path.Combine("Assets", "MRTK.Generated");
 
         private SubsystemWizardState state = SubsystemWizardState.Start;
@@ -38,6 +41,17 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             get => state;
             set => state = value;
+        }
+
+        private string baseClassName = DefaultBaseSubsystemName;
+
+        /// <summary>
+        /// The name of the base class from which the subsysten will derive.
+        /// </summary>
+        public string BaseClassName
+        {
+            get => baseClassName;
+            set => baseClassName = value;
         }
 
         private bool createConfiguration = DefaultCreateConfiguration;
@@ -52,13 +66,24 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             set => createConfiguration = value;
         }
 
+        private string companyName = DefaultCompanyName;
+
+        /// <summary>
+        /// The name of the entity which is creating / releasing the subsystem.
+        /// </summary>
+        public string CompanyName
+        {
+            get => companyName;
+            set => companyName = value;
+        }
+
         /// <summary>
         /// Name of configuration class, if enabled by <see cref="CreateConfiguration"/>
         /// to create for new subystem.
         /// </summary>
         public string ConfigurationName
         {
-            get => $"{SubsystemName}Configuration";
+            get => CreateConfiguration ? $"{SubsystemName}Config" : "BaseSubsystemConfig"; 
         }
 
         /// <summary>
@@ -67,6 +92,17 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public string DescriptorName
         {
             get => $"{SubsystemName}Descriptor";
+        }
+
+        private string displayName = DefaultDisplayName;
+
+        /// <summary>
+        /// The name that will be displayed in project settings.
+        /// </summary>
+        public string DisplayName
+        {
+            get => displayName;
+            set => displayName = value;
         }
 
         /// <summary>
@@ -111,6 +147,18 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             get => dontCreateClass;
             set => dontCreateClass = value;
+        }
+
+        private bool dontCreateDerivedClass = false;
+
+        /// <summary>
+        /// Indicates if the user wishes to skip the creation of the subsystem
+        /// descriptor source code file.
+        /// </summary>
+        public bool DontCreateDerivedClass
+        {
+            get => dontCreateDerivedClass;
+            set => dontCreateDerivedClass = value;
         }
 
         private string subsystemName = DefaultSubsystemName;
@@ -176,6 +224,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 CreateFile(classTemplate,
                     Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
             }
+            if (!DontCreateDerivedClass)
+            {
+                // todo
+                //CreateFile(classTemplate,
+                //    Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
+            }
             if (CreateConfiguration)
             {
                 CreateFile(configTemplate,
@@ -228,6 +282,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                     // Insert namespace and subsystem name
                     template = template.Replace("%NAMESPACE%", SubsystemNamespace);
                     template = template.Replace("%SUBSYSTEMNAME%", SubsystemName);
+                    template = template.Replace("%CONFIGNAME%", ConfigurationName);
+                    //template = template.Replace("%DISPLAYNAME%", DisplayName);
                 }
             }
 
@@ -248,6 +304,29 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
+        /// Ensures that the value of <see cref="BaseClassName"/> is valid for the
+        /// C# language.
+        /// </summary>
+        /// <param name="error">String describing the encountered error.</param>
+        /// <returns>True of successful, or false.</returns>
+        public bool ValidateSubsystemBaseClassName(out string error)
+        {
+            // Ensure a name was provided.
+            if (string.IsNullOrWhiteSpace(BaseClassName))
+            {
+                error = $"Subsystem base class name: Must specify a name.";
+                return false;
+            }
+
+            bool success = ValidateName(BaseClassName);
+
+            error = success ? string.Empty :
+                $"Subsystem base class name: {BaseClassName} is not a valid C# identifier.";
+
+            return success;
+        }
+
+        /// <summary>
         /// Ensures that the value of <see cref="SubsystemNamespace"/> is valid for the
         /// C# language.
         /// </summary>
@@ -258,7 +337,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             // Ensure a name was provided.
             if (string.IsNullOrWhiteSpace(SubsystemNamespace))
             {
-                SubsystemNamespace = DefaultSubsystemNamespace;
+                error = $"Subsystem namespace: Must specify a name.";
+                return false;
             }
 
             bool success = true;
@@ -295,7 +375,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             // Ensure a name was provided.
             if (string.IsNullOrWhiteSpace(SubsystemName))
             {
-                SubsystemName = DefaultSubsystemName;
+                error = $"Subsystem name: Must specify a name.";
+                return false;
             }
 
             bool success = ValidateName(SubsystemName);
@@ -412,8 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private bool ValidateName(string name)
         {
             // Verify that the name is valid within C#
-            bool isValid = CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
-            return isValid;
+            return CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
         }
     }
 

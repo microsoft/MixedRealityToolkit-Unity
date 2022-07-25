@@ -3,6 +3,7 @@ using UnityEngine.SubsystemsImplementation;
 
 namespace %NAMESPACE%
 {
+    [Preserve]
     public class %SUBSYSTEMNAME% :
         MRTKSubsystem<%SUBSYSTEMNAME%, %SUBSYSTEMNAME%Descriptor, %SUBSYSTEMNAME%.Provider>,
         I%SUBSYSTEMNAME%
@@ -13,6 +14,7 @@ namespace %NAMESPACE%
         public %SUBSYSTEMNAME%()
         { }
 
+        [Preserve]
         public abstract class Provider : MRTKSubsystemProvider<%SUBSYSTEMNAME%>, I%SUBSYSTEMNAME%
         {
             #region I%SUBSYSTEMNAME% implementation

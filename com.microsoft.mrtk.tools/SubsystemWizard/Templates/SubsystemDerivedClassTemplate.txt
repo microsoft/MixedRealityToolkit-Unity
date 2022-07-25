@@ -1,0 +1,49 @@
+using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
+using UnityEngine;
+using UnityEngine.Scripting;
+
+namespace Microsoft.MixedReality.Toolkit.Accessibility
+{
+    [Preserve]
+    [MRTKSubsystem(
+        Name = "com.microsoft.mixedreality.accessibility",
+        DisplayName = "%DISPLAYNAME%",
+        Author = "%COMPANYNAME%",
+        ProviderType = typeof(%PROVIDERNAME%),
+        SubsystemTypeOverride = typeof(MRTKAccessibilitySubsystem),
+        ConfigType = typeof(%CONFIGTYPE%))]
+    public class MRTKAccessibilitySubsystem : %SUBSYSTEMNAME%
+    {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void Register()
+        {
+            // Fetch subsystem metadata from the attribute.
+            var cinfo = XRSubsystemHelpers.ConstructCinfo<MRTKAccessibilitySubsystem, %SUBSYSTEMNAME%Cinfo>();
+
+            if (!%SUBSYSTEMNAME%.Register(cinfo))
+            {
+                Debug.LogError($"Failed to register the {cinfo.Name} subsystem.");
+            }
+        }
+
+        [Preserve]
+        class %PROVIDERNAME% : Provider
+        {
+            protected %CONFIGTYPE% Config { get; }
+
+            public %PROVIDERNAME%() : base()
+            {
+                Config = XRSubsystemHelpers.GetConfiguration<%CONFIGTYPE%, MRTKAccessibilitySubsystem>();
+                
+                // TODO: Apply the configuration to the provider.
+            }
+
+            #region I%SUBSYSTEMNAME% implementation
+
+            // TODO: Add the provider implementation.
+
+            #endregion %SUBSYSTEMNAME% implementation
+        }
+    }
+}
