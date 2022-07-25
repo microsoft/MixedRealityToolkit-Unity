@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 // reduced version of the first, and should be faster than 2
                 // trig calls.
 
-                //float offset = Mathf.Sin(Mathf.PI - (Mathf.Atan(1.0f / tangent) + Mathf.PI / 2.0f)) * (tr.rect.height / 2.0f) * Mathf.Sign(tangent);
+                // float offset = Mathf.Sin(Mathf.PI - (Mathf.Atan(1.0f / tangent) + Mathf.PI / 2.0f)) * (tr.rect.height / 2.0f) * Mathf.Sign(tangent);
                 float offset = (tr.rect.height / 2.0f) / Mathf.Sqrt(1.0f / (tangent*tangent) + 1) * Mathf.Sign(tangent);
 
                 Vector3 pos = tr.localPosition;
