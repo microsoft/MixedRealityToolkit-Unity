@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -95,6 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private bool IsTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
 
+        private HandsAggregatorSubsystem handsAggregator;
+
         #endregion Private properties
 
         #region XRBaseControllerInteractor
@@ -169,6 +172,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
             {
                 rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
+            }
+            else
+            {
+                // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
+                if (handsAggregator == null)
+                {
+                    handsAggregator = HandsUtils.GetSubsystem();
+                }
+                if (handsAggregator != null && handsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
+                {
+                    rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
+                }
             }
 
             if (hasSelection && interactable != null)
