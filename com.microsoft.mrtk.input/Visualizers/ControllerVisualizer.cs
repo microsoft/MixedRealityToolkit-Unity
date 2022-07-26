@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.OpenXR;
-using Microsoft.MixedReality.Toolkit.Subsystems;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityInputSystem = UnityEngine.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -36,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ControllerModel controllerModelProvider;
 
         // The controller characteristics we want the input device to have;
-        private InputDeviceCharacteristics controllerCharacteristics;
+        private InternedString targetUsage;
 
         /// <inheritdoc />
         protected bool isControllerTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
@@ -52,60 +50,66 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 case XRNode.LeftHand:
                     controllerModelProvider = ControllerModel.Left;
                     xrController = lookups[0].LeftHandController;
-                    controllerCharacteristics = InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left;
+                    targetUsage = UnityInputSystem.CommonUsages.LeftHand;
                     break;
                 case XRNode.RightHand:
                     controllerModelProvider = ControllerModel.Right;
                     xrController = lookups[0].RightHandController;
-                    controllerCharacteristics = InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right;
+                    targetUsage = UnityInputSystem.CommonUsages.RightHand;
                     break;
                 default:
                     break;
             }
 
-            InputDevices.deviceConnected += CheckToShowVisuals;
+            UnityInputSystem.InputSystem.onDeviceChange += CheckToShowVisuals;
         }
 
         protected void OnDisable()
         {
-            InputDevices.deviceConnected -= CheckToShowVisuals;
+            UnityInputSystem.InputSystem.onDeviceChange -= CheckToShowVisuals;
 
             // Hide the controller model
             xrController.hideControllerModel = true;
         }
 
-        private void CheckToShowVisuals(InputDevice inputDevice)
+        private void CheckToShowVisuals(UnityInputSystem.InputDevice inputDevice, UnityInputSystem.InputDeviceChange change)
         {
-            if (inputDevice.isValid && (inputDevice.characteristics & controllerCharacteristics) == controllerCharacteristics)
+            if (change == UnityInputSystem.InputDeviceChange.Added ||
+                change == UnityInputSystem.InputDeviceChange.UsageChanged ||
+                change == UnityInputSystem.InputDeviceChange.ConfigurationChanged)
             {
-                InstantiateControllerVisuals(); 
+                if (inputDevice is UnityInputSystem.XR.XRController xrInputDevice)
+                {
+                    if (xrInputDevice.usages.Contains(targetUsage))
+                    {
+                        InstantiateControllerVisuals();
+                    }
+                }
             }
         }
 
         private async void InstantiateControllerVisuals()
         {
+            GameObject ControllerGameObject = null;
             if (controllerModelProvider != null)
             {
-                GameObject ControllerGameObject = await OpenXRControllerModelSubsystem.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
-                if(ControllerGameObject != null)
+                ControllerGameObject = await OpenXRControllerModelSubsystem.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
+                if(ControllerGameObject == null)
                 {
-                    xrController.model = ControllerGameObject.transform;
-                }
-                else
-                {
-                    xrController.model = Instantiate(fallbackControllerModel).transform;
+                    ControllerGameObject = Instantiate(fallbackControllerModel);
                 }
             }
+
+            if (ControllerGameObject != null)
+            {
+                xrController.model = ControllerGameObject.transform;
+            }
+
             xrController.model.transform.parent = xrController.modelParent;
         }
 
         public void Update()
         {
-            if (xrController.model == null)
-            {
-                xrController.model = Instantiate(fallbackControllerModel).transform;
-                xrController.model.transform.parent = xrController.modelParent;
-            }
             xrController.hideControllerModel = !isControllerTracked;
         }
     }
