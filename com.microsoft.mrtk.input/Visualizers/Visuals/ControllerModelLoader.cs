@@ -1,15 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.OpenXR;
-using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
+
+#if GLTFAST_PRESENT
+using GLTFast;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class OpenXRControllerModelSubsystem
+    public class ControllerModelLoader
     {
         public static Dictionary<ulong, GameObject> ControllerModelDictionary;
 
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             GameObject gltfGameObject = null;
 
-#if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
+#if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
                 Debug.LogError("Failed to obtain controller model key from platform.");
@@ -38,10 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return null;
             }
 
-            GltfObject gltfObject = GltfUtility.GetGltfObjectFromGlb(modelStream);
-            gltfGameObject = await gltfObject.ConstructAsync();
-
-            if (gltfGameObject != null)
+            GltfImport gltf = new GltfImport();
+            bool success = await gltf.LoadGltfBinary(modelStream);
+            gltfGameObject = new GameObject(modelKey.ToString());
+            if (success && gltf.InstantiateMainScene(gltfGameObject.transform))
             {
                 // After all the awaits, double check that another task didn't finish earlier
                 if (ControllerModelDictionary.TryGetValue(modelKey, out GameObject existingGameObject))
@@ -49,10 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Object.Destroy(gltfGameObject);
                     return existingGameObject;
                 }
-                else
-                {
-                    ControllerModelDictionary.Add(modelKey, gltfGameObject);
-                }
+                ControllerModelDictionary.Add(modelKey, gltfGameObject);
+            }
+            else
+            {
+                Debug.LogError("Failed to obtain controller model from platform.");
+                Object.Destroy(gltfGameObject);
             }
 #endif //MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
 

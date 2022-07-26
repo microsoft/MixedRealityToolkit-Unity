@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             GameObject ControllerGameObject = null;
             if (controllerModelProvider != null)
             {
-                ControllerGameObject = await OpenXRControllerModelSubsystem.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
+                ControllerGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
                 if(ControllerGameObject == null)
                 {
                     ControllerGameObject = Instantiate(fallbackControllerModel);

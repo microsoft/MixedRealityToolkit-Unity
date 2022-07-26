@@ -7,7 +7,8 @@
         "Unity.InputSystem",
         "Unity.XR.CoreUtils",
         "Unity.XR.Interaction.Toolkit",
-        "Unity.XR.OpenXR"
+        "Unity.XR.OpenXR",
+        "glTFast"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -21,6 +22,11 @@
             "name": "com.microsoft.mixedreality.openxr",
             "expression": "",
             "define": "MROPENXR_PRESENT"
+        },
+        {
+            "name": "com.atteneder.gltfast",
+            "expression": "",
+            "define": "GLTFAST_PRESENT"
         }
     ],
     "noEngineReferences": false
