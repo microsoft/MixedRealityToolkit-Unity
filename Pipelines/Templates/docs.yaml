@@ -31,7 +31,7 @@ steps:
     filePath: ${{ parameters.docToolProjectRoot }}/Scripts/importdoctoolgeneratebinaries.ps1
     arguments: >
       -ProjectDirectory: '${{ parameters.mrtkProjectRoot }}/UnityProjects/MRTKDevTemplate'
-      -UnityDirectory: ${{ parameters.unityDirectory }}
+      -UnityDirectory: '${{ parameters.unityDirectory }}'
       -OutputDirectory: ${{ parameters.outputDirectory }}
       -ImportPackagePath '${{ parameters.docToolProjectRoot }}/doctool.unitypackage'
       -ProductName 'MRTK3'
