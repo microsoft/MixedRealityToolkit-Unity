@@ -10,6 +10,8 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
+using InfoType = Microsoft.MixedReality.Toolkit.ShowInfoIfAttribute.InfoType;
+
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
@@ -65,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Hand material to use for hand tracking hand mesh.")]
-        [ShowInfoIf(UnityEditor.MessageType.Warning, "provided material is missing property " + pinchAmountMaterialProperty, "showMissingPropertyWarning")]
+        [ShowInfoIf(InfoType.Warning, "provided material is missing property " + pinchAmountMaterialProperty, "showMissingPropertyWarning")]
         private Material handMaterial = null;
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Renderer of the hand mesh")]
-        [ShowInfoIf(UnityEditor.MessageType.Warning, "Rigged Mesh Renderer is missing", "showMissingRendererWarning")]
+        [ShowInfoIf(InfoType.Warning, "Rigged Mesh Renderer is missing", "showMissingRendererWarning")]
         private SkinnedMeshRenderer handRenderer = null;
 
         // The property block used to modify the pinch amount property on the material

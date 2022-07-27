@@ -4,6 +4,8 @@
 using UnityEditor;
 using UnityEngine;
 
+using InfoType = Microsoft.MixedReality.Toolkit.ShowInfoIfAttribute.InfoType;
+
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
@@ -32,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
                     width = position.width,
                     height = EditorGUIUtility.singleLineHeight * 2
                 };
-                EditorGUI.HelpBox(infoRect, showInfoIf.Message, showInfoIf.MessageType);
+                EditorGUI.HelpBox(infoRect, showInfoIf.Message, GetMessageType(showInfoIf.InfoBoxType));
             }
         }
 
@@ -72,6 +74,19 @@ namespace Microsoft.MixedReality.Toolkit
                     Debug.LogError($"DrawIfAttribute only supports bool and Enum types. Your property '{showInfoIf.ComparedPropertyName}' is a {propertyToCheck.type}");
                     return true;
             }
+        }
+
+        private MessageType GetMessageType(InfoType infoType)
+        {
+            switch (infoType)
+            {
+                case InfoType.None: return MessageType.None;
+                case InfoType.Info: return MessageType.Info;
+                case InfoType.Warning: return MessageType.Warning;
+                case InfoType.Error: return MessageType.Error;
+            }
+
+            return MessageType.None;
         }
     }
 }
