@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class ControllerModelLoader
     {
-        public static Dictionary<ulong, GameObject> ControllerModelDictionary;
+        public static Dictionary<ulong, GameObject> ControllerModelDictionary = new Dictionary<ulong, GameObject>();
 
         public async static Task<GameObject> TryGenerateControllerModelFromPlatformSDK(ControllerModel controllerModelProvider)
         {
