@@ -18,7 +18,7 @@ steps:
     filePath: ${{ parameters.docToolProjectRoot }}/Scripts/exportunitypackage.ps1
     arguments: >
           -OutputDirectory: ${{ parameters.docToolProjectRoot }}
-          -UnityDirectory: ${{ parameters.unityDirectory }}
+          -UnityDirectory: '${{ parameters.unityDirectory }}'
           -ExportPackageName: 'doctool.unitypackage'
           -ExportAssetPath: 'Assets/DocTool'
           -ProjectDirectory: '${{ parameters.docToolProjectRoot }}/DocToolUnityProject/'
