@@ -88,24 +88,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private GameObject ControllerGameObject;
         private async void InstantiateControllerVisuals()
         {
-            GameObject ControllerGameObject = null;
-            if (controllerModelProvider != null)
+            // Initialize the ControllerGameObject if it has not yet been initialized
+            // First try to load the controller model from the platform
+            if (ControllerGameObject == null)
             {
-                ControllerGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
-                if(ControllerGameObject == null)
+                if (controllerModelProvider != null)
+                {
+                    GameObject PlatformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
+                    if (PlatformLoadedGameObject != null)
+                    {
+                        ControllerGameObject = PlatformLoadedGameObject;
+                    }
+                }
+
+                // If the ControllerGameObject is still not initialized after this, then use the fallback model
+                if (ControllerGameObject == null)
                 {
                     ControllerGameObject = Instantiate(fallbackControllerModel);
                 }
             }
 
+
             if (ControllerGameObject != null)
             {
                 xrController.model = ControllerGameObject.transform;
+                xrController.model.transform.parent = xrController.modelParent;
             }
-
-            xrController.model.transform.parent = xrController.modelParent;
         }
 
         public void Update()
