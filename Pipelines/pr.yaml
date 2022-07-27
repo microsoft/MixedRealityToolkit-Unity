@@ -13,6 +13,10 @@ resources:
     endpoint: ToolsAccess
     name: tools.internal
     ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
+  - repository: DocToolUnityProject
+    type: git
+    name: lib.doctools
+    ref: refs/heads/main
 
 trigger: none # disable CI
 
@@ -29,3 +33,14 @@ jobs:
     parameters:
       BuildStandalone: true
       BuildUWP: true
+
+- job: DocsBinariesGeneration
+  pool: Unity_2021.3.3f1_Pool
+  steps:
+  - checkout: self
+
+  - checkout: PipelineTools
+
+  - checkout: DocToolUnityProject
+
+  - template: Templates/docs.yaml

@@ -1,0 +1,47 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# [Template] Generate binaries for API reference docs.
+
+parameters:
+  unityDirectory: 'C:/Program Files/Unity/Hub/Editor/2021.3.3f1'
+  docToolProjectRoot: $(Build.SourcesDirectory)/lib.doctools
+  mrtkProjectRoot: $(Build.SourcesDirectory)/MixedRealityToolkit-Unity
+  outputDirectory: $(Build.ArtifactStagingDirectory)/docs
+
+steps:
+- task: PowerShell@2
+  displayName: 'Generate DocTool Unity asset package'
+  inputs:
+    pwsh: true
+    targetType: filePath
+    filePath: ${{ parameters.docToolProjectRoot }}/Scripts/exportunitypackage.ps1
+    arguments: >
+          -OutputDirectory: ${{ parameters.docToolProjectRoot }}
+          -UnityDirectory: ${{ parameters.unityDirectory }}
+          -ExportPackageName: 'doctool.unitypackage'
+          -ExportAssetPath: 'Assets/DocTool'
+          -ProjectDirectory: '${{ parameters.docToolProjectRoot }}/DocToolUnityProject/'
+
+- task: PowerShell@2
+  displayName: 'Generate docs binaries using DocTool package'
+  inputs:
+    targetType: filePath
+    pwsh: true
+    filePath: ${{ parameters.docToolProjectRoot }}/Scripts/importdoctoolgeneratebinaries.ps1
+    arguments: >
+      -ProjectDirectory: '${{ parameters.mrtkProjectRoot }}/UnityProjects/MRTKDevTemplate'
+      -UnityDirectory: ${{ parameters.unityDirectory }}
+      -OutputDirectory: ${{ parameters.outputDirectory }}
+      -ImportPackagePath '${{ parameters.docToolProjectRoot }}/doctool.unitypackage'
+      -ProductName 'MRTK3'
+      -ProductDLLPrefix 'Microsoft.MixedReality.Toolkit.'
+      -TargetPlatform 'WindowsStoreApps'
+      -DocsPackagePrefixes 'Core Input Diagnostics Environment Speech.Windows UXCore UXComponents SpatialManipulation Accessibility'
+      -IgnoreTestAssemblies $true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish binaries for API reference docs'
+  inputs:
+    targetPath: ${{ parameters.outputDirectory }}
+    artifactName: "docs-binaries"
