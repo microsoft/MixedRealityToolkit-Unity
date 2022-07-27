@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using System.Collections.Generic;
@@ -79,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 // subsystems we're listening to, we can consider ourselves
                                 // to have valid data this frame.
                                 FullQueryValid |= true;
-                                Array.Copy((HandJointPose[])data, handJoints, HandTracker.JointCount);
+                                Array.Copy((HandJointPose[])data, handJoints, (int)TrackedHandJoint.TotalJoints);
                             }
 
                             if (gotPhysicalData) { break; }
