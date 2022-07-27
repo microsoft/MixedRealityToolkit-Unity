@@ -15,6 +15,7 @@ resources:
     ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
   - repository: DocToolUnityProject
     type: git
+    endpoint: ToolsAccess
     name: lib.doctools
     ref: refs/heads/main
 
