@@ -44,4 +44,6 @@ jobs:
 
   - checkout: DocToolUnityProject
 
+  - template: Templates/license-unity.yaml@PipelineTools
+
   - template: Templates/docs.yaml
