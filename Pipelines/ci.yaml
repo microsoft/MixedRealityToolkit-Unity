@@ -54,7 +54,7 @@ jobs:
       previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
       publishToFeed: true
 
-- job: DocsBinariesGeneration2
+- job: DocsBinariesGeneration
   pool: Unity_2021.3.3f1_Pool
   steps:
   - checkout: self
@@ -62,5 +62,7 @@ jobs:
   - checkout: PipelineTools
 
   - checkout: DocToolUnityProject
+
+  - template: Templates/license-unity.yaml@PipelineTools
 
   - template: Templates/docs.yaml
