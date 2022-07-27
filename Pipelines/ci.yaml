@@ -54,7 +54,7 @@ jobs:
       previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
       publishToFeed: true
 
-- job: DocsBinariesGeneration
+- job: DocsBinariesGeneration2
   pool: Unity_2021.3.3f1_Pool
   steps:
   - checkout: self
