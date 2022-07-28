@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// as the conflict between the user's real hand and the slightly delayed holographic visualization
     /// can be more distracting than it's worth. However, for opaque platforms, this is a great solution.
     /// </remarks>
-    [AddComponentMenu("Scripts/Microsoft/MRTK/Hands/Rigged Hand Mesh Visualizer")]
+    [AddComponentMenu("MRTK/Input/Visualizers/Rigged Hand Mesh Visualizer")]
     public class RiggedHandMeshVisualizer : MonoBehaviour
     {
         [SerializeField]
@@ -57,13 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("The transform of the wrist joint.")]
         private Transform wrist;
-
-        /// <summary>
-        /// Used to track whether the hand material has the appropriate property
-        /// </summary>
-        [SerializeField]
-        [HideInInspector]
-        private bool showMissingPropertyWarning = true;
 
         /// <summary>
         /// Used to track whether the hand renderer was provided

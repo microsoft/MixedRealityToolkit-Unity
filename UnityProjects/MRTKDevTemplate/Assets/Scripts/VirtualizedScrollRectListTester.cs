@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.UX;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    [AddComponentMenu("MRTX/Examples/Virtualized Scroll Rect List Tester")]
+    [AddComponentMenu("MRTK/Examples/Virtualized Scroll Rect List Tester")]
     public class VirtualizedScrollRectListTester : MonoBehaviour
     {
         [SerializeField]
