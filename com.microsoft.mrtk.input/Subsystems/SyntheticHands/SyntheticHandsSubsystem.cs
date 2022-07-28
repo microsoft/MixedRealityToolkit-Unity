@@ -257,11 +257,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < JointCount; i++)
                     {
+                        TransformPoseForHand(ref currentGesture[i], HandNode);
+
                         handJoints[i] = new HandJointPose(
                             playspaceTransform.TransformPoint((handRotation * currentGesture[i].Position) + handPosition),
                             playspaceTransform.rotation * (handRotation * currentGesture[i].Rotation),
                             currentGesture[i].Radius);
                     }
+                }
+            }
+
+            private void TransformPoseForHand(ref HandJointPose pose, XRNode HandNode)
+            {
+                // Pose offset are for right hand, mirror on X axis if left hand is needed
+                if (HandNode == XRNode.LeftHand)
+                {
+                    pose.Position = Vector3.Scale(pose.Position, new Vector3(-1, 1, 1));
+                    pose.Rotation = new Quaternion(pose.Rotation.x, -pose.Rotation.y, -pose.Rotation.z, pose.Rotation.w);
+                }
+                else if (HandNode != XRNode.LeftHand && HandNode != XRNode.RightHand)
+                {
+                    Debug.LogError("Cannot transform pose for a non-hand node");
                 }
             }
 
@@ -286,7 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         currentGesture[i].Position = Vector3.Lerp(baseData[i].Position, pinchData[i].Position, selectAmount) + poseOffset;
                         currentGesture[i].Rotation = Quaternion.Slerp(baseData[i].Rotation, pinchData[i].Rotation, selectAmount);
                         currentGesture[i].Radius = Mathf.Lerp(baseData[i].Radius, pinchData[i].Radius, selectAmount);
-                        currentGesture[i].Position = Vector3.Scale(currentGesture[i].Position, new Vector3(HandNode == XRNode.LeftHand ? -1 : 1, 1, 1));
                     }
                 }
             }
