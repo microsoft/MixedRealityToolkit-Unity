@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2002339758}
   - component: {fileID: 2002339757}
   - component: {fileID: 2002339759}
-  - component: {fileID: 6868736976721772609}
   m_Layer: 0
   m_Name: Pen Interactor
   m_TagString: Untagged
@@ -108,27 +107,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6868736976721772609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2002339755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8f3c1ca1ffd554b9636766493e6ce3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settings:
-    handedness: 2
-    nearRadius: 0.05
-    farRadius: 0.2
-    nearDistance: 0.02
-    minNearSizePercentage: 0.35
-    centerColor: {r: 0.21176471, g: 0.5568628, b: 0.98039216, a: 0}
-    middleColor: {r: 0.18431373, g: 0.5176471, b: 1, a: 0.2}
-    outerColor: {r: 0.9647059, g: 0.3647059, b: 2.2470589, a: 1}
 --- !u!1 &3084243108605482235
 GameObject:
   m_ObjectHideFlags: 0
