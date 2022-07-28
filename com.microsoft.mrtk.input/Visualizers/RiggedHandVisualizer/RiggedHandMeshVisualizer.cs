@@ -65,11 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [HideInInspector]
         private bool showMissingPropertyWarning = true;
 
-        [SerializeField]
-        [Tooltip("Hand material to use for hand tracking hand mesh.")]
-        [ShowInfoIf(InfoType.Warning, "provided material is missing property " + pinchAmountMaterialProperty, "showMissingPropertyWarning")]
-        private Material handMaterial = null;
-
         /// <summary>
         /// Used to track whether the hand renderer was provided
         /// </summary>
