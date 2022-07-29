@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         [Preserve]
         class %SUBSYSTEMNAME%Provider : Provider
         {
-            protected %CONFIGTYPE% Config { get; }
+            protected %CONFIGNAME% Config { get; }
 
             public %SUBSYSTEMNAME%Provider() : base()
             {
