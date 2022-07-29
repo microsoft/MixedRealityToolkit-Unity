@@ -176,6 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             foreach (BoundsHandleInteractable handle in handles)
             {
                 projectedHandles.Add(new HandlePoint() { Handle = handle, Position = Vector3.zero });
+                handle.BoundsControlRoot = boundsControl;
             }
 
             // Read the box properties out of the material. This will inform our (un)pinchScaleOffsets to keep
