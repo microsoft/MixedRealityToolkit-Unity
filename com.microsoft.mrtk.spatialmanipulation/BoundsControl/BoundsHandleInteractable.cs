@@ -88,6 +88,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private bool wasOccludedLastFrame = false;
 
+        private Vector3 initialLocalScale;
+
+        private float initialParentScale;
+
         protected override void Awake()
         {
             base.Awake();
@@ -108,6 +112,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             wasOccludedLastFrame = true;
         }
 
+        // Record initial values at Start(), so that we
+        // capture the bounds sizing, etc.
+        void Start()
+        {
+            initialLocalScale = transform.localScale;
+            initialParentScale = MaxComponent(transform.parent.lossyScale);
+        }
+
         protected virtual void LateUpdate()
         {
             // Do our IsOccluded "setter" in Update so we don't do this multiple times a frame.
@@ -121,12 +133,27 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 colliders[0].enabled = !IsOccluded;
             }
 
-            if (maintainGlobalSize)
+            // Maintain the aspect ratio/proportion of the handles, globally.
+            transform.localScale = Vector3.one;
+            transform.localScale = new Vector3(1.0f / transform.lossyScale.x,
+                                               1.0f / transform.lossyScale.y,
+                                               1.0f / transform.lossyScale.z);
+            
+            // If we don't want to maintain the overall *size*, we scale
+            // by the maximum component of the box so that the handles grow/shrink
+            // with the overall box manipulation.
+            if (!maintainGlobalSize)
             {
-                // Maintain global scale of the handle(s).
-                transform.localScale = Vector3.one;
-                transform.localScale = new Vector3(1.0f / transform.lossyScale.x, 1.0f / transform.lossyScale.y, 1.0f / transform.lossyScale.z);
+                transform.localScale = transform.localScale * (MaxComponent(transform.parent.lossyScale) / initialParentScale);
             }
+        }
+
+        private float MaxComponent(Vector3 v)
+        {
+            Vector3 abs = new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
+            if (abs.x > abs.y && abs.x > abs.z) { return v.x; }
+            else if (abs.y > abs.x && abs.y > abs.z) { return v.y; }
+            else return v.z;
         }
 
         /// <inheritdoc />
