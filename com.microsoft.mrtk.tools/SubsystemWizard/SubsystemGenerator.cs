@@ -287,9 +287,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
                     // Insert namespace and subsystem name
                     template = template.Replace("%NAMESPACE%", SubsystemNamespace);
+                    template = template.Replace("%SUBSYSTEMBASECLASSNAME%", BaseClassName);
                     template = template.Replace("%SUBSYSTEMNAME%", SubsystemName);
                     template = template.Replace("%CONFIGNAME%", ConfigurationName);
-                    //template = template.Replace("%DISPLAYNAME%", DisplayName);
+                    template = template.Replace("%COMPANYNAME%", CompanyName);
+                    template = template.Replace("%DISPLAYNAME%", DisplayName);
                 }
             }
 

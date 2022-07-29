@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         Author = "%COMPANYNAME%",
         ProviderType = typeof(%SUBSYSTEMNAME%Provider),
         SubsystemTypeOverride = typeof(%SUBSYSTEMNAME),
-        ConfigType = typeof(%CONFIGTYPE%))]
+        ConfigType = typeof(%CONFIGNAME%))]
     public class %SUBSYSTEMNAME% : %SUBSYSTEMBASECLASSNAME%
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
             public %SUBSYSTEMNAME%Provider() : base()
             {
-                Config = XRSubsystemHelpers.GetConfiguration<%CONFIGTYPE%, %SUBSYSTEMNAME%>();
+                Config = XRSubsystemHelpers.GetConfiguration<%CONFIGNAME%, %SUBSYSTEMNAME%>();
                 
                 // TODO: Apply the configuration to the provider.
             }
