@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+// TODO: [Optional] Add additional copyright statement(s).
+
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using UnityEngine;
@@ -10,16 +14,16 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         Name = "com.microsoft.mixedreality.accessibility",
         DisplayName = "%DISPLAYNAME%",
         Author = "%COMPANYNAME%",
-        ProviderType = typeof(%PROVIDERNAME%),
-        SubsystemTypeOverride = typeof(MRTKAccessibilitySubsystem),
+        ProviderType = typeof(%SUBSYSTEMNAME%Provider),
+        SubsystemTypeOverride = typeof(%SUBSYSTEMNAME),
         ConfigType = typeof(%CONFIGTYPE%))]
-    public class MRTKAccessibilitySubsystem : %SUBSYSTEMNAME%
+    public class %SUBSYSTEMNAME% : %SUBSYSTEMBASECLASSNAME%
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Register()
         {
             // Fetch subsystem metadata from the attribute.
-            var cinfo = XRSubsystemHelpers.ConstructCinfo<MRTKAccessibilitySubsystem, %SUBSYSTEMNAME%Cinfo>();
+            var cinfo = XRSubsystemHelpers.ConstructCinfo<%SUBSYSTEMNAME%, %SUBSYSTEMBASECLASSNAME%Cinfo>();
 
             if (!%SUBSYSTEMNAME%.Register(cinfo))
             {
@@ -28,22 +32,22 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         }
 
         [Preserve]
-        class %PROVIDERNAME% : Provider
+        class %SUBSYSTEMNAME%Provider : Provider
         {
             protected %CONFIGTYPE% Config { get; }
 
-            public %PROVIDERNAME%() : base()
+            public %SUBSYSTEMNAME%Provider() : base()
             {
-                Config = XRSubsystemHelpers.GetConfiguration<%CONFIGTYPE%, MRTKAccessibilitySubsystem>();
+                Config = XRSubsystemHelpers.GetConfiguration<%CONFIGTYPE%, %SUBSYSTEMNAME%>();
                 
                 // TODO: Apply the configuration to the provider.
             }
 
-            #region I%SUBSYSTEMNAME% implementation
+            #region I%SUBSYSTEMBASECLASSNAME% implementation
 
             // TODO: Add the provider implementation.
 
-            #endregion %SUBSYSTEMNAME% implementation
+            #endregion %SUBSYSTEMBASECLASSNAME% implementation
         }
     }
 }
