@@ -292,6 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                     template = template.Replace("%CONFIGNAME%", ConfigurationName);
                     template = template.Replace("%COMPANYNAME%", CompanyName);
                     template = template.Replace("%DISPLAYNAME%", DisplayName);
+                    template = template.Replace("%RUNTIMENAME%", SubsystemNamespace.ToLower());
                 }
             }
 

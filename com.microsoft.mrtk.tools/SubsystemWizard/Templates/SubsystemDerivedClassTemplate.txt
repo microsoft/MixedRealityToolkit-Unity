@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 // TODO: [Optional] Add additional copyright statement(s).
 
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Subsystems;
-using System;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Microsoft.MixedReality.Toolkit.Accessibility
+namespace %NAMESPACE%
 {
     [Preserve]
     [MRTKSubsystem(
-        Name = "com.microsoft.mixedreality.accessibility",
+        Name = "%RUNTIMENAME",
         DisplayName = "%DISPLAYNAME%",
         Author = "%COMPANYNAME%",
         ProviderType = typeof(%SUBSYSTEMNAME%Provider),
