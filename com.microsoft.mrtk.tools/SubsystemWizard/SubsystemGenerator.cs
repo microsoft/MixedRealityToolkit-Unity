@@ -15,8 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     /// </summary>
     internal class SubsystemGenerator
     {
-        // SubsystemWizard/Templates/SubsystemClassTemplate.txt
-        private const string ClassTemplateGuid = "2cb3a153fb7b8b142a1dac1bcfc3b38c";
+        // SubsystemWizard/Templates/SubsystemBaseClassTemplate.txt
+        private const string BaseClassTemplateGuid = "2cb3a153fb7b8b142a1dac1bcfc3b38c";
+        // SubsystemWizard/Templates/SubsystemDerivedClassTemplate.txt
+        private const string DerivedClassTemplateGuid = "02b67503c64cf224ca2c04a04077c0d7";
         // SubsystemWizard/Templates/SubsystemConfigTemplate.txt
         private const string ConfigTemplateGuid = "ab5924fb380e64d47bdbd9fed4c08910";
         // SubsystemWizard/Templates/SubsystemDescriptorTemplate.txt
@@ -26,9 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
         private const bool DefaultCreateConfiguration = false;
         private static readonly string DefaultBaseSubsystemName = $"NewSubsystem";
-        private static readonly string DefaultCompanyName = "Custom";
-        private static readonly string DefaultDisplayName = ""; // todo
-        private static readonly string DefaultSubsystemName = $"{DefaultCompanyName}NewSubsystem";
+        private static readonly string DefaultCompanyName = "Contoso";
+        private static readonly string DefaultDisplayName = $"{DefaultCompanyName} {DefaultBaseSubsystemName}"; // todo
+        private static readonly string DefaultSubsystemName = $"{DefaultCompanyName}{DefaultBaseSubsystemName}";
         private static readonly string DefaultSubsystemNamespace = $"{DefaultCompanyName}.MRTK3.Subsystems";
         private static readonly string OutputFolderRoot = Path.Combine("Assets", "MRTK.Generated");
 
@@ -83,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// </summary>
         public string ConfigurationName
         {
-            get => CreateConfiguration ? $"{SubsystemName}Config" : "BaseSubsystemConfig"; 
+            get => CreateConfiguration ? $"{BaseClassName}Config" : "BaseSubsystemConfig"; 
         }
 
         /// <summary>
@@ -91,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// </summary>
         public string DescriptorName
         {
-            get => $"{SubsystemName}Descriptor";
+            get => $"{BaseClassName}Descriptor";
         }
 
         private string displayName = DefaultDisplayName;
@@ -110,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// </summary>
         public string InterfaceName
         {
-            get => $"I{SubsystemName}";
+            get => $"I{BaseClassName}";
         }
 
         private bool dontCreateDescriptor = false;
@@ -143,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// Indicates if the user wishes to skip the creation of the subsystem
         /// class source code file.
         /// </summary>
-        public bool DontCreateClass
+        public bool DontCreateBaseClass
         {
             get => dontCreateClass;
             set => dontCreateClass = value;
@@ -197,7 +199,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public void Generate(
             FileInfo descriptorTemplate,
             FileInfo interfaceTemplate,
-            FileInfo classTemplate,
+            FileInfo baseClassTemplate,
+            FileInfo derivedClassTemplate,
             FileInfo configTemplate)
         {
             // Make sure there is a folder in which to create the new files.
@@ -219,16 +222,15 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 CreateFile(interfaceTemplate,
                     Path.Combine(outputFolder.FullName, $"{InterfaceName}.cs"));
             }
-            if (!DontCreateClass)
+            if (!DontCreateBaseClass)
             {
-                CreateFile(classTemplate,
-                    Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
+                CreateFile(baseClassTemplate,
+                    Path.Combine(outputFolder.FullName, $"{BaseClassName}.cs"));
             }
             if (!DontCreateDerivedClass)
             {
-                // todo
-                //CreateFile(classTemplate,
-                //    Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
+                CreateFile(derivedClassTemplate,
+                    Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
             }
             if (CreateConfiguration)
             {
@@ -246,12 +248,16 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public void Reset()
         {
             CreateConfiguration = DefaultCreateConfiguration;
+            BaseClassName = DefaultBaseSubsystemName;
+            CompanyName = DefaultCompanyName;
+            DisplayName = DefaultDisplayName;
             SubsystemName = DefaultSubsystemName;
             SubsystemNamespace = DefaultSubsystemNamespace;
 
-            DontCreateClass = false;
+            DontCreateBaseClass = false;
+            DontCreateDerivedClass = false;
             DontCreateDescriptor = false;
-            dontCreateInterface = false;
+            DontCreateInterface = false;
 
             State = SubsystemWizardState.Start;
         }
@@ -407,7 +413,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public bool ValidateTemplates(List<string> errors,
             out FileInfo descriptorTemplate,
             out FileInfo interfaceTemplate,
-            out FileInfo classTemplate,
+            out FileInfo baseClassTemplate,
+            out FileInfo derivedClassTemplate,
             out FileInfo configTemplate)
         {
             bool success = true;
@@ -429,13 +436,22 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 success = false;
             }
             if (!GetAsset(
-                ClassTemplateGuid,
-                out classTemplate,
+                BaseClassTemplateGuid,
+                out baseClassTemplate,
                 out error))
             {
                 errors.Add($"Class template - {error}");
                 success = false;
             }
+            if (!GetAsset(
+                DerivedClassTemplateGuid,
+                out derivedClassTemplate,
+                out error))
+            {
+                errors.Add($"Class template - {error}");
+                success = false;
+            }
+
             configTemplate = null;
             if (CreateConfiguration)
             {
