@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// Scale handles subclass this to implement custom occlusion + reorientation logic.
     /// </summary>
     [AddComponentMenu("MRTK/Spatial Manipulation/Bounds Handle Interactable")]
-    internal class BoundsHandleInteractable : StatefulInteractable, ISnapInteractable
+    public class BoundsHandleInteractable : StatefulInteractable, ISnapInteractable
     {
         private BoundsControl boundsControlRoot;
 
@@ -34,6 +34,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        [SerializeField]
+        [Tooltip("Should the handle maintain its global size, even as the object changes size?")]
+        private bool maintainGlobalSize = true;
+
+        /// <summary>
+        /// Should the handle maintain its global size, even as the object changes size?
+        /// </summary>
+        public bool MaintainGlobalSize { get => maintainGlobalSize; set => maintainGlobalSize = value;}
+
         #region ISnapInteractable
 
         /// <inheritdoc />
@@ -51,8 +60,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </remarks>
         public virtual bool IsOccluded { get; set; }
 
+        /// <summary>
+        /// The vector/direction along which the bounds should be flattened.
+        /// Set by the box visuals script; it controls which handles are hidden
+        /// when the bounds are flattened to a 2D/slate shape. Has no effect
+        /// if/when IsFlattened is false!
+        /// </summary>
         public Vector3 FlattenVector { get; set; }
 
+        /// <summary>
+        /// Whether the parent bounds is flattened or not. If true,
+        /// FlattenVector is used to determine which axis to flatten along
+        /// (and, accordingly, which handles to hide!)
+        /// </summary>
         public bool IsFlattened { get; set; }
 
         [SerializeField]
@@ -101,9 +121,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 colliders[0].enabled = !IsOccluded;
             }
 
-            // Maintain global scale of the handle(s).
-            transform.localScale = Vector3.one;
-            transform.localScale = new Vector3(1.0f / transform.lossyScale.x, 1.0f / transform.lossyScale.y, 1.0f / transform.lossyScale.z);
+            if (maintainGlobalSize)
+            {
+                // Maintain global scale of the handle(s).
+                transform.localScale = Vector3.one;
+                transform.localScale = new Vector3(1.0f / transform.lossyScale.x, 1.0f / transform.lossyScale.y, 1.0f / transform.lossyScale.z);
+            }
         }
 
         /// <inheritdoc />
