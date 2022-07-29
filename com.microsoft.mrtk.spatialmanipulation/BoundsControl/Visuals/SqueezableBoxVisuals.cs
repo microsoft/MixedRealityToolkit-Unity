@@ -106,15 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => activationLerpTime = value;
         }
 
-        #region IBoundsVisuals Implementation
-        /// <inheritdoc />
-        public bool IsFlat { get; set; }
-
-        /// <inheritdoc />
-        public bool IsManipulated { get; set; }
-
-        #endregion IBoundsVisuals Implementation
-
         // Reference to a BoundsControl component that
         // will inform this visual of flattening, manipulation events,
         // and active handle types.
