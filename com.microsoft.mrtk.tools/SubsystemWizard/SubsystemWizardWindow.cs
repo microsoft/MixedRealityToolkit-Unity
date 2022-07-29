@@ -243,6 +243,14 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 EditorGUILayout.Space(6);
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    EditorGUILayout.LabelField("Subsystem class:", GUILayout.Width(160));
+                    EditorGUILayout.LabelField($"{subsystemGenerator.SubsystemName}.cs");
+                    subsystemGenerator.DontCreateDerivedClass = EditorGUILayout.ToggleLeft(
+                        "Skip",
+                        subsystemGenerator.DontCreateDerivedClass);
+                }
+                using (new EditorGUILayout.HorizontalScope())
+                {
                     EditorGUILayout.LabelField("Subsystem interface:", GUILayout.Width(160));
                     EditorGUILayout.LabelField($"{subsystemGenerator.InterfaceName}.cs");
                     subsystemGenerator.DontCreateInterface = EditorGUILayout.ToggleLeft(
@@ -256,14 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                     subsystemGenerator.DontCreateBaseClass   = EditorGUILayout.ToggleLeft(
                         "Skip",
                         subsystemGenerator.DontCreateBaseClass);
-                }
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Subsystem class:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemGenerator.SubsystemName}.cs");
-                    subsystemGenerator.DontCreateDerivedClass = EditorGUILayout.ToggleLeft(
-                        "Skip",
-                        subsystemGenerator.DontCreateDerivedClass);
                 }
                 using (new EditorGUILayout.HorizontalScope())
                 {
