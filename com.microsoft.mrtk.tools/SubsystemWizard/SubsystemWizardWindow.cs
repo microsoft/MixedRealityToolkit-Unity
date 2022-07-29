@@ -334,33 +334,39 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             StringBuilder sb = new StringBuilder();
             int step = 1;
-            sb.Append($"{step}. In the Project view, navigate to Assets/MRTK.Generated/{subsystemGenerator.SubsystemName}");
+            sb.Append($"{step}. In the Project view, navigate to Assets/MRTK.Generated/{subsystemGenerator.SubsystemName}\n");
             step++;
-            sb.Append($"{step}. Open {subsystemGenerator.DescriptorName}.cs");
+            sb.Append($"{step}. Open {subsystemGenerator.DescriptorName}.cs\n");
             step++;
-            sb.Append($"{step}. Define subsystem specific properties in the {subsystemGenerator.SubsystemName}CInfo class");
+            sb.Append($"{step}. Define subsystem specific properties in the {subsystemGenerator.BaseClassName}CInfo class\n");
             step++;
-            sb.Append($"{step}. Add and initialize subsystem specific properties in the {subsystemGenerator.DescriptorName} class");
+            sb.Append($"{step}. Add and initialize subsystem specific properties in the {subsystemGenerator.DescriptorName} class\n");
             step++;
-            sb.Append($"{step}. Open {subsystemGenerator.InterfaceName}.cs");
+            sb.Append($"{step}. Open {subsystemGenerator.InterfaceName}.cs\n");
             step++;
-            sb.Append($"{step}. Add subsystem specific properties and/or methods");
+            sb.Append($"{step}. Define subsystem specific properties and/or methods\n");
             step++;
-            sb.Append($"{step}. Open {subsystemGenerator.SubsystemName}.cs");
+            sb.Append($"{step}. Open {subsystemGenerator.BaseClassName}.cs\n");
             step++;
-            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in abstract Provider class");
+            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the abstract `Provider` class\n");
             step++;
-            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in {subsystemGenerator.SubsystemName} class");
+            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.BaseClassName} class\n");
+            step++;
+            sb.Append($"{step}. Open {subsystemGenerator.SubsystemName}.cs\n");
+            step++;
+            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the `{subsystemGenerator.SubsystemName}Provider` class\n");
+            step++;
+            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.SubsystemName} class\n");
             step++;
             if (subsystemGenerator.CreateConfiguration)
             {
-                sb.Append($"{step}. Open {subsystemGenerator.ConfigurationName}.cs");
+                sb.Append($"{step}. Open {subsystemGenerator.ConfigurationName}.cs\n");
                 step++;
-                sb.Append($"{step}. Add subsystem configuration properties");
+                sb.Append($"{step}. Add subsystem configuration properties\n");
                 step++;
-                sb.Append($"{step}. Return to {subsystemGenerator.SubsystemName}.cs");
+                sb.Append($"{step}. Return to {subsystemGenerator.SubsystemName}.cs\n");
                 step++;
-                sb.Append($"{step}. Read configuration and initialize properties");
+                sb.Append($"{step}. Initialize the subsystem configuration\n");
                 step++;
             }
 

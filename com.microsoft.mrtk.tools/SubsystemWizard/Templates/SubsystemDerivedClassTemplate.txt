@@ -11,7 +11,7 @@ namespace %NAMESPACE%
 {
     [Preserve]
     [MRTKSubsystem(
-        Name = "%RUNTIMENAME",
+        Name = "%RUNTIMENAME%",
         DisplayName = "%DISPLAYNAME%",
         Author = "%COMPANYNAME%",
         ProviderType = typeof(%SUBSYSTEMNAME%Provider),
