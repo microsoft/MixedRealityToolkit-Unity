@@ -17,11 +17,7 @@ steps:
     targetType: filePath
     filePath: ${{ parameters.docToolProjectRoot }}/Scripts/exportunitypackage.ps1
     arguments: >
-          -OutputDirectory: '${{ parameters.docToolProjectRoot }}'
           -UnityDirectory: '${{ parameters.unityDirectory }}'
-          -ExportPackageName: 'doctool.unitypackage'
-          -ExportAssetPath: 'Assets/DocTool'
-          -ProjectDirectory: '${{ parameters.docToolProjectRoot }}/DocToolUnityProject/'
 
 - task: PowerShell@2
   displayName: 'Generate docs binaries using DocTool package'
@@ -33,7 +29,7 @@ steps:
       -ProjectDirectory: '${{ parameters.mrtkProjectRoot }}/UnityProjects/MRTKDevTemplate'
       -UnityDirectory: '${{ parameters.unityDirectory }}'
       -OutputDirectory: '${{ parameters.outputDirectory }}'
-      -ImportPackagePath '${{ parameters.docToolProjectRoot }}/doctool.unitypackage'
+      -ImportPackagePath '${{ parameters.docToolProjectRoot }}/Export/DocTool.unitypackage'
       -ProductName 'MRTK3'
       -ProductDLLPrefix 'Microsoft.MixedReality.Toolkit.'
       -TargetPlatform 'WindowsStoreApps'
