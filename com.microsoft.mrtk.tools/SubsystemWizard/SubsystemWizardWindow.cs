@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 }
 
                 // Validate the subsystem base class name.
-                if (!subsystemGenerator.ValidateSubsystemBaseClassName(out error))
+                if (!subsystemGenerator.ValidateBaseClassName(out error))
                 {
                     errors.Add(error);
                 }
@@ -222,7 +222,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 out FileInfo interfaceTemplate,
                 out FileInfo baseClassTemplate,
                 out FileInfo derivedClassTemplate,
-                out FileInfo configTemplate);
+                out FileInfo configTemplate,
+                out FileInfo applyConfigTemplate);
 
             using (new EditorGUI.IndentLevelScope())
             {
@@ -310,7 +311,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                                 interfaceTemplate,
                                 baseClassTemplate,
                                 derivedClassTemplate,
-                                configTemplate);
+                                configTemplate,
+                                applyConfigTemplate);
                             subsystemGenerator.State = SubsystemWizardState.Complete;
                         }
                         catch (Exception e)

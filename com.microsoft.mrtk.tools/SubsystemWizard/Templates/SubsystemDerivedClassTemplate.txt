@@ -34,15 +34,7 @@ namespace %NAMESPACE%
         [Preserve]
         class %SUBSYSTEMNAME%Provider : Provider
         {
-            protected %CONFIGNAME% Config { get; }
-
-            public %SUBSYSTEMNAME%Provider() : base()
-            {
-                Config = XRSubsystemHelpers.GetConfiguration<%CONFIGNAME%, %SUBSYSTEMNAME%>();
-                
-                // TODO: Apply the configuration to the provider.
-            }
-
+%APPLYCONFIG%
             #region I%SUBSYSTEMBASECLASSNAME% implementation
 
             // TODO: Add the provider implementation.

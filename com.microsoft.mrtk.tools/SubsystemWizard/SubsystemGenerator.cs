@@ -15,12 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     /// </summary>
     internal class SubsystemGenerator
     {
+        // SubsystemWizard/Templates/ApplyConfigTemplate.txt
+        private const string ApplyConfigTemplateGuid = "c4bce3779fa330840bc15f96d11fcec0";
         // SubsystemWizard/Templates/SubsystemBaseClassTemplate.txt
         private const string BaseClassTemplateGuid = "2cb3a153fb7b8b142a1dac1bcfc3b38c";
-        // SubsystemWizard/Templates/SubsystemDerivedClassTemplate.txt
-        private const string DerivedClassTemplateGuid = "02b67503c64cf224ca2c04a04077c0d7";
         // SubsystemWizard/Templates/SubsystemConfigTemplate.txt
         private const string ConfigTemplateGuid = "ab5924fb380e64d47bdbd9fed4c08910";
+        // SubsystemWizard/Templates/SubsystemDerivedClassTemplate.txt
+        private const string DerivedClassTemplateGuid = "02b67503c64cf224ca2c04a04077c0d7";
         // SubsystemWizard/Templates/SubsystemDescriptorTemplate.txt
         private const string DescriptorTemplateGuid = "8e1afb29fbaf1c2419511d266f49b976";
         // SubsystemWizard/Templates/SubsystemInterfaceTemplate.txt
@@ -201,7 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             FileInfo interfaceTemplate,
             FileInfo baseClassTemplate,
             FileInfo derivedClassTemplate,
-            FileInfo configTemplate)
+            FileInfo configTemplate,
+            FileInfo applyConfigTemplate)
         {
             // Make sure there is a folder in which to create the new files.
             DirectoryInfo outputFolder = new DirectoryInfo(
@@ -209,6 +212,18 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             if (!outputFolder.Exists)
             {
                 outputFolder.Create();
+            }
+
+            // Prepare the drop-in code for applying configuration to the
+            // templates.
+            string configCode;
+            using (FileStream fs = applyConfigTemplate.OpenRead())
+            {
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    configCode = reader.ReadToEnd();
+                    configCode = ReplaceTokens(configCode);
+                }
             }
 
             // Create the source files.
@@ -229,8 +244,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             }
             if (!DontCreateDerivedClass)
             {
-                CreateFile(derivedClassTemplate,
-                    Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs"));
+                string filePath = Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs");
+
+                CreateFile(derivedClassTemplate, filePath);
+                ApplyConfigCode(CreateConfiguration ? configCode : string.Empty,
+                    new FileInfo(filePath));
             }
             if (CreateConfiguration)
             {
@@ -263,62 +281,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// Creates the specified subsystem source code file from the provided template.
-        /// </summary>
-        /// <param name="templateFile">The template to use for the specified file.</param>
-        /// <param name="outputFilePath">The fully qualified path for the resulting source code file.</param>
-        private void CreateFile(
-            FileInfo templateFile,
-            string outputFilePath)
-        {
-            FileInfo outputFile = new FileInfo(outputFilePath);
-            if (outputFile.Exists)
-            {
-                throw new IOException($"Unable to create {outputFile.FullName}, overwriting existing files is not supported.");
-            }
-
-            // Read the template file.
-            string template = null;
-            using (FileStream fs = templateFile.OpenRead())
-            {
-                using (StreamReader reader = new StreamReader(fs))
-                {
-                    template = reader.ReadToEnd();
-
-                    // Insert namespace and subsystem name
-                    template = template.Replace("%NAMESPACE%", SubsystemNamespace);
-                    template = template.Replace("%SUBSYSTEMBASECLASSNAME%", BaseClassName);
-                    template = template.Replace("%SUBSYSTEMNAME%", SubsystemName);
-                    template = template.Replace("%CONFIGNAME%", ConfigurationName);
-                    template = template.Replace("%COMPANYNAME%", CompanyName);
-                    template = template.Replace("%DISPLAYNAME%", DisplayName);
-                    template = template.Replace("%RUNTIMENAME%", SubsystemNamespace.ToLower());
-                }
-            }
-
-            if (template == null)
-            {
-                throw new IOException($"Failed to read the contents of {templateFile.FullName}");
-            }
-
-            // Write the new source file.
-            using (FileStream fs = outputFile.OpenWrite())
-            {
-                using (StreamWriter writer = new StreamWriter(fs))
-                {
-                    writer.AutoFlush = true;
-                    writer.Write(template);
-                }
-            }
-        }
-
-        /// <summary>
         /// Ensures that the value of <see cref="BaseClassName"/> is valid for the
         /// C# language.
         /// </summary>
         /// <param name="error">String describing the encountered error.</param>
         /// <returns>True of successful, or false.</returns>
-        public bool ValidateSubsystemBaseClassName(out string error)
+        public bool ValidateBaseClassName(out string error)
         {
             // Ensure a name was provided.
             if (string.IsNullOrWhiteSpace(BaseClassName))
@@ -412,13 +380,19 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <param name="configTemplate">
         /// <see cref="FileInfo"/> object representing the subsystem configuration template file.
         /// </param>
+        /// <param name="applyConfigTemplate">
+        /// <see cref="FileInfo"/> object representing the template file that contains information on
+        /// the code to apply when configuraton is desired.
+        /// </param>
         /// <returns>True if the collection of templates can all be validated, or false.</returns>
-        public bool ValidateTemplates(List<string> errors,
+        public bool ValidateTemplates(
+            List<string> errors,
             out FileInfo descriptorTemplate,
             out FileInfo interfaceTemplate,
             out FileInfo baseClassTemplate,
             out FileInfo derivedClassTemplate,
-            out FileInfo configTemplate)
+            out FileInfo configTemplate,
+            out FileInfo applyConfigTemplate)
         {
             bool success = true;
 
@@ -430,6 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 errors.Add($"Descriptor template - {error}");
                 success = false;
             }
+
             if (!GetAsset(
                 InterfaceTemplateGuid,
                 out interfaceTemplate,
@@ -438,6 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 errors.Add($"Interface template - {error}");
                 success = false;
             }
+
             if (!GetAsset(
                 BaseClassTemplateGuid,
                 out baseClassTemplate,
@@ -446,6 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 errors.Add($"Class template - {error}");
                 success = false;
             }
+
             if (!GetAsset(
                 DerivedClassTemplateGuid,
                 out derivedClassTemplate,
@@ -455,20 +432,101 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 success = false;
             }
 
-            configTemplate = null;
-            if (CreateConfiguration)
+            if (!GetAsset(
+                ConfigTemplateGuid,
+                out configTemplate,
+                out error))
             {
-                if (!GetAsset(
-                    ConfigTemplateGuid,
-                    out configTemplate,
-                    out error))
-                {
-                    errors.Add($"Configuration template - {error}");
-                    success = false;
-                }
+                errors.Add($"Configuration template - {error}");
+                success = false;
+            }
+
+            if (!GetAsset(
+                ApplyConfigTemplateGuid,
+                out applyConfigTemplate,
+                out error))
+            {
+                errors.Add($"Apply configuration template - {error}");
+                success = false;
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="sourceFile"></param>
+        private void ApplyConfigCode(
+            string code,
+            FileInfo sourceFile)
+        {
+            if (!sourceFile.Exists)
+            {
+                throw new IOException($"{sourceFile.FullName} cannot be found.");
+            }
+
+            string source;
+            using (FileStream fs = sourceFile.OpenRead())
+            {
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    source = reader.ReadToEnd();
+                    source = source.Replace("%APPLYCONFIG%", code);
+                }
+            }
+
+            using (FileStream fs = new FileStream(sourceFile.FullName, FileMode.Truncate, FileAccess.Write))
+            {
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.AutoFlush = true;
+                    writer.Write(source);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates the specified subsystem source code file from the provided template.
+        /// </summary>
+        /// <param name="templateFile">The template to use for the specified file.</param>
+        /// <param name="outputFilePath">The fully qualified path for the resulting source code file.</param>
+        private void CreateFile(
+            FileInfo templateFile,
+            string outputFilePath)
+        {
+            FileInfo outputFile = new FileInfo(outputFilePath);
+            if (outputFile.Exists)
+            {
+                throw new IOException($"Unable to create {outputFile.FullName}, overwriting existing files is not supported.");
+            }
+
+            // Read the template file.
+            string template = null;
+            using (FileStream fs = templateFile.OpenRead())
+            {
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    template = reader.ReadToEnd();
+                    template = ReplaceTokens(template);
+                }
+            }
+
+            if (template == null)
+            {
+                throw new IOException($"Failed to read the contents of {templateFile.FullName}");
+            }
+
+            // Write the new source file.
+            using (FileStream fs = outputFile.OpenWrite())
+            {
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.AutoFlush = true;
+                    writer.Write(template);
+                }
+            }
         }
 
         /// <summary>
@@ -502,6 +560,24 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
             fileInfo = fi;
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        private string ReplaceTokens(string template)
+        {
+            template = template.Replace("%NAMESPACE%", SubsystemNamespace);
+            template = template.Replace("%SUBSYSTEMBASECLASSNAME%", BaseClassName);
+            template = template.Replace("%SUBSYSTEMNAME%", SubsystemName);
+            template = template.Replace("%CONFIGNAME%", ConfigurationName);
+            template = template.Replace("%COMPANYNAME%", CompanyName);
+            template = template.Replace("%DISPLAYNAME%", DisplayName);
+            template = template.Replace("%RUNTIMENAME%", SubsystemNamespace.ToLower());
+
+            return template;
         }
 
         /// <summary>
