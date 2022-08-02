@@ -597,9 +597,9 @@ AudioSource:
   Loop: 1
   Mute: 0
   Spatialize: 1
-  SpatializePostEffects: 0
+  SpatializePostEffects: 1
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -967,7 +967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4906210948401705404, guid: c028545ea0a56b34993228b8997220cd, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.132
+      value: 0.136
       objectReference: {fileID: 0}
     - target: {fileID: 4906210948401705404, guid: c028545ea0a56b34993228b8997220cd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -977,6 +977,26 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 6547287731041676193, guid: c028545ea0a56b34993228b8997220cd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547287731185703676, guid: c028545ea0a56b34993228b8997220cd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547287731569261317, guid: c028545ea0a56b34993228b8997220cd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547287732552794944, guid: c028545ea0a56b34993228b8997220cd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607088663772162018, guid: c028545ea0a56b34993228b8997220cd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     m_RemovedComponents:
     - {fileID: 3433554895966514137, guid: c028545ea0a56b34993228b8997220cd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c028545ea0a56b34993228b8997220cd, type: 3}
