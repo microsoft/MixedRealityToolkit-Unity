@@ -68,19 +68,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             Transform parent = this.transform.parent;
             if (parent == null)
+            {
                 parent = this.transform;
-
-            if (useLocalSpaceForConstraint) //Use local space
+            }
+            if (useLocalSpaceForConstraint)
+            {
                 position = parent.InverseTransformPoint(transform.Position);
-
+            }
             position.x = Mathf.Clamp(position.x, minimumPosition.x, maximumPosition.x);
             position.y = Mathf.Clamp(position.y, minimumPosition.y, maximumPosition.y);
             position.z = Mathf.Clamp(position.z, minimumPosition.z, maximumPosition.z);
 
-            if (useLocalSpaceForConstraint) //Use local space
+            if (useLocalSpaceForConstraint)
+            {
                 transform.Position = parent.TransformPoint(position);
+            }
             else
+            {
                 transform.Position = position;
+            }
         }
 
         /// <summary>
@@ -93,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             Vector3 forward = Vector3.forward;
             Vector3 offset = Vector3.zero;
 
-            if (useLocalSpaceForConstraint) //Use local space
+            if (useLocalSpaceForConstraint)
             {
                 Transform parent = this.transform.parent;
                 if (parent != null)
@@ -105,19 +111,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
             }
 
-            //Draw X axis
             Gizmos.color = Color.red / 1.5f;
             Gizmos.DrawLine(offset, offset + right * minimumPosition.x);
             Gizmos.color = Color.red;
             Gizmos.DrawLine(offset, offset + right * maximumPosition.x);
 
-            //Draw Y axis
             Gizmos.color = Color.green / 1.5f;
             Gizmos.DrawLine(offset, offset + up * minimumPosition.y);
             Gizmos.color = Color.green;
             Gizmos.DrawLine(offset, offset + up * maximumPosition.y);
 
-            //Draw Z axis
             Gizmos.color = Color.blue / 1.5f;
             Gizmos.DrawLine(offset, offset + forward * minimumPosition.z);
             Gizmos.color = Color.blue;
