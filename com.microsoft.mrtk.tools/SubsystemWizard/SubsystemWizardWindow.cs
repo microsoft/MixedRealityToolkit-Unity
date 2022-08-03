@@ -71,7 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                         break;
 
                     default:
-                        // todo: unknown / unexpected state
+                        // Unknown / unexpected state
+                        Debug.LogWarning($"[Subsystem Wizard] Unknown state: {subsystemGenerator.State}");
                         break;
                 }
 
@@ -107,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// Renders the contents of the provided errors list.
         /// </summary>
-        /// <param name="errors"></param>
+        /// <param name="errors">The collection of errors to be rendered.</param>
         private void RenderErrorLog(List<string> errors)
         {
             EditorGUILayout.LabelField("Errors");
@@ -137,29 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 EditorGUILayout.LabelField("This tool will guide you through the creation of a new subsystem to extend the functionality of MRTK3.");
 
                 EditorGUILayout.Space(6);
-                EditorGUILayout.LabelField("Please enter the name of the company creating the subsystem.", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Please enter the company name.", EditorStyles.boldLabel);
                 subsystemGenerator.CompanyName = EditorGUILayout.TextField(
                     "Company name", subsystemGenerator.CompanyName);
                 EditorGUILayout.Space(4);
-                EditorGUILayout.LabelField("Please enter the display name for the subsystem.", EditorStyles.boldLabel);
-                subsystemGenerator.DisplayName = EditorGUILayout.TextField(
-                    "Display name",subsystemGenerator.DisplayName);
-                EditorGUILayout.Space(4);
-                EditorGUILayout.LabelField("In which namespace should the new subsystem be contained?", EditorStyles.boldLabel);
-                subsystemGenerator.SubsystemNamespace = EditorGUILayout.TextField(
-                    "Namespace", subsystemGenerator.SubsystemNamespace);
-                EditorGUILayout.Space(4);
-                EditorGUILayout.LabelField("Please enter a name for the subsystem and the base class.", EditorStyles.boldLabel);
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    subsystemGenerator.SubsystemName = EditorGUILayout.TextField(
-                        "Subsystem name", subsystemGenerator.SubsystemName);
-                    //EditorGUILayout.Space(4);
-                    //EditorGUILayout.LabelField("Please enter a name for the subsystem base class.", EditorStyles.boldLabel);
-                    // todo
-                    subsystemGenerator.BaseClassName = EditorGUILayout.TextField(
-                        "Base class name", subsystemGenerator.BaseClassName);
-                }
+                EditorGUILayout.LabelField("Please enter the name for the subsystem base class.", EditorStyles.boldLabel);
+                subsystemGenerator.BaseClassName = EditorGUILayout.TextField(
+                    "Base class name", subsystemGenerator.BaseClassName);
                 EditorGUILayout.Space(4);
                 EditorGUILayout.LabelField("Subsystems can optionally support configuration via the MRTK3 project settings.", EditorStyles.boldLabel);
                 float labelWidth = EditorGUIUtility.labelWidth;
@@ -167,9 +152,30 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 subsystemGenerator.CreateConfiguration = EditorGUILayout.Toggle("Add subsystem configuration",
                     subsystemGenerator.CreateConfiguration);
                 EditorGUIUtility.labelWidth = labelWidth;
-                EditorGUILayout.Space(4);
+                EditorGUILayout.Space(6);
 
-                // todo - additional validation
+                EditorGUILayout.LabelField("Generated names", EditorStyles.boldLabel);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        EditorGUILayout.LabelField("Namespace: ", EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField(subsystemGenerator.SubsystemNamespace);
+                    }
+                    EditorGUILayout.Space(4);
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        EditorGUILayout.LabelField("Implementation class: ", EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField(subsystemGenerator.SubsystemName);
+                    }
+                    EditorGUILayout.Space(4);
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        EditorGUILayout.LabelField("Display name: ", EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField(subsystemGenerator.DisplayName);
+                    }
+                    EditorGUILayout.Space(6);
+                }
 
                 // Validate the namespace.
                 if (!subsystemGenerator.ValidateNamespace(out string error))
@@ -188,7 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 {
                     errors.Add(error);
                 }
-
 
                 if (errors.Count > 0)
                 {
@@ -228,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             using (new EditorGUI.IndentLevelScope())
             {
                 if (subsystemGenerator.DontCreateBaseClass ||
-                    subsystemGenerator.DontCreateDerivedClass ||
+                    subsystemGenerator.DontCreateImplementationClass ||
                     subsystemGenerator.DontCreateDescriptor ||
                     subsystemGenerator.DontCreateInterface)
                 {
@@ -246,9 +251,9 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 {
                     EditorGUILayout.LabelField("Subsystem class:", GUILayout.Width(160));
                     EditorGUILayout.LabelField($"{subsystemGenerator.SubsystemName}.cs");
-                    subsystemGenerator.DontCreateDerivedClass = EditorGUILayout.ToggleLeft(
+                    subsystemGenerator.DontCreateImplementationClass = EditorGUILayout.ToggleLeft(
                         "Skip",
-                        subsystemGenerator.DontCreateDerivedClass);
+                        subsystemGenerator.DontCreateImplementationClass);
                 }
                 using (new EditorGUILayout.HorizontalScope())
                 {
@@ -380,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 EditorGUILayout.LabelField("Next steps", EditorStyles.boldLabel);
                 scrollPos = EditorGUILayout.BeginScrollView(
                     scrollPos,
-                    GUILayout.Height(150));
+                    GUILayout.Height(300));
                 EditorGUILayout.TextArea(
                     sb.ToString(),
                     GUILayout.ExpandHeight(true));
@@ -398,7 +403,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
                 if (GUILayout.Button("Close"))
                 {
-                    subsystemGenerator.Reset();
                     window.Close();
                 }
             }

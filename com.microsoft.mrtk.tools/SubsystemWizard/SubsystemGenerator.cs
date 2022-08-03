@@ -31,9 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private const bool DefaultCreateConfiguration = false;
         private static readonly string DefaultBaseSubsystemName = $"NewSubsystem";
         private static readonly string DefaultCompanyName = "Contoso";
-        private static readonly string DefaultDisplayName = $"{DefaultCompanyName} {DefaultBaseSubsystemName}"; // todo
-        private static readonly string DefaultSubsystemName = $"{DefaultCompanyName}{DefaultBaseSubsystemName}";
-        private static readonly string DefaultSubsystemNamespace = $"{DefaultCompanyName}.MRTK3.Subsystems";
+        // todo
+        //private static readonly string DefaultSubsystemNamespace = $"{DefaultCompanyName}.MRTK3.Subsystems";
         private static readonly string OutputFolderRoot = Path.Combine("Assets", "MRTK.Generated");
 
         private SubsystemWizardState state = SubsystemWizardState.Start;
@@ -98,16 +97,10 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             get => $"{BaseClassName}Descriptor";
         }
 
-        private string displayName = DefaultDisplayName;
-
         /// <summary>
         /// The name that will be displayed in project settings.
         /// </summary>
-        public string DisplayName
-        {
-            get => displayName;
-            set => displayName = value;
-        }
+        public string DisplayName => $"{CompanyName} {BaseClassName}";
 
         /// <summary>
         /// Name of interface to create for new subystem.
@@ -153,39 +146,27 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             set => dontCreateClass = value;
         }
 
-        private bool dontCreateDerivedClass = false;
+        private bool dontCreateImplementationClass = false;
 
         /// <summary>
         /// Indicates if the user wishes to skip the creation of the subsystem
         /// descriptor source code file.
         /// </summary>
-        public bool DontCreateDerivedClass
+        public bool DontCreateImplementationClass
         {
-            get => dontCreateDerivedClass;
-            set => dontCreateDerivedClass = value;
+            get => dontCreateImplementationClass;
+            set => dontCreateImplementationClass = value;
         }
-
-        private string subsystemName = DefaultSubsystemName;
 
         /// <summary>
         /// The name class to create for the new subsystem.
         /// </summary>
-        public string SubsystemName
-        {
-            get => subsystemName;
-            set => subsystemName = value;
-        }
-
-        private string subsystemNamespace = DefaultSubsystemNamespace;
+        public string SubsystemName => $"{CompanyName}{BaseClassName}";
 
         /// <summary>
         /// The interface in which the new subsystem code will be contained.
         /// </summary>
-        public string SubsystemNamespace
-        {
-            get => subsystemNamespace;
-            set => subsystemNamespace = value;
-        }
+        public string SubsystemNamespace => $"{CompanyName}.MRTK3.Subsystems";
 
         /// <summary>
         /// Constructor
@@ -242,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 CreateFile(baseClassTemplate,
                     Path.Combine(outputFolder.FullName, $"{BaseClassName}.cs"));
             }
-            if (!DontCreateDerivedClass)
+            if (!DontCreateImplementationClass)
             {
                 string filePath = Path.Combine(outputFolder.FullName, $"{SubsystemName}.cs");
 
@@ -268,12 +249,9 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             CreateConfiguration = DefaultCreateConfiguration;
             BaseClassName = DefaultBaseSubsystemName;
             CompanyName = DefaultCompanyName;
-            DisplayName = DefaultDisplayName;
-            SubsystemName = DefaultSubsystemName;
-            SubsystemNamespace = DefaultSubsystemNamespace;
 
             DontCreateBaseClass = false;
-            DontCreateDerivedClass = false;
+            DontCreateImplementationClass = false;
             DontCreateDescriptor = false;
             DontCreateInterface = false;
 
@@ -454,10 +432,18 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Inserts the required code, to access a subsystem configuration object, to
+        /// the specified file.
         /// </summary>
-        /// <param name="code"></param>
-        /// <param name="sourceFile"></param>
+        /// <param name="code">The code required to access the subsystem configuration.</param>
+        /// <param name="sourceFile">The file to which the code is to be added.</param>
+        /// <remarks>
+        /// If the subsystem does not utilize a configuration, an empty is to be provided
+        /// in the 'code' parameter.
+        /// <para/>
+        /// For 'sourceFile' to be properly updated, its contents must contain the "%APPLYCONFIG%"
+        /// token. This is used to indicate the correct location at which to place the code.
+        /// </remarks>
         private void ApplyConfigCode(
             string code,
             FileInfo sourceFile)
