@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     public class SubsystemWizardWindow : EditorWindow
     {
         private static SubsystemWizardWindow window = null;
-        private static SubsystemGenerator subsystemGenerator = new SubsystemGenerator();
+        private SubsystemGenerator subsystemGenerator = new SubsystemGenerator();
 
         private static readonly Vector2 WindowSizeWithoutLogo = new Vector2(600, 430);
         private static readonly Vector2 WindowSizeWithLogo = new Vector2(600, 500);

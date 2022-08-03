@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 using Microsoft.CSharp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tools
 {
@@ -13,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     /// Class which generates subsystem source files from templates contained within
     /// the package.
     /// </summary>
+    [Serializable]
     internal class SubsystemGenerator
     {
         // SubsystemWizard/Templates/ApplyConfigTemplate.txt
@@ -35,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         //private static readonly string DefaultSubsystemNamespace = $"{DefaultCompanyName}.MRTK3.Subsystems";
         private static readonly string OutputFolderRoot = Path.Combine("Assets", "MRTK.Generated");
 
+        [SerializeField]
         private SubsystemWizardState state = SubsystemWizardState.Start;
 
         /// <summary>
@@ -46,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             set => state = value;
         }
 
+        [SerializeField]
         private string baseClassName = DefaultBaseSubsystemName;
 
         /// <summary>
@@ -69,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             set => createConfiguration = value;
         }
 
+        [SerializeField]
         private string companyName = DefaultCompanyName;
 
         /// <summary>
@@ -174,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public SubsystemGenerator()
         {
             Reset();
-        }
+        }                                   
 
         /// <summary>
         /// Creates the subsystem source files based off of the provided templates.
@@ -574,7 +580,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private bool ValidateName(string name)
         {
             // Verify that the name is valid within C#
-            return CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
+                                        return CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
         }
     }
 
