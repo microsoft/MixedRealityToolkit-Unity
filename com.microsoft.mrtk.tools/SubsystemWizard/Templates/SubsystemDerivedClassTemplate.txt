@@ -13,7 +13,7 @@ namespace %NAMESPACE%
     [MRTKSubsystem(
         Name = "%RUNTIMENAME%",
         DisplayName = "%DISPLAYNAME%",
-        Author = "%COMPANYNAME%",
+        Author = "%ORGANIZATION%",
         ProviderType = typeof(%SUBSYSTEMNAME%Provider),
         SubsystemTypeOverride = typeof(%SUBSYSTEMNAME%),
         ConfigType = typeof(%CONFIGNAME%))]

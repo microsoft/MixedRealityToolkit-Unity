@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
         private const bool DefaultCreateConfiguration = false;
         private static readonly string DefaultBaseSubsystemName = $"NewSubsystem";
-        private static readonly string DefaultCompanyName = "Contoso";
+        private static readonly string DefaultOrganizationName = "Contoso";
         // todo
         //private static readonly string DefaultSubsystemNamespace = $"{DefaultCompanyName}.MRTK3.Subsystems";
         private static readonly string OutputFolderRoot = Path.Combine("Assets", "MRTK.Generated");
@@ -75,15 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         [SerializeField]
-        private string companyName = DefaultCompanyName;
+        private string organizationName = DefaultOrganizationName;
 
         /// <summary>
         /// The name of the entity which is creating / releasing the subsystem.
         /// </summary>
-        public string CompanyName
+        public string OrganizationName
         {
-            get => companyName;
-            set => companyName = value;
+            get => organizationName;
+            set => organizationName = value;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// The name that will be displayed in project settings.
         /// </summary>
-        public string DisplayName => $"{CompanyName} {BaseClassName}";
+        public string DisplayName => $"{OrganizationName} {BaseClassName}";
 
         /// <summary>
         /// Name of interface to create for new subystem.
@@ -167,12 +167,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// The name class to create for the new subsystem.
         /// </summary>
-        public string SubsystemName => $"{CompanyName}{BaseClassName}";
+        public string SubsystemName => $"{OrganizationName}{BaseClassName}";
 
         /// <summary>
         /// The interface in which the new subsystem code will be contained.
         /// </summary>
-        public string SubsystemNamespace => $"{CompanyName}.MRTK3.Subsystems";
+        public string SubsystemNamespace => $"{OrganizationName}.MRTK3.Subsystems";
 
         /// <summary>
         /// Constructor
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             CreateConfiguration = DefaultCreateConfiguration;
             BaseClassName = DefaultBaseSubsystemName;
-            CompanyName = DefaultCompanyName;
+            OrganizationName = DefaultOrganizationName;
 
             DontCreateBaseClass = false;
             DontCreateImplementationClass = false;
@@ -565,7 +565,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             template = template.Replace("%SUBSYSTEMBASECLASSNAME%", BaseClassName);
             template = template.Replace("%SUBSYSTEMNAME%", SubsystemName);
             template = template.Replace("%CONFIGNAME%", ConfigurationName);
-            template = template.Replace("%COMPANYNAME%", CompanyName);
+            template = template.Replace("%ORGANIZATION%", OrganizationName);
             template = template.Replace("%DISPLAYNAME%", DisplayName);
             template = template.Replace("%RUNTIMENAME%", SubsystemNamespace.ToLower());
 

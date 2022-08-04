@@ -138,9 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 EditorGUILayout.LabelField("This tool will guide you through the creation of a new subsystem to extend the functionality of MRTK3.");
 
                 EditorGUILayout.Space(6);
-                EditorGUILayout.LabelField("Please enter the company name.", EditorStyles.boldLabel);
-                subsystemGenerator.CompanyName = EditorGUILayout.TextField(
-                    "Company name", subsystemGenerator.CompanyName);
+                EditorGUILayout.LabelField("Please enter your organization or project name.", EditorStyles.boldLabel);
+                subsystemGenerator.OrganizationName = EditorGUILayout.TextField(
+                    "Company name", subsystemGenerator.OrganizationName);
                 EditorGUILayout.Space(4);
                 EditorGUILayout.LabelField("Please enter the name for the subsystem base class.", EditorStyles.boldLabel);
                 subsystemGenerator.BaseClassName = EditorGUILayout.TextField(
@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem class:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemGenerator.SubsystemName}.cs");
+                    EditorGUILayout.LabelField($"{subsystemGenerator.SubsystemName}.cs", GUILayout.Width(400));
                     subsystemGenerator.DontCreateImplementationClass = EditorGUILayout.ToggleLeft(
                         "Skip",
                         subsystemGenerator.DontCreateImplementationClass);
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem interface:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemGenerator.InterfaceName}.cs");
+                    EditorGUILayout.LabelField($"{subsystemGenerator.InterfaceName}.cs", GUILayout.Width(400));
                     subsystemGenerator.DontCreateInterface = EditorGUILayout.ToggleLeft(
                         "Skip",
                         subsystemGenerator.DontCreateInterface);
@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem base class:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemGenerator.BaseClassName}.cs");
+                    EditorGUILayout.LabelField($"{subsystemGenerator.BaseClassName}.cs", GUILayout.Width(400));
                     subsystemGenerator.DontCreateBaseClass   = EditorGUILayout.ToggleLeft(
                         "Skip",
                         subsystemGenerator.DontCreateBaseClass);
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Subsystem descriptor:", GUILayout.Width(160));
-                    EditorGUILayout.LabelField($"{subsystemGenerator.DescriptorName}.cs");
+                    EditorGUILayout.LabelField($"{subsystemGenerator.DescriptorName}.cs", GUILayout.Width(400));
                     subsystemGenerator.DontCreateDescriptor = EditorGUILayout.ToggleLeft(
                         "Skip",
                         subsystemGenerator.DontCreateDescriptor);
@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                     using (new EditorGUILayout.HorizontalScope())
                     {
                         EditorGUILayout.LabelField("Configuration class:", GUILayout.Width(160));
-                        EditorGUILayout.LabelField($"{subsystemGenerator.ConfigurationName}.cs");
+                        EditorGUILayout.LabelField($"{subsystemGenerator.ConfigurationName}.cs", GUILayout.Width(400));
                     }
                 }
                 EditorGUILayout.Space(6);
@@ -341,39 +341,39 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             StringBuilder sb = new StringBuilder();
             int step = 1;
-            sb.Append($"{step}. In the Project view, navigate to Assets/MRTK.Generated/{subsystemGenerator.SubsystemName}\n");
+            sb.AppendLine($" {step}. In the Project view, navigate to Assets/MRTK.Generated/{subsystemGenerator.SubsystemName}");
             step++;
-            sb.Append($"{step}. Open {subsystemGenerator.DescriptorName}.cs\n");
+            sb.AppendLine($" {step}. Open {subsystemGenerator.DescriptorName}.cs");
             step++;
-            sb.Append($"{step}. Define subsystem specific properties in the {subsystemGenerator.BaseClassName}CInfo class\n");
+            sb.AppendLine($" {step}. Define subsystem specific properties in the {subsystemGenerator.BaseClassName}CInfo class");
             step++;
-            sb.Append($"{step}. Add and initialize subsystem specific properties in the {subsystemGenerator.DescriptorName} class\n");
+            sb.AppendLine($" {step}. Add and initialize subsystem specific properties in the {subsystemGenerator.DescriptorName} class");
             step++;
-            sb.Append($"{step}. Open {subsystemGenerator.InterfaceName}.cs\n");
+            sb.AppendLine($" {step}. Open {subsystemGenerator.InterfaceName}.cs");
             step++;
-            sb.Append($"{step}. Define subsystem specific properties and/or methods\n");
+            sb.AppendLine($" {step}. Define subsystem specific properties and/or methods");
             step++;
-            sb.Append($"{step}. Open {subsystemGenerator.BaseClassName}.cs\n");
+            sb.AppendLine($" {step}. Open {subsystemGenerator.BaseClassName}.cs");
             step++;
-            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the abstract `Provider` class\n");
+            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the abstract `Provider` class");
             step++;
-            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.BaseClassName} class\n");
+            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.BaseClassName} class");
             step++;
-            sb.Append($"{step}. Open {subsystemGenerator.SubsystemName}.cs\n");
+            sb.AppendLine($" {step}. Open {subsystemGenerator.SubsystemName}.cs");
             step++;
-            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the `{subsystemGenerator.SubsystemName}Provider` class\n");
+            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the `{subsystemGenerator.SubsystemName}Provider` class");
             step++;
-            sb.Append($"{step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.SubsystemName} class\n");
+            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.SubsystemName} class");
             step++;
             if (subsystemGenerator.CreateConfiguration)
             {
-                sb.Append($"{step}. Open {subsystemGenerator.ConfigurationName}.cs\n");
+                sb.AppendLine($" {step}. Open {subsystemGenerator.ConfigurationName}.cs");
                 step++;
-                sb.Append($"{step}. Add subsystem configuration properties\n");
+                sb.AppendLine($" {step}. Add subsystem configuration properties");
                 step++;
-                sb.Append($"{step}. Return to {subsystemGenerator.SubsystemName}.cs\n");
+                sb.AppendLine($" {step}. Return to {subsystemGenerator.SubsystemName}.cs");
                 step++;
-                sb.Append($"{step}. Initialize the subsystem configuration\n");
+                sb.AppendLine($" {step}. Initialize the subsystem configuration");
                 step++;
             }
 
@@ -390,7 +390,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                     sb.ToString(),
                     GUILayout.ExpandHeight(true));
                 EditorGUILayout.EndScrollView();
-
+                EditorGUILayout.Space(4);
+                if (GUILayout.Button("Enable your subsystem"))
+                {
+                    SettingsService.OpenProjectSettings("MRTK3");
+                }
                 GUILayout.FlexibleSpace();
             }
 
