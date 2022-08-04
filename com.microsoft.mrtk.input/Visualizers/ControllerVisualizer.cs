@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private InternedString targetUsage;
 
         /// <inheritdoc />
-        protected bool isControllerTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
+        protected bool IsControllerTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
 
         protected void OnEnable()
         {
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void Update()
         {
-            xrController.hideControllerModel = !isControllerTracked;
+            xrController.hideControllerModel = !IsControllerTracked;
         }
     }
 }
