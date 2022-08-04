@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private const bool DefaultCreateConfiguration = false;
         private static readonly string DefaultBaseSubsystemName = $"NewSubsystem";
         private static readonly string DefaultOrganizationName = "Contoso";
-        // todo
-        //private static readonly string DefaultSubsystemNamespace = $"{DefaultCompanyName}.MRTK3.Subsystems";
         private static readonly string OutputFolderRoot = Path.Combine("Assets", "MRTK.Generated");
 
         [SerializeField]
@@ -527,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <param name="guid">The guid that represents the asset.</param>
         /// <param name="fileInfo"><see cref="FileInfo"/> object representing the asset.</param>
         /// <param name="error">Error message.</param>
-        /// <returns></returns>
+        /// <returns>True if the asset was acquired, or false.</returns>
         private bool GetAsset(
             string guid,
             out FileInfo fileInfo,
@@ -555,10 +553,10 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// 
+        /// Replaces template tokens with customer data.
         /// </summary>
-        /// <param name="template"></param>
-        /// <returns></returns>
+        /// <param name="template">The contents of the template.</param>
+        /// <returns>The updated contents of the template.</returns>
         private string ReplaceTokens(string template)
         {
             template = template.Replace("%NAMESPACE%", SubsystemNamespace);
