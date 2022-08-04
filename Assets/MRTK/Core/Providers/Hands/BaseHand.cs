@@ -79,6 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion Gesture Definitions
 
         /// <inheritdoc />
+        public abstract bool IsJointDataAvailable { get; }
+
+        /// <inheritdoc />
         public abstract bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose);
 
         private Vector3 GetJointPosition(TrackedHandJoint jointToGet)
