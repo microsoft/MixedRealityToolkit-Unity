@@ -103,7 +103,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 2
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
   m_FirstHoverEntered:
@@ -622,15 +622,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2540620928385852740, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.065000005
+      value: 0.06499999
       objectReference: {fileID: 0}
     - target: {fileID: 2540620928514445879, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.097
+      value: 0.09699999
       objectReference: {fileID: 0}
     - target: {fileID: 2540620929034369931, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.033000004
+      value: 0.03299999
       objectReference: {fileID: 0}
     - target: {fileID: 2540620929069257158, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_IsActive
@@ -773,12 +773,16 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3192054425862307650, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 3192054425862307650, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.13700001
+      value: 0.137
       objectReference: {fileID: 0}
     - target: {fileID: 3192054425862307650, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0485
+      value: 0.048499994
       objectReference: {fileID: 0}
     - target: {fileID: 3334445480955236878, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_IsActive
@@ -906,7 +910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5187099724903728565, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.016500002
+      value: 0.016499994
       objectReference: {fileID: 0}
     - target: {fileID: 5581127635866360105, guid: 4f58c2a311c9998419b959a46ed80ca7, type: 3}
       propertyPath: m_IsActive
