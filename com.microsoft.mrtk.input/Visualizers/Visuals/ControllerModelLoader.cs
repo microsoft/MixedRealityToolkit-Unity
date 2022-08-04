@@ -23,8 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Tries to load the controller model game object from the provided OpenXR ControllerModel.
         /// Requires the MR OpenXR plugin to work.
         /// </summary>
-        /// <param name="controllerModelProvider"></param>
-        /// <returns></returns>
+        /// <param name="controllerModelProvider">The OpenXR ControllerModel to loade from</param>
+        /// <returns>A gameobject representing the generated controller model in the scene</returns>
         public async static Task<GameObject> TryGenerateControllerModelFromPlatformSDK(ControllerModel controllerModelProvider)
         {
             GameObject gltfGameObject = null;
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.LogError("Failed to obtain controller model from platform.");
                 Object.Destroy(gltfGameObject);
             }
-#endif //MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
+#endif // MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
 
             return gltfGameObject;
         }
