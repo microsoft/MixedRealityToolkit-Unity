@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private static SubsystemWizardWindow window = null;
         private SubsystemGenerator subsystemGenerator = new SubsystemGenerator();
 
-        private static readonly Vector2 WindowSizeWithoutLogo = new Vector2(600, 430);
-        private static readonly Vector2 WindowSizeWithLogo = new Vector2(600, 500);
+        private static readonly Vector2 WindowSizeWithoutLogo = new Vector2(600, 510);
+        private static readonly Vector2 WindowSizeWithLogo = new Vector2(600, 580);
 
         [MenuItem("Mixed Reality/MRTK3/Utilities/Subsystem Wizard...", false)]
         private static void Init()
