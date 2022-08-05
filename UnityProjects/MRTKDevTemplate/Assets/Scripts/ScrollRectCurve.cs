@@ -32,7 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void Awake()
         {
-            scrollRect = (scrollRect != null) ? scrollRect : gameObject.GetComponentInParent<ScrollRect>(true);
+            if (scrollRect == null)
+            {
+                scrollRect = gameObject.GetComponentInParent<ScrollRect>(true);
+            }
             scrollRect.onValueChanged.AddListener(a => UpdatePositions());
         }
 
