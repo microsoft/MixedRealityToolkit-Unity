@@ -181,22 +181,6 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: e7a37761780007545a89ece9b43ce0e8, type: 3}
-    - target: {fileID: 6400998762086782788, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 6478382837289762357, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: currentIconName
-      value: Icon 63
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_text
-      value: "\uF2DE"
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
 --- !u!1 &383522641485202674 stripped
@@ -443,22 +427,6 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d78e812d92f277e4697483d4cb58238e, type: 3}
-    - target: {fileID: 6400998762086782788, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 6478382837289762357, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: currentIconName
-      value: Icon 89
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_text
-      value: "\uF419"
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
 --- !u!1 &383522641080100107 stripped
@@ -618,22 +586,6 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 7cd5b104a735bbc4dbe839386eb8df9a, type: 3}
-    - target: {fileID: 6400998762086782788, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 6478382837289762357, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: currentIconName
-      value: Icon 104
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_text
-      value: "\uF507"
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
 --- !u!1 &383522640554390959 stripped
@@ -705,22 +657,6 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a4b456277eaceb444b12d617c8f86a61, type: 3}
-    - target: {fileID: 6400998762086782788, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 6478382837289762357, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: currentIconName
-      value: Icon 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_text
-      value: "\uE844"
-      objectReference: {fileID: 0}
-    - target: {fileID: 7861103635146759125, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5b53b02ddc453d49a3a36a85164095f, type: 3}
 --- !u!1 &383522640251739470 stripped

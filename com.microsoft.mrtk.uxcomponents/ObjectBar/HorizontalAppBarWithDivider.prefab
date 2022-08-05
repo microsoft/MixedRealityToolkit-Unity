@@ -215,22 +215,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 3656eebc947757d4da0e5ce408a3e13b, type: 3}
-    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: currentIconName
-      value: Icon 68
+    - target: {fileID: 1633295506271318166, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_text
-      value: "\uF300"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -389,22 +377,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 5a39c30123bcca8468df62db5f18f470, type: 3}
-    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: currentIconName
-      value: Icon 92
+    - target: {fileID: 1633295506271318166, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_text
-      value: "\uF47A"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -476,22 +452,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 56c8c6c45b38d7e41875a67169668f53, type: 3}
-    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: currentIconName
-      value: Icon 107
+    - target: {fileID: 1633295506271318166, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_text
-      value: "\uF55A"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -587,29 +551,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6675957056742955635}
     m_Modifications:
-    - target: {fileID: 1629828863454055269, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
-    - target: {fileID: 1706138715461181972, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: currentIconName
-      value: Icon 94
+    - target: {fileID: 1633295506271318166, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_text
-      value: "\uF481"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2545372552223131636, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.09700001
+      value: 0.097
       objectReference: {fileID: 0}
     - target: {fileID: 7259344040934225704, guid: 6ce24ddaab37c8c4aa01ee45349b4583, type: 3}
       propertyPath: m_LocalPosition.y
