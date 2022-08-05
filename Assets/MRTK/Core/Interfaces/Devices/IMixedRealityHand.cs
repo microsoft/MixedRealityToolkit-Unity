@@ -11,11 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityHand : IMixedRealityController
     {
         /// <summary>
-        /// Has the hand any joint data available.
-        /// </summary>
-        bool IsJointDataAvailable { get; }
-
-        /// <summary>
         /// Get the current pose of a hand joint.
         /// </summary>
         /// <remarks>
