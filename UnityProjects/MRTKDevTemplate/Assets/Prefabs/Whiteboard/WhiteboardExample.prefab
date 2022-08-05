@@ -103,7 +103,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 2
+    m_Bits: 4294967295
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
   m_FirstHoverEntered:
@@ -243,11 +243,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  disabledInteractorTypes: []
+  disabledInteractorTypes:
+  - reference: Microsoft.MixedReality.Toolkit.IGazeInteractor, Microsoft.MixedReality.Toolkit.Core
+  - reference: Microsoft.MixedReality.Toolkit.IRayInteractor, Microsoft.MixedReality.Toolkit.Core
   TextureSize: 512
   drawingColor:
     serializedVersion: 2
-    rgba: 1
+    rgba: 0
 --- !u!65 &443995632
 BoxCollider:
   m_ObjectHideFlags: 0
