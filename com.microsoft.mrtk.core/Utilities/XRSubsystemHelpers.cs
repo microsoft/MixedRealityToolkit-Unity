@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -16,21 +17,21 @@ namespace Microsoft.MixedReality.Toolkit
     /// <remarks>These properties are only valid for the XR SDK pipeline.</remarks>
     public static class XRSubsystemHelpers
     {
+        private static Dictionary<Type, IList> scratchCaches = new Dictionary<Type, IList>();
+
         /// <summary>
         /// Get the first active subsystem of type T.
         /// </summary>
         /// <remarks>
-        /// Caution: this method allocs a new list of subsystems.
-        /// For performance critical (frame loop) applications,
-        /// consider calling SubsystemManager.GetSubsystems directly
-        /// with a pre-allocated list.
+        /// This method allocates on the first invocation with a new, unique type T.
+        /// Subsequent invocations with the same type T will no longer allocate.
         /// </remarks>
         public static T GetFirstSubsystem<T>() where T : ISubsystem
         {
-            List<T> subsystems = GetAllSubsystems<T>();
+            List<T> results = GetAllSubsystems<T>();
 
             // default returns null on reference type
-            return subsystems.Count > 0 ? subsystems[0] : default;
+            return results.Count > 0 ? results[0] : default;
         }
 
         /// <summary>
@@ -51,9 +52,10 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Get all running subsystems of type T without allocating a new list.
+        /// Get all running subsystems of type T.
         /// </summary>
         /// <param name="runningSubsystems">The list to fill with all running subsystems of the specified type.</param>
+        [Obsolete("GetAllRunningSubsystems now internally caches for you; this separate NonAlloc method is no longer necessary.")]
         public static void GetAllRunningSubsystemsNonAlloc<T>(List<T> runningSubsystems) where T : ISubsystem
         {
             SubsystemManager.GetSubsystems(runningSubsystems);
@@ -61,43 +63,45 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Get all running subsystems of type T.
+        /// Get all running subsystems of type T. Note, this is internally cached, so
+        /// the list is only valid immediately after invocation.
         /// </summary>
         /// <remarks>
-        /// Caution: this method allocs a new list of subsystems.
-        /// For performance critical (frame loop) applications,
-        /// consider calling SubsystemManager.GetSubsystems directly
-        /// with a pre-allocated list.
+        /// This method allocates on the first invocation with a new, unique type T.
+        /// Subsequent invocations with the same type T will no longer allocate.
         /// </remarks>
         public static List<T> GetAllRunningSubsystems<T>() where T : ISubsystem
         {
-            List<T> filtered = new List<T>();
-
-            foreach (T sys in GetAllSubsystems<T>())
-            {
-                if (sys.running)
-                {
-                    filtered.Add(sys);
-                }
-            }
-
-            return filtered;
+            List<T> subsystems = GetAllSubsystems<T>();
+            subsystems.RemoveAll(subsystem => !subsystem.running);
+            return subsystems;
         }
 
         /// <summary>
-        /// Get all subsystems (not necessarily running) of type T.
+        /// Get all subsystems (not necessarily running) of type T. Note, this is
+        /// internally cached, so the list is only valid immediately after invocation.
         /// </summary>
         /// <remarks>
-        /// Caution: this method allocs a new list of subsystems.
-        /// For performance critical (frame loop) applications,
-        /// consider calling SubsystemManager.GetSubsystems directly
-        /// with a pre-allocated list.
+        /// This method allocates on the first invocation with a new, unique type T.
+        /// Subsequent invocations with the same type T will no longer allocate.
         /// </remarks>
         public static List<T> GetAllSubsystems<T>() where T : ISubsystem
         {
-            List<T> subsystems = new List<T>();
-            SubsystemManager.GetSubsystems(subsystems);
-            return subsystems;
+            // If we haven't queried subsystems of this type before,
+            // we'll need to add a new entry in our cache. This will
+            // allocate the first time, but subsequent queries will
+            // reuse the same cached list. (The list will still be cleared
+            // and re-filled by the GetSubsystems call, but nothing will be
+            // allocated.)
+            if (!scratchCaches.ContainsKey(typeof(T)))
+            {
+                scratchCaches.Add(typeof(T), new List<T>());
+            }
+
+            List<T> cache = scratchCaches[typeof(T)] as List<T>;
+            SubsystemManager.GetSubsystems<T>(cache);
+
+            return cache;
         }
 
         private static XRInputSubsystem inputSubsystem = null;
@@ -148,6 +152,23 @@ namespace Microsoft.MixedReality.Toolkit
                     displaySubsystem = GetFirstRunningSubsystem<XRDisplaySubsystem>();
                 }
                 return displaySubsystem;
+            }
+        }
+
+        private static HandsAggregatorSubsystem handsAggregator = null;
+
+        /// <summary>
+        /// The currently loaded and running hands aggregator, if any.
+        /// </summary>
+        public static HandsAggregatorSubsystem HandsAggregator
+        {
+            get
+            {
+                if (handsAggregator == null || !handsAggregator.running)
+                {
+                    handsAggregator = GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
+                }
+                return handsAggregator;
             }
         }
 
