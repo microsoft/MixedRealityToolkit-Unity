@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void Awake()
         {
-            scrollRect = scrollRect ?? gameObject.GetComponentInParent<ScrollRect>(true);
+            scrollRect = (scrollRect != null) ? scrollRect : gameObject.GetComponentInParent<ScrollRect>(true);
             scrollRect.onValueChanged.AddListener(a => UpdatePositions());
         }
 
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             if (scrollRect == null) { return; }
 
-            float height  = scrollRect.viewport.rect.top - scrollRect.viewport.rect.bottom;
+            float height  = scrollRect.viewport.rect.yMin - scrollRect.viewport.rect.yMax;
             float height2 = height * height;
             float top     = ((RectTransform)transform).rect.yMax + transform.localPosition.y;
 
