@@ -48,16 +48,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             handMeshProvider = (controllerHandedness == Handedness.Left) ? WindowsMixedRealityHandMeshProvider.Left : WindowsMixedRealityHandMeshProvider.Right;
             handMeshProvider.SetInputSource(inputSource);
 
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
             articulatedHandApiAvailable = WindowsApiChecker.IsMethodAvailable(
                 "Windows.UI.Input.Spatial",
                 "SpatialInteractionSourceState",
                 "TryGetHandPose");
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private readonly ArticulatedHandDefinition handDefinition;
         private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
+
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
         private readonly bool articulatedHandApiAvailable = false;
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 
         #region IMixedRealityHand Implementation
 
