@@ -64,9 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         #region IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public bool IsJointDataAvailable => jointPoses != null;
-
-        /// <inheritdoc/>
         public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
         {
             if (jointPoses != null)

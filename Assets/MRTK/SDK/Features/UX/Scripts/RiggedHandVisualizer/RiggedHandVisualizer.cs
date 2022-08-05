@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
 
                 // Only runs if render hand mesh is true
-                bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization && MixedRealityHand.IsJointDataAvailable;
+                bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization && MixedRealityHand.TryGetJoint(TrackedHandJoint.Palm, out _);
                 HandRenderer.enabled = renderHandmesh;
                 if (renderHandmesh)
                 {
