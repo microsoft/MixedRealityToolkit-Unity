@@ -12276,18 +12276,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 315131386078964330, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
-    - target: {fileID: 619615687237832163, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
-    - target: {fileID: 1089947811362143961, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
     - target: {fileID: 2351505567455720332, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -12335,30 +12323,6 @@ PrefabInstance:
     - target: {fileID: 2351505567455720334, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
       propertyPath: m_Name
       value: MRTK XR Rig
-      objectReference: {fileID: 0}
-    - target: {fileID: 4102833070697430761, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
-    - target: {fileID: 4387645780003502924, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
-    - target: {fileID: 5727148872130156898, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
-    - target: {fileID: 8629307323091863620, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
-    - target: {fileID: 8865254736179457997, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
-      objectReference: {fileID: 0}
-    - target: {fileID: 8988800969130450167, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967293
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
@@ -12564,6 +12528,10 @@ PrefabInstance:
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7119852961148484655, guid: 5e1e5c2fb89ded5469dd37ccbed1a896, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e1e5c2fb89ded5469dd37ccbed1a896, type: 3}
 --- !u!4 &1669647714 stripped
@@ -13519,6 +13487,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1089489031}
     m_Modifications:
+    - target: {fileID: 3060986453813667140, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 6026828403977934991, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -13870,7 +13842,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 443995633, guid: a31291e7cd07cc34f9b29ec2a6ab7224, type: 3}
       propertyPath: drawingColor.rgba
-      value: 33535
+      value: 4278235903
       objectReference: {fileID: 0}
     - target: {fileID: 150949528621185834, guid: a31291e7cd07cc34f9b29ec2a6ab7224, type: 3}
       propertyPath: m_LocalScale.x
@@ -14061,10 +14033,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1203713056}
     m_Modifications:
-    - target: {fileID: 2002339758, guid: 5be1d1dda43e3ed40b18f4eb09e144fa, type: 3}
-      propertyPath: m_InteractionManager
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2415827607033482817, guid: 5be1d1dda43e3ed40b18f4eb09e144fa, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -14108,10 +14076,6 @@ PrefabInstance:
     - target: {fileID: 2415827607033482817, guid: 5be1d1dda43e3ed40b18f4eb09e144fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -83.514
-      objectReference: {fileID: 0}
-    - target: {fileID: 2741574062440155177, guid: 5be1d1dda43e3ed40b18f4eb09e144fa, type: 3}
-      propertyPath: m_InteractionManager
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3084243108605482235, guid: 5be1d1dda43e3ed40b18f4eb09e144fa, type: 3}
       propertyPath: m_Name

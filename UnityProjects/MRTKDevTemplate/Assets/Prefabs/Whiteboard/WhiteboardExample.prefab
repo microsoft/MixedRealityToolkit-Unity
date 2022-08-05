@@ -246,6 +246,7 @@ MonoBehaviour:
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGazeInteractor, Microsoft.MixedReality.Toolkit.Core
   - reference: Microsoft.MixedReality.Toolkit.IRayInteractor, Microsoft.MixedReality.Toolkit.Core
+  - reference: Microsoft.MixedReality.Toolkit.UX.CanvasProxyInteractor, Microsoft.MixedReality.Toolkit.UXCore
   TextureSize: 512
   drawingColor:
     serializedVersion: 2
