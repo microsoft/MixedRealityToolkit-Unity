@@ -828,7 +828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.02358422, y: -0.00045043931}
+  m_AnchoredPosition: {x: -0.06380791, y: -0.00045043931}
   m_SizeDelta: {x: 0, y: 218.4}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2578649064017060637
@@ -1121,7 +1121,7 @@ GameObject:
   - component: {fileID: 2578649064399513029}
   - component: {fileID: 2578649064399513030}
   m_Layer: 5
-  m_Name: Dash Demo
+  m_Name: UIPanelExample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1193,7 +1193,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!1 &2578649064448521970
 GameObject:
   m_ObjectHideFlags: 0
@@ -5229,7 +5229,7 @@ PrefabInstance:
       objectReference: {fileID: 6776978393435224395}
     - target: {fileID: 9062819528647497191, guid: bd4b74f5c5104ae498cb7b5e4a5f2f04, type: 3}
       propertyPath: m_Size.x
-      value: 52.867165
+      value: 52.804665
       objectReference: {fileID: 0}
     - target: {fileID: 9062819528647497191, guid: bd4b74f5c5104ae498cb7b5e4a5f2f04, type: 3}
       propertyPath: m_Size.y
@@ -5241,7 +5241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9062819528647497191, guid: bd4b74f5c5104ae498cb7b5e4a5f2f04, type: 3}
       propertyPath: m_Center.x
-      value: 0.019031525
+      value: 0.050281525
       objectReference: {fileID: 0}
     - target: {fileID: 9062819528647497191, guid: bd4b74f5c5104ae498cb7b5e4a5f2f04, type: 3}
       propertyPath: m_Center.y
