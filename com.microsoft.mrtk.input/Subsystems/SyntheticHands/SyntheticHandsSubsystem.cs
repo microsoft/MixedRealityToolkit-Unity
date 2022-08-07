@@ -67,6 +67,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             (provider as SynthesisProvider).SetNeutralPose(handNode, poseId);
         }
 
+        /// <summary>
+        /// Requests the selection pose for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection pose is being requested.</param>
+        /// <returns>
+        /// Identifier representing the hand pose.
+        /// </returns>
+        public GestureId GetSelectionPose(XRNode handNode)
+        {
+            return (provider as SynthesisProvider).GetSelectionPose(handNode);
+        }
+
+        /// <summary>
+        /// Sets the selection pose for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection pose is being set.</param>
+        /// <param name="poseId">The desired hand pose.</param>
+        public void SetSelectionPose(XRNode handNode, GestureId poseId)
+        {
+            (provider as SynthesisProvider).SetSelectionPose(handNode, poseId);
+        }
+
         private class SyntheticHandContainer : HandDataContainer
         {
             // The current gesture in hand-space, untransformed.
@@ -74,6 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // The 'neutral' hand pose (ex: flat or ready position) to be displayed.
             private GestureId neutralHandPose = GestureId.Flat;
+
+            // The 'selection' hand pose (ex: pinch position) to be displayed.
+            private GestureId selectionHandPose = GestureId.Pinch;
 
             // The Input Action associated with the root position of this hand.
             private InputActionProperty positionAction;
@@ -127,6 +152,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 get => neutralHandPose;
                 set => neutralHandPose = value;
+            }
+
+            /// <summary>
+            /// Gets or sets the synthetic hand's selection pose.
+            /// </summary>
+            public GestureId SelectionPose
+            {
+                get => selectionHandPose;
+                set => selectionHandPose = value;
             }
 
             /// <inheritdoc/>
@@ -277,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 using (UpdateGesturePerfMarker.Auto())
                 {
                     SimulatedArticulatedHandPoses.GetGesturePose(neutralHandPose, out HandJointPose[] baseData);
-                    SimulatedArticulatedHandPoses.GetGesturePose(GestureId.Pinch, out HandJointPose[] pinchData);
+                    SimulatedArticulatedHandPoses.GetGesturePose(selectionHandPose, out HandJointPose[] pinchData);
 
                     selectAmount = selectAction.action.ReadValue<float>();
 
@@ -348,6 +382,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public void SetNeutralPose(XRNode handNode, GestureId poseId)
             {
                 hands[handNode].NeutralPose = poseId;
+            }
+
+            /// <summary>
+            /// Requests the selection pose for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection pose is being requested.</param>
+            /// <returns>
+            /// Identifier representing the hand pose.
+            /// </returns>
+            public GestureId GetSelectionPose(XRNode handNode)
+            {
+                return hands[handNode].SelectionPose;
+            }
+
+            /// <summary>
+            /// Sets the selection pose for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection pose is being set.</param>
+            /// <param name="poseId">The desired hand pose.</param>
+            public void SetSelectionPose(XRNode handNode, GestureId poseId)
+            {
+                hands[handNode].SelectionPose = poseId;
             }
 
             #region IHandsSubsystem implementation

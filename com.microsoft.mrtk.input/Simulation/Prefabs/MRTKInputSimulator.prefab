@@ -68,6 +68,10 @@ MonoBehaviour:
     simulationMode: 1
     anchorPoint: 0
     changeNeutralPose: {fileID: -1599196918749775551, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    defaultPose: 2
+    selectionPose: 3
+    secondaryDefaultPose: 1
+    secondarySelectionPose: 7
     defaultPosition: {x: -0.25, y: 0, z: 0.5}
     track: {fileID: -7375025743082985399, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
     toggle: {fileID: -1821415106711856085, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
@@ -90,6 +94,10 @@ MonoBehaviour:
     simulationMode: 1
     anchorPoint: 0
     changeNeutralPose: {fileID: -1040645400157157469, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    defaultPose: 2
+    selectionPose: 3
+    secondaryDefaultPose: 1
+    secondarySelectionPose: 7
     defaultPosition: {x: 0.25, y: 0, z: 0.5}
     track: {fileID: -4319582668609697866, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
     toggle: {fileID: 7677260744920439143, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}

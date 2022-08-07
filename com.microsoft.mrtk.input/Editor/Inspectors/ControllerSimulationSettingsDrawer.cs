@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent anchorPointContent = new GUIContent("Anchor point");
         private readonly GUIContent defaultPositionContent = new GUIContent("Default position");
         private readonly GUIContent defaultPoseContent = new GUIContent("Default pose");
+        private readonly GUIContent selectionPoseContent = new GUIContent("Selection pose");
+        private readonly GUIContent secondaryDefaultPoseContent = new GUIContent("Secondary default pose");
+        private readonly GUIContent secondarySelectionPoseContent = new GUIContent("Secondary selection pose");
 
         private readonly GUIContent trackContent = new GUIContent("Momentary tracking");
         private readonly GUIContent toggleContent = new GUIContent("Toggle tracking");
@@ -46,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             SerializedProperty property,
             GUIContent label)
         {
-            return PropertyDrawerUtilities.CalculatePropertyHeight(26);
+            return PropertyDrawerUtilities.CalculatePropertyHeight(29);
         }
 
         public override void OnGUI(
@@ -73,6 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             SerializedProperty anchorPoint = property.FindPropertyRelative("anchorPoint");
             SerializedProperty defaultPosition = property.FindPropertyRelative("defaultPosition");
             SerializedProperty defaultPose = property.FindPropertyRelative("defaultPose");
+            SerializedProperty selectionPose = property.FindPropertyRelative("selectionPose");
+            SerializedProperty secondaryDefaultPose = property.FindPropertyRelative("secondaryDefaultPose");
+            SerializedProperty secondarySelectionPose = property.FindPropertyRelative("secondarySelectionPose");
 
             SerializedProperty track = property.FindPropertyRelative("track");
             SerializedProperty toggle = property.FindPropertyRelative("toggle");
@@ -105,6 +111,27 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
                 defaultPose, defaultPoseContent);
+            EditorGUI.PropertyField(
+                PropertyDrawerUtilities.GetPosition(
+                    position,
+                    PropertyDrawerUtilities.VerticalSpacing,
+                    ++rowMultiplier,
+                    PropertyDrawerUtilities.Height),
+                selectionPose, selectionPoseContent);
+            EditorGUI.PropertyField(
+                PropertyDrawerUtilities.GetPosition(
+                    position,
+                    PropertyDrawerUtilities.VerticalSpacing,
+                    ++rowMultiplier,
+                    PropertyDrawerUtilities.Height),
+                secondaryDefaultPose, secondaryDefaultPoseContent);
+            EditorGUI.PropertyField(
+                PropertyDrawerUtilities.GetPosition(
+                    position,
+                    PropertyDrawerUtilities.VerticalSpacing,
+                    ++rowMultiplier,
+                    PropertyDrawerUtilities.Height),
+                secondarySelectionPose, secondarySelectionPoseContent);
 
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(

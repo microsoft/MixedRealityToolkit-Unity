@@ -55,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     {
         private readonly MRTKSimulatedController simulatedController = null;
         private readonly IHandRay handRay = new HandRay();
+        private ControllerSimulationSettings controllerSimulationSettings;
 
         private MRTKSimulatedControllerState simulatedControllerState;
 
@@ -145,17 +146,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         public SimulatedController(
             Handedness handedness,
-            SimulatedHandPose defaultPose,
+            ControllerSimulationSettings ctrlSettings,
             Vector3 initialRelativePosition)
         {
             Handedness = handedness;
+            controllerSimulationSettings = ctrlSettings;
 
             // Set the default hand pose when initially tracked.
             XRNode? handNode = Handedness.ToXRNode();
             if (handNode.HasValue && SynthHands != null)
             {
                 SynthHands.SetNeutralPose(handNode.Value,
-                    defaultPose == SimulatedHandPose.Ready ? GestureId.Open : GestureId.Flat);
+                    controllerSimulationSettings.DefaultPose);
+                SynthHands.SetSelectionPose(handNode.Value,
+                    controllerSimulationSettings.SelectionPose);
             }
 
             simulatedController = InputSystem.AddDevice<MRTKSimulatedController>();
@@ -204,6 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         /// <summary>
         /// Toggles the simulated hand between flat or ready poses.
+        /// Not quite sure why this option is present
         /// </summary>
         public void ToggleNeutralPose()
         {
@@ -215,7 +220,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     GestureId neutralPose = SynthHands.GetNeutralPose(handNode.Value);
                     SynthHands.SetNeutralPose(
                                             handNode.Value,
-                                            (neutralPose == GestureId.Flat) ? GestureId.Open : GestureId.Flat);
+                                            (neutralPose == controllerSimulationSettings.DefaultPose) ? controllerSimulationSettings.SecondaryDefaultPose : controllerSimulationSettings.DefaultPose);
+
+                    GestureId selectionPose = SynthHands.GetSelectionPose(handNode.Value);
+                    SynthHands.SetSelectionPose(
+                                            handNode.Value,
+                                            (selectionPose == controllerSimulationSettings.SelectionPose) ? controllerSimulationSettings.SecondarySelectionPose : controllerSimulationSettings.SelectionPose);
                 }
                 else
                 {

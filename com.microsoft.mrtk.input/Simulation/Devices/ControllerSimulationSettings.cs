@@ -4,6 +4,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Microsoft.MixedReality.Toolkit.Input.GestureTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -60,16 +61,56 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         [SerializeField]
         [Tooltip("The initial pose of the simulated hand")]
-        private SimulatedHandPose defaultPose = SimulatedHandPose.Neutral;
+        private GestureId defaultPose = GestureId.Open;
 
         /// <summary>
         /// The initial pose of the simulated hand.
         /// </summary>
-        public SimulatedHandPose DefaultPose
+        public GestureId DefaultPose
         {
             get => defaultPose;
             set => defaultPose = value;
         }
+
+        [SerializeField]
+        [Tooltip("The pose of the simulated hand during a select action")]
+        private GestureId selectionPose = GestureId.Pinch;
+
+        /// <summary>
+        /// The pose of the simulated hand during a select action.
+        /// </summary>
+        public GestureId SelectionPose
+        {
+            get => selectionPose;
+            set => selectionPose = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The alternative initial pose of the simulated hand")]
+        private GestureId secondaryDefaultPose = GestureId.Open;
+
+        /// <summary>
+        /// The alternative initial pose of the simulated hand.
+        /// </summary>
+        public GestureId SecondaryDefaultPose
+        {
+            get => secondaryDefaultPose;
+            set => secondaryDefaultPose = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The alternative pose of the simulated hand during a select action")]
+        private GestureId secondarySelectionPose = GestureId.ThumbsUp;
+
+        /// <summary>
+        /// The alternative pose of the simulated hand during a select action.
+        /// </summary>
+        public GestureId SecondarySelectionPose
+        {
+            get => secondarySelectionPose;
+            set => secondarySelectionPose = value;
+        }
+
 
         [SerializeField]
         [Tooltip("The initial position, relative to the camera, at which the controller will appear (when tracking is toggled).")]
