@@ -328,7 +328,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6448619845270702420}
   - component: {fileID: 8085333164323593313}
-  - component: {fileID: 1442541267}
   m_Layer: 0
   m_Name: CanvasProxyInteractor
   m_TagString: Untagged
@@ -428,23 +427,6 @@ MonoBehaviour:
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
---- !u!114 &1442541267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7735890427496681069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45da53d665c373148a88bcc2dc96c9de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flatScreenInteractionMode:
-    name: FlatScreen
-    priority: 6
-  controllers:
-  - {fileID: 3780704554783686034}
 --- !u!1 &8393265084915170239
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7483033888661862189}
   - component: {fileID: 3780704554783686034}
+  - component: {fileID: 6470194891443387656}
   m_Layer: 0
   m_Name: FlatScreenController
   m_TagString: Untagged
@@ -643,6 +626,23 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_ButtonPressPoint: 0.5
+--- !u!114 &6470194891443387656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8393265084915170239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45da53d665c373148a88bcc2dc96c9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flatScreenInteractionMode:
+    name: FlatScreen
+    priority: 6
+  controllers:
+  - {fileID: 3780704554783686034}
 --- !u!1 &8479077998186684813
 GameObject:
   m_ObjectHideFlags: 0

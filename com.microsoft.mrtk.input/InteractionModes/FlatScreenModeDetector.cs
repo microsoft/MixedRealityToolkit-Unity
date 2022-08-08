@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class FlatScreenModeDetector : MonoBehaviour, IInteractionModeDetector
+    internal class FlatScreenModeDetector : MonoBehaviour, IInteractionModeDetector
     {
         [SerializeField]
         [Tooltip("The interaction mode to be set when the interactor is hovering over an interactable.")]
