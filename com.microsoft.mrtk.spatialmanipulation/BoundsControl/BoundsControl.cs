@@ -268,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public RotateAnchorType RotateAnchor
         {
-            get { return rotateAnchor; }
+            get => rotateAnchor;
             set
             {
                 if (rotateAnchor != value)
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public ScaleAnchorType ScaleAnchor
         {
-            get { return scaleAnchor; }
+            get => scaleAnchor;
             set
             {
                 if (scaleAnchor != value)
@@ -307,10 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public HandleScaleMode ScaleBehavior
         {
-            get
-            {
-                return scaleBehavior;
-            }
+            get => scaleBehavior;
             set
             {
                 if (scaleBehavior != value)
