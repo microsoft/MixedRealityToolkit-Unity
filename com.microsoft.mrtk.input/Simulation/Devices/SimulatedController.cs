@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     {
         private readonly MRTKSimulatedController simulatedController = null;
         private readonly IHandRay handRay = new HandRay();
-        private ControllerSimulationSettings controllerSimulationSettings;
+        private readonly ControllerSimulationSettings controllerSimulationSettings;
 
         private MRTKSimulatedControllerState simulatedControllerState;
 
