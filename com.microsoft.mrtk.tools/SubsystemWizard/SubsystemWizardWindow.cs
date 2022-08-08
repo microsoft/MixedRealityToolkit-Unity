@@ -355,13 +355,13 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             step++;
             sb.AppendLine($" {step}. Open {subsystemGenerator.BaseClassName}.cs");
             step++;
-            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the abstract `Provider` class");
+            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the abstract Provider class");
             step++;
             sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.BaseClassName} class");
             step++;
             sb.AppendLine($" {step}. Open {subsystemGenerator.SubsystemName}.cs");
             step++;
-            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the `{subsystemGenerator.SubsystemName}Provider` class");
+            sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.SubsystemName}Provider class");
             step++;
             sb.AppendLine($" {step}. Implement {subsystemGenerator.InterfaceName} in the {subsystemGenerator.SubsystemName} class");
             step++;

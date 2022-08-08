@@ -1,6 +1,4 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-// TODO: [Optional] Add additional copyright statement(s).
+// TODO: [Optional] Add copyright and license statement(s).
 
 using Microsoft.MixedReality.Toolkit;
 using UnityEngine;
