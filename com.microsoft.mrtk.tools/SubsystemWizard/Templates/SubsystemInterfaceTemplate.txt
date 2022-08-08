@@ -3,7 +3,7 @@
 namespace %NAMESPACE%
 {
     /// <summary>
-    /// Interface defining the functionality of the %SUBSYSTEMBASECLASSNAME%.
+    /// Interface defining the functionality of %SUBSYSTEMBASECLASSNAME%.
     /// </summary>
     internal interface I%SUBSYSTEMBASECLASSNAME%
     {
