@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // When the gaze pinch interactor is already selecting an object, use the default interactor behavior
                 if (hasSelection)
                 {
-                    return base.isHoverActive;
+                    return base.isHoverActive && IsTracked;
                 }
                 // Otherwise, this selector is only allowed to hover if we can tell that the palm for the corresponding hand/controller is facing away from the user.
                 else

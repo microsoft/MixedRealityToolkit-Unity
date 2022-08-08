@@ -17,6 +17,11 @@ resources:
     endpoint: ToolsAccess
     name: tools.internal
     ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
+  - repository: DocToolUnityProject
+    type: git
+    endpoint: ToolsAccess
+    name: lib.doctools
+    ref: f6dcb5efd248fbe486757cb5a7198aed81c180d5
 
 pr: none # disable PR validation
 
@@ -48,3 +53,16 @@ jobs:
       buildNumber: $(Version.Revision)
       previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
       publishToFeed: true
+
+- job: DocsBinariesGeneration
+  pool: Unity_2021.3.3f1_Pool
+  steps:
+  - checkout: self
+
+  - checkout: PipelineTools
+
+  - checkout: DocToolUnityProject
+
+  - template: Templates/license-unity.yaml@PipelineTools
+
+  - template: Templates/docs.yaml
