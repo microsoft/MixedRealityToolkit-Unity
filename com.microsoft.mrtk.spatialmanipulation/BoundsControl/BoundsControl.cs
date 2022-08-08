@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private ScaleAnchorType scaleAnchor = ScaleAnchorType.OppositeCorner;
 
         /// <summary>
-        /// Specifies whether the rotate handles will rotate the object around its origin, or the center of its calculated bounds.
+        /// Specifies whether the scale handles will rotate the scale around the opposing corner, or the center of its calculated bounds.
         /// </summary>
         public ScaleAnchorType ScaleAnchor
         {
