@@ -481,7 +481,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            UpdateReticle(rayInteractor.hasHover || rayInteractor.hasSelection || (rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _)));
+            UpdateReticle(rayInteractor.hasHover ||
+                            rayInteractor.hasSelection ||
+                            (rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _)));
 
             // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
             if (rayHasHit)
