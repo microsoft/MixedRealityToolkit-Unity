@@ -77,12 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             for (int i = 0; i < joints.Count; i++)
             {
+                HandJointPose joint = joints[i];
                 Gizmos.color = Color.blue;
-                Gizmos.DrawRay(joints[i].Position, joints[i].Forward * 0.01f);
+                Gizmos.DrawRay(joint.Position, joint.Forward * 0.01f);
                 Gizmos.color = Color.red;
-                Gizmos.DrawRay(joints[i].Position, joints[i].Right * 0.01f);
+                Gizmos.DrawRay(joint.Position, joint.Right * 0.01f);
                 Gizmos.color = Color.green;
-                Gizmos.DrawRay(joints[i].Position, joints[i].Up * 0.01f);
+                Gizmos.DrawRay(joint.Position, joint.Up * 0.01f);
             }
         }
 
