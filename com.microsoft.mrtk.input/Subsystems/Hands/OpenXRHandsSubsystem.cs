@@ -147,16 +147,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         return;
                     }
 
-                    FullQueryValid = true;
                     for (int i = 0; i < HandTracker.JointCount; i++)
                     {
                         UpdateJoint(TrackedHandJointIndexFromHandJointIndex[i], HandJointLocations[i], playspaceTransform);
-                        FullQueryValid &= HandJointLocations[i].IsTracked;
                     }
 
                     // Mark this hand as having been fully queried this frame.
                     // If any joint is queried again this frame, we'll reuse the
                     // information to avoid extra work.
+                    FullQueryValid = true;
                     AlreadyFullQueried = true;
                 }
             }
