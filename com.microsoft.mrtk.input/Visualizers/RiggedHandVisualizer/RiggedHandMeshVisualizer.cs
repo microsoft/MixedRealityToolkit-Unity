@@ -153,17 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 showMissingRendererWarning = false;
             }
-
-            // Check if the handRenderer's material has the pinchAmountMaterialProperty
-            if (!handRenderer.sharedMaterial.HasProperty(pinchAmountMaterialProperty))
-            {
-                Debug.LogWarning(String.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchAmountMaterialProperty));
-                showMissingPropertyWarning = true;
-            }
-            else
-            {
-                showMissingPropertyWarning = false;
-            }
         }
 
         /// <summary>

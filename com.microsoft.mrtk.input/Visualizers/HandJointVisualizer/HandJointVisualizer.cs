@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Basic hand joint visualizer that draws an instanced mesh on each hand joint.
+    /// This visualizer is mostly recommended for debugging purposes; try the
+    /// the <see cref="RiggedHandMeshVisualizer"/> for a more visually pleasing
+    /// hand visualization.
     /// </summary>
     [AddComponentMenu("MRTK/Input/Visualizers/Hand Joint Visualizer")]
     public class HandJointVisualizer : MonoBehaviour

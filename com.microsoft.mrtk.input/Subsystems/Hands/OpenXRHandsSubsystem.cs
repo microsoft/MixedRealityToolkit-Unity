@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// Given a destination jointID, apply the Bone info to the correct struct
             /// in the handJoints collection.
             /// </summary>
-            private bool UpdateJoint(int jointIndex, in HandJointLocation handJointLocation, Transform playspaceTransform)
+            private void UpdateJoint(int jointIndex, in HandJointLocation handJointLocation, Transform playspaceTransform)
             {
                 using (UpdateJointPerfMarker.Auto())
                 {
@@ -176,8 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         playspaceTransform.TransformPoint(handJointLocation.Pose.position),
                         playspaceTransform.rotation * handJointLocation.Pose.rotation,
                         handJointLocation.Radius);
-
-                    return true;
                 }
             }
 
