@@ -49,34 +49,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Range(0.8f, 1.2f)]
-        [Tooltip("The overall hand mesh will be scaled by this amount to fit the user's real hand size.")]
-        // Will be automatically calculated in the future.
-        private float handScale = 1.0f;
-
-        [SerializeField]
         [Tooltip("The transform of the wrist joint.")]
         private Transform wrist;
 
-        /// <summary>
-        /// Used to track whether the hand renderer was provided
-        /// </summary>
-        [SerializeField]
-        [HideInInspector]
-        private bool showMissingRendererWarning = false;
-
         [SerializeField]
         [Tooltip("Renderer of the hand mesh")]
-        [ShowInfoIf(InfoType.Warning, "Rigged Mesh Renderer is missing", "showMissingRendererWarning")]
         private SkinnedMeshRenderer handRenderer = null;
+
+        [SerializeField]
+        [Tooltip("Name of the shader property used to drive pinch-amount-based visual effects. " +
+                 "Generally, maps to something like a glow or an outline color!")]
+        private string pinchAmountMaterialProperty = "_PinchAmount";
+        
+        // Automatically calculated over time, based on the accumulated error
+        // between the user's actual joint locations and the armature's bones/joints.
+        private float handScale = 1.0f;
 
         // The property block used to modify the pinch amount property on the material
         private MaterialPropertyBlock propertyBlock = null;
-
-        /// <summary>
-        /// Property name for modifying the mesh's appearance based on pinch strength
-        /// </summary>
-        private const string pinchAmountMaterialProperty = "_PinchAmount";
 
         // Caching local references 
         private HandsAggregatorSubsystem handsSubsystem;
@@ -84,19 +74,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Scratch list for checking for the presence of display subsystems.
         private List<XRDisplaySubsystem> displaySubsystems = new List<XRDisplaySubsystem>();
 
+        // The XRController that is used to determine the pinch strength (i.e., select value!)
         private XRBaseController controller;
 
         // The actual, physical, rigged joints that drive the skinned mesh.
         // Otherwise referred to as "armature". Must be in OpenXR order.
         private readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
 
-        // Record the initial, intrinsic lengths of the tip bones of the skinned mesh.
-        // Used later to adjust the length of the skinned mesh's fingertips for improved accuracy.
-        private readonly float[] initialTipLengths = new float[(int)TrackedHandJoint.TotalJoints];
-
         protected virtual void Awake()
         {
             propertyBlock = new MaterialPropertyBlock();
+
+            if (handRenderer == null)
+            {
+                handRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+                if (handRenderer == null)
+                {
+                    Debug.LogWarning("RiggedHandMeshVisualizer couldn't find your rigged mesh renderer! " +
+                                     "You should set it manually.");
+                }
+            }
+
+            if (wrist == null)
+            {
+                // "Armature" is the default name that Blender assigns
+                // to the root of an armature/rig. Also happens to be the wrist joint!
+                wrist = transform.Find("Armature");
+
+                if (wrist == null)
+                {
+                    Debug.LogWarning("RiggedHandMeshVisualizer couldn't find the wrist joint on your hand mesh. " +
+                                     "You should set it manually!");
+                    
+                    // Abort initialization as we don't even have a wrist joint to go off of.
+                    return;
+                }
+            }
 
             // Start the depth-first-traversal at the wrist index.
             int index = (int)TrackedHandJoint.Wrist;
@@ -108,14 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // The "leaf joints" are excluded
                 if (child.name.Contains("end")) { continue; }
 
-                // Measure the intrinsic length of the fingertip bone. Used later to
-                // adjust the length of the skinned mesh's fingertips for improved accuracy.
-                if (child.name.Contains("tip"))
-                {
-                    // World-space, absolute, length of the tip-to-tip_end bone.
-                    initialTipLengths[index] = child.GetChild(0).localPosition.z * child.lossyScale.z;
-                }
-
                 riggedVisualJointsArray[index++] = child;
             }
         }
@@ -125,7 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Ensure hand is not visible until we can update position first time.
             handRenderer.enabled = false;
 
-            Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
+            Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand,
+                         $"HandVisualizer has an invalid XRNode ({handNode})!");
 
             handsSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
 
@@ -141,20 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handRenderer.enabled = false;
         }
 
-        protected void OnValidate()
-        {
-            // Skip these steps if the handRenderer is null
-            if (handRenderer == null)
-            {
-                showMissingRendererWarning = true;
-                return;
-            }
-            else
-            {
-                showMissingRendererWarning = false;
-            }
-        }
-
         /// <summary>
         /// Coroutine to wait until subsystem becomes available.
         /// </summary>
@@ -166,44 +158,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            if (handsSubsystem == null)
-            {
-                return;
-            }
-
             // Query all joints in the hand.
-            if (!handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
+            if (!ShouldRenderHand() || 
+                !handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
             {
+                // Hide the hand and abort if we shouldn't be
+                // showing the hand, for whatever reason.
+                // (Missing joint data, no subsystem, additive
+                // display, etc!)
                 handRenderer.enabled = false;
                 return;
             }
 
-            if (displaySubsystems.Count == 0)
-            {
-                SubsystemManager.GetSubsystems(displaySubsystems);
-            }
-
-            // Are we running on an XR display and it happens to be transparent?
-            // Probably shouldn't be showing rigged hands!
-            if (displaySubsystems.Count > 0 &&
-                displaySubsystems[0].running &&
-                !displaySubsystems[0].displayOpaque &&
-                !showHandsOnTransparentDisplays)
-            {
-                handRenderer.enabled = false;
-                return;
-            }
-            
-            transform.localScale = new Vector3(handNode == XRNode.LeftHand ? -handScale : handScale, handScale, handScale);
-
-            RenderMesh(joints);
-        }
-
-        private void RenderMesh(IReadOnlyList<HandJointPose> joints)
-        {
-            // Enable the hand mesh after once we have joint data
             handRenderer.enabled = true;
 
+            // We'll accumulate joint error as we iterate over each joint
+            // and compare it to the user's actual joint data.
             float error = 0.0f;
 
             for (int i = 0; i < joints.Count; i++)
@@ -221,7 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (jointTransform != null)
                 {
-                    
                     switch ((TrackedHandJoint)i)
                     {
                         case TrackedHandJoint.Palm:
@@ -239,6 +208,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         case TrackedHandJoint.LittleTip:
                             // The tip bone uses the joint rotation directly.
                             jointTransform.rotation = joints[i-1].Rotation;
+
+                            // The computed error between the rigged mesh's joints and the user's joints
+                            // is essentially the distance between the mesh and user joints, projected
+                            // along the forward axis of the finger itself; i.e., the "length error" of the finger.
                             error += Vector3.Dot((jointTransform.position - joints[i-1].Position), jointTransform.forward);
                             break;
                         case TrackedHandJoint.ThumbMetacarpal:
@@ -258,11 +231,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            // Compute and apply the adjusted scale of the hand.
+            // Over time, we'll grow or shrink the rigged hand
+            // to more accurately fit the actual size of the
+            // user's hand. 
             handScale += -error * 0.1f;
             handScale = Mathf.Clamp(handScale, 0.8f, 1.1f);
+            transform.localScale = new Vector3(handNode == XRNode.LeftHand ? -handScale : handScale, handScale, handScale);
 
             // Update the hand material based on selectedness value
             UpdateHandMaterial();
+        }
+
+        private bool ShouldRenderHand()
+        {
+            // If we're missing anything, don't render the hand.
+            if (handsSubsystem == null || wrist == null || handRenderer == null)
+            {
+                return false;
+            }
+
+            if (displaySubsystems.Count == 0)
+            {
+                SubsystemManager.GetSubsystems(displaySubsystems);
+            }
+
+            // Are we running on an XR display and it happens to be transparent?
+            // Probably shouldn't be showing rigged hands! (Users can
+            // specify showHandsOnTransparentDisplays if they disagree.)
+            if (displaySubsystems.Count > 0 &&
+                displaySubsystems[0].running &&
+                !displaySubsystems[0].displayOpaque &&
+                !showHandsOnTransparentDisplays)
+            {
+                return false;
+            }
+
+            // All checks out!
+            return true;
         }
 
         private void UpdateHandMaterial()
