@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine.XR;
 
@@ -16,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// Implementations can aggregate hand joint data from multiple APIs, or from multiple
     /// HandsSubsystems, or from any other source they choose.
     /// Recommended use is for aggregating from all loaded HandsSubsystems.
-    /// See <cref see="MRTKHandsAggregatorSubsystem"> for the MRTK implementation.
+    /// See <see cref="MRTKHandsAggregatorSubsystem"> for the MRTK implementation.
     /// </remarks>
     /// </summary>
     public interface IHandsAggregatorSubsystem
@@ -35,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// needed. This will return the controller position if no hand data is
         /// available on the platform.
         /// </summary>
+        [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
         bool TryGetHandCenter(XRNode hand, out HandJointPose jointPose);
 
         /// <summary>
@@ -66,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
 
         /// <summary>
         /// Get a read-only reference to the entire hand.
+        /// Joint poses are returned in an order consistent where each index matches up with the <see cref="Microsoft.MixedReality.Toolkit.TrackedHandJoint"/> enum
         /// </summary>
         bool TryGetEntireHand(XRNode hand, out IReadOnlyList<HandJointPose> jointPoses);
     }

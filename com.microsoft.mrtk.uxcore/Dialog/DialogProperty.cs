@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             List<DialogButtonContext> buttonTypesList = new List<DialogButtonContext>();
             foreach (DialogButtonTypes buttonType in Enum.GetValues(typeof(DialogButtonTypes)))
             {
-                if (buttonType != DialogButtonTypes.None && buttonTypes.HasFlag(buttonType))
+                if (buttonType != DialogButtonTypes.None && (buttonTypes & buttonType) == buttonType)
                 {
                     buttonTypesList.Add(new DialogButtonContext(Convert(buttonType)));
                 }

@@ -100,6 +100,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // List of the actions for the toggles in ToggleList
         private List<UnityAction<float>> toggleActions = new List<UnityAction<float>>();
 
+        private void OnValidate()
+        {
+            // Refresh this when modified, so that the desired changes are propagated
+            // to all the managed interactables.
+            AllowSwitchOff = allowSwitchOff;
+        }
+
         private void Start()
         {
             // If we don't already have any toggles listed, we scan for toggles
@@ -136,6 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     Toggles[CurrentIndex].ForceSetToggled(true);
                 }
             }
+
+            // Initialize the interactables with the proper allow-toggle-off setting.
+            AllowSwitchOff = allowSwitchOff;
         }
 
         /// <summary>

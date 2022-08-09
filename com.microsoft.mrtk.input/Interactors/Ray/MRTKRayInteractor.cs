@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // When the gaze pinch interactor is already selecting an object, use the default interactor behavior
                 if (hasSelection)
                 {
-                    return base.isHoverActive;
+                    return base.isHoverActive && IsTracked;
                 }
                 // Otherwise, this selector is only allowed to hover if we can tell that the palm for the corresponding hand/controller is facing away from the user.
                 else
@@ -163,6 +163,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
                     {
                         attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
+                    }
+                    else
+                    {
+                        // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
+                        if (handsAggregator == null)
+                        {
+                            handsAggregator = HandsUtils.GetSubsystem();
+                        }
+                        if (handsAggregator != null &&
+                            xrController is ArticulatedHandController handController &&
+                            handsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
+                        {
+                            attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
+                        }
                     }
 
                     if (hasSelection)

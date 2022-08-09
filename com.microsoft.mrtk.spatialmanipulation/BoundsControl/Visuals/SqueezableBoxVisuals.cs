@@ -106,15 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => activationLerpTime = value;
         }
 
-        #region IBoundsVisuals Implementation
-        /// <inheritdoc />
-        public bool IsFlat { get; set; }
-
-        /// <inheritdoc />
-        public bool IsManipulated { get; set; }
-
-        #endregion IBoundsVisuals Implementation
-
         // Reference to a BoundsControl component that
         // will inform this visual of flattening, manipulation events,
         // and active handle types.
@@ -185,6 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             foreach (BoundsHandleInteractable handle in handles)
             {
                 projectedHandles.Add(new HandlePoint() { Handle = handle, Position = Vector3.zero });
+                handle.BoundsControlRoot = boundsControl;
             }
 
             // Read the box properties out of the material. This will inform our (un)pinchScaleOffsets to keep
