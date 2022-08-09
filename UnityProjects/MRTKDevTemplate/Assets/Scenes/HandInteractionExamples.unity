@@ -13092,10 +13092,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1089489031}
     m_Modifications:
+    - target: {fileID: 2285124468144155093, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
+      propertyPath: m_text
+      value: "\uF419"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2285124468144155093, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 3060986453813667140, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 3119290704008432693, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
+      propertyPath: currentIconName
+      value: Icon 89
+      objectReference: {fileID: 0}
     - target: {fileID: 6026828403977934991, guid: 8ace9c04082e8ce4ea440f9bef681ce3, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -15121,6 +15133,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.09700001
       objectReference: {fileID: 0}
+    - target: {fileID: 5406764374972338603, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: currentIconName
+      value: Icon 74
+      objectReference: {fileID: 0}
+    - target: {fileID: 5406764375541661268, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: currentIconName
+      value: Icon 91
+      objectReference: {fileID: 0}
+    - target: {fileID: 5406764375752056176, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: currentIconName
+      value: Icon 139
+      objectReference: {fileID: 0}
+    - target: {fileID: 5406764376579440171, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: currentIconName
+      value: Icon 26
+      objectReference: {fileID: 0}
     - target: {fileID: 6675957057147064828, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.08050001
@@ -15180,6 +15208,22 @@ PrefabInstance:
     - target: {fileID: 6675957057942723118, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
       propertyPath: m_Name
       value: HorizontalAppBarWithDivider
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220901756459817931, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: m_text
+      value: "\uEB43"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220901757435337652, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: m_text
+      value: "\uF472"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220901757761157264, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: m_text
+      value: "\uF84D"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220901758071895115, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
+      propertyPath: m_text
+      value: "\uF342"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9b1a111fa131cc48b6c4daedd47efe3, type: 3}
