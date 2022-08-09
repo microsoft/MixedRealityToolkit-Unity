@@ -10,8 +10,6 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
-using InfoType = Microsoft.MixedReality.Toolkit.ShowInfoIfAttribute.InfoType;
-
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
