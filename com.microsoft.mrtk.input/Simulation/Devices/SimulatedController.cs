@@ -156,10 +156,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             XRNode? handNode = Handedness.ToXRNode();
             if (handNode.HasValue && SynthHands != null)
             {
-                SynthHands.SetNeutralPose(handNode.Value,
-                    controllerSimulationSettings.DefaultPose);
-                SynthHands.SetSelectionPose(handNode.Value,
-                    controllerSimulationSettings.SelectionPose);
+                SynthHands.SetNeutralGesture(handNode.Value,
+                    controllerSimulationSettings.DefaultGesture);
+                SynthHands.SetSelectionGesture(handNode.Value,
+                    controllerSimulationSettings.TriggerGesture);
             }
 
             simulatedController = InputSystem.AddDevice<MRTKSimulatedController>();
@@ -217,15 +217,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 XRNode? handNode = Handedness.ToXRNode();
                 if (handNode.HasValue && SynthHands != null)
                 {
-                    GestureId neutralPose = SynthHands.GetNeutralPose(handNode.Value);
-                    SynthHands.SetNeutralPose(
+                    GestureId neutralPose = SynthHands.GetNeutralGesture(handNode.Value);
+                    SynthHands.SetNeutralGesture(
                                             handNode.Value,
-                                            (neutralPose == controllerSimulationSettings.DefaultPose) ? controllerSimulationSettings.SecondaryDefaultPose : controllerSimulationSettings.DefaultPose);
+                                            (neutralPose == controllerSimulationSettings.DefaultGesture) ? controllerSimulationSettings.SecondaryDefaultGesture : controllerSimulationSettings.DefaultGesture);
 
-                    GestureId selectionPose = SynthHands.GetSelectionPose(handNode.Value);
-                    SynthHands.SetSelectionPose(
+                    GestureId selectionPose = SynthHands.GetSelectionGesture(handNode.Value);
+                    SynthHands.SetSelectionGesture(
                                             handNode.Value,
-                                            (selectionPose == controllerSimulationSettings.SelectionPose) ? controllerSimulationSettings.SecondarySelectionPose : controllerSimulationSettings.SelectionPose);
+                                            (selectionPose == controllerSimulationSettings.TriggerGesture) ? controllerSimulationSettings.SecondaryTriggerGesture : controllerSimulationSettings.TriggerGesture);
                 }
                 else
                 {

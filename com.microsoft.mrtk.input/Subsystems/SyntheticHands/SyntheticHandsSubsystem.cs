@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
@@ -52,20 +53,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>
         /// Identifier representing the hand pose.
         /// </returns>
-        public GestureId GetNeutralPose(XRNode handNode)
-        {
-            return (provider as SynthesisProvider).GetNeutralPose(handNode);
-        }
-
+        [Obsolete("Please use the GetNeutralGesture(handNode) instead.")]
+        public GestureId GetNeutralPose(XRNode handNode) => GetNeutralGesture(handNode);
         /// <summary>
         /// Sets the neutral pose for the specified hand.
         /// </summary>
         /// <param name="handNode">The hand for which the neutral pose is being set.</param>
         /// <param name="poseId">The desired hand pose.</param>
-        public void SetNeutralPose(XRNode handNode, GestureId poseId)
-        {
-            (provider as SynthesisProvider).SetNeutralPose(handNode, poseId);
-        }
+        [Obsolete("Please use the SetNeutralGesture(handNode, poseId) instead.")]
+        public void SetNeutralPose(XRNode handNode, GestureId poseId) => SetNeutralGesture(handNode, poseId);
 
         /// <summary>
         /// Requests the selection pose for the specified hand.
@@ -74,19 +70,59 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>
         /// Identifier representing the hand pose.
         /// </returns>
-        public GestureId GetSelectionPose(XRNode handNode)
-        {
-            return (provider as SynthesisProvider).GetSelectionPose(handNode);
-        }
+        [Obsolete("Please use the GetSelectionGesture(handNode) instead.")]
+        public GestureId GetSelectionPose(XRNode handNode) => GetSelectionGesture(handNode);
 
         /// <summary>
         /// Sets the selection pose for the specified hand.
         /// </summary>
         /// <param name="handNode">The hand for which the selection pose is being set.</param>
         /// <param name="poseId">The desired hand pose.</param>
-        public void SetSelectionPose(XRNode handNode, GestureId poseId)
+        [Obsolete("Please use the SetSelectionPose(handNode, poseId) instead.")]
+        public void SetSelectionPose(XRNode handNode, GestureId poseId) => SetSelectionGesture(handNode, poseId);
+
+        /// <summary>
+        /// Requests the neutral gesture for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the neutral gesture is being requested.</param>
+        /// <returns>
+        /// Identifier representing the hand gesture.
+        /// </returns>
+        public GestureId GetNeutralGesture(XRNode handNode)
         {
-            (provider as SynthesisProvider).SetSelectionPose(handNode, poseId);
+            return (provider as SynthesisProvider).GetNeutralGesture(handNode);
+        }
+
+        /// <summary>
+        /// Sets the neutral gesture for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the neutral gesture is being set.</param>
+        /// <param name="gestureId">The desired hand gesture.</param>
+        public void SetNeutralGesture(XRNode handNode, GestureId gestureId)
+        {
+            (provider as SynthesisProvider).SetNeutralGesture(handNode, gestureId);
+        }
+
+        /// <summary>
+        /// Requests the selection gesture for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection gesture is being requested.</param>
+        /// <returns>
+        /// Identifier representing the hand gesture.
+        /// </returns>
+        public GestureId GetSelectionGesture(XRNode handNode)
+        {
+            return (provider as SynthesisProvider).GetSelectionGesture(handNode);
+        }
+
+        /// <summary>
+        /// Sets the selection gesture for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection gesture is being set.</param>
+        /// <param name="gestureId">The desired hand gesture.</param>
+        public void SetSelectionGesture(XRNode handNode, GestureId gestureId)
+        {
+            (provider as SynthesisProvider).SetSelectionGesture(handNode, gestureId);
         }
 
         private class SyntheticHandContainer : HandDataContainer
@@ -94,11 +130,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // The current gesture in hand-space, untransformed.
             private HandJointPose[] currentGesture = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
 
-            // The 'neutral' hand pose (ex: flat or ready position) to be displayed.
-            private GestureId neutralHandPose = GestureId.Flat;
+            // The 'neutral' gesture (ex: flat or open) to be displayed.
+            private GestureId neutralGesture = GestureId.Open;
 
-            // The 'selection' hand pose (ex: pinch position) to be displayed.
-            private GestureId selectionHandPose = GestureId.Pinch;
+            // The 'selection' gesture (ex: pinch) to be displayed.
+            // Does not have to correspond to a selecting action, but the pose lerps based on the value of the selectAction
+            private GestureId selectionGesture = GestureId.Pinch;
 
             // The Input Action associated with the root position of this hand.
             private InputActionProperty positionAction;
@@ -135,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                         InputActionProperty selectAction,
                                         Vector3 poseOffset) : base(handNode)
             {
-                this.neutralHandPose = baseHandPose;
+                this.neutralGesture = baseHandPose;
                 this.positionAction = positionAction;
                 this.rotationAction = rotationAction;
                 this.selectAction = selectAction;
@@ -148,19 +185,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Gets or sets the synthetic hand's neutral pose.
             /// </summary>
-            public GestureId NeutralPose
+            public GestureId NeutralGesture
             {
-                get => neutralHandPose;
-                set => neutralHandPose = value;
+                get => neutralGesture;
+                set => neutralGesture = value;
             }
 
             /// <summary>
             /// Gets or sets the synthetic hand's selection pose.
             /// </summary>
-            public GestureId SelectionPose
+            public GestureId SelectionGesture
             {
-                get => selectionHandPose;
-                set => selectionHandPose = value;
+                get => selectionGesture;
+                set => selectionGesture = value;
             }
 
             /// <inheritdoc/>
@@ -310,8 +347,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 using (UpdateGesturePerfMarker.Auto())
                 {
-                    SimulatedArticulatedHandPoses.GetGesturePose(neutralHandPose, out HandJointPose[] baseData);
-                    SimulatedArticulatedHandPoses.GetGesturePose(selectionHandPose, out HandJointPose[] pinchData);
+                    SimulatedArticulatedHandPoses.GetGesturePose(neutralGesture, out HandJointPose[] baseData);
+                    SimulatedArticulatedHandPoses.GetGesturePose(selectionGesture, out HandJointPose[] pinchData);
 
                     selectAmount = selectAction.action.ReadValue<float>();
 
@@ -369,20 +406,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <returns>
             /// Identifier representing the hand pose.
             /// </returns>
-            public GestureId GetNeutralPose(XRNode handNode)
-            {
-                return hands[handNode].NeutralPose;
-            }
+            [Obsolete("Please use the GetNeutralGesture(handNode) instead.")]
+            public GestureId GetNeutralPose(XRNode handNode) => GetNeutralGesture(handNode);
 
             /// <summary>
             /// Sets the neutral pose for the specified hand.
             /// </summary>
             /// <param name="handNode">The hand for which the neutral pose is being set.</param>
             /// <param name="poseId">The desired hand pose.</param>
-            public void SetNeutralPose(XRNode handNode, GestureId poseId)
-            {
-                hands[handNode].NeutralPose = poseId;
-            }
+            [Obsolete("Please use the SetNeutralGesture(handNode) instead.")]
+            public void SetNeutralPose(XRNode handNode, GestureId poseId) => SetNeutralGesture(handNode, poseId);
 
             /// <summary>
             /// Requests the selection pose for the specified hand.
@@ -391,19 +424,59 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <returns>
             /// Identifier representing the hand pose.
             /// </returns>
-            public GestureId GetSelectionPose(XRNode handNode)
-            {
-                return hands[handNode].SelectionPose;
-            }
+            [Obsolete("Please use the GetSelectionGesture(handNode) instead.")]
+            public GestureId GetSelectionPose(XRNode handNode) => GetSelectionGesture(handNode);
 
             /// <summary>
             /// Sets the selection pose for the specified hand.
             /// </summary>
             /// <param name="handNode">The hand for which the selection pose is being set.</param>
             /// <param name="poseId">The desired hand pose.</param>
-            public void SetSelectionPose(XRNode handNode, GestureId poseId)
+            [Obsolete("Please use the SetSelectionGesture(handNode, poseId) instead.")]
+            public void SetSelectionPose(XRNode handNode, GestureId poseId) => SetSelectionGesture(handNode, poseId);
+
+            /// <summary>
+            /// Requests the neutral gesture for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the neutral gesture is being requested.</param>
+            /// <returns>
+            /// GestureId for the desired gesture.
+            /// </returns>
+            public GestureId GetNeutralGesture(XRNode handNode)
             {
-                hands[handNode].SelectionPose = poseId;
+                return hands[handNode].NeutralGesture;
+            }
+
+            /// <summary>
+            /// Sets the neutral gesture for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the neutral gesture is being set.</param>
+            /// <param name="gestureId">The desired hand gesture.</param>
+            public void SetNeutralGesture(XRNode handNode, GestureId gestureId)
+            {
+                hands[handNode].NeutralGesture = gestureId;
+            }
+
+            /// <summary>
+            /// Requests the selection gesture for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection gesture is being requested.</param>
+            /// <returns>
+            /// Identifier representing the hand gesture.
+            /// </returns>
+            public GestureId GetSelectionGesture(XRNode handNode)
+            {
+                return hands[handNode].SelectionGesture;
+            }
+
+            /// <summary>
+            /// Sets the selection gesture for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection gesture is being set.</param>
+            /// <param name="gestureId">The desired hand gesture.</param>
+            public void SetSelectionGesture(XRNode handNode, GestureId gestureId)
+            {
+                hands[handNode].SelectionGesture = gestureId;
             }
 
             #region IHandsSubsystem implementation

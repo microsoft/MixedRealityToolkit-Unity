@@ -60,55 +60,55 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         }
 
         [SerializeField]
-        [Tooltip("The initial pose of the simulated hand")]
-        private GestureId defaultPose = GestureId.Open;
+        [Tooltip("The initial gesture of the simulated hand")]
+        private GestureId defaultGesture = GestureId.Open;
 
         /// <summary>
-        /// The initial pose of the simulated hand.
+        /// The initial gesture of the simulated hand.
         /// </summary>
-        public GestureId DefaultPose
+        public GestureId DefaultGesture
         {
-            get => defaultPose;
-            set => defaultPose = value;
+            get => defaultGesture;
+            set => defaultGesture = value;
         }
 
         [SerializeField]
-        [Tooltip("The pose of the simulated hand during a select action")]
-        private GestureId selectionPose = GestureId.Pinch;
+        [Tooltip("The gesture of the simulated hand when the 'trigger' button is pressed")]
+        private GestureId triggerGesture = GestureId.Pinch;
 
         /// <summary>
-        /// The pose of the simulated hand during a select action.
+        /// The gesture of the simulated hand during a select action.
         /// </summary>
-        public GestureId SelectionPose
+        public GestureId TriggerGesture
         {
-            get => selectionPose;
-            set => selectionPose = value;
+            get => triggerGesture;
+            set => triggerGesture = value;
         }
 
         [SerializeField]
-        [Tooltip("The alternative initial pose of the simulated hand")]
-        private GestureId secondaryDefaultPose = GestureId.Open;
+        [Tooltip("The alternative initial Gesture of the simulated hand")]
+        private GestureId secondaryDefaultGesture = GestureId.Flat;
 
         /// <summary>
-        /// The alternative initial pose of the simulated hand.
+        /// The alternative initial gesture of the simulated hand.
         /// </summary>
-        public GestureId SecondaryDefaultPose
+        public GestureId SecondaryDefaultGesture
         {
-            get => secondaryDefaultPose;
-            set => secondaryDefaultPose = value;
+            get => secondaryDefaultGesture;
+            set => secondaryDefaultGesture = value;
         }
 
         [SerializeField]
-        [Tooltip("The alternative pose of the simulated hand during a select action")]
-        private GestureId secondarySelectionPose = GestureId.ThumbsUp;
+        [Tooltip("The alternative gesture of the simulated hand during a select action")]
+        private GestureId secondaryTriggerGesture = GestureId.ThumbsUp;
 
         /// <summary>
-        /// The alternative pose of the simulated hand during a select action.
+        /// The alternative gesture of the simulated hand during a select action.
         /// </summary>
-        public GestureId SecondarySelectionPose
+        public GestureId SecondaryTriggerGesture
         {
-            get => secondarySelectionPose;
-            set => secondarySelectionPose = value;
+            get => secondaryTriggerGesture;
+            set => secondaryTriggerGesture = value;
         }
 
 

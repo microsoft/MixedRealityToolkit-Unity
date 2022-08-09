@@ -17,10 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 
         private readonly GUIContent anchorPointContent = new GUIContent("Anchor point");
         private readonly GUIContent defaultPositionContent = new GUIContent("Default position");
-        private readonly GUIContent defaultPoseContent = new GUIContent("Default pose");
-        private readonly GUIContent selectionPoseContent = new GUIContent("Selection pose");
-        private readonly GUIContent secondaryDefaultPoseContent = new GUIContent("Secondary default pose");
-        private readonly GUIContent secondarySelectionPoseContent = new GUIContent("Secondary selection pose");
+        private readonly GUIContent defaultGestureContent = new GUIContent("Default gesture");
+        private readonly GUIContent TriggerGestureContent = new GUIContent("Trigger gesture");
+        private readonly GUIContent secondaryDefaultGestureContent = new GUIContent("Secondary default gesture");
+        private readonly GUIContent secondaryTriggerGestureContent = new GUIContent("Secondary trigger gesture");
 
         private readonly GUIContent trackContent = new GUIContent("Momentary tracking");
         private readonly GUIContent toggleContent = new GUIContent("Toggle tracking");
@@ -75,10 +75,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             SerializedProperty simMode = property.FindPropertyRelative("simulationMode");
             SerializedProperty anchorPoint = property.FindPropertyRelative("anchorPoint");
             SerializedProperty defaultPosition = property.FindPropertyRelative("defaultPosition");
-            SerializedProperty defaultPose = property.FindPropertyRelative("defaultPose");
-            SerializedProperty selectionPose = property.FindPropertyRelative("selectionPose");
-            SerializedProperty secondaryDefaultPose = property.FindPropertyRelative("secondaryDefaultPose");
-            SerializedProperty secondarySelectionPose = property.FindPropertyRelative("secondarySelectionPose");
+            SerializedProperty defaultGesture = property.FindPropertyRelative("defaultGesture");
+            SerializedProperty triggerGesture = property.FindPropertyRelative("triggerGesture");
+            SerializedProperty secondaryDefaultGesture = property.FindPropertyRelative("secondaryDefaultGesture");
+            SerializedProperty secondaryTriggerGesture = property.FindPropertyRelative("secondaryTriggerGesture");
 
             SerializedProperty track = property.FindPropertyRelative("track");
             SerializedProperty toggle = property.FindPropertyRelative("toggle");
@@ -110,28 +110,28 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                defaultPose, defaultPoseContent);
+                defaultGesture, defaultGestureContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                selectionPose, selectionPoseContent);
+                triggerGesture, TriggerGestureContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                secondaryDefaultPose, secondaryDefaultPoseContent);
+                secondaryDefaultGesture, secondaryDefaultGestureContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                secondarySelectionPose, secondarySelectionPoseContent);
+                secondaryTriggerGesture, secondaryTriggerGestureContent);
 
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
