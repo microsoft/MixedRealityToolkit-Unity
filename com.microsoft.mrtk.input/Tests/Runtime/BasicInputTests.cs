@@ -6,9 +6,11 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input.Simulation;
 
 using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
 
@@ -19,6 +21,71 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
     /// </summary>
     public class BasicInputTests : BaseRuntimeInputTests
     {
+        /// <summary>
+        /// Ensure the simulated input devices are registered and present.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator InputDeviceSmoketest()
+        {
+            foreach (var device in InputSystem.devices)
+            {
+                Debug.Log(device);
+            }
+            Assert.That(InputSystem.devices, Has.Exactly(2).TypeOf<MRTKSimulatedController>());
+            yield return null;
+        }
+
+        /// <summary>
+        /// Ensure the simulated input devices bind to the controllers on the rig.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator InputBindingSmoketest()
+        {
+            var controllers = new[] {
+                CachedLookup.LeftHandController,
+                CachedLookup.RightHandController,
+                CachedLookup.GazeController
+            };
+
+            foreach (var controller in controllers)
+            {
+                Assert.That(controller, Is.Not.Null);
+                Assert.That(controller, Is.AssignableTo(typeof(ActionBasedController)));
+
+                ActionBasedController actionBasedController = controller as ActionBasedController;
+                Assert.That(actionBasedController.positionAction.action.controls, Has.Count.GreaterThanOrEqualTo(1));
+            }
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Ensure the simulated input device actually makes the rig's controllers move/actuate.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator HandMovingSmoketest()
+        {
+            var controller = CachedLookup.RightHandController as ActionBasedController;
+
+            var testHand = new TestHand(Handedness.Right);
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.Device);
+
+            yield return testHand.Show(Vector3.forward);
+
+            Assert.That(controller.transform.position.x, Is.EqualTo(0.0f).Within(0.01f));
+
+            yield return testHand.Move(Vector3.right * 0.5f, 60);
+            Debug.Log("Input system update mode: " + InputSystem.settings.updateMode);
+
+            Assert.That(controller.positionAction.action.controls, Has.Count.GreaterThanOrEqualTo(1));
+            Assert.That(controller.positionAction.action.activeControl, Is.Not.Null);
+            Assert.That(controller.positionAction.action.ReadValue<Vector3>().x, Is.EqualTo(0.5f).Within(0.01f));
+
+            Assert.That(controller.transform.position.x, Is.EqualTo(0.5f).Within(0.01f));
+
+            yield return null;
+        }
+
         /// <summary>
         /// Very basic test of StatefulInteractable's poke hovering, grab selecting,
         /// and toggling mechanics. Does not test rays or gaze interactions.

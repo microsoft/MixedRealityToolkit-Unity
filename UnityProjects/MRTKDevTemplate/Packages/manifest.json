@@ -64,6 +64,7 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "testables": [
+    "com.unity.inputsystem",
     "com.microsoft.mrtk.accessibility",
     "com.microsoft.mrtk.core",
     "com.microsoft.mrtk.data",

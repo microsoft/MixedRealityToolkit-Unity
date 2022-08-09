@@ -427,6 +427,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     yield return hand.SetGesture(GestureId.Pinch);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
+                    Assert.IsTrue(objectManipulator.isSelected, "ObjectManipulator wasn't selected!");
+
                     // Ensure the object didn't move after pinching if using object centered rotation
                     if (rotationAnchorType == ObjectManipulator.RotateAnchorType.RotateAboutObjectCenter)
                     {

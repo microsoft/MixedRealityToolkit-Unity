@@ -149,6 +149,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             foreach (Collider nearbyCollider in detector.DetectedColliders)
             {
+                // Sometimes things can be destroyed in between when we detect them
+                // and when we want to magnetize to them!
+                if (nearbyCollider == null) { continue; }
+
                 Vector3 nearestPoint = nearbyCollider.ClosestPoint(root);
                 float distance = Vector3.Distance(root, nearestPoint);
 

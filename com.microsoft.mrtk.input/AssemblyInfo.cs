@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Input.Runtime.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Input.Tests")]
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Input.Editor")]
 
 [assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Input")]
