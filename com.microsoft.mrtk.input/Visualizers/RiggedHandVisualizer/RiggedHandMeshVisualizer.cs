@@ -78,6 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Otherwise referred to as "armature". Must be in OpenXR order.
         private readonly Transform[] riggedVisualJointsArray = new Transform[(int)TrackedHandJoint.TotalJoints];
 
+        // The substring used to determine the "leaf joint"
+        // at the end of a finger, which is discarded.
+        private const string endJointName = "end";
+
         protected virtual void Awake()
         {
             propertyBlock = new MaterialPropertyBlock();
@@ -115,8 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // the provided armature's bones/joints are in OpenXR order.
             foreach (Transform child in wrist.GetComponentsInChildren<Transform>())
             {
-                // The "leaf joints" are excluded
-                if (child.name.Contains("end")) { continue; }
+                // The "leaf joints" are excluded.
+                if (child.name.Contains(endJointName)) { continue; }
 
                 riggedVisualJointsArray[index++] = child;
             }
@@ -205,11 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         case TrackedHandJoint.LittleTip:
                             // The tip bone uses the joint rotation directly.
                             jointTransform.rotation = joints[i-1].Rotation;
-
-                            // The computed error between the rigged mesh's joints and the user's joints
-                            // is essentially the distance between the mesh and user joints, projected
-                            // along the forward axis of the finger itself; i.e., the "length error" of the finger.
-                            error += Vector3.Dot((jointTransform.position - joints[i-1].Position), jointTransform.forward);
+                            // Compute and accumulate the error between the hand mesh and the user's joint data.
+                            error += JointError(jointTransform.position, joints[i-1].Position, jointTransform.forward);
                             break;
                         case TrackedHandJoint.ThumbMetacarpal:
                         case TrackedHandJoint.IndexMetacarpal:
@@ -231,13 +232,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Compute and apply the adjusted scale of the hand.
             // Over time, we'll grow or shrink the rigged hand
             // to more accurately fit the actual size of the
-            // user's hand. 
-            handScale += -error * 0.1f;
-            handScale = Mathf.Clamp(handScale, 0.8f, 1.1f);
+            // user's hand.
+
+            // How quickly the hand will grow or shrink
+            // to fit the user's hand size.
+            const float errorGainFactor = 0.1f;
+
+            // Reasonable minimum and maximum for how much
+            // the hand mesh is allowed to stretch to fit the user.
+            const float minScale = 0.8f;
+            const float maxScale = 1.1f;
+
+            // Apply.
+            handScale += -error * errorGainFactor;
+            handScale = Mathf.Clamp(handScale, minScale, maxScale);
             transform.localScale = new Vector3(handNode == XRNode.LeftHand ? -handScale : handScale, handScale, handScale);
 
             // Update the hand material based on selectedness value
             UpdateHandMaterial();
+        }
+
+        // Computes the error between the rig's joint position and
+        // the user's joint position along the finger vector.
+        private float JointError(Vector3 armatureJointPosition, Vector3 userJointPosition, Vector3 fingerVector)
+        {
+            // The computed error between the rigged mesh's joints and the user's joints
+            // is essentially the distance between the mesh and user joints, projected
+            // along the forward axis of the finger itself; i.e., the "length error" of the finger.
+            return Vector3.Dot((armatureJointPosition - userJointPosition), fingerVector);
         }
 
         private bool ShouldRenderHand()
