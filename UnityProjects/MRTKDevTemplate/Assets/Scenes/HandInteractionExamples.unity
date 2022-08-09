@@ -548,7 +548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6ceef383a3dfd0a4e9c38b8d793170e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.869
+      value: 0.888
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6ceef383a3dfd0a4e9c38b8d793170e4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -556,7 +556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6ceef383a3dfd0a4e9c38b8d793170e4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.43300006
+      value: 0.433
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 6ceef383a3dfd0a4e9c38b8d793170e4, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2299,7 +2299,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 247333379}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.556}
+  m_LocalPosition: {x: 0, y: 0, z: 0.578}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 1708103290}
@@ -2307,7 +2307,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.842, y: -0.312}
+  m_AnchoredPosition: {x: 0.842, y: -0.276}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &247333381
@@ -2402,7 +2402,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -11.039095, w: 0.732635}
+  m_margin: {x: 0, y: 0, z: -8.21011, w: 0.732635}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3016,7 +3016,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -1.5926552, w: 0.732635}
+  m_margin: {x: 0, y: 0, z: 2.1106167, w: 0.732635}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6471,7 +6471,7 @@ GameObject:
   - component: {fileID: 956891495}
   - component: {fileID: 956891494}
   m_Layer: 0
-  m_Name: ObjectLabel (7)
+  m_Name: ObjectLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6485,15 +6485,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956891492}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.8}
+  m_LocalPosition: {x: 0, y: 0, z: 0.685}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
-  m_Father: {fileID: 1727403011}
-  m_RootOrder: 7
+  m_Father: {fileID: 2131597836}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.65599984, y: -0.23000002}
+  m_AnchoredPosition: {x: 0.955, y: 0.026}
   m_SizeDelta: {x: 41.5131, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &956891494
@@ -6516,7 +6516,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Far Interaction with Hand Ray or Gaze + Pinch
+  m_text: "Far Interaction with \nHand Ray or Gaze + Pinch\n\n<size=14>Dynamic visual
+    feedback based on the amount of pinch gesture (Selectedness) using StateVisualizer's
+    'Playback Time Matches Value'. Hover highlight is activated by MeshOutline script.</size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 533bdd8d5c92b52448ee2ecf7bd828a4, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b082f80c6b45164418a354f7e116f0a3, type: 2}
@@ -6543,14 +6545,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -6579,7 +6581,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -45.501728, w: 0.732635}
+  m_margin: {x: 0, y: 0, z: 8.773954, w: -5.0294595}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7936,7 +7938,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232423736}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.719, y: -0.043, z: 0.726}
+  m_LocalPosition: {x: 0.583, y: -0.043, z: 0.726}
   m_LocalScale: {x: 1.4077, y: 1.4077, z: 1.4077}
   m_Children:
   - {fileID: 1823018503}
@@ -9359,7 +9361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: f9a8072f5d9b92347a999f10f01b8012, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1110001
+      value: 1.143
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: f9a8072f5d9b92347a999f10f01b8012, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9367,7 +9369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: f9a8072f5d9b92347a999f10f01b8012, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.46600005
+      value: 0.453
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: f9a8072f5d9b92347a999f10f01b8012, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13075,7 +13077,6 @@ Transform:
   - {fileID: 1254210891}
   - {fileID: 79416684}
   - {fileID: 1294530692}
-  - {fileID: 956891493}
   m_Father: {fileID: 1708103290}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14043,7 +14044,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b72c1e6302ca7542afd89257b6367aa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.0400001
+      value: 1.186
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b72c1e6302ca7542afd89257b6367aa, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14051,7 +14052,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b72c1e6302ca7542afd89257b6367aa, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.68600005
+      value: 0.686
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b72c1e6302ca7542afd89257b6367aa, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14725,7 +14726,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -1.5926552, w: -1.8075503}
+  m_margin: {x: 0, y: 0, z: 7.0536785, w: -1.8075503}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -15766,11 +15767,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2131597835}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0.202}
+  m_LocalPosition: {x: -0, y: -0.042, z: 0.202}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1232423737}
   - {fileID: 1923515645}
+  - {fileID: 956891493}
   m_Father: {fileID: 1708103290}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
