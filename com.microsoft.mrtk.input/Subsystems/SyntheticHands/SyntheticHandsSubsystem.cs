@@ -257,6 +257,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < JointCount; i++)
                     {
+                        // Joints are recorded for the right hand. If we're the left
+                        // hand, mirror the joint pose!
+                        if (HandNode == XRNode.LeftHand)
+                        {
+                            MirrorJoint(ref currentGesture[i]);
+                        }
+
                         handJoints[i] = new HandJointPose(
                             playspaceTransform.TransformPoint((handRotation * currentGesture[i].Position) + handPosition),
                             playspaceTransform.rotation * (handRotation * currentGesture[i].Rotation),
@@ -286,9 +293,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         currentGesture[i].Position = Vector3.Lerp(baseData[i].Position, pinchData[i].Position, selectAmount) + poseOffset;
                         currentGesture[i].Rotation = Quaternion.Slerp(baseData[i].Rotation, pinchData[i].Rotation, selectAmount);
                         currentGesture[i].Radius = Mathf.Lerp(baseData[i].Radius, pinchData[i].Radius, selectAmount);
-                        currentGesture[i].Position = Vector3.Scale(currentGesture[i].Position, new Vector3(HandNode == XRNode.LeftHand ? -1 : 1, 1, 1));
                     }
                 }
+            }
+
+            // Flips/rotates a hand joint pose. This mirrors the joint's position across
+            // the x-axis, and applies a mirror transformation to the joint quaternions (x,-y,-z,w).
+            private static void MirrorJoint(ref HandJointPose pose)
+            {
+                pose.Position = Vector3.Scale(pose.Position, new Vector3(-1, 1, 1));
+                pose.Rotation = new Quaternion(pose.Rotation.x, -pose.Rotation.y, -pose.Rotation.z, pose.Rotation.w);
             }
         }
 
