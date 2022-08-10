@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     public class SubsystemWizardWindow : EditorWindow
     {
         private static SubsystemWizardWindow window = null;
-        private SubsystemGenerator subsystemGenerator = new SubsystemGenerator();
+        private SubsystemGenerator subsystemGenerator = null;
 
         private static readonly Vector2 WindowSizeWithoutLogo = new Vector2(600, 510);
         private static readonly Vector2 WindowSizeWithLogo = new Vector2(600, 580);
@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             }
 
             window = GetWindow<SubsystemWizardWindow>();
+            window.subsystemGenerator = new SubsystemGenerator();
             window.titleContent = new GUIContent("MRTK3 Subsystem Wizard", EditorGUIUtility.IconContent("d_CustomTool").image); ;
 
             if (MixedRealityInspectorUtility.IsMixedRealityToolkitLogoAssetPresent())

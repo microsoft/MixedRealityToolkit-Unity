@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
         private const bool DefaultCreateConfiguration = false;
         private static readonly string DefaultBaseSubsystemName = $"NewSubsystem";
-        private static readonly string DefaultOrganizationName = "Contoso";
         private static readonly string OutputFolderRoot = Path.Combine("Assets", "MRTK.Generated");
 
         [SerializeField]
@@ -73,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         [SerializeField]
-        private string organizationName = DefaultOrganizationName;
+        private string organizationName = string.Empty; // DefaultOrganizationName;
 
         /// <summary>
         /// The name of the entity which is creating / releasing the subsystem.
@@ -93,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// Name of descriptor class to create for new subystem.
         /// </summary>
-        public string DescriptorName=> $"{BaseClassName}Descriptor";
+        public string DescriptorName => $"{BaseClassName}Descriptor";
 
         /// <summary>
         /// The name that will be displayed in project settings.
@@ -243,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             CreateConfiguration = DefaultCreateConfiguration;
             BaseClassName = DefaultBaseSubsystemName;
-            OrganizationName = DefaultOrganizationName;
+            OrganizationName = PlayerSettings.companyName.Replace(" ", string.Empty); ;
 
             DontCreateBaseClass = false;
             DontCreateImplementationClass = false;
@@ -569,7 +568,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private bool ValidateName(string name)
         {
             // Verify that the name is valid within C#
-                                        return CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
+            return CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(name);
         }
     }
 
