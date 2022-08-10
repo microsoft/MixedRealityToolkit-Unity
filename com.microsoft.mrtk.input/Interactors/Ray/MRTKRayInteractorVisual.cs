@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
                     targetLocalHitNormal = hitTargetTransform.InverseTransformPoint(raycastHit.Value.normal);
                 }
-                
+
                 hitDistance = (raycastHit.Value.point - rayPositions[0]).magnitude;
             }
         }
