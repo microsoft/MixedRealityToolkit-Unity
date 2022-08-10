@@ -719,10 +719,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             return set.name;
         }
 
+        
+        // This is a utility method called by XRSimulatedHMD and XRSimulatedController
+        // since both devices share the same command handling. This intercepts sync commands
+        // and returns GenericSuccess. Otherwise, simulated devices will fail to sync and
+        // cause issues like wonky state after tabbing out/tabbing in.
         internal static unsafe bool TryExecuteCommand(InputDeviceCommand* commandPtr, out long result)
         {
-            // This is a utility method called by XRSimulatedHMD and XRSimulatedController
-            // since both devices share the same command handling.
             // This replicates the logic in XRToISXDevice::IOCTL (XRInputToISX.cpp).
             var type = commandPtr->type;
             if (type == RequestSyncCommand.Type)
@@ -736,6 +739,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
             if (type == QueryCanRunInBackground.Type)
             {
+                // This ensures all simulated devices always report canRunInBackground = true,
+                // regardless of whether they were explicitly marked as such.
                 ((QueryCanRunInBackground*)commandPtr)->canRunInBackground = true;
                 result = InputDeviceCommand.GenericSuccess;
                 return true;
