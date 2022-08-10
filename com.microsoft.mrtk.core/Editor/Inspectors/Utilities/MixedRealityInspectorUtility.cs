@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             fixedHeight = 32
         };
 
-        public static bool IsMixedRealityToolkitLogoAssetPresent()
+        internal static bool IsMixedRealityToolkitLogoAssetPresent()
         {
             return EditorGUIUtility.isProSkin ? LogoDarkTheme != null : LogoLightTheme != null;
         }

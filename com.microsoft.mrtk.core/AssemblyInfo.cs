@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Input")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tools")]
 
 // The AssemblyVersion attribute is checked-in and is recommended not to be changed often.
 // https://docs.microsoft.com/troubleshoot/visualstudio/general/assembly-version-assembly-file-version
