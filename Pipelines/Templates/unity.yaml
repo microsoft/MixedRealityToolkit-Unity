@@ -45,6 +45,14 @@ steps:
 
   # Standalone x64 tasks
 
+  # Run tests early!
+- ${{ if eq(parameters.RunTests, true) }}:
+  - template: tests.yaml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
+      BuildTarget: StandaloneWindows64
+      PathToProject: ${{ parameters.PathToProject }}
+
 - ${{ if eq(parameters.BuildStandalone, true) }}:
   - template: Tasks/build-unity.yaml
     parameters:
@@ -55,13 +63,6 @@ steps:
       OutputPath: $(Build.ArtifactStagingDirectory)/Apps/exe-x64/${{ parameters.ProjectName }}.exe
       AdditionalArguments: -EnableCacheServer -cacheServerEndpoint 10.0.0.6 -cacheServerNamespacePrefix MRTK3 -cacheServerEnableDownload true -cacheServerEnableUpload true
 
-  # Run tests early, but don't bother if the standalone build failed.
-- ${{ if eq(parameters.RunTests, true) }}:
-  - template: tests.yaml
-    parameters:
-      UnityVersion: ${{ parameters.UnityVersion }}
-      BuildTarget: StandaloneWindows64
-      PathToProject: ${{ parameters.PathToProject }}
 
   # UWP tasks
 
