@@ -88,18 +88,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// Name of configuration class, if enabled by <see cref="CreateConfiguration"/>
         /// to create for new subystem.
         /// </summary>
-        public string ConfigurationName
-        {
-            get => CreateConfiguration ? $"{BaseClassName}Config" : "BaseSubsystemConfig"; 
-        }
+        public string ConfigurationName => CreateConfiguration ? $"{BaseClassName}Config" : "BaseSubsystemConfig"; 
 
         /// <summary>
         /// Name of descriptor class to create for new subystem.
         /// </summary>
-        public string DescriptorName
-        {
-            get => $"{BaseClassName}Descriptor";
-        }
+        public string DescriptorName=> $"{BaseClassName}Descriptor";
 
         /// <summary>
         /// The name that will be displayed in project settings.
@@ -109,10 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <summary>
         /// Name of interface to create for new subystem.
         /// </summary>
-        public string InterfaceName
-        {
-            get => $"I{BaseClassName}";
-        }
+        public string InterfaceName => $"I{BaseClassName}";
 
         private bool dontCreateDescriptor = false;
 
