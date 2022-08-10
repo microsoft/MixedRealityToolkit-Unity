@@ -56,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 Debug.LogError("Failed to create the simulated HMD.");
             }
             simulatedHmdState.Reset();
+            InputState.Change(simulatedHmd, simulatedHmdState);
         }
 
         /// <summary>

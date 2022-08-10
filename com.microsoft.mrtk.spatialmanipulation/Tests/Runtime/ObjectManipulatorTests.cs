@@ -522,7 +522,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Enable gaze interactions for this unit test;
             InputTestUtilities.EnableGaze();
 
-            // set up cube with manipulation handler
+            // Set up cube with ObjectManipulator
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;

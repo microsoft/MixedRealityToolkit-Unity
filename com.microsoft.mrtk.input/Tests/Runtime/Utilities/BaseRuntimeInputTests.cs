@@ -77,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
         public override IEnumerator TearDown()
         {
+            yield return null; // Make sure the input system gets one last tick.
             InputTestUtilities.TeardownRig();
             InputTestUtilities.TeardownSimulation();
             cachedInteractionManager = null;
