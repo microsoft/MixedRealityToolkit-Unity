@@ -486,7 +486,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            UpdateReticle(rayInteractor.hasHover || rayInteractor.hasSelection);
+            UpdateReticle(rayInteractor.hasHover ||
+                            rayInteractor.hasSelection ||
+                            (rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _)));
 
             // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
             if (rayHasHit)
@@ -536,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 reticleToUse.transform.position = reticlePosition;
                 reticleToUse.transform.forward = reticleNormal;
 
-                if (reticleToUse.activeSelf == false)
+                if (!reticleToUse.activeSelf)
                 {
                     reticleToUse.SetActive(true);
                 }
