@@ -14,7 +14,7 @@
       "hash": "04962b47618cdab46943217d30c6c6de33d3c3f7"
     },
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.2.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.4.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
