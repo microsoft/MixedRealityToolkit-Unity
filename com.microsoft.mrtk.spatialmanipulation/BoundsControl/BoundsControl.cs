@@ -511,6 +511,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // Spawn our bounds visuals.
             CreateBoundsVisuals();
 
+            // See if we have a constraints manager.
+            if (constraintsManager == null)
+            {
+                constraintsManager = GetComponent<ConstraintManager>();
+            }
             // Setup constraints with the initial pose.
             if (constraintsManager != null)
             {
