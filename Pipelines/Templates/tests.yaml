@@ -54,7 +54,6 @@ steps:
 #   displayName: 'Run EditMode tests'
 
 - powershell: |
-
     Write-Host "======================= PlayMode Tests ======================="
 
     $logFile = Join-Path $(Agent.TempDirectory) "playmode-test-run.log"
@@ -81,9 +80,23 @@ steps:
     Stop-Process $proc
 
     Write-Output '====================================================='
-    Write-Output '              PlayMode Tests Finished                '
+    Write-Output '               PlayMode Tests Finished               '
     Write-Output '====================================================='
 
+    if (Test-Path $resultFile) {
+        Write-Output '====================================================='
+        Write-Output '            Begin PlayMode Tests Results             '
+        Write-Output '====================================================='
+
+        Get-Content $resultFile
+
+        Write-Output '====================================================='
+        Write-Output '             End PlayMode Tests Results              '
+        Write-Output '====================================================='
+    }
+    else {
+        Write-Output 'PlayMode Tests log missing!'
+    }
   displayName: 'Run PlayMode tests'
 
 - task: PublishTestResults@2
