@@ -18,6 +18,10 @@ parameters:
   type: string
   default: $(Build.SourcesDirectory)/MixedRealityToolkit-Unity/UnityProjects/MRTKDevTemplate
 
+- name: RunTests
+  type: boolean
+  default: true
+
 - name: BuildStandalone
   type: boolean
   default: false
@@ -50,6 +54,14 @@ steps:
       PathToProject: ${{ parameters.PathToProject }}
       OutputPath: $(Build.ArtifactStagingDirectory)/Apps/exe-x64/${{ parameters.ProjectName }}.exe
       AdditionalArguments: -EnableCacheServer -cacheServerEndpoint 10.0.0.6 -cacheServerNamespacePrefix MRTK3 -cacheServerEnableDownload true -cacheServerEnableUpload true
+
+  # Run tests early, but don't bother if the standalone build failed.
+- ${{ if eq(parameters.RunTests, true) }}:
+  - template: tests.yml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
+      BuildTarget: StandaloneWindows64
+      PathToProject: ${{ parameters.PathToProject }}
 
   # UWP tasks
 
