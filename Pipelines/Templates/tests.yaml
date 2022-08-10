@@ -74,6 +74,7 @@ steps:
     while (-not $proc.HasExited -and $ljob.HasMoreData)
     {
         Receive-Job $ljob
+        Write-Host "."
         Start-Sleep -Milliseconds 200
     }
     Stop-Job $ljob
@@ -90,5 +91,6 @@ steps:
   displayName: 'Publish Test Results'
   inputs:
     testResultsFormat: NUnit
+    searchFolder: $(Agent.TempDirectory)
     testResultsFiles: 'test*.xml'
     failTaskOnFailedTests: true
