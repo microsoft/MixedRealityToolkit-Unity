@@ -1,28 +1,55 @@
 ![Mixed Reality Toolkit](https://user-images.githubusercontent.com/13754172/122838732-89ea3400-d2ab-11eb-8c79-32dd84944989.png)
 
-# What is MRTK3
 
-MRTK3 is the third generation of the Microsoft Mixed Reality Toolkit for Unity. It is a Microsoft driven open source project to accelerate cross-platform mixed reality development in Unity. This new version is built on top of Unity's XR Management system and XR Interaction Toolkit.
+![MRTK3 Banner](Images/MRTK3_banner.png)
 
-![MRTK3 Bannerr](Images/MRTK3_banner.png)
+# Mixed Reality Toolkit 3
 
-## Software Requirements
+MRTK3 is the third generation of the Microsoft Mixed Reality Toolkit for Unity. It's a Microsoft driven open source project designed to accelerate cross-platform mixed reality development in Unity. MRTK3 is built on top of [Unity's XR Interaction Toolkit (XRI)](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.1/manual/index.html) and OpenXR. This new generation of MRTK is intended to be faster, cleaner, and more modular, with an easier cross-platform development workflow enabled by OpenXR and the Unity Input System. 
 
-To acquire and use MRTK3, the following software tools are required.
+### Key improvements
 
-| Software | Version | Notes
-| --- | --- | --- |
-| [Microsoft Visual Studio](https://visualstudio.microsoft.com/) | 2019 Community edition or greater | Recommend Visual Studio 2022 |
-| Unity | 2020.3, 2021.3 or newer | Recommend using an LTS release |
-| [Mixed Reality Feature Tool for Unity](https://aka.ms/mrfeaturetool) | | Used to acquire MRTK3 packages |
-| Mixed Reality OpenXR Plugin | | Install via Mixed Reality Feature Tool |
+**Architecture**
+
+* Built on Unity XR Interaction Toolkit and the Unity Input System.
+* Dedicated to OpenXR, with flexibility for other XRSDK backends
+* Open-ended and extensible interaction paradigms across devices, platforms, and applications
+
+**Performance**
+
+* Rewrote and redesigned most features and systems, from UX to input to subsystems.
+* Zero per-frame memory allocation.
+* Tuned for maximum performance on HoloLens 2 and other resource-constrained mobile platforms.
+
+**UI**
+
+* New interaction models (gaze-pinch indirect manipulation).
+* Updated Mixed Reality Design Language.
+* Unity Canvas + 3D UX: production-grade dynamic auto-layout.
+* Unified 2D & 3D input for gamepad, mouse, and accessibility support.
+* Data binding for branding, theming, dynamic data, and complex lists.
+
+MRTK3 is currently in **public preview.** We appreciate your feedback and contributions, but we caution that many APIs are still subject to change, and many features are either missing or buggy! We value your patience and your feedback as we work towards GA.
+
+## Requirements
+
+MRTK3 requires Unity 2020.3 or 2021.3 and higher. In addition, you need the [Mixed Reality Feature Tool for Unity](https://aka.ms/mrfeaturetool) to find, download, and add the packages to your project.
+
+## Getting started
+[Follow the documentation for setting up MRTK3 packages as dependencies in your project here.](https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk3-overview/setup) Alternatively, you can clone this repo directly to experiment with our template project. However, we *strongly* recommend adding MRTK3 packages as dependencies through the Feature Tool, as it makes updating, managing, and consuming MRTK3 packages far easier and less error-prone.
+
+## Supported devices
+
+| Platform | Supported Devices |
+|---|---|
+| OpenXR devices | Microsoft HoloLens 2 <br> Meta Quest 1/2 <br> Windows Mixed Reality (experimental) <br> SteamVR (experimental) <br> Oculus Rift on OpenXR (experimental) <br> Varjo XR-3 (experimental) <br> **If your OpenXR device already works with MRTK3, let us know!**
+| Windows | Traditional flat-screen desktop (experimental)
+| And more coming soon! |
 
 ## Versioning
 
-In previous versions of MRTK (HoloToolkit and MRTK v2), all packages were released as a complete set, marked with the same version number (ex: 2.8.0). Starting with MRTK3, each package will be individually versioned, following the [Semantic Versioning 2.0.0 specification](https://semver.org/spec/v2.0.0.html). 
+In previous versions of MRTK (HoloToolkit and MRTK v2), all packages were released as a complete set, marked with the same version number (ex: 2.8.0). Starting with MRTK3 GA, each package will be individually versioned, following the [Semantic Versioning 2.0.0 specification](https://semver.org/spec/v2.0.0.html). (As a result, the '3' in MRTK3 is not a version number!)
 
->![NOTE]
->The '3' in MRTK3 is not a version number. It is an indicator of the generation of the underlying architecture, with HoloToolkit being generation one and MRTK v2.x being generation two.
 
 Individual versioning will enable faster servicing while providing improved developer understanding of the magnitude of changes and reducing the number of packages needing to be updated to acquire the desired fix(es).
 
@@ -32,7 +59,7 @@ As a result of this change, there is not a unified MRTK3 product version.
 
 To help identify specific packages and their versions, MRTK3 provides an about dialog that lists the relevant packages included in the project. To access this dialog, select `Mixed Reality` > `MRTK3` > `About MRTK` from the Unity Editor menu.
 
-![MRTK3 Bannerr](Images/AboutMRTK.png)
+![About MRTK Panel](Images/AboutMRTK.png)
 
 # Branch Status
 
