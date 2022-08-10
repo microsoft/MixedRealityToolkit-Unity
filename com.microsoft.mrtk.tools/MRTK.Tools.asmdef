@@ -1,5 +1,5 @@
 {
-    "name": "com.microsoft.mrtk.tools",
+    "name": "Microsoft.MixedReality.Toolkit.Tools",
     "rootNamespace": "Microsoft.MixedReality.Toolkit.Tools",
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
