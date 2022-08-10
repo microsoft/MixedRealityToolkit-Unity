@@ -10,7 +10,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Subsystems;
 
 using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
 
@@ -84,6 +87,42 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.That(controller.transform.position.x, Is.EqualTo(0.5f).Within(0.01f));
 
             yield return null;
+        }
+
+        /// <summary>
+        /// Test that anchoring the test hands on the grab point actually results in the grab interactor
+        /// being located where we want it to be.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator GrabAnchorTest()
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var interactable = cube.AddComponent<MRTKBaseInteractable>();
+
+            Vector3 cubePos = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = cubePos;
+            cube.transform.localScale = Vector3.one * 1.0f;
+            
+            var testHand = new TestHand(Handedness.Right);
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.Grab);
+
+            yield return testHand.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return testHand.MoveTo(cubePos);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            yield return new WaitForSeconds(2.0f);
+
+            var hands = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
+
+            bool gotJoint = hands.TryGetPinchingPoint(XRNode.RightHand, out HandJointPose jointPose);
+
+            Assert.IsTrue(interactable.IsGrabHovered, "Interactable wasn't grab hovered!");
+
+            Assert.IsTrue((interactable.HoveringGrabInteractors[0] as GrabInteractor).enabled, "Interactor wasn't enabled");
+
+            TestUtilities.AssertAboutEqual(interactable.HoveringGrabInteractors[0].GetAttachTransform(interactable).position,
+                                           cubePos, "Grab interactor's attachTransform wasn't where we wanted it to go!", 0.001f);
         }
 
         /// <summary>
@@ -406,6 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // Spawn our hand.
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(0, 0, 1));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Prox detector should start out un-triggered.
             Assert.IsFalse(AnyProximityDetectorsTriggered(), "Prox detector started out triggered, when it shouldn't be (no cube yet!)");
@@ -423,7 +463,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             cube.transform.position = new Vector3(0, 0, 1);
             cube.transform.localScale = Vector3.one * 0.1f;
             cube.AddComponent<StatefulInteractable>();
-
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(AnyProximityDetectorsTriggered(), "Prox detector should see it!");
