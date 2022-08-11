@@ -62,6 +62,8 @@ steps:
     $resultFile = Join-Path $(Agent.TempDirectory) "test-results-playmode.xml"
     New-Item -Path $resultFile -ItemType File -Force
 
+    Write-Host $resultFile
+
     if ("${{ parameters.UnityVersion }}" -eq "Latest") {
       Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     }
