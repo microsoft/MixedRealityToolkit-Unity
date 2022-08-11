@@ -4,6 +4,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using static Microsoft.MixedReality.Toolkit.Input.GestureTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
@@ -47,16 +48,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         }
 
         [SerializeField]
-        [Tooltip("The input action used to indicate that the hand's neutral pose should be changed.")]
-        private InputActionReference changeNeutralPose;
+        [FormerlySerializedAs("changeNeutralPose")]
+        [Tooltip("The input action used to indicate that the hand's default pose should be changed.")]
+        private InputActionReference changeDefaultPose;
 
-        /// <summary>
-        /// The input action used to indicate that the hand's neutral pose should be changed.
-        /// </summary>
-        public InputActionReference ChangeNeutralPose
+        [Obsolete("Use ChangeDefaultPose instead")]
+        public InputActionReference ChangeNeutralPose => ChangeDefaultPose;
+
+        public InputActionReference ChangeDefaultPose
         {
-            get => changeNeutralPose;
-            set => changeNeutralPose = value;
+            get => changeDefaultPose;
+            set => changeDefaultPose = value;
         }
 
         [SerializeField]

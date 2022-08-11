@@ -67,7 +67,7 @@ MonoBehaviour:
   leftControllerSettings:
     simulationMode: 1
     anchorPoint: 0
-    changeNeutralPose: {fileID: -1599196918749775551, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    changeDefaultPose: {fileID: -1599196918749775551, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
     defaultGesture: 2
     triggerGesture: 3
     secondaryDefaultGesture: 1
@@ -93,7 +93,7 @@ MonoBehaviour:
   rightControllerSettings:
     simulationMode: 1
     anchorPoint: 0
-    changeNeutralPose: {fileID: -1040645400157157469, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
+    changeDefaultPose: {fileID: -1040645400157157469, guid: 70b361cf3c037d54896482d1ffd9f999, type: 3}
     defaultGesture: 2
     triggerGesture: 3
     secondaryDefaultGesture: 1

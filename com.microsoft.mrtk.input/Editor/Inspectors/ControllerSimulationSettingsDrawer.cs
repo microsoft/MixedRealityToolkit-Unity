@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent yawContent = new GUIContent("Yaw");
         private readonly GUIContent rollContent = new GUIContent("Roll");
 
-        private readonly GUIContent changeNeutralPoseContent = new GUIContent("Change neutral pose");
+        private readonly GUIContent changeDefaultPoseContent = new GUIContent("Change default pose");
         private readonly GUIContent faceTheCameraContent = new GUIContent("Face the camera");
 
         private readonly GUIContent triggerContent = new GUIContent("Trigger");
@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 
             #region Hand pose controls
 
-            SerializedProperty changeNeutralPose = property.FindPropertyRelative("changeNeutralPose");
+            SerializedProperty changeDefaultPose = property.FindPropertyRelative("changeDefaultPose");
             SerializedProperty faceTheCamera = property.FindPropertyRelative("faceTheCamera");
 
             EditorGUI.LabelField(
@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                changeNeutralPose, changeNeutralPoseContent);
+                changeDefaultPose, changeDefaultPoseContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
