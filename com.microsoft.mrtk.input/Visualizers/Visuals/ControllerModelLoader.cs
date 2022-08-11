@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
-                Debug.LogError("Failed to obtain controller model key from platform.");
+                Debug.LogWarning("Failed to obtain controller model key from platform.");
                 return null;
             }
 

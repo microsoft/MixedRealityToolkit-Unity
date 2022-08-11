@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.OpenXR;
+using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
@@ -33,8 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // caching the controller model provider we are using we belong to
         private ControllerModel controllerModelProvider;
 
-        // The controller characteristics we want the input device to have;
+        // The controller usages we want the input device to have;
         private InternedString targetUsage;
+
+        // The characteristics we want to check to ensure that the input device is for the appropriate hand.
+        private InputDeviceCharacteristics handednessCharacteristic;
+
+        // The controller characteristics we want the input device to have;
+        private InputDeviceCharacteristics validControllerCharacteristiscs = InputDeviceCharacteristics.HeldInHand & InputDeviceCharacteristics.TrackedDevice;
 
         /// <inheritdoc />
         protected bool IsControllerTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
@@ -51,17 +58,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     controllerModelProvider = ControllerModel.Left;
                     xrController = lookups[0].LeftHandController;
                     targetUsage = UnityInputSystem.CommonUsages.LeftHand;
+                    handednessCharacteristic = InputDeviceCharacteristics.Left;
                     break;
                 case XRNode.RightHand:
                     controllerModelProvider = ControllerModel.Right;
                     xrController = lookups[0].RightHandController;
                     targetUsage = UnityInputSystem.CommonUsages.RightHand;
+                    handednessCharacteristic = InputDeviceCharacteristics.Right;
                     break;
                 default:
                     break;
             }
 
             UnityInputSystem.InputSystem.onDeviceChange += CheckToShowVisuals;
+            InputDevices.deviceConnected += CheckToShowVisuals;
         }
 
         protected void OnDisable()
@@ -80,22 +90,56 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (inputDevice is UnityInputSystem.XR.XRController xrInputDevice)
                 {
+                    // Upon detecting a generic input device with the appropriate usages, load the controller visuals
                     if (xrInputDevice.usages.Contains(targetUsage))
                     {
-                        InstantiateControllerVisuals();
+                        // Fallback visuals are only used if no hand joints are detected
+                        // OR the input device is specifically a simulated controller that is in the MotionController Simulation Mode.
+                        bool useFallbackVisuals = HandsUtils.GetSubsystem().TryGetJoint(TrackedHandJoint.Palm, handNode, out _);
+                        bool isSimulatedController = false;
+                        if (xrInputDevice is MRTKSimulatedController simulatedController)
+                        {
+                            Debug.LogError(simulatedController.SimulationMode);
+                            isSimulatedController = simulatedController.SimulationMode == ControllerSimulationMode.MotionController;
+                            useFallbackVisuals |= isSimulatedController;
+                        }
+
+                        InstantiateControllerVisuals(!isSimulatedController, useFallbackVisuals);
                     }
                 }
             }
         }
 
+        private void CheckToShowVisuals(InputDevice inputDevice)
+        {
+            if ((inputDevice.characteristics & handednessCharacteristic) == handednessCharacteristic)
+            {
+                if ((inputDevice.characteristics & validControllerCharacteristiscs) == validControllerCharacteristiscs)
+                {
+                    // Instantiate the controller visuals if this input device matches the characteristics for a valid controller.
+                    InstantiateControllerVisuals(true, true);
+                }
+                else
+                {
+                    // If the input device detected for this hand does not meet the specified characteristics for a valid controller, clear the
+                    // controller visuals if they have been previously instantiated
+                    ClearControllerVisuals();
+                }
+            }
+        }
+
         private GameObject ControllerGameObject;
-        private async void InstantiateControllerVisuals()
+        /// <summary>
+        /// Tries to instantiate controller visuals for the specified hand node.
+        /// </summary>
+        /// <param name="useFallbackVisuals">Whether or not to use the fallback controller visuals</param>
+        private async void InstantiateControllerVisuals(bool usePlatformVisuals, bool useFallbackVisuals)
         {
             // Initialize the ControllerGameObject if it has not yet been initialized
             // First try to load the controller model from the platform
             if (ControllerGameObject == null)
             {
-                if (controllerModelProvider != null)
+                if (usePlatformVisuals && controllerModelProvider != null)
                 {
                     GameObject PlatformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
                     if (PlatformLoadedGameObject != null)
@@ -104,18 +148,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                // If the ControllerGameObject is still not initialized after this, then use the fallback model
-                if (ControllerGameObject == null)
+                // If the ControllerGameObject is still not initialized after this, then use the fallback model if told to
+                if (ControllerGameObject == null && useFallbackVisuals)
                 {
                     ControllerGameObject = Instantiate(fallbackControllerModel);
                 }
             }
 
-
             if (ControllerGameObject != null)
             {
                 xrController.model = ControllerGameObject.transform;
                 xrController.model.transform.parent = xrController.modelParent;
+            }
+        }
+
+        /// <summary>
+        /// Clears the controller visuals if they have been instantiated
+        /// </summary>
+        private void ClearControllerVisuals()
+        {
+            if (ControllerGameObject != null)
+            {
+                xrController.model = null;
+                Destroy(ControllerGameObject);
             }
         }
 

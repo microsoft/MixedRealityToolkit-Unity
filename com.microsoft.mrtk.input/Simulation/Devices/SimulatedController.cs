@@ -30,6 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     internal class MRTKSimulatedController : XRSimulatedController
     {
         /// <summary>
+        /// The current simulation mode for this controller;
+        /// </summary>
+        public ControllerSimulationMode SimulationMode;
+
+        /// <summary>
         /// The device's pointerPosition
         /// </summary>
         public Vector3Control PointerPosition { get; private set; }
@@ -165,6 +170,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 return;
             }
             simulatedControllerState.Reset();
+
+            // TODO replace with the value derived from controller settings
+            simulatedController.SimulationMode = ControllerSimulationMode.MotionController;
 
             SimulatedInputPosition = initialRelativePosition;
 
@@ -434,6 +442,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // simulatedControllerState.WithButton(ControllerButton.Secondary2DAxisClick, controls.Secondary2DAxisClick);
                 // simulatedControllerState.WithButton(ControllerButton.Primary2DAxisTouch, controls.Primary2DAxisTouch);
                 // simulatedControllerState.WithButton(ControllerButton.Secondary2DAxisTouch, controls.Secondary2DAxisTouch);
+
+                // TODO replace with the value derived from controller settings
+                simulatedController.SimulationMode = ControllerSimulationMode.MotionController;
 
                 InputState.Change(simulatedController, simulatedControllerState);
             }
