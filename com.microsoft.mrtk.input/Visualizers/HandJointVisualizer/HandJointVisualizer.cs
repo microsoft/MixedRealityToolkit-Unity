@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+
 using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Basic hand joint visualizer that draws an instanced mesh on each hand joint.
+    /// This visualizer is mostly recommended for debugging purposes; try the
+    /// the <see cref="RiggedHandMeshVisualizer"/> for a more visually pleasing
+    /// hand visualization.
     /// </summary>
-    [AddComponentMenu("MRTK/Input/Hand Visualizer")]
-    public class HandVisualizer : MonoBehaviour
+    [AddComponentMenu("MRTK/Input/Visualizers/Hand Joint Visualizer")]
+    public class HandJointVisualizer : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The XRNode on which this hand is located.")]
@@ -60,6 +65,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        void OnDrawGizmos()
+        {
+            if (!enabled) { return; }
+            
+            // Query all joints in the hand.
+            if (handsSubsystem == null || !handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
+            {
+                return;
+            }
+
+            for (int i = 0; i < joints.Count; i++)
+            {
+                HandJointPose joint = joints[i];
+                Gizmos.color = Color.blue;
+                Gizmos.DrawRay(joint.Position, joint.Forward * 0.01f);
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(joint.Position, joint.Right * 0.01f);
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(joint.Position, joint.Up * 0.01f);
+            }
+        }
+
         /// <summary>
         /// Coroutine to wait until subsystem becomes available.
         /// </summary>
@@ -69,19 +96,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnEnable();
         }
 
-        private void LateUpdate()
+        private void Update()
         {
-            if (handsSubsystem == null)
-            {
-                return;
-            }
-
             // Query all joints in the hand.
-            if (!handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
+            if (handsSubsystem == null || !handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
             {
                 return;
             }
 
+            RenderJoints(joints);
+        }
+
+        private void RenderJoints(IReadOnlyList<HandJointPose> joints)
+        {
             for (int i = 0; i < joints.Count; i++)
             {
                 // Skip joints with uninitialized quaternions.
