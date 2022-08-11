@@ -27,7 +27,7 @@
 * Unified 2D & 3D input for gamepad, mouse, and accessibility support.
 * Data binding for branding, theming, dynamic data, and complex lists.
 
-MRTK3 is currently in **public preview.** We appreciate your feedback and contributions, but we caution that many APIs are still subject to change, and many features are either missing or buggy! We value your patience and your feedback as we work towards GA.
+MRTK3 is currently in **public preview.** We appreciate your feedback and contributions, but we caution that many APIs are still subject to change, and many features are either missing or buggy! We value your patience and your feedback as we work towards general availability (GA).
 
 ## Requirements
 
@@ -58,10 +58,6 @@ As a result of this change, there is not a unified MRTK3 product version.
 To help identify specific packages and their versions, MRTK3 provides an about dialog that lists the relevant packages included in the project. To access this dialog, select `Mixed Reality` > `MRTK3` > `About MRTK` from the Unity Editor menu.
 
 ![About MRTK Panel](Images/AboutMRTK.png)
-
-# Branch Status
-
-MRTK3 is currently in public preview and it is not recommended for use in production projects. We appreciate your testing, issues and feedback while the team works towards general availability (GA).
 
 ## Early preview packages
 
