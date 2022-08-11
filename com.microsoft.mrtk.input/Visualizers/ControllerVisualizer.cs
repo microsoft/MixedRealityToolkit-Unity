@@ -70,6 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
             }
 
+            // This process may change in the future as unity updates its input subsystem.
+            // In the future, there will be a different way of distinguishing between phsyical controllers
+            // and tracked hands, forgoing the UnityEngine.XR.InputDevices route
             UnityInputSystem.InputSystem.onDeviceChange += CheckToShowVisuals;
             InputDevices.deviceConnected += CheckToShowVisuals;
         }
