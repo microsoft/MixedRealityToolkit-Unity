@@ -24,7 +24,7 @@ parameters:
 
 steps:
 # No edit mode tests (yet!)
-# - powershell: |
+# - pwsh: |
     # Write-Host "======================= EditMode Tests ======================="
 
     # $logFile = Join-Path $(Agent.TempDirectory) "editmode-test-run.log"
@@ -53,7 +53,7 @@ steps:
     # Write-Output '====================================================='
 #   displayName: 'Run EditMode tests'
 
-- powershell: |
+- pwsh: |
     Write-Host "======================= PlayMode Tests ======================="
 
     $logFile = Join-Path $(Agent.TempDirectory) "playmode-test-run.log"

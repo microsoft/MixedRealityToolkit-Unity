@@ -35,10 +35,10 @@ parameters:
   default: false
 
 steps:
-- powershell: Install-Module PowerShellGet -Force
+- pwsh: Install-Module PowerShellGet -Force
   displayName: Update PowerShellGet
 
-- powershell: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
+- pwsh: Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
   displayName: Install unitysetup.powershell
 
 - template: Templates/license-unity.yaml@PipelineTools
@@ -63,7 +63,6 @@ steps:
       PathToProject: ${{ parameters.PathToProject }}
       OutputPath: $(Build.ArtifactStagingDirectory)/Apps/exe-x64/${{ parameters.ProjectName }}.exe
       AdditionalArguments: -EnableCacheServer -cacheServerEndpoint 10.0.0.6 -cacheServerNamespacePrefix MRTK3 -cacheServerEnableDownload true -cacheServerEnableUpload true
-
 
   # UWP tasks
 
