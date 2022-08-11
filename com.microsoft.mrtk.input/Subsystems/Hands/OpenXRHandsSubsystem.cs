@@ -104,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         var jointLocation = HandJointLocations[HandJointIndexFromTrackedHandJointIndex[index]];
                         UpdateJoint(index, jointLocation, playspaceTransform);
+                        thisQueryValid = true;
                     }
                     else
                     {
