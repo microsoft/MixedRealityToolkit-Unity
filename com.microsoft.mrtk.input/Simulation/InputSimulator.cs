@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 if (simCtrl == null) { return; }
 
                 // Has the user asked to change the neutral pose?
-                if (ctrlSettings.ChangeNeutralPose.action.WasPerformedThisFrame())
+                if (ctrlSettings.ChangeDefaultPose.action.WasPerformedThisFrame())
                 {
                     simCtrl.ToggleNeutralPose();
                 }
