@@ -57,23 +57,37 @@ steps:
     Write-Host "======================= PlayMode Tests ======================="
 
     $logFile = Join-Path $(Agent.TempDirectory) "playmode-test-run.log"
-    New-Item -Path $logFile -ItemType File -Force
-
     $resultFile = Join-Path $(Agent.TempDirectory) "test-results-playmode.xml"
-    New-Item -Path $resultFile -ItemType File -Force
 
-    if ("${{ parameters.UnityVersion }}" -eq "Latest") {
-      Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+    try {
+      if ("${{ parameters.UnityVersion }}" -eq "Latest") {
+        Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+      }
+      else {
+          Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+      }
     }
-    else {
-      Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
-    }
+    finally {
+      Write-Output '====================================================='
+      Write-Output '               PlayMode Tests Finished               '
+      Write-Output '====================================================='
 
-    Write-Output '====================================================='
-    Write-Output '               PlayMode Tests Finished               '
-    Write-Output '====================================================='
+      if (Test-Path $logFile) {
+        Write-Output '====================================================='
+        Write-Output '             Begin PlayMode Tests Logs               '
+        Write-Output '====================================================='
 
-    if (Test-Path $resultFile) {
+        Get-Content $resultFile
+
+        Write-Output '====================================================='
+        Write-Output '              End PlayMode Tests Logs                '
+        Write-Output '====================================================='
+      }
+      else {
+        Write-Output 'PlayMode Tests log missing!'
+      }
+
+      if (Test-Path $resultFile) {
         Write-Output '====================================================='
         Write-Output '            Begin PlayMode Tests Results             '
         Write-Output '====================================================='
@@ -83,9 +97,10 @@ steps:
         Write-Output '====================================================='
         Write-Output '             End PlayMode Tests Results              '
         Write-Output '====================================================='
-    }
-    else {
-        Write-Output 'PlayMode Tests log missing!'
+      }
+      else {
+        Write-Output 'PlayMode Tests results missing!'
+      }
     }
   displayName: 'Run PlayMode tests'
 
