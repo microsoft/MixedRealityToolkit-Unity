@@ -104,53 +104,29 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// </summary>
         public string InterfaceName => $"I{BaseClassName}";
 
-        private bool dontCreateDescriptor = false;
-
         /// <summary>
         /// Indicates if the user wishes to skip the creation of the subsystem
         /// descriptor source code file.
         /// </summary>
-        public bool DontCreateDescriptor
-        {
-            get => dontCreateDescriptor;
-            set => dontCreateDescriptor = value;
-        }
-
-        private bool dontCreateInterface = false;
+        public bool DontCreateDescriptor { get; set; }
 
         /// <summary>
         /// Indicates if the user wishes to skip the creation of the subsystem
         /// interface source code file.
         /// </summary>
-        public bool DontCreateInterface
-        {
-            get => dontCreateInterface;
-            set => dontCreateInterface = value;
-        }
-
-        private bool dontCreateClass = false;
+        public bool DontCreateInterface { get; set; }
 
         /// <summary>
         /// Indicates if the user wishes to skip the creation of the subsystem
         /// class source code file.
         /// </summary>
-        public bool DontCreateBaseClass
-        {
-            get => dontCreateClass;
-            set => dontCreateClass = value;
-        }
-
-        private bool dontCreateImplementationClass = false;
+        public bool DontCreateBaseClass { get; set; }
 
         /// <summary>
         /// Indicates if the user wishes to skip the creation of the subsystem
         /// descriptor source code file.
         /// </summary>
-        public bool DontCreateImplementationClass
-        {
-            get => dontCreateImplementationClass;
-            set => dontCreateImplementationClass = value;
-        }
+        public bool DontCreateImplementationClass { get; set; }
 
         /// <summary>
         /// The name class to create for the new subsystem.
@@ -346,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <param name="interfaceTemplate">
         /// <see cref="FileInfo"/> object representing the subsystem interface template file.
         /// </param>
-        /// <param name="classTemplate">
+        /// <param name="baseClassTemplate">
         /// <see cref="FileInfo"/> object representing the subsystem class template file.
         /// </param>
         /// <param name="configTemplate">

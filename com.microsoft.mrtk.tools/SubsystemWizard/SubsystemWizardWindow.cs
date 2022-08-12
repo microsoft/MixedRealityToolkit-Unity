@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
     /// Editor window to guide developers through the process of creating a
     /// Unity XR Subsystem for use with MRTK3.
     /// </summary>
-    public class SubsystemWizardWindow : EditorWindow
+    internal class SubsystemWizardWindow : EditorWindow
     {
         private static SubsystemWizardWindow window = null;
         private SubsystemGenerator subsystemGenerator = null;
