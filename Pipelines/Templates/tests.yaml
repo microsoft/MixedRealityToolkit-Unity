@@ -77,7 +77,7 @@ steps:
         Write-Output '             Begin PlayMode Tests Logs               '
         Write-Output '====================================================='
 
-        Get-Content $resultFile
+        Get-Content $logFile
 
         Write-Output '====================================================='
         Write-Output '              End PlayMode Tests Logs                '
