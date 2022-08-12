@@ -48,6 +48,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => showHandsOnTransparentDisplays = value;
         }
 
+        /// <summary>
+        /// Is the hand actually visible?
+        /// </summary>
+        public bool IsShowingHands
+        {
+            get
+            {
+                if (handRenderer != null)
+                {
+                    return handRenderer.enabled &&
+                           handRenderer.gameObject.activeInHierarchy;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("The transform of the wrist joint.")]
         private Transform wrist;
