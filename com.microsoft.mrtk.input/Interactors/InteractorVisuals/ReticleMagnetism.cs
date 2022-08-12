@@ -128,6 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnEnable()
         {
             Application.onBeforeRender += OnBeforeRender;
+
+            // On enabling, snap the reticle immediately to the anchor point, to 
+            // avoid any chance of suddenly lerping the moment the reticle is visible.
+            smoothedMagnetRotation = transform.parent.rotation;
+            smoothedMagnetPosition = transform.parent.position;
         }
 
         private void OnDisable()
