@@ -63,10 +63,10 @@ steps:
     New-Item -Path $resultFile -ItemType File -Force
 
     if ("${{ parameters.UnityVersion }}" -eq "Latest") {
-      Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+      Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     }
     else {
-      Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+      Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     }
 
     Write-Output '====================================================='
