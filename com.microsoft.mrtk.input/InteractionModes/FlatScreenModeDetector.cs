@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("List of XR Base Controllers that this interaction mode detector has jurisdiction over. Interaction modes will be set on all specified controllers.")]
-        private List<XRBaseController> controllers;
+        private List<GameObject> controllers;
 
         public InteractionMode ModeOnDetection => flatScreenInteractionMode;
 
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public List<XRBaseController> GetControllers()
+        public List<GameObject> GetControllers()
         {
             return controllers;
         }

@@ -164,7 +164,7 @@ MonoBehaviour:
     name: FarRaySelect
     priority: 3
   controllers:
-  - {fileID: 6164080946324827545}
+  - {fileID: 1948193615953854874}
 --- !u!114 &2105872328799679035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,7 +361,7 @@ MonoBehaviour:
     name: GrabSelect
     priority: 5
   controllers:
-  - {fileID: 6164080946324827545}
+  - {fileID: 1948193615953854874}
 --- !u!1 &1948193615953854874
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +827,7 @@ MonoBehaviour:
     name: Near
     priority: 2
   controllers:
-  - {fileID: 6164080946324827545}
+  - {fileID: 1948193615953854874}
   nearInteractors:
   - {fileID: 1948193616346090107}
   - {fileID: 2572330550550829917}
@@ -1010,7 +1010,7 @@ MonoBehaviour:
     name: GazeSelect
     priority: 4
   controllers:
-  - {fileID: 6164080946324827545}
+  - {fileID: 1948193615953854874}
 --- !u!1 &6406844254730761679
 GameObject:
   m_ObjectHideFlags: 0
