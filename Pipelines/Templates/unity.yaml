@@ -52,7 +52,7 @@ steps:
       UnityVersion: ${{ parameters.UnityVersion }}
       BuildTarget: StandaloneWindows64
       PathToProject: ${{ parameters.PathToProject }}
-      AdditionalArguments: -EnableCacheServer -cacheServerEndpoint 10.0.0.6 -cacheServerNamespacePrefix MRTK3 -cacheServerEnableDownload true
+      AdditionalArguments: -noGraphics -EnableCacheServer -cacheServerEndpoint 10.0.0.6 -cacheServerNamespacePrefix MRTK3 -cacheServerEnableDownload true
 
 - ${{ if eq(parameters.BuildStandalone, true) }}:
   - template: Tasks/build-unity.yaml
