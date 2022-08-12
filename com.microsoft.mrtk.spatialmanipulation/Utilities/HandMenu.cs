@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [Flags]
         private enum TargetType
         {
-            LeftHand = 1 << 0, RightHand = 1 << 1
+            None = 0, LeftHand = 1 << 0, RightHand = 1 << 1
         }
 
         [SerializeField]
@@ -36,9 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [SerializeField]
         private float padding = 0.04f;
 
-        private TargetType currentlyTrackedTarget;
-
         private RectTransform rootRectTransform = null;
+
+        private TargetType currentTarget = TargetType.None;
 
         private void Start()
         {
@@ -60,9 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             float leftViewDot = 0;
             float rightViewDot = 0;
 
+            float leftToRightHandDistance = 1.0f;
+            float rightToLeftHandDistance = 1.0f;
+
             if ((target & TargetType.LeftHand) != 0)
             {
-                leftAttach = GetJointAttach(XRNode.LeftHand, out leftViewDot);
+                leftAttach = GetJointAttach(XRNode.LeftHand, out leftViewDot, out leftToRightHandDistance);
                 if (!leftAttach.HasValue)
                 {
                     leftAttach = GetControllerAttach(XRNode.LeftHand);
@@ -71,20 +74,50 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if ((target & TargetType.RightHand) != 0)
             {
-                rightAttach = GetJointAttach(XRNode.RightHand, out rightViewDot);
+                rightAttach = GetJointAttach(XRNode.RightHand, out rightViewDot, out rightToLeftHandDistance);
                 if (!rightAttach.HasValue)
                 {
                     rightAttach = GetControllerAttach(XRNode.RightHand);
                 }
             }
 
+            if (currentTarget == TargetType.None)
+            {
+                // Tie break!
+                if (rightAttach.HasValue && leftAttach.HasValue)
+                {
+                    currentTarget = TargetType.RightHand;
+                }
+                else if (rightAttach.HasValue) // Switch from None to Right
+                {
+                    currentTarget = TargetType.RightHand;
+                }
+                else if (leftAttach.HasValue) // Switch from None to Left
+                {
+                    currentTarget = TargetType.LeftHand;
+                }
+            }
+            else
+            {
+                // Should we cancel? If we have a target, and the current target is no longer valid, cancel.
+                if (currentTarget == TargetType.RightHand && !rightAttach.HasValue)
+                {
+                    currentTarget = TargetType.None;
+                }
+                else if (currentTarget == TargetType.LeftHand && !leftAttach.HasValue)
+                {
+                    currentTarget = TargetType.None;
+                }
+            }
+
             // todo: tiebreak
-            Pose? attach = rightAttach.HasValue ? rightAttach : leftAttach;
-            float viewDot = rightAttach.HasValue ? rightViewDot : leftViewDot;
+            Pose? attach = currentTarget == TargetType.RightHand ? rightAttach : leftAttach;
+            float viewDot = currentTarget == TargetType.RightHand ? rightViewDot : leftViewDot;
+            float dist = currentTarget == TargetType.RightHand ? rightToLeftHandDistance : leftToRightHandDistance;
 
             if (rootRectTransform != null)
             {
-                rootRectTransform.pivot = new Vector2(rightAttach.HasValue ? 1 : 0, 0.5f);
+                rootRectTransform.pivot = new Vector2(currentTarget == TargetType.RightHand ? 1 : 0, 0.5f);
                 rootRectTransform.anchoredPosition = new Vector2(0,0);
             }
 
@@ -101,13 +134,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             transform.localScale = Vector3.one * viewDot;
-            transform.position = Vector3.Lerp(transform.position, attach.Value.position, 0.4f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, attach.Value.rotation, 0.4f);
+            transform.position = Vector3.Lerp(transform.position, attach.Value.position, Mathf.Lerp(0.1f, 0.5f, dist));
+            transform.rotation = Quaternion.Slerp(transform.rotation, attach.Value.rotation, Mathf.Lerp(0.1f, 0.5f, dist));
         }
 
-        private Pose? GetJointAttach(XRNode hand, out float viewDot)
+
+        private Pose? GetJointAttach(XRNode hand, out float viewDot, out float oppositeHandDistance)
         {
             viewDot = 0;
+            oppositeHandDistance = 1.0f;
+
             if (XRSubsystemHelpers.HandsAggregator == null) { return null; }
 
             bool gotJoints = true;
@@ -117,20 +153,31 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             gotJoints &= XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.LittleProximal,
                                                                         hand,
                                                                         out var proximal);
+            gotJoints &= XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm,
+                                                                        hand,
+                                                                        out var palm);
             if (!gotJoints) { return null; }
 
-            Vector3 offsetVector = (-proximal.Right + -proximal.Right).normalized;
-
+            Vector3 offsetVector = (-proximal.Right + -metacarpal.Right).normalized * (hand == XRNode.LeftHand ? 1 : -1);
             
             Pose attach = default;
             
             // The rotation that the hand menu would have if it were perfectly flat along the hand.
-            Quaternion flatRotation = Quaternion.LookRotation(proximal.Up, (proximal.Position - metacarpal.Position));
+            Quaternion flatRotation = Quaternion.LookRotation(palm.Up, palm.Forward);
 
             viewDot = Mathf.Clamp01(Vector3.Dot(flatRotation * Vector3.forward, CameraCache.Main.transform.forward) * 1.4f);
 
+            if (viewDot == 0) { return null; }
+
             attach.position = ((proximal.Position + metacarpal.Position) * 0.5f) + offsetVector * padding;
-            attach.rotation = flatRotation * Quaternion.Euler(0, -90 * (1.0f - viewDot), 0);
+            attach.rotation = flatRotation * Quaternion.Euler(0, -90 * (1.0f - viewDot) * (hand == XRNode.LeftHand ? 1 : -1), 0);
+
+            if (XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip,
+                                                               hand == XRNode.LeftHand ? XRNode.RightHand : XRNode.LeftHand,
+                                                               out var oppositeIndexTip))
+            {
+                oppositeHandDistance = Mathf.Clamp01(Mathf.InverseLerp(0.05f, 0.2f, (oppositeIndexTip.Position - (attach.position + offsetVector * (menuSize.width * 0.5f))).magnitude));
+            }
             
             return attach;
         }
