@@ -372,7 +372,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1948193615953854875}
   - component: {fileID: 6164080946324827545}
-  - component: {fileID: 1173925932019795335}
   m_Layer: 0
   m_Name: MRTK Hand Controller
   m_TagString: Untagged
@@ -566,21 +565,6 @@ MonoBehaviour:
     m_Reference: {fileID: 7779212132400271959, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   m_ButtonPressPoint: 0.5
   handNode: 4
---- !u!114 &1173925932019795335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948193615953854874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a4cc0663b372fd4795c4e6d942500fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handNode: 4
-  jointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  jointMaterial: {fileID: 2100000, guid: f115122e8379c044faecfec013fda057, type: 2}
 --- !u!1 &1948193616346090105
 GameObject:
   m_ObjectHideFlags: 0
