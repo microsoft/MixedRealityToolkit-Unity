@@ -61,14 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public void InitializeControllers()
         {
-            //controllerMapping.Clear();
-            //foreach (InteractionModeController xrController in FindObjectsOfType<InteractionModeController>())
-            //{
-            //    if (!controllerMapping.ContainsKey(xrController))
-            //    {
-            //        controllerMapping.Add(xrController, new ControllerInteractorStatus());
-            //    }
-            //}
+            controllerMapping.Clear();
+            foreach (XRController xrController in FindObjectsOfType<XRController>())
+            {
+                if (!controllerMapping.ContainsKey(xrController.gameObject))
+                {
+                    controllerMapping.Add(xrController.gameObject, new ControllerInteractorStatus());
+                }
+            }
         }
 
         public void PopulateModesWithSubtypes()
