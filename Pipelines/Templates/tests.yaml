@@ -61,10 +61,10 @@ steps:
 
     try {
       if ("${{ parameters.UnityVersion }}" -eq "Latest") {
-        Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+        Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -LogFile $logFile -AdditionalArguments "${{ parameters.AdditionalArguments }} -testResults $resultFile"
       }
       else {
-        Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+        Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Wait -LogFile $logFile -AdditionalArguments "${{ parameters.AdditionalArguments }} -testResults $resultFile"
       }
     }
     finally {
