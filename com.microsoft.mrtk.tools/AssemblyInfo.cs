@@ -2,11 +2,8 @@
 // Licensed under the MIT License.
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tools")]
-
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Core Definitions - Editor")]
+[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Tools")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 
 // The AssemblyVersion attribute is checked-in and is recommended not to be changed often.
