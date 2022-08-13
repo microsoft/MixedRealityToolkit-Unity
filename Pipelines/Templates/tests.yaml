@@ -113,6 +113,8 @@ steps:
       else {
         Write-Output 'PlayMode Tests results missing!'
       }
+
+      Write-Output "Exit code: $($proc.ExitCode)"
     }
   displayName: 'Run PlayMode tests'
 
