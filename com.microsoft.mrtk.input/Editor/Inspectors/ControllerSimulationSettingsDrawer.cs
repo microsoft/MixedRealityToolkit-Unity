@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent anchorPointContent = new GUIContent("Anchor point");
         private readonly GUIContent defaultPositionContent = new GUIContent("Default position");
         private readonly GUIContent defaultGestureContent = new GUIContent("Default gesture");
-        private readonly GUIContent TriggerGestureContent = new GUIContent("Trigger gesture");
+        private readonly GUIContent triggerGestureContent = new GUIContent("Trigger gesture");
         private readonly GUIContent secondaryDefaultGestureContent = new GUIContent("Secondary default gesture");
         private readonly GUIContent secondaryTriggerGestureContent = new GUIContent("Secondary trigger gesture");
 
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                triggerGesture, TriggerGestureContent);
+                triggerGesture, triggerGestureContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
