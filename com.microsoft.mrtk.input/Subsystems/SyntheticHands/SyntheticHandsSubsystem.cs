@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="handNode">The hand for which the neutral pose is being set.</param>
         /// <param name="poseId">The desired hand pose.</param>
-        [Obsolete("Please use the SetNeutralGesture(handNode, poseId) instead.")]
+        [Obsolete("Please use the SetNeutralGesture(handNode, gestureId) instead.")]
         public void SetNeutralPose(XRNode handNode, GestureId poseId) => SetNeutralGesture(handNode, poseId);
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="handNode">The hand for which the selection pose is being set.</param>
         /// <param name="poseId">The desired hand pose.</param>
-        [Obsolete("Please use the SetSelectionPose(handNode, poseId) instead.")]
+        [Obsolete("Please use the SetSelectionGesture(handNode, gestureId) instead.")]
         public void SetSelectionPose(XRNode handNode, GestureId poseId) => SetSelectionGesture(handNode, poseId);
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="handNode">The hand for which the neutral pose is being set.</param>
             /// <param name="poseId">The desired hand pose.</param>
-            [Obsolete("Please use the SetNeutralGesture(handNode) instead.")]
+            [Obsolete("Please use the SetNeutralGesture(handNode, gestureId) instead.")]
             public void SetNeutralPose(XRNode handNode, GestureId poseId) => SetNeutralGesture(handNode, poseId);
 
             /// <summary>
@@ -446,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="handNode">The hand for which the selection pose is being set.</param>
             /// <param name="poseId">The desired hand pose.</param>
-            [Obsolete("Please use the SetSelectionGesture(handNode, poseId) instead.")]
+            [Obsolete("Please use the SetSelectionGesture(handNode, gestureId) instead.")]
             public void SetSelectionPose(XRNode handNode, GestureId poseId) => SetSelectionGesture(handNode, poseId);
 
             /// <summary>
