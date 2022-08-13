@@ -63,10 +63,10 @@ steps:
 
     try {
       if ("${{ parameters.UnityVersion }}" -eq "Latest") {
-        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -AdditionalArguments "${{ parameters.AdditionalArguments }} -testResults $resultFile"
+        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
       }
       else {
-        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -AdditionalArguments "${{ parameters.AdditionalArguments }} -testResults $resultFile"
+        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
       }
 
       $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile
