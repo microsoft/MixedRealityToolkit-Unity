@@ -11,16 +11,17 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Used to manage interactors and ensure that each several interactors for an XR controller aren't clashing and firing at the same time
+    /// Used to manage interactors and ensure that each several interactors for a 'controller' aren't clashing and firing at the same time
     /// </summary>
     [AddComponentMenu("MRTK/Input/Interaction Mode Manager")]
+    [RequireComponent(typeof(ControllerLookup))]
     public class InteractionModeManager : MonoBehaviour
     {
         /// <summary>
         /// Describes the types of interaction modes an interactor can belong to
         /// </summary>
         [Serializable]
-        private class ControllerInteractorStatus
+        private class ManagedInteractorStatus
         {
             [SerializeField]
             private InteractionMode currentMode;
@@ -57,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Editor only function for initializing the Interaction Mode Manager with the existing controllers in the scene
+        /// Editor only function for initializing the Interaction Mode Manager with the existing XR controllers in the scene
         /// </summary>
         public void InitializeControllers()
         {
@@ -66,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (!controllerMapping.ContainsKey(xrController.gameObject))
                 {
-                    controllerMapping.Add(xrController.gameObject, new ControllerInteractorStatus());
+                    controllerMapping.Add(xrController.gameObject, new ManagedInteractorStatus());
                 }
             }
         }
@@ -122,11 +123,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private List<IInteractionModeDetector> interactionModeDectectors = new List<IInteractionModeDetector>();
 
         /// <summary>
-        /// The MRTK InteractorMediator will only mediate controller interactors.
+        /// The MRTK Interaction Mode Manager will only mediate controller interactors and interactors which are designated as managed
         /// </summary>
         [SerializeField]
-        [Tooltip("The MRTK InteractorMediator will only mediate controller interactors.")]
-        private SerializableDictionary<GameObject, ControllerInteractorStatus> controllerMapping = new SerializableDictionary<GameObject, ControllerInteractorStatus>();
+        [Tooltip("The MRTK Interaction Mode Manager will only mediate controller interactors and interactors which are designated as managed")]
+        private SerializableDictionary<GameObject, ManagedInteractorStatus> controllerMapping = new SerializableDictionary<GameObject, ManagedInteractorStatus>();
 
         /// <summary>
         /// Private collection kept in lock-step with interactorMapping. Used to keep track of all registered interactors.
@@ -204,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (!controllerMapping.ContainsKey(controllerObject))
             {
-                controllerMapping.Add(controllerObject, new ControllerInteractorStatus());
+                controllerMapping.Add(controllerObject, new ManagedInteractorStatus());
             }
 
             if (!registeredControllerInteractors.Contains(interactor))
@@ -236,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 controllerObject = modeManagedInteractor.GetModeManagedController();
             }
 
-            if (controllerMapping.TryGetValue(controllerObject, out ControllerInteractorStatus controllerInteractorStatus))
+            if (controllerMapping.TryGetValue(controllerObject, out ManagedInteractorStatus controllerInteractorStatus))
             {
                 controllerInteractorStatus.Interactors.Remove(interactor);
             }
@@ -439,12 +440,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     controllerMapping.Remove(controller);
                 }
 
-                foreach (IXRInteractor interactor in destroyedInteractors)
+                foreach (XRBaseInteractor interactor in destroyedInteractors)
                 {
-                    if (interactor is XRBaseInteractor controllerInteractor)
-                    {
-                        UnregisterInteractor(controllerInteractor);
-                    }
+                    UnregisterInteractor(interactor);
                 }
             }
         }
@@ -456,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="interactionMode">The interaction mode that is currently being applied to this controller.</param>
         public void SetInteractionMode(GameObject controller, InteractionMode interactionMode)
         {
-            if (controllerMapping.TryGetValue(controller, out ControllerInteractorStatus controllerInteractorStatus))
+            if (controllerMapping.TryGetValue(controller, out ManagedInteractorStatus controllerInteractorStatus))
             {
                 controllerInteractorStatus.CurrentMode = controllerInteractorStatus.CurrentMode.priority > interactionMode.priority ? controllerInteractorStatus.CurrentMode : interactionMode;
             }
@@ -468,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controller">The controller we intend to reset to the default mode</param>
         public void ResetToDefaultMode(GameObject controller)
         {
-            if (controllerMapping.TryGetValue(controller, out ControllerInteractorStatus controllerInteractorStatus))
+            if (controllerMapping.TryGetValue(controller, out ManagedInteractorStatus controllerInteractorStatus))
             {
                 controllerInteractorStatus.CurrentMode = defaultMode;
             }

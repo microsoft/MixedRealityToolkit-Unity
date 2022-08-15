@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     [AddComponentMenu("MRTK/UX/Canvas Proxy Interactor")]
     public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor, IModeManagedInteractor
     {
-        protected HashSet<IXRInteractable> canvasValidTargets = new HashSet<IXRInteractable>();
+        protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();
 
         protected IXRSelectInteractable manualSelectTarget;
 
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 Vector3 cameraLocal = worldPosition - CameraCache.Main.transform.position;
                 cameraLocal = cameraLocal.normalized * currentDepth;
                 transform.position = CameraCache.Main.transform.position + cameraLocal;
-                canvasValidTargets.Add(target);
+                validTargets.Add(target);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (target != null)
             {
-                canvasValidTargets.Remove(target);
+                validTargets.Remove(target);
             }
         }
 
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public override void GetValidTargets(List<IXRInteractable> targets)
         {
             targets.Clear();
-            targets.AddRange(canvasValidTargets);
+            targets.AddRange(validTargets);
         }
 
         /// <inheritdoc />
@@ -148,9 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public override bool isHoverActive => base.isHoverActive && !isCancellingInteraction;
 
         /// <inheritdoc />
-        public GameObject GetModeManagedController()
-        {
-            return gameObject;
-        }
+        public GameObject GetModeManagedController() => gameObject;
     }
 }
