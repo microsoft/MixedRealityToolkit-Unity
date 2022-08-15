@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using static Microsoft.MixedReality.Toolkit.Input.GestureTypes;
+using static Microsoft.MixedReality.Toolkit.Input.HandshapeTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -49,68 +49,68 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         [SerializeField]
         [FormerlySerializedAs("changeNeutralPose")]
-        [Tooltip("The input action used to indicate that the hand's default pose should be changed.")]
-        private InputActionReference changeDefaultPose;
+        [Tooltip("The input action used to toggle between using the default or Secondary Handshape settings.")]
+        private InputActionReference toggleSecondaryHandshapes;
 
-        [Obsolete("Use ChangeDefaultPose instead")]
-        public InputActionReference ChangeNeutralPose => ChangeDefaultPose;
+        [Obsolete("Use ChangeNeutralHandshape instead")]
+        public InputActionReference ChangeNeutralPose => ToggleSecondaryHandshapes;
 
-        public InputActionReference ChangeDefaultPose
+        public InputActionReference ToggleSecondaryHandshapes
         {
-            get => changeDefaultPose;
-            set => changeDefaultPose = value;
+            get => toggleSecondaryHandshapes;
+            set => toggleSecondaryHandshapes = value;
         }
 
         [SerializeField]
-        [Tooltip("The initial gesture of the simulated hand")]
-        private GestureId defaultGesture = GestureId.Open;
+        [Tooltip("The initial handshape of the simulated hand")]
+        private HandshapeId neutralHandshape = HandshapeId.Open;
 
         /// <summary>
-        /// The initial gesture of the simulated hand.
+        /// The initial handshape of the simulated hand.
         /// </summary>
-        public GestureId DefaultGesture
+        public HandshapeId NeutralHandshape
         {
-            get => defaultGesture;
-            set => defaultGesture = value;
+            get => neutralHandshape;
+            set => neutralHandshape = value;
         }
 
         [SerializeField]
-        [Tooltip("The gesture of the simulated hand when the 'trigger' button is pressed")]
-        private GestureId triggerGesture = GestureId.Pinch;
+        [Tooltip("The handshape of the simulated hand when the 'trigger' button is pressed")]
+        private HandshapeId triggerHandshape = HandshapeId.Pinch;
 
         /// <summary>
-        /// The gesture of the simulated hand during a select action.
+        /// The handshape of the simulated hand during a select action.
         /// </summary>
-        public GestureId TriggerGesture
+        public HandshapeId TriggerHandshape
         {
-            get => triggerGesture;
-            set => triggerGesture = value;
+            get => triggerHandshape;
+            set => triggerHandshape = value;
         }
 
         [SerializeField]
-        [Tooltip("The alternative initial Gesture of the simulated hand")]
-        private GestureId secondaryDefaultGesture = GestureId.Flat;
+        [Tooltip("The alternative initial Handshape of the simulated hand")]
+        private HandshapeId secondaryNeutralHandshape = HandshapeId.Flat;
 
         /// <summary>
-        /// The alternative initial gesture of the simulated hand.
+        /// The alternative initial handshape of the simulated hand.
         /// </summary>
-        public GestureId SecondaryDefaultGesture
+        public HandshapeId SecondaryNeutralHandshape
         {
-            get => secondaryDefaultGesture;
-            set => secondaryDefaultGesture = value;
+            get => secondaryNeutralHandshape;
+            set => secondaryNeutralHandshape = value;
         }
 
         [SerializeField]
-        [Tooltip("The alternative gesture of the simulated hand during a select action")]
-        private GestureId secondaryTriggerGesture = GestureId.ThumbsUp;
+        [Tooltip("The alternative handshape of the simulated hand during a select action")]
+        private HandshapeId secondaryTriggerHandshape = HandshapeId.ThumbsUp;
 
         /// <summary>
-        /// The alternative gesture of the simulated hand during a select action.
+        /// The alternative handshape of the simulated hand during a select action.
         /// </summary>
-        public GestureId SecondaryTriggerGesture
+        public HandshapeId SecondaryTriggerHandshape
         {
-            get => secondaryTriggerGesture;
-            set => secondaryTriggerGesture = value;
+            get => secondaryTriggerHandshape;
+            set => secondaryTriggerHandshape = value;
         }
 
 

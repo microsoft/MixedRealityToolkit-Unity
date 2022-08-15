@@ -13,7 +13,7 @@ using UnityEngine.Scripting;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -156,10 +156,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             XRNode? handNode = Handedness.ToXRNode();
             if (handNode.HasValue && SynthHands != null)
             {
-                SynthHands.SetNeutralGesture(handNode.Value,
-                    controllerSimulationSettings.DefaultGesture);
-                SynthHands.SetSelectionGesture(handNode.Value,
-                    controllerSimulationSettings.TriggerGesture);
+                SynthHands.SetNeutralHandshape(handNode.Value,
+                    controllerSimulationSettings.NeutralHandshape);
+                SynthHands.SetSelectionHandshape(handNode.Value,
+                    controllerSimulationSettings.TriggerHandshape);
             }
 
             simulatedController = InputSystem.AddDevice<MRTKSimulatedController>();
@@ -217,15 +217,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 XRNode? handNode = Handedness.ToXRNode();
                 if (handNode.HasValue && SynthHands != null)
                 {
-                    GestureId neutralPose = SynthHands.GetNeutralGesture(handNode.Value);
-                    SynthHands.SetNeutralGesture(
+                    HandshapeId neutralPose = SynthHands.GetNeutralHandshape(handNode.Value);
+                    SynthHands.SetNeutralHandshape(
                                             handNode.Value,
-                                            (neutralPose == controllerSimulationSettings.DefaultGesture) ? controllerSimulationSettings.SecondaryDefaultGesture : controllerSimulationSettings.DefaultGesture);
+                                            (neutralPose == controllerSimulationSettings.NeutralHandshape) ? controllerSimulationSettings.SecondaryNeutralHandshape : controllerSimulationSettings.NeutralHandshape);
 
-                    GestureId selectionPose = SynthHands.GetSelectionGesture(handNode.Value);
-                    SynthHands.SetSelectionGesture(
+                    HandshapeId selectionPose = SynthHands.GetSelectionHandshape(handNode.Value);
+                    SynthHands.SetSelectionHandshape(
                                             handNode.Value,
-                                            (selectionPose == controllerSimulationSettings.TriggerGesture) ? controllerSimulationSettings.SecondaryTriggerGesture : controllerSimulationSettings.TriggerGesture);
+                                            (selectionPose == controllerSimulationSettings.TriggerHandshape) ? controllerSimulationSettings.SecondaryTriggerHandshape : controllerSimulationSettings.TriggerHandshape);
                 }
                 else
                 {

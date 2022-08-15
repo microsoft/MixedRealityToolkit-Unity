@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 {
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Wait for the enable animation to complete.
             yield return new WaitForSeconds(0.1f);
 
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return null;
 
             Assert.IsTrue(testHandle.isSelected, "Handle didn't get selected.");

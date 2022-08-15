@@ -10,7 +10,7 @@ using UnityEngine.TestTools;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 Assert.IsTrue(firstCubeInteractable.IsGrabHovered,
                               "StatefulInteractable did not get hovered.");
 
-                yield return rightHand.SetGesture(GestureId.Pinch);
+                yield return rightHand.SetHandshape(HandshapeId.Pinch);
                 yield return RuntimeTestUtilities.WaitForUpdates();
                 Assert.IsTrue(firstCubeInteractable.IsGrabSelected,
                               "StatefulInteractable did not get GrabSelected.");
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                     }
                 }
 
-                yield return rightHand.SetGesture(GestureId.Open);
+                yield return rightHand.SetHandshape(HandshapeId.Open);
                 yield return RuntimeTestUtilities.WaitForUpdates();
                 Assert.IsFalse(firstCubeInteractable.IsGrabSelected,
                               "StatefulInteractable did not get un-GrabSelected.");
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 Assert.IsTrue(secondCubeInteractable.IsGrabHovered,
                               "StatefulInteractable did not get hovered.");
 
-                yield return rightHand.SetGesture(GestureId.Pinch);
+                yield return rightHand.SetHandshape(HandshapeId.Pinch);
                 yield return RuntimeTestUtilities.WaitForUpdates();
                 Assert.IsTrue(secondCubeInteractable.IsGrabSelected,
                               "StatefulInteractable did not get GrabSelected.");
@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                     }
                 }
 
-                yield return rightHand.SetGesture(GestureId.Open);
+                yield return rightHand.SetHandshape(HandshapeId.Open);
                 yield return RuntimeTestUtilities.WaitForUpdates();
                 Assert.IsFalse(secondCubeInteractable.IsGrabSelected,
                               "StatefulInteractable did not get un-GrabSelected.");
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.IsTrue(interactable.isHovered);
             Assert.IsTrue(interactable.IsGazePinchHovered);
 
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(interactable.isSelected);
@@ -296,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             yield return rightHand.Show(new Vector3(0, 0, 0.5f));
 
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(cube.GetComponent<StatefulInteractable>().IsGrabSelected,
@@ -304,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             cube.SetActive(false);
 
-            yield return rightHand.SetGesture(GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeId.Open);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(cube.GetComponent<StatefulInteractable>().IsGrabSelected,
@@ -401,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // First ensure that the interactor can interact with a cube normally
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(cube.GetComponent<StatefulInteractable>().IsGrabSelected,
@@ -418,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.IsTrue(cube.GetComponent<StatefulInteractable>().IsGrabSelected,
                            "StatefulInteractable is no longer GrabSelected.");
 
-            yield return rightHand.SetGesture(GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeId.Open);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(cube.GetComponent<StatefulInteractable>().IsGrabSelected,
@@ -431,13 +431,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             newCube.AddComponent<StatefulInteractable>();
 
             yield return rightHand.MoveTo(newCube.transform.position);
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(newCube.GetComponent<StatefulInteractable>().IsGrabSelected,
                             "The interactor somehow grabbed the new cube");
 
-            yield return rightHand.SetGesture(GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeId.Open);
 
             // Finish
             yield return RuntimeTestUtilities.WaitForUpdates();

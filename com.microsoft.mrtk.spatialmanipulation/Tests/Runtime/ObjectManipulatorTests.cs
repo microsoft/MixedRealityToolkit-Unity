@@ -8,7 +8,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 {
@@ -52,13 +52,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsFalse(objManip.IsPokeHovered, "ObjManip shouldn't get IsPokeHovered");
             Assert.IsTrue(objManip.IsGrabHovered, "ObjManip didn't report IsGrabHovered");
 
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(objManip.IsGrabSelected, "ObjManip didn't report IsGrabSelected");
             Assert.IsFalse(objManip.IsPokeSelected, "ObjManip was PokeSelected. Should not be possible.");
 
-            yield return rightHand.SetGesture(GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeId.Open);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(objManip.isSelected, "ObjManip didn't de-select.");
@@ -66,13 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             objManip.AllowedInteractionTypes = InteractionFlags.Ray | InteractionFlags.Gaze;
             yield return RuntimeTestUtilities.WaitForUpdates();
 
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(objManip.IsGrabSelected, "ObjManip was still grab selected after removing Near from AllowedInteractionTypes.");
             Assert.IsFalse(objManip.IsPokeSelected, "ObjManip was PokeSelected. Should not be possible.");
 
-            yield return rightHand.SetGesture(GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeId.Open);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // We don't have full gaze support in sim yet, so this is an approximation.
@@ -87,13 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsTrue(objManip.IsGazePinchHovered,
                 "ObjManip didn't report IsGazePinchHovered");
 
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(objManip.IsGazePinchSelected,
                 "ObjManip didn't report IsGazePinchSelected");
 
-            yield return rightHand.SetGesture(GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeId.Open);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(objManip.IsGazePinchSelected,
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             objManip.AllowedInteractionTypes = InteractionFlags.Ray;
             yield return RuntimeTestUtilities.WaitForUpdates();
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(objManip.IsGazePinchSelected,
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsFalse(objManip.IsPokeHovered, "ObjManip shouldn't get IsPokeHovered");
             Assert.IsTrue(objManip.IsGrabHovered, "ObjManip didn't report IsGrabHovered");
 
-            yield return rightHand.SetGesture(GestureId.Pinch);
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(objManip.IsGrabSelected, "ObjManip didn't report IsGrabSelected");
@@ -302,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
                     Vector3 initialPosition = testObject.transform.position;
 
-                    yield return hand.SetGesture(GestureId.Pinch, 30);
+                    yield return hand.SetHandshape(HandshapeId.Pinch, 30);
 
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
                     yield return hand.MoveTo(initialGrabPosition, numHandSteps);
 
-                    yield return hand.SetGesture(GestureId.Open);
+                    yield return hand.SetHandshape(HandshapeId.Open);
                     yield return hand.Hide();
                 }
             }
@@ -424,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
                     Vector3 initialPosition = testObject.transform.position;
-                    yield return hand.SetGesture(GestureId.Pinch);
+                    yield return hand.SetHandshape(HandshapeId.Pinch);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
                     // Ensure the object didn't move after pinching if using object centered rotation
@@ -498,7 +498,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     yield return hand.RotateTo(initialHandRotation);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
-                    yield return hand.SetGesture(GestureId.Open);
+                    yield return hand.SetHandshape(HandshapeId.Open);
                     yield return hand.Hide();
 
                     // There seems to be some sort of deficiency with the object manipulator where the object does not return exactly to it's original position
@@ -558,7 +558,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
                     Vector3 initialPosition = testObject.transform.position;
 
-                    yield return hand.SetGesture(GestureId.Pinch);
+                    yield return hand.SetHandshape(HandshapeId.Pinch);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
                     // Ensure the object didn't move after pinching if using object centered rotation
@@ -624,7 +624,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     yield return hand.RotateTo(initialHandRotation);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
-                    yield return hand.SetGesture(GestureId.Open);
+                    yield return hand.SetHandshape(HandshapeId.Open);
                     yield return hand.Hide();
 
                     // There seems to be some sort of deficiency with the object manipulator where the object does not return exactly to it's original position
@@ -815,7 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return null;
 
             // Grab the cube and move towards the collider
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
             yield return null;
 
             yield return hand.Move(Vector3.forward * 3f, numHandSteps);
@@ -862,7 +862,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return null;
 
             // Grab the cube and move towards the collider
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
             yield return null;
 
             yield return hand.Move(Vector3.forward * 3f, numHandSteps);

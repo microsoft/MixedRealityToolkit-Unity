@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
-using static Microsoft.MixedReality.Toolkit.Input.GestureTypes;
+using static Microsoft.MixedReality.Toolkit.Input.HandshapeTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 if (simCtrl == null) { return; }
 
                 // Has the user asked to change the neutral pose?
-                if (ctrlSettings.ChangeDefaultPose.action.WasPerformedThisFrame())
+                if (ctrlSettings.ToggleSecondaryHandshapes.action.WasPerformedThisFrame())
                 {
                     simCtrl.ToggleNeutralPose();
                 }

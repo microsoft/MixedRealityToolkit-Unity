@@ -16,11 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent simModeContent = new GUIContent("Simulation mode");
 
         private readonly GUIContent anchorPointContent = new GUIContent("Anchor point");
-        private readonly GUIContent defaultPositionContent = new GUIContent("Default position");
-        private readonly GUIContent defaultGestureContent = new GUIContent("Default gesture");
-        private readonly GUIContent triggerGestureContent = new GUIContent("Trigger gesture");
-        private readonly GUIContent secondaryDefaultGestureContent = new GUIContent("Secondary default gesture");
-        private readonly GUIContent secondaryTriggerGestureContent = new GUIContent("Secondary trigger gesture");
+        private readonly GUIContent neutralPositionContent = new GUIContent("Neutral position");
+        private readonly GUIContent neutralHandshapeContent = new GUIContent("Neutral handshape");
+        private readonly GUIContent triggerHandshapeContent = new GUIContent("Trigger handshape");
+        private readonly GUIContent secondaryNeutralHandshapeContent = new GUIContent("Secondary neutral handshape");
+        private readonly GUIContent secondaryTriggerHandshapeContent = new GUIContent("Secondary trigger handshape");
 
         private readonly GUIContent trackContent = new GUIContent("Momentary tracking");
         private readonly GUIContent toggleContent = new GUIContent("Toggle tracking");
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent yawContent = new GUIContent("Yaw");
         private readonly GUIContent rollContent = new GUIContent("Roll");
 
-        private readonly GUIContent changeDefaultPoseContent = new GUIContent("Change default pose");
+        private readonly GUIContent toggleSecondaryHandshapesContent = new GUIContent("Toggle secondary handshapes");
         private readonly GUIContent faceTheCameraContent = new GUIContent("Face the camera");
 
         private readonly GUIContent triggerContent = new GUIContent("Trigger");
@@ -75,10 +75,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             SerializedProperty simMode = property.FindPropertyRelative("simulationMode");
             SerializedProperty anchorPoint = property.FindPropertyRelative("anchorPoint");
             SerializedProperty defaultPosition = property.FindPropertyRelative("defaultPosition");
-            SerializedProperty defaultGesture = property.FindPropertyRelative("defaultGesture");
-            SerializedProperty triggerGesture = property.FindPropertyRelative("triggerGesture");
-            SerializedProperty secondaryDefaultGesture = property.FindPropertyRelative("secondaryDefaultGesture");
-            SerializedProperty secondaryTriggerGesture = property.FindPropertyRelative("secondaryTriggerGesture");
+            SerializedProperty neutralHandshape = property.FindPropertyRelative("neutralHandshape");
+            SerializedProperty triggerHandshape = property.FindPropertyRelative("triggerHandshape");
+            SerializedProperty secondaryNeutralHandshape = property.FindPropertyRelative("secondaryNeutralHandshape");
+            SerializedProperty secondaryTriggerHandshape = property.FindPropertyRelative("secondaryTriggerHandshape");
 
             SerializedProperty track = property.FindPropertyRelative("track");
             SerializedProperty toggle = property.FindPropertyRelative("toggle");
@@ -103,35 +103,35 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                defaultPosition, defaultPositionContent);
+                defaultPosition, neutralPositionContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                defaultGesture, defaultGestureContent);
+                neutralHandshape, neutralHandshapeContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                triggerGesture, triggerGestureContent);
+                triggerHandshape, triggerHandshapeContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                secondaryDefaultGesture, secondaryDefaultGestureContent);
+                secondaryNeutralHandshape, secondaryNeutralHandshapeContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                secondaryTriggerGesture, secondaryTriggerGestureContent);
+                secondaryTriggerHandshape, secondaryTriggerHandshapeContent);
 
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 
             #region Hand pose controls
 
-            SerializedProperty changeDefaultPose = property.FindPropertyRelative("changeDefaultPose");
+            SerializedProperty toggleSecondaryHandshapes = property.FindPropertyRelative("toggleSecondaryHandshapes");
             SerializedProperty faceTheCamera = property.FindPropertyRelative("faceTheCamera");
 
             EditorGUI.LabelField(
@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     PropertyDrawerUtilities.VerticalSpacing,
                     ++rowMultiplier,
                     PropertyDrawerUtilities.Height),
-                changeDefaultPose, changeDefaultPoseContent);
+                toggleSecondaryHandshapes, toggleSecondaryHandshapesContent);
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
                     position,
