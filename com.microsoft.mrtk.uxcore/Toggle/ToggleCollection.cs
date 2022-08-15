@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 AddSelectionListeners();
 
                 // Force set initial selection in the toggle collection at start
-                if (CurrentIndex >= 0 && CurrentIndex < Toggles.Count - 1)
+                if (CurrentIndex >= 0 && CurrentIndex < Toggles.Count)
                 {
                     SetSelection(CurrentIndex, true);
                     Toggles[CurrentIndex].ForceSetToggled(true);

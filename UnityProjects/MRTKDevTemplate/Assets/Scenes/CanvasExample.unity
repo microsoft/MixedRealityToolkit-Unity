@@ -5248,6 +5248,7 @@ MonoBehaviour:
   radius: 13
   thickness: 2
   wedges: 8
+  calculateSmoothEdges: 1
 --- !u!222 &1290652756
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6485,6 +6486,7 @@ GameObject:
   - component: {fileID: 1710053219}
   - component: {fileID: 1710053218}
   - component: {fileID: 1710053217}
+  - component: {fileID: 1710053221}
   m_Layer: 0
   m_Name: Dash Holster
   m_TagString: Untagged
@@ -6518,6 +6520,7 @@ MonoBehaviour:
   handlesActive: 0
   enabledHandles: 2
   rotateAnchor: 1
+  scaleAnchor: 0
   scaleBehavior: 0
   smoothingActive: 1
   rotateLerpTime: 0.00001
@@ -6775,6 +6778,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1710053221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710053216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f85af46f9bddd4ea78f11cee5e3b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handType: 3
+  proximityType: 3
+  executionOrder: 0
+  minimumScale: {x: 0.2, y: 0.2, z: 0.2}
+  maximumScale: {x: 1.5, y: 1.5, z: 1.5}
+  relativeToInitialState: 1
 --- !u!1001 &1711034363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7066,6 +7087,7 @@ MonoBehaviour:
   radius: 13
   thickness: 2
   wedges: 8
+  calculateSmoothEdges: 1
 --- !u!222 &1741977900
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11500,6 +11522,7 @@ MonoBehaviour:
   radius: 13
   thickness: 2
   wedges: 8
+  calculateSmoothEdges: 1
 --- !u!222 &4163659423534323387
 CanvasRenderer:
   m_ObjectHideFlags: 0
