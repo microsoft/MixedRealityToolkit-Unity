@@ -57,8 +57,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
-  far clip plane: 1000
+  near clip plane: 0.02
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -328,6 +328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6448619845270702420}
   - component: {fileID: 8085333164323593313}
+  - component: {fileID: 8386996556897629391}
   m_Layer: 0
   m_Name: CanvasProxyInteractor
   m_TagString: Untagged
@@ -342,7 +343,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7735890427496681069}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -394,6 +395,23 @@ MonoBehaviour:
   m_OnSelectExited:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8386996556897629391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7735890427496681069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45da53d665c373148a88bcc2dc96c9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flatScreenInteractionMode:
+    name: FlatScreen
+    priority: 6
+  controllers:
+  - {fileID: 7735890427496681069}
 --- !u!1 &8479077998186684813
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,17 +554,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f3af2a8508960843b36fb9d64de2bc2, type: 3}
---- !u!114 &7304020826145247389 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8384892589113505615, guid: 6f3af2a8508960843b36fb9d64de2bc2, type: 3}
-  m_PrefabInstance: {fileID: 1224987191631620050}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fbb824f58192bc4fb05f24feee73050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4102833070697430761 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3021976565802998075, guid: 6f3af2a8508960843b36fb9d64de2bc2, type: 3}
@@ -563,6 +570,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6853218870844938225, guid: 6f3af2a8508960843b36fb9d64de2bc2, type: 3}
   m_PrefabInstance: {fileID: 1224987191631620050}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7304020826145247389 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8384892589113505615, guid: 6f3af2a8508960843b36fb9d64de2bc2, type: 3}
+  m_PrefabInstance: {fileID: 1224987191631620050}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fbb824f58192bc4fb05f24feee73050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2609686519359345044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -662,7 +680,7 @@ PrefabInstance:
     - target: {fileID: 2167306733888939048, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
       propertyPath: controllers.Array.data[1]
       value: 
-      objectReference: {fileID: 7304020826145247389}
+      objectReference: {fileID: 0}
     - target: {fileID: 2167306733888939048, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
       propertyPath: associatedControllers.Array.size
       value: 2
@@ -729,6 +747,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
+--- !u!4 &5727148871348114050 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8544718171901067399, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
+  m_PrefabInstance: {fileID: 4174278757018161669}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &142007140022173312 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4041565961123392645, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
@@ -740,11 +763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6533afcc1a3776848a226f74fce34856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5727148871348114050 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8544718171901067399, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
-  m_PrefabInstance: {fileID: 4174278757018161669}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5364037230396944427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -752,22 +770,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2351505566903569412}
     m_Modifications:
-    - target: {fileID: 2167306733888939048, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: controllers.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2167306733888939048, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: controllers.Array.data[1]
-      value: 
-      objectReference: {fileID: 7304020826145247389}
-    - target: {fileID: 2167306733888939048, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: associatedControllers.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2167306733888939048, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: associatedControllers.Array.data[1]
-      value: 
-      objectReference: {fileID: 7304020826145247389}
     - target: {fileID: 4821581000001043912, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
       propertyPath: dependentInteractor
       value: 

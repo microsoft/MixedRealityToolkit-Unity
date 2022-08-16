@@ -43,6 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         public static readonly float NeutralHighFrequency = 22000.0f;
 
         /// <summary>
+        /// The source of the audio.
+        /// </summary>
+        private AudioSource audioSource;
+
+        /// <summary>
         /// Time, in seconds, between audio influence updates.
         /// </summary>
         /// <remarks>
@@ -106,12 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         private DateTime lastUpdate = DateTime.MinValue;
 
         /// <summary>
-        /// The source of the audio.
-        /// </summary>
-        [SerializeField]
-        private AudioSource audioSource;
-
-        /// <summary>
         /// The initial volume level of the audio source.
         /// </summary>
         private float initialAudioSourceVolume;
@@ -160,10 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             effectsToApply = new List<IAudioInfluencer>(maxObjects);
             effectsToRemove = new List<IAudioInfluencer>(maxObjects);
 
-            if (audioSource == null)
-            {
-                audioSource = GetComponent<AudioSource>();
-            }
+            audioSource = GetComponent<AudioSource>();
 
             initialAudioSourceVolume = audioSource.volume;
 

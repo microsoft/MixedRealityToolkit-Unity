@@ -113,8 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                // TODO, profile. Is this too expensive for OnBeforeRender?
-                if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.OnBeforeRender)
+                if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
                     // Obtain near interaction point, and set our interactor's
                     // position/rotation to the interaction point's pose.

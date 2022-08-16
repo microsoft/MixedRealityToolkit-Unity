@@ -85,9 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #endif
         }
 
+        
+#if WINDOWS_UWP
         private void Update()
         {
-#if WINDOWS_UWP
             // Windows mixed reality keyboard update goes here
             if (wmrKeyboard.Visible)
             {
@@ -127,7 +128,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     mixedRealityKeyboardPreview.CaretIndex = 0;
                 }
             }
+        }
 #elif UNITY_IOS || UNITY_ANDROID
+        private void Update()
+        {
             // non-Windows mixed reality keyboard initialization goes here
             // for non-Windows mixed reality keyboards just use Unity's default
             // touchscreenkeyboard.
@@ -151,8 +155,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     touchscreenKeyboard = null;
                 }
             }
-#endif
         }
+#endif
 
         #endregion MonoBehaviour Implementation
     }
