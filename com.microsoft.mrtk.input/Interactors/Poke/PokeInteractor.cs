@@ -75,12 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The default poke radius returned by <see cref="IPokeInteractor.PokeRadius"/>
         /// if no joint data is obtained.
         /// </summary>
-        private const float defaultPokeRadius = 0.005f;
+        private const float DefaultPokeRadius = 0.005f;
 
         #region IPokeInteractor
 
         /// <inheritdoc />
-        public virtual float PokeRadius => defaultPokeRadius;
+        public virtual float PokeRadius => DefaultPokeRadius;
 
         private PokePath pokeTrajectory;
 
@@ -89,10 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion
 
-        private XROrigin origin;
-
         // Was our poking point tracked the last time we checked?
-        // Ths will drive isHoverActive.
+        // This will drive isHoverActive.
         private bool pokePointTracked;
 
         protected override void OnDisable()
@@ -107,7 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Awake();
             handsAggregator = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
-            origin = GetComponentInParent<XROrigin>();
             pokeTrajectory.Start = attachTransform.position;
             pokeTrajectory.End = attachTransform.position;
         }

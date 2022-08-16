@@ -92,9 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Scores the interactable + it's associated raycast hit according to our several criteria, such as distance, raycast hit angle, and target center angle.
         /// </summary>
-        /// <param name="target">The target we wish to score</param>
         /// <param name="hit">The raycast hit which indicates where the target was hit</param>
-        private float ScoreHit(IXRInteractable target, RaycastHit hit)
+        private float ScoreHit(RaycastHit hit)
         {
             using (ScoreHitPerfMarker.Auto())
             {
@@ -209,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // private. As a result, we end up doing twice the number of raycast calls for the Gaze Interactor, making this a
             // potential avenue for performance improvement in the future.
             // In addition, the raycast hit results will be slightly different between the base class and the fuzzy gaze interactor.
-            // This should not be noticable when running the application, but it's another reason why we need the raycast hit
+            // This should not be noticeable when running the application, but it's another reason why we need the raycast hit
             // information from the underlying XRRayInteractor.
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
@@ -249,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// A workaround function for getting where the spherecast hit on the target
-        /// This is mimicks the code in the XRRayInteractor's UpdateRaycastHits() function
+        /// This is mimics the code in the XRRayInteractor's UpdateRaycastHits() function
         /// </summary>
         private void UpdateRaycastHits(int targetPrecision, float castRadius)
         {
@@ -319,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 var raycastHit = allRaycastHits[targetPrecision][i];
 
-                // Gets the interactable accociated with the collider
+                // Gets the interactable associated with the collider
                 // Skip this step if the collider in question is not an interactable
                 if (!interactionManager.TryGetInteractableForCollider(raycastHit.collider, out var interactable))
                 {
@@ -370,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     IXRInteractable interactable = result.targetInteractable;
                     RaycastHit raycastHit = result.raycastHit;
 
-                    float score = fuzzyGazeInteractor.ScoreHit(interactable, raycastHit);
+                    float score = fuzzyGazeInteractor.ScoreHit(raycastHit);
                     if (!InteractableScoreMap.ContainsKey(interactable) || InteractableScoreMap[interactable] > score)
                     {
                         InteractableScoreMap[interactable] = score;
