@@ -46,6 +46,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             PointerPosition = GetChildControl<Vector3Control>(nameof(PointerPosition));
             PointerRotation = GetChildControl<QuaternionControl>(nameof(PointerRotation));
         }
+
+        /// <inheritdoc />
+        protected override unsafe long ExecuteCommand(InputDeviceCommand* commandPtr)
+        {
+            return InputSimulator.TryExecuteCommand(commandPtr, out var result)
+                ? result
+                : base.ExecuteCommand(commandPtr);
+        }
     }
 
     /// <summary>

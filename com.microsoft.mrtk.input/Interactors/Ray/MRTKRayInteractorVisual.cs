@@ -151,8 +151,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The line data that represented by this visual.")]
         internal BaseMixedRealityLineDataProvider lineDataProvider = null;
 
-        // reusable lists of the points returned by the XRRayInteractor
-        Vector3[] rayPositions;
+        // Reusable array for retrieving points from the XRRayInteractor
+        Vector3[] rayPositions = null;
+
         int rayPositionsCount = -1;
 
         // reusable lists of the points used for the line renderer
@@ -263,6 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 targetLocalHitNormal;
         private float hitDistance;
         private Transform hitTargetTransform;
+
         /// <summary>
         /// Used internally to determine if the ray we are visualizing hit an object or not.
         /// </summary>
@@ -280,6 +282,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return;
             }
+
+            // If we haven't even gotten any ray positions yet, abort.
+            if (rayPositions == null || rayPositionsCount <= 0) { return; }
 
             // Record relevant data about the hit point.
             if (raycastResult.HasValue && isUIHitClosest)

@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         private static ControllerSimulationSettings rightControllerSettings;
         private static ControllerControls rightControls;
 
-        private static SimulatedCamera hmd;
+        private static SimulatedHMD hmd;
 
         #endregion Simulated Devices
 
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Creates the simulated devices (two <see cref="SimulatedController"/>s and a <see cref="SimulatedCamera"/>)
+        /// Creates the simulated devices (two <see cref="SimulatedController"/>s and a <see cref="SimulatedHMD"/>)
         /// as well as the associated <see cref="ControllerControls"/> for each.
         /// </summary>
         public static void SetupSimulation()
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             SetHandAnchorPoint(Handedness.Left, ControllerAnchorPoint.IndexFinger);
             SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.IndexFinger);
 
-            hmd = new SimulatedCamera();
+            hmd = new SimulatedHMD();
         }
 
         /// <summary>
