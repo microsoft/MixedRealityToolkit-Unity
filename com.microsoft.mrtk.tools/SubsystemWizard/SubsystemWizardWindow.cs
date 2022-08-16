@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
                 EditorGUILayout.Space(6);
                 EditorGUILayout.LabelField("Please enter your organization or project name.", EditorStyles.boldLabel);
                 subsystemGenerator.OrganizationName = EditorGUILayout.TextField(
-                    "Company name", subsystemGenerator.OrganizationName);
+                    "Organization name", subsystemGenerator.OrganizationName);
                 EditorGUILayout.Space(4);
                 EditorGUILayout.LabelField("Please enter the name for the subsystem base class.", EditorStyles.boldLabel);
                 subsystemGenerator.BaseClassName = EditorGUILayout.TextField(
