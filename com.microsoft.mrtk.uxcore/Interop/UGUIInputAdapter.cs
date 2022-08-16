@@ -128,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (proxyInteractor == null && ThisInteractable != null && InteractionManager != null)
             {
                 // Go find the proxy interactor that this shim is associated with.
-                interactorQueryList.Clear();
                 InteractionManager.GetRegisteredInteractors(interactorQueryList);
 
                 foreach (var interactor in interactorQueryList)
