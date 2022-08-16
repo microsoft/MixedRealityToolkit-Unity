@@ -132,9 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 foreach (var interactor in interactorQueryList)
                 {
-                    if (interactor is IProxyInteractor)
+                    if (interactor is IProxyInteractor proxy)
                     {
-                        proxyInteractor = interactor as IProxyInteractor;
+                        proxyInteractor = proxy;
                         break;
                     }
                 }
