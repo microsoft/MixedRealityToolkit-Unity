@@ -23,6 +23,23 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     }
 
     /// <summary>
+    /// Enum specifying whether an object should be scaled
+    /// around the opposite corner, or around the center of the calculated bounds.
+    /// </summary>
+    public enum ScaleAnchorType
+    {
+        /// <summary>
+        /// Scale around the opposite bounds corner.
+        /// </summary>
+        OppositeCorner = 0,
+
+        /// <summary>
+        /// Scale around the bounds center point.
+        /// </summary>
+        BoundsCenter
+    }
+
+    /// <summary>
     /// Enum describing the type of handle grabbed; can be a rotation (edge-mounted)
     /// handle, a scaling (corner-mounted) handle, or a translation (face-mounted)
     /// handle.

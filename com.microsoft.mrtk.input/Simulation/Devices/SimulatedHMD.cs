@@ -5,18 +5,41 @@ using System;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.Scripting;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
     /// <summary>
+    /// A derived XRSimulatedHMD, mostly to add the missing sync command
+    /// functionality from the base class(es). If/when XRSimulatedHMD gets
+    /// the sync command functionality by default, we'll remove this class.
+    /// </summary>
+    [InputControlLayout(
+        stateType = typeof(XRSimulatedHMDState),
+        isGenericTypeOfDevice = false,
+        displayName = "XR Simulated HMD (MRTK)"),
+        Preserve]
+    internal class MRTKSimulatedHMD : XRSimulatedHMD
+    {
+        /// <inheritdoc />
+        protected override unsafe long ExecuteCommand(InputDeviceCommand* commandPtr)
+        {
+            return InputSimulator.TryExecuteCommand(commandPtr, out var result)
+                ? result
+                : base.ExecuteCommand(commandPtr);
+        }
+    }
+
+    /// <summary>
     /// Class for simulating user / camera movement and rotation. Used by the MRTK Input Simulator.
     /// </summary>
-    internal class SimulatedCamera : IDisposable
+    internal class SimulatedHMD : IDisposable
     {
-        private readonly XRSimulatedHMD simulatedHmd = null;
+        private readonly MRTKSimulatedHMD simulatedHmd = null;
         private XRSimulatedHMDState simulatedHmdState;
 
         // Smoothing time for the camera position.
@@ -25,20 +48,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SimulatedCamera()
+        public SimulatedHMD()
         {
-            simulatedHmd = InputSystem.AddDevice<XRSimulatedHMD>();
+            simulatedHmd = InputSystem.AddDevice<MRTKSimulatedHMD>();
             if (simulatedHmd == null)
             {
                 Debug.LogError("Failed to create the simulated HMD.");
             }
             simulatedHmdState.Reset();
+            InputState.Change(simulatedHmd, simulatedHmdState);
         }
 
         /// <summary>
         /// Finalizer.
         /// </summary>
-        ~SimulatedCamera()
+        ~SimulatedHMD()
         {
             Dispose();
         }
@@ -69,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private Vector3 smoothedMoveDelta;
 
         private static readonly ProfilerMarker UpdatePerfMarker =
-            new ProfilerMarker("[MRTK] SimulatedCamera.Update");
+            new ProfilerMarker("[MRTK] SimulatedHMD.Update");
 
         /// <summary>
         /// Retrieves the playspace relative position of the simulated camera

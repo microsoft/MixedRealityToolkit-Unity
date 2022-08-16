@@ -128,6 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnEnable()
         {
             Application.onBeforeRender += OnBeforeRender;
+
+            // On enabling, snap the reticle immediately to the anchor point, to 
+            // avoid any chance of suddenly lerping the moment the reticle is visible.
+            smoothedMagnetRotation = transform.parent.rotation;
+            smoothedMagnetPosition = transform.parent.position;
         }
 
         private void OnDisable()
@@ -149,6 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             foreach (Collider nearbyCollider in detector.DetectedColliders)
             {
+                // Sometimes things can be destroyed in between when we detect them
+                // and when we want to magnetize to them!
+                if (nearbyCollider == null) { continue; }
+
                 Vector3 nearestPoint = nearbyCollider.ClosestPoint(root);
                 float distance = Vector3.Distance(root, nearestPoint);
 

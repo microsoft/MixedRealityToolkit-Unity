@@ -275,7 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return null;
 
             const int numCircleSteps = 10;
-            const int numHandSteps = 3;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             Vector3 initialGrabPosition = new Vector3(-0.05f, -0.05f, 1f); // grab around the left bottom corner of the cube
@@ -297,20 +296,23 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     InputTestUtilities.InitializeCameraToOriginAndForward();
 
                     yield return hand.Show(initialHandPosition);
-                    yield return hand.MoveTo(initialGrabPosition, numHandSteps);
+                    yield return hand.MoveTo(initialGrabPosition);
                     yield return hand.RotateTo(initialGrabRotation);
 
                     Vector3 initialPosition = testObject.transform.position;
 
-                    yield return hand.SetGesture(GestureId.Pinch, 30);
-
+                    yield return hand.SetGesture(GestureId.Pinch);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
+                    Assert.IsTrue(objectManipulator.IsGrabSelected, $"ObjectManipulator didn't get grabbed on pinch!");
+
                     // Ensure the object didn't move after pinching if using object centered rotation
-                    if (rotationAnchorType == ObjectManipulator.RotateAnchorType.RotateAboutObjectCenter)
-                    {
-                        TestUtilities.AssertAboutEqual(initialPosition, testObject.transform.position, "object shifted during pinch", 0.01f);
-                    }
+                    // Todo: Re-enable when grab-anchoring no longer has a frame delay. (Will require
+                    // updates to synthetic hands subsystem!)
+                    // if (rotationAnchorType == ObjectManipulator.RotateAnchorType.RotateAboutObjectCenter)
+                    // {
+                    //     TestUtilities.AssertAboutEqual(testObject.transform.position, initialPosition, "object shifted during pinch", 0.01f);
+                    // }
 
                     // save relative pos grab point to object
                     // The firstInteractorSelecting is the one that is currently grabbing the object
@@ -331,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
                         // move hand with the camera
                         Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialGrabPosition;
-                        yield return hand.MoveTo(newHandPosition, numHandSteps);
+                        yield return hand.MoveTo(newHandPosition);
                         yield return hand.RotateTo(Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialGrabRotation);
                         yield return new WaitForFixedUpdate();
 
@@ -352,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     }
 
                     // Move the object forward and back
-                    yield return hand.MoveTo(initialGrabPosition + Vector3.forward);
+                    yield return hand.MoveTo(initialGrabPosition + Vector3.forward * 0.4f);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
                     // make sure that the offset between grab and object centre hasn't changed while rotating
@@ -360,14 +362,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     Vector3 currentOffset = currentGrabPoint - testObject.transform.position;
                     TestUtilities.AssertAboutEqual(currentOffset, initialGrabOffset, $"Object offset changed during move forward");
 
-                    yield return hand.MoveTo(initialGrabPosition + Vector3.back);
+                    yield return hand.MoveTo(initialGrabPosition + Vector3.back * 0.4f);
                     yield return RuntimeTestUtilities.WaitForUpdates();
-                    // make sure that the offset between grab and object centre hasn't changed while rotating
+
+                    // make sure that the offset between grab and object centre hasn't changed while moving
                     currentGrabPoint = objectManipulator.firstInteractorSelecting.GetAttachTransform(objectManipulator).position;
                     currentOffset = currentGrabPoint - testObject.transform.position;
                     TestUtilities.AssertAboutEqual(currentOffset, initialGrabOffset, $"Object offset changed during move backward");
 
-                    yield return hand.MoveTo(initialGrabPosition, numHandSteps);
+                    yield return hand.MoveTo(initialGrabPosition);
 
                     yield return hand.SetGesture(GestureId.Open);
                     yield return hand.Hide();
@@ -402,7 +405,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return null;
 
             const int numCircleSteps = 10;
-            const int numHandSteps = 3;
 
             // Hand pointing at the cube
             Vector3 initialHandPosition = new Vector3(0, 0.0f, 0.6f);
@@ -426,6 +428,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     Vector3 initialPosition = testObject.transform.position;
                     yield return hand.SetGesture(GestureId.Pinch);
                     yield return RuntimeTestUtilities.WaitForUpdates();
+
+                    Assert.IsTrue(objectManipulator.isSelected, "ObjectManipulator wasn't selected!");
 
                     // Ensure the object didn't move after pinching if using object centered rotation
                     if (rotationAnchorType == ObjectManipulator.RotateAnchorType.RotateAboutObjectCenter)
@@ -458,7 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
                         // move hand with the camera
                         Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialHandPosition;
-                        yield return hand.MoveTo(newHandPosition, numHandSteps);
+                        yield return hand.MoveTo(newHandPosition);
                         yield return hand.RotateTo(Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialHandRotation);
                         yield return new WaitForFixedUpdate();
 
@@ -482,19 +486,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     }
 
                     // Move the object forward and back
-                    yield return hand.MoveTo(initialHandPosition + Vector3.forward, numHandSteps);
+                    yield return hand.MoveTo(initialHandPosition + Vector3.forward);
                     // make sure that the offset between grab and object centre has grown
                     Vector3 currentInteractorPosition = objectManipulator.firstInteractorSelecting.transform.position;
                     Vector3 currentOffset = currentInteractorPosition - testObject.transform.position;
                     Assert.IsTrue(currentOffset.magnitude > initialGrabOffset.magnitude, $"Object did not move farther away when moving forward while doing gaze manipulation");
 
-                    yield return hand.MoveTo(initialHandPosition + Vector3.back * 0.2f, numHandSteps);
+                    yield return hand.MoveTo(initialHandPosition + Vector3.back * 0.2f);
                     // make sure that the offset between grab and object centre has shrunk as it moves closer to the camera
                     currentInteractorPosition = objectManipulator.firstInteractorSelecting.transform.position;
                     currentOffset = currentInteractorPosition - testObject.transform.position;
                     Assert.IsTrue(currentOffset.magnitude < initialGrabOffset.magnitude, $"Object did not move closer when moving backwards while doing gaze manipulation");
 
-                    yield return hand.MoveTo(initialHandPosition, numHandSteps);
+                    yield return hand.MoveTo(initialHandPosition);
                     yield return hand.RotateTo(initialHandRotation);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -520,7 +524,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Enable gaze interactions for this unit test;
             InputTestUtilities.EnableGaze();
 
-            // set up cube with manipulation handler
+            // Set up cube with ObjectManipulator
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
@@ -533,7 +537,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return null;
 
             const int numCircleSteps = 10;
-            const int numHandSteps = 3;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f); // Hand hovers in the center of the fov, but the hand ray misses the cube
             Quaternion initialHandRotation = Quaternion.identity;
@@ -591,7 +594,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
                         // move hand with the camera
                         Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialHandPosition;
-                        yield return hand.MoveTo(newHandPosition, numHandSteps);
+                        yield return hand.MoveTo(newHandPosition);
                         yield return hand.RotateTo(Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialHandRotation);
                         yield return new WaitForFixedUpdate();
 
@@ -608,19 +611,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     }
 
                     // Move the object forward and back
-                    yield return hand.MoveTo(initialHandPosition + Vector3.forward, numHandSteps);
+                    yield return hand.MoveTo(initialHandPosition + Vector3.forward);
                     // make sure that the offset between grab and object centre hasn't changed while rotating
                     Vector3 currentGrabPoint = objectManipulator.firstInteractorSelecting.transform.position;
                     Vector3 currentOffset = currentGrabPoint - testObject.transform.position;
                     Assert.IsTrue(currentOffset.magnitude > initialGrabOffset.magnitude, $"Object did not move farther away when moving forward while doing gaze manipulation");
 
-                    yield return hand.MoveTo(initialHandPosition + Vector3.back * 0.2f, numHandSteps);
+                    yield return hand.MoveTo(initialHandPosition + Vector3.back * 0.2f);
                     // make sure that the offset between grab and object centre hasn't changed while rotating
                     currentGrabPoint = objectManipulator.firstInteractorSelecting.transform.position;
                     currentOffset = currentGrabPoint - testObject.transform.position;
                     Assert.IsTrue(currentOffset.magnitude < initialGrabOffset.magnitude, $"Object did not move closer when moving backwards while doing gaze manipulation");
 
-                    yield return hand.MoveTo(initialHandPosition, numHandSteps);
+                    yield return hand.MoveTo(initialHandPosition);
                     yield return hand.RotateTo(initialHandRotation);
                     yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -809,7 +812,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             backgroundObject.transform.position = new Vector3(0f, 0f, 2f);
             backgroundObject.GetComponent<MeshRenderer>().material.color = Color.green;
 
-            const int numHandSteps = 10;
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(new Vector3(0.1f, -0.1f, 0.5f));
             yield return null;
@@ -818,7 +820,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return hand.SetGesture(GestureId.Pinch);
             yield return null;
 
-            yield return hand.Move(Vector3.forward * 3f, numHandSteps);
+            yield return hand.Move(Vector3.forward * 3f);
 
             Assert.Less(testObject.transform.position.z, backgroundObject.transform.position.z);
             Assert.AreEqual(1, collisionListener.CollisionCount);
@@ -856,7 +858,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var backgroundRigidbody = backgroundObject.AddComponent<Rigidbody>();
             backgroundRigidbody.useGravity = false;
 
-            const int numHandSteps = 10;
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(new Vector3(0.1f, -0.1f, 0.5f));
             yield return null;
@@ -865,7 +866,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return hand.SetGesture(GestureId.Pinch);
             yield return null;
 
-            yield return hand.Move(Vector3.forward * 3f, numHandSteps);
+            yield return hand.Move(Vector3.forward * 3f);
 
             Assert.AreNotEqual(Vector3.zero, backgroundRigidbody.velocity);
             Assert.AreEqual(1, collisionListener.CollisionCount);

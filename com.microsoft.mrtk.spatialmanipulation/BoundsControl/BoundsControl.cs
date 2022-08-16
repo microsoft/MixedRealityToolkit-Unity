@@ -268,12 +268,32 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public RotateAnchorType RotateAnchor
         {
-            get { return rotateAnchor; }
+            get => rotateAnchor;
             set
             {
                 if (rotateAnchor != value)
                 {
                     rotateAnchor = value;
+                }
+            }
+        }
+
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("Specifies whether the scale handles will rotate the object around their opposing corner, or the center of its calculated bounds.")]
+        private ScaleAnchorType scaleAnchor = ScaleAnchorType.OppositeCorner;
+
+        /// <summary>
+        /// Specifies whether the scale handles will rotate the scale around the opposing corner, or the center of its calculated bounds.
+        /// </summary>
+        public ScaleAnchorType ScaleAnchor
+        {
+            get => scaleAnchor;
+            set
+            {
+                if (scaleAnchor != value)
+                {
+                    scaleAnchor = value;
                 }
             }
         }
@@ -287,10 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public HandleScaleMode ScaleBehavior
         {
-            get
-            {
-                return scaleBehavior;
-            }
+            get => scaleBehavior;
             set
             {
                 if (scaleBehavior != value)
@@ -762,19 +779,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     }
                     else if (currentHandle.HandleType == HandleType.Scale)
                     {
+                        Vector3 anchorPoint = ScaleAnchor == ScaleAnchorType.BoundsCenter ? Target.transform.TransformPoint(currentBounds.center) : oppositeCorner;
                         Vector3 scaleFactor = Target.transform.localScale;
                         if (ScaleBehavior == HandleScaleMode.Uniform)
                         {
-                            float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
-                            float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
+                            float initialDist = Vector3.Dot(initialGrabPoint - anchorPoint, diagonalDir);
+                            float currentDist = Vector3.Dot(currentGrabPoint - anchorPoint, diagonalDir);
                             float scaleFactorUniform = 1 + (currentDist - initialDist) / initialDist;
                             scaleFactor = new Vector3(scaleFactorUniform, scaleFactorUniform, scaleFactorUniform);
                         }
                         else // non-uniform scaling
                         {
                             // get diff from center point of box
-                            Vector3 initialDist = Target.transform.InverseTransformVector(initialGrabPoint - oppositeCorner);
-                            Vector3 currentDist = Target.transform.InverseTransformVector(currentGrabPoint - oppositeCorner);
+                            Vector3 initialDist = Target.transform.InverseTransformVector(initialGrabPoint - anchorPoint);
+                            Vector3 currentDist = Target.transform.InverseTransformVector(currentGrabPoint - anchorPoint);
                             Vector3 grabDiff = (currentDist - initialDist);
 
                             scaleFactor = Vector3.one + grabDiff.Div(initialDist);
@@ -805,8 +823,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                                 clampedTransform.Scale;
                         }
 
-                        var originalRelativePosition = Target.transform.InverseTransformDirection(initialTransformOnGrabStart.Position - oppositeCorner);
-                        var newPosition = Target.transform.TransformDirection(originalRelativePosition.Mul(clampedTransform.Scale.Div(initialTransformOnGrabStart.Scale))) + oppositeCorner;
+                        var originalRelativePosition = Target.transform.InverseTransformDirection(initialTransformOnGrabStart.Position - anchorPoint);
+                        var newPosition = Target.transform.TransformDirection(originalRelativePosition.Mul(clampedTransform.Scale.Div(initialTransformOnGrabStart.Scale))) + anchorPoint;
                         Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                     }
                     else if (currentHandle.HandleType == HandleType.Translation)
