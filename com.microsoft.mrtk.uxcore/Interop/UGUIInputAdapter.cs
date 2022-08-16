@@ -156,7 +156,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         protected virtual void OnInteractorRegistered(InteractorRegisteredEventArgs args)
         {
-            Debug.Log("Interactor registered");
             if (args.interactorObject is IProxyInteractor)
             {
                 proxyInteractor = args.interactorObject as IProxyInteractor;
