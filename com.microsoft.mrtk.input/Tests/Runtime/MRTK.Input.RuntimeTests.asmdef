@@ -4,10 +4,9 @@
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
         "Microsoft.MixedReality.Toolkit.Core.TestUtilities",
-        "Microsoft.MixedReality.Toolkit.Hands",
         "Microsoft.MixedReality.Toolkit.Input",
-        "Microsoft.MixedReality.Toolkit.XRIExtensions",
         "Unity.InputSystem",
+        "Unity.InputSystem.TestFramework",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
         "Unity.XR.Interaction.Toolkit"

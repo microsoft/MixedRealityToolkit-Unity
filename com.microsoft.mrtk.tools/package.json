@@ -1,0 +1,20 @@
+{
+  "name": "com.microsoft.mrtk.tools",
+  "version": "3.0.0-development",
+  "description": "A collection of tools, utilities, and wizards that can be used to create and analyze components for use with MRTK3.",
+  "displayName": "MRTK Tools",
+  "msftFeatureCategory": "MRTK3",
+  "author": "Microsoft",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+  },
+  "unity": "2020.3",
+  "dependencies": {
+    "com.microsoft.mrtk.core": "3.0.0-development"
+  }
+}

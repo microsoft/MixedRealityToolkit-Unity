@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-
+using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
 using System.Collections;
@@ -165,13 +165,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsFalse(bc.IsManipulated, "BC thought we were already manipulated");
 
             yield return rightHand.MoveTo(testHandle.transform.position);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
-            // Wait for the enable animation to complete.
-            yield return new WaitForSeconds(0.1f);
+            Assert.IsTrue(testHandle.isHovered, "Handle should be hovered.");
 
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(testHandle.isSelected, "Handle didn't get selected.");
             Assert.IsTrue(bc.IsManipulated, "No manipulation detected when we grabbed a handle.");

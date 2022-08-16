@@ -1,0 +1,127 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# [Template] Run MRTK tests.
+
+parameters:
+- name: UnityVersion
+  type: string
+  default: ''
+
+- name: BuildTarget
+  type: string
+  values:
+    - StandaloneWindows64
+    - WSAPlayer
+    - Android
+
+- name: PathToProject
+  type: string
+
+- name: AdditionalArguments
+  type: string
+  default: ''
+
+steps:
+# No edit mode tests (yet!)
+# - pwsh: |
+    # Write-Host "======================= EditMode Tests ======================="
+
+    # $logFile = Join-Path $(Agent.TempDirectory) "editmode-test-run.log"
+    # New-Item -Path $logFile -ItemType File -Force
+
+    # if ("${{ parameters.UnityVersion }}" -eq "Latest") {
+    #   $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Quit -PassThru -LogFile $logFile -EditorTestsResultFile ".\test-editmode-default.xml" -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+    # }
+    # else {
+    #   $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Quit -PassThru -LogFile $logFile -EditorTestsResultFile ".\test-editmode-default.xml" -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+    # }
+
+    # $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile
+
+    # while (-not $proc.HasExited -and $ljob.HasMoreData)
+    # {
+    #     Receive-Job $ljob
+    #     Start-Sleep -Milliseconds 200
+    # }
+    # Stop-Job $ljob
+    # Remove-Job $ljob
+    # Stop-Process $proc
+
+    # Write-Output '====================================================='
+    # Write-Output '              PlayMode Tests Finished                '
+    # Write-Output '====================================================='
+#   displayName: 'Run EditMode tests'
+
+- pwsh: |
+    Write-Host "======================= PlayMode Tests ======================="
+
+    $logFile = Join-Path $(Agent.TempDirectory) "playmode-test-run.log"
+    New-Item -Path $logFile -ItemType File -Force
+
+    $resultFile = Join-Path $(Agent.TempDirectory) "test-results-playmode.xml"
+
+    try {
+      if ("${{ parameters.UnityVersion }}" -eq "Latest") {
+        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+      }
+      else {
+        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+      }
+
+      $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile
+      while (-not $proc.HasExited -and $ljob.HasMoreData)
+      {
+        Receive-Job $ljob
+        Start-Sleep -Milliseconds 200
+      }
+      Stop-Job $ljob
+      Remove-Job $ljob
+      Stop-Process $proc
+    }
+    finally {
+      Write-Output '====================================================='
+      Write-Output '               PlayMode Tests Finished               '
+      Write-Output '====================================================='
+
+      if (Test-Path $logFile) {
+        Write-Output '====================================================='
+        Write-Output '             Begin PlayMode Tests Logs               '
+        Write-Output '====================================================='
+
+        Get-Content $logFile
+
+        Write-Output '====================================================='
+        Write-Output '              End PlayMode Tests Logs                '
+        Write-Output '====================================================='
+      }
+      else {
+        Write-Output 'PlayMode Tests log missing!'
+      }
+
+      if (Test-Path $resultFile) {
+        Write-Output '====================================================='
+        Write-Output '            Begin PlayMode Tests Results             '
+        Write-Output '====================================================='
+
+        Get-Content $resultFile
+
+        Write-Output '====================================================='
+        Write-Output '             End PlayMode Tests Results              '
+        Write-Output '====================================================='
+      }
+      else {
+        Write-Output 'PlayMode Tests results missing!'
+      }
+
+      Write-Output "Exit code: $($proc.ExitCode)"
+    }
+  displayName: 'Run PlayMode tests'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results'
+  inputs:
+    testResultsFormat: NUnit
+    testResultsFiles: 'test*.xml'
+    searchFolder: $(Agent.TempDirectory)
+    failTaskOnFailedTests: true
