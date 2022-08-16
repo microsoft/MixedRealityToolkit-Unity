@@ -35,11 +35,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [FormerlySerializedAs("associatedControllers")]
-        [Tooltip("List of XR Base Controllers that this interaction mode detector has jurisdiction over")]
-        private List<XRBaseController> controllers;
+        [Tooltip("List of GameObjects which represent the 'controllers' that this interaction mode detector has jurisdiction over. Interaction modes will be set on all specified controllers.")]
+        private List<GameObject> controllers;
 
         /// <inheritdoc />
-        public List<XRBaseController> GetControllers() => controllers;
+        public List<GameObject> GetControllers() => controllers;
 
         // Visualizing the proximity zone
         private SphereCollider detectionZone;

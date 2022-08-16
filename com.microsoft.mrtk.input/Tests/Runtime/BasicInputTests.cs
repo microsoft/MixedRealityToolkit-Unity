@@ -6,9 +6,14 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Simulation;
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Subsystems;
 
 using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
 
@@ -19,6 +24,107 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
     /// </summary>
     public class BasicInputTests : BaseRuntimeInputTests
     {
+        /// <summary>
+        /// Ensure the simulated input devices are registered and present.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator InputDeviceSmoketest()
+        {
+            foreach (var device in InputSystem.devices)
+            {
+                Debug.Log(device);
+            }
+            Assert.That(InputSystem.devices, Has.Exactly(2).TypeOf<MRTKSimulatedController>());
+            yield return null;
+        }
+
+        /// <summary>
+        /// Ensure the simulated input devices bind to the controllers on the rig.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator InputBindingSmoketest()
+        {
+            var controllers = new[] {
+                CachedLookup.LeftHandController,
+                CachedLookup.RightHandController,
+                CachedLookup.GazeController
+            };
+
+            foreach (var controller in controllers)
+            {
+                Assert.That(controller, Is.Not.Null);
+                Assert.That(controller, Is.AssignableTo(typeof(ActionBasedController)));
+
+                ActionBasedController actionBasedController = controller as ActionBasedController;
+                Assert.That(actionBasedController.positionAction.action.controls, Has.Count.GreaterThanOrEqualTo(1));
+            }
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Ensure the simulated input device actually makes the rig's controllers move/actuate.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator HandMovingSmoketest()
+        {
+            var controller = CachedLookup.RightHandController as ActionBasedController;
+
+            var testHand = new TestHand(Handedness.Right);
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.Device);
+
+            yield return testHand.Show(Vector3.forward);
+
+            Assert.That(controller.transform.position.x, Is.EqualTo(0.0f).Within(0.01f));
+
+            yield return testHand.Move(Vector3.right * 0.5f, 60);
+            Debug.Log("Input system update mode: " + InputSystem.settings.updateMode);
+
+            Assert.That(controller.positionAction.action.controls, Has.Count.GreaterThanOrEqualTo(1));
+            Assert.That(controller.positionAction.action.activeControl, Is.Not.Null);
+            Assert.That(controller.positionAction.action.ReadValue<Vector3>().x, Is.EqualTo(0.5f).Within(0.01f));
+
+            Assert.That(controller.transform.position.x, Is.EqualTo(0.5f).Within(0.01f));
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test that anchoring the test hands on the grab point actually results in the grab interactor
+        /// being located where we want it to be.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator GrabAnchorTest()
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var interactable = cube.AddComponent<MRTKBaseInteractable>();
+
+            Vector3 cubePos = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = cubePos;
+            cube.transform.localScale = Vector3.one * 1.0f;
+            
+            var testHand = new TestHand(Handedness.Right);
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.Grab);
+
+            yield return testHand.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return testHand.MoveTo(cubePos);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            yield return new WaitForSeconds(2.0f);
+
+            var hands = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
+
+            bool gotJoint = hands.TryGetPinchingPoint(XRNode.RightHand, out HandJointPose jointPose);
+
+            Assert.IsTrue(interactable.IsGrabHovered, "Interactable wasn't grab hovered!");
+
+            Assert.IsTrue((interactable.HoveringGrabInteractors[0] as GrabInteractor).enabled, "Interactor wasn't enabled");
+
+            TestUtilities.AssertAboutEqual(interactable.HoveringGrabInteractors[0].GetAttachTransform(interactable).position,
+                                           cubePos, "Grab interactor's attachTransform wasn't where we wanted it to go!", 0.001f);
+        }
+
         /// <summary>
         /// Very basic test of StatefulInteractable's poke hovering, grab selecting,
         /// and toggling mechanics. Does not test rays or gaze interactions.
@@ -339,6 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // Spawn our hand.
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(0, 0, 1));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Prox detector should start out un-triggered.
             Assert.IsFalse(AnyProximityDetectorsTriggered(), "Prox detector started out triggered, when it shouldn't be (no cube yet!)");
@@ -356,7 +463,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             cube.transform.position = new Vector3(0, 0, 1);
             cube.transform.localScale = Vector3.one * 0.1f;
             cube.AddComponent<StatefulInteractable>();
-
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(AnyProximityDetectorsTriggered(), "Prox detector should see it!");
