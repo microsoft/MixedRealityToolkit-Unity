@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RiggedHand
-  m_Shader: {fileID: 4800000, guid: 7e5190cdaf0ecda4c8cd1c9d0c6e017b, type: 3}
-  m_ShaderKeywords: _ENABLE_
+  m_Name: RiggedHand-InvertedShell
+  m_Shader: {fileID: 4800000, guid: 1e78bf4fa2e9ae0459a4b1836f7a74b5, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0

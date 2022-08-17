@@ -3,12 +3,13 @@
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public static class GestureTypes
+    public static class HandshapeTypes
+
     {
         /// <summary>
         /// Supported hand gestures.
         /// </summary>
-        public enum GestureId
+        public enum HandshapeId
         {
             /// <summary>
             /// Unspecified hand shape

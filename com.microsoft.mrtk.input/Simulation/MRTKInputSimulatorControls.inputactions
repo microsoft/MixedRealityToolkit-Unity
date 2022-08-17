@@ -1254,6 +1254,17 @@
                     "action": "Change Pose",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "949c9249-ab86-42ad-ba7a-66e7d8502e50",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Pose",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -2145,6 +2156,17 @@
                     "name": "binding",
                     "id": "42e371be-b7ed-49c2-933b-eaba740a0c08",
                     "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Pose",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "eac9dd97-4db3-4cf6-b541-ba2551a70510",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

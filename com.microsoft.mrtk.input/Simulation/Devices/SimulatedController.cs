@@ -13,7 +13,7 @@ using UnityEngine.Scripting;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     {
         private readonly MRTKSimulatedController simulatedController = null;
         private readonly IHandRay handRay = new HandRay();
+        private readonly ControllerSimulationSettings controllerSimulationSettings;
 
         private MRTKSimulatedControllerState simulatedControllerState;
 
@@ -153,17 +154,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         public SimulatedController(
             Handedness handedness,
-            SimulatedHandPose defaultPose,
+            ControllerSimulationSettings ctrlSettings,
             Vector3 initialRelativePosition)
         {
             Handedness = handedness;
+            controllerSimulationSettings = ctrlSettings;
 
             // Set the default hand pose when initially tracked.
             XRNode? handNode = Handedness.ToXRNode();
             if (handNode.HasValue && SynthHands != null)
             {
-                SynthHands.SetNeutralPose(handNode.Value,
-                    defaultPose == SimulatedHandPose.Ready ? GestureId.Open : GestureId.Flat);
+                SynthHands.SetNeutralHandshape(handNode.Value,
+                    controllerSimulationSettings.NeutralHandshape);
+                SynthHands.SetSelectionHandshape(handNode.Value,
+                    controllerSimulationSettings.TriggerHandshape);
             }
 
             simulatedController = InputSystem.AddDevice<MRTKSimulatedController>();
@@ -212,6 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         /// <summary>
         /// Toggles the simulated hand between flat or ready poses.
+        /// Not quite sure why this option is present
         /// </summary>
         public void ToggleNeutralPose()
         {
@@ -220,10 +225,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 XRNode? handNode = Handedness.ToXRNode();
                 if (handNode.HasValue && SynthHands != null)
                 {
-                    GestureId neutralPose = SynthHands.GetNeutralPose(handNode.Value);
-                    SynthHands.SetNeutralPose(
+                    HandshapeId neutralPose = SynthHands.GetNeutralHandshape(handNode.Value);
+                    SynthHands.SetNeutralHandshape(
                                             handNode.Value,
-                                            (neutralPose == GestureId.Flat) ? GestureId.Open : GestureId.Flat);
+                                            (neutralPose == controllerSimulationSettings.NeutralHandshape) ? controllerSimulationSettings.SecondaryNeutralHandshape : controllerSimulationSettings.NeutralHandshape);
+
+                    HandshapeId selectionPose = SynthHands.GetSelectionHandshape(handNode.Value);
+                    SynthHands.SetSelectionHandshape(
+                                            handNode.Value,
+                                            (selectionPose == controllerSimulationSettings.TriggerHandshape) ? controllerSimulationSettings.SecondaryTriggerHandshape : controllerSimulationSettings.TriggerHandshape);
                 }
                 else
                 {
