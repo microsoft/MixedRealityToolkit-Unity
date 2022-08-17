@@ -183,8 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             }
             simulatedControllerState.Reset();
 
-            // TODO replace with the value derived from controller settings
-            simulatedController.SimulationMode = ControllerSimulationMode.MotionController;
+            simulatedController.SimulationMode = controllerSimulationSettings.SimulationMode;
 
             SimulatedInputPosition = initialRelativePosition;
 
@@ -461,8 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // simulatedControllerState.WithButton(ControllerButton.Primary2DAxisTouch, controls.Primary2DAxisTouch);
                 // simulatedControllerState.WithButton(ControllerButton.Secondary2DAxisTouch, controls.Secondary2DAxisTouch);
 
-                // TODO replace with the value derived from controller settings
-                simulatedController.SimulationMode = ControllerSimulationMode.MotionController;
+                simulatedController.SimulationMode = controllerSimulationSettings.SimulationMode;
 
                 InputState.Change(simulatedController, simulatedControllerState);
             }

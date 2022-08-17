@@ -551,6 +551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3973969148631863464}
   - component: {fileID: 3507431783398283103}
+  - component: {fileID: -7366846053233975685}
   m_Layer: 0
   m_Name: openxr_right_hand
   m_TagString: Untagged
@@ -591,6 +592,20 @@ MonoBehaviour:
   wrist: {fileID: 5446693289115484214}
   handRenderer: {fileID: 5709336421934327412}
   pinchAmountMaterialProperty: _PinchAmount
+--- !u!114 &-7366846053233975685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4354293980546992658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c84c0b2be85add4ea1a5d0b1b2bf027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handNode: 5
+  fallbackControllerModel: {fileID: 2343778425554525912, guid: 3bd614f14cda63940b56faf0518b55f3, type: 3}
 --- !u!1 &4657295888579565740
 GameObject:
   m_ObjectHideFlags: 0

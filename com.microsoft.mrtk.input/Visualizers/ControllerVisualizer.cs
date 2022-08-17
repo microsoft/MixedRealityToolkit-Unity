@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         bool isSimulatedController = false;
                         if (xrInputDevice is MRTKSimulatedController simulatedController)
                         {
-                            Debug.LogError(simulatedController.SimulationMode);
                             isSimulatedController = simulatedController.SimulationMode == ControllerSimulationMode.MotionController;
                             useFallbackVisuals |= isSimulatedController;
                         }
@@ -160,8 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (ControllerGameObject != null)
             {
-                xrController.model = ControllerGameObject.transform;
-                xrController.model.transform.parent = xrController.modelParent;
+                ControllerGameObject.transform.parent = transform;
+                ControllerGameObject.transform.position = transform.position;
+                ControllerGameObject.transform.rotation = transform.rotation;
             }
         }
 
@@ -172,14 +172,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (ControllerGameObject != null)
             {
-                xrController.model = null;
                 Destroy(ControllerGameObject);
             }
         }
 
         public void Update()
         {
-            xrController.hideControllerModel = !IsControllerTracked;
+            if(ControllerGameObject != null && ControllerGameObject.activeSelf != IsControllerTracked)
+            {
+                ControllerGameObject.SetActive(IsControllerTracked);
+            }
         }
     }
 }

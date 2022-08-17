@@ -371,8 +371,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1948193615953854875}
   - component: {fileID: 6164080946324827545}
-  - component: {fileID: 1173925932019795335}
-  - component: {fileID: 4032301647702797930}
   m_Layer: 0
   m_Name: MRTK Hand Controller
   m_TagString: Untagged
@@ -566,35 +564,6 @@ MonoBehaviour:
     m_Reference: {fileID: 7779212132400271959, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   m_ButtonPressPoint: 0.5
   handNode: 4
---- !u!114 &1173925932019795335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948193615953854874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a4cc0663b372fd4795c4e6d942500fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handNode: 4
-  jointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  jointMaterial: {fileID: 2100000, guid: f115122e8379c044faecfec013fda057, type: 2}
---- !u!114 &4032301647702797930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948193615953854874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c84c0b2be85add4ea1a5d0b1b2bf027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handNode: 4
-  fallbackControllerModel: {fileID: 5565954080554097683, guid: 1102adc710b58ee45adb08bdd5d4767c, type: 3}
 --- !u!1 &1948193616346090105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,6 +1398,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+--- !u!1 &8086910922498750391 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 1009008764017234214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4299642553587339576 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
@@ -1437,11 +1411,6 @@ Transform:
 --- !u!1 &4299642553587339577 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 1009008764017234214}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8086910922498750391 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &943052423812839532
