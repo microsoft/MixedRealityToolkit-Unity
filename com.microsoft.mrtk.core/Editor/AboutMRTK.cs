@@ -86,40 +86,48 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField("Copyright (c) Microsoft Corporation. Licensed under the MIT License.", MixedRealityStylesUtility.LicenseStyle);
                 EditorGUILayout.Space(12);
 
-                StringBuilder sb = new StringBuilder();
-
-                foreach (PackageInfo packageInfo in installedPackages)
+                if (packageListRequest != null && packageListRequest.IsCompleted == false)
                 {
-                    if (packageInfo.name.StartsWith("com.microsoft.mrtk") ||
-                        packageInfo.name.StartsWith("com.microsoft.mixedreality"))
-                    {
-                        sb.AppendLine($"{packageInfo.name}: {packageInfo.version}");
-                    }
+                    EditorGUILayout.Space(30);
+                    EditorGUILayout.LabelField("Loading package information...", MixedRealityStylesUtility.LicenseStyle);
                 }
-
-                using (new EditorGUILayout.HorizontalScope())
+                else
                 {
-                    EditorGUILayout.LabelField("Package versions", EditorStyles.boldLabel);
-                    using (new EditorGUI.DisabledGroupScope(sb.Length == 0))
+                    StringBuilder sb = new StringBuilder();
+
+                    foreach (PackageInfo packageInfo in installedPackages)
                     {
-                        if (GUILayout.Button(new GUIContent("Copy")))
+                        if (packageInfo.name.StartsWith("com.microsoft.mrtk") ||
+                            packageInfo.name.StartsWith("com.microsoft.mixedreality"))
                         {
-                            GUIUtility.systemCopyBuffer = sb.ToString();
+                            sb.AppendLine($"{packageInfo.name}: {packageInfo.version}");
                         }
                     }
-                }
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    scrollPos = EditorGUILayout.BeginScrollView(
-                        scrollPos,
-                        GUILayout.Height(150));
-                    using (new EditorGUI.DisabledGroupScope(true))
+
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorGUILayout.TextArea(
-                            sb.ToString(),
-                            GUILayout.ExpandHeight(true));
+                        EditorGUILayout.LabelField("Package versions", EditorStyles.boldLabel);
+                        using (new EditorGUI.DisabledGroupScope(sb.Length == 0))
+                        {
+                            if (GUILayout.Button(new GUIContent("Copy")))
+                            {
+                                GUIUtility.systemCopyBuffer = sb.ToString();
+                            }
+                        }
                     }
-                    EditorGUILayout.EndScrollView();
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        scrollPos = EditorGUILayout.BeginScrollView(
+                            scrollPos,
+                            GUILayout.Height(150));
+                        using (new EditorGUI.DisabledGroupScope(true))
+                        {
+                            EditorGUILayout.TextArea(
+                                sb.ToString(),
+                                GUILayout.ExpandHeight(true));
+                        }
+                        EditorGUILayout.EndScrollView();
+                    }
                 }
             }
         }
