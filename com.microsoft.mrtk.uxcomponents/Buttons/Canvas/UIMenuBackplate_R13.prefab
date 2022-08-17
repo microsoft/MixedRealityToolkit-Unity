@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 961341594221179252}
   - component: {fileID: 8652067621810633434}
   m_Layer: 5
-  m_Name: MenuPlate
+  m_Name: UIMenuBackplate_R13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
