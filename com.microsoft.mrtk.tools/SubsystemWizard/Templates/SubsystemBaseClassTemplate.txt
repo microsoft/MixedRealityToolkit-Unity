@@ -1,0 +1,51 @@
+// TODO: [Optional] Add copyright and license statement(s).
+
+using Microsoft.MixedReality.Toolkit.Subsystems;
+using UnityEngine.Scripting;
+using UnityEngine.SubsystemsImplementation;
+
+namespace %NAMESPACE%
+{
+    [Preserve]
+    public class %SUBSYSTEMBASECLASSNAME% :
+        MRTKSubsystem<%SUBSYSTEMBASECLASSNAME%, %SUBSYSTEMBASECLASSNAME%Descriptor, %SUBSYSTEMBASECLASSNAME%.Provider>,
+        I%SUBSYSTEMBASECLASSNAME%
+    {
+        /// <summary>
+        /// Construct the <c>%SUBSYSTEMBASECLASSNAME%</c>.
+        /// </summary>
+        public %SUBSYSTEMBASECLASSNAME%()
+        { }
+
+        [Preserve]
+        public abstract class Provider : MRTKSubsystemProvider<%SUBSYSTEMBASECLASSNAME%>, I%SUBSYSTEMBASECLASSNAME%
+        {
+            #region I%SUBSYSTEMBASECLASSNAME% implementation
+
+            // TODO: Implement abstract Provider class.
+
+            #endregion I%SUBSYSTEMBASECLASSNAME% implementation
+        }
+
+        #region I%SUBSYSTEMBASECLASSNAME% implementation
+
+        // TODO: Calls into abstract Provider (ex: public int MaxValue => provider.MaxValue;
+
+        #endregion I%SUBSYSTEMBASECLASSNAME% implementation
+
+        /// <summary>
+        /// Registers a %SUBSYSTEMBASECLASSNAME% implementation based on the given subsystem parameters.
+        /// </summary>
+        /// <param name="subsystemParams">The parameters defining the %SUBSYSTEMBASECLASSNAME%
+        /// functionality implemented by the subsystem provider.</param>
+        /// <returns>
+        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// </returns>
+        public static bool Register(%SUBSYSTEMBASECLASSNAME%Cinfo subsystemParams)
+        {
+            %SUBSYSTEMBASECLASSNAME%Descriptor Descriptor = %SUBSYSTEMBASECLASSNAME%Descriptor.Create(subsystemParams);
+            SubsystemDescriptorStore.RegisterDescriptor(Descriptor);
+            return true;
+        }
+    }
+}

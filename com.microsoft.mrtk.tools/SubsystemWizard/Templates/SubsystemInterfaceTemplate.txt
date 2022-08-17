@@ -1,0 +1,12 @@
+// TODO: [Optional] Add copyright and license statement(s).
+
+namespace %NAMESPACE%
+{
+    /// <summary>
+    /// Interface defining the functionality of %SUBSYSTEMBASECLASSNAME%.
+    /// </summary>
+    internal interface I%SUBSYSTEMBASECLASSNAME%
+    {
+        // TODO: Add subsystem specific properties and/or methods.
+    }
+}

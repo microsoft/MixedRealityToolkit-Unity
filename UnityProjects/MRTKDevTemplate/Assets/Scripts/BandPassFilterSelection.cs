@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Audio;
 using TMPro;
 using UnityEngine;
@@ -18,10 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private GameObject audioEmitter = null;
 
         [SerializeField]
-        private AudioBandPassFilter filter = null;
-
-        [SerializeField]
-        private TMP_Text caption = null;
+        private List<AudioBandPassFilter> filters = new List<AudioBandPassFilter>();
 
         private AudioBandPassEffect effect = null;
 
@@ -30,10 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             effect = audioEmitter.EnsureComponent<AudioBandPassEffect>();
         }
         
-        public void SetFilter()
+        public void SetFilter(int index)
         {
-            effect.Filter = filter;
-            caption.text = $"{filter.name} ({filter.LowFrequencyCutoff}Hz - {filter.HighFrequencyCutoff}Hz)";
+            effect.Filter = filters[index];
         }
     }
 }

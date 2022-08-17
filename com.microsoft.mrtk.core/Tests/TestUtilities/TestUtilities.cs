@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Tests
@@ -9,26 +10,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
     {
         public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message, float tolerance = 0.01f)
         {
-            var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Assert.That((actual - expected).magnitude,
+                        Is.EqualTo(0.0f).Within(tolerance),
+                        $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
 
         public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message, float tolerance = 0.01f)
         {
-            var angle = Quaternion.Angle(actual, expected);
-            Debug.Assert(angle < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Assert.That(Quaternion.Angle(actual, expected),
+                        Is.EqualTo(0.0f).Within(tolerance),
+                        $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
 
         public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message, float tolerance = 0.01f)
         {
-            var dist = (val1 - val2).magnitude;
-            Debug.Assert(dist >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Assert.That((val1 - val2).magnitude,
+                        Is.GreaterThan(tolerance),
+                        $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
 
         public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message, float tolerance = 0.01f)
         {
-            var angle = Quaternion.Angle(val1, val2);
-            Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Assert.That(Quaternion.Angle(val1, val2),
+                        Is.GreaterThan(tolerance),
+                        $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
 
         /// <summary>

@@ -4,8 +4,10 @@
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
+using static Microsoft.MixedReality.Toolkit.Input.HandshapeTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -38,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
                     if (!isSimulating)
                     {
-                        DisableSimulatedCamera();
+                        DisableSimulatedHMD();
                         DisableSimulatedEyeGaze();
                         DisableSimulatedController(Handedness.Left);
                         DisableSimulatedController(Handedness.Right);
@@ -53,12 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // Camera
                 if (cameraSettings.SimulationEnabled)
                 {
-                    EnableSimulatedCamera();
-                    UpdateSimulatedCamera();
+                    EnableSimulatedHMD();
+                    UpdateSimulatedHMD();
                 }
                 else
                 {
-                    DisableSimulatedCamera();
+                    DisableSimulatedHMD();
                 }
 
                 // Eyes
@@ -95,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         private void OnDisable()
         {
-            DisableSimulatedCamera();
+            DisableSimulatedHMD();
             DisableSimulatedEyeGaze();
             DisableSimulatedController(Handedness.Left);
             DisableSimulatedController(Handedness.Right);
@@ -105,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         #region Camera
 
-        private SimulatedCamera simulatedCamera = null;
+        private SimulatedHMD SimulatedHMD = null;
 
         [SerializeField]
         [Tooltip("Input simulation control compatibility set")]
@@ -139,11 +141,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// This method creates the camera simulation object(s) as needed. If called while
         /// already enabled, this method does nothing.
         /// </remarks>
-        private void EnableSimulatedCamera()
+        private void EnableSimulatedHMD()
         {
-            if (simulatedCamera == null)
+            if (SimulatedHMD == null)
             {
-                simulatedCamera = new SimulatedCamera();
+                SimulatedHMD = new SimulatedHMD();
             }
         }
 
@@ -154,26 +156,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// This method cleans up the camera simulation object(s) as needed. If called while
         /// already enabled, this method does nothing.
         /// </remarks>
-        private void DisableSimulatedCamera()
+        private void DisableSimulatedHMD()
         {
-            if (simulatedCamera != null)
+            if (SimulatedHMD != null)
             {
-                simulatedCamera.Dispose();
-                simulatedCamera = null;
+                SimulatedHMD.Dispose();
+                SimulatedHMD = null;
             }
         }
 
-        private static readonly ProfilerMarker UpdateSimulatedCameraPerfMarker =
-            new ProfilerMarker("[MRTK] InputSimulator.UpdateSimulatedCamera");
+        private static readonly ProfilerMarker UpdateSimulatedHMDPerfMarker =
+            new ProfilerMarker("[MRTK] InputSimulator.UpdateSimulatedHMD");
 
         /// <summary>
         /// Updates the camera simulation.
         /// </summary>
-        private void UpdateSimulatedCamera()
+        private void UpdateSimulatedHMD()
         {
-            if (simulatedCamera == null) { return; }
+            if (SimulatedHMD == null) { return; }
 
-            using (UpdateSimulatedCameraPerfMarker.Auto())
+            using (UpdateSimulatedHMDPerfMarker.Auto())
             {
                 // Get the position change
                 Vector3 positionDelta = new Vector3(
@@ -189,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     CameraSettings.Roll.action.ReadValue<float>());
 
                 // Update the simulated camera
-                simulatedCamera.Update(
+                SimulatedHMD.Update(
                     positionDelta * 0.1f,
                     rotationDelta,
                     CameraSettings.IsMovementSmoothed,
@@ -333,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </returns>
         private SimulatedController EnableSimulatedController(
             Handedness handedness,
-            SimulatedHandPose defaultPose,
+            ControllerSimulationSettings ctrlSettings,
             Vector3 startPosition)
         {
             if (!IsSupportedHandedness(handedness))
@@ -344,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
             ref SimulatedController simCtrl = ref GetControllerReference(handedness);
             if (simCtrl != null) { return simCtrl; }
-            simCtrl = new SimulatedController(handedness, defaultPose, startPosition);
+            simCtrl = new SimulatedController(handedness, ctrlSettings, startPosition);
 
             ControllerControls controls = GetControllerControls(handedness);
             controls.Reset();
@@ -431,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                         // Create the simulated controller.
                         simCtrl = EnableSimulatedController(
                             handedness,
-                            ctrlSettings.DefaultPose,
+                            ctrlSettings,
                             startPosition);
                     }
                 }
@@ -444,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 if (simCtrl == null) { return; }
 
                 // Has the user asked to change the neutral pose?
-                if (ctrlSettings.ChangeNeutralPose.action.WasPerformedThisFrame())
+                if (ctrlSettings.ToggleSecondaryHandshapes.action.WasPerformedThisFrame())
                 {
                     simCtrl.ToggleNeutralPose();
                 }
@@ -716,6 +718,37 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private string GetControlSetName(SimulatorControlScheme set)
         {
             return set.name;
+        }
+
+        
+        // This is a utility method called by XRSimulatedHMD and XRSimulatedController
+        // since both devices share the same command handling. This intercepts sync commands
+        // and returns GenericSuccess. Otherwise, simulated devices will fail to sync and
+        // cause issues like wonky state after tabbing out/tabbing in.
+        internal static unsafe bool TryExecuteCommand(InputDeviceCommand* commandPtr, out long result)
+        {
+            // This replicates the logic in XRToISXDevice::IOCTL (XRInputToISX.cpp).
+            var type = commandPtr->type;
+            if (type == RequestSyncCommand.Type)
+            {
+                // The state is maintained by XRDeviceSimulator, so no need for any change
+                // when focus is regained. Returning success instructs Input System to not
+                // reset the device.
+                result = InputDeviceCommand.GenericSuccess;
+                return true;
+            }
+
+            if (type == QueryCanRunInBackground.Type)
+            {
+                // This ensures all simulated devices always report canRunInBackground = true,
+                // regardless of whether they were explicitly marked as such.
+                ((QueryCanRunInBackground*)commandPtr)->canRunInBackground = true;
+                result = InputDeviceCommand.GenericSuccess;
+                return true;
+            }
+
+            result = default;
+            return false;
         }
 
         #endregion Helpers

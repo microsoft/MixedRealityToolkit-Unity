@@ -128,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         /// </summary>
         public static IEnumerator WaitForUpdates(int frameCount = 10)
         {
+            yield return new WaitForFixedUpdate();
             for (int i = 0; i < frameCount; i++)
             {
                 yield return null;

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 using UnityEngine.XR;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -23,6 +24,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         ConfigType = typeof(SyntheticHandsConfig))]
     public class SyntheticHandsSubsystem : HandsSubsystem
     {
+        private SynthesisProvider m_synthesisProvider;
+        private SynthesisProvider synthesisProvider
+        {
+            get
+            {
+                if (m_synthesisProvider == null || m_synthesisProvider != provider)
+                {
+                    m_synthesisProvider = provider as SynthesisProvider;
+                }
+                return m_synthesisProvider;
+            }
+        }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Register()
         {
@@ -52,28 +66,89 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>
         /// Identifier representing the hand pose.
         /// </returns>
-        public GestureId GetNeutralPose(XRNode handNode)
-        {
-            return (provider as SynthesisProvider).GetNeutralPose(handNode);
-        }
-
+        [Obsolete("Please use the GetNeutralHandshape(handNode) instead.")]
+        public HandshapeId GetNeutralPose(XRNode handNode) => GetNeutralHandshape(handNode);
         /// <summary>
         /// Sets the neutral pose for the specified hand.
         /// </summary>
         /// <param name="handNode">The hand for which the neutral pose is being set.</param>
         /// <param name="poseId">The desired hand pose.</param>
-        public void SetNeutralPose(XRNode handNode, GestureId poseId)
+        [Obsolete("Please use the SetNeutralHandshape(handNode, handshapeId) instead.")]
+        public void SetNeutralPose(XRNode handNode, HandshapeId poseId) => SetNeutralHandshape(handNode, poseId);
+
+        /// <summary>
+        /// Requests the selection pose for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection pose is being requested.</param>
+        /// <returns>
+        /// Identifier representing the hand pose.
+        /// </returns>
+        [Obsolete("Please use the GetSelectionHandshape(handNode) instead.")]
+        public HandshapeId GetSelectionPose(XRNode handNode) => GetSelectionHandshape(handNode);
+
+        /// <summary>
+        /// Sets the selection pose for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection pose is being set.</param>
+        /// <param name="poseId">The desired hand pose.</param>
+        [Obsolete("Please use the SetSelectionHandshape(handNode, handshapeId) instead.")]
+        public void SetSelectionPose(XRNode handNode, HandshapeId poseId) => SetSelectionHandshape(handNode, poseId);
+
+        /// <summary>
+        /// Requests the neutral handshape for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the neutral handshape is being requested.</param>
+        /// <returns>
+        /// Identifier representing the hand handshape.
+        /// </returns>
+        public HandshapeId GetNeutralHandshape(XRNode handNode)
         {
-            (provider as SynthesisProvider).SetNeutralPose(handNode, poseId);
+            return synthesisProvider.GetNeutralHandshape(handNode);
+        }
+
+        /// <summary>
+        /// Sets the neutral handshape for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the neutral handshape is being set.</param>
+        /// <param name="handshapeId">The desired hand handshape.</param>
+        public void SetNeutralHandshape(XRNode handNode, HandshapeId handshapeId)
+        {
+            synthesisProvider.SetNeutralHandshape(handNode, handshapeId);
+        }
+
+        /// <summary>
+        /// Requests the selection handshape for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection handshape is being requested.</param>
+        /// <returns>
+        /// Identifier representing the hand handshape.
+        /// </returns>
+        public HandshapeId GetSelectionHandshape(XRNode handNode)
+        {
+            return synthesisProvider.GetSelectionHandshape(handNode);
+        }
+
+        /// <summary>
+        /// Sets the selection handshape for the specified hand.
+        /// </summary>
+        /// <param name="handNode">The hand for which the selection handshape is being set.</param>
+        /// <param name="handshapeId">The desired hand handshape.</param>
+        public void SetSelectionHandshape(XRNode handNode, HandshapeId handshapeId)
+        {
+            synthesisProvider.SetSelectionHandshape(handNode, handshapeId);
         }
 
         private class SyntheticHandContainer : HandDataContainer
         {
-            // The current gesture in hand-space, untransformed.
-            private HandJointPose[] currentGesture = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
+            // The current handshape in hand-space, untransformed.
+            private HandJointPose[] currentHandshape = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
 
-            // The 'neutral' hand pose (ex: flat or ready position) to be displayed.
-            private GestureId neutralHandPose = GestureId.Flat;
+            // The 'neutral' handshape (ex: flat or open) to be displayed.
+            private HandshapeId neutralHandshape = HandshapeId.Open;
+
+            // The 'selection' handshape (ex: pinch) to be displayed.
+            // Does not have to correspond to a selecting action, but the pose lerps based on the value of the selectAction
+            private HandshapeId selectionHandshape = HandshapeId.Pinch;
 
             // The Input Action associated with the root position of this hand.
             private InputActionProperty positionAction;
@@ -104,13 +179,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public SyntheticHandContainer(
                                         XRNode handNode,
-                                        GestureId baseHandPose,
+                                        HandshapeId baseHandshape,
                                         InputActionProperty positionAction,
                                         InputActionProperty rotationAction,
                                         InputActionProperty selectAction,
                                         Vector3 poseOffset) : base(handNode)
             {
-                this.neutralHandPose = baseHandPose;
+                this.neutralHandshape = baseHandshape;
                 this.positionAction = positionAction;
                 this.rotationAction = rotationAction;
                 this.selectAction = selectAction;
@@ -121,12 +196,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 new ProfilerMarker("[MRTK] SyntheticHandsSubsystem.TryGetEntireHand");
 
             /// <summary>
-            /// Gets or sets the synthetic hand's neutral pose.
+            /// Gets or sets the synthetic hand's neutral hand shape.
             /// </summary>
-            public GestureId NeutralPose
+            public HandshapeId NeturalHandshape
             {
-                get => neutralHandPose;
-                set => neutralHandPose = value;
+                get => neutralHandshape;
+                set => neutralHandshape = value;
+            }
+
+            /// <summary>
+            /// Gets or sets the synthetic hand's selection hand shape.
+            /// </summary>
+            public HandshapeId SelectionHandshape
+            {
+                get => selectionHandshape;
+                set => selectionHandshape = value;
             }
 
             /// <inheritdoc/>
@@ -196,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // information to avoid extra work.
                     AlreadyFullQueried = true;
 
-                    UpdateGesture();
+                    UpdateHandshape();
 
                     // ActiveControl will be null if the position/pose has not yet been "actuated".
                     // Thus, if there's no "recently actuated control", we just manually resolve the
@@ -257,38 +341,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < JointCount; i++)
                     {
+                        // Joints are recorded for the right hand. If we're the left
+                        // hand, mirror the joint pose!
+                        if (HandNode == XRNode.LeftHand)
+                        {
+                            MirrorJoint(ref currentHandshape[i]);
+                        }
+
                         handJoints[i] = new HandJointPose(
-                            playspaceTransform.TransformPoint((handRotation * currentGesture[i].Position) + handPosition),
-                            playspaceTransform.rotation * (handRotation * currentGesture[i].Rotation),
-                            currentGesture[i].Radius);
+                            playspaceTransform.TransformPoint((handRotation * currentHandshape[i].Position) + handPosition),
+                            playspaceTransform.rotation * (handRotation * currentHandshape[i].Rotation),
+                            currentHandshape[i].Radius);
                     }
                 }
             }
 
-            private static readonly ProfilerMarker UpdateGesturePerfMarker =
-                new ProfilerMarker("[MRTK] SyntheticHandsSubsystem.UpdateGesture");
+            private static readonly ProfilerMarker UpdatehandshapePerfMarker =
+                new ProfilerMarker("[MRTK] SyntheticHandsSubsystem.Updatehandshape");
 
             /// <summary/>
             /// Given the current state of the various input actions,
-            /// write the current local-space gesture into the currentGesture array.
+            /// write the current local-space handshape into the currentHandshape array.
             /// </summary>
-            private void UpdateGesture()
+            private void UpdateHandshape()
             {
-                using (UpdateGesturePerfMarker.Auto())
+                using (UpdatehandshapePerfMarker.Auto())
                 {
-                    SimulatedArticulatedHandPoses.GetGesturePose(neutralHandPose, out HandJointPose[] baseData);
-                    SimulatedArticulatedHandPoses.GetGesturePose(GestureId.Pinch, out HandJointPose[] pinchData);
+                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(neutralHandshape, out HandJointPose[] baseData);
+                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(selectionHandshape, out HandJointPose[] pinchData);
 
                     selectAmount = selectAction.action.ReadValue<float>();
 
                     for (int i = 0; i < JointCount; i++)
                     {
-                        currentGesture[i].Position = Vector3.Lerp(baseData[i].Position, pinchData[i].Position, selectAmount) + poseOffset;
-                        currentGesture[i].Rotation = Quaternion.Slerp(baseData[i].Rotation, pinchData[i].Rotation, selectAmount);
-                        currentGesture[i].Radius = Mathf.Lerp(baseData[i].Radius, pinchData[i].Radius, selectAmount);
-                        currentGesture[i].Position = Vector3.Scale(currentGesture[i].Position, new Vector3(HandNode == XRNode.LeftHand ? -1 : 1, 1, 1));
+                        currentHandshape[i].Position = Vector3.Lerp(baseData[i].Position, pinchData[i].Position, selectAmount) + poseOffset;
+                        currentHandshape[i].Rotation = Quaternion.Slerp(baseData[i].Rotation, pinchData[i].Rotation, selectAmount);
+                        currentHandshape[i].Radius = Mathf.Lerp(baseData[i].Radius, pinchData[i].Radius, selectAmount);
                     }
                 }
+            }
+
+            // Flips/rotates a hand joint pose. This mirrors the joint's position across
+            // the x-axis, and applies a mirror transformation to the joint quaternions (x,-y,-z,w).
+            private static void MirrorJoint(ref HandJointPose pose)
+            {
+                pose.Position = Vector3.Scale(pose.Position, new Vector3(-1, 1, 1));
+                pose.Rotation = new Quaternion(pose.Rotation.x, -pose.Rotation.y, -pose.Rotation.z, pose.Rotation.w);
             }
         }
 
@@ -307,14 +405,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     { XRNode.LeftHand, new SyntheticHandContainer(
                                                                 XRNode.LeftHand,
-                                                                GestureId.Flat,
+                                                                HandshapeId.Flat,
                                                                 config.LeftHandPosition,
                                                                 config.LeftHandRotation,
                                                                 config.LeftHandSelect,
                                                                 config.PoseOffset) },
                     { XRNode.RightHand, new SyntheticHandContainer(
                                                                 XRNode.RightHand,
-                                                                GestureId.Flat,
+                                                                HandshapeId.Flat,
                                                                 config.RightHandPosition,
                                                                 config.RightHandRotation,
                                                                 config.RightHandSelect,
@@ -335,19 +433,77 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <returns>
             /// Identifier representing the hand pose.
             /// </returns>
-            public GestureId GetNeutralPose(XRNode handNode)
-            {
-                return hands[handNode].NeutralPose;
-            }
+            [Obsolete("Please use the GetNeutralHandshape(handNode) instead.")]
+            public HandshapeId GetNeutralPose(XRNode handNode) => GetNeutralHandshape(handNode);
 
             /// <summary>
             /// Sets the neutral pose for the specified hand.
             /// </summary>
             /// <param name="handNode">The hand for which the neutral pose is being set.</param>
             /// <param name="poseId">The desired hand pose.</param>
-            public void SetNeutralPose(XRNode handNode, GestureId poseId)
+            [Obsolete("Please use the SetNeutralHandshape(handNode, handshapeId) instead.")]
+            public void SetNeutralPose(XRNode handNode, HandshapeId poseId) => SetNeutralHandshape(handNode, poseId);
+
+            /// <summary>
+            /// Requests the selection pose for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection pose is being requested.</param>
+            /// <returns>
+            /// Identifier representing the hand pose.
+            /// </returns>
+            [Obsolete("Please use the GetSelectionHandshape(handNode) instead.")]
+            public HandshapeId GetSelectionPose(XRNode handNode) => GetSelectionHandshape(handNode);
+
+            /// <summary>
+            /// Sets the selection pose for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection pose is being set.</param>
+            /// <param name="poseId">The desired hand pose.</param>
+            [Obsolete("Please use the SetSelectionHandshape(handNode, handshapeId) instead.")]
+            public void SetSelectionPose(XRNode handNode, HandshapeId poseId) => SetSelectionHandshape(handNode, poseId);
+
+            /// <summary>
+            /// Requests the neutral handshape for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the neutral handshape is being requested.</param>
+            /// <returns>
+            /// handshapeId for the desired handshape.
+            /// </returns>
+            public HandshapeId GetNeutralHandshape(XRNode handNode)
             {
-                hands[handNode].NeutralPose = poseId;
+                return hands[handNode].NeturalHandshape;
+            }
+
+            /// <summary>
+            /// Sets the neutral handshape for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the neutral handshape is being set.</param>
+            /// <param name="handshapeId">The desired hand handshape.</param>
+            public void SetNeutralHandshape(XRNode handNode, HandshapeId handshapeId)
+            {
+                hands[handNode].NeturalHandshape = handshapeId;
+            }
+
+            /// <summary>
+            /// Requests the selection handshape for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection handshape is being requested.</param>
+            /// <returns>
+            /// Identifier representing the hand handshape.
+            /// </returns>
+            public HandshapeId GetSelectionHandshape(XRNode handNode)
+            {
+                return hands[handNode].SelectionHandshape;
+            }
+
+            /// <summary>
+            /// Sets the selection handshape for the specified hand.
+            /// </summary>
+            /// <param name="handNode">The hand for which the selection handshape is being set.</param>
+            /// <param name="handshapeId">The desired hand handshape.</param>
+            public void SetSelectionHandshape(XRNode handNode, HandshapeId handshapeId)
+            {
+                hands[handNode].SelectionHandshape = handshapeId;
             }
 
             #region IHandsSubsystem implementation

@@ -1,0 +1,18 @@
+// TODO: [Optional] Add copyright and license statement(s).
+
+using Microsoft.MixedReality.Toolkit;
+using UnityEngine;
+
+namespace %NAMESPACE%
+{
+    /// <summary>
+    /// The configuration object for all %SUBSYSTEMBASECLASSNAME% implementations.
+    /// </summary>
+    [CreateAssetMenu(
+        fileName = "%SUBSYSTEMBASECLASSNAME%Config.asset",
+        menuName = "Custom/Subsystems/%SUBSYSTEMBASECLASSNAME% Config")]
+    public class %SUBSYSTEMBASECLASSNAME%Config : BaseSubsystemConfig
+    {
+        // TODO: Add subsystem specific configuration properties.
+    }
+}

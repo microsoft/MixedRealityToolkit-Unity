@@ -132,6 +132,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: m_ModelPrefab
+      value: 
+      objectReference: {fileID: 3973969148631863464, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
+    - target: {fileID: 6164080946324827545, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: m_SelectAction.m_Reference
       value: 
       objectReference: {fileID: 187161793506945269, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}

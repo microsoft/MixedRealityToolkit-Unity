@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 using SpaceMode = Microsoft.MixedReality.Toolkit.UX.PressableButton.SpaceMode;
 
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
@@ -334,8 +334,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             TestHand hand = new TestHand(Handedness.Right);
             Vector3 initialHandPosition = new Vector3(0.05f, -0.05f, 0.3f); // orient hand so far interaction ray will hit button
             yield return hand.Show(initialHandPosition);
-            yield return hand.SetGesture(GestureId.Pinch);
-            yield return hand.SetGesture(GestureId.Open);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Open);
             Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
 
             Object.Destroy(testButton);

@@ -170,6 +170,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Ray ray = handRay.Ray;
                 controllerState.position = ray.origin;
                 controllerState.rotation = Quaternion.LookRotation(ray.direction, PlayspaceUtilities.ReferenceTransform.TransformVector(palm.Up));
+
+                // Polyfill the tracking state, too.
+                controllerState.inputTrackingState = InputTrackingState.Position | InputTrackingState.Rotation;
             }
         }
     }
