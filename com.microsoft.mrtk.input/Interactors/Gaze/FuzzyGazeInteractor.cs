@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("MRTK/Input/Fuzzy Gaze Interactor")]
     public class FuzzyGazeInteractor : GazeInteractor
     {
+        #region FuzzyGazeInteractor
+
         // TODO: these fields need to override their respective equivalents in the underlying XRRayInteractor class
         // i.e. coneAngle should change the sphereCastRadius, maxGazeDistance should change the raycastDistance
         [SerializeField]
@@ -45,9 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private float angleToCenterWeight = 0.0f;
 
-        private static readonly ProfilerMarker IsHitValidPerfMarker =
-            new ProfilerMarker("[MRTK] FuzzyGazeInteractor.IsHitValid");
-
         [SerializeField]
         [Tooltip("Used to adjust the precision of the fuzzy gaze physics raycasts. Each level adds an additional physics cast to improve precision of scoring target hit results")]
         [Range(0, MaxPrecision)]
@@ -63,7 +62,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Determines whether a raycast following the eye gaze is performed to improve scoring results")]
         internal bool performAdditionalRaycast = true;
 
-        internal bool IsHitValid(IXRInteractable target, RaycastHit hit)
+        private static readonly ProfilerMarker IsHitValidPerfMarker =
+            new ProfilerMarker("[MRTK] FuzzyGazeInteractor.IsHitValid");
+
+        private bool IsHitValid(IXRInteractable target, RaycastHit hit)
         {
             using (IsHitValidPerfMarker.Auto())
             {
@@ -185,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public bool IsRaycast => precisionLevel == RaycastPrecision;
         }
 
-        const int MaxRaycastHits = 10;
+        private const int MaxRaycastHits = 10;
         // Allocate space for precision levels 0 -> MaxPrecision, and then reserve 1 more row for a potential dedicated raycast that follows the eye gaze.
         int[] raycastHitCounts = new int[MaxPrecision + 2];
         protected RaycastHit[][] allRaycastHits = new RaycastHit[MaxPrecision + 2][];
@@ -198,53 +200,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Returns the best case estimate for the hit location for fuzzy gaze
         /// </summary>
         public GazeRaycastHitResult PreciseHitResult => preciseHitResult;
-
-        /// <inheritdoc />
-        public override void PreprocessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
-        {
-            // Gets the raycast hits associated with the passed in sets of base targets
-            //
-            // This is a bit of an unfortunate workaround, since the XRRayInteractor's internal tracker of the raycast hit data is
-            // private. As a result, we end up doing twice the number of raycast calls for the Gaze Interactor, making this a
-            // potential avenue for performance improvement in the future.
-            // In addition, the raycast hit results will be slightly different between the base class and the fuzzy gaze interactor.
-            // This should not be noticeable when running the application, but it's another reason why we need the raycast hit
-            // information from the underlying XRRayInteractor.
-            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
-            {
-                for (int targetPrecision = 0; targetPrecision <= precision; targetPrecision++)
-                {
-                    float castRadius = precisionCurve.Evaluate((float)targetPrecision / MaxPrecision) * sphereCastRadius;
-
-                    UpdateRaycastHits(targetPrecision, castRadius);
-                }
-
-                if (performAdditionalRaycast)
-                {
-                    UpdateRaycastHits(RaycastPrecision, 0.0f);
-                }
-
-                // Now associate these targets with their corresponding raycast hit where applicable
-                // The raycast hits are generated from the Fuzzy Gaze Interactor's own cache of raycast hits
-                // In the future, this will derive from the XRRayInteractor
-                baseTargetsRaycastHitResults.Clear();
-
-                for (int targetPrecision = 0; targetPrecision <= precision; targetPrecision++)
-                {
-                    UpdateHitResults(targetPrecision);
-                }
-
-                if (performAdditionalRaycast)
-                {
-                    UpdateHitResults(RaycastPrecision);
-                }
-
-                Sort(this, baseTargetsRaycastHitResults);
-            }
-
-            base.PreprocessInteractor(updatePhase);
-        }
-
 
         /// <summary>
         /// A workaround function for getting where the spherecast hit on the target
@@ -275,38 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 
         #endregion
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// This differs from the underlying XRRayInteractor implementation because the best valid target is
-        /// not always the closest one with the fuzzy gaze scenario. This makes the XRRayInteractor's optimization of
-        /// invalidating targets which are further from the user than another UI or invalid target (for example, an object
-        /// partially covered by a wall or UI element) not applicable for this scenario. Thus this implementation
-        /// doesn't call base.GetValidTargets at any point
-        /// </remarks>
-        public override void GetValidTargets(List<IXRInteractable> targets)
-        {
-            using (GetValidTargetsPerfMarker.Auto())
-            {
-                // Populate targets with the first valid interactable for fuzzy gaze targettings
-                targets.Clear();
-                foreach (GazeRaycastHitResult gazeRaycastHitResult in baseTargetsRaycastHitResults)
-                {
-                    IXRInteractable target = gazeRaycastHitResult.targetInteractable;
-                    RaycastHit raycastHit = gazeRaycastHitResult.raycastHit;
-                    if (IsHitValid(target, raycastHit))
-                    {
-                        // The precise hit result does not always correspond to a raycast from the gaze origin
-                        // along the gaze vector, since an object which is not hit by this raycast may
-                        // end up being the better fuzzy gaze target.
-                        preciseHitResult = InteractableRaycastHitMap[target];
-                        targets.Add(target);
-                        // only add the first valid target to the list of valid targets
-                        return;
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// Updates the hit results at the chosen precision level gazeRaycastHitResults for all colliders with IXRInteractable
@@ -398,6 +321,92 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return origin + direction * dotP;
         }
 
+        #endregion FuzzyGazeInteractor
+
+        #region XRBaseInteractor
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// This differs from the underlying XRRayInteractor implementation because the best valid target is
+        /// not always the closest one with the fuzzy gaze scenario. This makes the XRRayInteractor's optimization of
+        /// invalidating targets which are further from the user than another UI or invalid target (for example, an object
+        /// partially covered by a wall or UI element) not applicable for this scenario. Thus this implementation
+        /// doesn't call base.GetValidTargets at any point
+        /// </remarks>
+        public override void GetValidTargets(List<IXRInteractable> targets)
+        {
+            using (GetValidTargetsPerfMarker.Auto())
+            {
+                // Populate targets with the first valid interactable for fuzzy gaze targeting
+                targets.Clear();
+                foreach (GazeRaycastHitResult gazeRaycastHitResult in baseTargetsRaycastHitResults)
+                {
+                    IXRInteractable target = gazeRaycastHitResult.targetInteractable;
+                    RaycastHit raycastHit = gazeRaycastHitResult.raycastHit;
+                    if (IsHitValid(target, raycastHit))
+                    {
+                        // The precise hit result does not always correspond to a raycast from the gaze origin
+                        // along the gaze vector, since an object which is not hit by this raycast may
+                        // end up being the better fuzzy gaze target.
+                        preciseHitResult = InteractableRaycastHitMap[target];
+                        targets.Add(target);
+                        // only add the first valid target to the list of valid targets
+                        return;
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void PreprocessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
+        {
+            // Gets the raycast hits associated with the passed in sets of base targets
+            //
+            // This is a bit of an unfortunate workaround, since the XRRayInteractor's internal tracker of the raycast hit data is
+            // private. As a result, we end up doing twice the number of raycast calls for the Gaze Interactor, making this a
+            // potential avenue for performance improvement in the future.
+            // In addition, the raycast hit results will be slightly different between the base class and the fuzzy gaze interactor.
+            // This should not be noticeable when running the application, but it's another reason why we need the raycast hit
+            // information from the underlying XRRayInteractor.
+            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
+            {
+                for (int targetPrecision = 0; targetPrecision <= precision; targetPrecision++)
+                {
+                    float castRadius = precisionCurve.Evaluate((float)targetPrecision / MaxPrecision) * sphereCastRadius;
+
+                    UpdateRaycastHits(targetPrecision, castRadius);
+                }
+
+                if (performAdditionalRaycast)
+                {
+                    UpdateRaycastHits(RaycastPrecision, 0.0f);
+                }
+
+                // Now associate these targets with their corresponding raycast hit where applicable
+                // The raycast hits are generated from the Fuzzy Gaze Interactor's own cache of raycast hits
+                // In the future, this will derive from the XRRayInteractor
+                baseTargetsRaycastHitResults.Clear();
+
+                for (int targetPrecision = 0; targetPrecision <= precision; targetPrecision++)
+                {
+                    UpdateHitResults(targetPrecision);
+                }
+
+                if (performAdditionalRaycast)
+                {
+                    UpdateHitResults(RaycastPrecision);
+                }
+
+                Sort(this, baseTargetsRaycastHitResults);
+            }
+
+            base.PreprocessInteractor(updatePhase);
+        }
+
+        #endregion XRBaseInteractor
+
+        #region MonoBehaviour
+
 #if UNITY_EDITOR
         private const float RaycastGizmoScale = 0.07f;
 
@@ -470,5 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 #endif
+
+        #endregion MonoBehaviour
     }
 }

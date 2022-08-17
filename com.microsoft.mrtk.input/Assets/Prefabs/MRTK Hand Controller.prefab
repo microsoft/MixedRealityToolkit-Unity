@@ -675,9 +675,9 @@ MonoBehaviour:
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
-  touchVisuals: {fileID: 4299642553587339577}
   handNode: 4
   joint: 10
+  touchVisuals: {fileID: 4299642553587339577}
 --- !u!1 &4299642553989019656
 GameObject:
   m_ObjectHideFlags: 0
