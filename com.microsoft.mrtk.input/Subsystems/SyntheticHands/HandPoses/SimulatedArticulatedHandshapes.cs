@@ -12,9 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This stores the joint pose JSON data that defines various articulated hand poses for input simulation.
     /// The JSON data that defines each joint position and orientation is stored in strings to avoid file loading/targeting during runtime
     /// </summary>
-    public static class SimulatedArticulatedHandPoses
+    public static class SimulatedArticulatedHandshapes
     {
-        private static readonly Dictionary<HandshapeId, string> HandshapePoseJSONMapping = new Dictionary<HandshapeId, string>()
+        private static readonly Dictionary<HandshapeId, string> HandshapeJointPoseDataJSONMapping = new Dictionary<HandshapeId, string>()
         {
             { HandshapeId.Flat, ArticulatedHandPose_Flat},
             { HandshapeId.Grab, ArticulatedHandPose_Grab},
@@ -29,41 +29,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
             { HandshapeId.TeleportEnd, ArticulatedHandPose_TeleportEnd}
         };
 
-        private static Dictionary<HandshapeId, HandJointPose[]> handshapePoses;
+        private static Dictionary<HandshapeId, HandJointPose[]> HandshapeJointPoseData;
 
         /// <summary>
         /// Get pose data for a supported handshape.
         /// </summary>
-        public static void GetHandshapePose(HandshapeId handshape, out HandJointPose[] poseData)
+        public static void GetHandshapeJointPoseData(HandshapeId handshape, out HandJointPose[] poseData)
         {
-            if (handshapePoses == null)
+            if (HandshapeJointPoseData == null)
             {
-                LoadDefaultHandshapePoses();
+                LoadDefaultHandshapeJointPoseData();
             }
 
-            Debug.Assert(handshapePoses.ContainsKey(handshape));
+            Debug.Assert(HandshapeJointPoseData.ContainsKey(handshape));
 
-            handshapePoses.TryGetValue(handshape, out poseData);
+            HandshapeJointPoseData.TryGetValue(handshape, out poseData);
         }
 
         /// <summary>
         /// Set hand pose data for supported handshape. Useful to overwrite loaded defaults
         /// </summary>
-        public static void SetHandshapePose(HandshapeId key, HandJointPose[] poseData)
+        public static void SetHandshapeJointPoseData(HandshapeId key, HandJointPose[] poseData)
         {
-            handshapePoses[key] = poseData;
+            HandshapeJointPoseData[key] = poseData;
         }
 
         /// <summary>
         /// Load default hand poses for supported handshapes. Clears and overwrites original handshape poses
         /// </summary>
-        public static void LoadDefaultHandshapePoses()
+        public static void LoadDefaultHandshapeJointPoseData()
         {
-            handshapePoses = new Dictionary<HandshapeId, HandJointPose[]>();
+            HandshapeJointPoseData = new Dictionary<HandshapeId, HandJointPose[]>();
 
-            foreach (var mapping in HandshapePoseJSONMapping)
+            foreach (var mapping in HandshapeJointPoseDataJSONMapping)
             {
-                handshapePoses.Add(mapping.Key, HandsUtils.PoseFromJson(mapping.Value));
+                HandshapeJointPoseData.Add(mapping.Key, HandsUtils.PoseFromJson(mapping.Value));
             }
         }
 

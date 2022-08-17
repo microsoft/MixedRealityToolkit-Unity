@@ -24,6 +24,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         ConfigType = typeof(SyntheticHandsConfig))]
     public class SyntheticHandsSubsystem : HandsSubsystem
     {
+        private SynthesisProvider m_synthesisProvider;
+        private SynthesisProvider synthesisProvider
+        {
+            get
+            {
+                if (m_synthesisProvider == null || m_synthesisProvider != provider)
+                {
+                    m_synthesisProvider = provider as SynthesisProvider;
+                }
+                return m_synthesisProvider;
+            }
+        }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Register()
         {
@@ -90,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </returns>
         public HandshapeId GetNeutralHandshape(XRNode handNode)
         {
-            return (provider as SynthesisProvider).GetNeutralHandshape(handNode);
+            return synthesisProvider.GetNeutralHandshape(handNode);
         }
 
         /// <summary>
@@ -100,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handshapeId">The desired hand handshape.</param>
         public void SetNeutralHandshape(XRNode handNode, HandshapeId handshapeId)
         {
-            (provider as SynthesisProvider).SetNeutralHandshape(handNode, handshapeId);
+            synthesisProvider.SetNeutralHandshape(handNode, handshapeId);
         }
 
         /// <summary>
@@ -112,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </returns>
         public HandshapeId GetSelectionHandshape(XRNode handNode)
         {
-            return (provider as SynthesisProvider).GetSelectionHandshape(handNode);
+            return synthesisProvider.GetSelectionHandshape(handNode);
         }
 
         /// <summary>
@@ -122,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handshapeId">The desired hand handshape.</param>
         public void SetSelectionHandshape(XRNode handNode, HandshapeId handshapeId)
         {
-            (provider as SynthesisProvider).SetSelectionHandshape(handNode, handshapeId);
+            synthesisProvider.SetSelectionHandshape(handNode, handshapeId);
         }
 
         private class SyntheticHandContainer : HandDataContainer
@@ -354,8 +367,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 using (UpdatehandshapePerfMarker.Auto())
                 {
-                    SimulatedArticulatedHandPoses.GetHandshapePose(neutralHandshape, out HandJointPose[] baseData);
-                    SimulatedArticulatedHandPoses.GetHandshapePose(selectionHandshape, out HandJointPose[] pinchData);
+                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(neutralHandshape, out HandJointPose[] baseData);
+                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(selectionHandshape, out HandJointPose[] pinchData);
 
                     selectAmount = selectAction.action.ReadValue<float>();
 
