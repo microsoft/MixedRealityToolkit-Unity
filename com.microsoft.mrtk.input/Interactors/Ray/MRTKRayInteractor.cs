@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private float refDistance = 0;
 
-        Pose initialLocalAttach = Pose.identity;
+        private Pose initialLocalAttach = Pose.identity;
 
         #endregion MRTKRayInteractor
 
