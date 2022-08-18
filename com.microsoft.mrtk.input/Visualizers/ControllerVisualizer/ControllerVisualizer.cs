@@ -146,7 +146,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GameObject PlatformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
                     if (PlatformLoadedGameObject != null)
                     {
-                        ControllerGameObject = PlatformLoadedGameObject;
+                        // Platform models are "rotated" 180 degrees due to the forward vector for a controller pointing towards the user.
+                        // We need to rotate these models in order to have them pointing in the correct direction on device
+                        GameObject rotationAdjustedGameObject = new GameObject(PlatformLoadedGameObject.name + " Root");
+                        PlatformLoadedGameObject.transform.parent = rotationAdjustedGameObject.transform;
+                        PlatformLoadedGameObject.transform.SetPositionAndRotation(rotationAdjustedGameObject.transform.position, rotationAdjustedGameObject.transform.rotation * Quaternion.Euler(0, 180, 0));
+                        ControllerGameObject = rotationAdjustedGameObject;
                     }
                 }
 
@@ -160,8 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (ControllerGameObject != null)
             {
                 ControllerGameObject.transform.parent = transform;
-                ControllerGameObject.transform.position = transform.position;
-                ControllerGameObject.transform.rotation = transform.rotation;
+                ControllerGameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
             }
         }
 
