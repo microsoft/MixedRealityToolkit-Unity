@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("MRTK/Input/Gaze Interactor")]
     public class GazeInteractor : XRRayInteractor, IMRTKInteractorVisuals, IGazeInteractor
     {
+        #region IMRTKInteractorVisuals
 
         // No gaze visuals/reticles/rays/etc yet.
         /// <inheritdoc />
@@ -20,5 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // No gaze visuals/reticles/rays/etc yet.
         /// <inheritdoc />
         public virtual void UpdateVisuals(XRBaseInteractable interactable) { }
+
+        #endregion IMRTKInteractorVisuals
     }
 }

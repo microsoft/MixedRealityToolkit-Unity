@@ -55,8 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // TODO: This uses the attachTransform ONLY, which can possibly be
             // unstable/imprecise (see GrabInteractor, etc.) Old version used to use the interactor
-            // transform in the case where there was only one interactor, and the attachtransform
-            // when there were 2+. The interactor should stabilize its attachtransform
+            // transform in the case where there was only one interactor, and the attachTransform
+            // when there were 2+. The interactor should stabilize its attachTransform
             // to get a similar effect. Possibly, we should stabilize grabs on the thumb, or some
             // other technique.
 
