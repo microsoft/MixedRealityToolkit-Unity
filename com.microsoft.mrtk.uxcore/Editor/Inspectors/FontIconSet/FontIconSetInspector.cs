@@ -140,6 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                             iconToRemove = iconEntry.Name;
                                         }
                                         Rect textureRect = GUILayoutUtility.GetLastRect();
+                                        textureRect.width = glyphDrawSize;
+                                        textureRect.height = glyphDrawSize;
                                         EditorDrawTMPGlyph(textureRect, iconEntry.UnicodeValue, fontAsset);
 
                                         string currentName = iconEntry.Name;
@@ -199,6 +201,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorUtility.SetDirty(target);
                 }
                 Rect textureRect = GUILayoutUtility.GetLastRect();
+                textureRect.width = glyphDrawSize;
+                textureRect.height = glyphDrawSize;
                 EditorDrawTMPGlyph(textureRect, fontAsset, fontAsset.characterTable[i]);
                 column++;
             }
@@ -280,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Draws a Text Mesh Pro glyph in the supplied rect. Used for inspectors.
         /// </summary>
-        public static void EditorDrawTMPGlyph(Rect position, TMP_FontAsset fontAsset, TMP_Character character, bool selected = false, Material fontRenderMaterial = null)
+        public static void EditorDrawTMPGlyph(Rect glyphRect, TMP_FontAsset fontAsset, TMP_Character character, bool selected = false, Material fontRenderMaterial = null)
         {
             if (Event.current.type == EventType.Repaint)
             {
@@ -319,20 +323,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 glyphMaterial.SetColor("_Color", Color.white);
                             }
 
-                            // Draw glyph
-                            Rect glyphDrawPosition = new Rect(
-                                position.x,
-                                position.y,
-                                glyphDrawSize,
-                                glyphDrawSize);
-
                             int glyphOriginX = glyph.glyphRect.x;
                             int glyphOriginY = glyph.glyphRect.y;
                             int glyphWidth = glyph.glyphRect.width;
                             int glyphHeight = glyph.glyphRect.height;
 
                             float normalizedHeight = fontAsset.faceInfo.ascentLine - fontAsset.faceInfo.descentLine;
-                            float scale = Mathf.Min(glyphDrawPosition.width, glyphDrawPosition.height) / normalizedHeight * iconSizeMultiplier;
+                            float scale = Mathf.Min(glyphRect.width, glyphRect.height) / normalizedHeight * iconSizeMultiplier;
 
                             // Compute the normalized texture coordinates
                             Rect texCoords = new Rect((float)glyphOriginX / atlasTexture.width, (float)glyphOriginY / atlasTexture.height, (float)glyphWidth / atlasTexture.width, (float)glyphHeight / atlasTexture.height);
@@ -340,13 +337,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             glyphWidth = (int)Mathf.Min(glyphDrawSize, glyphWidth * scale);
                             glyphHeight = (int)Mathf.Min(glyphDrawSize, glyphHeight * scale);
 
-                            glyphDrawPosition.x += (glyphDrawPosition.width - glyphWidth) / 2;
-                            glyphDrawPosition.y += (glyphDrawPosition.height - glyphHeight) / 2;
-                            glyphDrawPosition.width = glyphWidth;
-                            glyphDrawPosition.height = glyphHeight;
+                            glyphRect.x += (glyphRect.width - glyphWidth) / 2;
+                            glyphRect.y += (glyphRect.height - glyphHeight) / 2;
+                            glyphRect.width = glyphWidth;
+                            glyphRect.height = glyphHeight;
 
                             // Could switch to using the default material of the font asset which would require passing scale to the shader.
-                            Graphics.DrawTexture(glyphDrawPosition, atlasTexture, texCoords, 0, 0, 0, 0, new Color(1f, 1f, 1f), glyphMaterial);
+                            Graphics.DrawTexture(glyphRect, atlasTexture, texCoords, 0, 0, 0, 0, new Color(1f, 1f, 1f), glyphMaterial);
                         }
                     }
                 }
