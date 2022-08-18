@@ -338,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <remarks>
         /// We may/will be implementing true directional input on our interactables instead of this.
-        /// This implements things like slider input by literally moving the attachtransform of the
+        /// This implements things like slider input by literally moving the attachTransform of the
         /// proxy interactor. In the future, things like Sliders may implement some kind of interface
         /// that will enable directional/discrete input.
         /// </remarks>

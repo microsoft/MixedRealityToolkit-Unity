@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
-using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
