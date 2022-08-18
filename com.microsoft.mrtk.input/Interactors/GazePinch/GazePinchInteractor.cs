@@ -38,7 +38,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The worldspace pose of the hand pinching point.
         /// </summary>
-        public Pose PinchPose => handController.PinchSelectPose;
+        public Pose PinchPose => pinchPoseSource.TryGetPose(out Pose pinchPose) ? pinchPose : Pose.identity;
+
+        [SerializeReference]
+        [InterfaceSelector]
+        InputActionPoseSource rayPoseSource;
+
+        [SerializeReference]
+        [InterfaceSelector]
+        HandJointPoseSource palmPoseSource;
+
+        [SerializeReference]
+        [InterfaceSelector]
+        private PinchPoseSource pinchPoseSource;
 
         [SerializeField]
         [Tooltip("The interactor we're using to query potential gaze pinch targets")]
@@ -199,17 +211,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
-            if (xrController is ActionBasedController abController &&
-                abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
+            if (rayPoseSource.TryGetPose(out Pose rayPose))
             {
-                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
+                attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
             }
             else
             {
-                // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
-                if (HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
+                if (palmPoseSource.TryGetPose(out Pose palmPose))
                 {
-                    rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
+                    attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
                 }
             }
 

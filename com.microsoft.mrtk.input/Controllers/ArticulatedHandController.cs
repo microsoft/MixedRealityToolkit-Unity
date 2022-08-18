@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 handControllerState.PinchSelectReady = isPinchReady;
 
-                if (isPinching && handsAggregator.TryGetPinchingPoint(handNode, out HandJointPose pinchPose))
+                if (isPinching && handsAggregator.TryGetPinchPose(handNode, out HandJointPose pinchPose))
                 {
                     handControllerState.PinchPose.position = pinchPose.Position;
                     handControllerState.PinchPose.rotation = pinchPose.Rotation;

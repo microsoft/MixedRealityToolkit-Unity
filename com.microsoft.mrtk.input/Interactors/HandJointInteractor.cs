@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// at which the interaction occurs. This would be the tip of the index finger
         /// for a poke interactor, or some other computed position from other data sources.
         /// </summary>
-        protected abstract bool TryGetInteractionPoint(out HandJointPose jointPose);
+        protected abstract bool TryGetInteractionPoint(out Pose jointPose);
 
         #endregion HandJointInteractor
 
@@ -152,10 +152,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // Obtain near interaction point, and set our interactor's
                     // position/rotation to the interaction point's pose.
-                    interactionPointTracked = TryGetInteractionPoint(out HandJointPose interactionPoint);
+                    interactionPointTracked = TryGetInteractionPoint(out Pose interactionPose);
                     if (interactionPointTracked)
                     {
-                        attachTransform.SetPositionAndRotation(interactionPoint.Position, interactionPoint.Rotation);
+                        attachTransform.SetPositionAndRotation(interactionPose.position, interactionPose.rotation);
                     }
                     else
                     {

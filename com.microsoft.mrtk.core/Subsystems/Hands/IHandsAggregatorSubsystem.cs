@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// The playspace-local pose of the grab/pinch location. This is typically
         /// halfway between the thumb tip and the index tip.
         /// </summary>
-        bool TryGetPinchingPoint(XRNode hand, out HandJointPose jointPose);
+        bool TryGetPinchPose(XRNode hand, out HandJointPose jointPose);
 
         /// <summary>
         /// How pinched the specific hand is.

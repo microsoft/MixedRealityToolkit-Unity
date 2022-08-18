@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     internal class FollowJoint : MonoBehaviour
     {
         [SerializeField]
+        private HandJointPoseSource jointPoseSource;
+
+        [SerializeField]
         [Tooltip("The hand on which to track the joint.")]
         private Handedness hand;
 
@@ -55,10 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void Update()
         {
-            XRNode? node = Hand.ToXRNode();
-            if (node.HasValue && HandsAggregator != null && HandsAggregator.TryGetJoint(joint, node.Value, out var jointPose))
+            if (jointPoseSource.TryGetPose(out Pose jointPose))
             {
-                transform.SetPositionAndRotation(jointPose.Position, jointPose.Rotation);
+                transform.SetPositionAndRotation(jointPose.position, jointPose.rotation);
             }
             else
             {

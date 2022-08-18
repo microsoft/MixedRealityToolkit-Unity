@@ -140,6 +140,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        [SerializeReference]
+        [InterfaceSelector]
+        IPoseSource rayPoseSource;
+
+        [SerializeReference]
+        [InterfaceSelector]
+        HandJointPoseSource palmPoseSource;
+
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
 
@@ -163,19 +171,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         isRelaxedBeforeSelect = false;
                     }
 
-                    if (xrController is ActionBasedController abController &&
-                            abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
+                    if (rayPoseSource.TryGetPose(out Pose rayPose))
                     {
-                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
+                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
                     }
                     else
                     {
-                        // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
-                        if (HandsAggregator != null &&
-                            xrController is ArticulatedHandController handController &&
-                            HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
+                        if (palmPoseSource.TryGetPose(out Pose palmPose))
                         {
-                            attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
+                            attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
                         }
                     }
 

@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <inheritdoc/>
-            public override bool TryGetPinchingPoint(XRNode handNode, out HandJointPose jointPose)
+            public override bool TryGetPinchPose(XRNode handNode, out HandJointPose jointPose)
             {
                 // GetJoint will reuse existing joint data if the hand was already queried this frame.
                 bool gotData = true;

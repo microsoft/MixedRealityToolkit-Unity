@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             var hands = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
 
-            bool gotJoint = hands.TryGetPinchingPoint(XRNode.RightHand, out HandJointPose jointPose);
+            bool gotJoint = hands.TryGetPinchPose(XRNode.RightHand, out HandJointPose jointPose);
 
             Assert.IsTrue(interactable.IsGrabHovered, "Interactable wasn't grab hovered!");
 
