@@ -21,6 +21,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.AnimationEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 7400000, guid: f426d8e7127f95b438ea2c887cbf063d, type: 2}
+    - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].name
+      value: Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].weightMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].playbackMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538676005348672636, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].transitionDuration
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3597673138419739313, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}

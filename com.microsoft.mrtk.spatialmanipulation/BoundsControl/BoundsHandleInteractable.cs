@@ -150,10 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private float MaxComponent(Vector3 v)
         {
-            Vector3 abs = new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
-            if (abs.x > abs.y && abs.x > abs.z) { return v.x; }
-            else if (abs.y > abs.x && abs.y > abs.z) { return v.y; }
-            else return v.z;
+            return Mathf.Max(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
         }
 
         /// <inheritdoc />

@@ -4,7 +4,7 @@
 using System.Collections;
 using UnityEngine;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
     /// </summary>
     public class TestHand : TestController
     {
-        private GestureId gestureId = GestureId.Open;
+        private HandshapeId handshapeId = HandshapeId.Open;
 
         public TestHand(Handedness handedness) : base(handedness) { }
 
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <inheritdoc />
         public override IEnumerator MoveTo(Vector3 newPosition, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
-            yield return InputTestUtilities.MoveHandTo(newPosition, gestureId, handedness, numSteps);
+            yield return InputTestUtilities.MoveHandTo(newPosition, handshapeId, handedness, numSteps);
             if (waitForFixedUpdate)
             {
                 yield return new WaitForFixedUpdate();
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <inheritdoc />
         public override IEnumerator RotateTo(Quaternion newRotation, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
-            yield return InputTestUtilities.RotateHandTo(newRotation, gestureId, handedness, numSteps);
+            yield return InputTestUtilities.RotateHandTo(newRotation, handshapeId, handedness, numSteps);
             if (waitForFixedUpdate)
             {
                 yield return new WaitForFixedUpdate();
@@ -81,14 +81,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Changes the hand's pose to the given gesture.  Does not animate the hand between the current pose and new pose.
+        /// Changes the hand's pose to the given handshape.  Does not animate the hand between the current pose and new pose.
         /// </summary>
-        /// <param name="newGestureId">The new hand pose</param>
+        /// <param name="newhandshapeId">The new hand pose</param>
         /// <param name="waitForFixedUpdate">If true, waits for a fixed update after moving to the new pose.</param>
-        public IEnumerator SetGesture(GestureId newGestureId, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
+        public IEnumerator SetHandshape(HandshapeId newhandshapeId, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
-            gestureId = newGestureId;
-            yield return InputTestUtilities.SetHandGesture(gestureId, handedness, numSteps);
+            handshapeId = newhandshapeId;
+            yield return InputTestUtilities.SetHandshape(handshapeId, handedness, numSteps);
             if (waitForFixedUpdate)
             {
                 yield return new WaitForFixedUpdate();
@@ -100,9 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// </summary>
         public override IEnumerator Click()
         {
-            yield return SetGesture(GestureId.Pinch);
+            yield return SetHandshape(HandshapeId.Pinch);
             yield return null;
-            yield return SetGesture(GestureId.Open);
+            yield return SetHandshape(HandshapeId.Open);
             yield return null;
         }
     }
