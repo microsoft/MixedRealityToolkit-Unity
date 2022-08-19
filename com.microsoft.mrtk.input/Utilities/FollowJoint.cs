@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -22,37 +23,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private HandJointPoseSource jointPoseSource;
 
         [SerializeField]
-        [Tooltip("The hand on which to track the joint.")]
+        [HideInInspector]
+        // A temporary variable used to migrate instnaces of FollowJoint to use the jointPoseSource class as the source of truth
+        // rather than its own separately serialized values.
+        // TODO: Remove this after some time to ensure users have successfully migrated.
+        private bool migratedSuccessfully = false;
+
+
+        [SerializeField]
+        [HideInInspector]
         private Handedness hand;
 
         /// <summary>
         /// The hand on which to track the joint.
         /// </summary>
-        protected Handedness Hand { get => hand; set => hand = value; }
+        [Obsolete("Please change the Hand value on the jointPoseSource instead")]
+        protected Handedness Hand { get => jointPoseSource.Hand; set => jointPoseSource.Hand = value; }
 
         [SerializeField]
-        [Tooltip("The specific joint to track.")]
+        [HideInInspector]
         private TrackedHandJoint joint;
 
         /// <summary>
         /// The specific joint to track.
         /// </summary>
-        protected TrackedHandJoint Joint { get => joint; set => joint = value; }
-
-        private HandsAggregatorSubsystem handsAggregator;
+        [Obsolete("Please change the Joint value on the jointPoseSource instead")]
+        protected TrackedHandJoint Joint { get => jointPoseSource.Joint; set => jointPoseSource.Joint = value; }
 
         /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
+        /// Using OnValidate to ensure that instances of FollowJoint are migrated to the new HandJointPoseSource
+        /// Doesn't work perfectly due to complications with prefab variants :(
+        ///
+        /// TODO: Remove this after some time to ensure users have successfully migrated.
         /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator
+        private void OnValidate()
         {
-            get
+            if (!migratedSuccessfully)
             {
-                if (handsAggregator == null)
-                {
-                    handsAggregator = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
-                }
-                return handsAggregator;
+                jointPoseSource.Hand = hand;
+                jointPoseSource.Joint = joint;
+                migratedSuccessfully = true;
             }
         }
 
