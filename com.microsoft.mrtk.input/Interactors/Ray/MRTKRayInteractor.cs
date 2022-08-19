@@ -143,12 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeReference]
         [InterfaceSelector]
         [Tooltip("The pose source representing the ray this interactor uses for rotation")]
-        private IPoseSource rayPoseSource;
+        protected IPoseSource rayPoseSource;
 
         [SerializeReference]
         [InterfaceSelector]
         [Tooltip("A fallback pose source representing a palm this interactor uses for rotation")]
-        private IPoseSource fallbackPalmPoseSource;
+        protected IPoseSource fallbackPalmPoseSource;
 
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
