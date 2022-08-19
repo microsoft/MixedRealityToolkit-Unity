@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit
     public static class MRTKProjectValidation
     {
         private const string XRProjectValidationSettingsPath = "Project/XR Plug-in Management/Project Validation";
-        private const string DefaultMRTKProfilePath = "Packages/com.microsoft.mrtk.core/Configuration/Default Profiles/MRTKProfile.asset";
+        private const string DefaultMRTKProfileGuid = "c677e5c4eb85b7849a8da406775c299d";
         private static readonly BuildTargetGroup[] buildTargetGroups = ((BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup))).Distinct().ToArray();
         private static readonly Dictionary<BuildTargetGroup, List<BuildValidationRule>> validationRulesDictionary = new Dictionary<BuildTargetGroup, List<BuildValidationRule>>();
 
@@ -92,7 +92,8 @@ namespace Microsoft.MixedReality.Toolkit
                 Category = "MRTK3",
                 Message = $"MRTK3 profile may need to be assigned for the {buildTargetGroup} build target.",
                 CheckPredicate = () => MRTKSettings.ProfileForBuildTarget(buildTargetGroup) != null,
-                FixIt = () => MRTKSettings.GetOrCreateSettings().SetProfileForBuildTarget(buildTargetGroup, AssetDatabase.LoadAssetAtPath<MRTKProfile>(DefaultMRTKProfilePath)),
+                FixIt = () => MRTKSettings.GetOrCreateSettings().SetProfileForBuildTarget(buildTargetGroup,
+                AssetDatabase.LoadAssetAtPath<MRTKProfile>(AssetDatabase.GUIDToAssetPath(DefaultMRTKProfileGuid))),
                 FixItMessage = $"Assign the default MRTK3 profile for the {buildTargetGroup} build target",
                 Error = false,
                 HelpLink = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/mrtk3-overview/setup#4-configure-mrtk-profile-after-import"
