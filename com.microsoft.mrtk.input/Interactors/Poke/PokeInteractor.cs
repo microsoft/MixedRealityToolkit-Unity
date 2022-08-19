@@ -34,7 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual bool TryGetPokePose(out Pose pose)
         {
-            return pokePoseSource.TryGetPose(out pose);
+            pose = Pose.identity;
+            return pokePoseSource != null && pokePoseSource.TryGetPose(out pose);
         }
 
         #endregion PokeInteractor

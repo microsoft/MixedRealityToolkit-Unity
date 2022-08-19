@@ -173,13 +173,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         isRelaxedBeforeSelect = false;
                     }
 
-                    if (rayPoseSource.TryGetPose(out Pose rayPose))
+                    if (rayPoseSource != null && rayPoseSource.TryGetPose(out Pose rayPose))
                     {
                         attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
                     }
                     else
                     {
-                        if (fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
+                        if (fallbackPalmPoseSource != null && fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
                         {
                             attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
                         }

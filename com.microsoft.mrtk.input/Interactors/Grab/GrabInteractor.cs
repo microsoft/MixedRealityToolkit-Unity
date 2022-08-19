@@ -24,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected override bool TryGetInteractionPoint(out Pose pose)
         {
-            return pinchPoseSource.TryGetPose(out pose);
+            pose = Pose.identity;
+            return pinchPoseSource != null && pinchPoseSource.TryGetPose(out pose);
         }
     }
 }

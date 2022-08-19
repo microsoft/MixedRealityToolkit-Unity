@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The worldspace pose of the hand pinching point.
         /// </summary>
-        public Pose PinchPose => pinchPoseSource.TryGetPose(out Pose pinchPose) ? pinchPose : Pose.identity;
+        public Pose PinchPose => (pinchPoseSource != null && pinchPoseSource.TryGetPose(out Pose pinchPose)) ? pinchPose : Pose.identity;
 
         [SerializeReference]
         [InterfaceSelector]
@@ -214,13 +214,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
-            if (rayPoseSource.TryGetPose(out Pose rayPose))
+            if (rayPoseSource != null && rayPoseSource.TryGetPose(out Pose rayPose))
             {
                 rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
             }
             else
             {
-                if (fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
+                if (fallbackPalmPoseSource != null && fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
                 {
                     rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
                 }
