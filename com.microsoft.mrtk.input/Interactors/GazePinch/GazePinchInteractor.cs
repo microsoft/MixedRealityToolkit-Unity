@@ -42,15 +42,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
-        InputActionPoseSource rayPoseSource;
+        private IPoseSource rayPoseSource;
 
         [SerializeReference]
         [InterfaceSelector]
-        HandJointPoseSource palmPoseSource;
+        private IPoseSource palmPoseSource;
 
         [SerializeReference]
         [InterfaceSelector]
-        private PinchPoseSource pinchPoseSource;
+        private IPoseSource pinchPoseSource;
 
         [SerializeField]
         [Tooltip("The interactor we're using to query potential gaze pinch targets")]

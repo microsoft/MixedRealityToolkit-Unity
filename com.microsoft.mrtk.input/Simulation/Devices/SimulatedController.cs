@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             get
             {
-                if (HandSubsystem.TryGetPinchPose(Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
+                if (HandSubsystem.TryGetPinchingPoint(Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
                                                       out HandJointPose grabPose))
                 {
                     return grabPose.Position;

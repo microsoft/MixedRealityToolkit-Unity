@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             public abstract bool TryGetHandCenter(XRNode hand, out HandJointPose jointPose);
 
             /// <inheritdoc/>
-            public abstract bool TryGetPinchPose(XRNode hand, out HandJointPose jointPose);
+            public abstract bool TryGetPinchingPoint(XRNode hand, out HandJointPose jointPose);
 
             /// <inheritdoc/>
             public abstract bool TryGetPinchProgress(XRNode hand, out bool isReadyToPinch, out bool isPinching, out float pinchAmount);
@@ -74,8 +74,8 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             => provider.TryGetHandCenter(hand, out jointPose);
 
         /// <inheritdoc/>
-        public bool TryGetPinchPose(XRNode hand, out HandJointPose jointPose)
-            => provider.TryGetPinchPose(hand, out jointPose);
+        public bool TryGetPinchingPoint(XRNode hand, out HandJointPose jointPose)
+            => provider.TryGetPinchingPoint(hand, out jointPose);
 
         /// <inheritdoc/>
         public bool TryGetPinchProgress(XRNode hand, out bool isReadyToPinch, out bool isPinching, out float pinchAmount)
