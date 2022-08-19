@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
-        private HandJointPoseSource jointPoseSource;
+        private IPoseSource jointPoseSource;
 
         /// <summary>
         /// Called during ProcessInteractor to obtain the poking pose. AttachTransform is set to this pose.

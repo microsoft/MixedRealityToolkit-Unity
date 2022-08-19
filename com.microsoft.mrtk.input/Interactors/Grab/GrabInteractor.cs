@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         [SerializeReference]
         [InterfaceSelector]
-        private PinchPoseSource pinchPoseSource;
+        private IPoseSource pinchPoseSource;
 
         /// <summary>
         /// Get near interaction point from hands aggregator.
