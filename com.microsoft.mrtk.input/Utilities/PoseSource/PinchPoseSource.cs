@@ -9,6 +9,9 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [Serializable]
+    /// <summary>
+    /// A pose source which gets the pinch pose of a specific hand
+    /// </summary>
     public class PinchPoseSource : IPoseSource
     {
         private HandsAggregatorSubsystem handsAggregator;
@@ -32,6 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private HandJointPose cachedPinchPose;
 
+        /// <summary>
+        /// Tries to get the pinch pose of a specific hand
+        /// </summary>
         public bool TryGetPose(out Pose pose)
         {
             XRNode? handNode = hand.ToXRNode();

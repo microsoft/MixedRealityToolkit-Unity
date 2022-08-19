@@ -6,8 +6,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// This interface follows the command pattern. Classes which implement IPoseSource contain a function which retrieves a Unity Pose (position and rotation)
-    /// through some means. This can be the pose of a joint, the pose of an input action, or any other means which is appropriate
+    /// Classes which implement IPoseSource contain a function which retrieves a Unity Pose (position and rotation)
+    /// through some means. This can be the pose of a joint, the pose of an input action, or any other means which is appropriate.
+    /// Designed to follow the Command Pattern https://en.wikipedia.org/wiki/Command_pattern
     /// </summary>
     public interface IPoseSource
     {

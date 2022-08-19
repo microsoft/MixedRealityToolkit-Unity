@@ -9,6 +9,10 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [Serializable]
+
+    /// <summary>
+    /// A pose source which gets the pose composed of a tracked position and rotation input action
+    /// </summary>
     public class InputActionPoseSource : IPoseSource
     {
         [SerializeField]
@@ -20,6 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         InputActionProperty rotationActionProperty;
 
+        /// <summary>
+        /// Tries to get the pose composed of the provided input action properties when the position and rotation are tracked
+        /// </summary>
         public bool TryGetPose(out Pose pose)
         {
             InputAction trackingStateAction = trackingStateActionProperty.action;
