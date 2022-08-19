@@ -162,14 +162,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // Tick the hand ray generator function. Uses index knuckle for position.
-                handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(knuckle.Position),
-                               PlayspaceUtilities.ReferenceTransform.TransformVector(-palm.Up),
-                               CameraCache.Main.transform,
-                               HandNode.ToHandedness());
+                handRay.Update(knuckle.Position, -palm.Up, CameraCache.Main.transform, HandNode.ToHandedness());
                 
                 Ray ray = handRay.Ray;
-                controllerState.position = ray.origin;
-                controllerState.rotation = Quaternion.LookRotation(ray.direction, PlayspaceUtilities.ReferenceTransform.TransformVector(palm.Up));
+                
+                // controllerState is in rig-local space, our ray generator works in worldspace!
+                controllerState.position = PlayspaceUtilities.ReferenceTransform.InverseTransformPoint(ray.origin);
+                controllerState.rotation = Quaternion.LookRotation(PlayspaceUtilities.ReferenceTransform.InverseTransformVector(ray.direction),
+                                                                   PlayspaceUtilities.ReferenceTransform.InverseTransformVector(palm.Up));
 
                 // Polyfill the tracking state, too.
                 controllerState.inputTrackingState = InputTrackingState.Position | InputTrackingState.Rotation;
