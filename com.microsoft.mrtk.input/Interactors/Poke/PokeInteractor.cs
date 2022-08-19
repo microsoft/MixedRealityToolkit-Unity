@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
-        [Tooltip("The pose source representing the hand joint this interactor tracks")]
-        private IPoseSource jointPoseSource;
+        [Tooltip("The pose source representing the poke pose")]
+        private IPoseSource pokePoseSource;
 
         /// <summary>
         /// Called during ProcessInteractor to obtain the poking pose. AttachTransform is set to this pose.
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual bool TryGetPokePose(out Pose pose)
         {
-            return jointPoseSource.TryGetPose(out pose);
+            return pokePoseSource.TryGetPose(out pose);
         }
 
         #endregion PokeInteractor
