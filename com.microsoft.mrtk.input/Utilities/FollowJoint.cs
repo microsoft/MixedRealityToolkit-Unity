@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     internal class FollowJoint : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("The pose source representing the hand joint this interactor tracks")]
         private HandJointPoseSource jointPoseSource;
 
         [SerializeField]

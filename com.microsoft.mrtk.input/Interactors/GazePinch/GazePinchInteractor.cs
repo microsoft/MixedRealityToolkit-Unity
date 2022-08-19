@@ -42,14 +42,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
+        [Tooltip("The pose source representing the ray this interactor uses for rotation")]
         private IPoseSource rayPoseSource;
 
         [SerializeReference]
         [InterfaceSelector]
-        private IPoseSource palmPoseSource;
+        [Tooltip("A fallback pose source representing a palm this interactor uses for rotation")]
+        private IPoseSource fallbackPalmPoseSource;
 
         [SerializeReference]
         [InterfaceSelector]
+        [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
         private IPoseSource pinchPoseSource;
 
         [SerializeField]
@@ -217,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                if (palmPoseSource.TryGetPose(out Pose palmPose))
+                if (fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
                 {
                     attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
                 }

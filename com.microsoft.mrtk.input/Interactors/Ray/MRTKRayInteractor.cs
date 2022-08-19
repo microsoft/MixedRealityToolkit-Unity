@@ -142,11 +142,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
-        IPoseSource rayPoseSource;
+        [Tooltip("The pose source representing the ray this interactor uses for rotation")]
+        private IPoseSource rayPoseSource;
 
         [SerializeReference]
         [InterfaceSelector]
-        IPoseSource palmPoseSource;
+        [Tooltip("A fallback pose source representing a palm this interactor uses for rotation")]
+        private IPoseSource fallbackPalmPoseSource;
 
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
@@ -177,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        if (palmPoseSource.TryGetPose(out Pose palmPose))
+                        if (fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
                         {
                             attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
                         }

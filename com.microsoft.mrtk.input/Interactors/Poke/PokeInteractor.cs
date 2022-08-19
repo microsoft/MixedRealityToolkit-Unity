@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
+        [Tooltip("The pose source representing the hand joint this interactor tracks")]
         private IPoseSource jointPoseSource;
 
         /// <summary>
