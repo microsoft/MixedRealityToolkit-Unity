@@ -43,7 +43,7 @@ If you're an experienced Mixed Reality or MRTK developer, check the links in the
 
 | Branch | CI Status | Docs Status |
 |---|---|---|
-| `main` |[![CI Status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_CI?branchName=main)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=15)|[![Docs Status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_docs?branchName=main)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=7)
+| `main` |[![CI Status](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_apis/build/status/public/mrtk_CI?branchName=main)](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/latest?definitionId=15)|[![Docs Validation (MRTK2)](https://github.com/microsoft/MixedRealityToolkit-Unity/actions/workflows/docs_mrtk2.yaml/badge.svg?branch=main)](https://github.com/microsoft/MixedRealityToolkit-Unity/actions/workflows/docs_mrtk2.yaml)
 
 # Required software
 
