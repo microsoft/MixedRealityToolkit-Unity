@@ -109,10 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private List<GameObject> controllers;
 
         /// <inheritdoc />
-        public List<GameObject> GetControllers()
-        {
-            return controllers;
-        }
+        public List<GameObject> GetControllers() => controllers;
 
         /// <inheritdoc />
         public bool IsModeDetected()

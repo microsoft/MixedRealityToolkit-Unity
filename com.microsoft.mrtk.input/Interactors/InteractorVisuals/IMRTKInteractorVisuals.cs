@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void SetVisuals(bool visible);
 
         /// <summary>
-        /// Used to update the visuals based on the interactable it is engaging with
+        /// Used to update the visuals based on the interactable it is engaging with.
         /// </summary>
         void UpdateVisuals(XRBaseInteractable interactable);
     }

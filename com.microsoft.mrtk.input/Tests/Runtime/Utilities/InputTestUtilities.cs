@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
@@ -135,13 +135,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // See comments for UseSlowTestController for why this is reset to false on each test case.
             UseSlowTestController = false;
 
-            leftController = new SimulatedController(
-                Handedness.Left, SimulatedHandPose.Neutral, Vector3.zero);
-            rightController = new SimulatedController(
-                Handedness.Right, SimulatedHandPose.Neutral, Vector3.zero);
-
             leftControllerSettings = new ControllerSimulationSettings();
             rightControllerSettings = new ControllerSimulationSettings();
+
+            leftController = new SimulatedController(
+                Handedness.Left, leftControllerSettings, Vector3.zero);
+            rightController = new SimulatedController(
+                Handedness.Right, rightControllerSettings, Vector3.zero);
 
             leftControls = new ControllerControls();
             rightControls = new ControllerControls();
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
         /// <summary>
         /// Moves the hand from startPos to endPos, rotates the hand from startRot to endRot, and lerps the pinchedness
-        /// based on the provided gestureId.
+        /// based on the provided handshapeId.
         /// </summary>
         /// <remarks>
         /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
@@ -193,11 +193,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public static IEnumerator UpdateHand(
             Vector3 startPos, Vector3 endPos,
             Quaternion startRot, Quaternion endRot,
-            GestureId gestureId, Handedness handedness,
+            HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
-            bool isPinching = gestureId == GestureId.Grab || gestureId == GestureId.Pinch || gestureId == GestureId.PinchSteadyWrist;
+            bool isPinching = handshapeId == HandshapeId.Grab || handshapeId == HandshapeId.Pinch || handshapeId == HandshapeId.PinchSteadyWrist;
 
             numSteps = CalculateNumSteps(numSteps);
 
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Moves the hand from startPos to endPos and lerps the pinchedness based on the provided gestureId.
+        /// Moves the hand from startPos to endPos and lerps the pinchedness based on the provided handshapeId.
         /// </summary>
         /// <remarks>
         /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
@@ -245,16 +245,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// </remarks>
         public static IEnumerator MoveHand(
             Vector3 startPos, Vector3 endPos,
-            GestureId gestureId, Handedness handedness,
+            HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             Quaternion rot = controller.WorldRotation;
-            return UpdateHand(startPos, endPos, rot, rot, gestureId, handedness, numSteps);
+            return UpdateHand(startPos, endPos, rot, rot, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
-        /// Moves the hand to newPos from its current position and lerps the pinchedness based on the provided gestureId.
+        /// Moves the hand to newPos from its current position and lerps the pinchedness based on the provided handshapeId.
         /// </summary>
         /// <remarks>
         /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
@@ -262,16 +262,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// time constant, which is a requirement for default parameter values.</para>
         /// </remarks>
         public static IEnumerator MoveHandTo(
-            Vector3 newPos, GestureId gestureId, Handedness handedness,
+            Vector3 newPos, HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             Vector3 pos = GetHandPose(handedness).position;
 
-            return MoveHand(pos, newPos, gestureId, handedness, numSteps);
+            return MoveHand(pos, newPos, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
-        /// Rotates the hand from startRot to endRot and lerps the pinchedness based on the provided gestureId.
+        /// Rotates the hand from startRot to endRot and lerps the pinchedness based on the provided handshapeId.
         /// </summary>
         /// <remarks>
         /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
@@ -280,17 +280,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// </remarks>
         public static IEnumerator RotateHand(
             Quaternion startRot, Quaternion endRot,
-            GestureId gestureId, Handedness handedness,
+            HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             Vector3 pos = GetHandPose(handedness).position;
-            return UpdateHand(pos, pos, startRot, endRot, gestureId, handedness, numSteps);
+            return UpdateHand(pos, pos, startRot, endRot, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
         /// Rotates the hand to newRot from its current rotation and lerps the pinchedness based on the
-        /// provided gestureId.
+        /// provided handshapeId.
         /// </summary>
         /// <remarks>
         /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
@@ -298,18 +298,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// time constant, which is a requirement for default parameter values.</para>
         /// </remarks>
         public static IEnumerator RotateHandTo(
-            Quaternion newRot, GestureId gestureId, Handedness handedness,
+            Quaternion newRot, HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             Quaternion rot = controller.WorldRotation;
-            return RotateHand(rot, newRot, gestureId, handedness, numSteps);
+            return RotateHand(rot, newRot, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
         /// The hand so it's pointing towards the specified point in space
         /// </summary>
-        public static IEnumerator PointHandToTarget(Vector3 target, GestureId gestureId, Handedness handedness, int numSteps = ControllerMoveStepsSentinelValue)
+        public static IEnumerator PointHandToTarget(Vector3 target, HandshapeId handshapeId, Handedness handedness, int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
 
@@ -322,15 +322,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Quaternion lookRotation = Quaternion.LookRotation(direction);
 
 
-            return RotateHandTo(lookRotation, gestureId, handedness, numSteps);
+            return RotateHandTo(lookRotation, handshapeId, handedness, numSteps);
         }
 
-        public static IEnumerator SetHandGesture(GestureId gestureId, Handedness handedness, int numSteps = ControllerMoveStepsSentinelValue)
+        public static IEnumerator SetHandshape(HandshapeId handshapeId, Handedness handedness, int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             Vector3 pos = GetHandPose(handedness).position;
             Quaternion rot = controller.WorldRotation;
-            return UpdateHand(pos, pos, rot, rot, gestureId, handedness, numSteps);
+            return UpdateHand(pos, pos, rot, rot, handshapeId, handedness, numSteps);
         }
 
         /// <summary>

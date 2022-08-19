@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
+using static Microsoft.MixedReality.Toolkit.Input.HandshapeTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -334,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </returns>
         private SimulatedController EnableSimulatedController(
             Handedness handedness,
-            SimulatedHandPose defaultPose,
+            ControllerSimulationSettings ctrlSettings,
             Vector3 startPosition)
         {
             if (!IsSupportedHandedness(handedness))
@@ -345,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
             ref SimulatedController simCtrl = ref GetControllerReference(handedness);
             if (simCtrl != null) { return simCtrl; }
-            simCtrl = new SimulatedController(handedness, defaultPose, startPosition);
+            simCtrl = new SimulatedController(handedness, ctrlSettings, startPosition);
 
             ControllerControls controls = GetControllerControls(handedness);
             controls.Reset();
@@ -432,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                         // Create the simulated controller.
                         simCtrl = EnableSimulatedController(
                             handedness,
-                            ctrlSettings.DefaultPose,
+                            ctrlSettings,
                             startPosition);
                     }
                 }
@@ -445,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 if (simCtrl == null) { return; }
 
                 // Has the user asked to change the neutral pose?
-                if (ctrlSettings.ChangeNeutralPose.action.WasPerformedThisFrame())
+                if (ctrlSettings.ToggleSecondaryHandshapes.action.WasPerformedThisFrame())
                 {
                     simCtrl.ToggleNeutralPose();
                 }

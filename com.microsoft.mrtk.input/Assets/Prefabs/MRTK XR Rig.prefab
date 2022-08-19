@@ -673,22 +673,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2351505566903569412}
     m_Modifications:
-    - target: {fileID: 2167306733888939048, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
-      propertyPath: controllers.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2167306733888939048, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
-      propertyPath: controllers.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2167306733888939048, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
-      propertyPath: associatedControllers.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2167306733888939048, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
-      propertyPath: associatedControllers.Array.data[1]
-      value: 
-      objectReference: {fileID: 7304020826145247389}
     - target: {fileID: 4821581000001043912, guid: 82333e6e543cb7e4dbd5b1d47aff3f58, type: 3}
       propertyPath: dependentInteractor
       value: 

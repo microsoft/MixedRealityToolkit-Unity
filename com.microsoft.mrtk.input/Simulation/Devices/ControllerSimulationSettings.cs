@@ -4,6 +4,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+using static Microsoft.MixedReality.Toolkit.Input.HandshapeTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -46,30 +48,71 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         }
 
         [SerializeField]
-        [Tooltip("The input action used to indicate that the hand's neutral pose should be changed.")]
-        private InputActionReference changeNeutralPose;
+        [FormerlySerializedAs("changeNeutralPose")]
+        [Tooltip("The input action used to toggle between using the default or Secondary Handshape settings.")]
+        private InputActionReference toggleSecondaryHandshapes;
 
-        /// <summary>
-        /// The input action used to indicate that the hand's neutral pose should be changed.
-        /// </summary>
-        public InputActionReference ChangeNeutralPose
+        [Obsolete("Use ChangeNeutralHandshape instead")]
+        public InputActionReference ChangeNeutralPose => ToggleSecondaryHandshapes;
+
+        public InputActionReference ToggleSecondaryHandshapes
         {
-            get => changeNeutralPose;
-            set => changeNeutralPose = value;
+            get => toggleSecondaryHandshapes;
+            set => toggleSecondaryHandshapes = value;
         }
 
         [SerializeField]
-        [Tooltip("The initial pose of the simulated hand")]
-        private SimulatedHandPose defaultPose = SimulatedHandPose.Neutral;
+        [Tooltip("The initial handshape of the simulated hand")]
+        private HandshapeId neutralHandshape = HandshapeId.Open;
 
         /// <summary>
-        /// The initial pose of the simulated hand.
+        /// The initial handshape of the simulated hand.
         /// </summary>
-        public SimulatedHandPose DefaultPose
+        public HandshapeId NeutralHandshape
         {
-            get => defaultPose;
-            set => defaultPose = value;
+            get => neutralHandshape;
+            set => neutralHandshape = value;
         }
+
+        [SerializeField]
+        [Tooltip("The handshape of the simulated hand when the 'trigger' button is pressed")]
+        private HandshapeId triggerHandshape = HandshapeId.Pinch;
+
+        /// <summary>
+        /// The handshape of the simulated hand during a select action.
+        /// </summary>
+        public HandshapeId TriggerHandshape
+        {
+            get => triggerHandshape;
+            set => triggerHandshape = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The alternative initial Handshape of the simulated hand")]
+        private HandshapeId secondaryNeutralHandshape = HandshapeId.Flat;
+
+        /// <summary>
+        /// The alternative initial handshape of the simulated hand.
+        /// </summary>
+        public HandshapeId SecondaryNeutralHandshape
+        {
+            get => secondaryNeutralHandshape;
+            set => secondaryNeutralHandshape = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The alternative handshape of the simulated hand during a select action")]
+        private HandshapeId secondaryTriggerHandshape = HandshapeId.ThumbsUp;
+
+        /// <summary>
+        /// The alternative handshape of the simulated hand during a select action.
+        /// </summary>
+        public HandshapeId SecondaryTriggerHandshape
+        {
+            get => secondaryTriggerHandshape;
+            set => secondaryTriggerHandshape = value;
+        }
+
 
         [SerializeField]
         [Tooltip("The initial position, relative to the camera, at which the controller will appear (when tracking is toggled).")]
