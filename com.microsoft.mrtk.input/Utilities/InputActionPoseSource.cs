@@ -4,6 +4,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -29,7 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 && positionAction != null && positionAction.enabled
                 && rotationAction != null && rotationAction.enabled
                 && ((InputTrackingState)trackingStateAction.ReadValue<int>() & (InputTrackingState.Position | InputTrackingState.Rotation)) != 0)
-)
             {
                 pose.position = positionAction.ReadValue<Vector3>();
                 pose.rotation = rotationAction.ReadValue<Quaternion>();
@@ -38,9 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                pose.position = Vector3.zero;
-                pose.rotation = Quaternion.identity;
-
+                pose = Pose.identity;
                 return false;
             }
         }
