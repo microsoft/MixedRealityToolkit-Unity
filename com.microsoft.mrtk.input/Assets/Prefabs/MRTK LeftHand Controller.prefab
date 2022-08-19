@@ -56,6 +56,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pokePoseSource.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: jointPoseSource.hand
       value: 1
       objectReference: {fileID: 0}

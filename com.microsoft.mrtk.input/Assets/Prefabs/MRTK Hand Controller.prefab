@@ -370,7 +370,6 @@ MonoBehaviour:
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
-  handNode: 4
   touchVisuals: {fileID: 0}
   pinchPoseSource:
     id: 0
@@ -733,7 +732,7 @@ MonoBehaviour:
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
-  jointPoseSource:
+  pokePoseSource:
     id: 0
   touchVisuals: {fileID: 4299642553587339577}
   references:
