@@ -216,13 +216,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
             if (rayPoseSource.TryGetPose(out Pose rayPose))
             {
-                attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
+                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
             }
             else
             {
                 if (fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
                 {
-                    attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
+                    rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
                 }
             }
 
