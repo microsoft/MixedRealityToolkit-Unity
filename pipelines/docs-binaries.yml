@@ -9,6 +9,8 @@ jobs:
 - job: BuildUnity2020
   pool:
     name: Analog-Unity
+    demands:
+      - ImageVersionOverride -equals 20220218.0.1
 
   steps:
   - checkout: self
@@ -36,6 +38,8 @@ jobs:
 - job: BuildUnity2019
   pool:
     name: Analog-Unity
+    demands:
+      - ImageVersionOverride -equals 20220218.0.1
 
   steps:
   - checkout: self
