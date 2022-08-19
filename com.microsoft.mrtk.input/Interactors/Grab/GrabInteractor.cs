@@ -22,9 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Get near interaction point from hands aggregator.
         /// </summary>
-        protected override bool TryGetInteractionPoint(out Pose jointPose)
+        protected override bool TryGetInteractionPoint(out Pose pose)
         {
-            return pinchPoseSource.TryGetPose(out jointPose);
+            return pinchPoseSource.TryGetPose(out pose);
         }
     }
 }

@@ -69,9 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void Update()
         {
-            if (jointPoseSource.TryGetPose(out Pose jointPose))
+            if (jointPoseSource.TryGetPose(out Pose pose))
             {
-                transform.SetPositionAndRotation(jointPose.position, jointPose.rotation);
+                transform.SetPositionAndRotation(pose.position, pose.rotation);
             }
             else
             {

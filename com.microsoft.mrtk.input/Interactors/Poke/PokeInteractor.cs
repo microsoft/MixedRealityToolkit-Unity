@@ -32,9 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Called during ProcessInteractor to obtain the poking pose. AttachTransform is set to this pose.
         /// Override to customize how poses are calculated.
         /// </summary>
-        protected virtual bool TryGetPokePose(out Pose jointPose)
+        protected virtual bool TryGetPokePose(out Pose pose)
         {
-            return jointPoseSource.TryGetPose(out jointPose);
+            return jointPoseSource.TryGetPose(out pose);
         }
 
         #endregion PokeInteractor
@@ -177,11 +177,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // The start of our new trajectory is the end of the last frame's trajectory.
                     pokeTrajectory.Start = pokeTrajectory.End;
 
-                    pokePointTracked = TryGetPokePose(out Pose jointPose);
+                    pokePointTracked = TryGetPokePose(out Pose pose);
                     if (pokePointTracked)
                     {
                         // If we can get a joint pose, set our attachtransform accordingly.
-                        attachTransform.SetPositionAndRotation(jointPose.position, jointPose.rotation);
+                        attachTransform.SetPositionAndRotation(pose.position, pose.rotation);
                     }
                     else
                     {

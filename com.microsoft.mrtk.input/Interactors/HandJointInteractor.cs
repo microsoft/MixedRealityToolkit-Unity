@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// at which the interaction occurs. This would be the tip of the index finger
         /// for a poke interactor, or some other computed position from other data sources.
         /// </summary>
-        protected abstract bool TryGetInteractionPoint(out Pose jointPose);
+        protected abstract bool TryGetInteractionPoint(out Pose pose);
 
         #endregion HandJointInteractor
 
