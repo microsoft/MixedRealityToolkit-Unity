@@ -42,13 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
-        [Tooltip("The pose source representing the ray this interactor uses for rotation")]
-        protected IPoseSource rayPoseSource;
-
-        [SerializeReference]
-        [InterfaceSelector]
-        [Tooltip("A fallback pose source representing a palm this interactor uses for rotation")]
-        protected IPoseSource fallbackPalmPoseSource;
+        [Tooltip("The pose source representing the device triggering the interaction")]
+        protected IPoseSource devicePoseSource;
 
         [SerializeReference]
         [InterfaceSelector]
@@ -214,16 +209,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
-            if (rayPoseSource != null && rayPoseSource.TryGetPose(out Pose rayPose))
+            if (devicePoseSource != null && devicePoseSource.TryGetPose(out Pose rayPose))
             {
                 rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
-            }
-            else
-            {
-                if (fallbackPalmPoseSource != null && fallbackPalmPoseSource.TryGetPose(out Pose palmPose))
-                {
-                    rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.rotation;
-                }
             }
 
             if (hasSelection && interactable != null)
