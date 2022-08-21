@@ -20,32 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
         internal class SpriteTintBehaviour : TintBehaviour<SpriteRenderer>
         {
             /// <inheritdoc />
-            protected override void ApplyColor(Color color)
+            protected override void ApplyColor(Color color, SpriteRenderer sprite)
             {
-                if (Tintables == null) { return; }
-
-                foreach (SpriteRenderer sprite in Tintables)
-                {
-                    if (sprite != null)
-                    {
-                        sprite.color = color;
-                    }
-                }
+                if (sprite == null) { return; }
+                sprite.color = color;
             }
 
             /// <inheritdoc />
-            protected override Color GetColor()
+            protected override bool GetColor(SpriteRenderer sprite, out Color color)
             {
-                if (Tintables == null) { return default; }
-
-                if (Tintables.Count > 0 && Tintables[0] != null)
-                {
-                    return Tintables[0].color;
-                }
-                else
-                {
-                    return default;
-                }
+                color = default;
+                if (sprite == null) { return false; }
+                color = sprite.color;
+                return true;
             }
         }
 
