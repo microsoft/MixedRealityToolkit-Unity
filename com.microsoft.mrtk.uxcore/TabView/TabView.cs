@@ -46,20 +46,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => toggleCollection.CurrentIndex = value;
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            toggleCollection.OnToggleSelected.AddListener((index) =>
-            {
-                SetIsVisible(index, true);
+            toggleCollection.OnToggleSelected.AddListener(ChangeTab);
+            
+            // Ensure the correct view is visible when waking up.
+            ChangeTab(CurrentVisibleSectionIndex);
+        }
 
-                for (int i = 0; i < TabSections.Length; i++)
-                {
-                    if (i != index)
-                    {
-                        SetIsVisible(i, false);
-                    }
-                }
-            });
+        private void OnDisable()
+        {
+            toggleCollection.OnToggleSelected.RemoveListener(ChangeTab);
+        }
+
+        private void ChangeTab(int index)
+        {
+            for (int i = 0; i < TabSections.Length; i++)
+            {
+                SetVisibility(i, i == index);
+            }
         }
 
         /// <summary>
@@ -78,7 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
 
-            Debug.LogError($"The section name {sectionName} entered does not exist in the TabSections array.");
             return false;
         }
 
@@ -100,33 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return false;
         }
 
-        /// <summary>
-        /// Set the next tab active in the toggle collection.
-        /// </summary>
-        public void IncreaseIndex()
-        {
-            int nextIndex = CurrentVisibleSectionIndex + 1;
-
-            if (nextIndex < TabSections.Length)
-            {
-                CurrentVisibleSectionIndex = nextIndex;
-            }
-        }
-
-        /// <summary>
-        /// Set the previous tab active in the toggle collection.
-        /// </summary>
-        public void DecreaseIndex()
-        {
-            int nextIndex = CurrentVisibleSectionIndex - 1;
-
-            if (nextIndex >= 0)
-            {
-                CurrentVisibleSectionIndex = nextIndex;
-            }
-        }
-
-        private void SetIsVisible(int index, bool isVisible)
+        private void SetVisibility(int index, bool isVisible)
         {
             if (isVisible != TabSections[index].SectionVisibleRoot.activeSelf)
             {
