@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool TryGetPose(out Pose pose)
         {
-            XRNode? handNode = hand.ToXRNode();
-            bool poseRetrieved = handNode.HasValue && HandsAggregator != null && HandsAggregator.TryGetPinchingPoint(handNode.Value, out cachedHandJointPose);
+            XRNode? handNode = Hand.ToXRNode();
+            bool poseRetrieved = handNode.HasValue && HandsAggregator != null && HandsAggregator.TryGetJoint(Joint, handNode.Value, out cachedHandJointPose);
             if (poseRetrieved)
             {
                 pose.position = cachedHandJointPose.Position;
