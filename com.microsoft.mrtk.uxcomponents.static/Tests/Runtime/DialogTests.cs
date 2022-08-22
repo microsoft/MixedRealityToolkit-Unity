@@ -12,7 +12,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {
     /// <summary>
-    /// Tests for the Dialog UX component.
+    /// Tests for the Static Dialog UX component.
     /// </summary>
     public class DialogTests : BaseRuntimeInputTests
     {
