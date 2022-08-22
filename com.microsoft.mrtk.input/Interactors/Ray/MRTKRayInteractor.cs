@@ -14,8 +14,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A wrapper for the XRRayInteractor which stores extra information for MRTK management/services
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Interactor")]
-    public class MRTKRayInteractor : XRRayInteractor, IRayInteractor, IHandedInteractor, IVariableSelectInteractor
+    public class MRTKRayInteractor :
+        XRRayInteractor,
+        IRayInteractor,
+        IHandedInteractor,
+        IVariableSelectInteractor
     {
+        #region MRTKRayInteractor
+
         /// <summary>
         /// Is this ray currently hovering a UnityUI/Canvas element?
         /// </summary>
@@ -26,18 +32,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool HasUISelection => HasUIHover && isUISelectActive;
 
-        public Handedness Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
-
-        /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
-        /// </summary>
-        private HandsAggregatorSubsystem handsAggregator;
-
         /// <summary>
         /// Used to check if the parent controller is tracked or not
         /// Hopefully this becomes part of the base Unity XRI API.
         /// </summary>
         private bool IsTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
+
+        /// <summary>
+        /// Cached reference to hands aggregator for efficient per-frame use.
+        /// </summary>
+        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
+        private HandsAggregatorSubsystem handsAggregator;
 
         /// <summary>
         /// How unselected the interactor must be to initiate a new hover or selection on a new target.
@@ -60,14 +65,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Pose initialLocalAttach = Pose.identity;
 
+        #endregion MRTKRayInteractor
+
+        #region IHandedInteractor
+
+        Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
+
+        #endregion IHandedInteractor
+
         #region IVariableSelectInteractor
 
         /// <inheritdoc />
         public float SelectProgress => xrController.selectInteractionState.value;
 
-        #endregion
+        #endregion IVariableSelectInteractor
 
-        #region XRBaseControllerInteractor
+        #region XRBaseInteractor
 
         /// <inheritdoc />
         public override bool CanHover(IXRHoverInteractable interactable)
@@ -93,8 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override bool CanSelect(IXRSelectInteractable interactable)
         {
-            var selectActivated = base.CanSelect(interactable);
-
             return base.CanSelect(interactable) && (!hasSelection || IsSelecting(interactable)) && isRelaxedBeforeSelect;
         }
 
@@ -106,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // When the gaze pinch interactor is already selecting an object, use the default interactor behavior
                 if (hasSelection)
                 {
-                    return base.isHoverActive;
+                    return base.isHoverActive && IsTracked;
                 }
                 // Otherwise, this selector is only allowed to hover if we can tell that the palm for the corresponding hand/controller is facing away from the user.
                 else
@@ -116,15 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (xrController is ArticulatedHandController handController)
                         {
-                            // Get hands aggregator subsystem reference, if still null.
-                            // Should avoid per-frame allocs by only acquiring aggregator reference once.
-                            if (handsAggregator == null)
-                            {
-                                handsAggregator = HandsUtils.GetSubsystem();
-                            }
-
                             bool isPalmFacingAway = false;
-                            if (handsAggregator?.TryGetPalmFacingAway(handController.HandNode, out isPalmFacingAway) ?? true)
+                            if (HandsAggregator?.TryGetPalmFacingAway(handController.HandNode, out isPalmFacingAway) ?? true)
                             {
                                 hoverActive &= isPalmFacingAway;
                             }
@@ -167,13 +171,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     else
                     {
                         // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
-                        if (handsAggregator == null)
-                        {
-                            handsAggregator = HandsUtils.GetSubsystem();
-                        }
-                        if (handsAggregator != null &&
+                        if (HandsAggregator != null &&
                             xrController is ArticulatedHandController handController &&
-                            handsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
+                            HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
                         {
                             attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
                         }
@@ -197,6 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             refDistance = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation));
         }
 
-        #endregion
+        #endregion XRBaseInteractor
     }
 }

@@ -20,6 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IHandedInteractor,
         IMRTKInteractorVisuals
     {
+        #region HandJointInteractor
+
+        [Header("Hand joint interactor settings")]
+
         [SerializeField]
         [Tooltip("The XRNode on which this hand is located.")]
         private XRNode handNode;
@@ -29,39 +33,67 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected XRNode HandNode => handNode;
 
-        private HandsAggregatorSubsystem handsAggregator;
-
         /// <summary>
         /// Cached reference to hands aggregator for efficient per-frame use.
         /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator
+        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
+        private HandsAggregatorSubsystem handsAggregator;
+
+        /// <summary>
+        /// Concrete implementations should override this function to specify the point
+        /// at which the interaction occurs. This would be the tip of the index finger
+        /// for a poke interactor, or some other computed position from other data sources.
+        /// </summary>
+        protected abstract bool TryGetInteractionPoint(out HandJointPose jointPose);
+
+        #endregion HandJointInteractor
+
+        #region IHandedInteractor
+
+        /// <inheritdoc/>
+        Handedness IHandedInteractor.Handedness => HandNode.ToHandedness();
+
+        #endregion IHandedInteractor
+
+        #region IMRTKInteractorVisuals
+
+        [Header("Interactor visuals settings")]
+
+        [SerializeField]
+        [Tooltip("The visuals representing the interaction point, such as a cursor, donut, or other marker.")]
+        private GameObject touchVisuals;
+
+        /// <summary>
+        /// The visuals representing the interaction point, such as a cursor, donut, or other marker.
+        /// </summary>
+        public GameObject TouchVisuals { get => touchVisuals; set => touchVisuals = value; }
+
+        private static readonly ProfilerMarker SetVisualsPerfMarker =
+            new ProfilerMarker("[MRTK] HandJointInteractor.SetVisuals");
+
+        /// <inheritdoc/>
+        public virtual void SetVisuals(bool isVisible)
         {
-            get
+            using (SetVisualsPerfMarker.Auto())
             {
-                if (handsAggregator == null)
-                {
-                    handsAggregator = HandsUtils.GetSubsystem();
-                }
-                return handsAggregator;
+                if (TouchVisuals == null) { return; }
+
+                TouchVisuals.SetActive(isVisible);
             }
         }
 
-        public Handedness Handedness => HandNode.ToHandedness();
-
-        /// <summary>
-        /// Used to keep track of whether the controller has an interaction point.
-        /// </summary>
-        private bool interactionPointTracked;
-
-        #region MonoBehaviour Implementation
-
-        protected override void Start()
+        /// <inheritdoc/>
+        public virtual void UpdateVisuals(XRBaseInteractable interactable)
         {
-            base.Start();
-
-            // caching HandsAggregator Subsystem
-            handsAggregator = HandsUtils.GetSubsystem();
+            if (TouchVisuals != null)
+            {
+                TouchVisuals.transform.SetPositionAndRotation(attachTransform.position, attachTransform.rotation);
+            }
         }
+
+        #endregion IMRTKInteractorVisuals
+
+        #region MonoBehaviour
 
         protected override void OnEnable()
         {
@@ -70,6 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Showing interactor visuals
             SetVisuals(true);
         }
+
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -78,9 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SetVisuals(false);
         }
 
-        #endregion
+        #endregion MonoBehaviour
 
-        #region XRBaseControllerInteractor
+        #region XRBaseInteractor
+
+        /// <summary>
+        /// Used to keep track of whether the controller has an interaction point.
+        /// </summary>
+        private bool interactionPointTracked;
 
         /// <inheritdoc />
         public override bool isHoverActive
@@ -92,15 +130,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <summary>
-        /// Concrete implementations should override this function to specify the point
-        /// at which the interaction occurs. This would be the tip of the index finger
-        /// for a poke interactor, or some other computed position from other data sources.
-        /// </summary>
-        protected abstract bool TryGetInteractionPoint(out HandJointPose jointPose);
+        #endregion XRBaseInteractor
+
+        #region XRBaseControllerInteractor
 
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
-            new ProfilerMarker("[MRTK] ArticulatedTouchInteractor.ProcessInteractor");
+            new ProfilerMarker("[MRTK] HandJointInteractor.ProcessInteractor");
 
         public override void ProcessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
@@ -108,13 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             using (ProcessInteractorPerfMarker.Auto())
             {
-                if (handsAggregator == null)
+                if (HandsAggregator == null)
                 {
                     return;
                 }
 
-                // TODO, profile. Is this too expensive for OnBeforeRender?
-                if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.OnBeforeRender)
+                if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
                     // Obtain near interaction point, and set our interactor's
                     // position/rotation to the interaction point's pose.
@@ -138,42 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion
-
-        #region IMRTKInteractorVisuals
-
-        [SerializeField]
-        [Tooltip("The visuals representing the interaction point, such as a cursor, donut, or other marker")]
-        private GameObject touchVisuals;
-
-        /// <summary>
-        /// The visuals representing the interaction point, such as a cursor, donut, or other marker.
-        /// </summary>
-        public GameObject TouchVisuals { get => touchVisuals; set => touchVisuals = value; }
-
-        private static readonly ProfilerMarker SetVisualsPerfMarker =
-            new ProfilerMarker("[MRTK] ArticulatedTouchInteractor.SetVisuals");
-
-        /// <inheritdoc/>
-        public virtual void SetVisuals(bool isVisible)
-        {
-            using (SetVisualsPerfMarker.Auto())
-            {
-                if (TouchVisuals == null) { return; }
-
-                TouchVisuals.SetActive(isVisible);
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void UpdateVisuals(XRBaseInteractable interactable)
-        {
-            if (TouchVisuals != null)
-            {
-                TouchVisuals.transform.SetPositionAndRotation(attachTransform.position, attachTransform.rotation);
-            }
-        }
-
-        #endregion
+        #endregion XRBaseControllerInteractor
     }
 }

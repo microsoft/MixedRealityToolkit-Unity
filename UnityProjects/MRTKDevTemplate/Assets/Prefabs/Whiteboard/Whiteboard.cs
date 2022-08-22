@@ -45,6 +45,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             Start();
         }
 
+        public void ChangeColorYellow()
+        {
+            drawingColor = new Color(1.0f, 0.7f, 0.0f, 1.0f);
+        }
+
+        public void ChangeColorGreen()
+        {
+            drawingColor = new Color(0.0f, 1.0f, 0.7f, 1.0f);
+        }
+        public void ChangeColorRed()
+        {
+            drawingColor = new Color(1.0f, 0.0f, 0.2f, 1.0f);
+        }
+
         protected override void OnDestroy()
         {
             Object.Destroy(texture);

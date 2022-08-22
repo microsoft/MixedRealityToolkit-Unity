@@ -129,11 +129,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.AnimationEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 7400000, guid: f426d8e7127f95b438ea2c887cbf063d, type: 2}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].name
+      value: Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].weightMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].playbackMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].transitionDuration
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 994071487416343378, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1290675915836177998, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8174955776655707806, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: canToggle

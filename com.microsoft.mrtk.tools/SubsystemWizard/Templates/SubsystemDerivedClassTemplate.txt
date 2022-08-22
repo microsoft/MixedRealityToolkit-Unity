@@ -1,0 +1,43 @@
+// TODO: [Optional] Add copyright and license statement(s).
+
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Subsystems;
+using UnityEngine;
+using UnityEngine.Scripting;
+
+namespace %NAMESPACE%
+{
+    [Preserve]
+    [MRTKSubsystem(
+        Name = "%RUNTIMENAME%",
+        DisplayName = "%DISPLAYNAME%",
+        Author = "%ORGANIZATION%",
+        ProviderType = typeof(%SUBSYSTEMNAME%Provider),
+        SubsystemTypeOverride = typeof(%SUBSYSTEMNAME%),
+        ConfigType = typeof(%CONFIGNAME%))]
+    public class %SUBSYSTEMNAME% : %SUBSYSTEMBASECLASSNAME%
+    {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void Register()
+        {
+            // Fetch subsystem metadata from the attribute.
+            var cinfo = XRSubsystemHelpers.ConstructCinfo<%SUBSYSTEMNAME%, %SUBSYSTEMBASECLASSNAME%Cinfo>();
+
+            if (!%SUBSYSTEMNAME%.Register(cinfo))
+            {
+                Debug.LogError($"Failed to register the {cinfo.Name} subsystem.");
+            }
+        }
+
+        [Preserve]
+        class %SUBSYSTEMNAME%Provider : Provider
+        {
+%APPLYCONFIG%
+            #region I%SUBSYSTEMBASECLASSNAME% implementation
+
+            // TODO: Add the provider implementation.
+
+            #endregion %SUBSYSTEMBASECLASSNAME% implementation
+        }
+    }
+}

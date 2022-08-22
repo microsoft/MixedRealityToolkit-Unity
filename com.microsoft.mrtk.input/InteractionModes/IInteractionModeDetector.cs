@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 
@@ -25,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsModeDetected();
 
         /// <summary>
-        /// Gets a list of the XR Base Controllers that this interaction mode detector has jurisdiction over
+        /// Gets a list of the GameObjects which represent the "controllers" that this interaction mode detector has jurisdiction over
         /// </summary>
-        /// <returns> Returns the list of the XR Base Controllers that this interaction mode detector has jurisdiction over</returns>
-        List<XRBaseController> GetControllers();
+        /// <returns> Returns the list of the GameObjects which represent the "controllers" that this interaction mode detector has jurisdiction over</returns>
+        List<GameObject> GetControllers();
     }
 }
