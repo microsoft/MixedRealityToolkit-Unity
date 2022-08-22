@@ -16,8 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class FallbackPoseSource : IPoseSource
     {
         [SerializeField]
-        [Tooltip("A list of pose sources to query in order")]
+        [Tooltip("An ordered list of pose sources to query.")]
         private PoseSourceWrapper[] poseSources;
+
+        /// <summary>
+        /// An ordered list of pose sources to query.
+        /// </summary>
+        protected PoseSourceWrapper[] PoseSources { get => poseSources; set => poseSources = value; }
 
         /// <summary>
         /// Tries to get a pose from each pose source in order, returning the result of the first pose source
@@ -47,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Reference: https://forum.unity.com/threads/genericmenu-used-as-context-inside-a-menuitem.330235/ 
         /// </summary>
         [Serializable]
-        private struct PoseSourceWrapper
+        protected struct PoseSourceWrapper
         {
             [SerializeReference]
             [InterfaceSelector]

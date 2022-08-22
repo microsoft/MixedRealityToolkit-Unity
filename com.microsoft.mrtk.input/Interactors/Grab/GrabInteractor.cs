@@ -17,7 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeReference]
         [InterfaceSelector]
         [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
-        protected IPoseSource pinchPoseSource;
+        private IPoseSource pinchPoseSource;
+
+        /// <summary>
+        /// The pose source representing the worldspace pose of the hand pinching point.
+        /// </summary>
+        protected IPoseSource PinchPoseSource { get => pinchPoseSource; set => pinchPoseSource = value; }
 
         /// <summary>
         /// Get near interaction point from hands aggregator.
@@ -25,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override bool TryGetInteractionPoint(out Pose pose)
         {
             pose = Pose.identity;
-            return pinchPoseSource != null && pinchPoseSource.TryGetPose(out pose);
+            return PinchPoseSource != null && PinchPoseSource.TryGetPose(out pose);
         }
     }
 }

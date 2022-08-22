@@ -26,7 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeReference]
         [InterfaceSelector]
         [Tooltip("The pose source representing the poke pose")]
-        protected IPoseSource pokePoseSource;
+        private IPoseSource pokePoseSource;
+
+        /// <summary>
+        /// The pose source representing the poke pose
+        /// </summary>
+        protected IPoseSource PokePoseSource { get => pokePoseSource; set => pokePoseSource = value; }
 
         /// <summary>
         /// Called during ProcessInteractor to obtain the poking pose. <see cref="XRBaseInteractor.attachTransform"/> is set to this pose.
@@ -35,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual bool TryGetPokePose(out Pose pose)
         {
             pose = Pose.identity;
-            return pokePoseSource != null && pokePoseSource.TryGetPose(out pose);
+            return PokePoseSource != null && PokePoseSource.TryGetPose(out pose);
         }
 
         #endregion PokeInteractor

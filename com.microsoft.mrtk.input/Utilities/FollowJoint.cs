@@ -23,6 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The pose source representing the hand joint this interactor tracks")]
         private HandJointPoseSource jointPoseSource;
 
+        /// <summary>
+        /// The pose source representing the hand joint this interactor tracks
+        /// </summary>
+        protected HandJointPoseSource JointPoseSource { get => jointPoseSource; set => jointPoseSource = value; }
+
         [SerializeField]
         [HideInInspector]
         // A temporary variable used to migrate instnaces of FollowJoint to use the jointPoseSource class as the source of truth
@@ -39,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The hand on which to track the joint.
         /// </summary>
         [Obsolete("Please change the Hand value on the jointPoseSource instead")]
-        protected Handedness Hand { get => jointPoseSource.Hand; set => jointPoseSource.Hand = value; }
+        protected Handedness Hand { get => JointPoseSource.Hand; set => JointPoseSource.Hand = value; }
 
         [SerializeField]
         [HideInInspector]
@@ -49,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The specific joint to track.
         /// </summary>
         [Obsolete("Please change the Joint value on the jointPoseSource instead")]
-        protected TrackedHandJoint Joint { get => jointPoseSource.Joint; set => jointPoseSource.Joint = value; }
+        protected TrackedHandJoint Joint { get => JointPoseSource.Joint; set => JointPoseSource.Joint = value; }
 
         /// <summary>
         /// Using OnValidate to ensure that instances of FollowJoint are migrated to the new HandJointPoseSource
@@ -61,15 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!migratedSuccessfully)
             {
-                jointPoseSource.Hand = hand;
-                jointPoseSource.Joint = joint;
+                JointPoseSource.Hand = hand;
+                JointPoseSource.Joint = joint;
                 migratedSuccessfully = true;
             }
         }
 
         void Update()
         {
-            if (jointPoseSource != null && jointPoseSource.TryGetPose(out Pose pose))
+            if (JointPoseSource != null && JointPoseSource.TryGetPose(out Pose pose))
             {
                 transform.SetPositionAndRotation(pose.position, pose.rotation);
             }

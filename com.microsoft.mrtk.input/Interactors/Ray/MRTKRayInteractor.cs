@@ -142,8 +142,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector]
-        [Tooltip("The pose source representing the ray this interactor uses for rotation")]
-        protected IPoseSource devicePoseSource;
+        [Tooltip("The pose source representing the device this interactor uses for rotation.")]
+        private IPoseSource devicePoseSource;
+
+        /// <summary>
+        /// The pose source representing the device this interactor uses for rotation.
+        /// </summary>
+        protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
 
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
@@ -168,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         isRelaxedBeforeSelect = false;
                     }
 
-                    if (devicePoseSource != null && devicePoseSource.TryGetPose(out Pose devicePose))
+                    if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
                     {
                         attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
                     }
