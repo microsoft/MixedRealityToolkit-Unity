@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
 
                 if (setAsFirst
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2022_2_OR_NEWER
                     && SceneManager.loadedSceneCount >= 1)
 #else
                     && EditorSceneManager.loadedSceneCount >= 1)
