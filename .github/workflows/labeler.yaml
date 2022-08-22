@@ -2,7 +2,6 @@ name: PR Labeling
 
 on:
   pull_request:
-  workflow_dispatch:
   
 permissions:
   contents: read
@@ -13,8 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Branch-Labeler
-        uses: Zee2/branch-labeler@release
+      - uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ equals(github.event.pull_request.base_ref, 'mrtk3') }}
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          configuration-path: .github/labeler.yaml
+          labels: MRTK3
+      - uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ equals(github.event.pull_request.base_ref, 'main') }}
+        with:
+          labels: MRTK2
