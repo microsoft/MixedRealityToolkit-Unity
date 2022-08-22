@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Handles.color = Color.cyan;
                 handleSize = HandleUtility.GetHandleSize(toolTip.PivotPosition) * handleSizeMultiplier;
                 arrowSize = handleSize * 2;
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2022_2_OR_NEWER
                 Vector3 newPivotPosition = Handles.FreeMoveHandle(toolTip.PivotPosition, handleSize, Vector3.zero, Handles.SphereHandleCap);
 #else
                 Vector3 newPivotPosition = Handles.FreeMoveHandle(toolTip.PivotPosition, Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Handles.color = Color.cyan;
                 handleSize = HandleUtility.GetHandleSize(toolTip.AnchorPosition) * handleSizeMultiplier;
                 arrowSize = handleSize * 2;
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2022_2_OR_NEWER
                 Vector3 newAnchorPosition = Handles.FreeMoveHandle(toolTip.AnchorPosition, HandleUtility.GetHandleSize(toolTip.AnchorPosition) * handleSizeMultiplier, Vector3.zero, Handles.SphereHandleCap);
 #else
                 Vector3 newAnchorPosition = Handles.FreeMoveHandle(toolTip.AnchorPosition, Quaternion.identity, HandleUtility.GetHandleSize(toolTip.AnchorPosition) * handleSizeMultiplier, Vector3.zero, Handles.SphereHandleCap);
@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     Handles.color = Color.cyan;
                     handleSize = HandleUtility.GetHandleSize(toolTip.AttachPointPosition) * handleSizeMultiplier;
                     arrowSize = handleSize * 2;
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2022_2_OR_NEWER
                     Vector3 newAttachPointPosition = Handles.FreeMoveHandle(toolTip.AttachPointPosition, HandleUtility.GetHandleSize(toolTip.AttachPointPosition) * handleSizeMultiplier, Vector3.zero, Handles.SphereHandleCap);
 #else
                     Vector3 newAttachPointPosition = Handles.FreeMoveHandle(toolTip.AttachPointPosition, Quaternion.identity, HandleUtility.GetHandleSize(toolTip.AttachPointPosition) * handleSizeMultiplier, Vector3.zero, Handles.SphereHandleCap);
