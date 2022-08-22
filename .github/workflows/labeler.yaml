@@ -2,7 +2,7 @@ name: PR Labeling
 
 on:
   pull_request_target:
-    types: [assigned, opened, synchronize, reopened]
+    types: [assigned, opened, synchronize, reopened, edited]
   
 permissions:
   contents: read
@@ -16,4 +16,4 @@ jobs:
         uses: microsoft/branch-labeler@release
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          configuration-path: .github/labeler.yaml
+          configuration-path: .github/labeler-config.yaml
