@@ -142,11 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 float factor = (float)(playable.GetTime() / playable.GetDuration());
                 Color currentColor, targetColor;
 
-                Debug.Assert(tintables != null);
-                Debug.Assert(tintables.Count > 0);
-                Debug.Assert(tintables.Count == cachedColors.Length);
-                Debug.Assert(tintables.Count == startColors.Length);
-
                 for (int i = 0; i < tintables.Count; i++)
                 {
                     // We grab the *current* color, because this behavior isn't necessarily
@@ -171,10 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         targetColor = TintColor;
                     }
 
-                    if ((Tintables[0] as MonoBehaviour).gameObject.name.Contains("ToggleBar"))
-                    {
-                        Debug.Log("CurrentColor: " + currentColor + ", factor = " + factor);
-                    }
                     ApplyColor(Color.Lerp(currentColor, targetColor, factor), tintables[i]);
                 }
             }
