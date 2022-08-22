@@ -1,7 +1,7 @@
 name: PR Labeling
 
 on:
-  pull_request:
+  pull_request_target:
   workflow_dispatch:
   
 permissions:
@@ -11,7 +11,6 @@ permissions:
 jobs:
   label-pr:
     runs-on: ubuntu-latest
-    permissions: read-all write-all
     steps:
       - name: Branch-Labeler
         uses: microsoft/branch-labeler@release
