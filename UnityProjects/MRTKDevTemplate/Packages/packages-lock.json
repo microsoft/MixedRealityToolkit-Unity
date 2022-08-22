@@ -352,7 +352,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.arsubsystems": {
-      "version": "4.1.9",
+      "version": "4.1.10",
       "depth": 2,
       "source": "registry",
       "dependencies": {
