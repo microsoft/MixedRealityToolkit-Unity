@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected IPoseSource pokePoseSource;
 
         /// <summary>
-        /// Called during ProcessInteractor to obtain the poking pose. AttachTransform is set to this pose.
+        /// Called during ProcessInteractor to obtain the poking pose. <see cref="XRBaseInteractor.attachTransform"/> is set to this pose.
         /// Override to customize how poses are calculated.
         /// </summary>
         protected virtual bool TryGetPokePose(out Pose pose)
