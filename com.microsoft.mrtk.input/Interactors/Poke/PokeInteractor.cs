@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pokePointTracked = TryGetPokePose(out Pose pose);
                     if (pokePointTracked)
                     {
-                        // If we can get a joint pose, set our attachtransform accordingly.
+                        // If we can get a joint pose, set our attachTransform accordingly.
                         attachTransform.SetPositionAndRotation(pose.position, pose.rotation);
                     }
                     else
