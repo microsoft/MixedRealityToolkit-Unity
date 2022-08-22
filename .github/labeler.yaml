@@ -1,0 +1,5 @@
+MRTK3:
+- branch: ['mrtk3']
+
+MRTK2:
+- branch: ['main']

@@ -1,0 +1,20 @@
+name: PR Labeling
+
+on:
+  pull_request:
+  workflow_dispatch:
+  
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Branch-Labeler
+        uses: Zee2/branch-labeler@test-release
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yaml
