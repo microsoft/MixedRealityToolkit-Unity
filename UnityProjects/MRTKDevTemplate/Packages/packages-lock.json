@@ -140,8 +140,8 @@
         "com.microsoft.mrtk.core": "3.0.0-development"
       }
     },
-    "com.microsoft.mrtk.uxcomponents": {
-      "version": "file:../../../com.microsoft.mrtk.uxcomponents",
+    "com.microsoft.mrtk.uxcomponents.static": {
+      "version": "file:C:/Users/finnn/src/MixedRealityToolkit-Unity-TENTED/com.microsoft.mrtk.uxcomponents.static",
       "depth": 0,
       "source": "local",
       "dependencies": {
@@ -342,7 +342,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.arsubsystems": {
-      "version": "4.1.10",
+      "version": "4.1.9",
       "depth": 2,
       "source": "registry",
       "dependencies": {
