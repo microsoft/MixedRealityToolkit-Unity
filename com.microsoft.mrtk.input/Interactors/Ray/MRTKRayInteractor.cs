@@ -168,9 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         isRelaxedBeforeSelect = false;
                     }
 
-                    if (devicePoseSource != null && devicePoseSource.TryGetPose(out Pose rayPose))
+                    if (devicePoseSource != null && devicePoseSource.TryGetPose(out Pose devicePose))
                     {
-                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
+                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
                     }
 
                     if (hasSelection)

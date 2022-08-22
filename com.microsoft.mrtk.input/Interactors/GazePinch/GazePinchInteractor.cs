@@ -209,9 +209,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
-            if (devicePoseSource != null && devicePoseSource.TryGetPose(out Pose rayPose))
+            if (devicePoseSource != null && devicePoseSource.TryGetPose(out Pose devicePose))
             {
-                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * rayPose.rotation;
+                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
             }
 
             if (hasSelection && interactable != null)
