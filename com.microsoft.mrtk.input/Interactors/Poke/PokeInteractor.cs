@@ -178,6 +178,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // The start of our new trajectory is the end of the last frame's trajectory.
                     pokeTrajectory.Start = pokeTrajectory.End;
 
+                    // If we can get a joint pose, set out attachTransform accordingly.
+                    // pokePointTracked is used to help set isHoverActive.
                     pokePointTracked = TryGetPokePose(out Pose pose);
                     if (pokePointTracked)
                     {
