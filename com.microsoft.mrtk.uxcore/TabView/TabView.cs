@@ -6,7 +6,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// Collection of toggles that control the visibility of associated game objects.
+    /// Enables and disables sub-objects based on the currently
+    /// toggled index of a <see cref="ToggleCollection"/>.
     /// </summary>
     [AddComponentMenu("MRTK/UX/Tab View")]
     public class TabView : MonoBehaviour
