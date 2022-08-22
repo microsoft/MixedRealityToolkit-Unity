@@ -1,8 +1,13 @@
-name: "PR Labeling"
+name: PR Labeling
 
+# on:
+#   pull_request_target:
+#     types: [assigned, opened, synchronize, reopened, edited]
 on:
-  pull_request_target:
-    types: [assigned, opened, synchronize, reopened, edited]
+  workflow_run:
+    workflows: ["Receive PR"]
+    types:
+      - completed
   
 permissions:
   contents: read
