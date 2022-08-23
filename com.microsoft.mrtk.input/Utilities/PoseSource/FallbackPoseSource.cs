@@ -36,7 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             for (int i = 0; i < poseSources.Length; i++)
             {
                 IPoseSource currentPoseSource = poseSources[i].source;
-                if (currentPoseSource != null && currentPoseSource.TryGetPose(out pose))
+                poseRetrieved = currentPoseSource != null && currentPoseSource.TryGetPose(out pose);
+                if (poseRetrieved)
                 {
                     break;
                 }
