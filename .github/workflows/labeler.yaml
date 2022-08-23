@@ -1,8 +1,5 @@
 name: "PR Labeling"
-
-on:
-  pull_request_target:
-    types: [assigned, opened, synchronize, reopened, edited]
+on: pull_request_target
   
 permissions:
   contents: read
@@ -12,8 +9,15 @@ jobs:
   label-pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Branch-Labeler
-        uses: microsoft/branch-labeler@release
+      - uses: actions/github-script@v6
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          configuration-path: .github/labeler-config.yaml
+          script: |
+            if (context.pull_request.base_ref == "mrtk3")
+            {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['MRTK3']
+              })
+            }
