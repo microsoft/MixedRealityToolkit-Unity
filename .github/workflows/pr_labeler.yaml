@@ -1,5 +1,7 @@
 name: "PR Labeling"
-on: pull_request_target
+on:
+  pull_request_target:
+    types: [opened, closed, synchronize, reopened, edited, ready_for_review]
   
 permissions:
   contents: read
