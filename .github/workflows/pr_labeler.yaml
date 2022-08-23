@@ -12,7 +12,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            if (context.pull_request.base_ref == "mrtk3")
+            if (context.payload.pull_request.base_ref == "mrtk3")
             {
               github.rest.issues.addLabels({
                 issue_number: context.issue.number,
