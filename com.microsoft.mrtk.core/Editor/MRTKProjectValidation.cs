@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.XR.CoreUtils.Editor;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -44,11 +45,17 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void AddMRTKCoreValidationRules()
         {
-            List<BuildValidationRule> mrtkCoreTargetIndependentRules = new List<BuildValidationRule>();
-            // Always ensure the standalone target has a profile assigned no matter what target is being targeted
-            mrtkCoreTargetIndependentRules.Add(GenerateProfileRule(BuildTargetGroup.Standalone));
+            List<BuildValidationRule> mrtkCoreTargetIndependentRules = new List<BuildValidationRule>
+            {
+                // Always ensure the standalone target has a profile assigned no matter what target is being targeted
+                GenerateProfileRule(BuildTargetGroup.Standalone),
+                GenerateVisibleMetaFilesRule(),
+                GenerateForceTextSerializationRule(),
+                GenerateSpatializerRule()
+            };
             AddTargetIndependentRules(mrtkCoreTargetIndependentRules);
 
+            // Add target-specific rules
             foreach (var buildTargetGroup in buildTargetGroups)
             {
                 // Skip the standalone target as the profile rule for it is already present for all build targets
@@ -60,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Add a build target independent rule for project configuration validation
+        /// Add a build target independent rule for project configuration validation (i.e. a rule that applies to all targets)
         /// </summary>
         public static void AddTargetIndependentRules(List<BuildValidationRule> rules)
         {
@@ -97,6 +104,47 @@ namespace Microsoft.MixedReality.Toolkit
                 FixItMessage = $"Assign the default MRTK3 profile for the {buildTargetGroup} build target",
                 Error = false,
                 HelpLink = "https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/mrtk3-overview/setup#4-configure-mrtk-profile-after-import"
+            };
+        }
+
+        private static BuildValidationRule GenerateVisibleMetaFilesRule()
+        {
+            return new BuildValidationRule()
+            {
+                Category = "MRTK3",
+                Message = "Visible meta files is recommended for Version Control settings.",
+                CheckPredicate = () => VersionControlSettings.mode.Equals("Visible Meta Files"),
+                FixIt = () => VersionControlSettings.mode = "Visible Meta Files",
+                FixItMessage = "Change the mode under Project Settings -> Version Control to Visible Meta Files",
+                Error = false
+            };
+        }
+
+        private static BuildValidationRule GenerateForceTextSerializationRule()
+        {
+            return new BuildValidationRule()
+            {
+                Category = "MRTK3",
+                Message = "Force text serialization is recommended for Editor settings.",
+                CheckPredicate = () => EditorSettings.serializationMode == SerializationMode.ForceText,
+                FixIt = () => EditorSettings.serializationMode = SerializationMode.ForceText,
+                FixItMessage = "Change the mode under Project Settings -> Editor -> Asset serialization to Force Text",
+                Error = false
+            };
+        }
+
+        private static BuildValidationRule GenerateSpatializerRule()
+        {
+            return new BuildValidationRule()
+            {
+                IsRuleEnabled = () => AudioSettings.GetSpatializerPluginNames().Length > 0,
+                Category = "MRTK3",
+                Message = "It is recommended to enable an audio spatializer in the project.",
+                CheckPredicate = () => !string.IsNullOrEmpty(AudioSettings.GetSpatializerPluginName()),
+                FixIt = () => SettingsService.OpenProjectSettings("Project/Audio"),
+                FixItMessage = "Specify a spatializer under Project Settings -> Audio -> Spatializer plugin",
+                FixItAutomatic = false,
+                Error = false
             };
         }
     }
