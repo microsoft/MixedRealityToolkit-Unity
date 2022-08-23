@@ -82,7 +82,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8369807737276081524
 RectTransform:
   m_ObjectHideFlags: 0
@@ -133,10 +133,8 @@ MonoBehaviour:
   m_text: "\n<size=10><b>What is Mixed Reality Toolkit?</b></size>\n\n<size=7>MRTK-Unity
     is a Microsoft-driven project that provides a set of components and features,
     used to accelerate cross-platform MR app development in Unity. \n\nMRTK3 is the
-    third generation of Microsoft Mixed Reality Toolkit for Unity. It's a Microsoft-driven
-    open source project to accelerate cross-platform mixed reality development in
-    Unity. This new version is built on top of Unity's XR Management system and XR
-    Interaction Toolkit.</size>"
+    third generation of Microsoft Mixed Reality Toolkit for Unity. This new version
+    is built on top of Unity's XR Management system and XR Interaction Toolkit.</size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fea6b26abeefbc547b6aca1dbda0a34d, type: 2}
   m_sharedMaterial: {fileID: -2049848100760321927, guid: fea6b26abeefbc547b6aca1dbda0a34d, type: 2}
