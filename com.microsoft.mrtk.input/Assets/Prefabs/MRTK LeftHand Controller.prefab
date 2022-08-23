@@ -72,19 +72,11 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: fallbackPalmPoseSource.hand
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: devicePoseSource.poseSources.Array.data[1].source.hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: pinchPoseSource.hand
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: fallbackPalmPoseSource.hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
