@@ -38,7 +38,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The worldspace pose of the hand pinching point.
         /// </summary>
-        public Pose PinchPose => handController.PinchSelectPose;
+        public Pose PinchPose => (PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose)) ? pinchPose : Pose.identity;
+
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("The pose source representing the device triggering the interaction.")]
+        private IPoseSource devicePoseSource;
+
+        /// <summary>
+        /// The pose source representing the device triggering the interaction.
+        /// </summary>
+        protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
+
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
+        private IPoseSource pinchPoseSource;
+
+        /// <summary>
+        /// The pose source representing the worldspace pose of the hand pinching point.
+        /// </summary>
+        protected IPoseSource PinchPoseSource { get => pinchPoseSource; set => pinchPoseSource = value; }
 
         [SerializeField]
         [Tooltip("The interactor we're using to query potential gaze pinch targets")]
@@ -71,12 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get => relaxationThreshold;
             set => relaxationThreshold = Mathf.Clamp01(value);
         }
-
-        /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
-        /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
 
         /// <summary>
         /// The distance from the body at the time of selection.
@@ -199,18 +213,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
-            if (xrController is ActionBasedController abController &&
-                abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
+            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
             {
-                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
-            }
-            else
-            {
-                // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
-                if (HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
-                {
-                    rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
-                }
+                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
             }
 
             if (hasSelection && interactable != null)

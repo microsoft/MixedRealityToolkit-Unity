@@ -42,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The worldspace pose of the pinch selection.
         /// </summary>
+        [Obsolete("We are moving away from querying the pinch select pose via the specific XR controller reference. It should be accessed via an IPoseSource interface or directly from the subsystem")]
         public Pose PinchSelectPose => (currentControllerState is ArticulatedHandControllerState handControllerState) ?
                                                 handControllerState.PinchPose : Pose.identity;
 

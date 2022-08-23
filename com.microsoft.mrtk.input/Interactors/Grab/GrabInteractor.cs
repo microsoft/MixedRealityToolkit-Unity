@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using UnityEngine;
+
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
@@ -12,12 +14,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [UnityEngine.AddComponentMenu("MRTK/Input/Grab Interactor")]
     public class GrabInteractor : HandJointInteractor, IGrabInteractor
     {
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
+        private IPoseSource pinchPoseSource;
+
+        /// <summary>
+        /// The pose source representing the worldspace pose of the hand pinching point.
+        /// </summary>
+        protected IPoseSource PinchPoseSource { get => pinchPoseSource; set => pinchPoseSource = value; }
+
         /// <summary>
         /// Get near interaction point from hands aggregator.
         /// </summary>
-        protected override bool TryGetInteractionPoint(out HandJointPose jointPose)
+        protected override bool TryGetInteractionPoint(out Pose pose)
         {
-            return HandsAggregator.TryGetPinchingPoint(HandNode, out jointPose);
+            pose = Pose.identity;
+            return PinchPoseSource != null && PinchPoseSource.TryGetPose(out pose);
         }
     }
 }
