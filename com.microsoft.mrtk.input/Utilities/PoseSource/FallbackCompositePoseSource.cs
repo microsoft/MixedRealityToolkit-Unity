@@ -9,11 +9,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
 
     /// <summary>
-    /// A pose source composed of other pose sources. Tries to get a pose from each pose source in order, returning the result of the first pose source
-    /// which returns a success.
+    /// A pose source composed computed from an ordered list of pose sources. Returns the result of the first pose source
+    /// which successfully returns a pose.
     /// </summary>
     [Serializable]
-    public class FallbackPoseSource : IPoseSource
+    public class FallbackCompositePoseSource : IPoseSource
     {
         [SerializeField]
         [Tooltip("An ordered list of pose sources to query.")]

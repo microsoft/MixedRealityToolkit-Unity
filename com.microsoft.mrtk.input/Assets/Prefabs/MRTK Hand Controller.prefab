@@ -147,7 +147,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: FallbackPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSources:
         - source:
@@ -971,7 +971,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: FallbackPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSources:
         - source:
