@@ -9,7 +9,6 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [Serializable]
-
     /// <summary>
     /// A pose source which tracks a specific hand joint on a specific hand
     /// </summary>
@@ -40,12 +39,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         internal TrackedHandJoint Joint { get => joint; set => joint = value; }
 
         /// <summary>
-        /// A cache of the hand joint pose returned by the hands aggregator
+        /// A cache of the hand joint pose returned by the hands aggregator.
         /// </summary>
         private HandJointPose cachedHandJointPose;
 
         /// <summary>
-        /// Tries to get the pose of a specific hand joint on a specific hand
+        /// Tries to get the pose of a specific hand joint on a specific hand.
         /// </summary>
         public bool TryGetPose(out Pose pose)
         {

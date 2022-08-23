@@ -31,12 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         internal Handedness Hand { get => hand; set => hand = value; }
 
         /// <summary>
-        /// A cache of the hand joint pose returned by the hands aggregator
+        /// A cache of the hand joint pose returned by the hands aggregator.
         /// </summary>
         private HandJointPose cachedPinchPose;
 
         /// <summary>
-        /// Tries to get the pinch pose of a specific hand
+        /// Tries to get the pinch pose of a specific hand.
         /// </summary>
         public bool TryGetPose(out Pose pose)
         {
