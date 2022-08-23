@@ -62,7 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (changed)
             {
-                MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityToolkitConfigurationProfile)activeProfile.objectReferenceValue);
+                if (!Application.isPlaying)
+                {
+                    MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityToolkitConfigurationProfile)activeProfile.objectReferenceValue);
+                }
+
                 activeProfileEditor = null;
                 cachedProfile = activeProfile.objectReferenceValue;
             }
