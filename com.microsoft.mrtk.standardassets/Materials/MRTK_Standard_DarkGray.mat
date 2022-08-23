@@ -9,9 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MRTK_Standard_DarkGray
   m_Shader: {fileID: 4800000, guid: c331f6c43a2ef0945864cb668f2653c9, type: 3}
-  m_ShaderKeywords: _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT
-    _DISABLE_ALBEDO_MAP _HOVER_LIGHT _SPECULARHIGHLIGHTS_ON _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON
-    _USEDIFFUSE_ON _USEMAINCOLOR_ON
+  m_ShaderKeywords: _BORDER_LIGHT _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP _HOVER_LIGHT
+    _SPECULARHIGHLIGHTS_ON _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -58,6 +57,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _IridescentSpectrumMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -84,15 +87,25 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlbedoAlphaMode: 0
+    - _AlbedoAssignedAtRuntime: 0
     - _AlphaTest: 0
     - _BlendOp: 0
+    - _BlendedClippingWidth: 0
+    - _BlurBorderIntensity: 0
+    - _BlurMode: 0
+    - _BlurTextureIntensity: 1
+    - _BorderColorMode: 0
     - _BorderLight: 1
     - _BorderLightOpaque: 0
+    - _BorderLightOpaqueAlpha: 1
+    - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 1
     - _BorderMinValue: 0.1
     - _BorderWidth: 0.5
     - _BumpScale: 1
     - _CalibrationSpaceReflections: 0
+    - _ClippingBorder: 0
+    - _ClippingBorderWidth: 0.025
     - _ClippingPlane: 0
     - _ClippingPlaneBorder: 0
     - _ClippingPlaneBorderWidth: 0.025
@@ -104,33 +117,55 @@ Material:
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 1
     - _DstBlend: 0
+    - _EdgeSmoothingMode: 0
     - _EdgeSmoothingValue: 0.002
     - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
+    - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
+    - _EnableProximityLightColorOverride: 0
+    - _EnableSSAA: 0
+    - _EnableStencil: 0
+    - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
+    - _Fade: 1
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
+    - _FadeMinValue: 0
+    - _FluentLightIntensity: 1
     - _ForcePerPixel: 0
     - _Gloss: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GradientAngle: 180
+    - _GradientMode: 0
     - _HoverLight: 1
     - _HoverLightOpaque: 0
+    - _IndependentCorners: 0
     - _InnerGlow: 0
+    - _InnerGlowPower: 4
     - _InstancedColor: 0
+    - _IridescenceAngle: -0.78
+    - _IridescenceIntensity: 0.5
+    - _IridescenceThreshold: 0.05
     - _MainTex_OFFSET: 0
     - _MainTex_SCALE: 0
     - _Metallic: 0
+    - _MipmapBias: -2
     - _Mode: 0
+    - _NearLightFade: 0
     - _NearPlaneFade: 0
+    - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _ProximityLight: 0
+    - _ProximityLightSubtractive: 0
+    - _ProximityLightTwoSided: 0
     - _ReflectionScale: 2
     - _Reflections: 0
     - _Refraction: 0
@@ -141,16 +176,21 @@ Material:
     - _RoundCornerMargin: 0
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0
+    - _RoundCornersHideInterior: 0
     - _Shade4: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _Specular: 10
     - _SpecularHighlights: 1
+    - _SphericalHarmonics: 0
     - _SrcBlend: 1
     - _Stencil: 0
     - _StencilComparison: 0
     - _StencilOperation: 0
+    - _StencilReadMask: 255
     - _StencilReference: 0
+    - _StencilWriteMask: 255
+    - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _UseAmbient: 1
     - _UseBumpMap: 0
