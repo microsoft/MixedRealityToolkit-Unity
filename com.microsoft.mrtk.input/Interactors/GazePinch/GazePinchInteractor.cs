@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private IPoseSource devicePoseSource;
 
         /// <summary>
-        /// The pose source representing the device triggering the interaction".
+        /// The pose source representing the device triggering the interaction.
         /// </summary>
         protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
 
