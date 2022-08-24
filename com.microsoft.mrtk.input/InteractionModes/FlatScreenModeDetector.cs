@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -39,10 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public List<GameObject> GetControllers()
-        {
-            return controllers;
-        }
+        /// <inheritdoc />
+        public List<GameObject> GetControllers() => controllers;
 
         public bool IsModeDetected()
         {

@@ -26,20 +26,30 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         internal abstract class TintBehaviour<U> : PlayableBehaviour
         {
+            private List<U> tintables = new List<U>();
+
             /// <summary>
             /// The objects targeted by this PlayableBehaviour.
             /// </summary>
-            public List<U> Tintables { get; set; }
-
-            /// <summary>
-            /// The color to lerp from.
-            /// </summary>
-            public Color StartColor { get; set; }
+            public List<U> Tintables
+            {
+                get => tintables;
+                set
+                {
+                    tintables = value;
+                    if (startColors == null || startColors.Length != tintables.Count ||
+                        cachedColors == null || cachedColors.Length != tintables.Count)
+                    {
+                        startColors = new Color[tintables.Count];
+                        cachedColors = new Color[tintables.Count];
+                    }
+                }
+            }
 
             /// <summary>
             /// The color to lerp to.
             /// </summary>
-            public Color EndColor { get; set; }
+            public Color TintColor { get; set; }
 
             /// <summary>
             /// How should this tint color be blended onto the existing Graphic color
@@ -47,25 +57,31 @@ namespace Microsoft.MixedReality.Toolkit.UX
             /// </summary>
             public BlendType BlendMode { get; set; }
 
+            // Each individual tintable's "base color", which is blended
+            // upon by the tint behavior based on the blend type and
+            // factor.
+            private Color[] startColors;
+
             // Private cache of the color when the graph stops.
             // Checked when the graph restarts; if it's different,
             // the user probably externally modified the color, and
             // we set our new StartColor to the current color.
             // It's not perfect (for example, if it's changed *during* graph
             // execution, we won't catch it) but it works for most use cases.
-            private Color cachedColor;
+            private Color[] cachedColors;
 
             public TintBehaviour() { }
 
             /// <summary>
             /// Implement this to specify how the tintables should have their color set.
             /// </summary>
-            protected abstract void ApplyColor(Color color);
+            protected abstract void ApplyColor(Color color, U tintable);
 
             /// <summary>
-            /// Implement this to define how a color is retrieved from the tintables.
+            /// Implement this to define how colors are retrieved from the tintables.
             /// </summary>
-            protected abstract Color GetColor();
+            /// <returns> true if color was successfully retrieved. </returns>
+            protected abstract bool GetColor(U tintable, out Color color);
 
             /// <inheritdoc />
             public override void OnGraphStop(Playable playable)
@@ -75,7 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // Cache the color when the graph stops.
                 // We check it again when the graph restarts,
                 // and if it changed, it was probably externally modified.
-                cachedColor = GetColor();
+                for (int i = 0; i < tintables.Count; i++)
+                {
+                    if (GetColor(tintables[i], out Color color))
+                    {
+                        cachedColors[i] = color;
+                    }
+                }
             }
 
             /// <inheritdoc />
@@ -83,11 +105,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 base.OnGraphStart(playable);
 
-                // If the color was externally modified,
+                // If any color was externally modified (while graph was dormant),
                 // let's set the StartColor to the modified color.
-                if (cachedColor != GetColor())
+                for (int i = 0; i < tintables.Count; i++)
                 {
-                    StartColor = GetColor();
+                    // If the current color is different than the cached color,
+                    // update StartColor.
+                    if (GetColor(tintables[i], out Color color) && cachedColors[i] != color)
+                    {
+                        startColors[i] = color;
+                    }
                 }
             }
 
@@ -96,7 +123,15 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 base.PrepareFrame(playable, info);
 
-                ApplyColor(StartColor);
+                // At the beginning of a frame/graph execution,
+                // we apply the starting colors to the tintables,
+                // so that the blending operation can begin again
+                // across all participating tint behaviors.
+                for (int i = 0; i < tintables.Count; i++)
+                {
+                    ApplyColor(startColors[i], tintables[i]);
+                }
+                
             }
 
             /// <inheritdoc />
@@ -105,25 +140,34 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 base.ProcessFrame(playable, info, playerData);
 
                 float factor = (float)(playable.GetTime() / playable.GetDuration());
+                Color currentColor, targetColor;
 
-                Color currentColor = GetColor();
-                Color targetColor = EndColor;
+                for (int i = 0; i < tintables.Count; i++)
+                {
+                    // We grab the *current* color, because this behavior isn't necessarily
+                    // the only thing tinting this tintable! TintBehaviors can stack and blend.
+                    if (!GetColor(tintables[i], out currentColor)) { continue; }
 
-                // Compute our target color based on the specified mix mode.
-                if (BlendMode == BlendType.Override)
-                {
-                    targetColor = EndColor;
-                }
-                else if (BlendMode == BlendType.Additive)
-                {
-                    targetColor = currentColor + EndColor;
-                }
-                else if (BlendMode == BlendType.Multiply)
-                {
-                    targetColor = currentColor * EndColor;
-                }
+                    // Compute our target color based on the specified mix mode.
+                    if (BlendMode == BlendType.Override)
+                    {
+                        targetColor = TintColor;
+                    }
+                    else if (BlendMode == BlendType.Additive)
+                    {
+                        targetColor = currentColor + TintColor;
+                    }
+                    else if (BlendMode == BlendType.Multiply)
+                    {
+                        targetColor = currentColor * TintColor;
+                    }
+                    else
+                    {
+                        targetColor = TintColor;
+                    }
 
-                ApplyColor(Color.Lerp(currentColor, targetColor, factor));
+                    ApplyColor(Color.Lerp(currentColor, targetColor, factor), tintables[i]);
+                }
             }
         }
 
@@ -204,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             // Populate the behaviour with the relevant settings.
             behaviourInstance.Tintables = tintables;
-            behaviourInstance.EndColor = color;
+            behaviourInstance.TintColor = color;
             behaviourInstance.BlendMode = blendMode;
 
             // Set the playable's duration to the desired transition duration.
@@ -216,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             // Update the PlayableBehaviour settings for runtime editing of playable settings.
             behaviourInstance.Tintables = tintables;
-            behaviourInstance.EndColor = color;
+            behaviourInstance.TintColor = color;
             behaviourInstance.BlendMode = blendMode;
             Playable.SetDuration(transitionDuration);
             return base.Evaluate(value);

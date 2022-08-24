@@ -26,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsModeDetected();
 
         /// <summary>
-        /// Gets a list of the Gameobjects which represent the "controllers" that this interaction mode detector has jurisdiction over
+        /// Gets a list of the GameObjects which represent the "controllers" that this interaction mode detector has jurisdiction over
         /// </summary>
-        /// <returns> Returns the list of the Gameobjects which represent the "controllers" that this interaction mode detector has jurisdiction over</returns>
+        /// <returns> Returns the list of the GameObjects which represent the "controllers" that this interaction mode detector has jurisdiction over</returns>
         List<GameObject> GetControllers();
     }
 }

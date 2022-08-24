@@ -6,8 +6,7 @@
         "Microsoft.MixedReality.Toolkit.Core",
         "Unity.InputSystem",
         "Unity.XR.CoreUtils",
-        "Unity.XR.Interaction.Toolkit",
-        "Unity.XR.OpenXR"
+        "Unity.XR.Interaction.Toolkit"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

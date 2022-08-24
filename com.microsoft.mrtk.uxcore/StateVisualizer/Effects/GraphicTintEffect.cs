@@ -21,32 +21,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
         internal class GraphicTintBehaviour : TintBehaviour<Graphic>
         {
             /// <inheritdoc />
-            protected override void ApplyColor(Color color)
+            protected override void ApplyColor(Color color, Graphic graphic)
             {
-                if (Tintables == null) { return; }
-
-                foreach (Graphic graphic in Tintables)
-                {
-                    if (graphic != null)
-                    {
-                        graphic.color = color;
-                    }
-                }
+                if (graphic == null) { return; }
+                graphic.color = color;
             }
 
             /// <inheritdoc />
-            protected override Color GetColor()
+            protected override bool GetColor(Graphic graphic, out Color color)
             {
-                if (Tintables == null) { return default; }
-
-                if (Tintables.Count > 0 && Tintables[0] != null)
-                {
-                    return Tintables[0].color;
-                }
-                else
-                {
-                    return default;
-                }
+                color = default;
+                if (graphic == null) { return false; }
+                color = graphic.color;
+                return true;
             }
         }
 
