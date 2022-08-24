@@ -14,23 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A pose source which represents a hand ray. This hand ray is constructed by deriving it from the
     /// palm and knuckle positions
     /// </summary>
-    public class PolyfillHandRayPoseSource : IPoseSource
+    public class PolyfillHandRayPoseSource : HandBasedPoseSource
     {
-        /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
-        /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
-
-        [SerializeField]
-        [Tooltip("The hand which the joint belongs to joint.")]
-        private Handedness hand;
-
-        /// <summary>
-        /// The hand which the joint belongs to joint.
-        /// </summary>
-        internal Handedness Hand { get => hand; set => hand = value; }
-
         // The Hand Ray used to calculate the polyfill.
         private HandRay handRay = new HandRay();
 
@@ -48,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Tries to get the pose of the hand ray by deriving it from the
         /// palm and knuckle positions
         /// </summary>
-        public bool TryGetPose(out Pose pose)
+        public override bool TryGetPose(out Pose pose)
         {
             XRNode? handNode = Hand.ToXRNode();
 
