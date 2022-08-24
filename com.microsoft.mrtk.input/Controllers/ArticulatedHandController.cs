@@ -58,10 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private bool pinchedLastFrame = false;
 
-        // For pointing pose polyfill only.
-        // Remove once we have reliable cross-vendor aim pose from hands.
-        private HandRay handRay;
-
         // Awake() override to prevent the base class
         // from using the base controller state instead of our
         // derived state. TODO: Brought up with Unity, may be
@@ -69,9 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void Awake()
         {
             base.Awake();
-
-            // For pointing pose polyfill.
-            handRay = new HandRay();
 
             currentControllerState = new ArticulatedHandControllerState();
         }
@@ -147,33 +140,61 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.UpdateTrackingInput(controllerState);
 
-            // Workaround for missing aim/pointing-pose on devices without interaction profiles
-            // for hands, such as Varjo and Quest. Should be removed once we have universal
-            // hand interaction profile(s) across vendors.
+            // In case the position input action is not provided, we will try to polyfill it with the device position.
+            // Should be removed once we have universal hand interaction profile(s) across vendors.
+
             if (handsAggregator != null && (positionAction.action?.controls.Count ?? 0) == 0)
             {
-                if (!handsAggregator.TryGetJoint(TrackedHandJoint.IndexProximal, HandNode, out HandJointPose knuckle))
+                if (TryGetPolyfillDevicePose(out Pose devicePose))
                 {
-                    return;
-                }
-                if (!handsAggregator.TryGetJoint(TrackedHandJoint.Palm, HandNode, out HandJointPose palm))
-                {
-                    return;
-                }
+                    controllerState.position = devicePose.position;
+                    controllerState.rotation = devicePose.rotation;
 
-                // Tick the hand ray generator function. Uses index knuckle for position.
-                handRay.Update(knuckle.Position, -palm.Up, CameraCache.Main.transform, HandNode.ToHandedness());
-                
-                Ray ray = handRay.Ray;
-                
-                // controllerState is in rig-local space, our ray generator works in worldspace!
-                controllerState.position = PlayspaceUtilities.ReferenceTransform.InverseTransformPoint(ray.origin);
-                controllerState.rotation = Quaternion.LookRotation(PlayspaceUtilities.ReferenceTransform.InverseTransformVector(ray.direction),
-                                                                   PlayspaceUtilities.ReferenceTransform.InverseTransformVector(palm.Up));
-
-                // Polyfill the tracking state, too.
-                controllerState.inputTrackingState = InputTrackingState.Position | InputTrackingState.Rotation;
+                    // Polyfill the tracking state, too.
+                    controllerState.inputTrackingState = InputTrackingState.Position | InputTrackingState.Rotation;
+                }                
             }
+        }
+
+
+        private static readonly Quaternion rightPalmOffset = new Quaternion(Mathf.Sqrt(0.125f), Mathf.Sqrt(0.125f), -Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f);
+        private static readonly Quaternion leftPalmOffset = new Quaternion(Mathf.Sqrt(0.125f), -Mathf.Sqrt(0.125f), Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f);
+
+        // Workaround for missing device pose on devices without interaction profiles
+        // for hands, such as Varjo and Quest. Should be removed once we have universal
+        // hand interaction profile(s) across vendors.
+        public bool TryGetPolyfillDevicePose(out Pose devicePose)
+        {
+            Handedness handedness = HandNode.ToHandedness();
+            HandJointPoseSource palmPoseSource = new HandJointPoseSource(handedness, TrackedHandJoint.Palm);
+            bool poseRetrieved = false;
+
+            if (palmPoseSource.TryGetPose(out Pose palmPose))
+            {
+                devicePose.position = palmPose.position;
+                switch (handedness)
+                {
+                    case Handedness.Left:
+                        devicePose.rotation = palmPose.rotation * Quaternion.Inverse(leftPalmOffset);
+                        poseRetrieved = true;
+                        break;
+                    case Handedness.Right:
+                        devicePose.rotation = palmPose.rotation * Quaternion.Inverse(rightPalmOffset);
+                        poseRetrieved = true;
+                        break;
+                    default:
+                        Debug.LogError("No polyfill available for device with handedness " + handedness);
+                        devicePose = Pose.identity;
+                        poseRetrieved = false;
+                        break;
+                };
+            }
+            else
+            {
+                devicePose = Pose.identity;
+            }
+
+            return poseRetrieved;
         }
     }
 }

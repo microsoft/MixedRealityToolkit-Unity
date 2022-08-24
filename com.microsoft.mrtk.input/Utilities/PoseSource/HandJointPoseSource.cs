@@ -15,6 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class HandJointPoseSource : IPoseSource
     {
+        public HandJointPoseSource(Handedness hand, TrackedHandJoint joint)
+        {
+            Hand = hand;
+            Joint = joint;
+        }
+
         /// <summary>
         /// Cached reference to hands aggregator for efficient per-frame use.
         /// </summary>

@@ -133,14 +133,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     interactionPointTracked = TryGetInteractionPoint(out Pose interactionPose);
                     if (interactionPointTracked)
                     {
-                        attachTransform.SetPositionAndRotation(interactionPose.position, interactionPose.rotation);
+                        transform.SetPositionAndRotation(interactionPose.position, interactionPose.rotation);
                     }
                     else
                     {
                         // If we have no valid tracked interaction point, reset to whatever our parent XRController's pose is.
-                        attachTransform.localPosition = Vector3.zero;
-                        attachTransform.localRotation = Quaternion.identity;
+                        transform.localPosition = Vector3.zero;
+                        transform.localRotation = Quaternion.identity;
                     }
+
+                    // Ensure that the attachTransform tightly follows the interactor's transform
+                    attachTransform.localPosition = Vector3.zero;
+                    attachTransform.localRotation = Quaternion.identity;
 
                     SetVisuals(isHoverActive);
 
