@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b124359e8a3dd44db8d5a6a08d5a333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  root: {fileID: 920286487973313467}
+  visibleRoot: {fileID: 920286487973313467}
   target: -1
   leftHand:
     m_UseReference: 0
@@ -1281,6 +1281,7 @@ MonoBehaviour:
     width: 0
     height: 0
   padding: 0.04
+  minimumViewAngle: 45
 --- !u!1 &7883018520630735588
 GameObject:
   m_ObjectHideFlags: 0
