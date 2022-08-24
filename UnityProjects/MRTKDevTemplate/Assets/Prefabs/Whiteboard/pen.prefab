@@ -390,6 +390,12 @@ MonoBehaviour:
   onClicked:
     m_PersistentCalls:
       m_Calls: []
+  onEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisabled:
+    m_PersistentCalls:
+      m_Calls: []
   hostTransform: {fileID: 2415827607033482817}
   allowedManipulations: 3
   allowedInteractionTypes: 1

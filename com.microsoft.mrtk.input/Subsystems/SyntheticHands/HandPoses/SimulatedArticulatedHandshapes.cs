@@ -4,66 +4,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// This stores the joint pose JSON data that defines various articulated hand gestures for input simulation.
+    /// This stores the joint pose JSON data that defines various articulated hand poses for input simulation.
     /// The JSON data that defines each joint position and orientation is stored in strings to avoid file loading/targeting during runtime
     /// </summary>
-    public static class SimulatedArticulatedHandPoses
+    public static class SimulatedArticulatedHandshapes
     {
-        private static readonly Dictionary<GestureId, string> GesturePoseJSONMapping = new Dictionary<GestureId, string>()
+        private static readonly Dictionary<HandshapeId, string> HandshapeJointPoseDataJSONMapping = new Dictionary<HandshapeId, string>()
         {
-            { GestureId.Flat, ArticulatedHandPose_Flat},
-            { GestureId.Grab, ArticulatedHandPose_Grab},
-            { GestureId.Open, ArticulatedHandPose_Open},
-            { GestureId.OpenSteadyGrabPoint, ArticulatedHandPose_OpenSteadyGrabPoint},
-            { GestureId.Pinch, ArticulatedHandPose_Pinch},
-            { GestureId.PinchSteadyWrist, ArticulatedHandPose_PinchSteadyWrist},
-            { GestureId.Poke, ArticulatedHandPose_Poke },
-            { GestureId.ThumbsUp, ArticulatedHandPose_ThumbsUp},
-            { GestureId.Victory, ArticulatedHandPose_Victory},
-            { GestureId.TeleportStart, ArticulatedHandPose_TeleportStart},
-            { GestureId.TeleportEnd, ArticulatedHandPose_TeleportEnd}
+            { HandshapeId.Flat, ArticulatedHandPose_Flat},
+            { HandshapeId.Grab, ArticulatedHandPose_Grab},
+            { HandshapeId.Open, ArticulatedHandPose_Open},
+            { HandshapeId.OpenSteadyGrabPoint, ArticulatedHandPose_OpenSteadyGrabPoint},
+            { HandshapeId.Pinch, ArticulatedHandPose_Pinch},
+            { HandshapeId.PinchSteadyWrist, ArticulatedHandPose_PinchSteadyWrist},
+            { HandshapeId.Poke, ArticulatedHandPose_Poke },
+            { HandshapeId.ThumbsUp, ArticulatedHandPose_ThumbsUp},
+            { HandshapeId.Victory, ArticulatedHandPose_Victory},
+            { HandshapeId.TeleportStart, ArticulatedHandPose_TeleportStart},
+            { HandshapeId.TeleportEnd, ArticulatedHandPose_TeleportEnd}
         };
 
-        private static Dictionary<GestureId, HandJointPose[]> gesturePoses;
+        private static Dictionary<HandshapeId, HandJointPose[]> HandshapeJointPoseData;
 
         /// <summary>
-        /// Get pose data for a supported gesture.
+        /// Get pose data for a supported handshape.
         /// </summary>
-        public static void GetGesturePose(GestureId gesture, out HandJointPose[] poseData)
+        public static void GetHandshapeJointPoseData(HandshapeId handshape, out HandJointPose[] poseData)
         {
-            if (gesturePoses == null)
+            if (HandshapeJointPoseData == null)
             {
-                LoadDefaultGesturePoses();
+                LoadDefaultHandshapeJointPoseData();
             }
 
-            Debug.Assert(gesturePoses.ContainsKey(gesture));
+            Debug.Assert(HandshapeJointPoseData.ContainsKey(handshape));
 
-            gesturePoses.TryGetValue(gesture, out poseData);
+            HandshapeJointPoseData.TryGetValue(handshape, out poseData);
         }
 
         /// <summary>
-        /// Set hand pose data for supported gesture. Useful to overwrite loaded defaults
+        /// Set hand pose data for supported handshape. Useful to overwrite loaded defaults
         /// </summary>
-        public static void SetGesturePose(GestureId key, HandJointPose[] poseData)
+        public static void SetHandshapeJointPoseData(HandshapeId key, HandJointPose[] poseData)
         {
-            gesturePoses[key] = poseData;
+            HandshapeJointPoseData[key] = poseData;
         }
 
         /// <summary>
-        /// Load default hand poses for supported gestures. Clears and overwrites original gesture poses
+        /// Load default hand poses for supported handshapes. Clears and overwrites original handshape poses
         /// </summary>
-        public static void LoadDefaultGesturePoses()
+        public static void LoadDefaultHandshapeJointPoseData()
         {
-            gesturePoses = new Dictionary<GestureId, HandJointPose[]>();
+            HandshapeJointPoseData = new Dictionary<HandshapeId, HandJointPose[]>();
 
-            foreach (var mapping in GesturePoseJSONMapping)
+            foreach (var mapping in HandshapeJointPoseDataJSONMapping)
             {
-                gesturePoses.Add(mapping.Key, HandsUtils.PoseFromJson(mapping.Value));
+                HandshapeJointPoseData.Add(mapping.Key, HandsUtils.PoseFromJson(mapping.Value));
             }
         }
 

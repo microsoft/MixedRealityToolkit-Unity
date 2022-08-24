@@ -10,7 +10,11 @@ PrefabInstance:
     - target: {fileID: 1224743575262302074, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: e2503ae3821a6c5468d93a5b7fc80923, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997062889913927636, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2244185730444192509, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -63,6 +67,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6397459067767180594, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
+    - target: {fileID: 6397459067767180594, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937984443068901461, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     - target: {fileID: 7535415752403634025, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.size
       value: 2
@@ -75,6 +91,10 @@ PrefabInstance:
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].data
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7855682163667943843, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5762245003366665926, guid: 9b0d0ee11ff70b04d901a29b519cbaa0, type: 2}
     - target: {fileID: 8147799309782802252, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: m_IsActive
       value: 0
