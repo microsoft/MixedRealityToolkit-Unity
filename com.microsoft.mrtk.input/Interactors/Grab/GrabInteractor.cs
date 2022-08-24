@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// HandsAggregatorSubsystem. This is typically the averaged pose
     /// between the index tip and the thumb tip.
     /// </summary>
-    [UnityEngine.AddComponentMenu("MRTK/Input/Grab Interactor")]
+    [AddComponentMenu("MRTK/Input/Grab Interactor")]
     public class GrabInteractor : HandJointInteractor, IGrabInteractor
     {
         [SerializeReference]

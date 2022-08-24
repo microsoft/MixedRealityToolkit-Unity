@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [HideInInspector]
-        // A temporary variable used to migrate instnaces of FollowJoint to use the jointPoseSource class as the source of truth
+        // A temporary variable used to migrate instances of FollowJoint to use the jointPoseSource class as the source of truth
         // rather than its own separately serialized values.
         // TODO: Remove this after some time to ensure users have successfully migrated.
         private bool migratedSuccessfully = false;
