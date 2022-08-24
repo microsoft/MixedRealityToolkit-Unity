@@ -673,9 +673,9 @@ MonoBehaviour:
   m_fontSize: 4.66
   m_fontSizeBase: 4.66
   m_fontWeight: 400
-  m_enableAutoSizing: 1
-  m_fontSizeMin: 3
-  m_fontSizeMax: 4.66
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -750,14 +750,6 @@ PrefabInstance:
     - target: {fileID: 3705378105823492760, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_Size.y
       value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 3705378105823492760, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: m_Center.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3705378105823492760, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: m_Center.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3705378105823492761, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: rectTransform
@@ -849,7 +841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.size
@@ -876,15 +868,15 @@ PrefabInstance:
       value: 0.5019608
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].color.b
+      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].color.b
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].color.g
+      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].color.g
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].color.r
+      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].color.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
@@ -940,19 +932,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2228947736508096533}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].tintables.Array.data[1]
+      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.data[1]
       value: 
       objectReference: {fileID: 8493469810320727241}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].tintables.Array.data[2]
+      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.data[2]
       value: 
       objectReference: {fileID: 8467006667157818416}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].tintables.Array.data[3]
+      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.data[3]
       value: 
       objectReference: {fileID: 1922220768106560367}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[2].tintables.Array.data[4]
+      propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.data[4]
       value: 
       objectReference: {fileID: 5095746839500215027}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}

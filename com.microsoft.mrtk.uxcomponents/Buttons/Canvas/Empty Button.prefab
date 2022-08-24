@@ -799,29 +799,28 @@ MonoBehaviour:
       value:
         effects:
         - id: 0
-        - id: 1
         isVariable: 0
     - key: PassiveHover
       value:
         effects:
+        - id: 1
         - id: 2
-        - id: 3
         isVariable: 0
     - key: ActiveHover
       value:
         effects:
+        - id: 3
         - id: 4
-        - id: 5
         isVariable: 0
     - key: Select
       value:
         effects:
-        - id: 6
+        - id: 5
         isVariable: 1
     - key: Toggle
       value:
         effects:
-        - id: 7
+        - id: 6
         isVariable: 0
   interactable: {fileID: 3705378105823492762}
   animator: {fileID: 3705378105823492766}
@@ -838,16 +837,6 @@ MonoBehaviour:
         playbackMode: 0
         blendMode: 2
     00000001:
-      type: {class: GraphicTintEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
-      data:
-        name: GraphicTint
-        transitionDuration: 0.3
-        tintables:
-        - {fileID: 7746750332524202746}
-        color: {r: 1, g: 1, b: 1, a: 0}
-        playbackMode: 0
-        blendMode: 0
-    00000002:
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
@@ -856,7 +845,7 @@ MonoBehaviour:
         playbackMode: 0
         weightMode: 0
         transitionDuration: 0
-    00000003:
+    00000002:
       type: {class: GraphicTintEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: GraphicTint
@@ -866,7 +855,7 @@ MonoBehaviour:
         color: {r: 1, g: 1, b: 1, a: 1}
         playbackMode: 0
         blendMode: 0
-    00000004:
+    00000003:
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
@@ -875,7 +864,7 @@ MonoBehaviour:
         playbackMode: 0
         weightMode: 0
         transitionDuration: 0
-    00000005:
+    00000004:
       type: {class: GraphicTintEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: GraphicTint
@@ -885,7 +874,7 @@ MonoBehaviour:
         color: {r: 0, g: 0, b: 0, a: 0.2}
         playbackMode: 0
         blendMode: 1
-    00000006:
+    00000005:
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
@@ -894,7 +883,7 @@ MonoBehaviour:
         playbackMode: 1
         weightMode: 0
         transitionDuration: 0
-    00000007:
+    00000006:
       type: {class: GraphicTintEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: GraphicTint
