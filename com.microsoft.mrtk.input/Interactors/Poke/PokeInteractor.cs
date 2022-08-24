@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region PokeInteractor
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the poke pose")]
         private IPoseSource pokePoseSource;
 

@@ -75,11 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // and tracked hands, forgoing the UnityEngine.XR.InputDevices route
             UnityInputSystem.InputSystem.onDeviceChange += CheckToShowVisuals;
             InputDevices.deviceConnected += CheckToShowVisuals;
+            InputDevices.deviceDisconnected += RemoveVisuals;
         }
 
         protected void OnDisable()
         {
             UnityInputSystem.InputSystem.onDeviceChange -= CheckToShowVisuals;
+            InputDevices.deviceConnected -= CheckToShowVisuals;
+            InputDevices.deviceDisconnected -= RemoveVisuals;
 
             // Hide the controller model
             xrController.hideControllerModel = true;
@@ -87,18 +90,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void CheckToShowVisuals(UnityInputSystem.InputDevice inputDevice, UnityInputSystem.InputDeviceChange change)
         {
-            if (change == UnityInputSystem.InputDeviceChange.Added ||
-                change == UnityInputSystem.InputDeviceChange.UsageChanged ||
-                change == UnityInputSystem.InputDeviceChange.ConfigurationChanged)
+            // Upon detecting a generic input device with the appropriate usages, load or remove the controller visuals
+            // when appropriate
+            if (inputDevice is UnityInputSystem.XR.XRController xrInputDevice && xrInputDevice.usages.Contains(targetUsage))
             {
-                if (inputDevice is UnityInputSystem.XR.XRController xrInputDevice)
+                switch (change)
                 {
-                    // Upon detecting a generic input device with the appropriate usages, load the controller visuals
-                    if (xrInputDevice.usages.Contains(targetUsage))
-                    {
-                        // Fallback visuals are only used if no hand joints are detected
+                    case UnityInputSystem.InputDeviceChange.Added:
+                    case UnityInputSystem.InputDeviceChange.Reconnected:
+                    case UnityInputSystem.InputDeviceChange.Enabled:
+                    case UnityInputSystem.InputDeviceChange.UsageChanged:
+                    case UnityInputSystem.InputDeviceChange.ConfigurationChanged:
+                    case UnityInputSystem.InputDeviceChange.SoftReset:
+                    case UnityInputSystem.InputDeviceChange.HardReset:
+                        // Clear the exiting visuals before proceding to try to render new ones
+                        ClearControllerVisuals();
+
+                        // Fallback visuals are only used if NO hand joints are detected
                         // OR the input device is specifically a simulated controller that is in the MotionController Simulation Mode.
-                        bool useFallbackVisuals = HandsUtils.GetSubsystem().TryGetJoint(TrackedHandJoint.Palm, handNode, out _);
+                        bool useFallbackVisuals = !HandsUtils.GetSubsystem().TryGetJoint(TrackedHandJoint.Palm, handNode, out _);
                         bool isSimulatedController = false;
                         if (xrInputDevice is MRTKSimulatedController simulatedController)
                         {
@@ -107,26 +117,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         InstantiateControllerVisuals(!isSimulatedController, useFallbackVisuals);
-                    }
+                        break;
+                    case UnityInputSystem.InputDeviceChange.Disabled:
+                    case UnityInputSystem.InputDeviceChange.Removed:
+                    case UnityInputSystem.InputDeviceChange.Disconnected:
+                        ClearControllerVisuals();
+                        break;
                 }
             }
         }
 
         private void CheckToShowVisuals(InputDevice inputDevice)
         {
-            if ((inputDevice.characteristics & handednessCharacteristic) == handednessCharacteristic)
+            if ((inputDevice.characteristics & handednessCharacteristic) == handednessCharacteristic &&
+                (inputDevice.characteristics & validControllerCharacteristiscs) == validControllerCharacteristiscs)
             {
-                if ((inputDevice.characteristics & validControllerCharacteristiscs) == validControllerCharacteristiscs)
-                {
-                    // Instantiate the controller visuals if this input device matches the characteristics for a valid controller.
-                    InstantiateControllerVisuals(true, true);
-                }
-                else
-                {
-                    // If the input device detected for this hand does not meet the specified characteristics for a valid controller, clear the
-                    // controller visuals if they have been previously instantiated
-                    ClearControllerVisuals();
-                }
+                // Clear the exiting visuals before proceding to try to render new ones
+                ClearControllerVisuals();
+
+                // Instantiate the controller visuals if this input device matches the characteristics for a valid controller.
+                InstantiateControllerVisuals(true, true);
+            }
+        }
+
+        private void RemoveVisuals(InputDevice inputDevice)
+        {
+            if ((inputDevice.characteristics & handednessCharacteristic) == handednessCharacteristic &&
+                (inputDevice.characteristics & validControllerCharacteristiscs) == validControllerCharacteristiscs)
+            {
+                // Clear the controller visuals if they have been previously instantiated
+                ClearControllerVisuals();
             }
         }
 

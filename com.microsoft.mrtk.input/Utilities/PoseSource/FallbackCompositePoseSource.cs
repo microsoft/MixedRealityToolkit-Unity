@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected struct PoseSourceWrapper
         {
             [SerializeReference]
-            [InterfaceSelector]
+            [InterfaceSelector(true)]
             [Tooltip("The pose source we are trying to get the pose of")]
             public IPoseSource source;
         }

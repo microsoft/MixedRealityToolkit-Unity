@@ -33,9 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InputAction positionAction = positionActionProperty.action;
             InputAction rotationAction = rotationActionProperty.action;
 
-            if (trackingStateAction != null && trackingStateAction.enabled
-                && positionAction != null && positionAction.enabled
-                && rotationAction != null && rotationAction.enabled
+            if (trackingStateAction != null && trackingStateAction.controls.Count != 0
+                && positionAction != null && positionAction.controls.Count != 0
+                && rotationAction != null && rotationAction.controls.Count != 0
                 && ((InputTrackingState)trackingStateAction.ReadValue<int>() & (InputTrackingState.Position | InputTrackingState.Rotation)) != 0)
             {
                 pose.position = positionAction.ReadValue<Vector3>();

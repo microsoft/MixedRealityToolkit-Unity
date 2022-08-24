@@ -107,6 +107,22 @@ PrefabInstance:
       propertyPath: jointPoseSource.hand
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pokePoseSource.poseSources.Array.data[0].source.hand
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pokePoseSource.poseSources.Array.data[1].source.positionActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: -3326005586356538449, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pokePoseSource.poseSources.Array.data[1].source.rotationActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: 5101698808175986029, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pokePoseSource.poseSources.Array.data[1].source.trackingStateActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: 3239510804178183174, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
     - target: {fileID: 2082243679387671466, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: settings.handedness
       value: 2
@@ -116,9 +132,21 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2572330550550829917, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: pinchPoseSource.hand
+      propertyPath: pinchPoseSource.poseSources.Array.data[0].source.hand
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2572330550550829917, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pinchPoseSource.poseSources.Array.data[1].source.positionActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: -3326005586356538449, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 2572330550550829917, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pinchPoseSource.poseSources.Array.data[1].source.rotationActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: 5101698808175986029, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 2572330550550829917, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pinchPoseSource.poseSources.Array.data[1].source.trackingStateActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: 3239510804178183174, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
     - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: aimPoseSource.poseSources.Array.data[0].source.hand
       value: 2

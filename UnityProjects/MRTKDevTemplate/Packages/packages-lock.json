@@ -13,6 +13,15 @@
       },
       "hash": "04962b47618cdab46943217d30c6c6de33d3c3f7"
     },
+    "com.atteneder.ktx": {
+      "version": "https://github.com/atteneder/KtxUnity.git#v2.1.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "hash": "7747a48d5e994db800b4c60a0a8b95a5ae2ce39f"
+    },
     "com.microsoft.mixedreality.openxr": {
       "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.4.tgz",
       "depth": 0,
