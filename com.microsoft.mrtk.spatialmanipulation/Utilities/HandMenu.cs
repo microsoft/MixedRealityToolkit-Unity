@@ -10,41 +10,89 @@ using Microsoft.MixedReality.Toolkit.Subsystems;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
+    /// <summary>
+    /// A dedicated script for controlling hand menus. Best used in conjuction with
+    /// a Canvas-based menu object, this will automatically position the menu
+    /// to conform to the edge of a user's hand, with proper spacing/padding as well
+    /// as logic for switching between hands.
+    /// </summary>
     internal class HandMenu : MonoBehaviour
     {
         [Flags]
-        private enum TargetType
+        internal enum TargetType
         {
             None = 0, LeftHand = 1 << 0, RightHand = 1 << 1
         }
 
         [SerializeField]
-        private GameObject root;
+        [Tooltip("The visible root of the hand menu object. This is the object that " +
+                 "will be enabled/disabled and positioned to fit the hand.")]
+        private GameObject visibleRoot;
+
+        /// <summary>
+        /// The visible root of the hand menu object. This is the
+        /// object that will be enabled/disabled and positioned to fit the hand.
+        /// </summary>
+        public GameObject VisibleRoot { get => visibleRoot; set => visibleRoot = value; }
 
         [SerializeField]
+        [Tooltip("A bitflag representing the hands that should be used for this menu. " +
+                 "If both hands are selected, the menu will be visible on either.")]
         private TargetType target;
 
+        /// <summary>
+        /// A bitflag representing the hands that should be used for this menu.
+        /// If both hands are selected, the menu will be visible on either.
+        /// </summary>
+        public TargetType Target { get => target; set => target = value; }
+
         [SerializeField]
+        [Tooltip("The input action representing the left hand's position. " +
+                 "This is used if no joint data is available.")]
         private InputActionProperty leftHand;
 
         [SerializeField]
+        [Tooltip("The input action representing the right hand's position. " +
+                 "This is used if no joint data is available.")]
         private InputActionProperty rightHand;
 
         [SerializeField]
+        [Tooltip("This is automatically set if a Canvas-based menu is used. " +
+                 "If a non-canvas object is used, this should be set to approximate " +
+                 "2D footprint of the menu object.")]
         private Rect menuSize;
 
         [SerializeField]
+        [Tooltip("The amount of padding between the edge of the user's hand " +
+                 "and the edge of the menu.")]
         private float padding = 0.04f;
 
+        [SerializeField]
+        [Tooltip("The minimum view angle (angle between the hand and the user's view direction) " +
+                 "at which the menu can activate.")]
+        private float minimumViewAngle = 45f;
+
+        /// <summary>
+        /// The minimum view angle (angle between the hand and the user's view direction)
+        /// at which the menu can activate.
+        /// </summary>
+        public float MinimumViewAngle { get => minimumViewAngle; set => minimumViewAngle = value; }
+
+        #region Private Fields
+
+        // The rect transform located at the visibleRoot (if one exists)
         private RectTransform rootRectTransform = null;
 
+        // The hand target we're currently targeting.
         private TargetType currentTarget = TargetType.None;
+
+        #endregion Private Fields
 
         private void Start()
         {
-            if (root != null)
+            if (visibleRoot != null)
             {
-                rootRectTransform = root.GetComponent<RectTransform>();
+                rootRectTransform = visibleRoot.GetComponent<RectTransform>();
                 if (rootRectTransform != null)
                 {
                     menuSize.width = rootRectTransform.sizeDelta.x * rootRectTransform.lossyScale.x;
@@ -81,20 +129,29 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
             }
 
+            // Flag if we've switched to a new hand this frame,
+            // and the menu is sufficiently "behind" the hand.
+            // This is to avoid the menu "lerping" between hands
+            // when very small (causing distracting visuals.)
+            bool snapToNewHand = false;
+
             if (currentTarget == TargetType.None)
             {
                 // Tie break!
                 if (rightAttach.HasValue && leftAttach.HasValue)
                 {
                     currentTarget = TargetType.RightHand;
+                    snapToNewHand = rightViewDot < 0.5f;
                 }
                 else if (rightAttach.HasValue) // Switch from None to Right
                 {
                     currentTarget = TargetType.RightHand;
+                    snapToNewHand = rightViewDot < 0.5f;
                 }
                 else if (leftAttach.HasValue) // Switch from None to Left
                 {
                     currentTarget = TargetType.LeftHand;
+                    snapToNewHand = leftViewDot < 0.5f;
                 }
             }
             else
@@ -124,18 +181,29 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             if (!attach.HasValue)
             {
                 // TODO: animate.
-                root.SetActive(false);
+                visibleRoot.SetActive(false);
                 return;
             }
             else
             {
                 // TODO: animate.
-                root.SetActive(true);
+                visibleRoot.SetActive(true);
             }
 
+            visibleRoot.SetActive(viewDot > 0.15f);
+
             transform.localScale = Vector3.one * viewDot;
-            transform.position = Vector3.Lerp(transform.position, attach.Value.position, Mathf.Lerp(0.1f, 0.5f, dist));
-            transform.rotation = Quaternion.Slerp(transform.rotation, attach.Value.rotation, Mathf.Lerp(0.1f, 0.5f, dist));
+
+            if (snapToNewHand)
+            {
+                transform.position = attach.Value.position;
+                transform.rotation = attach.Value.rotation;
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, attach.Value.position, Mathf.Lerp(0.1f, 0.5f, dist));
+                transform.rotation = Quaternion.Slerp(transform.rotation, attach.Value.rotation, Mathf.Lerp(0.1f, 0.5f, dist));
+            }
         }
 
 
@@ -157,6 +225,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                                                                         hand,
                                                                         out var palm);
             if (!gotJoints) { return null; }
+
+            // Check if the hand is within the view angle.
+            float viewAngle = Vector3.Angle(CameraCache.Main.transform.forward, palm.Position - CameraCache.Main.transform.position);
+            if (viewAngle > minimumViewAngle) { return null; }
 
             Vector3 offsetVector = (-proximal.Right + -metacarpal.Right).normalized * (hand == XRNode.LeftHand ? 1 : -1);
             
