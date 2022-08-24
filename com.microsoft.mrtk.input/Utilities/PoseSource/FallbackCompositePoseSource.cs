@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-
     /// <summary>
     /// A pose source composed computed from an ordered list of pose sources. Returns the result of the first pose source
     /// which successfully returns a pose.
@@ -49,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// An internal wrapper class which is required to allow the pose source to be properly selectable in editor
         /// This is needed because GenericMenu's cannot be set as the active context when embedded inside other GUI contexts,
-        /// which in this particular instance, is the list element's container context
-        /// Reference: https://forum.unity.com/threads/genericmenu-used-as-context-inside-a-menuitem.330235/ 
+        /// which in this particular instance, is the list element's container context.
+        /// Reference: https://forum.unity.com/threads/genericmenu-used-as-context-inside-a-menuitem.330235/
         /// </summary>
         [Serializable]
         protected struct PoseSourceWrapper
