@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
@@ -33,9 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // caching the controller we belong to
         private XRBaseController xrController;
 
-        // caching the controller model provider we are using we belong to
-        private ControllerModel controllerModelProvider;
-
         // The controller usages we want the input device to have;
         private InternedString targetUsage;
 
@@ -65,12 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             switch (handNode)
             {
                 case XRNode.LeftHand:
-                    controllerModelProvider = ControllerModel.Left;
                     xrController = lookups[0].LeftHandController;
                     targetUsage = UnityInputSystem.CommonUsages.LeftHand;
                     break;
                 case XRNode.RightHand:
-                    controllerModelProvider = ControllerModel.Right;
                     xrController = lookups[0].RightHandController;
                     targetUsage = UnityInputSystem.CommonUsages.RightHand;
                     break;
@@ -141,9 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             fallbackGameObject?.SetActive(false);
 
             // Try to load the controller model from the platform
-            if (usePlatformVisuals && controllerModelProvider != null)
+            if (usePlatformVisuals)
             {
-                platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(controllerModelProvider);
+                platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(handNode.ToHandedness());
                 if (platformLoadedGameObject != null)
                 {
                     // Platform models are "rotated" 180 degrees due to the forward vector for a controller pointing towards the user.

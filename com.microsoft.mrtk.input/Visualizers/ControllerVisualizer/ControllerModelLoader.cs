@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.OpenXR;
 using System.Threading.Tasks;
 
-#if GLTFAST_PRESENT
+
+#if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT && KTX_PRESENT
+using Microsoft.MixedReality.OpenXR;
 using GLTFast;
-#endif
+#endif // MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT && KTX_PRESENT
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -25,11 +26,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="controllerModelProvider">The OpenXR ControllerModel to loade from</param>
         /// <returns>A gameobject representing the generated controller model in the scene</returns>
-        public async static Task<GameObject> TryGenerateControllerModelFromPlatformSDK(ControllerModel controllerModelProvider)
+        public async static Task<GameObject> TryGenerateControllerModelFromPlatformSDK(Handedness handedness)
         {
             GameObject gltfGameObject = null;
 
-#if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT
+#if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT && KTX_PRESENT
+            ControllerModel controllerModelProvider = handedness == Handedness.Left ? ControllerModel.Left :
+                                                        handedness == Handedness.Right ?  ControllerModel.Right :
+                                                        null;
+
+            if (controllerModelProvider == null)
+            {
+                Debug.LogWarning("Controller model provider does not exist for this handedness");
+                return null;
+            }
+
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
                 Debug.LogWarning("Failed to obtain controller model key from platform.");
@@ -68,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.LogError("Failed to obtain controller model from platform.");
                 Object.Destroy(gltfGameObject);
             }
-#endif // MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID)
+#endif // MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT && KTX_PRESENT
 
             return gltfGameObject;
         }
