@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Pose PinchPose => (PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose)) ? pinchPose : new Pose(transform.position, transform.rotation);
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the device triggering the interaction.")]
         private IPoseSource devicePoseSource;
 
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
         private IPoseSource pinchPoseSource;
 
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected IPoseSource PinchPoseSource { get => pinchPoseSource; set => pinchPoseSource = value; }
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the pose this interactor uses for aiming and positioning. Follows the 'pointer pose'")]
         private IPoseSource aimPoseSource;
 

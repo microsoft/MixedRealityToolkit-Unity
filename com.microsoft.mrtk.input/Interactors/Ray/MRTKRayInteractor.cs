@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the pose this interactor uses for aiming and positioning. Follows the 'pointer pose'")]
         private IPoseSource aimPoseSource;
 
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected IPoseSource AimPoseSource { get => aimPoseSource; set => aimPoseSource = value; }
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the device this interactor uses for rotation.")]
         private IPoseSource devicePoseSource;
 
