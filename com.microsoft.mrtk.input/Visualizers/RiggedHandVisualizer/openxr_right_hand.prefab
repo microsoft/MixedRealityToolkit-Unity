@@ -618,6 +618,23 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 3239510804178183174, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+  controllerDetectedAction:
+    m_Name: Controller Detected
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: acf2b8b1-99c5-476b-bc26-376dcd688a02
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: dbc1f4dd-176f-4f11-ab92-2681f5dc7cd9
+      m_Path: <XRController>{RightHand}/isTracked
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Controller Detected
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1 &4657295888579565740
 GameObject:
   m_ObjectHideFlags: 0

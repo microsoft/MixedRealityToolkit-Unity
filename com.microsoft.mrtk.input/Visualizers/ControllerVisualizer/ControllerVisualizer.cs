@@ -9,9 +9,6 @@ using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityInputSystem = UnityEngine.InputSystem;
 using InputAction = UnityEngine.InputSystem.InputAction;
-using InputActionType = UnityEngine.InputSystem.InputActionType;
-using System.Threading.Tasks;
-using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -42,13 +39,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // The controller usages we want the input device to have;
         private InternedString targetUsage;
 
+        // A gameobject representing the currently loaded platform models.
         private GameObject platformLoadedGameObject;
+
+        // A gameobject representing the root which contains any loaded platform models.
+        // This root is necessary since platform models are rotated 180 degrees by default.
         private GameObject platformLoadedGameObjectRoot;
+
+        // A gameobject representing the fallback controller model.
         private GameObject fallbackGameObject;
 
         [SerializeField]
-        private UnityInputSystem.InputActionProperty myAction;
-        private InputAction controllerDetectedAction => myAction.action;
+        [Tooltip("The input action we key into to determine whether this controller is tracked or not")]
+        private InputAction controllerDetectedAction;
 
         /// <inheritdoc />
         protected bool IsControllerTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
@@ -121,8 +124,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        // Private reference to the gameobject which represents the visualized controller
+        // Needs to be explicitly set to null in cases where no controller visuals are ever loaded.
+        private GameObject ControllerGameObject = null;
 
-        private GameObject ControllerGameObject;
         /// <summary>
         /// Tries to instantiate controller visuals for the specified hand node.
         /// </summary>
@@ -175,8 +180,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void RemoveControllerVisuals(InputAction.CallbackContext obj)
         {
-            ControllerGameObject.SetActive(false);
+            if (ControllerGameObject != null)
+            {
+                ControllerGameObject.SetActive(false);
+            }
         }
-
     }
 }
