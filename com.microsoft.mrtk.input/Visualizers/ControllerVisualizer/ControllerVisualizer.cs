@@ -16,7 +16,8 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Basic controller visualizer which draws a generic motion controller when one is detected
+    /// Basic controller visualizer which renders the a controller model when one is detected.
+    /// The platform controller model is used when available, otherwise a generic controller model is used.
     /// </summary>
     [AddComponentMenu("MRTK/Input/Controller Visualizer")]
     public class ControllerVisualizer : MonoBehaviour
@@ -56,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
 
-            ControllerLookup[] lookups = GameObject.FindObjectsOfType(typeof(ControllerLookup)) as ControllerLookup[];
+            ControllerLookup[] lookups = FindObjectsOfType(typeof(ControllerLookup)) as ControllerLookup[];
 
             switch (handNode)
             {
@@ -73,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 default:
                     break;
             }
-
+            
             if (controllerDetectedAction == null) { return; }
             controllerDetectedAction.started += RenderControllerVisuals;
             controllerDetectedAction.canceled += RemoveControllerVisuals;
@@ -156,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If the ControllerGameObject is still not initialized after this, then use the fallback model if told to
             if (useFallbackVisuals && ControllerGameObject == null)
             {
-                if (fallbackGameObject == null)
+                if (fallbackGameObject == null && fallbackControllerModel != null)
                 {
                     fallbackGameObject = Instantiate(fallbackControllerModel);
                 }
