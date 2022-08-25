@@ -913,7 +913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].transitionDuration
-      value: 0.3
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].transitionDuration
@@ -946,7 +946,7 @@ PrefabInstance:
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.data[4]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5095746839500215027}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].tintables.Array.data[0]
       value: 
