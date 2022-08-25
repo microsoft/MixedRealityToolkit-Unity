@@ -606,6 +606,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handNode: 5
   fallbackControllerModel: {fileID: 2343778425554525912, guid: 3bd614f14cda63940b56faf0518b55f3, type: 3}
+  myAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: My
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: a52ba66f-d5dd-473f-8100-4a9b15edaadb
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 3239510804178183174, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
 --- !u!1 &4657295888579565740
 GameObject:
   m_ObjectHideFlags: 0
