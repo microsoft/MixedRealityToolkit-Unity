@@ -176,7 +176,7 @@ MonoBehaviour:
   m_FirstSelectEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 437282718095144432}
+      - m_Target: {fileID: 78665208148668691}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -1213,7 +1213,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7372669237086358568}
-  - component: {fileID: 437282718095144432}
+  - component: {fileID: 78665208148668691}
   m_Layer: 0
   m_Name: SampleSceneHandMenu
   m_TagString: Untagged
@@ -1236,7 +1236,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &437282718095144432
+--- !u!114 &78665208148668691
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1250,28 +1250,109 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visibleRoot: {fileID: 920286487973313467}
   target: -1
-  leftHand:
+  activationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.20642412
+      value: 0
+      inSlope: 0.049747806
+      outSlope: 0.049747806
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.08561034
+    - serializedVersion: 3
+      time: 0.7977905
+      value: 1
+      inSlope: 0.04239119
+      outSlope: 0.04239119
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1086861
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minimumViewAngle: 35
+  leftHandPosition:
     m_UseReference: 0
     m_Action:
-      m_Name: Left Hand
+      m_Name: Left Hand Position
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 980b2e88-15ab-4b94-af9d-49400c4fa0c1
+      m_Id: 6ff2216d-22da-4277-8947-96cc47dc257a
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: a135d2fb-446e-4c74-82a3-e09d5ae29c84
+        m_Path: <XRController>{LeftHand}/devicePosition
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Left Hand Position
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  rightHand:
+  leftHandRotation:
     m_UseReference: 0
     m_Action:
-      m_Name: Right Hand
+      m_Name: Left Hand Rotation
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 3e91f05f-179f-49f7-9e76-78654406c8a3
+      m_Id: 1813e93a-f355-4a21-8aa7-9949cd32c9f0
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 8c170f1b-7346-4e36-8e33-4e9afe18b30e
+        m_Path: <XRController>{LeftHand}/deviceRotation
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Left Hand Rotation
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  rightHandPosition:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Right Hand Position
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 1ddccd9f-62ba-436f-b472-45ba9845ccfb
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: ff95ec88-3715-4200-a1ee-16c3cb568ce1
+        m_Path: <XRController>{RightHand}/devicePosition
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Right Hand Position
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  rightHandRotation:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Right Hand Rotation
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: abee921c-a8f2-4e96-8b24-5010bc3ae11a
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: af493949-d3a7-4b22-af7c-6c66b1b59230
+        m_Path: <XRController>{RightHand}/deviceRotation
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Right Hand Rotation
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   menuSize:
@@ -1281,7 +1362,6 @@ MonoBehaviour:
     width: 0
     height: 0
   padding: 0.04
-  minimumViewAngle: 45
 --- !u!1 &7883018520630735588
 GameObject:
   m_ObjectHideFlags: 0
@@ -3112,7 +3192,7 @@ PrefabInstance:
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 437282718095144432}
+      objectReference: {fileID: 78665208148668691}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
