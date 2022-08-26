@@ -20,6 +20,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private SerializableDictionary<BuildTargetGroup, MRTKProfile> settings = new SerializableDictionary<BuildTargetGroup, MRTKProfile>();
 
+        [SerializeField]
+        private string appLauncherModelLocation = string.Empty;
+
+        public string AppLauncherModelLocation
+        {
+            get => appLauncherModelLocation;
+            internal set => appLauncherModelLocation = value;
+        }
+
         private void OnEnable()
         {
             MRTKProfile.Instance = GetProfileForBuildTarget(BuildTargetGroup.Standalone);
