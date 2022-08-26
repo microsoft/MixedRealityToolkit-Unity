@@ -166,8 +166,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // Construct bitflag for which hand targets are actually available.
-            Handedness available = (rightAttach.HasValue ? Handedness.Right : Handedness.None) |
-                                   (leftAttach.HasValue ? Handedness.Left : Handedness.None);
+            Handedness available = ((rightAttach.HasValue && rightActivation >= 0) ? Handedness.Right : Handedness.None) |
+                                   ((leftAttach.HasValue && leftActivation >= 0) ? Handedness.Left : Handedness.None);
 
                                    
 
@@ -314,8 +314,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             Debug.Log("Activation: " + activation.ToString());
 
+            // Compute the view angle to determine whether the hand is
+            // within the "FOV" restriction specified by the user (minimumViewAngle)
+            viewAngle = Vector3.Angle(
+                CameraCache.Main.transform.forward,
+                anchor.position - CameraCache.Main.transform.position
+            );
+
             // Finally, compute the actual attach pose.
-            return GetAttach(hand, anchor, oppositeHandPose, offsetVector, padding, activation, out oppositeHandDistance, out viewAngle);
+            return GetAttach(hand, anchor, oppositeHandPose, offsetVector, padding, activation, out oppositeHandDistance);
 
 
         }
@@ -365,29 +372,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 )
             );
 
+            if (activation <= 0) { return default; }
+
             return GetAttach(hand, anchor, oppositeGripPose,
                              offsetVector, padding + averageHandRadius,
-                             activation, out oppositeHandDistance, out viewAngle);
+                             activation, out oppositeHandDistance);
         }
 
         // Computes the hand menu attach pose from a hand/controller agnostic
         // set of poses and information.
-        private Pose? GetAttach(XRNode hand, Pose anchor, Pose? opposite,
+        private Pose GetAttach(XRNode hand, Pose anchor, Pose? opposite,
                                 Vector3 offsetVector, float padding,
-                                float activation, out float oppositeHandDistance,
-                                out float viewAngle)
+                                float activation, out float oppositeHandDistance)
         {
             oppositeHandDistance = 1.0f;
-
-            // Compute the view angle to determine whether the hand is
-            // within the "FOV" restriction specified by the user (minimumViewAngle)
-            viewAngle = Vector3.Angle(
-                CameraCache.Main.transform.forward,
-                anchor.position - CameraCache.Main.transform.position
-            );
-
-            if (activation <= 0) { return null; }
-
             Pose attach = default;
 
             // Compute the attach pose. The position is the anchor position offset
