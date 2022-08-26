@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// Settings provider for build-specific settings, like the 3D app launcher model for Windows builds.
     /// </summary>
     [Serializable]
-    internal class MRTKBuildPreferences : ScriptableObject, IPreprocessBuildWithReport, IPostprocessBuildWithReport
+    internal class MRTKBuildPreferences : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
         private static readonly GUIContent AppLauncherModelLabel = new GUIContent("3D App Launcher Model", "Location of .glb model to use as a 3D App Launcher");
@@ -35,8 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static MRTKSettings Settings => settings != null ? settings : settings = MRTKSettings.GetOrCreateSettings();
         private static MRTKSettings settings = null;
 
-        private static UnityEditor.Editor cachedSettingsEditor;
-
         [SettingsProvider]
         private static SettingsProvider BuildPreferences()
         {
@@ -47,93 +45,68 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 keywords = new HashSet<string>(new[] { "Mixed", "Reality", "Toolkit", "Build" })
             };
 
-            if (Settings.BuildPreferences == null)
-            {
-                Settings.BuildPreferences = CreateInstance<MRTKBuildPreferences>();
-                AssetDatabase.AddObjectToAsset(Settings.BuildPreferences, Settings);
-            }
-
             void GUIHandler(string searchContext)
             {
                 EditorGUILayout.HelpBox("These settings are serialized into MRTKSettings.asset in the MRTK-Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
-                UnityEditor.Editor.CreateCachedEditor(Settings.BuildPreferences, null, ref cachedSettingsEditor);
-
-                if (cachedSettingsEditor != null)
-                {
-                    cachedSettingsEditor.OnInspectorGUI();
-                }
+                DrawAppLauncherModelField();
             }
 
             return provider;
         }
 
-        [CustomEditor(typeof(MRTKBuildPreferences))]
-        private class MRTKBuildPreferencesInspector : UnityEditor.Editor
+        public static void DrawAppLauncherModelField(bool showInteractivePreview = true)
         {
-            private SerializedProperty appLauncherModelLocation;
-
-            private void OnEnable()
+            using (new EditorGUILayout.HorizontalScope())
             {
-                appLauncherModelLocation = serializedObject.FindProperty(nameof(appLauncherModelLocation));
-            }
+                GameObject newGlbModel;
+                bool appLauncherChanged = false;
 
-            public override void OnInspectorGUI()
-            {
-                serializedObject.Update();
+                // 3D launcher model
+                var curGlbModel = AssetDatabase.LoadAssetAtPath(Settings.BuildPreferences.appLauncherModelLocation, typeof(GameObject));
 
-                using (new EditorGUILayout.HorizontalScope())
+                using (new EditorGUILayout.VerticalScope())
                 {
-                    GameObject newGlbModel;
-                    bool appLauncherChanged = false;
+                    EditorGUILayout.HelpBox("This field will only accept .glb and .gltf files. Any other file type will be silently rejected.", MessageType.Info);
 
-                    // 3D launcher model
-                    var curGlbModel = AssetDatabase.LoadAssetAtPath(appLauncherModelLocation.stringValue, typeof(GameObject));
-
-                    using (new EditorGUILayout.VerticalScope())
+                    EditorGUILayout.LabelField(AppLauncherModelLabel);
+                    using (var check = new EditorGUI.ChangeCheckScope())
                     {
-                        EditorGUILayout.HelpBox("This field will only accept .glb and .gltf files. Any other file type will be silently rejected.", MessageType.Info);
-
-                        EditorGUILayout.LabelField(AppLauncherModelLabel);
-                        using (var check = new EditorGUI.ChangeCheckScope())
+                        newGlbModel = EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false, GUILayout.MaxWidth(256)) as GameObject;
+                        string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
+                        if (check.changed
+                            && (newAppLauncherModelLocation.EndsWith(".glb")
+                                || newAppLauncherModelLocation.EndsWith(".gltf")
+                                || string.IsNullOrWhiteSpace(newAppLauncherModelLocation)))
                         {
-                            newGlbModel = EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false, GUILayout.MaxWidth(256)) as GameObject;
-                            string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
-                            if (check.changed
-                                && (newAppLauncherModelLocation.EndsWith(".glb")
-                                    || newAppLauncherModelLocation.EndsWith(".gltf")
-                                    || string.IsNullOrWhiteSpace(newAppLauncherModelLocation)))
-                            {
-                                appLauncherModelLocation.stringValue = newAppLauncherModelLocation;
-                                appLauncherChanged = true;
-                            }
+                            Settings.BuildPreferences.appLauncherModelLocation = newAppLauncherModelLocation;
+                            appLauncherChanged = true;
+                            EditorUtility.SetDirty(Settings);
                         }
-                    }
-
-                    // The preview GUI has a problem during the build, so we don't render it
-                    if (newGlbModel != null && !isBuilding)
-                    {
-                        if (gameObjectEditor == null || appLauncherChanged)
-                        {
-                            gameObjectEditor = CreateEditor(newGlbModel);
-                        }
-
-                        if (appLauncherPreviewBackgroundColor == null)
-                        {
-                            appLauncherPreviewBackgroundColor = new GUIStyle();
-                            appLauncherPreviewBackgroundColor.normal.background = EditorGUIUtility.whiteTexture;
-                        }
-
-                        gameObjectEditor.OnInteractivePreviewGUI(GUILayoutUtility.GetRect(128, 128), appLauncherPreviewBackgroundColor);
                     }
                 }
 
-                serializedObject.ApplyModifiedProperties();
+                // The preview GUI has a problem during the build, so we don't render it
+                if (newGlbModel != null && !isBuilding)
+                {
+                    if (gameObjectEditor == null || appLauncherChanged)
+                    {
+                        gameObjectEditor = UnityEditor.Editor.CreateEditor(newGlbModel);
+                    }
+
+                    if (appLauncherPreviewBackgroundColor == null)
+                    {
+                        appLauncherPreviewBackgroundColor = new GUIStyle();
+                        appLauncherPreviewBackgroundColor.normal.background = EditorGUIUtility.whiteTexture;
+                    }
+
+                    gameObjectEditor.OnInteractivePreviewGUI(GUILayoutUtility.GetRect(128, 128), appLauncherPreviewBackgroundColor);
+                }
             }
         }
 
         void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport report)
         {
-            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(appLauncherModelLocation))
+            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(Settings.BuildPreferences.appLauncherModelLocation))
             {
                 isBuilding = true;
                 // Sets the editor to null. On a build, Unity reloads the object preview
@@ -145,14 +118,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport report)
         {
-            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(appLauncherModelLocation))
+            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(Settings.BuildPreferences.appLauncherModelLocation))
             {
 
                 string appxPath = $"{report.summary.outputPath}/{PlayerSettings.productName}";
 
-                Debug.Log($"3D App Launcher: {appLauncherModelLocation}, Destination: {appxPath}/{AppLauncherPath}");
+                Debug.Log($"3D App Launcher: {Settings.BuildPreferences.appLauncherModelLocation}, Destination: {appxPath}/{AppLauncherPath}");
 
-                FileUtil.ReplaceFile(appLauncherModelLocation, $"{appxPath}/{AppLauncherPath}");
+                FileUtil.ReplaceFile(Settings.BuildPreferences.appLauncherModelLocation, $"{appxPath}/{AppLauncherPath}");
                 AddAppLauncherModelToProject($"{appxPath}/{PlayerSettings.productName}.vcxproj");
                 AddAppLauncherModelToFilter($"{appxPath}/{PlayerSettings.productName}.vcxproj.filters");
                 UpdateManifest($"{appxPath}/Package.appxmanifest");

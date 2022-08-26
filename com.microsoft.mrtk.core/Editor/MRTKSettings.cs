@@ -23,11 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private MRTKBuildPreferences buildPreferences = default;
 
-        internal MRTKBuildPreferences BuildPreferences
-        {
-            get => buildPreferences;
-            set => buildPreferences = value;
-        }
+        internal MRTKBuildPreferences BuildPreferences => buildPreferences;
 
         private void OnEnable()
         {
