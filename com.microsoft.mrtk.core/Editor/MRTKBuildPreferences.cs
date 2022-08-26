@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         /// <remarks>See <see href="https://docs.microsoft.com/windows/mixed-reality/distribute/3d-app-launcher-design-guidance">3D app launcher design guidance</see> for more information.</remarks>
         [SerializeField]
-        private string appLauncherModelLocation;
+        private GameObject appLauncherModel;
 
         private static MRTKSettings Settings => settings != null ? settings : settings = MRTKSettings.GetOrCreateSettings();
         private static MRTKSettings settings = null;
@@ -61,9 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 GameObject newGlbModel;
                 bool appLauncherChanged = false;
 
-                // 3D launcher model
-                var curGlbModel = AssetDatabase.LoadAssetAtPath(Settings.BuildPreferences.appLauncherModelLocation, typeof(GameObject));
-
                 using (new EditorGUILayout.VerticalScope())
                 {
                     EditorGUILayout.HelpBox("This field will only accept .glb and .gltf files. Any other file type will be silently rejected.", MessageType.Info);
@@ -71,14 +68,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.LabelField(AppLauncherModelLabel);
                     using (var check = new EditorGUI.ChangeCheckScope())
                     {
-                        newGlbModel = EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false, GUILayout.MaxWidth(256)) as GameObject;
+                        newGlbModel = EditorGUILayout.ObjectField(Settings.BuildPreferences.appLauncherModel, typeof(GameObject), false, GUILayout.MaxWidth(256)) as GameObject;
                         string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
                         if (check.changed
                             && (newAppLauncherModelLocation.EndsWith(".glb")
                                 || newAppLauncherModelLocation.EndsWith(".gltf")
                                 || string.IsNullOrWhiteSpace(newAppLauncherModelLocation)))
                         {
-                            Settings.BuildPreferences.appLauncherModelLocation = newAppLauncherModelLocation;
+                            Settings.BuildPreferences.appLauncherModel = newGlbModel;
                             appLauncherChanged = true;
                             EditorUtility.SetDirty(Settings);
                         }
@@ -106,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport report)
         {
-            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(Settings.BuildPreferences.appLauncherModelLocation))
+            if (report.summary.platformGroup == BuildTargetGroup.WSA && Settings.BuildPreferences.appLauncherModel != null)
             {
                 isBuilding = true;
                 // Sets the editor to null. On a build, Unity reloads the object preview
@@ -118,14 +115,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport report)
         {
-            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(Settings.BuildPreferences.appLauncherModelLocation))
+            if (report.summary.platformGroup == BuildTargetGroup.WSA && Settings.BuildPreferences.appLauncherModel != null)
             {
-
                 string appxPath = $"{report.summary.outputPath}/{PlayerSettings.productName}";
+                string assetPath = AssetDatabase.GetAssetPath(Settings.BuildPreferences.appLauncherModel);
 
-                Debug.Log($"3D App Launcher: {Settings.BuildPreferences.appLauncherModelLocation}, Destination: {appxPath}/{AppLauncherPath}");
+                Debug.Log($"3D App Launcher: {assetPath}, Destination: {appxPath}/{AppLauncherPath}");
 
-                FileUtil.ReplaceFile(Settings.BuildPreferences.appLauncherModelLocation, $"{appxPath}/{AppLauncherPath}");
+                FileUtil.ReplaceFile(assetPath, $"{appxPath}/{AppLauncherPath}");
                 AddAppLauncherModelToProject($"{appxPath}/{PlayerSettings.productName}.vcxproj");
                 AddAppLauncherModelToFilter($"{appxPath}/{PlayerSettings.productName}.vcxproj.filters");
                 UpdateManifest($"{appxPath}/Package.appxmanifest");
