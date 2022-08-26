@@ -36,7 +36,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.textmeshpro": "3.0.6"
       }
     },
@@ -107,7 +107,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.inputsystem": "1.3.0",
         "com.unity.xr.interaction.toolkit": "2.0.3",
         "com.unity.xr.core-utils": "2.1.0-pre.1"
@@ -129,7 +129,7 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15"
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0"
       }
     },
     "com.microsoft.mrtk.tools": {
@@ -156,7 +156,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.inputsystem": "1.3.0",
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.xr.interaction.toolkit": "2.0.3"
