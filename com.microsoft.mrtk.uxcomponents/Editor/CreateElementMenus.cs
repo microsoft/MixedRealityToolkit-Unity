@@ -8,6 +8,7 @@ using UnityEditor.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Reflection;
+using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -61,10 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Otherwise, it was probably an existing canvas we were added to, so we shouldn't mess with it.
             if (rt.childCount == 1 && rt.GetChild(0) == gameObject.transform)
             {
-                // The canvas was already created for us at a good starting position in-view.
-                // We'll reset the canvas to this position after adjusting the measurements.
-                Vector3 existingWorldPos = rt.position; 
-
                 // 1mm : 1 unit measurement ratio.
                 if (rt.lossyScale != Vector3.one * 0.001f)
                 {
@@ -109,15 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             LayoutElement le = gameObject.GetComponent<LayoutElement>();
             le.minWidth = 128.0f;
 
-            foreach (var text in gameObject.GetComponentsInChildren<TMP_Text>(true))
-            {
-                if (text.name == "Text")
-                {
-                    text.gameObject.SetActive(true);
-                    text.alignment = TextAlignmentOptions.Left;
-                    text.text = "<size=8>Header</size><size=6>\n<alpha=#88>Meta text goes here</size>";
-                }
-            }
+            var text = gameObject.GetComponentsInChildren<TMP_Text>(true).Where(t => t.name == "Text").First();
+            text.gameObject.SetActive(true);
+            text.alignment = TextAlignmentOptions.Left;
+            text.text = "<size=8>Header</size><size=6>\n<alpha=#88>Meta text goes here</size>";
 
             PrefabUtility.RecordPrefabInstancePropertyModifications(gameObject);
         }
