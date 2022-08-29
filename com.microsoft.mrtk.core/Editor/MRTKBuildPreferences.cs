@@ -19,7 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     internal class MRTKBuildPreferences : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
-        private static readonly GUIContent AppLauncherModelLabel = new GUIContent("3D App Launcher Model", "Location of .glb model to use as a 3D App Launcher");
+        private const string AppLauncherDocsUrl = @"https://docs.microsoft.com/windows/mixed-reality/distribute/creating-3d-models-for-use-in-the-windows-mixed-reality-home";
+
+        private static GUIContent appLauncherModelLabel = null;
+        private static GUIContent buttonContent = null;
         private static UnityEditor.Editor gameObjectEditor = null;
         private static GUIStyle appLauncherPreviewBackgroundColor = null;
         private static bool isBuilding = false;
@@ -41,13 +44,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var provider = new SettingsProvider("Project/MRTK3/Build Settings", SettingsScope.Project)
             {
                 guiHandler = GUIHandler,
-
                 keywords = new HashSet<string>(new[] { "Mixed", "Reality", "Toolkit", "Build" })
             };
 
-            void GUIHandler(string searchContext)
+            static void GUIHandler(string searchContext)
             {
-                EditorGUILayout.HelpBox("These settings are serialized into MRTKSettings.asset in the MRTK-Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
+                EditorGUILayout.HelpBox("These settings are serialized into MRTKSettings.asset in the MRTK.Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
                 DrawAppLauncherModelField();
             }
 
@@ -56,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public static void DrawAppLauncherModelField(bool showInteractivePreview = true)
         {
+            appLauncherModelLabel ??= new GUIContent("3D App Launcher Model (UWP)", "Location of .glb model to use as a 3D App Launcher");
+            buttonContent ??= new GUIContent(string.Empty, EditorGUIUtility.IconContent("_Help").image, "Click for documentation");
+
             using (new EditorGUILayout.HorizontalScope())
             {
                 GameObject newGlbModel;
@@ -63,9 +68,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 using (new EditorGUILayout.VerticalScope())
                 {
-                    EditorGUILayout.HelpBox("This field will only accept .glb and .gltf files. Any other file type will be silently rejected.", MessageType.Info);
+                    EditorGUILayout.HelpBox("This field will only accept .glb files. Any other file type will be silently rejected.", MessageType.Info);
 
-                    EditorGUILayout.LabelField(AppLauncherModelLabel);
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        EditorGUILayout.LabelField(appLauncherModelLabel);
+
+                        if (GUILayout.Button(buttonContent, EditorStyles.label))
+                        {
+                            Help.BrowseURL(AppLauncherDocsUrl);
+                        }
+                    }
+
                     using (var check = new EditorGUI.ChangeCheckScope())
                     {
                         newGlbModel = EditorGUILayout.ObjectField(Settings.BuildPreferences.appLauncherModel, typeof(GameObject), false, GUILayout.MaxWidth(256)) as GameObject;
@@ -82,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 // The preview GUI has a problem during the build, so we don't render it
-                if (newGlbModel != null && !isBuilding)
+                if (showInteractivePreview && newGlbModel != null && !isBuilding)
                 {
                     if (gameObjectEditor == null || appLauncherChanged)
                     {
