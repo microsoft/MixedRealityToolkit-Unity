@@ -435,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Transform target = null;
                 if (TrackedTargetType == TrackedObjectType.Head)
                 {
-                    target = CameraCache.Main.transform;
+                    target = Camera.main.transform;
                 }
                 else if (TrackedTargetType == TrackedObjectType.ControllerRay)
                 {

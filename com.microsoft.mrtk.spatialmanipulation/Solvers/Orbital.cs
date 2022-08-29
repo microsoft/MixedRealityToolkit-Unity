@@ -144,13 +144,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     desiredRot = transform.rotation;
                     break;
                 case SolverOrientationType.CameraAligned:
-                    desiredRot = CameraCache.Main.transform.rotation;
+                    desiredRot = Camera.main.transform.rotation;
                     break;
                 case SolverOrientationType.FaceTrackedObject:
                     desiredRot = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(SolverHandler.TransformTarget.position - desiredPos) : Quaternion.identity;
                     break;
                 case SolverOrientationType.CameraFacing:
-                    desiredRot = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(CameraCache.Main.transform.position - desiredPos) : Quaternion.identity;
+                    desiredRot = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(Camera.main.transform.position - desiredPos) : Quaternion.identity;
                     break;
                 case SolverOrientationType.FollowTrackedObject:
                     desiredRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;
