@@ -26,10 +26,6 @@
 # Tooling
 /Tooling/ @keveleigh @Zee2
 
-# Packaging
-*.asmdef @keveleigh @davidkline-ms
-package.json @davidkline-ms @keveleigh
-
 # Feature packages
 /com.microsoft.mrtk.accessibility/ @davidkline-ms
 /com.microsoft.mrtk.audio/ @davidkline-ms
@@ -49,3 +45,7 @@ package.json @davidkline-ms @keveleigh
 
 # Examples and templates
 /UnityProjects/ @davidkline-ms @keveleigh @maluoi @MaxWang-MS @RogPodge @Zee2
+
+# Packaging
+*.asmdef @keveleigh @davidkline-ms
+package.json @davidkline-ms @keveleigh
