@@ -19,6 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
         {
             ParseBuildCommandLine();
 
+            EnsureTMPro();
+
             // We don't need stack traces on all our logs. Makes things a lot easier to read.
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             Debug.Log($"Starting command line build for {EditorUserBuildSettings.activeBuildTarget}...");
@@ -92,6 +94,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
         {
             return (from scene in sceneList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                     select scene.Trim()).ToArray();
+        }
+
+        private static void EnsureTMPro()
+        {
+            string assetsFullPath = Path.GetFullPath("Assets/TextMesh Pro");
+            if (Directory.Exists(assetsFullPath))
+            {
+                return;
+            }
+
+            // Import the TMP Essential Resources package
+            string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
+            if (Directory.Exists(packageFullPath))
+            {
+                Debug.Log("Importing TextMesh Pro...");
+                AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
+            }
+            else
+            {
+                Debug.LogError("Unable to locate the Text Mesh Pro package.");
+            }
         }
     }
 }
