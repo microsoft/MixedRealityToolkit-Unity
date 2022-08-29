@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private Vector2 ProjectToScreen(Vector3 worldPoint, Vector3 worldVector)
         {
-            return CameraCache.Main.WorldToScreenPoint(worldPoint + worldVector) - CameraCache.Main.WorldToScreenPoint(worldPoint);
+            return Camera.main.WorldToScreenPoint(worldPoint + worldVector) - Camera.main.WorldToScreenPoint(worldPoint);
         }
 
         #endregion Private Helpers

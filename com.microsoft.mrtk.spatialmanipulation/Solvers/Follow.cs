@@ -693,13 +693,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     orientation = transform.rotation;
                     break;
                 case SolverOrientationType.CameraAligned:
-                    orientation = CameraCache.Main.transform.rotation;
+                    orientation = Camera.main.transform.rotation;
                     break;
                 case SolverOrientationType.FaceTrackedObject:
                     orientation = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(goalPosition - ReferencePosition) : Quaternion.identity;
                     break;
                 case SolverOrientationType.CameraFacing:
-                    orientation = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(goalPosition - CameraCache.Main.transform.position) : Quaternion.identity;
+                    orientation = SolverHandler.TransformTarget != null ? Quaternion.LookRotation(goalPosition - Camera.main.transform.position) : Quaternion.identity;
                     break;
                 case SolverOrientationType.FollowTrackedObject:
                     orientation = SolverHandler.TransformTarget != null ? ReferenceRotation : Quaternion.identity;

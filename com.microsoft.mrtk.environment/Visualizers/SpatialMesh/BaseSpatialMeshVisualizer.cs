@@ -388,12 +388,12 @@ namespace Microsoft.MixedReality.Toolkit.Environment
                     // If enough time has passed since the previous observer update...
                     else if (Time.time - lastUpdated >= UpdateInterval)
                     {
-                        ObserverRotation = CameraCache.Main.transform.rotation;
+                        ObserverRotation = Camera.main.transform.rotation;
 
                         // Update the observer location if it is not stationary
                         if (!IsStationaryObserver)
                         {
-                            ObserverOrigin = CameraCache.Main.transform.position;
+                            ObserverOrigin = Camera.main.transform.position;
                         }
 
                         // The application can update the observer volume at any time, make sure we are using the latest.
