@@ -72,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
                         if (check.changed
                             && (newAppLauncherModelLocation.EndsWith(".glb")
-                                || newAppLauncherModelLocation.EndsWith(".gltf")
                                 || string.IsNullOrWhiteSpace(newAppLauncherModelLocation)))
                         {
                             Settings.BuildPreferences.appLauncherModel = newGlbModel;
