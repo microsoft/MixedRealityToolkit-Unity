@@ -174,9 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // Update the camera-relative Euler angle look rotation.
                 CameraRelativeRotation += lookDelta;
 
-                poseState.position = CameraCache.Main.transform.localPosition + (CameraCache.Main.transform.localRotation * eyeOffset);
+                poseState.position = Camera.main.transform.localPosition + (Camera.main.transform.localRotation * eyeOffset);
                 // todo - saccade support
-                poseState.rotation = CameraCache.Main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
+                poseState.rotation = Camera.main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
 
                 InputState.Change(simulatedEyeDevice.pose, poseState);
             }

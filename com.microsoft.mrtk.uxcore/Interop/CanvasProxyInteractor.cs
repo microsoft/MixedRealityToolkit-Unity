@@ -39,9 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (target != null)
             {
-                Vector3 cameraLocal = worldPosition - CameraCache.Main.transform.position;
+                Vector3 cameraLocal = worldPosition - Camera.main.transform.position;
                 cameraLocal = cameraLocal.normalized * currentDepth;
-                transform.position = CameraCache.Main.transform.position + cameraLocal;
+                transform.position = Camera.main.transform.position + cameraLocal;
                 validTargets.Add(target);
             }
         }
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
 
                 transform.position = worldPosition;
-                currentDepth = Vector3.Distance(CameraCache.Main.transform.position, worldPosition);
+                currentDepth = Vector3.Distance(Camera.main.transform.position, worldPosition);
                 manualSelectTarget = target;
                 StartManualInteraction(target);
             }
@@ -84,9 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <inheritdoc />
         public void UpdateSelect(IXRSelectInteractable interactable, Vector3 worldPosition)
         {
-            Vector3 cameraLocal = worldPosition - CameraCache.Main.transform.position;
+            Vector3 cameraLocal = worldPosition - Camera.main.transform.position;
             cameraLocal = cameraLocal.normalized * currentDepth;
-            transform.position = CameraCache.Main.transform.position + cameraLocal;
+            transform.position = Camera.main.transform.position + cameraLocal;
         }
 
         /// <inheritdoc />
