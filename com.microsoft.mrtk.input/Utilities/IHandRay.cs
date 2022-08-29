@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="handPosition">Position of hand</param>
         /// <param name="palmNormal">Palm normal</param>
-        /// <param name="headTransform">Transform of CameraCache.main</param>
+        /// <param name="headTransform">Transform of Camera.main</param>
         /// <param name="sourceHandedness">Handedness of related hand</param>
         void Update(Vector3 handPosition, Vector3 palmNormal, Transform headTransform, Handedness sourceHandedness);
     }

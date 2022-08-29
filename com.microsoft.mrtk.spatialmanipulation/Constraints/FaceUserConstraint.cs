@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            Vector3 directionToTarget = transform.Position - CameraCache.Main.transform.position;
+            Vector3 directionToTarget = transform.Position - Camera.main.transform.position;
             directionToTarget = gravityAlign ? Vector3.ProjectOnPlane(directionToTarget, Vector3.up) : directionToTarget;
             transform.Rotation = Quaternion.LookRotation(faceAway ? directionToTarget : -directionToTarget);
         }

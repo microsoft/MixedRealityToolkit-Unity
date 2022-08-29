@@ -22,13 +22,13 @@ namespace Microsoft.MixedReality.Toolkit
         /// </remarks>
         internal static float GetDistanceToBody(Pose pose)
         {
-            if (pose.position.y > CameraCache.Main.transform.position.y)
+            if (pose.position.y > Camera.main.transform.position.y)
             {
-                return Vector3.Distance(pose.position, CameraCache.Main.transform.position);
+                return Vector3.Distance(pose.position, Camera.main.transform.position);
             }
             else
             {
-                Vector2 headPosXZ = new Vector2(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.z);
+                Vector2 headPosXZ = new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.z);
                 Vector2 pointerPosXZ = new Vector2(pose.position.x, pose.position.z);
 
                 return Vector2.Distance(pointerPosXZ, headPosXZ);
