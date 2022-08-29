@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -22,36 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         #region HandJointInteractor
 
-        [Header("Hand joint interactor settings")]
-
-        [SerializeField]
-        [Tooltip("The XRNode on which this hand is located.")]
-        private XRNode handNode;
-
-        /// <summary>
-        /// The XRNode on which this hand is located.
-        /// </summary>
-        protected XRNode HandNode => handNode;
-
-        /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
-        /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
-
         /// <summary>
         /// Concrete implementations should override this function to specify the point
         /// at which the interaction occurs. This would be the tip of the index finger
         /// for a poke interactor, or some other computed position from other data sources.
         /// </summary>
-        protected abstract bool TryGetInteractionPoint(out HandJointPose jointPose);
+        protected abstract bool TryGetInteractionPoint(out Pose pose);
 
         #endregion HandJointInteractor
 
         #region IHandedInteractor
 
         /// <inheritdoc/>
-        Handedness IHandedInteractor.Handedness => HandNode.ToHandedness();
+        Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
 
         #endregion IHandedInteractor
 
@@ -143,19 +124,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             using (ProcessInteractorPerfMarker.Auto())
             {
-                if (HandsAggregator == null)
-                {
-                    return;
-                }
-
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
                     // Obtain near interaction point, and set our interactor's
                     // position/rotation to the interaction point's pose.
-                    interactionPointTracked = TryGetInteractionPoint(out HandJointPose interactionPoint);
+                    interactionPointTracked = TryGetInteractionPoint(out Pose interactionPose);
                     if (interactionPointTracked)
                     {
-                        attachTransform.SetPositionAndRotation(interactionPoint.Position, interactionPoint.Rotation);
+                        attachTransform.SetPositionAndRotation(interactionPose.position, interactionPose.rotation);
                     }
                     else
                     {

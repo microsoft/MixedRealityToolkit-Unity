@@ -23,42 +23,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         #region PokeInteractor
 
-        [Header("Poke interactor settings")]
-
-        [SerializeField]
-        [Tooltip("The XRNode on which this hand is located.")]
-        private XRNode handNode;
-
-        /// <summary>
-        /// The XRNode on which this hand is located.
-        /// </summary>
-        protected XRNode HandNode => handNode;
-
-        [Header("Pose settings")]
-
-        [SerializeField]
-        [Tooltip("Which specific hand joint does this interactor track?")]
-        private TrackedHandJoint joint;
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("The pose source representing the poke pose")]
+        private IPoseSource pokePoseSource;
 
         /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
+        /// The pose source representing the poke pose
         /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
+        protected IPoseSource PokePoseSource { get => pokePoseSource; set => pokePoseSource = value; }
 
         /// <summary>
         /// Called during ProcessInteractor to obtain the poking pose. <see cref="XRBaseInteractor.attachTransform"/> is set to this pose.
         /// Override to customize how poses are calculated.
         /// </summary>
-        protected virtual bool TryGetPokePose(out HandJointPose jointPose)
+        protected virtual bool TryGetPokePose(out Pose pose)
         {
-            if (HandsAggregator != null && HandsAggregator.TryGetJoint(joint, handNode, out jointPose))
-            {
-                return true;
-            }
-
-            jointPose = default;
-            return false;
+            pose = Pose.identity;
+            return PokePoseSource != null && PokePoseSource.TryGetPose(out pose);
         }
 
         #endregion PokeInteractor
@@ -66,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region IHandedInteractor
 
         /// <inheritdoc />
-        Handedness IHandedInteractor.Handedness => HandNode.ToHandedness();
+        Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
 
         #endregion IHandedInteractor
 
@@ -201,12 +183,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // The start of our new trajectory is the end of the last frame's trajectory.
                     pokeTrajectory.Start = pokeTrajectory.End;
 
-                    // If we can get a joint pose, set our attachTransform accordingly.
-                    // pokePointTracked sets isHoverActive.
-                    pokePointTracked = TryGetPokePose(out HandJointPose jointPose);
+                    // If we can get a joint pose, set out attachTransform accordingly.
+                    // pokePointTracked is used to help set isHoverActive.
+                    pokePointTracked = TryGetPokePose(out Pose pose);
                     if (pokePointTracked)
                     {
-                        attachTransform.SetPositionAndRotation(jointPose.Position, jointPose.Rotation);
+                        // If we can get a joint pose, set our attachTransform accordingly.
+                        attachTransform.SetPositionAndRotation(pose.position, pose.rotation);
                     }
                     else
                     {
