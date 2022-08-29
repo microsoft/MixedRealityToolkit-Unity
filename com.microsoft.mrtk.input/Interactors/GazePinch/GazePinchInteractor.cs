@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -15,15 +13,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <see cref="GazePinchInteractor.dependentInteractor">.
     /// </summary>
     [AddComponentMenu("MRTK/Input/Gaze Pinch Interactor")]
-    public class GazePinchInteractor : XRBaseControllerInteractor, IGazePinchInteractor, IHandedInteractor
+    public class GazePinchInteractor :
+        XRBaseControllerInteractor,
+        IGazePinchInteractor,
+        IHandedInteractor
     {
+        #region GazePinchInteractor
+
+        [Header("Gaze Pinch interactor settings")]
+
         [SerializeField]
         [Tooltip("The hand controller used to get the pinchedness values")]
         private ArticulatedHandController handController;
-
-        [SerializeField]
-        [Tooltip("The interactor we're using to query potential gaze pinch targets")]
-        private XRBaseControllerInteractor dependentInteractor;
 
         /// <summary>
         /// Is the hand ready to select? Typically, this
@@ -32,15 +33,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool PinchReady => handController.PinchSelectReady;
 
-        /// <inheritdoc />
-        public float SelectProgress => handController.selectInteractionState.value;
-
         /// <summary>
         /// The worldspace pose of the hand pinching point.
         /// </summary>
-        public Pose PinchPose => handController.PinchSelectPose;
+        public Pose PinchPose => (PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose)) ? pinchPose : Pose.identity;
 
-        public Handedness Handedness => handController.HandNode.ToHandedness();
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("The pose source representing the device triggering the interaction.")]
+        private IPoseSource devicePoseSource;
+
+        /// <summary>
+        /// The pose source representing the device triggering the interaction.
+        /// </summary>
+        protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
+
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
+        private IPoseSource pinchPoseSource;
+
+        /// <summary>
+        /// The pose source representing the worldspace pose of the hand pinching point.
+        /// </summary>
+        protected IPoseSource PinchPoseSource { get => pinchPoseSource; set => pinchPoseSource = value; }
+
+        [SerializeField]
+        [Tooltip("The interactor we're using to query potential gaze pinch targets")]
+        private XRBaseControllerInteractor dependentInteractor;
 
         [SerializeField]
         [Range(0, 1)]
@@ -70,8 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => relaxationThreshold = Mathf.Clamp01(value);
         }
 
-        #region Private properties
-
         /// <summary>
         /// The distance from the body at the time of selection.
         /// This is computed with <see cref="InputRayUtilities.GetDistanceToBody"/>,
@@ -92,15 +110,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Used to check if the parent controller is tracked or not
-        /// Hopefully this becomes part of the base Unity XRI api
+        /// Hopefully this becomes part of the base Unity XRI API.
         /// </summary>
         private bool IsTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
 
-        private HandsAggregatorSubsystem handsAggregator;
+        #endregion GazePinchInteractor
 
-        #endregion Private properties
+        #region IHandedInteractor
 
-        #region XRBaseControllerInteractor
+        Handedness IHandedInteractor.Handedness => handController.HandNode.ToHandedness();
+
+        #endregion IHandedInteractor
+
+        #region IVariableSelectInteractor
+
+        /// <inheritdoc />
+        public float SelectProgress => handController.selectInteractionState.value;
+
+        #endregion IVariableSelectInteractor
+
+        #region MonoBehaviour
+
+        private void OnDrawGizmosSelected()
+        {
+            if (Application.isPlaying)
+            {
+                // Draw a yellow sphere at the transform's position
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(attachTransform.position, 0.05f);
+            }
+        }
+
+        #endregion MonoBehaviour
+
+        #region XRBaseInteractor
 
         /// <inheritdoc />
         /// <remarks>
@@ -157,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Separate vars for fused position/rotation setting.
             Quaternion rotationToApply = attachTransform.rotation;
-            Vector3 positionToApply = attachTransform.position;
+            Vector3 positionToApply;
 
             // Compute the ratio from the current hand-body distance to the distance
             // we recorded on selection. Used to linearly scale the attach transform's
@@ -168,22 +211,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
-            if (xrController is ActionBasedController abController &&
-                abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
+            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
             {
-                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
-            }
-            else
-            {
-                // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
-                if (handsAggregator == null)
-                {
-                    handsAggregator = HandsUtils.GetSubsystem();
-                }
-                if (handsAggregator != null && handsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
-                {
-                    rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
-                }
+                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
             }
 
             if (hasSelection && interactable != null)
@@ -199,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // TODO: Replace PinchPose with explicit binding to OpenXR pinch/grip pose when the standard is available.
                 Vector3 objectOffset = PinchPose.position - pinchCentroid.position;
 
-                // Compute the final attachtransform's position by transforming the interactor-local original attach point
+                // Compute the final attachTransform's position by transforming the interactor-local original attach point
                 // by the ray rotation, scaling by the body-distance ratio, and then finally applying the virtual hand offset.
                 // TODO: Replace transform.position with explicit binding to OpenXR grip pose when the standard is available.
                 positionToApply = transform.position + objectOffset + (rayRotation * interactorLocalAttachPoint) * distanceRatio;
@@ -212,16 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             attachTransform.SetPositionAndRotation(positionToApply, rotationToApply);
-        }
-
-        void OnDrawGizmosSelected()
-        {
-            if (Application.isPlaying)
-            {
-                // Draw a yellow sphere at the transform's position
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(attachTransform.position, 0.05f);
-            }
         }
 
         /// <inheritdoc />
@@ -313,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Vector3 virtualAttachTransform = snapPoint + objectOffset;
 
-            // Transform this virtual attachtransform into the interactor-local coordinate space.
+            // Transform this virtual attachTransform into the interactor-local coordinate space.
             interactorLocalAttachPoint = Quaternion.Inverse(rayRotation) * (virtualAttachTransform - transform.position);
 
             // Record the distance from the controller to the body of the user, to use as reference for subsequent
@@ -322,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Computes the geometric centroid between all PinchPoses of participtaing GazePinchInteractors.
+        /// Computes the geometric centroid between all PinchPoses of participating GazePinchInteractors.
         /// </summary>
         private Pose GetPinchCentroid(IXRSelectInteractable interactable)
         {
@@ -392,6 +412,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ComputeAttachTransform(args.interactableObject);
         }
 
-        #endregion
+        #endregion XRBaseInteractor
     }
 }

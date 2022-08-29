@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UX;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private StatefulInteractable nextSceneButton;
 
         [SerializeField]
+        private TMP_Text sceneTitleLabel;
+
+        [SerializeField]
         private GameObject profilerObject;
 
         private void Awake()
@@ -55,6 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             previousSceneButton.OnClicked.AddListener(() => GoToPreviousScene());
             nextSceneButton.OnClicked.AddListener(() => GoToNextScene());
+
+            sceneTitleLabel.text = SceneManager.GetActiveScene().name + ".unity";
         }
         
         /// <summary>

@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: ToggleIndicator
   m_Shader: {fileID: 4800000, guid: df5380aa6ab293c4fafbb942ed5da93f, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _GRADIENT_LINEAR _ROUND_CORNERS _SPECULAR_HIGHLIGHTS
-    _UI_CLIP_RECT_ROUNDED _VERTEX_COLORS
+  m_ShaderKeywords: _ALPHABLEND_ON _EDGE_SMOOTHING_AUTOMATIC _GRADIENT_LINEAR _ROUND_CORNERS
+    _SPECULAR_HIGHLIGHTS _UI_CLIP_RECT_ROUNDED _VERTEX_COLORS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -63,8 +63,8 @@ Material:
     - _Cutoff: 0.5
     - _DirectionalLight: 0
     - _DstBlend: 10
-    - _EdgeSmoothingMode: 0
-    - _EdgeSmoothingValue: 0.002
+    - _EdgeSmoothingMode: 1
+    - _EdgeSmoothingValue: 0.1
     - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOverride: 0
@@ -121,7 +121,7 @@ Material:
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 0.25
-    - _RoundCornerMargin: 0.01
+    - _RoundCornerMargin: 0.084
     - _RoundCornerRadius: 0.5
     - _RoundCorners: 1
     - _RoundCornersHideInterior: 0
@@ -159,6 +159,8 @@ Material:
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _GradientAlpha: {r: 1, g: 1, b: 1, a: 1}
+    - _GradientAlphaTime: {r: 0, g: 0, b: 0, a: 0}
     - _GradientColor0: {r: 0.7411765, g: 0.6392157, b: 0.9607844, a: 0}
     - _GradientColor1: {r: 0.40000004, g: 0.39607847, b: 0.85098046, a: 1}
     - _GradientColor2: {r: 0.40000004, g: 0.39607847, b: 0.85098046, a: 1}

@@ -2,13 +2,13 @@ name: Code Validation (MRTK3)
 
 on:
   push:
-    branches: [ "mrtk3" ]
+    branches: ["mrtk3"]
   pull_request:
-    branches: [ "mrtk3" ]
+    branches: ["mrtk3"]
 
 jobs:
   validation:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -16,17 +16,17 @@ jobs:
     - name: Get Pull Request changes
       if: github.event_name == 'pull_request'
       run: |
-        ./pipelines/scripts/gitchanges.ps1 -TargetBranch '${{ github.base_ref }}' -OutputFile '${{ runner.temp }}/build/changed_files.txt' -RepoRoot '${{ github.workspace }}'
+        ${{ github.workspace }}/Pipelines/Scripts/gitchanges.ps1 -TargetBranch '${{ github.base_ref }}' -OutputFile '${{ runner.temp }}/build/changed_files.txt' -RepoRoot '${{ github.workspace }}'
       shell: pwsh
 
     - name: Scoped code validation
       if: github.event_name == 'pull_request'
       run: |
-        ./pipelines/scripts/validatecode.ps1 -Directory '${{ github.workspace }}' -ChangesFile '${{ runner.temp }}/build/changed_files.txt'
+        ${{ github.workspace }}/Pipelines/Scripts/validatecode.ps1 -Directory '${{ github.workspace }}' -ChangesFile '${{ runner.temp }}/build/changed_files.txt'
       shell: pwsh
 
     - name: Global code validation
       if: github.event_name == 'push'
       run: |
-        ./pipelines/scripts/validatecode.ps1 -Directory '${{ github.workspace }}'
+        ${{ github.workspace }}/Pipelines/Scripts/validatecode.ps1 -Directory '${{ github.workspace }}'
       shell: pwsh

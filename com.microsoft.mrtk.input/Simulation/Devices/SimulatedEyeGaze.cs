@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         public void Dispose()
         {
-            if ((simulatedEyeDevice != null))
+            if (simulatedEyeDevice != null)
             {
                 InputSystem.RemoveDevice(simulatedEyeDevice);
             }
@@ -158,6 +158,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             if (simulatedEyeDevice == null) { return; }
 
+            if (!simulatedEyeDevice.added)
+            {
+                simulatedEyeDevice = InputSystem.GetDeviceById(simulatedEyeDevice.deviceId) as SimulatedEyeGazeDevice;
+                if (simulatedEyeDevice == null) { return; }
+            }
+
             using (UpdatePerfMarker.Auto())
             {
                 poseState.isTracked = isTracked;
@@ -165,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     TrackingState.Position | TrackingState.Rotation :
                     TrackingState.None;
 
-                // Update the camera-relative euler angle look rotation.
+                // Update the camera-relative Euler angle look rotation.
                 CameraRelativeRotation += lookDelta;
 
                 poseState.position = CameraCache.Main.transform.localPosition + (CameraCache.Main.transform.localRotation * eyeOffset);

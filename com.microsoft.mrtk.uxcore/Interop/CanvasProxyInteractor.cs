@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A simple proxy interactor which will select + hover things on our behalf, for canvas input.
     /// </summary>
     [AddComponentMenu("MRTK/UX/Canvas Proxy Interactor")]
-    public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor
+    public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor, IModeManagedInteractor
     {
         protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();
 
@@ -146,5 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // We combine the base hoverActive with our flag for whether we're suppressing events.
         // Our interactors use isHoverActive = false to indicate interaction cancellation.
         public override bool isHoverActive => base.isHoverActive && !isCancellingInteraction;
+
+        /// <inheritdoc />
+        public GameObject GetModeManagedController() => gameObject;
     }
 }

@@ -28,7 +28,7 @@ parameters:
   default: ''
 
 steps:
-- powershell: |
+- pwsh: |
     $logFile = Join-Path $(Agent.TempDirectory) "build_${{ parameters.BuildTarget }}.log"
     New-Item -Path $logFile -ItemType File -Force
     if ("${{ parameters.UnityVersion }}" -eq "Latest") {
@@ -49,18 +49,18 @@ steps:
     Stop-Process $proc
 
     Write-Output '====================================================='
-    Write-Output '           Unity Build Player Finished               '
+    Write-Output '             Unity Build Player Finished             '
     Write-Output '====================================================='
 
     if (Test-Path $logFile) {
         Write-Output '====================================================='
-        Write-Output '           Begin Unity Player Log                    '
+        Write-Output '               Begin Unity Player Log                '
         Write-Output '====================================================='
 
         Get-Content $logFile
 
         Write-Output '====================================================='
-        Write-Output '           End Unity Player Log                      '
+        Write-Output '                End Unity Player Log                 '
         Write-Output '====================================================='
     }
     else {

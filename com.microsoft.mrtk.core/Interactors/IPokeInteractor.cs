@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// the <see cref="IXRInteractor"/> attachTransform to specify
     /// the point at which the poke occurs; typically, this would be
     /// the tip of the index finger for an articulated hand, or a
-    /// pre-determined poking point on a motion controller rig.
+    /// predetermined poking point on a motion controller rig.
     /// </summary>
     public interface IPokeInteractor : IXRHoverInteractor, IXRSelectInteractor
     {
