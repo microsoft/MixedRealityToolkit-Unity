@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Tick the hand ray generator function. Uses index knuckle for position.
             if(poseRetrieved)
             {
-                handRay.Update(knuckle.Position, -palm.Up, CameraCache.Main.transform, Hand);
+                handRay.Update(knuckle.Position, -palm.Up, Camera.main.transform, Hand);
                 Ray ray = handRay.Ray;
 
                 // controllerState is in rig-local space, our ray generator works in worldspace!
