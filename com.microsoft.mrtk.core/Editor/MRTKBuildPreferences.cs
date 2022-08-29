@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// <summary>
     /// Settings provider for build-specific settings, like the 3D app launcher model for Windows builds.
     /// </summary>
+    /// <remarks>
+    /// See <see href="https://docs.microsoft.com/windows/mixed-reality/distribute/3d-app-launcher-design-guidance">3D app launcher design guidance</see> for more information.
+    /// </remarks>
     [Serializable]
     internal class MRTKBuildPreferences : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
@@ -31,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // a developer may have already.
         int IOrderedCallback.callbackOrder => 100;
 
-        /// <remarks>See <see href="https://docs.microsoft.com/windows/mixed-reality/distribute/3d-app-launcher-design-guidance">3D app launcher design guidance</see> for more information.</remarks>
         [SerializeField]
         private GameObject appLauncherModel;
 
