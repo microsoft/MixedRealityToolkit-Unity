@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Build
 {
-    internal class MRTKBuildProcessor : IPreprocessBuildWithReport
+    internal class BuildProcessor : IPreprocessBuildWithReport
     {
         int IOrderedCallback.callbackOrder => 0;
 
