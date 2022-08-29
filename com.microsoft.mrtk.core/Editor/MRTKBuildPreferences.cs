@@ -88,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             && (newAppLauncherModelLocation.EndsWith(".glb")
                                 || string.IsNullOrWhiteSpace(newAppLauncherModelLocation)))
                         {
+                            Undo.RecordObject(Settings, "Change app launcher model");
                             Settings.BuildPreferences.appLauncherModel = newGlbModel;
                             appLauncherChanged = true;
                             EditorUtility.SetDirty(Settings);
