@@ -66,13 +66,9 @@ namespace Microsoft.MixedReality.Toolkit
                         return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(folder, DefaultProfilePath));
                     }
                 }
-                else
+                else if (EditorProjectUtilities.FindRelativeDirectory(PackageFolder, out string folder))
                 {
-                    string folder;
-                    if (EditorProjectUtilities.FindRelativeDirectory(PackageFolder, out folder))
-                    {
-                        return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(folder, DefaultProfilePath));
-                    }
+                    return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(folder, DefaultProfilePath));
                 }
 
                 // If we get here, there was an issue finding the profile.

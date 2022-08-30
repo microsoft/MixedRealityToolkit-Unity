@@ -85,8 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </param>
         internal static bool FindRelativeDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
-            string absolutePath;
-            if (FindDirectory(directoryPathToSearch, directoryName, out absolutePath))
+            if (FindDirectory(directoryPathToSearch, directoryName, out string absolutePath))
             {
                 path = MixedRealityToolkitFiles.GetAssetDatabasePath(absolutePath);
                 return true;

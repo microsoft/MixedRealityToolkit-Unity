@@ -286,33 +286,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion
 
-        private string ServiceFieldName => Char.ToLowerInvariant(ServiceName[0]) + ServiceName.Substring(1);
-        private string ProfileFieldName => Char.ToLowerInvariant(ProfileName[0]) + ProfileName.Substring(1);
+        private string ServiceFieldName => char.ToLowerInvariant(ServiceName[0]) + ServiceName.Substring(1);
+        private string ProfileFieldName => char.ToLowerInvariant(ProfileName[0]) + ProfileName.Substring(1);
 
-        private string ServiceFolderPath
-        {
-            get { return ServiceFolderObject != null ? AssetDatabase.GetAssetPath(ServiceFolderObject) : string.Empty; }
-        }
+        private string ServiceFolderPath => ServiceFolderObject != null ? AssetDatabase.GetAssetPath(ServiceFolderObject) : string.Empty;
 
-        private string InspectorFolderPath
-        {
-            get { return InspectorFolderObject != null ? AssetDatabase.GetAssetPath(InspectorFolderObject) : string.Empty; }
-        }
+        private string InspectorFolderPath => InspectorFolderObject != null ? AssetDatabase.GetAssetPath(InspectorFolderObject) : string.Empty;
 
-        private string InterfaceFolderPath
-        {
-            get { return InterfaceFolderObject != null ? AssetDatabase.GetAssetPath(InterfaceFolderObject) : string.Empty; }
-        }
+        private string InterfaceFolderPath => InterfaceFolderObject != null ? AssetDatabase.GetAssetPath(InterfaceFolderObject) : string.Empty;
 
-        private string ProfileFolderPath
-        {
-            get { return ProfileFolderObject != null ? AssetDatabase.GetAssetPath(ProfileFolderObject) : string.Empty; }
-        }
-
-        private string ProfileAssetFolderPath
-        {
-            get { return ProfileAssetFolderObject != null ? AssetDatabase.GetAssetPath(ProfileAssetFolderObject) : string.Empty; }
-        }
+        private string ProfileFolderPath => ProfileFolderObject != null ? AssetDatabase.GetAssetPath(ProfileFolderObject) : string.Empty;
 
         private string ServiceTemplate;
         private string ServiceConstructorTemplate;
