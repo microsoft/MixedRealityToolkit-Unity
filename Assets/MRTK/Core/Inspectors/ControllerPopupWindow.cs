@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class ControllerPopupWindow : EditorWindow
     {
-        private const string EditorWindowOptionsPath = "Inspectors/Data/EditorWindowOptions.json";
+        // Inspectors/Data/EditorWindowOptions.json
+        private const string EditorWindowOptionsGuid = "28091d5ea9b5739419a221a06fa1ec89";
         private const float InputActionLabelWidth = 128f;
 
         /// <summary>
@@ -786,7 +787,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static string ResolveEditorWindowOptionsPath()
         {
-            return MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath(EditorWindowOptionsPath);
+            return Path.GetFullPath(AssetDatabase.GUIDToAssetPath(EditorWindowOptionsGuid));
         }
     }
 }
