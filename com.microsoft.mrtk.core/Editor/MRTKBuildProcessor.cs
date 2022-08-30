@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Clean old settings and bundle new settings.
         /// </summary>
-        public void OnPreprocessBuild(BuildReport report)
+        void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport report)
         {
             Clean();
 
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Clean old settings post-build.
         /// </summary>
-        public void OnPostprocessBuild(BuildReport report)
+        void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport report)
         {
             Clean();
         }
