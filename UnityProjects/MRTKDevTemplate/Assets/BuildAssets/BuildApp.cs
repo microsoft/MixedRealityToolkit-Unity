@@ -110,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             {
                 Debug.Log("Importing TextMesh Pro...");
                 AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
+                AssetDatabase.Refresh();
             }
             else
             {
