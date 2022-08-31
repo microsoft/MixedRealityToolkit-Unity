@@ -4,7 +4,8 @@
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
         "Unity.XR.Interaction.Toolkit",
-        "Unity.XR.Interaction.Toolkit.Editor"
+        "Unity.XR.Interaction.Toolkit.Editor",
+        "Unity.XR.CoreUtils.Editor"
     ],
     "includePlatforms": [
         "Editor"

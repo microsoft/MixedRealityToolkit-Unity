@@ -10,7 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
 {
     [Serializable]
     /// <summary>
-    /// A <see cref="TintEffect<T>"> that wraps a PlayableBehaviour which can fade the alpha of <see cref="Graphic"> components.
+    /// A <see cref="TintEffect<T>"> that wraps a PlayableBehaviour which can fade
+    /// only the alpha component of <see cref="Graphic"> components. The rgb
+    /// channels of the color will be unaffected.
     /// </summary>
     /// <remarks>
     /// Useful for fading UI Image/RawImages, TMPros, etc.
@@ -21,25 +23,21 @@ namespace Microsoft.MixedReality.Toolkit.UX
         internal class GraphicFadeBehaviour : TintBehaviour<Graphic>
         {
             /// <inheritdoc />
-            protected override void ApplyColor(Color color)
+            protected override void ApplyColor(Color color, Graphic graphic)
             {
-                foreach (Graphic graphic in Tintables)
-                {
-                    graphic.color = new Color(graphic.color.r, graphic.color.g, graphic.color.b, color.a);
-                }
+                if (graphic == null) { return; }
+
+                // Apply only the alpha channel; leave color channels unaffected.
+                graphic.color = new Color(graphic.color.r, graphic.color.g, graphic.color.b, color.a);
             }
 
             /// <inheritdoc />
-            protected override Color GetColor()
+            protected override bool GetColor(Graphic graphic, out Color color)
             {
-                if (Tintables.Count > 0 && Tintables[0] != null)
-                {
-                    return Tintables[0].color;
-                }
-                else
-                {
-                    return default;
-                }
+                color = default;
+                if (graphic == null) { return false; }
+                color = graphic.color;
+                return true;
             }
         }
 

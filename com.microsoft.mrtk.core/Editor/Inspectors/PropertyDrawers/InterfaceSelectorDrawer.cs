@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private GUIContent dropLabel;
         private GUIStyle labelStyle;
+
         public InterfaceSelectorDrawer()
         {
             // Cache some items used frequently in OnGUI
@@ -51,16 +52,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 // Grab a list of all Types currently loaded that implement our
                 // field's type.
-                List<Type> allInterfaces = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(assembly => assembly.GetLoadableTypes())
-                    .Where(type => type != fieldInfo.FieldType && fieldInfo.FieldType.IsAssignableFrom(type))
+                List<Type> allDerivedTypes = TypeCache.GetTypesDerivedFrom(fieldInfo.FieldType)
+                    .Where(type => !type.IsAbstract && !type.IsInterface)
                     .ToList();
 
                 GenericMenu menu = new GenericMenu();
                 // Add a menu item for each valid type
-                for (int i = 0; i < allInterfaces.Count; i++)
+                for (int i = 0; i < allDerivedTypes.Count; i++)
                 {
-                    menu.AddItem(new GUIContent(allInterfaces[i].Name), false, (t) =>
+                    menu.AddItem(new GUIContent(allDerivedTypes[i].Name), false, (t) =>
                     {
                         property.serializedObject.Update();
                         try
@@ -75,11 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             Debug.LogError($"{((Type)t).FullName} must have a constructor with no arguments to be instantiated through the inspector!");
                         }
                         property.serializedObject.ApplyModifiedProperties();
-                    }, allInterfaces[i]);
+                    }, allDerivedTypes[i]);
                 }
 
                 // Add an item for clearing to null
-                if (((InterfaceSelectorAttribute)attribute).AllowNull == true)
+                if (((InterfaceSelectorAttribute)attribute).AllowNull)
                 {
                     menu.AddItem(new GUIContent("(null)"), false, () =>
                     {

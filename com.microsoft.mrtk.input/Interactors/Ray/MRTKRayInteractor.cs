@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
@@ -140,6 +139,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("The pose source representing the device this interactor uses for rotation.")]
+        private IPoseSource devicePoseSource;
+
+        /// <summary>
+        /// The pose source representing the device this interactor uses for rotation.
+        /// </summary>
+        protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
+
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
 
@@ -163,20 +172,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         isRelaxedBeforeSelect = false;
                     }
 
-                    if (xrController is ActionBasedController abController &&
-                            abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
+                    if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
                     {
-                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
-                    }
-                    else
-                    {
-                        // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
-                        if (HandsAggregator != null &&
-                            xrController is ArticulatedHandController handController &&
-                            HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
-                        {
-                            attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
-                        }
+                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
                     }
 
                     if (hasSelection)

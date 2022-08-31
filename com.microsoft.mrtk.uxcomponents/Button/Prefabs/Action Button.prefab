@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 2650124607149202423}
   - component: {fileID: 8689816762975716001}
   m_Layer: 5
-  m_Name: ToggleQuad
+  m_Name: ToggleBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: b332d87877c99c84fadd6f1cba5c861b, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -844,11 +844,23 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1]
       value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.GraphicTintEffect
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.GraphicTintEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].name
+      value: GraphicTint
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].name
       value: GraphicTint
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
@@ -868,20 +880,52 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].blendMode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].blendMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].playbackMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].playbackMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].transitionDuration
-      value: 0.3
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].transitionDuration
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.size
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].tintables.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.data[0]
@@ -902,7 +946,11 @@ PrefabInstance:
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].tintables.Array.data[4]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5095746839500215027}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1].tintables.Array.data[0]
+      value: 
+      objectReference: {fileID: 8467006667157818416}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
 --- !u!224 &6922469056340231698 stripped

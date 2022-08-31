@@ -281,7 +281,8 @@ function GetProjectRelativePath {
 # (which run serially) causes noticable delays in responsiveness in the Unity editor.
 $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "com.microsoft.mrtk.core/Editor/MRTKSettings.cs",
-    "com.microsoft.mrtk.core/Editor/EditorProjectUtilities.cs"
+    "com.microsoft.mrtk.core/Editor/EditorProjectUtilities.cs",
+    "com.microsoft.mrtk.core/Editor/MRTKProjectValidation.cs"
 )
 
 <#
