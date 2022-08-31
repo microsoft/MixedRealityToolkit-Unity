@@ -1,0 +1,32 @@
+name: "Issue Labeling"
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  label-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            if (context.payload.issue.title.toLowerCase().includes("mrtk3") ||
+                context.payload.issue.body.toLowerCase().includes("mrtk3"))
+            {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['MRTK3']
+              })
+            }
+            if (context.payload.issue.title.toLowerCase().includes("mrtk2") ||
+                context.payload.issue.body.toLowerCase().includes("mrtk2"))
+            {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['MRTK2']
+              })
+            }
