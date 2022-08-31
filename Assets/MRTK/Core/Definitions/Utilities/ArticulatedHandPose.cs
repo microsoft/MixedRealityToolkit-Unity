@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEditor;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -237,19 +237,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public static void LoadGesturePoses()
         {
             string[] gestureNames = Enum.GetNames(typeof(GestureId));
-            string basePath = Path.Combine("InputSimulation", "ArticulatedHandPoses");
             for (int i = 0; i < gestureNames.Length; ++i)
             {
-                string relPath = Path.Combine(basePath, String.Format("ArticulatedHandPose_{0}.json", gestureNames[i]));
-                string absPath = MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Services, relPath);
-                LoadGesturePose((GestureId)i, absPath);
+                string gestureFileName = string.Format("ArticulatedHandPose_{0}", gestureNames[i]);
+                string[] gestureGuids = AssetDatabase.FindAssets(gestureFileName);
+                string gesturePath = string.Empty;
+                foreach (string guid in gestureGuids)
+                {
+                    string tempPath = AssetDatabase.GUIDToAssetPath(guid);
+                    if (tempPath.Contains("InputSimulation")
+                        && tempPath.Contains("ArticulatedHandPoses")
+                        && tempPath.Contains(gestureFileName + ".json"))
+                    {
+                        gesturePath = tempPath;
+                        break;
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(gesturePath))
+                {
+                    LoadGesturePose((GestureId)i, gesturePath);
+                }
             }
         }
 
         [Obsolete("Use SimulatedArticulatedHandPoses class or other custom class")]
         private static ArticulatedHandPose LoadGesturePose(GestureId gesture, string filePath)
         {
-            if (!string.IsNullOrEmpty(filePath))
+            if (!string.IsNullOrWhiteSpace(filePath))
             {
                 var pose = new ArticulatedHandPose();
                 pose.FromJson(File.ReadAllText(filePath));
