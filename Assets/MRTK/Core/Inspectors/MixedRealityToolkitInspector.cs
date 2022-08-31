@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 activeProfileEditor = null;
                 cachedProfile = activeProfile.objectReferenceValue;
             }
-            catch(System.Exception e)
+            catch (System.Exception e)
             {
                 Debug.LogError($"Fail with in-editor reset profile configuration to {newProfile?.name}:\n{e}");
             }
