@@ -62,9 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (changed)
             {
-                MixedRealityToolkit.Instance.ResetConfiguration((MixedRealityToolkitConfigurationProfile)activeProfile.objectReferenceValue);
-                activeProfileEditor = null;
-                cachedProfile = activeProfile.objectReferenceValue;
+                TryResetConfiguration();
             }
 
             if (activeProfile.objectReferenceValue != null && activeProfileEditor == null)
@@ -76,6 +74,29 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (activeProfileEditor != null)
             {
                 activeProfileEditor.OnInspectorGUI();
+            }
+        }
+
+        private void TryResetConfiguration()
+        {
+            var newProfile = (MixedRealityToolkitConfigurationProfile)activeProfile.objectReferenceValue;
+            try
+            {
+                if (!Application.isPlaying)
+                {
+                    MixedRealityToolkit.Instance.ResetConfiguration(newProfile);
+                }
+                else
+                {
+                    MixedRealityToolkit.Instance.ActiveProfile = newProfile;
+                }
+
+                activeProfileEditor = null;
+                cachedProfile = activeProfile.objectReferenceValue;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Failed to switch MRTK profile to {newProfile?.name}:\n{e}");
             }
         }
 
