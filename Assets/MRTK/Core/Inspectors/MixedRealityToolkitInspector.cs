@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"Fail with in-editor reset profile configuration to {newProfile?.name}:\n{e}");
+                Debug.LogError($"Failed to switch MRTK profile to {newProfile?.name}:\n{e}");
             }
         }
 
