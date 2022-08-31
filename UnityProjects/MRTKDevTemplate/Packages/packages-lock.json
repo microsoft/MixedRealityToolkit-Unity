@@ -150,8 +150,8 @@
         "com.microsoft.mrtk.standardassets": "3.0.0-development"
       }
     },
-    "com.microsoft.mrtk.uxcomponents.static": {
-      "version": "file:../../../com.microsoft.mrtk.uxcomponents.static",
+    "com.microsoft.mrtk.uxcomponents.noncanvas": {
+      "version": "file:../../../com.microsoft.mrtk.uxcomponents.noncanvas",
       "depth": 0,
       "source": "local",
       "dependencies": {

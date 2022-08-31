@@ -4,7 +4,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Static UX Components")]
+[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit UX Components (Non-Canvas)")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXComponents.Runtime.Tests")]
