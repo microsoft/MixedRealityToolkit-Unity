@@ -7,7 +7,6 @@
         "Unity.InputSystem",
         "Unity.XR.CoreUtils",
         "Unity.XR.Interaction.Toolkit",
-        "Unity.XR.OpenXR",
         "glTFast",
         "Ktx"
     ],
