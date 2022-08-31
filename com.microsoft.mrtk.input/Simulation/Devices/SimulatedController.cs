@@ -29,10 +29,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         Preserve]
     internal class MRTKSimulatedController : XRSimulatedController
     {
+        private ControllerSimulationMode simulationMode;
         /// <summary>
         /// The current simulation mode for this controller;
         /// </summary>
-        public ControllerSimulationMode SimulationMode;
+        public ControllerSimulationMode SimulationMode
+        {
+            get
+            {
+                return simulationMode;
+            }
+            set
+            {
+                simulationMode = value;
+            }
+        }
 
         /// <summary>
         /// The device's pointerPosition

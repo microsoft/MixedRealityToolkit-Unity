@@ -49,10 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion Associated hand select values
 
         #region Properties
-
+        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
         private HandsAggregatorSubsystem handsAggregator;
-
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator;
 
         #endregion Properties
 
@@ -87,17 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 Debug.Assert(handControllerState != null);
 
-                // Get hands aggregator subsystem reference, if still null.
-                // Should avoid per-frame allocs by only acquiring aggregator reference once.
-                if (handsAggregator == null)
-                {
-                    handsAggregator = HandsUtils.GetSubsystem();
-                }
 
                 // If we still don't have an aggregator, then don't update selects.
-                if (handsAggregator == null) { return; }
+                if (HandsAggregator == null) { return; }
 
-                bool gotPinchData = handsAggregator.TryGetPinchProgress(handNode, out bool isPinchReady, out bool isPinching, out float pinchAmount);
+                bool gotPinchData = HandsAggregator.TryGetPinchProgress(handNode, out bool isPinchReady, out bool isPinching, out float pinchAmount);
 
                 // If we got pinch data, write it into our select interaction state.
                 if (gotPinchData)
@@ -122,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 handControllerState.PinchSelectReady = isPinchReady;
 
-                if (isPinching && handsAggregator.TryGetPinchingPoint(handNode, out HandJointPose pinchPose))
+                if (isPinching && HandsAggregator.TryGetPinchingPoint(handNode, out HandJointPose pinchPose))
                 {
                     handControllerState.PinchPose.position = pinchPose.Position;
                     handControllerState.PinchPose.rotation = pinchPose.Rotation;
@@ -143,16 +135,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // In case the position input action is not provided, we will try to polyfill it with the device position.
             // Should be removed once we have universal hand interaction profile(s) across vendors.
 
-            if (handsAggregator != null && (positionAction.action?.controls.Count ?? 0) == 0)
+            if ((positionAction.action?.controls.Count ?? 0) == 0 && TryGetPolyfillDevicePose(out Pose devicePose))
             {
-                if (TryGetPolyfillDevicePose(out Pose devicePose))
-                {
-                    controllerState.position = devicePose.position;
-                    controllerState.rotation = devicePose.rotation;
-
-                    // Polyfill the tracking state, too.
-                    controllerState.inputTrackingState = InputTrackingState.Position | InputTrackingState.Rotation;
-                }                
+                controllerState.position = devicePose.position;
+                controllerState.rotation = devicePose.rotation;
+                
+                // Polyfill the tracking state, too.
+                controllerState.inputTrackingState = InputTrackingState.Position | InputTrackingState.Rotation;
             }
         }
 
@@ -163,23 +152,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Workaround for missing device pose on devices without interaction profiles
         // for hands, such as Varjo and Quest. Should be removed once we have universal
         // hand interaction profile(s) across vendors.
-        public bool TryGetPolyfillDevicePose(out Pose devicePose)
+        private bool TryGetPolyfillDevicePose(out Pose devicePose)
         {
-            Handedness handedness = HandNode.ToHandedness();
-            HandJointPoseSource palmPoseSource = new HandJointPoseSource(handedness, TrackedHandJoint.Palm);
             bool poseRetrieved = false;
+            Handedness handedness = HandNode.ToHandedness();
 
-            if (palmPoseSource.TryGetPose(out Pose palmPose))
+            if (HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, HandNode, out HandJointPose palmPose))
             {
-                devicePose.position = palmPose.position;
+                devicePose.position = palmPose.Position;
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        devicePose.rotation = palmPose.rotation * Quaternion.Inverse(leftPalmOffset);
+                        devicePose.rotation = palmPose.Rotation * Quaternion.Inverse(leftPalmOffset);
                         poseRetrieved = true;
                         break;
                     case Handedness.Right:
-                        devicePose.rotation = palmPose.rotation * Quaternion.Inverse(rightPalmOffset);
+                        devicePose.rotation = palmPose.Rotation * Quaternion.Inverse(rightPalmOffset);
                         poseRetrieved = true;
                         break;
                     default:

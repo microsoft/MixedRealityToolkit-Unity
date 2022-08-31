@@ -8,12 +8,11 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [Serializable]
-
     /// <summary>
     /// A pose source which represents a hand ray. This hand ray is constructed by deriving it from the
     /// palm and knuckle positions
     /// </summary>
+    [Serializable]
     public class PolyfillHandRayPoseSource : HandBasedPoseSource
     {
         // The Hand Ray used to calculate the polyfill.
@@ -30,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private HandJointPose palm;
 
         /// <summary>
-        /// Tries to get the pose of the hand ray by deriving it from the
+        /// Tries to get the pose of the hand ray in world space by deriving it from the
         /// palm and knuckle positions
         /// </summary>
         public override bool TryGetPose(out Pose pose)
@@ -38,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             XRNode? handNode = Hand.ToXRNode();
 
             bool poseRetrieved = handNode.HasValue;
-            poseRetrieved &= HandsAggregator.TryGetJoint(TrackedHandJoint.IndexProximal, handNode.Value, out knuckle);
-            poseRetrieved &= HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handNode.Value, out palm);
+            poseRetrieved &= HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.IndexProximal, handNode.Value, out knuckle);
+            poseRetrieved &= HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handNode.Value, out palm);
 
             // Tick the hand ray generator function. Uses index knuckle for position.
             if(poseRetrieved)

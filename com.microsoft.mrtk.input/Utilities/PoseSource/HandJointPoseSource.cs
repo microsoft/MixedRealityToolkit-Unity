@@ -16,9 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Empty constructor for inspector instantiation
         /// </summary>
-        public HandJointPoseSource()
-        {
-        }
+        public HandJointPoseSource() { }
 
         public HandJointPoseSource(Handedness hand, TrackedHandJoint joint)
         {

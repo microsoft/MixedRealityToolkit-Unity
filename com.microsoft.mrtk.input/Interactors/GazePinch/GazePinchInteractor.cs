@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
-                // Use Pose Sources to calculate the interactor's pose and the attach transform's position
+                // Use The aim pose sources to calculate the interactor's pose and the attach transform's position
                 if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
                 {
                     transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
@@ -237,23 +237,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
                     {
-                        // Get a rotation that points in the direction of this aiming ray.
-                        Quaternion rayRotation = Quaternion.LookRotation(aimPose.rotation * Vector3.forward);
-
                         // Compute the "virtual hand" position as the vector from this pinch to the average pinch.
-                        // TODO: Replace PinchPose with explicit binding to OpenXR pinch/grip pose when the standard is available.
                         Vector3 objectOffset = pinchPose.position - pinchCentroid.position;
 
                         // Compute the final attachTransform's position by transforming the interactor-local original attach point
-                        // by the ray rotation, scaling by the body-distance ratio, and then finally applying the virtual hand offset.
-                        // TODO: Replace transform.position with explicit binding to OpenXR grip pose when the standard is available.
-                        positionToApply = aimPose.position + objectOffset + (rayRotation * interactorLocalAttachPoint) * distanceRatio;
+                        // by the aiming ray's rotation, scaling by the body-distance ratio, and then finally applying the virtual hand offset.
+                        positionToApply = aimPose.position + objectOffset + (aimPose.rotation * interactorLocalAttachPoint) * distanceRatio;
                     }
                 }
                 else
                 {
                     // If we're not selecting, just use the pinching position.
-                    // TODO: Replace PinchPose with explicit binding to OpenXR pinch/grip pose when the standard is available.
                     positionToApply = pinchPose.position;
                 }
             }
