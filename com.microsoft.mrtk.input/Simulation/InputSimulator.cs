@@ -595,10 +595,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private Vector3 CameraRelativeToScreen(Vector3 cameraRelativePos)
         {
             // First, convert from the camera space to world space.
-            Vector3 worldPos = CameraCache.Main.transform.TransformPoint(cameraRelativePos);
+            Vector3 worldPos = Camera.main.transform.TransformPoint(cameraRelativePos);
 
             // Then convert from world to screen space.
-            return CameraCache.Main.WorldToScreenPoint(worldPos);
+            return Camera.main.WorldToScreenPoint(worldPos);
         }
 
         /// <summary>
@@ -611,10 +611,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private Vector3 ScreenToCameraRelative(Vector3 screenPos)
         {
             // First, convert from the screen space to world space.
-            Vector3 worldPos = CameraCache.Main.ScreenToWorldPoint(screenPos);
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
             // Then convert from world to camera relative space.
-            return CameraCache.Main.transform.InverseTransformPoint(worldPos);
+            return Camera.main.transform.InverseTransformPoint(worldPos);
         }
 
         /// <summary>

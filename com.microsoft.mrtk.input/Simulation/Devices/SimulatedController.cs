@@ -477,8 +477,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
         {
-            Vector3 worldPosition = CameraCache.Main.transform.TransformPoint(position) + offset;
-            Quaternion worldRotation = CameraCache.Main.transform.rotation * rotation;
+            Vector3 worldPosition = Camera.main.transform.TransformPoint(position) + offset;
+            Quaternion worldRotation = Camera.main.transform.rotation * rotation;
 
             SetWorldPose(worldPosition, worldRotation, rotationMode, shouldUseRayVector);
         }
@@ -533,7 +533,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
                 if (rotationMode == ControllerRotationMode.FaceCamera)
                 {
-                    Quaternion worldLookAtCamera = Quaternion.LookRotation(CameraCache.Main.transform.position - position);
+                    Quaternion worldLookAtCamera = Quaternion.LookRotation(Camera.main.transform.position - position);
                     Quaternion rigLocalLookAtCamera = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * worldLookAtCamera;
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
@@ -543,7 +543,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 }
                 else if (rotationMode == ControllerRotationMode.CameraAligned)
                 {
-                    Quaternion worldCameraForward = Quaternion.LookRotation(CameraCache.Main.transform.forward);
+                    Quaternion worldCameraForward = Quaternion.LookRotation(Camera.main.transform.forward);
                     Quaternion rigLocalCameraForward = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * worldCameraForward;
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
@@ -559,7 +559,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 if (shouldUseRayVector && Handedness.ToXRNode().HasValue && HandSubsystem != null &&
                         HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose))
                 {
-                    handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, CameraCache.Main.transform, Handedness);
+                    handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, Camera.main.transform, Handedness);
                     Ray ray = handRay.Ray;
                     simulatedControllerState.pointerPosition = PlayspaceUtilities.ReferenceTransform.InverseTransformPoint(ray.origin);
                     simulatedControllerState.pointerRotation = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * Quaternion.LookRotation(ray.direction);

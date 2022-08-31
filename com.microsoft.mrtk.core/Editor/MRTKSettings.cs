@@ -20,6 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [SerializeField]
         private SerializableDictionary<BuildTargetGroup, MRTKProfile> settings = new SerializableDictionary<BuildTargetGroup, MRTKProfile>();
 
+        [SerializeField]
+        private MRTKBuildPreferences buildPreferences = default;
+
+        internal MRTKBuildPreferences BuildPreferences => buildPreferences;
+
         private void OnEnable()
         {
             MRTKProfile.Instance = GetProfileForBuildTarget(BuildTargetGroup.Standalone);

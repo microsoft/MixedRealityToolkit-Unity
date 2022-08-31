@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // Tick the hand ray generator function. Uses index knuckle for position.
-                handRay.Update(knuckle.Position, -palm.Up, CameraCache.Main.transform, HandNode.ToHandedness());
+                handRay.Update(knuckle.Position, -palm.Up, Camera.main.transform, HandNode.ToHandedness());
                 
                 Ray ray = handRay.Ray;
                 
