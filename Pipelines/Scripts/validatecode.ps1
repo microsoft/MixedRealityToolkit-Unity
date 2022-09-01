@@ -130,30 +130,6 @@ function CheckSpacelessComments {
 
 <#
 .SYNOPSIS
-    Checks if the given file (at the given line number) contains a reference to Camera.main
-    Returns true if such a reference exists.
-#>
-function CheckMainCamera {
-    [CmdletBinding()]
-    param(
-        [string]$FileName,
-        [string[]]$FileContent,
-        [int]$LineNumber
-    )
-    process {
-        if ($FileName -notmatch "CameraCache.cs" -and
-            $FileName -notmatch "StandardAssets" -and
-            $FileContent[$LineNumber] -match "Camera\.main") {
-            Write-Host "An instance of Camera.main was found in $FileName at line $LineNumber "
-            Write-Host "Use CameraCache.Main instead."
-            $true;
-        }
-        $false;
-    }
-}
-
-<#
-.SYNOPSIS
     Checks if the given profile contains references to Assembly-CSharp, often indicative of invalid reference.
     Returns true if such a reference exists.
 #>
@@ -377,9 +353,6 @@ function CheckScript {
                 $containsIssue = $true
             }
             if (CheckEmptyDoccomment $FileName $fileContent $i) {
-                $containsIssue = $true
-            }
-            if (CheckMainCamera $FileName $fileContent $i) {
                 $containsIssue = $true
             }
             if (CheckSpacelessComments $FileName $fileContent $i) {

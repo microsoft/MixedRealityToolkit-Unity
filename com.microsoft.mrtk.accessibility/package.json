@@ -1,22 +1,22 @@
 {
   "name": "com.microsoft.mrtk.accessibility",
   "version": "1.0.0-development",
-  "description": "*** Please note ***\nThe MRTK3 accessibility features are in early preview and may not contain all planned features. Early preview releases also may undergo significant, breaking architectural changes before release.\n\nFeatures and subsystem to enable accessibility in mixed reality experiences.\n",
+  "description": "*** Please note ***\nThe MRTK3 accessibility features are in early preview and may not contain all planned features. Early preview releases also may undergo significant, breaking architectural changes before release.\n\nFeatures and subsystem to enable accessibility in mixed reality experiences.",
   "displayName": "MRTK Accessibility Early Preview",
   "msftFeatureCategory": "MRTK3",
   "author": "Microsoft",
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    "type": "git",
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
   },
   "bugs": {
-      "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
   },
   "unity": "2020.3",
-  "dependencies": { 
+  "dependencies": {
     "com.microsoft.mrtk.core": "3.0.0-development",
-    "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+    "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
     "com.unity.textmeshpro": "3.0.6"
   }
 }

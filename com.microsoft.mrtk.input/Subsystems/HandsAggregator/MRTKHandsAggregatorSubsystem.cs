@@ -271,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 gotData &= TryGetJoint(TrackedHandJoint.Palm, handNode, out HandJointPose palm);
 
                 // Is the hand far enough up/in view to be eligible for pinching?
-                bool handIsUp = Vector3.Angle(CameraCache.Main.transform.forward, (palm.Position - CameraCache.Main.transform.position)) < Config.HandRaiseCameraFov;
+                bool handIsUp = Vector3.Angle(Camera.main.transform.forward, (palm.Position - Camera.main.transform.position)) < Config.HandRaiseCameraFov;
 
                 gotData &= TryGetJoint(TrackedHandJoint.ThumbTip, handNode, out HandJointPose thumbTip);
                 gotData &= TryGetJoint(TrackedHandJoint.IndexTip, handNode, out HandJointPose indexTip);
@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             private bool IsPalmFacingAway(HandJointPose palmJoint)
             {
-                if (CameraCache.Main == null)
+                if (Camera.main == null)
                 {
                     return false;
                 }
@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // The original palm orientation is based on a horizontal palm facing down.
                 // So, if you bring your hand up and face it away from you, the palm.up is the forward vector.
-                if (Mathf.Abs(Vector3.Angle(palmDown, CameraCache.Main.transform.forward)) > Config.HandFacingAwayToleranceInDegrees)
+                if (Mathf.Abs(Vector3.Angle(palmDown, Camera.main.transform.forward)) > Config.HandFacingAwayToleranceInDegrees)
                 {
                     return false;
                 }

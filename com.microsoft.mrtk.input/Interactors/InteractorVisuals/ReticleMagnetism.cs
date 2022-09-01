@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bool insideCollider = Mathf.Approximately(ray.direction.sqrMagnitude, 0.0f);
 
             // Is the surface facing the camera? Don't magnetize to surfaces facing away from the user.
-            bool surfaceFacingCamera = Vector3.Dot(ray.direction, CameraCache.Main.transform.forward) > 0.0f;
+            bool surfaceFacingCamera = Vector3.Dot(ray.direction, Camera.main.transform.forward) > 0.0f;
 
             if (!insideCollider && surfaceFacingCamera)
             {
