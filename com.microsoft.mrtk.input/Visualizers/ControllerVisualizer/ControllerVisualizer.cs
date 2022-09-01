@@ -49,9 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The input action we key into to determine whether this controller is tracked or not")]
         private InputAction controllerDetectedAction;
 
-        /// <inheritdoc />
-        protected bool IsControllerTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
-
         protected void OnEnable()
         {
             Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
