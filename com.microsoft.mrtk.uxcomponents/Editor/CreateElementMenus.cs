@@ -44,11 +44,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 // We're using SelectableEditor type here to grab the assembly instead of going
                 // and hunting down the assembly ourselves. It's a bit more convenient and durable.
-                PlaceUIElementRoot = typeof(SelectableEditor).Assembly.GetType("UnityEditor.UI.MenuOptions").GetMethod(
+                PlaceUIElementRoot = typeof(SelectableEditor).Assembly.GetType("UnityEditor.UI.MenuOptions")?.GetMethod(
                                                 "PlaceUIElementRoot",
                                                 System.Reflection.BindingFlags.NonPublic |
                                                 System.Reflection.BindingFlags.Static );
-
+                if (PlaceUIElementRoot == null)
+                {
+                    Debug.LogError("Whoops! Looks like Unity changed the internals of their UGUI editor utilities. Please file a bug!");
+                    // Return early; we can't do anything else.
+                    return gameObject;
+                }
             }
 
             PlaceUIElementRoot.Invoke(null, new object[] { gameObject, menuCommand});
