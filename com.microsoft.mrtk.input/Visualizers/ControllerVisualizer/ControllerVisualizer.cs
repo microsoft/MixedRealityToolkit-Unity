@@ -8,6 +8,7 @@ using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityInputSystem = UnityEngine.InputSystem;
 using InputAction = UnityEngine.InputSystem.InputAction;
+using InputActionProperty = UnityEngine.InputSystem.InputActionProperty;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -47,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The input action we key into to determine whether this controller is tracked or not")]
-        private InputAction controllerDetectedAction;
+        private InputActionProperty controllerDetectedAction;
 
         protected void OnEnable()
         {
@@ -69,18 +70,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
             }
             
-            if (controllerDetectedAction == null) { return; }
-            controllerDetectedAction.started += RenderControllerVisuals;
-            controllerDetectedAction.canceled += RemoveControllerVisuals;
-            controllerDetectedAction.Enable();
+            if (controllerDetectedAction == null  || controllerDetectedAction.action == null) { return; }
+            controllerDetectedAction.action.started += RenderControllerVisuals;
+            controllerDetectedAction.action.canceled += RemoveControllerVisuals;
+            controllerDetectedAction.action.Enable();
         }
 
         protected void OnDisable()
         {
-            if (controllerDetectedAction == null) { return; }
-            controllerDetectedAction.Disable();
-            controllerDetectedAction.started -= RenderControllerVisuals;
-            controllerDetectedAction.canceled -= RemoveControllerVisuals;
+            if (controllerDetectedAction == null || controllerDetectedAction.action == null) { return; }
+            controllerDetectedAction.action.Disable();
+            controllerDetectedAction.action.started -= RenderControllerVisuals;
+            controllerDetectedAction.action.canceled -= RemoveControllerVisuals;
         }
         private void RenderControllerVisuals(InputAction.CallbackContext context)
         {

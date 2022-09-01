@@ -48,6 +48,14 @@ PrefabInstance:
       value: Controller Detected
       objectReference: {fileID: 0}
     - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
+      propertyPath: controllerDetectedAction.m_Action.m_Id
+      value: 4204bd93-73df-4026-97f6-48cc7932da0b
+      objectReference: {fileID: 0}
+    - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
+      propertyPath: controllerDetectedAction.m_Action.m_Name
+      value: Controller Detected
+      objectReference: {fileID: 0}
+    - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
       propertyPath: controllerDetectedAction.m_SingletonActionBindings.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -58,6 +66,10 @@ PrefabInstance:
     - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
       propertyPath: controllerDetectedAction.m_SingletonActionBindings.Array.data[0].m_Id
       value: e4d5f3cc-0eb6-4e0a-b9ab-796a40214788
+      objectReference: {fileID: 0}
+    - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
+      propertyPath: controllerDetectedAction.m_Action.m_SingletonActionBindings.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
       propertyPath: controllerDetectedAction.m_SingletonActionBindings.Array.data[0].m_Path
@@ -73,6 +85,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
       propertyPath: m_controllerDetectedAction.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Controller Detected
+      objectReference: {fileID: 0}
+    - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
+      propertyPath: controllerDetectedAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Id
+      value: 0e54d50d-3538-4344-9f94-d5621cf769e5
+      objectReference: {fileID: 0}
+    - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
+      propertyPath: controllerDetectedAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <XRController>{LeftHand}/isTracked
+      objectReference: {fileID: 0}
+    - target: {fileID: -7366846053233975685, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
+      propertyPath: controllerDetectedAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Action
       value: Controller Detected
       objectReference: {fileID: 0}
     - target: {fileID: 3507431783398283103, guid: da93d751ddc0f64468dfc02f18d02d00, type: 3}
