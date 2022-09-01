@@ -24,6 +24,11 @@
             "define": "MROPENXR_PRESENT"
         },
         {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "1.5",
+            "define": "MROPENXR_ANIM_PRESENT"
+        },
+        {
             "name": "com.atteneder.gltfast",
             "expression": "",
             "define": "GLTFAST_PRESENT"

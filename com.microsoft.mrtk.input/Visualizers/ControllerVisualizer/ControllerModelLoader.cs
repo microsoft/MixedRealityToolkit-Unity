@@ -72,6 +72,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Object.Destroy(gltfGameObject);
                     return existingGameObject;
                 }
+
+#if MROPENXR_ANIM_PRESENT
+                // Try to add an animator to the controller model
+                ControllerModelArticulator controllerModelArticulator = gltfGameObject.EnsureComponent<ControllerModelArticulator>();
+                if (!controllerModelArticulator.TryStartArticulating(controllerModelProvider, modelKey))
+                {
+                    Debug.LogError("Unable to load model animation.");
+                }
+#endif
+
                 ControllerModelDictionary.Add(modelKey, gltfGameObject);
             }
             else
