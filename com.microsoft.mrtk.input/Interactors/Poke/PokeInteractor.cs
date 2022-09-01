@@ -188,15 +188,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pokePointTracked = TryGetPokePose(out Pose pose);
                     if (pokePointTracked)
                     {
-                        // If we can get a joint pose, set our attachTransform accordingly.
-                        attachTransform.SetPositionAndRotation(pose.position, pose.rotation);
+                        // If we can get a joint pose, set our transform accordingly.
+                        transform.SetPositionAndRotation(pose.position, pose.rotation);
                     }
                     else
                     {
-                        // If we don't have a joint pose, just reset the attachTransform back to neutral.
-                        attachTransform.localPosition = Vector3.zero;
-                        attachTransform.localRotation = Quaternion.identity;
+                        // If we don't have a poke pose, reset to whatever our parent XRController's pose is.
+                        transform.localPosition = Vector3.zero;
+                        transform.localRotation = Quaternion.identity;
                     }
+
+                    // Ensure that the attachTransform tightly follows the interactor's transform
+                    attachTransform.SetPositionAndRotation(transform.position, transform.rotation);
 
                     // The endpoint of our trajectory is the current attachTransform, regardless
                     // if this interactor set the attachTransform or whether we are just on a motion controller.

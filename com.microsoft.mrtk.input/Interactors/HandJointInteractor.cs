@@ -135,14 +135,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        // If we have no valid tracked interaction point, reset to whatever our parent XRController's pose is.
+                        // If we don't have a joint pose, reset to whatever our parent XRController's pose is.
                         transform.localPosition = Vector3.zero;
                         transform.localRotation = Quaternion.identity;
                     }
 
                     // Ensure that the attachTransform tightly follows the interactor's transform
-                    attachTransform.localPosition = Vector3.zero;
-                    attachTransform.localRotation = Quaternion.identity;
+                    attachTransform.SetPositionAndRotation(transform.position, transform.rotation);
 
                     SetVisuals(isHoverActive);
 
