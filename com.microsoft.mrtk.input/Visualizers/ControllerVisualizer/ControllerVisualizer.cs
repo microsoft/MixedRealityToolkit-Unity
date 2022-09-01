@@ -130,9 +130,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private async void InstantiateControllerVisuals(bool usePlatformVisuals, bool useFallbackVisuals)
         {
             // Disable any pre-existing controller models before trying to render new ones.
-            platformLoadedGameObject?.SetActive(false);
-            platformLoadedGameObjectRoot?.SetActive(false);
-            fallbackGameObject?.SetActive(false);
+            if (platformLoadedGameObject != null)
+            {
+                platformLoadedGameObject.SetActive(false);
+            }
+            if (platformLoadedGameObjectRoot != null)
+            {
+                platformLoadedGameObjectRoot.SetActive(false);
+            }
+            if (fallbackGameObject != null)
+            {
+                fallbackGameObject.SetActive(false);
+            }
 
             // Try to load the controller model from the platform
             if (usePlatformVisuals)
