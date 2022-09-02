@@ -522,6 +522,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             return base.IsSelectableBy(interactor) && AllowedInteractionTypes.IsMaskSet(GetInteractionFlagsFromInteractor(interactor));
         }
 
+        private MixedRealityTransform targetTransform;
+
         private static readonly ProfilerMarker OnSelectEnteredPerfMarker =
             new ProfilerMarker("[MRTK] ObjectManipulator.OnSelectEntered");
 
@@ -544,7 +546,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     rigidBody.isKinematic = false;
                 }
 
-                MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
+                targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
                 ManipulationLogic.scaleLogic.Setup(interactorsSelecting, this, targetTransform);
                 ManipulationLogic.rotateLogic.Setup(interactorsSelecting, this, targetTransform);
@@ -573,8 +575,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     ReleaseRigidBody(rigidBody.velocity, rigidBody.angularVelocity);
                 }
-
-                MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
             }
         }
 
@@ -608,7 +608,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     bool useCenteredAnchor = rotateType == RotateAnchorType.RotateAboutObjectCenter;
                     bool isOneHanded = interactorsSelecting.Count == 1;
 
-                    MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
+                    targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
                     using (ScaleLogicMarker.Auto())
                     {
@@ -652,7 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         constraintsManager.ApplyTranslationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
                     }
 
-                    ApplyTargetTransform(targetTransform);
+                    ApplyTargetTransform();
                 }
             }
         }
@@ -662,10 +662,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// to apply the target pose to the object. Calls <see cref="ModifyTargetPose"/> before
         /// applying, to adjust the pose with smoothing, constraints, etc.
         /// </summary>
-        /// <param name="targetTransform">
-        /// The target position, rotation, and scale to set the object to.
-        /// <param/>
-        private void ApplyTargetTransform(MixedRealityTransform targetTransform)
+        private void ApplyTargetTransform()
         {
             // modifiedTransformFlags currently unused.
             TransformFlags modifiedTransformFlags = TransformFlags.None;
