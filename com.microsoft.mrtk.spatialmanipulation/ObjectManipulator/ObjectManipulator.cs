@@ -523,6 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         private MixedRealityTransform targetTransform;
+        private bool useForces;
 
         private static readonly ProfilerMarker OnSelectEnteredPerfMarker =
             new ProfilerMarker("[MRTK] ObjectManipulator.OnSelectEntered");
@@ -556,6 +557,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     constraintsManager.OnManipulationStarted(targetTransform);
                 }
+
+                useForces = rigidBody != null && (!IsGrabSelected || useForcesForNearManipulation);
             }
         }
 
@@ -597,11 +600,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     return;
                 }
 
-                // Update during Fixed if we are using physics.
-                // Update during Dynamic if we are not.
-                // TODO: Why does FixedUpdate make querying deviceRotation break???
-                // This is 99% a Unity bug. deviceRotation returns (0,0,0,0) when queried
-                // during a fixed update cycle.
+                // Evaluate user input in the UI Update() function.
+                // In we are using physics, targetTransform is not applied directly but instead deferred
+                // to the ApplyForces() function called from FixedUpdate()
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
                     RotateAnchorType rotateType = CurrentInteractionType == InteractionFlags.Near ? RotationAnchorNear : RotationAnchorFar;
@@ -654,6 +655,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                     ApplyTargetTransform();
                 }
+                else if (useForces && updatePhase == XRInteractionUpdateOrder.UpdatePhase.Fixed)
+                {
+                    ApplyForcesToRigidbody();
+                }
             }
         }
 
@@ -676,27 +681,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             else
             {
                 // There is a Rigidbody. Potential different paths for near vs far manipulation
-                if (IsGrabSelected && !useForcesForNearManipulation)
+                if (!useForces)
                 {
                     rigidBody.MovePosition(targetTransform.Position);
                     rigidBody.MoveRotation(targetTransform.Rotation);
-                }
-                else
-                {
-                    // We are using forces
-                    rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - HostTransform.position);
-
-                    var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
-                    relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
-
-                    if (axis.IsValidVector())
-                    {
-                        if (angle > 180f)
-                        {
-                            angle -= 360f;
-                        }
-                        rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (angle * Mathf.Deg2Rad * axis.normalized);
-                    }
                 }
 
                 HostTransform.localScale = targetTransform.Scale;
@@ -704,8 +692,29 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Called by ApplyTargetPose to apply smoothing and give subclassed implementations the chance to apply their
-        /// own modifications to the object's pose.
+        /// In case a Rigidbody gets the targetTransform applied using physical forcees, this function is called within the
+        /// FixedUpdate() routine with physics-conforming time stepping.
+        /// </summary>
+        void ApplyForcesToRigidbody()
+        {
+            rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.fixedDeltaTime)) / Time.fixedDeltaTime) * (targetTransform.Position - HostTransform.position);
+
+            var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
+            relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
+
+            if (axis.IsValidVector())
+            {
+                if (angle > 180f)
+                {
+                    angle -= 360f;
+                }
+                rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.fixedDeltaTime)) / Time.fixedDeltaTime) * (angle * Mathf.Deg2Rad * axis.normalized);
+            }
+        }
+
+        /// <summary>
+        /// Called by ApplyTargetPose to modify the target pose with the relevant constraints, smoothing,
+        /// elastic, or any other derived/overridden behavior.
         /// </summary>
         /// <param name="targetPose">
         /// The target position, rotation, and scale, pre-smoothing, but post-input and post-constraints. Modified by-reference.
