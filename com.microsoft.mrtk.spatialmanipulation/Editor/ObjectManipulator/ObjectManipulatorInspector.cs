@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty allowedInteractionTypes;
         private SerializedProperty useForcesForNearManipulation;
         private SerializedProperty applyTorque;
+        private SerializedProperty moveReactionTime;
+        private SerializedProperty moveDampingRatio;
 
         private SerializedProperty rotationAnchorNear;
         private SerializedProperty rotationAnchorFar;
@@ -70,6 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
             useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
             applyTorque = serializedObject.FindProperty("applyTorque");
+            moveReactionTime = serializedObject.FindProperty("moveReactionTime");
+            moveDampingRatio = serializedObject.FindProperty("moveDampingRatio");
 
             // Smoothing
             transformSmoothingLogicType = serializedObject.FindProperty("transformSmoothingLogicType");
@@ -121,11 +125,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
             if (physicsFoldout)
             {
-                if (rb != null)
+                if (rb != null && !rb.isKinematic)
                 {
                     EditorGUILayout.PropertyField(releaseBehavior);
                     EditorGUILayout.PropertyField(useForcesForNearManipulation);
                     EditorGUILayout.PropertyField(applyTorque);
+                    EditorGUILayout.PropertyField(moveReactionTime);
+                    EditorGUILayout.PropertyField(moveDampingRatio);
                 }
                 else
                 {
@@ -137,12 +143,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
             if (smoothingFoldout)
             {
-                EditorGUILayout.PropertyField(transformSmoothingLogicType);
-                EditorGUILayout.PropertyField(smoothingFar);
-                EditorGUILayout.PropertyField(smoothingNear);
-                EditorGUILayout.PropertyField(moveLerpTime);
-                EditorGUILayout.PropertyField(rotateLerpTime);
-                EditorGUILayout.PropertyField(scaleLerpTime);
+                if (rb == null || rb.isKinematic)
+                {
+                    EditorGUILayout.PropertyField(transformSmoothingLogicType);
+                    EditorGUILayout.PropertyField(smoothingFar);
+                    EditorGUILayout.PropertyField(smoothingNear);
+                    EditorGUILayout.PropertyField(moveLerpTime);
+                    EditorGUILayout.PropertyField(rotateLerpTime);
+                    EditorGUILayout.PropertyField(scaleLerpTime);
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("Smoothing disabled for dynamic Rigidbody. Use Physics smoothing instead.", MessageType.Info);
+                }
             }
 
             EditorGUILayout.Space();

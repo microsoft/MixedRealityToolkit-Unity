@@ -167,6 +167,34 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
+        [Range(0.001f, 2.0f)]
+        [Tooltip("The time scale at which a Rigidbody reacts to input defined as oscillation period of the dampened spring force.")]
+        private float moveReactionTime = 0.1f;
+
+        /// <summary>
+        /// The time scale at which a Rigidbody reacts to input defined as oscillation period of the dampened spring force.
+        /// </summary>
+        public float MoveReactionTime
+        {
+            get => moveReactionTime;
+            set => moveReactionTime = value;
+        }
+
+        [SerializeField]
+        [Range(0, 2.0f)]
+        [Tooltip("The damping of the spring force: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
+        private float moveDampingRatio = 1.0f;
+
+        /// <summary>
+        /// The damping of the spring force: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).
+        /// </summary>
+        public float MoveDampingRatio
+        {
+            get => moveDampingRatio;
+            set => moveDampingRatio = value;
+        }
+
+        [SerializeField]
         [Tooltip("Rotation behavior of object when using one hand near")]
         private RotateAnchorType rotationAnchorNear = RotateAnchorType.RotateAboutGrabPoint;
 
@@ -711,7 +739,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         void ApplyForcesToRigidbody()
         {
-            rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.fixedDeltaTime)) / Time.fixedDeltaTime) * (targetTransform.Position - HostTransform.position);
+            // implement critically dampened spring force, scaled to mass-independent frequency
+            float omega = Mathf.PI / moveReactionTime;  // angular frequency, sqrt(k/m)
+
+            Vector3 distance = HostTransform.position - targetTransform.Position;
+
+            // Apply damping - mathematically, we need e^(-2 * omega * dt)
+            // To compensate for the finite time step, this is split in two equal factors,
+            // one applied before, the other after the spring force
+            // equivalent with applying damping as well as spring force continuously
+            float halfDampingFactor = Mathf.Exp(-moveDampingRatio * omega * Time.fixedDeltaTime);
+
+            rigidBody.velocity *= halfDampingFactor;  // 1/2 damping
+            rigidBody.velocity -= distance * omega * omega * Time.fixedDeltaTime; // spring force
+            rigidBody.velocity *= halfDampingFactor;  // 1/2 damping
 
             if (applyTorque)
             {
