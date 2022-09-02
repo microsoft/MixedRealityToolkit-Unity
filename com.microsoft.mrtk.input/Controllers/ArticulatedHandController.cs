@@ -146,8 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
 
-        private static readonly Quaternion rightPalmOffset = new Quaternion(Mathf.Sqrt(0.125f), Mathf.Sqrt(0.125f), -Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f);
-        private static readonly Quaternion leftPalmOffset = new Quaternion(Mathf.Sqrt(0.125f), -Mathf.Sqrt(0.125f), Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f);
+        private static readonly Quaternion rightPalmOffset = Quaternion.Inverse(new Quaternion(Mathf.Sqrt(0.125f), Mathf.Sqrt(0.125f), -Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f));
+        private static readonly Quaternion leftPalmOffset = Quaternion.Inverse(new Quaternion(Mathf.Sqrt(0.125f), -Mathf.Sqrt(0.125f), Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f));
 
         // Workaround for missing device pose on devices without interaction profiles
         // for hands, such as Varjo and Quest. Should be removed once we have universal
@@ -163,11 +163,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        devicePose.rotation = palmPose.Rotation * Quaternion.Inverse(leftPalmOffset);
+                        devicePose.rotation = palmPose.Rotation * leftPalmOffset;
                         poseRetrieved = true;
                         break;
                     case Handedness.Right:
-                        devicePose.rotation = palmPose.Rotation * Quaternion.Inverse(rightPalmOffset);
+                        devicePose.rotation = palmPose.Rotation * rightPalmOffset;
                         poseRetrieved = true;
                         break;
                     default:
