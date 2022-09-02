@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty allowedManipulations;
         private SerializedProperty allowedInteractionTypes;
         private SerializedProperty useForcesForNearManipulation;
+        private SerializedProperty applyTorque;
 
         private SerializedProperty rotationAnchorNear;
         private SerializedProperty rotationAnchorFar;
@@ -68,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             // Physics
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
             useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
+            applyTorque = serializedObject.FindProperty("applyTorque");
 
             // Smoothing
             transformSmoothingLogicType = serializedObject.FindProperty("transformSmoothingLogicType");
@@ -123,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
                 {
                     EditorGUILayout.PropertyField(releaseBehavior);
                     EditorGUILayout.PropertyField(useForcesForNearManipulation);
+                    EditorGUILayout.PropertyField(applyTorque);
                 }
                 else
                 {

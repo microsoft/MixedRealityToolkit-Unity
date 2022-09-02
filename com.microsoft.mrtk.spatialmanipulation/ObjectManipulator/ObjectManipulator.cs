@@ -153,6 +153,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
+        [Tooltip(
+            "Apply torque to control orientation of the body")]
+        private bool applyTorque = true;
+
+        /// <summary>
+        /// Apply torque to control orientation of the body
+        /// </summary>
+        public bool ApplyTorque
+        {
+            get => applyTorque;
+            set => applyTorque = value;
+        }
+
+        [SerializeField]
         [Tooltip("Rotation behavior of object when using one hand near")]
         private RotateAnchorType rotationAnchorNear = RotateAnchorType.RotateAboutGrabPoint;
 
@@ -699,16 +713,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.fixedDeltaTime)) / Time.fixedDeltaTime) * (targetTransform.Position - HostTransform.position);
 
-            var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
-            relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
-
-            if (axis.IsValidVector())
+            if (applyTorque)
             {
-                if (angle > 180f)
+                var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
+                relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
+
+                if (axis.IsValidVector())
                 {
-                    angle -= 360f;
+                    if (angle > 180f)
+                    {
+                        angle -= 360f;
+                    }
+                    rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.fixedDeltaTime)) / Time.fixedDeltaTime) * (angle * Mathf.Deg2Rad * axis.normalized);
                 }
-                rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.fixedDeltaTime)) / Time.fixedDeltaTime) * (angle * Mathf.Deg2Rad * axis.normalized);
             }
         }
 
