@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1691252510208182612
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 323159698493470450, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.168
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287070332718372, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_Size.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287070332718392, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_Name
+      value: TogglePressableButton_160x32mm_Switch_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287070953249995, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.1153
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287070953249995, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00899
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071908807353, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572287071959583705, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2696551319371934411, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.158
+      objectReference: {fileID: 0}
+    - target: {fileID: 4129469953325453271, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.168
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256756130439157938, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.168
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093876799565683522, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.064
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928348358393538939, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c31c3c18fbaebe44c81393ab32d91b79, type: 3}

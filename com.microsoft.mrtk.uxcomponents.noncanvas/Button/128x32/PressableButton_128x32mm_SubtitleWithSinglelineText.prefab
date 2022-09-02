@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2879168432611765179
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 162236023003044723, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0028
+      objectReference: {fileID: 0}
+    - target: {fileID: 2604705503866656750, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_text
+      value: Secondary Info
+      objectReference: {fileID: 0}
+    - target: {fileID: 2810442197722135470, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_Name
+      value: TextMeshPro Subtitle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872171477205480, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0043
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172064182299, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_Name
+      value: PressableButton_128x32mm_SubtitleWithSinglelineText
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752872172617307898, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 763be22d1f08e6741a7101dacd726814, type: 3}
