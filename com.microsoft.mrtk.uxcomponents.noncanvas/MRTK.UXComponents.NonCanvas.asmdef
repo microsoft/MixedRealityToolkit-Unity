@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.UXComponents",
+    "name": "Microsoft.MixedReality.Toolkit.UXComponents.NonCanvas",
     "rootNamespace": "Microsoft.MixedReality.Toolkit.UX",
     "references": [
         "Microsoft.MixedReality.Toolkit.Accessibility",
@@ -18,6 +18,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mrtk.data",
+            "expression": "",
+            "define": "MRTK_DATA_PRESENT"
+        }
+    ],
     "noEngineReferences": false
 }

@@ -258,7 +258,9 @@ function GetProjectRelativePath {
 $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "com.microsoft.mrtk.core/Editor/MRTKSettings.cs",
     "com.microsoft.mrtk.core/Editor/EditorProjectUtilities.cs",
-    "com.microsoft.mrtk.core/Editor/MRTKProjectValidation.cs"
+    "com.microsoft.mrtk.core/Editor/MRTKProjectValidation.cs",
+    "com.microsoft.mrtk.input/Editor/InputValidation.cs",
+    "com.microsoft.mrtk.windowsspeech/Editor/WindowsSpeechValidation.cs"
 )
 
 <#
