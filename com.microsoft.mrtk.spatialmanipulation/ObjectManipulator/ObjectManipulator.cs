@@ -592,6 +592,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 base.ProcessInteractable(updatePhase);
 
+                if(!isSelected)
+                {
+                    return;
+                }
+
                 // Update during Fixed if we are using physics.
                 // Update during Dynamic if we are not.
                 // TODO: Why does FixedUpdate make querying deviceRotation break???
@@ -599,58 +604,55 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // during a fixed update cycle.
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
-                    if (isSelected)
+                    RotateAnchorType rotateType = CurrentInteractionType == InteractionFlags.Near ? RotationAnchorNear : RotationAnchorFar;
+                    bool useCenteredAnchor = rotateType == RotateAnchorType.RotateAboutObjectCenter;
+                    bool isOneHanded = interactorsSelecting.Count == 1;
+
+                    MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
+
+                    using (ScaleLogicMarker.Auto())
                     {
-                        RotateAnchorType rotateType = CurrentInteractionType == InteractionFlags.Near ? RotationAnchorNear : RotationAnchorFar;
-                        bool useCenteredAnchor = rotateType == RotateAnchorType.RotateAboutObjectCenter;
-                        bool isOneHanded = interactorsSelecting.Count == 1;
-
-                        MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
-
-                        using (ScaleLogicMarker.Auto())
+                        if (allowedManipulations.IsMaskSet(TransformFlags.Scale))
                         {
-                            if (allowedManipulations.IsMaskSet(TransformFlags.Scale))
-                            {
-                                targetTransform.Scale = ManipulationLogic.scaleLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
-                            }
+                            targetTransform.Scale = ManipulationLogic.scaleLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                         }
-
-                        // Immediately apply scale constraints after computing the user's desired scale input.
-                        if (EnableConstraints && constraintsManager != null)
-                        {
-                            constraintsManager.ApplyScaleConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
-                        }
-
-                        using (RotateLogicMarker.Auto())
-                        {
-                            if (allowedManipulations.IsMaskSet(TransformFlags.Rotate))
-                            {
-                                targetTransform.Rotation = ManipulationLogic.rotateLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
-                            }
-                        }
-
-                        // Immediately apply rotation constraints after computing the user's desired rotation input.
-                        if (EnableConstraints && constraintsManager != null)
-                        {
-                            constraintsManager.ApplyRotationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
-                        }
-
-                        using (MoveLogicMarker.Auto())
-                        {
-                            if (allowedManipulations.IsMaskSet(TransformFlags.Move))
-                            {
-                                targetTransform.Position = ManipulationLogic.moveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
-                            }
-                        }
-
-                        // Immediately apply translation constraints after computing the user's desired scale input.
-                        if (EnableConstraints && constraintsManager != null)
-                        {
-                            constraintsManager.ApplyTranslationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
-                        }
-
-                        ApplyTargetPose(targetTransform);
                     }
+
+                    // Immediately apply scale constraints after computing the user's desired scale input.
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyScaleConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                    }
+
+                    using (RotateLogicMarker.Auto())
+                    {
+                        if (allowedManipulations.IsMaskSet(TransformFlags.Rotate))
+                        {
+                            targetTransform.Rotation = ManipulationLogic.rotateLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
+                        }
+                    }
+
+                    // Immediately apply rotation constraints after computing the user's desired rotation input.
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyRotationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                    }
+
+                    using (MoveLogicMarker.Auto())
+                    {
+                        if (allowedManipulations.IsMaskSet(TransformFlags.Move))
+                        {
+                            targetTransform.Position = ManipulationLogic.moveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
+                        }
+                    }
+
+                    // Immediately apply translation constraints after computing the user's desired scale input.
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyTranslationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                    }
+
+                    ApplyTargetPose(targetTransform);
                 }
             }
         }
