@@ -652,44 +652,44 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         constraintsManager.ApplyTranslationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
                     }
 
-                    ApplyTargetPose(targetTransform);
+                    ApplyTargetTransform(targetTransform);
                 }
             }
         }
 
         /// <summary>
-        /// Once the <paramref name="targetPose"/> has been determined, this method is called
+        /// Once the <paramref name="targetTransform"/> has been determined, this method is called
         /// to apply the target pose to the object. Calls <see cref="ModifyTargetPose"/> before
         /// applying, to adjust the pose with smoothing, constraints, etc.
         /// </summary>
-        /// <param name="targetPose">
+        /// <param name="targetTransform">
         /// The target position, rotation, and scale to set the object to.
         /// <param/>
-        private void ApplyTargetPose(MixedRealityTransform targetPose)
+        private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
             // modifiedTransformFlags currently unused.
             TransformFlags modifiedTransformFlags = TransformFlags.None;
-            ModifyTargetPose(ref targetPose, ref modifiedTransformFlags);
+            ModifyTargetPose(ref targetTransform, ref modifiedTransformFlags);
 
             if (rigidBody == null)
             {
-                HostTransform.SetPositionAndRotation(targetPose.Position, targetPose.Rotation);
-                HostTransform.localScale = targetPose.Scale;
+                HostTransform.SetPositionAndRotation(targetTransform.Position, targetTransform.Rotation);
+                HostTransform.localScale = targetTransform.Scale;
             }
             else
             {
                 // There is a Rigidbody. Potential different paths for near vs far manipulation
                 if (IsGrabSelected && !useForcesForNearManipulation)
                 {
-                    rigidBody.MovePosition(targetPose.Position);
-                    rigidBody.MoveRotation(targetPose.Rotation);
+                    rigidBody.MovePosition(targetTransform.Position);
+                    rigidBody.MoveRotation(targetTransform.Rotation);
                 }
                 else
                 {
                     // We are using forces
-                    rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetPose.Position - HostTransform.position);
+                    rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - HostTransform.position);
 
-                    var relativeRotation = targetPose.Rotation * Quaternion.Inverse(HostTransform.rotation);
+                    var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
                     relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
 
                     if (axis.IsValidVector())
@@ -702,7 +702,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     }
                 }
 
-                HostTransform.localScale = targetPose.Scale;
+                HostTransform.localScale = targetTransform.Scale;
             }
         }
 
