@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// A dictionary which caches the controller model gameobject associated with a specified model key
         /// </summary>
-        public static Dictionary<ulong, GameObject> ControllerModelDictionary = new Dictionary<ulong, GameObject>();
+        private static Dictionary<ulong, GameObject> controllerModelDictionary = new Dictionary<ulong, GameObject>();
 
         /// <summary>
         /// Tries to load the controller model game object from the provided OpenXR ControllerModel.
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return null;
             }
 
-            if (ControllerModelDictionary.TryGetValue(modelKey, out gltfGameObject))
+            if (controllerModelDictionary.TryGetValue(modelKey, out gltfGameObject))
             {
                 gltfGameObject.SetActive(true);
                 return gltfGameObject;
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (success && gltf.InstantiateMainScene(gltfGameObject.transform))
             {
                 // After all the awaits, double check that another task didn't finish earlier
-                if (ControllerModelDictionary.TryGetValue(modelKey, out GameObject existingGameObject))
+                if (controllerModelDictionary.TryGetValue(modelKey, out GameObject existingGameObject))
                 {
                     Object.Destroy(gltfGameObject);
                     return existingGameObject;
@@ -84,13 +84,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 #endif
 
-                ControllerModelDictionary.Add(modelKey, gltfGameObject);
+                controllerModelDictionary.Add(modelKey, gltfGameObject);
             }
             else
             {
                 Debug.LogError("Failed to obtain controller model from platform.");
                 Object.Destroy(gltfGameObject);
             }
+#else
+            await Task.CompletedTask;
 #endif // MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT && KTX_PRESENT
 
             return gltfGameObject;
