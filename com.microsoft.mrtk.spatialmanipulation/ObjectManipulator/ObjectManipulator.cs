@@ -558,7 +558,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     constraintsManager.OnManipulationStarted(targetTransform);
                 }
 
-                useForces = rigidBody != null && (!IsGrabSelected || useForcesForNearManipulation);
+                useForces = rigidBody != null && !rigidBody.isKinematic && (!IsGrabSelected || useForcesForNearManipulation);
             }
         }
 
