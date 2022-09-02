@@ -150,6 +150,16 @@
         "com.microsoft.mrtk.standardassets": "3.0.0-development"
       }
     },
+    "com.microsoft.mrtk.uxcomponents.noncanvas": {
+      "version": "file:../../../com.microsoft.mrtk.uxcomponents.noncanvas",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.microsoft.mrtk.uxcore": "3.0.0-development",
+        "com.microsoft.mrtk.spatialmanipulation": "3.0.0-development",
+        "com.microsoft.mrtk.standardassets": "3.0.0-development"
+      }
+    },
     "com.microsoft.mrtk.uxcore": {
       "version": "file:../../../com.microsoft.mrtk.uxcore",
       "depth": 0,
