@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Tries to get a Pose.
         /// </summary>
-        /// <param name="pose">The value of the pose</param>
+        /// <param name="pose">The value of the pose in world space</param>
         /// <returns>Whether or not retrieving the pose was successful. Some methods,
         /// like retrieving the pose from hand joint data, can fail if the data is not available</returns>
         bool TryGetPose(out Pose pose);

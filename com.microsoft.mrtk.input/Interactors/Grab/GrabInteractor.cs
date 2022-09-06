@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class GrabInteractor : HandJointInteractor, IGrabInteractor
     {
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
         private IPoseSource pinchPoseSource;
 

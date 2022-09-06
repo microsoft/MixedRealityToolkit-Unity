@@ -31,15 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// represents whether the hand is in a pinching pose,
         /// within the FOV set by the aggregator config.
         /// </summary>
-        public bool PinchReady => handController.PinchSelectReady;
+        protected bool PinchReady => handController.PinchSelectReady;
 
         /// <summary>
         /// The worldspace pose of the hand pinching point.
         /// </summary>
-        public Pose PinchPose => (PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose)) ? pinchPose : Pose.identity;
+        protected Pose PinchPose => (PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose)) ? pinchPose : new Pose(transform.position, transform.rotation);
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the device triggering the interaction.")]
         private IPoseSource devicePoseSource;
 
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
         private IPoseSource pinchPoseSource;
 
@@ -57,6 +57,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The pose source representing the worldspace pose of the hand pinching point.
         /// </summary>
         protected IPoseSource PinchPoseSource { get => pinchPoseSource; set => pinchPoseSource = value; }
+
+        [SerializeReference]
+        [InterfaceSelector(true)]
+        [Tooltip("The pose source representing the pose this interactor uses for aiming and positioning. Follows the 'pointer pose'")]
+        private IPoseSource aimPoseSource;
+
+        /// <summary>
+        /// The pose source representing the ray this interactor uses for aiming and positioning.
+        /// </summary>
+        protected IPoseSource AimPoseSource { get => aimPoseSource; set => aimPoseSource = value; }
+
 
         [SerializeField]
         [Tooltip("The interactor we're using to query potential gaze pinch targets")]
@@ -179,6 +190,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
+                // Use The aim pose sources to calculate the interactor's pose and the attach transform's position
+                if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+                {
+                    transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
+                }
                 ComputeAttachTransform(hasSelection ? interactablesSelected[0] : null);
             }
         }
@@ -200,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // Separate vars for fused position/rotation setting.
             Quaternion rotationToApply = attachTransform.rotation;
-            Vector3 positionToApply;
+            Vector3 positionToApply = attachTransform.position;
 
             // Compute the ratio from the current hand-body distance to the distance
             // we recorded on selection. Used to linearly scale the attach transform's
@@ -211,35 +227,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
             // TODO: Replace with explicit binding to OpenXR grip pose when the standard is available.
-            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
+            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose) &&
+                   PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose))
             {
                 rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
+                if (hasSelection && interactable != null)
+                {
+                    var pinchCentroid = GetPinchCentroid(interactable);
+
+                    if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+                    {
+                        // Compute the "virtual hand" position as the vector from this pinch to the average pinch.
+                        Vector3 objectOffset = pinchPose.position - pinchCentroid.position;
+
+                        // Compute the final attachTransform's position by transforming the interactor-local original attach point
+                        // by the aiming ray's rotation, scaling by the body-distance ratio, and then finally applying the virtual hand offset.
+                        positionToApply = aimPose.position + objectOffset + (aimPose.rotation * interactorLocalAttachPoint) * distanceRatio;
+                    }
+                }
+                else
+                {
+                    // If we're not selecting, just use the pinching position.
+                    positionToApply = pinchPose.position;
+                }
             }
-
-            if (hasSelection && interactable != null)
-            {
-                var pinchCentroid = GetPinchCentroid(interactable);
-
-                // transform.rotation is the ray/aim rotation of the controller.
-                // Get a rotation that points in the direction of this aiming ray.
-                // TODO: Replace transform.rotation with explicit bindings to OpenXR aim pose when the standard is available.
-                Quaternion rayRotation = Quaternion.LookRotation(transform.rotation * Vector3.forward);
-
-                // Compute the "virtual hand" position as the vector from this pinch to the average pinch.
-                // TODO: Replace PinchPose with explicit binding to OpenXR pinch/grip pose when the standard is available.
-                Vector3 objectOffset = PinchPose.position - pinchCentroid.position;
-
-                // Compute the final attachTransform's position by transforming the interactor-local original attach point
-                // by the ray rotation, scaling by the body-distance ratio, and then finally applying the virtual hand offset.
-                // TODO: Replace transform.position with explicit binding to OpenXR grip pose when the standard is available.
-                positionToApply = transform.position + objectOffset + (rayRotation * interactorLocalAttachPoint) * distanceRatio;
-            }
-            else
-            {
-                // If we're not selecting, just use the pinching position.
-                // TODO: Replace PinchPose with explicit binding to OpenXR pinch/grip pose when the standard is available.
-                positionToApply = PinchPose.position;
-            }
+            
 
             attachTransform.SetPositionAndRotation(positionToApply, rotationToApply);
         }
