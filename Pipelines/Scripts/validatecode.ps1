@@ -245,7 +245,8 @@ function GetProjectRelativePath {
     )
     process {
         $normalizedFileName = $FileName.Replace("\", "/")
-        $assetFileName = $normalizedFileName.SubString($Directory.Length + 1)
+        $substringLength = $Directory.EndsWith("/") ? $Directory.Length : $Directory.Length + 1
+        $assetFileName = $normalizedFileName.SubString($substringLength)
         $assetFileName
     }
 }
@@ -406,7 +407,7 @@ function CheckAsset {
         }
 
         # Filter out the ProjectSettings .asset files, which don't have a meta file and don't need one.
-        if ((-not $FileName.Contains("\ProjectSettings\")) -and (CheckForMetaFile $FileName)) {
+        if ((-not $FileName.Contains("\ProjectSettings\")) -and (-not $FileName.Contains("/ProjectSettings/")) -and (CheckForMetaFile $FileName)) {
             $containsIssue = $true
         }
 
