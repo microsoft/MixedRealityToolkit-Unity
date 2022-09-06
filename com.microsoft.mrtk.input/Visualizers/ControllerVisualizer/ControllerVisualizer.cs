@@ -118,7 +118,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // Private reference to the gameobject which represents the visualized controller
         // Needs to be explicitly set to null in cases where no controller visuals are ever loaded.
-        private GameObject ControllerGameObject = null;
+        private GameObject controllerGameObject = null;
+
+        // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
+        private Quaternion controllerModelRotatedOffset = Quaternion.Euler(0, 180, 0);
 
         /// <summary>
         /// Tries to instantiate controller visuals for the specified hand node.
@@ -147,43 +150,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(handNode.ToHandedness());
                 if (platformLoadedGameObject != null)
                 {
-                    // Platform models are "rotated" 180 degrees due to the forward vector for a controller pointing towards the user.
+                    // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
                     // We need to rotate these models in order to have them pointing in the correct direction on device.
                     if (platformLoadedGameObjectRoot == null)
                     {
                         platformLoadedGameObjectRoot = new GameObject("Platform Model Root");
                     }
                     platformLoadedGameObject.transform.parent = platformLoadedGameObjectRoot.transform;
-                    platformLoadedGameObject.transform.SetPositionAndRotation(platformLoadedGameObjectRoot.transform.position, platformLoadedGameObjectRoot.transform.rotation * Quaternion.Euler(0, 180, 0));
+                    platformLoadedGameObject.transform.SetPositionAndRotation(platformLoadedGameObjectRoot.transform.position, platformLoadedGameObjectRoot.transform.rotation * controllerModelRotatedOffset);
 
-                    ControllerGameObject = platformLoadedGameObjectRoot;
+                    controllerGameObject = platformLoadedGameObjectRoot;
                 }
             }
 
             // If the ControllerGameObject is still not initialized after this, then use the fallback model if told to
-            if (useFallbackVisuals && ControllerGameObject == null)
+            if (useFallbackVisuals && controllerGameObject == null)
             {
                 if (fallbackGameObject == null && fallbackControllerModel != null)
                 {
                     fallbackGameObject = Instantiate(fallbackControllerModel);
                 }
 
-                ControllerGameObject = fallbackGameObject;
+                controllerGameObject = fallbackGameObject;
             }
 
-            if (ControllerGameObject != null)
+            if (controllerGameObject != null)
             {
-                ControllerGameObject.SetActive(usePlatformVisuals || useFallbackVisuals);
-                ControllerGameObject.transform.parent = transform;
-                ControllerGameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
+                controllerGameObject.SetActive(usePlatformVisuals || useFallbackVisuals);
+                controllerGameObject.transform.parent = transform;
+                controllerGameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
             }
         }
 
         private void RemoveControllerVisuals(InputAction.CallbackContext obj)
         {
-            if (ControllerGameObject != null)
+            if (controllerGameObject != null)
             {
-                ControllerGameObject.SetActive(false);
+                controllerGameObject.SetActive(false);
             }
         }
     }
