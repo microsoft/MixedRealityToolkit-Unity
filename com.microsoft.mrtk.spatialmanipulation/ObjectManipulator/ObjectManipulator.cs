@@ -564,6 +564,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             return base.IsSelectableBy(interactor) && AllowedInteractionTypes.IsMaskSet(GetInteractionFlagsFromInteractor(interactor));
         }
 
+        // When the player is carrying a Rigidbody, the physics damping of interaction should act within the moving frame of reference of the player.
+        // The reference frame logic allows compensating for that 
+        private Transform referenceFrameTransform;
+        private bool referenceFrameHasLastPos;
+        private Vector3 referenceFrameLastPos;
+
         private MixedRealityTransform targetTransform;
         private bool useForces;
 
@@ -601,6 +607,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
 
                 useForces = rigidBody != null && !rigidBody.isKinematic && (!IsGrabSelected || useForcesForNearManipulation);
+
+                // ideally, the reference frame should be that of the camera. Here the interactorObject transform is the best available alternative.
+                referenceFrameTransform = args.interactorObject.transform;
+                referenceFrameHasLastPos = false;
             }
         }
 
@@ -739,10 +749,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         void ApplyForcesToRigidbody()
         {
+            var referenceFrameVelocity = referenceFrameHasLastPos
+                ? (referenceFrameTransform.position - referenceFrameLastPos) / Time.fixedDeltaTime
+                : Vector3.zero;
+
+            referenceFrameLastPos = referenceFrameTransform.position;
+            referenceFrameHasLastPos = true;
+
             // implement critically dampened spring force, scaled to mass-independent frequency
             float omega = Mathf.PI / moveReactionTime;  // angular frequency, sqrt(k/m)
 
             Vector3 distance = HostTransform.position - targetTransform.Position;
+
+            // when player is moving, we need to anticipate where the targetTransform is going to be one time step from now
+            distance -= referenceFrameVelocity * Time.fixedDeltaTime;
 
             // Apply damping - mathematically, we need e^(-2 * omega * dt)
             // To compensate for the finite time step, this is split in two equal factors,
@@ -750,9 +770,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // equivalent with applying damping as well as spring force continuously
             float halfDampingFactor = Mathf.Exp(-moveDampingRatio * omega * Time.fixedDeltaTime);
 
-            rigidBody.velocity *= halfDampingFactor;  // 1/2 damping
-            rigidBody.velocity -= distance * omega * omega * Time.fixedDeltaTime; // spring force
-            rigidBody.velocity *= halfDampingFactor;  // 1/2 damping
+            var velocity = rigidBody.velocity;
+            velocity -= referenceFrameVelocity;  // change to the player's frame of reference before damping
+            velocity *= halfDampingFactor;  // 1/2 damping
+            velocity -= distance * omega * omega * Time.fixedDeltaTime; // spring force
+            velocity *= halfDampingFactor;  // 1/2 damping
+            velocity += referenceFrameVelocity;  // change back to global frame of reference
+            rigidBody.velocity = velocity;
 
             if (applyTorque)
             {
