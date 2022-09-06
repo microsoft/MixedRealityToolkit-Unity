@@ -56,20 +56,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             ControllerLookup[] lookups = FindObjectsOfType(typeof(ControllerLookup)) as ControllerLookup[];
 
-            switch (handNode)
+            if (lookups.Length > 0 && lookups[0] != null)
             {
-                case XRNode.LeftHand:
-                    xrController = lookups[0].LeftHandController;
-                    targetUsage = UnityInputSystem.CommonUsages.LeftHand;
-                    break;
-                case XRNode.RightHand:
-                    xrController = lookups[0].RightHandController;
-                    targetUsage = UnityInputSystem.CommonUsages.RightHand;
-                    break;
-                default:
-                    break;
+                switch (handNode)
+                {
+                    case XRNode.LeftHand:
+                        xrController = lookups[0].LeftHandController;
+                        targetUsage = UnityInputSystem.CommonUsages.LeftHand;
+                        break;
+                    case XRNode.RightHand:
+                        xrController = lookups[0].RightHandController;
+                        targetUsage = UnityInputSystem.CommonUsages.RightHand;
+                        break;
+                    default:
+                        break;
+                }
             }
-            
+
             if (controllerDetectedAction == null  || controllerDetectedAction.action == null) { return; }
             controllerDetectedAction.action.started += RenderControllerVisuals;
             controllerDetectedAction.action.canceled += RemoveControllerVisuals;

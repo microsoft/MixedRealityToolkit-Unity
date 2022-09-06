@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A helper class which loads and caches controller models fetched from the controller's platform sdk
     /// </summary>
-    public class ControllerModelLoader
+    public static class ControllerModelLoader
     {
         /// <summary>
         /// A dictionary which caches the controller model gameobject associated with a specified model key
