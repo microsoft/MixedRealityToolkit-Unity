@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private GameObject controllerGameObject = null;
 
         // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
-        private Quaternion controllerModelRotatedOffset = Quaternion.Euler(0, 180, 0);
+        private static readonly Quaternion controllerModelRotatedOffset = Quaternion.Euler(0, 180, 0);
 
         /// <summary>
         /// Tries to instantiate controller visuals for the specified hand node.
