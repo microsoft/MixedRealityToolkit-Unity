@@ -3,7 +3,7 @@
 
 using System.Reflection;
 
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit UXComponents Runtime Tests")]
+[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Static UX Components Runtime Tests")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 
 // The AssemblyVersion attribute is checked-in and is recommended not to be changed often.

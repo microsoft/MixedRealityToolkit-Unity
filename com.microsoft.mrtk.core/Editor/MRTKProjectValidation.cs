@@ -16,10 +16,17 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class MRTKProjectValidation
     {
+#pragma warning disable 618
+        private static readonly BuildTargetGroup[] excludedBuildTargetGroups = new BuildTargetGroup[]
+        // Need to cast int back to BuildTargetGroup because BuildTargetGroup.WebPlayer is marked as obsolete and treated as an error
+        { (BuildTargetGroup)2, BuildTargetGroup.PS3, BuildTargetGroup.XBOX360, BuildTargetGroup.WP8, BuildTargetGroup.BlackBerry, BuildTargetGroup.Tizen, BuildTargetGroup.PSP2,
+            BuildTargetGroup.PSM, BuildTargetGroup.SamsungTV, BuildTargetGroup.N3DS, BuildTargetGroup.WiiU, BuildTargetGroup.Facebook, BuildTargetGroup.Switch };
+#pragma warning restore 618
         private const string XRProjectValidationSettingsPath = "Project/XR Plug-in Management/Project Validation";
         private const string DefaultMRTKProfileGuid = "c677e5c4eb85b7849a8da406775c299d";
-        private static readonly BuildTargetGroup[] buildTargetGroups = ((BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup))).Distinct().ToArray();
         private static readonly Dictionary<BuildTargetGroup, List<BuildValidationRule>> validationRulesDictionary = new Dictionary<BuildTargetGroup, List<BuildValidationRule>>();
+
+        public static readonly BuildTargetGroup[] BuildTargetGroups = ((BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup))).Distinct().Except(excludedBuildTargetGroups).ToArray();
 
         [MenuItem("Mixed Reality/MRTK3/Utilities/Project Validation", priority = 0)]
         private static void MenuItem()
@@ -56,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit
             AddTargetIndependentRules(mrtkCoreTargetIndependentRules);
 
             // Add target-specific rules
-            foreach (var buildTargetGroup in buildTargetGroups)
+            foreach (var buildTargetGroup in BuildTargetGroups)
             {
                 // Skip the standalone target as the profile rule for it is already present for all build targets
                 if (buildTargetGroup != BuildTargetGroup.Standalone)
@@ -71,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public static void AddTargetIndependentRules(List<BuildValidationRule> rules)
         {
-            foreach (BuildTargetGroup buildTargetGroup in buildTargetGroups)
+            foreach (BuildTargetGroup buildTargetGroup in BuildTargetGroups)
             {
                 AddTargetDependentRules(rules, buildTargetGroup);
             }
@@ -90,6 +97,19 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 validationRulesDictionary.Add(buildTargetGroup, new List<BuildValidationRule>(rules));
             }
+        }
+
+        /// <summary>
+        /// Retrieve a list of loaded subsystems specified in the profile for a given BuildTargetGroup
+        /// </summary>
+        public static List<SystemType> GetLoadedSubsystemsForBuildTarget(BuildTargetGroup buildTargetGroup)
+        {
+            MRTKProfile profile = MRTKSettings.ProfileForBuildTarget(buildTargetGroup);
+            if (profile != null)
+            {
+                return profile.LoadedSubsystems;
+            }
+            return null;
         }
 
         private static BuildValidationRule GenerateProfileRule(BuildTargetGroup buildTargetGroup)
