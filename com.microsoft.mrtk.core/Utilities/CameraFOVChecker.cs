@@ -14,21 +14,16 @@ namespace Microsoft.MixedReality.Toolkit
     public static class CameraFOVChecker
     {
         private static int inFOVLastCalculatedFrame = -1;
-
-        /// <summary>
-        /// Map from object => is the object in FOV for this frame.
-        /// </summary>
-        /// <remarks>
-        /// This map is cleared every frame.
-        /// </remarks>
-        private static readonly Dictionary<Tuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<Tuple<Collider, Camera>, bool>();
-
-        /// <summary>
-        ///
-        /// List of corners shared across all sphere pointer query instances -- used to store list of corners for
-        /// a bounds. Shared and static to avoid allocating memory each frame
-        /// </summary>
-        private static readonly List<Vector3> inFOVBoundsCornerPoints = new List<Vector3>();
+#if !NETFX_CORE
+        // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
+        private static Dictionary<ValueTuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<ValueTuple<Collider, Camera>, bool>();
+#else
+        private static Dictionary<Tuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<Tuple<Collider, Camera>, bool>();
+#endif
+        // List of corners shared across all sphere pointer query instances --
+        // used to store list of corners for a bounds. Shared and static
+        // to avoid allocating memory each frame
+        private static List<Vector3> inFOVBoundsCornerPoints = new List<Vector3>();
 
         /// <summary>
         /// Returns true if a collider's bounds is within the camera FOV.
@@ -49,7 +44,12 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-            Tuple<Collider, Camera> cameraColliderPair = new Tuple<Collider, Camera>(myCollider, cam);
+#if !NETFX_CORE
+            ValueTuple<Collider, Camera> cameraColliderPair = ValueTuple.Create(myCollider, cam);
+#else
+            Tuple<Collider, Camera> cameraColliderPair = Tuple.Create(myCollider, cam);
+#endif
+
             bool result;
 
             if (inFOVLastCalculatedFrame != Time.frameCount)
