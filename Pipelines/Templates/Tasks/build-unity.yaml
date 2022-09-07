@@ -27,6 +27,10 @@ parameters:
   type: string
   default: ''
 
+- name: CustomDisplayName
+  type: string
+  default: ''
+
 steps:
 - pwsh: |
     $logFile = Join-Path $(Agent.TempDirectory) "build_${{ parameters.BuildTarget }}.log"
@@ -70,4 +74,7 @@ steps:
     if ($proc.ExitCode -ne 0) {
         exit $proc.ExitCode
     }
-  displayName: Build ${{ parameters.BuildTarget }}
+  ${{ if not(eq(parameters.CustomDisplayName, '')) }}:
+    displayName: ${{ parameters.CustomDisplayName }}
+  ${{ if eq(parameters.CustomDisplayName, '') }}:
+    displayName: Build ${{ parameters.BuildTarget }}

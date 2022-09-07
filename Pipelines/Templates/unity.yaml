@@ -53,6 +53,7 @@ steps:
     PathToProject: ${{ parameters.PathToProject }}
     OutputPath: $(Build.ArtifactStagingDirectory)/Apps/exe-x64/${{ parameters.ProjectName }}.exe
     AdditionalArguments: -EnableCacheServer -cacheServerEndpoint 10.0.0.6 -cacheServerNamespacePrefix MRTK3 -cacheServerEnableDownload true
+    CustomDisplayName: Import TextMesh Pro
 
   # Standalone x64 tasks
 
