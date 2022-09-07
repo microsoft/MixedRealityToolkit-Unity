@@ -29,9 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("A fallback controller model to render in case the platform model fails to load")]
         private GameObject fallbackControllerModel;
 
-        // caching the controller we belong to
-        private XRBaseController xrController;
-
         // The controller usages we want the input device to have;
         private InternedString targetUsage;
 
@@ -53,23 +50,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
 
-            ControllerLookup[] lookups = FindObjectsOfType(typeof(ControllerLookup)) as ControllerLookup[];
-
-            if (lookups.Length > 0 && lookups[0] != null)
+            switch (handNode)
             {
-                switch (handNode)
-                {
-                    case XRNode.LeftHand:
-                        xrController = lookups[0].LeftHandController;
-                        targetUsage = UnityInputSystem.CommonUsages.LeftHand;
-                        break;
-                    case XRNode.RightHand:
-                        xrController = lookups[0].RightHandController;
-                        targetUsage = UnityInputSystem.CommonUsages.RightHand;
-                        break;
-                    default:
-                        break;
-                }
+                case XRNode.LeftHand:
+                    targetUsage = UnityInputSystem.CommonUsages.LeftHand;
+                    break;
+                case XRNode.RightHand:
+                    targetUsage = UnityInputSystem.CommonUsages.RightHand;
+                    break;
+                default:
+                    break;
             }
 
             if (controllerDetectedAction == null || controllerDetectedAction.action == null) { return; }
