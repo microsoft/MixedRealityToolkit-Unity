@@ -2,7 +2,7 @@
   "name": "com.microsoft.mrtk.uxcomponents.noncanvas",
   "version": "3.0.0-development",
   "description": "MRTK non-Canvas UX component library, for building 3D UX without Canvas layout. For most production-grade UI, we recommend the dynamic hybrid Canvas-based UX systems, located in com.microsoft.mrtk.uxcomponents. However, in some circumstances, static/non-Canvas UI may offer improved performance and batching, and may be desirable in resource-constrained scenarios.",
-  "displayName": "MRTK (Non-Canvas) UX Components",
+  "displayName": "MRTK UX Components (Non-Canvas)",
   "msftFeatureCategory": "MRTK3",
   "author": "Microsoft",
   "license": "MIT",
