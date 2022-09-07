@@ -1290,8 +1290,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     RenderSettings.ambientLight = currentRenderSettings.AmbientLight;
                     RenderSettings.ambientMode = (AmbientMode)currentRenderSettings.AmbientMode;
                     RenderSettings.ambientSkyColor = currentRenderSettings.AmbientSkyColor;
+#if UNITY_2022_2_OR_NEWER
+                    RenderSettings.customReflectionTexture = currentRenderSettings.CustomReflection;
+#else
                     RenderSettings.customReflection = currentRenderSettings.CustomReflection;
-                    RenderSettings.defaultReflectionMode = (DefaultReflectionMode)currentRenderSettings.DefaultReflectionMode;
+#endif
+                    RenderSettings.defaultReflectionMode = currentRenderSettings.DefaultReflectionMode;
                     RenderSettings.defaultReflectionResolution = currentRenderSettings.DefaultReflectionResolution;
                     RenderSettings.fog = currentRenderSettings.Fog;
                     RenderSettings.fogColor = currentRenderSettings.FogColor;

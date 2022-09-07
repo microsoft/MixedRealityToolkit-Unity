@@ -5,8 +5,8 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -416,16 +416,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [MenuItem("Mixed Reality/Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
         {
-            Texture2D icon = null;
-
-            foreach (string iconPath in MixedRealityToolkitFiles.GetFiles(MixedRealityToolkitModuleType.StandardAssets, "Icons"))
-            {
-                if (iconPath.EndsWith("test_icon.png"))
-                {
-                    icon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
-                    break;
-                }
-            }
+            // test_icon.png
+            Texture2D icon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath("731058d908be67544b92b0341f29d906"));
 
             if (icon == null)
             {

@@ -7,7 +7,6 @@ using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {
-
     /// <summary>
     /// A struct that mimics the render settings stored in a scene.
     /// Used to store, retrieve and interpolate render settings.
@@ -66,7 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             to.UseRadianceAmbientProbe = notStarted ? from.UseRadianceAmbientProbe : to.UseRadianceAmbientProbe;
             return to;
         }
-
 
         /// <summary>
         /// Sets continuous settings to 'black' without changing any discrete features.

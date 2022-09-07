@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             try
             {
-                editorScene = EditorSceneManager.GetSceneByName(sceneInfo.Name);
+                editorScene = SceneManager.GetSceneByName(sceneInfo.Name);
 
                 if (editorScene.isLoaded)
                 {   // Already open - no need to do anything!
@@ -188,9 +188,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 string scenePath = AssetDatabase.GetAssetOrScenePath(sceneInfo.Asset);
                 EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
 
-                if (setAsFirst && EditorSceneManager.loadedSceneCount >= 1)
+                if (setAsFirst
+#if UNITY_2022_2_OR_NEWER
+                    && SceneManager.loadedSceneCount >= 1)
+#else
+                    && EditorSceneManager.loadedSceneCount >= 1)
+#endif
                 {   // Move the scene to first in order in the hierarchy
-                    Scene nextScene = EditorSceneManager.GetSceneAt(0);
+                    Scene nextScene = SceneManager.GetSceneAt(0);
                     EditorSceneManager.MoveSceneBefore(editorScene, nextScene);
                 }
             }

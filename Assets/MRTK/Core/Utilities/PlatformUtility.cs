@@ -57,9 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case RuntimePlatform.WebGLPlayer:
                     supportedPlatforms |= SupportedPlatforms.Web;
                     break;
+#if !UNITY_2022_2_OR_NEWER
                 case RuntimePlatform.Lumin:
                     supportedPlatforms |= SupportedPlatforms.Lumin;
                     break;
+#endif
             }
 
             return supportedPlatforms;
@@ -127,9 +129,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case UnityEditor.BuildTarget.WebGL:
                     supportedPlatforms |= SupportedPlatforms.Web;
                     break;
+#if !UNITY_2022_2_OR_NEWER
                 case UnityEditor.BuildTarget.Lumin:
                     supportedPlatforms |= SupportedPlatforms.Lumin;
                     break;
+#endif
             }
 
             return supportedPlatforms;

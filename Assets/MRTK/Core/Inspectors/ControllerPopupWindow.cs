@@ -16,11 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class ControllerPopupWindow : EditorWindow
     {
-        private const string EditorWindowOptionsPath = "Inspectors/Data/EditorWindowOptions.json";
+        // Inspectors/Data/EditorWindowOptions.json
+        private const string EditorWindowOptionsGuid = "28091d5ea9b5739419a221a06fa1ec89";
         private const float InputActionLabelWidth = 128f;
 
         /// <summary>
-        /// Used to enable editing the input axis label positions on controllers
+        /// Used to enable editing the input axis label positions on controllers.
         /// </summary>
         private static readonly bool EnableWysiwyg = false;
 
@@ -188,12 +189,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Displays the controller mapping window for the specified controller mapping
+        /// Displays the controller mapping window for the specified controller mapping.
         /// </summary>
-        /// <param name="controllerMapping"> The controller mapping being modified</param>
-        /// <param name="interactionsList"> The underlying serialized property being modified</param>
-        /// <param name="handedness"> The handedness of the controller </param>
-        /// <param name="mappedControllers"> The list of controller types affected by this mapping</param>
+        /// <param name="controllerMapping">The controller mapping being modified.</param>
+        /// <param name="interactionsList">The underlying serialized property being modified.</param>
+        /// <param name="handedness">The handedness of the controller.</param>
+        /// <param name="mappedControllers">The list of controller types affected by this mapping.</param>
         public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None, List<string> mappedControllers = null)
         {
             if (window != null)
@@ -262,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Use this to repaint the popup window
+        /// Use this to repaint the pop-up window.
         /// </summary>
         public static void RepaintWindow()
         {
@@ -786,7 +787,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static string ResolveEditorWindowOptionsPath()
         {
-            return MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath(EditorWindowOptionsPath);
+            return Path.GetFullPath(AssetDatabase.GUIDToAssetPath(EditorWindowOptionsGuid));
         }
     }
 }

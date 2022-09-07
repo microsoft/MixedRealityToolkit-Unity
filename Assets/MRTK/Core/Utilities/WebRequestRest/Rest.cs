@@ -104,7 +104,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             bool disposeCertificateHandlerOnDispose = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+#if UNITY_2022_2_OR_NEWER
+            using (var webRequest = UnityWebRequest.PostWwwForm(query, null as string))
+#else
             using (var webRequest = UnityWebRequest.Post(query, null as string))
+#endif
             {
                 cancellationToken.Register(() =>
                 {
@@ -165,7 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             bool disposeCertificateHandlerOnDispose = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+#if UNITY_2022_2_OR_NEWER
+            using (var webRequest = UnityWebRequest.PostWwwForm(query, "POST"))
+#else
             using (var webRequest = UnityWebRequest.Post(query, "POST"))
+#endif
             {
                 cancellationToken.Register(() =>
                 {
@@ -201,7 +209,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             bool disposeCertificateHandlerOnDispose = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+#if UNITY_2022_2_OR_NEWER
+            using (var webRequest = UnityWebRequest.PostWwwForm(query, "POST"))
+#else
             using (var webRequest = UnityWebRequest.Post(query, "POST"))
+#endif
             {
                 cancellationToken.Register(() =>
                 {

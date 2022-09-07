@@ -59,6 +59,26 @@ function RunUnityTask {
     Stop-Process $proc
     if ($proc.ExitCode -ge 1) {
         Write-Error "Failed to execute Unity Task '$($taskName)', see log '$($logFile)' for more information."
+
+        if (Test-Path $logFile.FullName) {
+            Write-Output '====================================================='
+            Write-Output '              Unity build docs finished              '
+            Write-Output '====================================================='
+
+            Write-Output '====================================================='
+            Write-Output '                Begin Unity build log                '
+            Write-Output '====================================================='
+
+            Get-Content $logFile.FullName
+
+            Write-Output '====================================================='
+            Write-Output '                 End Unity build log                 '
+            Write-Output '====================================================='
+        }
+        else {
+            Write-Error 'Unity build log missing!'
+        }
+
         exit($proc.ExitCode)
     }
 }

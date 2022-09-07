@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 #endif
@@ -255,10 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static Texture2D GetControllerTextureCached(Type controllerType, Handedness handedness, string suffix)
         {
-            Texture2D texture;
-
             var key = new Tuple<Type, Handedness, string>(controllerType, handedness, suffix);
-            if (cachedTextures.TryGetValue(key, out texture))
+            if (cachedTextures.TryGetValue(key, out Texture2D texture))
             {
                 return texture;
             }
@@ -303,8 +302,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             string themeSuffix = EditorGUIUtility.isProSkin ? "_white" : "_black";
 
-            string fullTexturePath = MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.StandardAssets, $"{relativeTexturePath}{handednessSuffix}{themeSuffix}{suffix}.png");
-            return (Texture2D)AssetDatabase.LoadAssetAtPath(fullTexturePath, typeof(Texture2D));
+            string textureName = $"{Path.GetFileName(relativeTexturePath)}{handednessSuffix}{themeSuffix}{suffix}";
+            string[] textureGuids = AssetDatabase.FindAssets(textureName);
+            string texturePath = string.Empty;
+            foreach (string guid in textureGuids)
+            {
+                string tempPath = AssetDatabase.GUIDToAssetPath(guid);
+                // Ensure the path we're looking at contains the exact file name we're looking for
+                if (tempPath.Contains(textureName + ".png"))
+                {
+                    texturePath = tempPath;
+                    break;
+                }
+            }
+
+            return (Texture2D)AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D));
         }
 
 #endif // UNITY_EDITOR

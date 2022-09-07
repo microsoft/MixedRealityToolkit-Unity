@@ -243,7 +243,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(planeNormal), handleSize * 2, EventType.Repaint);
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(-planeNormal), handleSize * 2, EventType.Repaint);
 
+#if UNITY_2022_2_OR_NEWER
+                Vector3 newPosition = Handles.FreeMoveHandle(vertices[1], handleSize, Vector3.zero, Handles.SphereHandleCap);
+#else
                 Vector3 newPosition = Handles.FreeMoveHandle(vertices[1], Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
+#endif
                 if (!newPosition.Equals(vertices[1]))
                 {
                     distance = button.GetDistanceAlongPushDirection(newPosition);
