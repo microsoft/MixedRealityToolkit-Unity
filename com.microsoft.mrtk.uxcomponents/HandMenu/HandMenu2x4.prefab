@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 8060732920955031440}
   - component: {fileID: 6486256165417080186}
   m_Layer: 5
-  m_Name: Button_IconAndText_32x32mm (1)
+  m_Name: Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -449,8 +449,8 @@ RectTransform:
   m_Father: {fileID: 8070400074404726865}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 36, y: 0}
   m_SizeDelta: {x: 72, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
