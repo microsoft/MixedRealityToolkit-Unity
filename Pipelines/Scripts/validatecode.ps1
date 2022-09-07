@@ -193,8 +193,8 @@ function CheckForMetaFile {
 
 <#
 .SYNOPSIS
-    Checks if the file has a corresponding meta checked in.
-    Returns true if the meta is missing.
+    Checks if the meta file has a corresponding file checked in.
+    Returns true if the file is missing.
 #>
 function CheckForActualFile {
     [CmdletBinding()]
@@ -235,8 +235,8 @@ function IsNamespace {
     of the file and normalizes the separators to /.
     For example, given D:\src\MixedRealityToolkit-Unity\Assets\MRTK\Services\DiagnosticsSystem\File.cs,
     this would return Assets/MRTK/Services/DiagnosticsSystem/File.cs.
-    Note that this function asssumes the Assets/MRTK prefix for all of the MRTK code,
-    and if this ever changes this function would need to be updated to accomodate that.
+    Note that this function assumes the Assets/MRTK prefix for all of the MRTK code,
+    and if this ever changes this function would need to be updated to accommodate that.
 #>
 function GetProjectRelativePath {
     [CmdletBinding()]
@@ -254,11 +254,13 @@ function GetProjectRelativePath {
 # InitializeOnLoad handlers have a fairly dangerous impact on the inner loop speed of anyone
 # using the MRTK, as they add milliseconds of time after each compile and prior to entering play mode.
 # While individual handlers may not be that significant, the sum total of time across all handlers
-# (which run serially) causes noticable delays in responsiveness in the Unity editor.
+# (which run serially) causes noticeable delays in responsiveness in the Unity editor.
 $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "com.microsoft.mrtk.core/Editor/MRTKSettings.cs",
     "com.microsoft.mrtk.core/Editor/EditorProjectUtilities.cs",
-    "com.microsoft.mrtk.core/Editor/MRTKProjectValidation.cs"
+    "com.microsoft.mrtk.core/Editor/MRTKProjectValidation.cs",
+    "com.microsoft.mrtk.input/Editor/InputValidation.cs",
+    "com.microsoft.mrtk.windowsspeech/Editor/WindowsSpeechValidation.cs"
 )
 
 <#
@@ -309,7 +311,7 @@ $AssemblyTypesExceptions = [System.Collections.Generic.HashSet[String]]@(
     Checks that we don't have any references to Assembly.GetTypes(), which throws an exception for types
     that aren't loadable. Instead, callers should use the Assembly extensions GetLoadableTypes(), which wraps
     Assembly.GetTypes(), catches any unloadable types exceptions, and returns the actually loadable types.
-    Note that this is mostly a hueristic to avoid having additional Assembly.GetTypes() calls (it doesn't do
+    Note that this is mostly a heuristic to avoid having additional Assembly.GetTypes() calls (it doesn't do
     actual static analysis, just rough text analysis)
 #>
 function CheckAssemblyTypes {

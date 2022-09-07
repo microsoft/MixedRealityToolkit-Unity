@@ -18,12 +18,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "com.microsoft.mrtk.data",
-            "expression": "",
-            "define": "MRTK_DATA_PRESENT"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }
