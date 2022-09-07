@@ -114,6 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 handControllerState.PinchSelectReady = isPinchReady;
 
+#pragma warning disable CS0618 // Type or member is obsolete
                 if (isPinching && HandsAggregator.TryGetPinchingPoint(handNode, out HandJointPose pinchPose))
                 {
                     handControllerState.PinchPose.position = pinchPose.Position;
@@ -124,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handControllerState.PinchPose.position = controllerState.position;
                     handControllerState.PinchPose.rotation = controllerState.rotation;
                 }
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 

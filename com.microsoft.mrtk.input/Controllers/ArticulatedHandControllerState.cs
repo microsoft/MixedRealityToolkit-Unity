@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The world-space pose of hand/controller performing the pinch.
         /// </summary>
+        [Obsolete("We are moving away from querying the pinch select pose via the specific XR controller reference. It should be accessed via an IPoseSource interface or directly from the subsystem")]
         public Pose PinchPose;
 
         /// <summary>
@@ -31,7 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public ArticulatedHandControllerState() : base()
         {
             PinchSelectReady = false;
+#pragma warning disable CS0618 // Type or member is obsolete
             PinchPose = Pose.identity;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }
