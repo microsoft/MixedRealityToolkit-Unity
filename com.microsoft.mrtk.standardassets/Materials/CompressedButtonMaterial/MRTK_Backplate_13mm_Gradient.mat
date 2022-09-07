@@ -117,7 +117,7 @@ Material:
     - _Highlight_Color_: {r: 0.2392157, g: 0.43529415, b: 0.82745105, a: 1}
     - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
     - _Iridescence_Tint_: {r: 1, g: 1, b: 1, a: 1}
-    - _Line_Color_: {r: 0.299, g: 0.3928039, b: 0.598, a: 1}
+    - _Line_Color_: {r: 0.36850303, g: 0.52249914, b: 0.8584906, a: 1}
     - _Top_Left_: {r: 1, g: 0.690196, b: 0.976471, a: 1}
     - _Top_Right_: {r: 0, g: 0.33, b: 0.88, a: 1}
   m_BuildTextureStacks: []

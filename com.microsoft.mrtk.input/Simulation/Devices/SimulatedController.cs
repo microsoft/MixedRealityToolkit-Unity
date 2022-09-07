@@ -29,6 +29,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         Preserve]
     internal class MRTKSimulatedController : XRSimulatedController
     {
+        private ControllerSimulationMode simulationMode;
+        /// <summary>
+        /// The current simulation mode for this controller;
+        /// </summary>
+        public ControllerSimulationMode SimulationMode
+        {
+            get
+            {
+                return simulationMode;
+            }
+            set
+            {
+                simulationMode = value;
+            }
+        }
+
         /// <summary>
         /// The device's pointerPosition
         /// </summary>
@@ -177,6 +193,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 return;
             }
             simulatedControllerState.Reset();
+
+            simulatedController.SimulationMode = controllerSimulationSettings.SimulationMode;
 
             SimulatedInputPosition = initialRelativePosition;
 
@@ -453,6 +471,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // simulatedControllerState.WithButton(ControllerButton.Primary2DAxisTouch, controls.Primary2DAxisTouch);
                 // simulatedControllerState.WithButton(ControllerButton.Secondary2DAxisTouch, controls.Secondary2DAxisTouch);
 
+                simulatedController.SimulationMode = controllerSimulationSettings.SimulationMode;
+
                 InputState.Change(simulatedController, simulatedControllerState);
             }
         }
@@ -529,6 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             using (SetRigLocalPosePerfMarker.Auto())
             {
+                // First set the device pose using the provided position and rotation.
                 simulatedControllerState.devicePosition = position;
 
                 if (rotationMode == ControllerRotationMode.FaceCamera)
@@ -556,9 +577,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     simulatedControllerState.deviceRotation = rotation;
                 }
 
+                // Then set the pointer pose.
                 if (shouldUseRayVector && Handedness.ToXRNode().HasValue && HandSubsystem != null &&
                         HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose))
                 {
+                    // If prompted to use the ray vector, this is pose is calculated by simulating a hand ray initialized at the device pose.
+                    // This occurs when the simulation mode is set to ArticulatedHand
                     handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, Camera.main.transform, Handedness);
                     Ray ray = handRay.Ray;
                     simulatedControllerState.pointerPosition = PlayspaceUtilities.ReferenceTransform.InverseTransformPoint(ray.origin);
@@ -566,6 +590,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 }
                 else
                 {
+                    // Otherwise, set the pointer pose to match the device pose.
                     simulatedControllerState.pointerPosition = simulatedControllerState.devicePosition;
                     simulatedControllerState.pointerRotation = simulatedControllerState.deviceRotation;
                 }

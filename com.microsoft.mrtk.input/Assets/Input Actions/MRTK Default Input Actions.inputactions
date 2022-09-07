@@ -54,7 +54,7 @@
             "id": "5fe596f9-1b7b-49b7-80a7-3b5195caf74d",
             "actions": [
                 {
-                    "name": "Position",
+                    "name": "PointerPosition",
                     "type": "Value",
                     "id": "83a7af0b-87e3-42c3-a909-95fbf8091e4f",
                     "expectedControlType": "Vector3",
@@ -63,7 +63,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Rotation",
+                    "name": "PointerRotation",
                     "type": "Value",
                     "id": "cb6b7130-2bac-4ef7-abe4-6991ae7d419d",
                     "expectedControlType": "Quaternion",
@@ -272,7 +272,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Position",
+                    "action": "PointerPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -470,7 +470,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rotation",
+                    "action": "PointerRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -558,7 +558,7 @@
             "id": "7960f8ef-2bf3-4281-aecc-4c03809d6c8c",
             "actions": [
                 {
-                    "name": "Position",
+                    "name": "PointerPosition",
                     "type": "Value",
                     "id": "c4990d70-7b8a-4ce1-b03c-da86716b8352",
                     "expectedControlType": "Vector3",
@@ -567,7 +567,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Rotation",
+                    "name": "PointerRotation",
                     "type": "Value",
                     "id": "ee6bf5bf-bb0a-4a50-8327-cb654b19e298",
                     "expectedControlType": "Quaternion",
@@ -776,7 +776,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Position",
+                    "action": "PointerPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -952,7 +952,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rotation",
+                    "action": "PointerRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
