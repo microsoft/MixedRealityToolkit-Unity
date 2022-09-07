@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <remarks>
         /// This map is cleared every frame.
         /// </remarks>
-        private static readonly Dictionary<ValueTuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<ValueTuple<Collider, Camera>, bool>();
+        private static readonly Dictionary<(Collider, Camera), bool> inFOVColliderCache = new Dictionary<(Collider, Camera), bool>();
 
         /// <summary>
         /// List of corners shared across all sphere pointer query instances -- used to store list of corners for
