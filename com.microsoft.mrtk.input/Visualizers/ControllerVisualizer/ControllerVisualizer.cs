@@ -5,10 +5,9 @@ using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityInputSystem = UnityEngine.InputSystem;
 using InputAction = UnityEngine.InputSystem.InputAction;
 using InputActionProperty = UnityEngine.InputSystem.InputActionProperty;
+using UnityInputSystem = UnityEngine.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -36,14 +35,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // The controller usages we want the input device to have;
         private InternedString targetUsage;
 
-        // A gameobject representing the currently loaded platform models.
+        // A GameObject representing the currently loaded platform models.
         private GameObject platformLoadedGameObject;
 
-        // A gameobject representing the root which contains any loaded platform models.
+        // A GameObject representing the root which contains any loaded platform models.
         // This root is necessary since platform models are rotated 180 degrees by default.
         private GameObject platformLoadedGameObjectRoot;
 
-        // A gameobject representing the fallback controller model.
+        // A GameObject representing the fallback controller model.
         private GameObject fallbackGameObject;
 
         [SerializeField]
@@ -73,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (controllerDetectedAction == null  || controllerDetectedAction.action == null) { return; }
+            if (controllerDetectedAction == null || controllerDetectedAction.action == null) { return; }
             controllerDetectedAction.action.started += RenderControllerVisuals;
             controllerDetectedAction.action.canceled += RemoveControllerVisuals;
             controllerDetectedAction.action.Enable();
@@ -86,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             controllerDetectedAction.action.started -= RenderControllerVisuals;
             controllerDetectedAction.action.canceled -= RemoveControllerVisuals;
         }
+
         private void RenderControllerVisuals(InputAction.CallbackContext context)
         {
             RenderControllerVisuals(context.control.device);
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void RenderControllerVisuals(UnityInputSystem.InputDevice inputDevice)
         {
             // This process may change in the future as unity updates its input subsystem.
-            // In the future, there will be a different way of distinguishing between phsyical controllers
+            // In the future, there will be a different way of distinguishing between physical controllers
             // and tracked hands, forgoing the UnityEngine.XR.InputDevices route
 
             // Upon detecting a generic input device with the appropriate usages, load or remove the controller visuals
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        // Private reference to the gameobject which represents the visualized controller
+        // Private reference to the GameObject which represents the visualized controller
         // Needs to be explicitly set to null in cases where no controller visuals are ever loaded.
         private GameObject controllerGameObject = null;
 
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="useFallbackVisuals">Whether or not to use the fallback controller visuals</param>
         private async void InstantiateControllerVisuals(bool usePlatformVisuals, bool useFallbackVisuals)
         {
-            // Disable any pre-existing controller models before trying to render new ones.
+            // Disable any preexisting controller models before trying to render new ones.
             if (platformLoadedGameObject != null)
             {
                 platformLoadedGameObject.SetActive(false);
