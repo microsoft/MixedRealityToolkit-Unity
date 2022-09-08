@@ -134,6 +134,20 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4654093213744493648, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 17.13686
+      objectReference: {fileID: 0}
+    - target: {fileID: 4654093213744493648, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.0128
+      objectReference: {fileID: 0}
+    - target: {fileID: 4654093213744493651, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
+      propertyPath: m_text
+      value: 'MRTK3 is the third generation of Microsoft Mixed Reality Toolkit for
+        Unity. It''s a Microsoft-driven open source project to accelerate cross-platform
+        mixed reality development in Unity. '
+      objectReference: {fileID: 0}
     - target: {fileID: 4654093214401527389, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.0159
@@ -148,11 +162,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8848900189972289685, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.001
+      value: 0.0824
       objectReference: {fileID: 0}
     - target: {fileID: 8848900189972289685, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.045
+      value: 0.0086
       objectReference: {fileID: 0}
     - target: {fileID: 8848900189972289685, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
       propertyPath: m_LocalPosition.z
@@ -717,9 +731,13 @@ PrefabInstance:
         how to achieve the 'magic window' or 'portal' effect using MRTK Standard
         Shader.  It is important to configure the 'Stencil Test' properties. Check
         out Stencil Comparison and Stencil Operation properties in the materials
-        that were used in this example for the objects and magic window box.\n\n<color=yellow>To
-        properly render this example, please make sure to \nconfigure 'Depth Submission
-        Mode' as '24 Bit' under\nProject Settings > XR Plug-in Management > OpenXR</color>"
+        that were used in this example for the objects and magic window box.\n\n<color=yellow>16
+        bit is the recommended setting for depth submission mode on HoloLens for
+        performance considerations but the magic window sample relies on the stencil
+        buffer, which is only available when the depth submission mode is set to
+        24 bit.</color>\n\n<color=yellow>To properly render this example, please
+        make sure to \nconfigure 'Depth Submission Mode' as '24 Bit' under\nProject
+        Settings > XR Plug-in Management > OpenXR</color>"
       objectReference: {fileID: 0}
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_fontSize
@@ -779,7 +797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0463
+      value: 0.0012
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -799,11 +817,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.018962938
+      value: -0.1464
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.1129
+      value: -0.0087
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -827,11 +845,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5493534032387613222, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalScale.y
-      value: 148.9052
+      value: 190.59865
       objectReference: {fileID: 0}
     - target: {fileID: 5493534032387613222, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.17
+      value: -4.75
       objectReference: {fileID: 0}
     - target: {fileID: 5929991690626966069, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_IsActive
