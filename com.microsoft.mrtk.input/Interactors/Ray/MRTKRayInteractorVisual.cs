@@ -439,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
                 rayHasHit = true;
             }
-            // Otherwise draw out the line exactly as the Ray Interactor perscribes
+            // Otherwise draw out the line exactly as the Ray Interactor prescribes
             else
             {
                 // If the ray hits an object, truncate the visual appropriately
