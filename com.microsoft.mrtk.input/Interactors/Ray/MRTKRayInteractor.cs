@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Use the Device Pose Sources to calculate the attach transform's pose
                     if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
                     {
-                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
+                        attachTransform.rotation = devicePose.rotation;
                     }
                 }
             }
