@@ -140,7 +140,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
+        [Tooltip("The pose source representing the pose this interactor uses for aiming and positioning. Follows the 'pointer pose'")]
+        private IPoseSource aimPoseSource;
+
+        /// <summary>
+        /// The pose source representing the ray this interactor uses for aiming and positioning.
+        /// </summary>
+        protected IPoseSource AimPoseSource { get => aimPoseSource; set => aimPoseSource = value; }
+
+        [SerializeReference]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the device this interactor uses for rotation.")]
         private IPoseSource devicePoseSource;
 
@@ -172,15 +182,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         isRelaxedBeforeSelect = false;
                     }
 
+                    // Use Pose Sources to calculate the interactor's pose and the attach transform's position
+                    if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+                    {
+                        transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
+
+                        if (hasSelection)
+                        {
+                            float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
+                            attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
+                        }
+                    }
+
+                    // Use the Device Pose Sources to calculate the attach transform's pose
                     if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
                     {
                         attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
-                    }
-
-                    if (hasSelection)
-                    {
-                        float distanceRatio = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation)) / refDistance;
-                        attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
                     }
                 }
             }

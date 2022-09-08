@@ -147,12 +147,14 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _ClipRectRadii: {r: 10, g: 10, b: 10, a: 10}
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
     - _Color_: {r: 0.48160002, g: 0.67080003, b: 0.86, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _GradientAlpha: {r: 1, g: 1, b: 1, a: 1}
+    - _GradientAlphaTime: {r: 0, g: 0, b: 0, a: 0}
     - _GradientColor0: {r: 0.631373, g: 0.631373, b: 0.631373, a: 0}
     - _GradientColor1: {r: 1, g: 0.690196, b: 0.976471, a: 0.25}
     - _GradientColor2: {r: 0, g: 0.33, b: 0.88, a: 0.5}

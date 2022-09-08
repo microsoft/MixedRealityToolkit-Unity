@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         InputActionProperty rotationActionProperty;
 
         /// <summary>
-        /// Tries to get the pose composed of the provided input action properties when the position and rotation are tracked
+        /// Tries to get the pose in worldspace composed of the provided input action properties when the position and rotation are tracked
         /// </summary>
         public bool TryGetPose(out Pose pose)
         {
@@ -33,13 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InputAction positionAction = positionActionProperty.action;
             InputAction rotationAction = rotationActionProperty.action;
 
-            if (trackingStateAction != null && trackingStateAction.enabled
-                && positionAction != null && positionAction.enabled
-                && rotationAction != null && rotationAction.enabled
+            if (trackingStateAction != null && trackingStateAction.controls.Count != 0
+                && positionAction != null && positionAction.controls.Count != 0
+                && rotationAction != null && rotationAction.controls.Count != 0
                 && ((InputTrackingState)trackingStateAction.ReadValue<int>() & (InputTrackingState.Position | InputTrackingState.Rotation)) != 0)
             {
-                pose.position = positionAction.ReadValue<Vector3>();
-                pose.rotation = rotationAction.ReadValue<Quaternion>();
+                // Transform the pose into worldspace, as input actions are returned in rig space
+                pose.position = PlayspaceUtilities.ReferenceTransform.TransformPoint(positionAction.ReadValue<Vector3>());
+                pose.rotation = PlayspaceUtilities.ReferenceTransform.rotation * rotationAction.ReadValue<Quaternion>();
 
                 return true;
             }
