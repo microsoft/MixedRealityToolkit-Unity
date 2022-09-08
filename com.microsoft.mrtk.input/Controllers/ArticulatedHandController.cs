@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 Debug.Assert(handControllerState != null);
 
-
                 // If we still don't have an aggregator, then don't update selects.
                 if (HandsAggregator == null) { return; }
 
