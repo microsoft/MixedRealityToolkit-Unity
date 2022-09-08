@@ -448,7 +448,6 @@ GameObject:
   - component: {fileID: 4654093214782437220}
   - component: {fileID: 4654093214782437225}
   - component: {fileID: 4654093214782437222}
-  - component: {fileID: 4654093214782437223}
   m_Layer: 0
   m_Name: UX.Slate.MagicWindow
   m_TagString: Untagged
@@ -519,19 +518,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4654093214782437223
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4654093214782437221}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.19035208, y: 0.061916698, z: 9.015246}
-  m_Center: {x: 0.00022298237, y: -0.00012581042, z: 4.307622}
 --- !u!1 &8779236679572472067
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 4654093214276311286}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2229,7 +2216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 2061463798}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
