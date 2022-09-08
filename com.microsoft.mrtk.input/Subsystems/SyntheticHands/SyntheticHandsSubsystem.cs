@@ -526,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (!Config.ShouldSynthesize())
                 {
-                    jointPoses = System.Array.Empty<HandJointPose>();
+                    jointPoses = Array.Empty<HandJointPose>();
                     return false;
                 }
 

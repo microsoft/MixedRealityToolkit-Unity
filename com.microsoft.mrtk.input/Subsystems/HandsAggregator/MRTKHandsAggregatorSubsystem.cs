@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public AggregateHandContainer(XRNode handNode) : base(handNode)
             {
-                handsSubsystems = XRSubsystemHelpers.GetAllSubsystems<HandsSubsystem>();
+                SubsystemManager.GetSubsystems(handsSubsystems);
             }
 
             private static readonly ProfilerMarker TryGetEntireHandPerfMarker =
