@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
+using UnityEngine.InputSystem;
 
 #if MROPENXR_PRESENT && (UNITY_EDITOR_WIN || UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_ANDROID)
 using Microsoft.MixedReality.OpenXR;
@@ -251,13 +252,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Preserve]
         private class OpenXRProvider : Provider, IHandsSubsystem
         {
-            private Dictionary<XRNode, OpenXRHandContainer> hands = new Dictionary<XRNode, OpenXRHandContainer>
-            {
-                { XRNode.LeftHand, new OpenXRHandContainer(XRNode.LeftHand) },
-                { XRNode.RightHand, new OpenXRHandContainer(XRNode.RightHand) }
-            };
+            private Dictionary<XRNode, OpenXRHandContainer> hands = null;
 
-            public override void Update()
+            public override void Start()
+            {
+                base.Start();
+
+                hands ??= new Dictionary<XRNode, OpenXRHandContainer>
+                {
+                    { XRNode.LeftHand, new OpenXRHandContainer(XRNode.LeftHand) },
+                    { XRNode.RightHand, new OpenXRHandContainer(XRNode.RightHand) }
+                };
+
+                InputSystem.onBeforeUpdate += ResetHands;
+            }
+
+            public override void Stop()
+            {
+                ResetHands();
+                InputSystem.onBeforeUpdate -= ResetHands;
+                base.Stop();
+            }
+
+            private void ResetHands()
             {
                 hands[XRNode.LeftHand].Reset();
                 hands[XRNode.RightHand].Reset();
