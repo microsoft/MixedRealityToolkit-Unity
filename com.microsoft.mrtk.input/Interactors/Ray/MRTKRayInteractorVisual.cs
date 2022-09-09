@@ -375,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
-        void OnBeforeRenderLineVisual()
+        private void OnBeforeRenderLineVisual()
         {
             UpdateLineVisual();
         }

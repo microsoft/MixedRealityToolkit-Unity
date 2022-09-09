@@ -193,7 +193,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public void Update()
+        /// <inheritdoc />
+        protected override void OnSelectEntering(SelectEnterEventArgs args)
+        {
+            base.OnSelectEntering(args);
+
+            initialLocalAttach = new Pose(attachTransform.localPosition, attachTransform.localRotation);
+            refDistance = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation));
+        }
+
+        #endregion XRBaseInteractor
+
+        private void Update()
         {
             // Use Pose Sources to calculate the interactor's pose and the attach transform's position
             // We have to make sure the ray interactor is oriented appropriately before calling
@@ -215,16 +226,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 attachTransform.rotation = devicePose.rotation;
             }
         }
-
-        /// <inheritdoc />
-        protected override void OnSelectEntering(SelectEnterEventArgs args)
-        {
-            base.OnSelectEntering(args);
-
-            initialLocalAttach = new Pose(attachTransform.localPosition, attachTransform.localRotation);
-            refDistance = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation));
-        }
-
-        #endregion XRBaseInteractor
     }
 }
