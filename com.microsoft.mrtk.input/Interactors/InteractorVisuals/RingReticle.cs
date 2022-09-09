@@ -52,9 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void Awake()
         {
             propertyBlock = new MaterialPropertyBlock();
-            reticleRenderer = GetComponent<MeshRenderer>();
 
-            if (reticleRenderer != null)
+            if (TryGetComponent(out reticleRenderer))
             {
                 // Cache the previous near fade value so we know what to restore to
                 // if we want to re-enable fading after disabling it (through InitializeShaderFadeEnabled).

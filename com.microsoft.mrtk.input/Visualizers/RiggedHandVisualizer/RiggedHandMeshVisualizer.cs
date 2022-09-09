@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Name of the shader property used to drive pinch-amount-based visual effects. " +
                  "Generally, maps to something like a glow or an outline color!")]
         private string pinchAmountMaterialProperty = "_PinchAmount";
-        
+
         // Automatically calculated over time, based on the accumulated error
         // between the user's actual joint locations and the armature's bones/joints.
         private float handScale = 1.0f;
@@ -109,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Debug.LogWarning("RiggedHandMeshVisualizer couldn't find the wrist joint on your hand mesh. " +
                                      "You should set it manually!");
-                    
+
                     // Abort initialization as we don't even have a wrist joint to go off of.
                     return;
                 }
@@ -163,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void Update()
         {
             // Query all joints in the hand.
-            if (!ShouldRenderHand() || 
+            if (!ShouldRenderHand() ||
                 !handsSubsystem.TryGetEntireHand(handNode, out IReadOnlyList<HandJointPose> joints))
             {
                 // Hide the hand and abort if we shouldn't be
@@ -211,9 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         case TrackedHandJoint.RingTip:
                         case TrackedHandJoint.LittleTip:
                             // The tip bone uses the joint rotation directly.
-                            jointTransform.rotation = joints[i-1].Rotation;
+                            jointTransform.rotation = joints[i - 1].Rotation;
                             // Compute and accumulate the error between the hand mesh and the user's joint data.
-                            error += JointError(jointTransform.position, joints[i-1].Position, jointTransform.forward);
+                            error += JointError(jointTransform.position, joints[i - 1].Position, jointTransform.forward);
                             break;
                         case TrackedHandJoint.ThumbMetacarpal:
                         case TrackedHandJoint.IndexMetacarpal:
@@ -226,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             break;
                         default:
                             // For all other bones, do a simple "IK" from the rigged joint to the joint data's position.
-                            jointTransform.rotation = Quaternion.LookRotation(jointPose.Position - jointTransform.position, joints[i-1].Up);
+                            jointTransform.rotation = Quaternion.LookRotation(jointPose.Position - jointTransform.position, joints[i - 1].Up);
                             break;
                     }
                 }
