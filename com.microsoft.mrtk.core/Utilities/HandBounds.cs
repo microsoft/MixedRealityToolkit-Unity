@@ -55,11 +55,10 @@ namespace Microsoft.MixedReality.Toolkit
         /// Mapping between controller handedness and associated hand transforms.
         /// Used to transform the debug gizmos when rendering the hand AABBs.
         /// </summary>
-        private Dictionary<Handedness, Matrix4x4> BoundsTransforms = new Dictionary<Handedness, Matrix4x4>();
+        private Dictionary<Handedness, Matrix4x4> boundsTransforms = new Dictionary<Handedness, Matrix4x4>();
 
+        private HandsAggregatorSubsystem HandSubsystem => handSubsystem ??= HandsUtils.GetSubsystem();
         private HandsAggregatorSubsystem handSubsystem = null;
-
-        internal HandsAggregatorSubsystem HandSubsystem => handSubsystem ??= XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
 
         #region MonoBehaviour Implementation
 
@@ -84,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit
                 Gizmos.color = Color.cyan;
                 foreach (var kvp in LocalBounds)
                 {
-                    Gizmos.matrix = BoundsTransforms[kvp.Key];
+                    Gizmos.matrix = boundsTransforms[kvp.Key];
                     Gizmos.DrawWireCube(kvp.Value.center, kvp.Value.size);
                 }
             }
@@ -123,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                 // We must normalize the quaternion before constructing the TRS matrix; non-unit-length quaternions
                 // may be emitted from the palm-pose and they must be renormalized.
-                BoundsTransforms[hand] = Matrix4x4.TRS(palmPose.Position, palmPose.Rotation.normalized, Vector3.one);
+                boundsTransforms[hand] = Matrix4x4.TRS(palmPose.Position, palmPose.Rotation.normalized, Vector3.one);
             }
         }
     }

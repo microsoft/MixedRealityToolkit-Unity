@@ -149,11 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc/>
         public override bool isHoverActive
         {
-            get
-            {
-                // Only be available for hovering if the joint or controller is tracked.
-                return base.isHoverActive && (xrController.currentControllerState.inputTrackingState.HasPositionAndRotation() || pokePointTracked);
-            }
+            // Only be available for hovering if the joint or controller is tracked.
+            get => base.isHoverActive && (xrController.currentControllerState.inputTrackingState.HasPositionAndRotation() || pokePointTracked);
         }
 
         /// <inheritdoc/>

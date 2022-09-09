@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
     /// An extension of the <see cref="UGUIInputAdapter"/> that allows the interception of drag events.
-    /// Add to any XRI interactable you wish to recieve drags, such as sliders, handles, or even ObjectManipulators.
+    /// Add to any XRI interactable you wish to receive drags, such as sliders, handles, or even ObjectManipulators.
     /// </summary>
     [AddComponentMenu("MRTK/UX/UGUI Input Adapter Draggable")]
     public class UGUIInputAdapterDraggable : UGUIInputAdapter, IDragHandler
