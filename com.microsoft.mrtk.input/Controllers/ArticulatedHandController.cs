@@ -144,8 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Polyfill the tracking state, too.
                 controllerState.inputTrackingState = InputTrackingState.Position | InputTrackingState.Rotation;
             }
-
-            Debug.Log("1st pos" + controllerState.position.ToString("F9"));
         }
 
 

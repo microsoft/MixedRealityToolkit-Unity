@@ -510,11 +510,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 lineDataProvider.SetPoint(2, Vector3.Lerp(startPoint, expectedPoint, endPointLerp));
             }
 
-            Debug.Log((lineDataProvider.LastPoint - lineDataProvider.FirstPoint).normalized.ToString("F8"));
-            Debug.Log(rayInteractor.rayOriginTransform.forward.ToString("F8"));
-
-            Debug.Log("====Last=====");
-
             // Set positions for the rendered ray visual after passing it through the lineDataProvider
             lineRenderer.positionCount = lineStepCount;
 
