@@ -10,9 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Interactor helper object aligns a <see cref="LineRenderer"/> with the Interactor.
     /// </summary>
+    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(LineRenderer))]
-    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_LineVisual)]
     public class MRTKRayInteractorVisual : MonoBehaviour, IXRCustomReticleProvider
     {
         [Header("Visual Settings")]
@@ -373,6 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle(false);
         }
 
+        [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void OnBeforeRenderLineVisual()
         {
             UpdateLineVisual();

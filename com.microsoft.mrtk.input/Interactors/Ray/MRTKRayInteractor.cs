@@ -13,6 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A wrapper for the XRRayInteractor which stores extra information for MRTK management/services
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Interactor")]
+
+    // This execution order ensures that the MRTKRayInteractor runs its update function right after the
+    // XRController. We do this because the MRTKRayInteractor needs to set its own pose after the parent controller transform,
+    // but before any physics raycast calls are made to determine selection. The earliest a physics call can be made is within
+    // the UIInputModule, which has an update order much higher than XRControllers.
+    // TODO: Examine the update order of other interactors in the future with respect to when their physics calls happen,
+    // or create a system to keep ensure interactor poses aren't ever implicitly set via parenting.
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_Controllers + 1)]
     public class MRTKRayInteractor :
         XRRayInteractor,
         IRayInteractor,
@@ -181,24 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         isRelaxedBeforeSelect = false;
                     }
-
-                    // Use Pose Sources to calculate the interactor's pose and the attach transform's position
-                    if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
-                    {
-                        transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
-
-                        if (hasSelection)
-                        {
-                            float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
-                            attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
-                        }
-                    }
-
-                    // Use the Device Pose Sources to calculate the attach transform's pose
-                    if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
-                    {
-                        attachTransform.rotation = devicePose.rotation;
-                    }
                 }
             }
         }
@@ -213,5 +203,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion XRBaseInteractor
+
+        private void Update()
+        {
+            // Use Pose Sources to calculate the interactor's pose and the attach transform's position
+            // We have to make sure the ray interactor is oriented appropriately before calling
+            // lower level raycasts
+            if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+            {
+                transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
+
+                if (hasSelection)
+                {
+                    float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
+                    attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
+                }
+            }
+
+            // Use the Device Pose Sources to calculate the attach transform's pose
+            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
+            {
+                attachTransform.rotation = devicePose.rotation;
+            }
+        }
     }
 }
