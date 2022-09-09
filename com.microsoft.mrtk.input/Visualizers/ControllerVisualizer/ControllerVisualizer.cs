@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
+using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
@@ -41,6 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // A GameObject representing the fallback controller model.
         private GameObject fallbackGameObject;
+
+        /// <summary>
+        /// Cached reference to hands aggregator for efficient per-frame use.
+        /// </summary>
+        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
+        private HandsAggregatorSubsystem handsAggregator;
 
         [SerializeField]
         [Tooltip("The input action we key into to determine whether this controller is tracked or not")]
@@ -102,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    useFallbackVisuals = !HandsUtils.GetSubsystem().TryGetJoint(TrackedHandJoint.Palm, handNode, out _);
+                    useFallbackVisuals = !(HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip, handNode, out _));
                     isSimulatedController = false;
                 }
                 InstantiateControllerVisuals(!isSimulatedController, useFallbackVisuals);

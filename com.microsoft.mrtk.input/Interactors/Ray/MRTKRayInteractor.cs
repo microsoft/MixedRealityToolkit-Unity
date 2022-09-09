@@ -181,25 +181,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         isRelaxedBeforeSelect = false;
                     }
+                }
+            }
+        }
 
-                    // Use Pose Sources to calculate the interactor's pose and the attach transform's position
-                    if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+        // does nothing, we do the pre-processing during process interactor
+        public override void PreprocessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
+        {
+            // Interactor pose updates during OnBeforeRender to match the behavior of XRBaseController, which also
+            // updates its pose during this update phase
+            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
+            {
+                // Use Pose Sources to calculate the interactor's pose and the attach transform's position
+                // We have to make sure the ray interactor is oriented appropriately before calling
+                // lower level raycasts
+                if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+                {
+                    Debug.Log("2nd");
+                    Debug.Log(transform.forward.ToString("F8"));
+                    transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
+                    Debug.Log("Start pos " + transform.position.ToString("F8"));
+                    Debug.Log(transform.forward.ToString("F8"));
+
+                    if (hasSelection)
                     {
-                        transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
-
-                        if (hasSelection)
-                        {
-                            float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
-                            attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
-                        }
-                    }
-
-                    // Use the Device Pose Sources to calculate the attach transform's pose
-                    if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
-                    {
-                        attachTransform.rotation = devicePose.rotation;
+                        float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
+                        attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
                     }
                 }
+
+                // Use the Device Pose Sources to calculate the attach transform's pose
+                if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
+                {
+                    attachTransform.rotation = devicePose.rotation;
+                }
+            }
+
+            base.PreprocessInteractor(updatePhase);
+            if(TryGetHitInfo(out var pos, out var _, out _, out _))
+            {
+                Debug.Log(pos.ToString("F8"));
             }
         }
 

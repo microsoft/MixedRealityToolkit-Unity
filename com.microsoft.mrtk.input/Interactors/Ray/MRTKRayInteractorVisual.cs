@@ -10,9 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Interactor helper object aligns a <see cref="LineRenderer"/> with the Interactor.
     /// </summary>
+    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(LineRenderer))]
-    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_LineVisual)]
     public class MRTKRayInteractorVisual : MonoBehaviour, IXRCustomReticleProvider
     {
         [Header("Visual Settings")]
@@ -375,7 +376,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle(false);
         }
 
-        private void OnBeforeRenderLineVisual()
+        [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
+        void OnBeforeRenderLineVisual()
         {
             UpdateLineVisual();
         }
@@ -468,6 +470,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Assign the last point to last point in the data structure
                 lineDataProvider.LastPoint = rayPositions[rayPositionsCount - 1];
 
+                //lineDataProvider.LastPoint = rayInteractor.transform.position + rayInteractor.transform.forward * 3.0f; //rayPositions[rayPositionsCount - 1];
+
                 // If we are hovering over a valid object, lerp the color based on pinchedness if applicable
                 if (rayHasHit)
                 {
@@ -505,6 +509,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 lineDataProvider.SetPoint(2, Vector3.Lerp(startPoint, expectedPoint, endPointLerp));
             }
+
+            Debug.Log((lineDataProvider.LastPoint - lineDataProvider.FirstPoint).normalized.ToString("F8"));
+            Debug.Log(rayInteractor.rayOriginTransform.forward.ToString("F8"));
+
+            Debug.Log("====Last=====");
 
             // Set positions for the rendered ray visual after passing it through the lineDataProvider
             lineRenderer.positionCount = lineStepCount;
