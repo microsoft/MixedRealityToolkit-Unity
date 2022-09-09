@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    useFallbackVisuals = HandsAggregator == null || !HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip, handNode, out _);
+                    useFallbackVisuals = HandsAggregator == null || !HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handNode, out _);
                     isSimulatedController = false;
                 }
                 InstantiateControllerVisuals(!isSimulatedController, useFallbackVisuals);
