@@ -470,8 +470,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Assign the last point to last point in the data structure
                 lineDataProvider.LastPoint = rayPositions[rayPositionsCount - 1];
 
-                //lineDataProvider.LastPoint = rayInteractor.transform.position + rayInteractor.transform.forward * 3.0f; //rayPositions[rayPositionsCount - 1];
-
                 // If we are hovering over a valid object, lerp the color based on pinchedness if applicable
                 if (rayHasHit)
                 {
