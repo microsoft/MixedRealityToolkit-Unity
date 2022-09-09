@@ -13,6 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A wrapper for the XRRayInteractor which stores extra information for MRTK management/services
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Interactor")]
+
+    // This execution order ensures that the MRTKRayInteractor runs its update function right after the
+    // XRController. We do this because the MRTKRayInteractor needs to set its own pose after the parent controller transform,
+    // but before any physics raycast calls are made to determine selection. The earliest a physics call can be made is within
+    // the UIInputModule, which has an update order much higher than XRControllers.
+    // TODO: Examine the update order of other interactors in the future with respect to when their physics calls happen,
+    // or create a system to keep ensure interactor poses aren't ever implicitly set via parenting.
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_Controllers + 1)]
     public class MRTKRayInteractor :
         XRRayInteractor,
         IRayInteractor,
@@ -185,42 +193,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        // does nothing, we do the pre-processing during process interactor
-        public override void PreprocessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
+        public void Update()
         {
-            // Interactor pose updates during OnBeforeRender to match the behavior of XRBaseController, which also
-            // updates its pose during this update phase
-            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
+            // Use Pose Sources to calculate the interactor's pose and the attach transform's position
+            // We have to make sure the ray interactor is oriented appropriately before calling
+            // lower level raycasts
+            if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
             {
-                // Use Pose Sources to calculate the interactor's pose and the attach transform's position
-                // We have to make sure the ray interactor is oriented appropriately before calling
-                // lower level raycasts
-                if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
-                {
-                    Debug.Log("2nd");
-                    Debug.Log(transform.forward.ToString("F8"));
-                    transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
-                    Debug.Log("Start pos " + transform.position.ToString("F8"));
-                    Debug.Log(transform.forward.ToString("F8"));
+                transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
 
-                    if (hasSelection)
-                    {
-                        float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
-                        attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
-                    }
-                }
-
-                // Use the Device Pose Sources to calculate the attach transform's pose
-                if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
+                if (hasSelection)
                 {
-                    attachTransform.rotation = devicePose.rotation;
+                    float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
+                    attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
                 }
             }
 
-            base.PreprocessInteractor(updatePhase);
-            if(TryGetHitInfo(out var pos, out var _, out _, out _))
+            // Use the Device Pose Sources to calculate the attach transform's pose
+            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
             {
-                Debug.Log(pos.ToString("F8"));
+                attachTransform.rotation = devicePose.rotation;
             }
         }
 
