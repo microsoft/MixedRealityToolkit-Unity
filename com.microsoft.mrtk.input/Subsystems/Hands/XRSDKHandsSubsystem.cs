@@ -5,8 +5,11 @@ using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 using UnityEngine.XR;
+using CommonUsages = UnityEngine.XR.CommonUsages;
+using InputDevice = UnityEngine.XR.InputDevice;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -260,13 +263,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Preserve]
         private class XRSDKProvider : Provider
         {
-            private Dictionary<XRNode, XRSDKHandContainer> hands = new Dictionary<XRNode, XRSDKHandContainer>
-            {
-                { XRNode.LeftHand, new XRSDKHandContainer(XRNode.LeftHand) },
-                { XRNode.RightHand, new XRSDKHandContainer(XRNode.RightHand) }
-            };
+            private Dictionary<XRNode, XRSDKHandContainer> hands = null;
 
-            public override void Update()
+            public override void Start()
+            {
+                base.Start();
+
+                hands ??= new Dictionary<XRNode, XRSDKHandContainer>
+                {
+                    { XRNode.LeftHand, new XRSDKHandContainer(XRNode.LeftHand) },
+                    { XRNode.RightHand, new XRSDKHandContainer(XRNode.RightHand) }
+                };
+
+                InputSystem.onBeforeUpdate += ResetHands;
+            }
+
+            public override void Stop()
+            {
+                ResetHands();
+                InputSystem.onBeforeUpdate -= ResetHands;
+                base.Stop();
+            }
+
+            private void ResetHands()
             {
                 hands[XRNode.LeftHand].Reset();
                 hands[XRNode.RightHand].Reset();
