@@ -57,17 +57,18 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 new Dictionary<ObjectClassification, List<GameObject>>();
 
             /// <inheritdoc/>
-            public override IReadOnlyList<GameObject> GetDescribableObjects(
+            public override bool TryGetDescribableObjects(
                 float maxDistance,
                 ObjectClassification classification,
-                ReaderView readerView)
+                ReaderView readerView,
+                List<GameObject> describableObjects)
             {
                 // todo
                 throw new NotImplementedException();
             }
 
             /// <inheritdoc/>
-            public override bool RegisterDescribableObject(
+            public override bool TryRegisterDescribableObject(
                 GameObject gameObj,
                 ObjectClassification classification)
             {

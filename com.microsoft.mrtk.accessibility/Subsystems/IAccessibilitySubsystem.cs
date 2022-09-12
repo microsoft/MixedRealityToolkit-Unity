@@ -25,10 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <param name="classification"></param>
         /// <param name="readerView"></param>
         /// <returns></returns>
-        IReadOnlyList<GameObject> GetDescribableObjects(
+        bool TryGetDescribableObjects(
             float maxDistance,
             ObjectClassification classification,
-            ReaderView readerView);
+            ReaderView readerView,
+            List<GameObject> describableObjects);
 
         /// <summary>
         /// 
@@ -36,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <param name="gameObj"></param>
         /// <param name="classification"></param>
         /// <returns></returns>
-        bool RegisterDescribableObject(
+        bool TryRegisterDescribableObject(
             GameObject gameObj,
             ObjectClassification classification);
 

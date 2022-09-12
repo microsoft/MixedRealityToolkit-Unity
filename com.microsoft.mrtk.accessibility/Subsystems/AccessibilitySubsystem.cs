@@ -37,13 +37,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             #region Describable object management
 
             /// <inheritdoc/>
-            public abstract IReadOnlyList<GameObject> GetDescribableObjects(
+            public abstract bool TryGetDescribableObjects(
                 float maxDistance,
                 ObjectClassification classification,
-                ReaderView readerView);
+                ReaderView readerView,
+                List<GameObject> describableObjects);
 
             /// <inheritdoc/>
-            public abstract bool RegisterDescribableObject(
+            public abstract bool TryRegisterDescribableObject(
                 GameObject gameObj,
                 ObjectClassification classification);
 
@@ -73,15 +74,16 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         #region Describable object management
 
         /// <inheritdoc/>
-        public IReadOnlyList<GameObject> GetDescribableObjects(
+        public bool TryGetDescribableObjects(
             float maxDistance,
             ObjectClassification classification,
-            ReaderView readerView) => provider.GetDescribableObjects(maxDistance, classification, readerView);
+            ReaderView readerView,
+            List<GameObject> describableObjects) => provider.TryGetDescribableObjects(maxDistance, classification, readerView, describableObjects);
 
         /// <inheritdoc/>
-        public bool RegisterDescribableObject(
+        public bool TryRegisterDescribableObject(
             GameObject gameObj,
-            ObjectClassification classification) => provider.RegisterDescribableObject(gameObj, classification);
+            ObjectClassification classification) => provider.TryRegisterDescribableObject(gameObj, classification);
 
         /// <inheritdoc/>
         public void UnregisterDescribableObject(
