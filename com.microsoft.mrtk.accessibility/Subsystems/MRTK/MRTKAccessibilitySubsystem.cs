@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.GraphicsTools;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -40,9 +41,49 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
             public AccessibilityProvider() : base()
             {
+                describableObjects.Add(ObjectClassification.People, new List<GameObject>());
+                describableObjects.Add(ObjectClassification.Places, new List<GameObject>());
+                describableObjects.Add(ObjectClassification.Things, new List<GameObject>());
+                describableObjects.Add(ObjectClassification.UserInterface, new List<GameObject>());
+                describableObjects.Add(ObjectClassification.Background, new List<GameObject>());
+
                 Config = XRSubsystemHelpers.GetConfiguration<AccessibilitySubsystemConfig, MRTKAccessibilitySubsystem>();
                 invertTextColor = Config.InvertTextColor;
             }
+
+            #region Describable object management
+
+            private readonly Dictionary<ObjectClassification, List<GameObject>> describableObjects =
+                new Dictionary<ObjectClassification, List<GameObject>>();
+
+            /// <inheritdoc/>
+            public override IReadOnlyList<GameObject> GetDescribableObjects(
+                float maxDistance,
+                ObjectClassification classification,
+                ReaderView readerView)
+            {
+                // todo
+                throw new NotImplementedException();
+            }
+
+            /// <inheritdoc/>
+            public override bool RegisterDescribableObject(
+                GameObject gameObj,
+                ObjectClassification classification)
+            {
+                // todo
+                throw new NotImplementedException();
+            }
+
+            /// <inheritdoc/>
+            public override void UnregisterDescribableObject(GameObject gameObj)
+            {
+                // todo
+            }
+
+            #endregion Describable object management
+
+            #region Text color inversion
 
             private bool invertTextColor = false;
 
@@ -81,6 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             {
                 InvertTextColorChanged?.Invoke(invert);
             }
+
+            #endregion Text color inversion
 
             #endregion IAccessibilitySubsystem implementation
         }

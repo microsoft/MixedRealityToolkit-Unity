@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Accessibility
@@ -15,6 +16,40 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// </summary>
     public interface IAccessibilitySubsystem
     {
+        #region Describable object management
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="maxDistance"></param>
+        /// <param name="classification"></param>
+        /// <param name="readerView"></param>
+        /// <returns></returns>
+        IReadOnlyList<GameObject> GetDescribableObjects(
+            float maxDistance,
+            ObjectClassification classification,
+            ReaderView readerView);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObj"></param>
+        /// <param name="classification"></param>
+        /// <returns></returns>
+        bool RegisterDescribableObject(
+            GameObject gameObj,
+            ObjectClassification classification);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObj"></param>
+        void UnregisterDescribableObject(GameObject gameObj);
+
+        #endregion Describable object management
+
+        #region Text color inversion
+
         /// <summary>
         /// Should text color inversion be enabled?
         /// </summary>
@@ -35,5 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// provided in the Microsoft Mixed Reality Toolkit Graphics Tools package.
         /// </remarks>
         void ApplyTextColorInversion(Material material, bool enable);
+
+#endregion Text color inversion
     }
 }
