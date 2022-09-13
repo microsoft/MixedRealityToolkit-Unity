@@ -10,9 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Interactor helper object aligns a <see cref="LineRenderer"/> with the Interactor.
     /// </summary>
+    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(LineRenderer))]
-    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_LineVisual)]
     public class MRTKRayInteractorVisual : MonoBehaviour, IXRCustomReticleProvider
     {
         [Header("Visual Settings")]
@@ -162,7 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // reusable vectors for determining the raycast hit data
         private Vector3 reticlePosition;
         private Vector3 reticleNormal;
-        private int endPositionInLine;
 
         // private array used to clear the line renderer when needed
         readonly Vector3[] clearPositions = { Vector3.zero, Vector3.zero };
@@ -192,8 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // Try to find a corresponding line data source and raise a warning if it does not exist
-            lineDataProvider = GetComponent<BaseMixedRealityLineDataProvider>();
-            if (lineDataProvider == null)
+            if (!TryGetComponent(out lineDataProvider))
             {
                 Debug.LogWarning("No Line Data Provider found for Interactor Line Visual.", this);
                 enabled = false;
@@ -226,9 +225,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             propertyBlock = new MaterialPropertyBlock();
 
-            if (reticle != null)
+            if (Reticle != null)
             {
-                variableSelectReticle = reticle.GetComponentInChildren<IVariableReticle>();
+                variableSelectReticle = Reticle.GetComponentInChildren<IVariableReticle>();
             }
 
             // mafinc - Start the line renderer off disabled (invisible), we'll enable it
@@ -323,9 +322,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // disable our standard reticle.
             if (customReticle == null)
             {
-                if (reticle != null)
+                if (Reticle != null)
                 {
-                    reticle.SetActive(false);
+                    Reticle.SetActive(false);
                 }
             }
             else if (customReticle != null)
@@ -353,9 +352,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // If we have a standard reticle, re-enable that one.
-            if (reticle != null)
+            if (Reticle != null)
             {
-                reticle.SetActive(true);
+                Reticle.SetActive(true);
             }
 
             customReticle = null;
@@ -375,6 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle(false);
         }
 
+        [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void OnBeforeRenderLineVisual()
         {
             UpdateLineVisual();
@@ -439,12 +439,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
                 rayHasHit = true;
             }
-            // Otherwise draw out the line exactly as the Ray Interactor perscribes
+            // Otherwise draw out the line exactly as the Ray Interactor prescribes
             else
             {
                 // If the ray hits an object, truncate the visual appropriately
                 // Remove the last point in the list to keep the number of points consistent.
-                if (rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out endPositionInLine, out bool isValidTarget))
+                if (rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int endPositionInLine, out bool isValidTarget))
                 {
                     // End the line at the current hit point.
                     if ((isValidTarget || stopLineAtFirstRaycastHit) && endPositionInLine > 0 && endPositionInLine < rayPositionsCount)
@@ -487,8 +487,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             UpdateReticle(rayInteractor.hasHover ||
-                            rayInteractor.hasSelection ||
-                            (rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _)));
+                          rayInteractor.hasSelection ||
+                          (rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _)));
 
             // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
             if (rayHasHit)
@@ -527,7 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void UpdateReticle(bool showCursor)
         {
             // Grab the reticle we're currently using
-            GameObject reticleToUse = customReticle != null ? customReticle : reticle;
+            GameObject reticleToUse = customReticle != null ? customReticle : Reticle;
             IVariableReticle variableReticleToUse = customReticle != null ? customVariableReticle : variableSelectReticle;
 
             if (reticleToUse == null) { return; }
@@ -584,8 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (lineRenderer == null)
             {
-                lineRenderer = GetComponent<LineRenderer>();
-                if (lineRenderer == null)
+                if (!TryGetComponent(out lineRenderer))
                 {
                     Debug.LogWarning("No Line Renderer found for MRTK Ray Interactor Visual.", this);
                     enabled = false;

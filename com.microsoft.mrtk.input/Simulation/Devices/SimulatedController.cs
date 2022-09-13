@@ -29,21 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         Preserve]
     internal class MRTKSimulatedController : XRSimulatedController
     {
-        private ControllerSimulationMode simulationMode;
         /// <summary>
         /// The current simulation mode for this controller;
         /// </summary>
-        public ControllerSimulationMode SimulationMode
-        {
-            get
-            {
-                return simulationMode;
-            }
-            set
-            {
-                simulationMode = value;
-            }
-        }
+        public ControllerSimulationMode SimulationMode { get; set; }
 
         /// <summary>
         /// The device's pointerPosition
@@ -579,7 +568,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
                 // Then set the pointer pose.
                 if (shouldUseRayVector && Handedness.ToXRNode().HasValue && HandSubsystem != null &&
-                        HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose))
+                    HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose))
                 {
                     // If prompted to use the ray vector, this is pose is calculated by simulating a hand ray initialized at the device pose.
                     // This occurs when the simulation mode is set to ArticulatedHand
