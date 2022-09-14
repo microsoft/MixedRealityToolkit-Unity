@@ -98,6 +98,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const string WINDOWS_10_KITS_DEFAULT_PATH = @"C:\Program Files (x86)\Windows Kits\10\Lib";
 
+        // StandardAssets/Textures/MRTK_Logo_Black.png
+        private const string LogoLightThemeGuid = "fa0038d8d2df1dd4c99f346c8ec9e746";
+        // StandardAssets/Textures/MRTK_Logo_White.png
+        private const string LogoDarkThemeGuid = "fe5cc215f12ea5e40b5021c4040bce24";
+
+        private static Texture2D LogoLightTheme;
+
+        private static Texture2D LogoDarkTheme;
+
         #endregion Constants and Readonly Values
 
         #region Labels
@@ -309,6 +318,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void OnEnable()
         {
+            LogoLightTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoLightThemeGuid));
+            LogoDarkTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoDarkThemeGuid));
+
             minSize = new Vector2(512, 256);
 
             tabRenders = new Action[]
@@ -332,7 +344,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void OnGUI()
         {
-            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            //GUILayout.Label(EditorGUIUtility.isProSkin ? LogoDarkTheme : LogoLightTheme, GUILayout.MaxHeight(96f));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.Space(3f);
 
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
             {
@@ -938,7 +955,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 
-            InspectorUIUtility.DrawDivider();
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
 
             if (Builds.Count == 0)
             {

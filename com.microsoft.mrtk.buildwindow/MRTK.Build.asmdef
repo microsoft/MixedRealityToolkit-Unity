@@ -1,7 +1,9 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Build",
     "rootNamespace": "Microsoft.MixedReality.Toolkit.Build",
-    "references": [],
+    "references": [
+        "GUID:a42927d1d4a3b4cda9b076a7adecb9cc"
+    ],
     "includePlatforms": [
         "Editor"
     ],
