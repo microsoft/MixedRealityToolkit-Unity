@@ -6,6 +6,7 @@
     "com.microsoft.mixedreality.visualprofiler": "https://github.com/microsoft/VisualProfiler-Unity.git",
     "com.microsoft.mrtk.accessibility": "file:../../../com.microsoft.mrtk.accessibility",
     "com.microsoft.mrtk.audio": "file:../../../com.microsoft.mrtk.audio",
+    "com.microsoft.mrtk.buildwindow": "file:../../../com.microsoft.mrtk.buildwindow",
     "com.microsoft.mrtk.core": "file:../../../com.microsoft.mrtk.core",
     "com.microsoft.mrtk.data": "file:../../../com.microsoft.mrtk.data",
     "com.microsoft.mrtk.diagnostics": "file:../../../com.microsoft.mrtk.diagnostics",

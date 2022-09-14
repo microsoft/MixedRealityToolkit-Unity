@@ -1,0 +1,21 @@
+{
+  "name": "com.microsoft.mrtk.buildwindow",
+  "version": "3.0.0-development",
+  "description": "Build window for generating and deploying appx from within Unity",
+  "displayName": "MRTK Build Window",
+  "msftFeatureCategory": "MRTK3",
+  "author": "Microsoft",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+  },
+  "unity": "2020.3",
+  "dependencies": {
+  },
+  "msftOptionalPackages": {
+  }
+}

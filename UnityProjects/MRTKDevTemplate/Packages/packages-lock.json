@@ -57,6 +57,12 @@
         "com.microsoft.mrtk.core": "3.0.0-development"
       }
     },
+    "com.microsoft.mrtk.buildwindow": {
+      "version": "file:../../../com.microsoft.mrtk.buildwindow",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.microsoft.mrtk.core": {
       "version": "file:../../../com.microsoft.mrtk.core",
       "depth": 0,
