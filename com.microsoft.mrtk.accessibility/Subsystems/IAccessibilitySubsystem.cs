@@ -77,6 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </remarks>
         void ApplyTextColorInversion(Material material, bool enable);
 
-#endregion Text color inversion
+        #endregion Text color inversion
     }
 }
