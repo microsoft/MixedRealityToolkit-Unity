@@ -37,10 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             #region Describable object management
 
             /// <inheritdoc/>
-            public abstract bool TryGetDescribableObjects(
-                float maxDistance,
+            public abstract void GetDescribableObjects(
                 ObjectClassification classification,
                 ReaderView readerView,
+                float maxDistance,
                 List<GameObject> describableObjects);
 
             /// <inheritdoc/>
@@ -49,7 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 ObjectClassification classification);
 
             /// <inheritdoc/>
-            public abstract void UnregisterDescribableObject(GameObject gameObj);
+            public abstract bool TryUnregisterDescribableObject(
+                GameObject gameObj,
+                ObjectClassification classification);
 
             #endregion Describable object management
 
@@ -74,11 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         #region Describable object management
 
         /// <inheritdoc/>
-        public bool TryGetDescribableObjects(
-            float maxDistance,
-            ObjectClassification classification,
+        public void GetDescribableObjects(
+            ObjectClassification classifications,
             ReaderView readerView,
-            List<GameObject> describableObjects) => provider.TryGetDescribableObjects(maxDistance, classification, readerView, describableObjects);
+            float maxDistance,
+            List<GameObject> objectList) => provider.GetDescribableObjects(classifications, readerView, maxDistance, objectList);
 
         /// <inheritdoc/>
         public bool TryRegisterDescribableObject(
@@ -86,8 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             ObjectClassification classification) => provider.TryRegisterDescribableObject(gameObj, classification);
 
         /// <inheritdoc/>
-        public void UnregisterDescribableObject(
-            GameObject gameObj) => provider.UnregisterDescribableObject(gameObj);
+        public bool TryUnregisterDescribableObject(
+            GameObject gameObj,
+            ObjectClassification classification) => provider.TryUnregisterDescribableObject(gameObj, classification);
 
         #endregion Describable object management
 

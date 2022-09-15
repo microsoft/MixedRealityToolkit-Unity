@@ -21,15 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="maxDistance"></param>
-        /// <param name="classification"></param>
+        /// <param name="classifications"></param>
         /// <param name="readerView"></param>
-        /// <returns></returns>
-        bool TryGetDescribableObjects(
-            float maxDistance,
-            ObjectClassification classification,
+        /// <param name="maxDistance"></param>
+        /// <param name="objectList"></param>
+        void GetDescribableObjects(
+            ObjectClassification classifications,
             ReaderView readerView,
-            List<GameObject> describableObjects);
+            float maxDistance,
+            List<GameObject> objectList);
 
         /// <summary>
         /// 
@@ -45,7 +45,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// 
         /// </summary>
         /// <param name="gameObj"></param>
-        void UnregisterDescribableObject(GameObject gameObj);
+        /// <param name="classification"></param>
+        /// <returns></returns>
+        bool TryUnregisterDescribableObject(
+            GameObject gameObj,
+            ObjectClassification classification);
 
         #endregion Describable object management
 

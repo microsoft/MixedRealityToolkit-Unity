@@ -57,14 +57,16 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 new Dictionary<ObjectClassification, List<GameObject>>();
 
             /// <inheritdoc/>
-            public override bool TryGetDescribableObjects(
-                float maxDistance,
-                ObjectClassification classification,
+            public override void GetDescribableObjects(
+                ObjectClassification classifications,
                 ReaderView readerView,
-                List<GameObject> describableObjects)
+                float maxDistance,
+                List<GameObject> objectList)
             {
-                // todo
-                throw new NotImplementedException();
+                // todo: need to validate parameters, specifically a maxDistance of <= 0 is meaningless
+
+                AssembleDescribableObjects(classifications, objectList);
+                FilterDescribableObjects(readerView, maxDistance, objectList);
             }
 
             /// <inheritdoc/>
@@ -72,14 +74,108 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 GameObject gameObj,
                 ObjectClassification classification)
             {
-                // todo
-                throw new NotImplementedException();
+                // todo: really, should we check _all_ of the classifications and enforce only _one_ registration?
+                List<GameObject> objCollection = describableObjects[classification];
+                if (objCollection.Contains(gameObj))
+                {
+                    Debug.LogError($"{gameObj.name} has already been registerd as a describable object");
+                    return false;
+                }
+
+                objCollection.Add(gameObj);
+                return true;
             }
 
             /// <inheritdoc/>
-            public override void UnregisterDescribableObject(GameObject gameObj)
+            public override bool TryUnregisterDescribableObject(
+                GameObject gameObj,
+                ObjectClassification classification)
             {
-                // todo
+                List<GameObject> objCollection = describableObjects[classification];
+                if (!objCollection.Contains(gameObj))
+                {
+                    Debug.LogError($"{gameObj.name} has not been registerd as a describable object");
+                    return false;
+                }
+
+                if (!describableObjects[classification].Remove(gameObj))
+                {
+                    Debug.LogError($"Failed to unregister {gameObj.name} as a describable object");
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="classifications"></param>
+            /// <param name="objectList"></param>
+            private void AssembleDescribableObjects(
+                ObjectClassification classifications,
+                List<GameObject> objectList)
+            {
+                objectList.Clear();
+
+                if ((int)(classifications & ObjectClassification.People) != 0)
+                {
+                    objectList.AddRange(describableObjects[ObjectClassification.People]);
+                }
+                else if ((int)(classifications & ObjectClassification.Places) != 0)
+                {
+                    objectList.AddRange(describableObjects[ObjectClassification.Places]);
+                }
+                else if ((int)(classifications & ObjectClassification.Things) != 0)
+                {
+                    objectList.AddRange(describableObjects[ObjectClassification.Things]);
+                }
+                else if ((int)(classifications & ObjectClassification.UserInterface) != 0)
+                {
+                    objectList.AddRange(describableObjects[ObjectClassification.UserInterface]);
+                }
+                else if ((int)(classifications & ObjectClassification.Background) != 0)
+                {
+                    objectList.AddRange(describableObjects[ObjectClassification.Background]);
+                }
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="readerView"></param>
+            /// <param name="maxDistance"></param>
+            /// <param name="objectList"></param>
+            private void FilterDescribableObjects(
+                ReaderView readerView,
+                float maxDistance,
+                List<GameObject> objectList)
+            {
+                for (int i = (objectList.Count - 1); i != 0; i--)
+                {
+                    GameObject obj = objectList[i];
+
+                    // Does the object have a collider?
+                    Collider collider = obj.GetComponent<Collider>();
+                    if (collider == null)
+                    {
+                        objectList.Remove(obj);
+                        continue;
+                    }
+
+                    // If requested, is it within the main camera's field of view?
+                    if ((readerView == ReaderView.FieldOfView) &&
+                        !CameraFOVChecker.IsInFOVCached(Camera.main, collider))
+                    {
+                        objectList.Remove(obj);
+                    }
+
+                    // Is it closer than the maximum distance?
+                    if (maxDistance < Mathf.Abs(Vector3.Distance(Camera.main.transform.position, obj.transform.position)))
+                    {
+                        objectList.Remove(obj);
+                    }
+                }
             }
 
             #endregion Describable object management

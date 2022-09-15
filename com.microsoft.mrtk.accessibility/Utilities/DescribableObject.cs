@@ -13,6 +13,15 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     public class DescribableObject : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("What is the classification (ex: person, place, ui element, etc.) is this object?")]
+        private ObjectClassification classification = (ObjectClassification)0; // todo
+
+        /// <summary>
+        /// What is the classification (ex: person, place, ui element, etc.) is this object?
+        /// </summary>
+        public ObjectClassification Classification => classification;
+
+        [SerializeField]
         [Tooltip("The full contents of the object.")]
         private string contents = string.Empty;
 
@@ -55,23 +64,24 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </remarks>
         public string Description => description;
 
-        [SerializeField]
-        [Tooltip("Information used to help the user determine the contextual importance of the object.")]
-        private DescribableFlag flags = DescribableFlag.Static | DescribableFlag.Item;
+        // todo: (partially?) replaced by classification?
+        //[SerializeField]
+        //[Tooltip("Information used to help the user determine the contextual importance of the object.")]
+        //private DescribableFlag flags = DescribableFlag.Static | DescribableFlag.Item;
 
-        /// <summary>
-        /// Information used to help the user determine the contextual importance
-        /// of the object.
-        /// </summary>
-        /// <remarks>
-        /// Flags can be used to provide appropriate audio notifications. These sounds
-        /// help the user to determine the type, purpose and importance of the object.
-        /// </remarks>
-        public DescribableFlag Flags
-        {
-            get => flags;
-            set => flags = value;
-        }
+        ///// <summary>
+        ///// Information used to help the user determine the contextual importance
+        ///// of the object.
+        ///// </summary>
+        ///// <remarks>
+        ///// Flags can be used to provide appropriate audio notifications. These sounds
+        ///// help the user to determine the type, purpose and importance of the object.
+        ///// </remarks>
+        //public DescribableFlag Flags
+        //{
+        //    get => flags;
+        //    set => flags = value;
+        //}
 
         [SerializeField]
         [Tooltip("Instructions on how to interact with the object.")]
@@ -106,5 +116,34 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// "login button", "rocking chair", etc.
         /// </summary>
         public string Semantic => semantic;
+
+        #region Monobehaviour methods
+
+        private AccessibilitySubsystem accessibilitySubsystem = null;
+
+        private void Awake()
+        {
+            accessibilitySubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<AccessibilitySubsystem>();
+        }
+
+        private void OnEnable()
+        {
+            if (accessibilitySubsystem == null) { return; }
+            if (!accessibilitySubsystem.TryRegisterDescribableObject(gameObject, Classification))
+            {
+                Debug.LogError($"Failed to register {gameObject.name} with the accessibility subsystem.");
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (accessibilitySubsystem == null) { return; }
+            if (!accessibilitySubsystem.TryUnregisterDescribableObject(gameObject, Classification))
+            {
+                Debug.LogError($"Failed to unregister {gameObject.name} with the accessibility subsystem.");
+            }
+        }
+
+        #endregion Monobehavior methods
     }
 }
