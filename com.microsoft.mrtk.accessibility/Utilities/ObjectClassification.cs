@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Accessibility
 {
     /// <summary>
-    /// Classifications for objects that may appear in the scene.
+    /// Classifications for describable objects that may appear in the scene.
     /// </summary>
     [Flags]
     public enum ObjectClassification : ushort

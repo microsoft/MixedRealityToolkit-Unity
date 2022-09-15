@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             #region Describable object management
 
             /// <inheritdoc/>
-            public abstract void GetDescribableObjects(
+            public abstract bool TryGetDescribableObjects(
                 ObjectClassification classification,
                 ReaderView readerView,
                 float maxDistance,
@@ -76,11 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         #region Describable object management
 
         /// <inheritdoc/>
-        public void GetDescribableObjects(
+        public bool TryGetDescribableObjects(
             ObjectClassification classifications,
             ReaderView readerView,
             float maxDistance,
-            List<GameObject> objectList) => provider.GetDescribableObjects(classifications, readerView, maxDistance, objectList);
+            List<GameObject> objectList) => provider.TryGetDescribableObjects(classifications, readerView, maxDistance, objectList);
 
         /// <inheritdoc/>
         public bool TryRegisterDescribableObject(

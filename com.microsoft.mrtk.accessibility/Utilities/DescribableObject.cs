@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     {
         [SerializeField]
         [Tooltip("What is the classification (ex: person, place, ui element, etc.) is this object?")]
-        private ObjectClassification classification = (ObjectClassification)0; // todo
+        private ObjectClassification classification = (ObjectClassification)0;
 
         /// <summary>
         /// What is the classification (ex: person, place, ui element, etc.) is this object?
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </remarks>
         public string Description => description;
 
-        // todo: (partially?) replaced by classification?
+        // todo: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/11020 - (partially?) replaced by classification?
         //[SerializeField]
         //[Tooltip("Information used to help the user determine the contextual importance of the object.")]
         //private DescribableFlag flags = DescribableFlag.Static | DescribableFlag.Item;
