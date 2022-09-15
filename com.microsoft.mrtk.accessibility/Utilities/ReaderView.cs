@@ -4,7 +4,8 @@
 namespace Microsoft.MixedReality.Toolkit.Accessibility
 {
     /// <summary>
-    /// 
+    /// The 'visibility window' that the accessibility subsystem will use to determine the object
+    /// descriptions to send to a screen reader.
     /// </summary>
     public enum ReaderView : ushort
     {
