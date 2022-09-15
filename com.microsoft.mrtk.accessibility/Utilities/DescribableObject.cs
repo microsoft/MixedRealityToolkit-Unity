@@ -64,24 +64,25 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </remarks>
         public string Description => description;
 
-        // todo: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/11020 - (partially?) replaced by classification?
-        //[SerializeField]
-        //[Tooltip("Information used to help the user determine the contextual importance of the object.")]
-        //private DescribableFlag flags = DescribableFlag.Static | DescribableFlag.Item;
+        /* todo: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/11020 - (partially?) replaced by classification?
+        [SerializeField]
+        [Tooltip("Information used to help the user determine the contextual importance of the object.")]
+        private DescribableFlag flags = DescribableFlag.Static | DescribableFlag.Item;
 
-        ///// <summary>
-        ///// Information used to help the user determine the contextual importance
-        ///// of the object.
-        ///// </summary>
-        ///// <remarks>
-        ///// Flags can be used to provide appropriate audio notifications. These sounds
-        ///// help the user to determine the type, purpose and importance of the object.
-        ///// </remarks>
-        //public DescribableFlag Flags
-        //{
-        //    get => flags;
-        //    set => flags = value;
-        //}
+        /// <summary>
+        /// Information used to help the user determine the contextual importance
+        /// of the object.
+        /// </summary>
+        /// <remarks>
+        /// Flags can be used to provide appropriate audio notifications. These sounds
+        /// help the user to determine the type, purpose and importance of the object.
+        /// </remarks>
+        public DescribableFlag Flags
+        {
+            get => flags;
+            set => flags = value;
+        }
+        */
 
         [SerializeField]
         [Tooltip("Instructions on how to interact with the object.")]
