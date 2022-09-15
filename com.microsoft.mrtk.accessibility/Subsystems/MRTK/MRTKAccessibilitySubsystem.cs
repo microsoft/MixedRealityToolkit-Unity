@@ -57,11 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 new Dictionary<ObjectClassification, List<GameObject>>();
 
             /// <inheritdoc/>
-            public override bool TryGetDescribableObjects(
-                ObjectClassification classifications,
-                ReaderView readerView,
-                float maxDistance,
-                List<GameObject> objectList)
+            public override bool TryGetDescribableObjects(ObjectClassification classifications, ReaderView readerView, float maxDistance, List<GameObject> objectList)
             {
                 if (maxDistance <= 0)
                 {
@@ -76,9 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
 
             /// <inheritdoc/>
-            public override bool TryRegisterDescribableObject(
-                GameObject gameObj,
-                ObjectClassification classification)
+            public override bool TryRegisterDescribableObject(GameObject gameObj, ObjectClassification classification)
             {
                 // Make sure the specified game object has not been previously registered in any classification.
                 foreach (IList<GameObject> list in describableObjects.Values)
@@ -95,9 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
 
             /// <inheritdoc/>
-            public override bool TryUnregisterDescribableObject(
-                GameObject gameObj,
-                ObjectClassification classification)
+            public override bool TryUnregisterDescribableObject(GameObject gameObj, ObjectClassification classification)
             {
                 List<GameObject> objCollection = describableObjects[classification];
                 if (!objCollection.Contains(gameObj))

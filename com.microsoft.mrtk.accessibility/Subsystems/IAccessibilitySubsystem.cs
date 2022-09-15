@@ -29,11 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <para/>
         /// The contents of the objectList collection is indeterminate when this method returns false.
         /// </remarks>
-        bool TryGetDescribableObjects(
-            ObjectClassification classifications,
-            ReaderView readerView,
-            float maxDistance,
-            List<GameObject> objectList);
+        bool TryGetDescribableObjects(ObjectClassification classifications, ReaderView readerView, float maxDistance, List<GameObject> objectList);
 
         /// <summary>
         /// Attempts to register the specified <see cref="GameObject"/> using the associated <see cref="ObjectClassification"/>.
@@ -44,9 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <remarks>
         /// The registration process requires that a <see cref="GameObject"/> belongs to exactly one classification.
         /// </remarks>
-        bool TryRegisterDescribableObject(
-            GameObject gameObj,
-            ObjectClassification classification);
+        bool TryRegisterDescribableObject(GameObject gameObj, ObjectClassification classification);
 
         /// <summary>
         /// Attempts to unregister the specified <see cref="GameObject"/> using the associated <see cref="ObjectClassification"/>
@@ -56,9 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <remarks>
         /// The registration process requires that a <see cref="GameObject"/> belongs to exactly one classification.
         /// </remarks>
-        bool TryUnregisterDescribableObject(
-            GameObject gameObj,
-            ObjectClassification classification);
+        bool TryUnregisterDescribableObject(GameObject gameObj, ObjectClassification classification);
 
         #endregion Describable object management
 
