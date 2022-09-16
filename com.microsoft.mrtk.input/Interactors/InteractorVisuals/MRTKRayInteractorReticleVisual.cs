@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class MRTKRayInteractorReticleVisual : MonoBehaviour, IXRCustomReticleProvider
+    public class MRTKRayInteractorReticleVisual : MRTKBaseReticleVisual
     {
         [SerializeField]
         [Tooltip("The interactor which this visual represents.")]
@@ -34,13 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-
-        // Staging area for custom reticles that interactors can attach to show unique visuals
-        private GameObject customReticle;
-        private bool customReticleAttached;
-
-        public GameObject reticle => customReticleAttached ? customReticle : baseReticle;
-
         protected void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
@@ -52,58 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
             Application.onBeforeRender -= UpdateReticle;
         }
-
-        #region IXRCustomReticleProvider Implementation
-
-        /// <inheritdoc />
-        public bool AttachCustomReticle(GameObject reticleInstance)
-        {
-            if (!customReticleAttached)
-            {
-                if (baseReticle != null)
-                {
-                    baseReticle.SetActive(false);
-                }
-            }
-            else
-            {
-                if (customReticle != null)
-                {
-                    customReticle.SetActive(false);
-                }
-            }
-
-            customReticle = reticleInstance;
-            if (customReticle != null)
-            {
-                customReticle.SetActive(true);
-            }
-
-            customReticleAttached = true;
-
-            return true;
-        }
-
-        /// <inheritdoc />
-        public bool RemoveCustomReticle()
-        {
-            if (customReticle != null)
-            {
-                customReticle.SetActive(false);
-            }
-
-            // If we have a standard reticle, re-enable that one.
-            if (baseReticle != null)
-            {
-                baseReticle.SetActive(true);
-            }
-
-            customReticle = null;
-            customReticleAttached = false;
-            return false;
-        }
-
-        #endregion IXRCustomReticleProvider Implementation
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()

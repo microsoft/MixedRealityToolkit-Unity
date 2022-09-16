@@ -1670,11 +1670,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
---- !u!1 &3988544559415115453 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 212221299525418658}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3988544559415115452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
@@ -1683,6 +1678,11 @@ Transform:
 --- !u!1 &8992338914735331379 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 212221299525418658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3988544559415115453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 212221299525418658}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5167647099609509214
@@ -1697,6 +1697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ec73306ca3ef44a95bbb45b96f0538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseReticle: {fileID: 8992338914735331379}
   rayInteractor: {fileID: 2940030942784507886}
   baseReticle: {fileID: 8992338914735331379}
   visibilitySettings: 0
@@ -1776,6 +1777,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4368997581537000626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4299642553587339577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d0a3cfa70939b4c802013c695e5d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseReticle: {fileID: 8086910922498750391}
 --- !u!114 &943052423812839532
 MonoBehaviour:
   m_ObjectHideFlags: 0
