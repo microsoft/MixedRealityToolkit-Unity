@@ -305,6 +305,19 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <summary>
+        /// Forcibly toggle the interactable and fire the relevant events.
+        /// This is a single-arg overload for ForceSetToggled for use
+        /// with UnityEvents. Consider using ForceSetToggled(bool, bool) instead,
+        /// especially if you'd like to suppress the resulting toggle events.
+        /// </summary>
+        public void ForceSetToggled(bool active)
+        {
+            // This will fire toggle events.
+            IsToggled.Active = active;
+        }
+
+
         private static readonly ProfilerMarker OnFirstSelectEnteredPerfMarker =
             new ProfilerMarker("[MRTK] StatefulInteractable.OnFirstSelectEntered");
 
