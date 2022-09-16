@@ -1668,6 +1668,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RayReticle
       objectReference: {fileID: 0}
+    - target: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
 --- !u!4 &3988544559415115452 stripped
@@ -1699,7 +1703,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseReticle: {fileID: 8992338914735331379}
   rayInteractor: {fileID: 2940030942784507886}
-  baseReticle: {fileID: 8992338914735331379}
   visibilitySettings: 0
 --- !u!1001 &1009008764017234214
 PrefabInstance:
@@ -1759,6 +1762,10 @@ PrefabInstance:
     - target: {fileID: 7949002557058872435, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: fadeEnabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}

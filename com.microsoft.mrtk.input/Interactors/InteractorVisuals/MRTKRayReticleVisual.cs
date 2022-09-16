@@ -5,6 +5,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// The reticle visual for a ray interactor. This behavior takes care of
+    /// aligning the reticle with a surface hit by the ray interactor.
+    /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Reticle Visual")]
     public class MRTKRayReticleVisual : BaseReticleVisual
     {
@@ -17,9 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 reticleNormal;
 
         [SerializeField]
-        [Tooltip("Should a reticle appear on all surfaces or interactables only?")]
+        [Tooltip("Should a reticle appear on all surfaces hit by the interactor or interactables only?")]
         private ReticleVisibilitySettings visibilitySettings;
 
+        /// <summary>
+        /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only
+        /// </summary>
         public ReticleVisibilitySettings VisibilitySettings
         {
             get

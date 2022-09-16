@@ -5,6 +5,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A base class for Reticle Visuals. This class takes care of swapping reticle models by
+    /// implementing <see cref="IXRCustomReticleProvider"/>. Classes which derive from this class
+    /// should provide behavior that is universal to that class of reticles, such as aligning a reticle
+    /// with an interactor's pose.
+    /// </summary>
     [AddComponentMenu("MRTK/Input/Base Reticle Visual")]
     [DisallowMultipleComponent]
     public class BaseReticleVisual : MonoBehaviour, IXRCustomReticleProvider

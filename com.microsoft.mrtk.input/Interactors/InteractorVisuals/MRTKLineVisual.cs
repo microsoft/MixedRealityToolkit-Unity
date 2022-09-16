@@ -8,7 +8,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Interactor helper object aligns a <see cref="LineRenderer"/> with the Interactor.
+    /// This visual component helps align a <see cref="LineRenderer"/> with the Interactor, while giving it "bendy" qualities
+    /// via the Bezier Data Provider
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Line Visual")]
     [DisallowMultipleComponent]
