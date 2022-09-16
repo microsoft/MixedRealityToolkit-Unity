@@ -5,8 +5,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [AddComponentMenu("MRTK/Input/Base Reticle Visual")]
     [DisallowMultipleComponent]
-    public class MRTKBaseReticleVisual : MonoBehaviour, IXRCustomReticleProvider
+    public class BaseReticleVisual : MonoBehaviour, IXRCustomReticleProvider
     {
         [SerializeField]
         private GameObject baseReticle;

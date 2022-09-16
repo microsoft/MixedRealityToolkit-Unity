@@ -5,7 +5,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class MRTKRayInteractorReticleVisual : MRTKBaseReticleVisual
+    [AddComponentMenu("MRTK/Input/MRTK Ray Reticle Visual")]
+    public class MRTKRayReticleVisual : BaseReticleVisual
     {
         [SerializeField]
         [Tooltip("The interactor which this visual represents.")]
