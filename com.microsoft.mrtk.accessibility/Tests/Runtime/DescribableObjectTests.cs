@@ -11,6 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
     /// </summary>
     public class DescribableObjectTests
     {
-        // todo
+        // todo - get describable objects (camera view)
+        // todo - get describable objects (surround)
+
+        // todo - no describable objects (camera view)
+        // todo - no describable objects (surround)
     }
 }
