@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// Classifications for describable objects that may appear in the scene.
     /// </summary>
     [Flags]
-    public enum ObjectClassification : ushort
+    public enum ObjectClassification
     {
         /// <summary>
         /// The object is a person.
@@ -35,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// The object is part of the scene background and is, generally,
         /// not interactable.
         /// </summary>
-        Background = 1 << 15,
-
+        Background = 1 << 31
     }
 }
