@@ -18,17 +18,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private GameObject baseReticle;
 
+        [SerializeField]
+        [Tooltip("Should a reticle appear on all surfaces or interactables only?")]
+        private ReticleVisibilitySettings visibilitySettings;
+
+        public ReticleVisibilitySettings VisibilitySettings
+        {
+            get
+            {
+                return visibilitySettings;
+            }
+            set
+            {
+                visibilitySettings = value;
+            }
+        }
+
+
         // Staging area for custom reticles that interactors can attach to show unique visuals
-        GameObject customReticle;
-        bool customReticleAttached;
+        private GameObject customReticle;
+        private bool customReticleAttached;
 
         public GameObject reticle => customReticleAttached ? customReticle : baseReticle;
 
-        // Start is called before the first frame update
-        void OnEnable()
+        protected void OnEnable()
         {
-            Application.onBeforeRender += UpdateReticle;
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
+            Application.onBeforeRender += UpdateReticle;
         }
 
         protected void OnDisable()
@@ -92,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()
         {
-            bool showReticle = rayInteractor.hasHover || rayInteractor.hasSelection ||
+            bool showReticle = VisibilitySettings == ReticleVisibilitySettings.AllValidSurfaces || rayInteractor.hasHover || rayInteractor.hasSelection ||
                 rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _);
 
             if (showReticle)
@@ -159,6 +175,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     targetLocalHitNormal = hitTargetTransform.InverseTransformPoint(raycastHit.Value.normal);
                 }
             }
+        }
+
+        public enum ReticleVisibilitySettings
+        {
+            InteractablesOnly,
+            AllValidSurfaces
         }
     }
 }
