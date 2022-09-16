@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 new Dictionary<ObjectClassification, List<GameObject>>();
 
             /// <inheritdoc/>
-            public override bool TryGetDescribableObjects(ObjectClassification classifications, ReaderView readerView, float maxDistance, List<GameObject> objectList)
+            internal override bool TryGetDescribableObjects(ObjectClassification classifications, ReaderView readerView, float maxDistance, List<GameObject> objectList)
             {
                 if (maxDistance <= 0)
                 {

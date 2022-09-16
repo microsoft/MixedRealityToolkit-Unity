@@ -36,8 +36,20 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
             #region Describable object management
 
-            /// <inheritdoc/>
-            public abstract bool TryGetDescribableObjects(ObjectClassification classification, ReaderView readerView, float maxDistance, List<GameObject> describableObjects);
+            /// <summary>
+            /// Attempts to get the collection of describable objects based on the specified constraints.
+            /// </summary>
+            /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
+            /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
+            /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
+            /// <param name="objectList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+            /// <returns>True if the collection of (zero or more) describable objects is being returned, or false.</returns>
+            /// <remarks>
+            /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
+            /// <para/>
+            /// The contents of the objectList collection is indeterminate when this method returns false.
+            /// </remarks>
+            internal abstract bool TryGetDescribableObjects(ObjectClassification classification, ReaderView readerView, float maxDistance, List<GameObject> describableObjects);
 
             /// <inheritdoc/>
             public abstract bool TryRegisterDescribableObject(GameObject gameObj, ObjectClassification classification);
@@ -67,8 +79,20 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
         #region Describable object management
 
-        /// <inheritdoc/>
-        public bool TryGetDescribableObjects(ObjectClassification classifications, ReaderView readerView, float maxDistance, List<GameObject> objectList) =>
+        /// <summary>
+        /// Attempts to get the collection of describable objects based on the specified constraints.
+        /// </summary>
+        /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
+        /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
+        /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
+        /// <param name="objectList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+        /// <returns>True if the collection of (zero or more) describable objects is being returned, or false.</returns>
+        /// <remarks>
+        /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
+        /// <para/>
+        /// The contents of the objectList collection is indeterminate when this method returns false.
+        /// </remarks>
+        internal bool TryGetDescribableObjects(ObjectClassification classifications, ReaderView readerView, float maxDistance, List<GameObject> objectList) =>
             provider.TryGetDescribableObjects(classifications, readerView, maxDistance, objectList);
 
         /// <inheritdoc/>
