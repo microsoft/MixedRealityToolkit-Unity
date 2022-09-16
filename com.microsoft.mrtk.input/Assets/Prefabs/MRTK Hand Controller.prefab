@@ -1658,7 +1658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_Name
-      value: Cursor
+      value: RayReticle
       objectReference: {fileID: 0}
     - target: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_IsActive
@@ -1748,7 +1748,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_Name
-      value: Cursor
+      value: PokeReticle
       objectReference: {fileID: 0}
     - target: {fileID: 7949002557058872435, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: fadeEnabled

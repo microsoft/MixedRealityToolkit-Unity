@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3867428799850922014}
   - component: {fileID: 7409364463680313149}
   m_Layer: 0
-  m_Name: RingCursor
+  m_Name: Reticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
