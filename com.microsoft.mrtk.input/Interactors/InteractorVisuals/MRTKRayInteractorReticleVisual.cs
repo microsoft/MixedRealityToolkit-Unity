@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 reticleNormal;
 
         [SerializeField]
-        private GameObject baseReticle;
-
-        [SerializeField]
         [Tooltip("Should a reticle appear on all surfaces or interactables only?")]
         private ReticleVisibilitySettings visibilitySettings;
 
