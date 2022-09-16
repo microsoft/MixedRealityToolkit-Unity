@@ -65,6 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                     return false;
                 }
 
+                objectList.Clear();
+
                 AssembleDescribableObjects(classifications, objectList);
                 FilterDescribableObjects(readerView, maxDistance, objectList);
 
@@ -117,8 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 ObjectClassification classifications,
                 List<GameObject> objectList)
             {
-                objectList.Clear();
-
                 if ((int)(classifications & ObjectClassification.People) != 0)
                 {
                     objectList.AddRange(describableObjects[ObjectClassification.People]);

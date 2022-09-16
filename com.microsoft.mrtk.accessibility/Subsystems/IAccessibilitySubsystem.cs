@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <param name="objectList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
         /// <returns>True if the collection of (zero or more) describable objects is being returned, or false.</returns>
         /// <remarks>
-        /// When this method returns, the contents of objectList will be modified to contain the requested <see cref="GameObject"/>s.
+        /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
         /// <para/>
         /// The contents of the objectList collection is indeterminate when this method returns false.
         /// </remarks>
