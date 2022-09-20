@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (IsPointerValid)
+            if (IsPointerValid && eventData.InputSource != null)
             {
                 foreach (var sourcePointer in eventData.InputSource.Pointers)
                 {
