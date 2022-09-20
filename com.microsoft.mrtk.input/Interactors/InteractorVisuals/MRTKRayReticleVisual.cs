@@ -91,6 +91,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
+            else
+            {
+                reticle.SetActive(false);
+            }    
         }
 
         private Vector3 targetLocalHitPoint;
