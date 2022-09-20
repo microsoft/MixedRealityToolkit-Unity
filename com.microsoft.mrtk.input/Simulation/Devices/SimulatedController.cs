@@ -94,12 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Returns the current position, in worldspace, of the simulated controller.
         /// </summary>
-        public Vector3 WorldPosition => PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition);
+        public Vector3 WorldPosition => PlayspaceUtilities.OriginOffsetTransform.TransformPoint(simulatedControllerState.devicePosition);
 
         /// <summary>
         /// Returns the current rotation, in worldspace, of the simulated controller.
         /// </summary>
-        public Quaternion WorldRotation => PlayspaceUtilities.ReferenceTransform.rotation * simulatedControllerState.deviceRotation;
+        public Quaternion WorldRotation => PlayspaceUtilities.OriginOffsetTransform.rotation * simulatedControllerState.deviceRotation;
 
         /// <summary>
         /// Returns the position of the index finger joint on the simulated device,
@@ -512,8 +512,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             using (SetWorldPosePerfMarker.Auto())
             {
-                Vector3 rigLocalPosition = PlayspaceUtilities.ReferenceTransform.InverseTransformPoint(position);
-                Quaternion rigLocalRotation = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * rotation;
+                Vector3 rigLocalPosition = PlayspaceUtilities.OriginOffsetTransform.InverseTransformPoint(position);
+                Quaternion rigLocalRotation = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * rotation;
                 SetRigLocalPose(rigLocalPosition, rigLocalRotation, rotationMode, shouldUseRayVector);
             }
         }
@@ -544,7 +544,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 if (rotationMode == ControllerRotationMode.FaceCamera)
                 {
                     Quaternion worldLookAtCamera = Quaternion.LookRotation(Camera.main.transform.position - position);
-                    Quaternion rigLocalLookAtCamera = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * worldLookAtCamera;
+                    Quaternion rigLocalLookAtCamera = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * worldLookAtCamera;
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
                         rigLocalLookAtCamera,
@@ -554,7 +554,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 else if (rotationMode == ControllerRotationMode.CameraAligned)
                 {
                     Quaternion worldCameraForward = Quaternion.LookRotation(Camera.main.transform.forward);
-                    Quaternion rigLocalCameraForward = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * worldCameraForward;
+                    Quaternion rigLocalCameraForward = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * worldCameraForward;
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
                         rigLocalCameraForward,
@@ -572,10 +572,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 {
                     // If prompted to use the ray vector, this is pose is calculated by simulating a hand ray initialized at the device pose.
                     // This occurs when the simulation mode is set to ArticulatedHand
-                    handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, Camera.main.transform, Handedness);
+                    handRay.Update(PlayspaceUtilities.OriginOffsetTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, Camera.main.transform, Handedness);
                     Ray ray = handRay.Ray;
-                    simulatedControllerState.pointerPosition = PlayspaceUtilities.ReferenceTransform.InverseTransformPoint(ray.origin);
-                    simulatedControllerState.pointerRotation = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * Quaternion.LookRotation(ray.direction);
+                    simulatedControllerState.pointerPosition = PlayspaceUtilities.OriginOffsetTransform.InverseTransformPoint(ray.origin);
+                    simulatedControllerState.pointerRotation = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * Quaternion.LookRotation(ray.direction);
                 }
                 else
                 {

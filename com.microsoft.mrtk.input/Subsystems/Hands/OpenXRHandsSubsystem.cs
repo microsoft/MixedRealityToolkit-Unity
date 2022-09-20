@@ -96,7 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return false;
                         }
 
-                        Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
+                        // Here, we use the origin transform (rather than the offset transform)
+                        // as joints are reported in rig-local space.
+                        Transform playspaceTransform = PlayspaceUtilities.OriginTransform;
                         if (playspaceTransform == null)
                         {
                             pose = handJoints[index];
@@ -141,7 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Null checks against Unity objects can be expensive, especially when you do
                     // it 52 times per frame (26 hand joints across 2 hands). Instead, we manage
                     // the playspace transformation internally for hand joints.
-                    Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
+                    // Here, we use the origin transform (rather than the offset transform)
+                        // as joints are reported in rig-local space.
+                    Transform playspaceTransform = PlayspaceUtilities.OriginTransform;
                     if (playspaceTransform == null)
                     {
                         return;

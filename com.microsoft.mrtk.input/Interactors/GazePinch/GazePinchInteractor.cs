@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose) &&
                    PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose))
             {
-                rotationToApply = PlayspaceUtilities.ReferenceTransform.rotation * devicePose.rotation;
+                rotationToApply = PlayspaceUtilities.OriginOffsetTransform.rotation * devicePose.rotation;
                 if (hasSelection && interactable != null)
                 {
                     var pinchCentroid = GetPinchCentroid(interactable);
