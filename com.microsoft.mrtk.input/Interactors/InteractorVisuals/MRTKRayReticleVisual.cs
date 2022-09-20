@@ -20,15 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The GameObject which holds the proximity light for the reticle")]
         private GameObject proximityLight;
 
+        [SerializeField]
+        [Tooltip("Should a reticle appear on all surfaces hit by the interactor or interactables only?")]
+        private ReticleVisibilitySettings visibilitySettings;
 
         // reusable vectors for determining the raycast hit data
         private Vector3 reticlePosition;
         private Vector3 reticleNormal;
         private IVariableReticle variableReticle;
-
-        [SerializeField]
-        [Tooltip("Should a reticle appear on all surfaces hit by the interactor or interactables only?")]
-        private ReticleVisibilitySettings visibilitySettings;
 
         /// <summary>
         /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only
