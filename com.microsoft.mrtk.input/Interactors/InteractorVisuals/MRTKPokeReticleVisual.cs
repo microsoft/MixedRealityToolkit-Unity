@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // This is because it would allow us to freely use different reticle icons without changing other behavior.
                 // However, until the ReticleMagnetism class is revisited and potentially incorporated into this class, we'll
                 // leave all pose related responsibilities to the ReticleMagnetism component.
-                //reticle.transform.SetPositionAndRotation(pokeInteractor.PokeTrajectory.End, pokeInteractor.attachTransform.rotation);
+                // reticle.transform.SetPositionAndRotation(pokeInteractor.PokeTrajectory.End, pokeInteractor.attachTransform.rotation);
 
                 // The proximity light should only be active when the reticle is
                 if (proximityLight.gameObject != null)
