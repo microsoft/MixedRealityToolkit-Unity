@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 reticle.transform.position = reticlePosition;
                 reticle.transform.forward = reticleNormal;
 
-                // Additional controls to have the reticle update based on selectedness if it is an IVariableSelectReticle
+                // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                 if (variableReticle != null)
                 {
                     if(rayInteractor is IVariableSelectInteractor variableSelectInteractor)
@@ -90,10 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         variableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
                     }
                 }
-            }
-            else
-            {
-                reticle.SetActive(false);
             }
         }
 
