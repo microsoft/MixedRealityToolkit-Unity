@@ -1668,6 +1668,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RayReticle
       objectReference: {fileID: 0}
+    - target: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1682,6 +1686,11 @@ Transform:
 --- !u!1 &8992338914735331379 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 212221299525418658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4448665028262160152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 212221299525418658}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3988544559415115453 stripped
@@ -1703,6 +1712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseReticle: {fileID: 8992338914735331379}
   rayInteractor: {fileID: 2940030942784507886}
+  proximityLight: {fileID: 4448665028262160152}
   visibilitySettings: 0
 --- !u!1001 &1009008764017234214
 PrefabInstance:

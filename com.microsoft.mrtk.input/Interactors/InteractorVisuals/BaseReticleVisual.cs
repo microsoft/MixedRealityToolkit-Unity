@@ -48,6 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (customReticle != null)
             {
                 customReticle.SetActive(true);
+
+                // Ensure the custom reticle is parented under this gameobject
+                customReticle.transform.parent = transform;
+                customReticle.transform.localPosition = Vector3.zero;
+                customReticle.transform.localRotation = Quaternion.identity;
             }
 
             customReticleAttached = true;

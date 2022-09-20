@@ -16,6 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The interactor which this visual represents.")]
         private XRRayInteractor rayInteractor;
 
+        [SerializeField]
+        [Tooltip("The GameObject which holds the proximity light for the reticle")]
+        private GameObject proximityLight;
+
+
         // reusable vectors for determining the raycast hit data
         private Vector3 reticlePosition;
         private Vector3 reticleNormal;
@@ -74,9 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     reticle.SetActive(rayHasHit);
                 }
 
-                // Set the relevant reticle position/normal and ensure it's active.
-                reticle.transform.position = reticlePosition;
-                reticle.transform.forward = reticleNormal;
+                // Ensure that our visuals position and normal are set correctly.
+                // The reticle should be a direct child of this gameobject, so it's position and rotation should match this gameobject's
+                transform.position = reticlePosition;
+                transform.forward = reticleNormal;
 
                 // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                 if (variableReticle != null)
@@ -94,7 +100,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 reticle.SetActive(false);
-            }    
+            }
+
+            // The proximity light should only be active when the reticle is
+            if (proximityLight.gameObject != null)
+            {
+                proximityLight.SetActive(reticle.activeSelf);
+            }
         }
 
         private Vector3 targetLocalHitPoint;
