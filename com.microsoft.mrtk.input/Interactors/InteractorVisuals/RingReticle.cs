@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -49,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private float previousNearFadeValue;
 
-        void Awake()
+        protected void OnEnable()
         {
             propertyBlock = new MaterialPropertyBlock();
 
@@ -66,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SetReticleShrink(0);
         }
 
+        [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         /// <inheritdoc />
         public void UpdateVisuals(float value)
         {

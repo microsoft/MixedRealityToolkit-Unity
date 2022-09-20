@@ -123,6 +123,10 @@ PrefabInstance:
       propertyPath: m_ModelPrefab
       value: 
       objectReference: {fileID: 1768293572455847265, guid: 2b468cc4fe6d2b44ebc53b958b38b91a, type: 3}
+    - target: {fileID: 6937621743165281871, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7215522641424853407, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: settings.handedness
       value: 1
@@ -137,6 +141,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7678414244376504105, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: jointPoseSource.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833497039863265739, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

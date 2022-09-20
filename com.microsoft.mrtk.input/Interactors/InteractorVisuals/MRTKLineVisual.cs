@@ -8,39 +8,16 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Interactor helper object aligns a <see cref="LineRenderer"/> with the Interactor.
+    /// This visual component helps align a <see cref="LineRenderer"/> with the Interactor, while giving it "bendy" qualities
+    /// via the Bezier Data Provider
     /// </summary>
-    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
+    [AddComponentMenu("MRTK/Input/MRTK Line Visual")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(LineRenderer))]
     [DefaultExecutionOrder(XRInteractionUpdateOrder.k_LineVisual)]
-    public class MRTKRayInteractorVisual : MonoBehaviour, IXRCustomReticleProvider
+    public class MRTKLineVisual : MonoBehaviour
     {
         [Header("Visual Settings")]
-
-        [SerializeField]
-        [Tooltip("The reticle (cursor), usually an IVariableReticle, along with a proximity light.")]
-        private GameObject reticle;
-
-        /// <summary>
-        /// The reticle (cursor), usually an IVariableReticle, along with a proximity light.
-        /// </summary>
-        public GameObject Reticle
-        {
-            get => reticle;
-            set
-            {
-                if (reticle != value)
-                {
-                    reticle = value;
-                    if (reticle != null)
-                    {
-                        variableSelectReticle = reticle.GetComponentInChildren<IVariableReticle>();
-                    }
-                }
-            }
-        }
-
         [SerializeField]
         [Tooltip("Color gradient when there is no applicable target")]
         Gradient noTargetColorGradient = new Gradient
@@ -225,11 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             propertyBlock = new MaterialPropertyBlock();
 
-            if (Reticle != null)
-            {
-                variableSelectReticle = Reticle.GetComponentInChildren<IVariableReticle>();
-            }
-
             // mafinc - Start the line renderer off disabled (invisible), we'll enable it
             // when we have enough data for it to render properly.
             if (lineRenderer != null)
@@ -251,9 +223,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 lineRenderer.enabled = false;
             }
-
-            // Update reticle one last time to shut it off.
-            UpdateReticle(false);
 
             Application.onBeforeRender -= OnBeforeRenderLineVisual;
         }
@@ -313,56 +282,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #region IXRCustomReticleProvider Implementation
-
-        /// <inheritdoc />
-        public bool AttachCustomReticle(GameObject reticleInstance)
-        {
-            // If we don't already have a custom reticle,
-            // disable our standard reticle.
-            if (customReticle == null)
-            {
-                if (Reticle != null)
-                {
-                    Reticle.SetActive(false);
-                }
-            }
-            else if (customReticle != null)
-            {
-                // Otherwise, disable our current custom reticle.
-                customReticle.SetActive(false);
-            }
-
-            // Install the new custom reticle.
-            customReticle = reticleInstance;
-            if (customReticle != null)
-            {
-                customReticle.SetActive(true);
-                customVariableReticle = customReticle.GetComponentInChildren<IVariableReticle>();
-            }
-            return false;
-        }
-
-        /// <inheritdoc />
-        public bool RemoveCustomReticle()
-        {
-            if (customReticle != null)
-            {
-                customReticle.SetActive(false);
-            }
-
-            // If we have a standard reticle, re-enable that one.
-            if (Reticle != null)
-            {
-                Reticle.SetActive(true);
-            }
-
-            customReticle = null;
-            return false;
-        }
-
-        #endregion IXRCustomReticleProvider Implementation
-
         private void ClearLineRenderer()
         {
             if (TryFindLineRenderer())
@@ -370,8 +289,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 lineRenderer.SetPositions(clearPositions);
                 lineRenderer.positionCount = 0;
             }
-
-            UpdateReticle(false);
         }
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
@@ -434,9 +351,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Assign the last point to the one saved by the callback
                 lineDataProvider.LastPoint = hitTargetTransform.TransformPoint(targetLocalHitPoint);
-                // Cursor and proximity light should follow the same last point
-                reticlePosition = lineDataProvider.LastPoint;
-                reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
                 rayHasHit = true;
             }
             // Otherwise draw out the line exactly as the Ray Interactor prescribes
@@ -486,10 +400,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            UpdateReticle(rayInteractor.hasHover ||
-                          rayInteractor.hasSelection ||
-                          (rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _)));
-
             // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
             if (rayHasHit)
             {
@@ -520,45 +430,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 rendererPositions[i] = lineDataProvider.GetPoint(normalizedDistance);
             }
             lineRenderer.SetPositions(rendererPositions);
-        }
-
-        // Based on whether the ray hit anything, the current hit position, normal, etc,
-        // update the current reticle (either standard or custom).
-        private void UpdateReticle(bool showCursor)
-        {
-            // Grab the reticle we're currently using
-            GameObject reticleToUse = customReticle != null ? customReticle : Reticle;
-            IVariableReticle variableReticleToUse = customReticle != null ? customVariableReticle : variableSelectReticle;
-
-            if (reticleToUse == null) { return; }
-
-            if (showCursor)
-            {
-                // Set the relevant reticle position/normal and ensure it's active.
-                reticleToUse.transform.position = reticlePosition;
-                reticleToUse.transform.forward = reticleNormal;
-
-                if (!reticleToUse.activeSelf)
-                {
-                    reticleToUse.SetActive(true);
-                }
-
-                if (variableReticleToUse != null)
-                {
-                    if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
-                    {
-                        variableReticleToUse.UpdateVisuals(variableSelectInteractor.SelectProgress);
-                    }
-                    else
-                    {
-                        variableReticleToUse.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
-                    }
-                }
-            }
-            else
-            {
-                reticleToUse.SetActive(false);
-            }
         }
 
         private void UpdateLineRendererProperties()
