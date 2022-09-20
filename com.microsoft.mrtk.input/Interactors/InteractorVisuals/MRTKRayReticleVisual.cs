@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // reusable vectors for determining the raycast hit data
         private Vector3 reticlePosition;
         private Vector3 reticleNormal;
+        private IVariableReticle variableReticle;
 
         [SerializeField]
         [Tooltip("Should a reticle appear on all surfaces hit by the interactor or interactables only?")]
@@ -43,6 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
             Application.onBeforeRender += UpdateReticle;
+
+            variableReticle = reticle?.GetComponentInChildren<IVariableReticle>();
         }
 
         protected void OnDisable()
@@ -74,6 +77,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Set the relevant reticle position/normal and ensure it's active.
                 reticle.transform.position = reticlePosition;
                 reticle.transform.forward = reticleNormal;
+
+                // Additional controls to have the reticle update based on selectedness if it is an IVariableSelectReticle
+                if (variableReticle != null)
+                {
+                    if(rayInteractor is IVariableSelectInteractor variableSelectInteractor)
+                    {
+                        variableReticle.UpdateVisuals(variableSelectInteractor.SelectProgress);
+                    }
+                    else
+                    {
+                        variableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
+                    }
+                }
             }
             else
             {
