@@ -47,9 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Ray ray = handRay.Ray;
 
                 // controllerState is in rig-local space, our ray generator works in worldspace!
-                pose.position = PlayspaceUtilities.CameraFloorOffsetObject.InverseTransformPoint(ray.origin);
-                pose.rotation = Quaternion.LookRotation(PlayspaceUtilities.CameraFloorOffsetObject.InverseTransformVector(ray.direction),
-                                                                   PlayspaceUtilities.CameraFloorOffsetObject.InverseTransformVector(palm.Up));
+                pose.position = PlayspaceUtilities.OriginOffsetTransform.InverseTransformPoint(ray.origin);
+                pose.rotation = Quaternion.LookRotation(PlayspaceUtilities.OriginOffsetTransform.InverseTransformVector(ray.direction),
+                                                                   PlayspaceUtilities.OriginOffsetTransform.InverseTransformVector(palm.Up));
             }
             else
             {
