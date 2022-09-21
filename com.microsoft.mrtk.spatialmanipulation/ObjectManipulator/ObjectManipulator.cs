@@ -195,6 +195,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
+        [Range(0, 10000f)]
+        [Tooltip("The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.")]
+        private float springForceLimit = 1000.0f;
+
+        /// <summary>
+        /// The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.
+        /// </summary>
+        public float SpringForceLimit
+        {
+            get => springForceLimit;
+            set => springForceLimit = value;
+        }
+
+        [SerializeField]
         [Tooltip("Rotation behavior of object when using one hand near")]
         private RotateAnchorType rotationAnchorNear = RotateAnchorType.RotateAboutGrabPoint;
 
@@ -771,11 +785,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             float halfDampingFactor = Mathf.Exp(-springForceDamping * omega * Time.fixedDeltaTime);
 
             var velocity = rigidBody.velocity;
+
             velocity -= referenceFrameVelocity;  // change to the player's frame of reference before damping
+
+            var oldVelocity = velocity;
+
             velocity *= halfDampingFactor;  // 1/2 damping
             velocity -= distance * omega * omega * Time.fixedDeltaTime; // spring force
             velocity *= halfDampingFactor;  // 1/2 damping
+
+            float maxDeltaVelocity = springForceLimit * Time.fixedDeltaTime;
+            var deltaVelocity = (velocity - oldVelocity).magnitude;
+            if (deltaVelocity > maxDeltaVelocity)
+            {
+                velocity = (velocity - oldVelocity) * (maxDeltaVelocity / deltaVelocity) + oldVelocity;
+            }
+
             velocity += referenceFrameVelocity;  // change back to global frame of reference
+
             rigidBody.velocity = velocity;
 
             if (applyTorque)

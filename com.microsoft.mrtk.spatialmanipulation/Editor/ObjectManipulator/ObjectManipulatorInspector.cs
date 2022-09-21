@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty applyTorque;
         private SerializedProperty springForceSoftness;
         private SerializedProperty springForceDamping;
+        private SerializedProperty springForceLimit;
 
         private SerializedProperty rotationAnchorNear;
         private SerializedProperty rotationAnchorFar;
@@ -74,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             applyTorque = serializedObject.FindProperty("applyTorque");
             springForceSoftness = serializedObject.FindProperty("springForceSoftness");
             springForceDamping = serializedObject.FindProperty("springForceDamping");
+            springForceLimit = serializedObject.FindProperty("springForceLimit");
 
             // Smoothing
             transformSmoothingLogicType = serializedObject.FindProperty("transformSmoothingLogicType");
@@ -132,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
                     EditorGUILayout.PropertyField(applyTorque);
                     EditorGUILayout.PropertyField(springForceSoftness);
                     EditorGUILayout.PropertyField(springForceDamping);
+                    EditorGUILayout.PropertyField(springForceLimit);
                 }
                 else
                 {
