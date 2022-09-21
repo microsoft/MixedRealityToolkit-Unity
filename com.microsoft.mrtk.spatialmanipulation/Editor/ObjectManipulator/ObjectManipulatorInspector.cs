@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty allowedInteractionTypes;
         private SerializedProperty useForcesForNearManipulation;
         private SerializedProperty applyTorque;
-        private SerializedProperty moveReactionTime;
-        private SerializedProperty moveDampingRatio;
+        private SerializedProperty springForceSoftness;
+        private SerializedProperty springForceDamping;
 
         private SerializedProperty rotationAnchorNear;
         private SerializedProperty rotationAnchorFar;
@@ -72,8 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
             useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
             applyTorque = serializedObject.FindProperty("applyTorque");
-            moveReactionTime = serializedObject.FindProperty("moveReactionTime");
-            moveDampingRatio = serializedObject.FindProperty("moveDampingRatio");
+            springForceSoftness = serializedObject.FindProperty("springForceSoftness");
+            springForceDamping = serializedObject.FindProperty("springForceDamping");
 
             // Smoothing
             transformSmoothingLogicType = serializedObject.FindProperty("transformSmoothingLogicType");
@@ -130,8 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
                     EditorGUILayout.PropertyField(releaseBehavior);
                     EditorGUILayout.PropertyField(useForcesForNearManipulation);
                     EditorGUILayout.PropertyField(applyTorque);
-                    EditorGUILayout.PropertyField(moveReactionTime);
-                    EditorGUILayout.PropertyField(moveDampingRatio);
+                    EditorGUILayout.PropertyField(springForceSoftness);
+                    EditorGUILayout.PropertyField(springForceDamping);
                 }
                 else
                 {

@@ -169,29 +169,29 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [SerializeField]
         [Range(0.001f, 2.0f)]
         [Tooltip("The time scale at which a Rigidbody reacts to input defined as oscillation period of the dampened spring force.")]
-        private float moveReactionTime = 0.1f;
+        private float springForceSoftness = 0.1f;
 
         /// <summary>
         /// The time scale at which a Rigidbody reacts to input defined as oscillation period of the dampened spring force.
         /// </summary>
-        public float MoveReactionTime
+        public float SpringForceSoftness
         {
-            get => moveReactionTime;
-            set => moveReactionTime = value;
+            get => springForceSoftness;
+            set => springForceSoftness = value;
         }
 
         [SerializeField]
         [Range(0, 2.0f)]
         [Tooltip("The damping of the spring force: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
-        private float moveDampingRatio = 1.0f;
+        private float springForceDamping = 1.0f;
 
         /// <summary>
         /// The damping of the spring force: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).
         /// </summary>
-        public float MoveDampingRatio
+        public float SpringForceDamping
         {
-            get => moveDampingRatio;
-            set => moveDampingRatio = value;
+            get => springForceDamping;
+            set => springForceDamping = value;
         }
 
         [SerializeField]
@@ -757,7 +757,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             referenceFrameHasLastPos = true;
 
             // implement critically dampened spring force, scaled to mass-independent frequency
-            float omega = Mathf.PI / moveReactionTime;  // angular frequency, sqrt(k/m)
+            float omega = Mathf.PI / springForceSoftness;  // angular frequency, sqrt(k/m)
 
             Vector3 distance = HostTransform.position - targetTransform.Position;
 
@@ -768,7 +768,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // To compensate for the finite time step, this is split in two equal factors,
             // one applied before, the other after the spring force
             // equivalent with applying damping as well as spring force continuously
-            float halfDampingFactor = Mathf.Exp(-moveDampingRatio * omega * Time.fixedDeltaTime);
+            float halfDampingFactor = Mathf.Exp(-springForceDamping * omega * Time.fixedDeltaTime);
 
             var velocity = rigidBody.velocity;
             velocity -= referenceFrameVelocity;  // change to the player's frame of reference before damping
