@@ -14,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit
     {
         private static XROrigin xrOrigin;
 
+        /// <summary>
+        /// The first detected XROrigin in the current scene.
+        /// </summary>
         public static XROrigin XROrigin
         {
             get
@@ -35,54 +38,63 @@ namespace Microsoft.MixedReality.Toolkit
         public static Transform ReferenceTransform;
 
         /// <summary>
-        /// The XROrigin's CameraFloorOffsetObject transform, which all input devices
-        /// are tracked relative to. AR trackables like spatial anchors are not tracked
-        /// relative to this transform; see OriginTransform instead.
+        /// The XROrigin's CameraFloorOffsetObject transform, which all trackables
+        /// should be tracked relative to (and parented to). On devices that have a 
+        /// floor (Guardian, Chaperone, etc), this will be identical to the RigTransform. On
+        /// devices with no floor (HoloLens, etc) this may have a vertical offset to represent
+        /// the user's height. This is the transform that should be used for all tracked objects,
+        /// including input devices, the user's head, controllers, hand joints, spatial anchors,
+        /// meshes, and planes.
         /// </summary>
         /// <remarks>
-        /// The XROrigin tracks input devices (head, hands, etc) relative to the
+        /// The XROrigin places trackables relative to the
         /// CameraFloorOffsetObject. This offset object is set based on the TrackingOriginMode;
         /// in Device mode, head and hands poses are reported relative to some arbitrary point
         /// in space, whereas in Floor mode, the poses are reported relative to the precalibrated
-        /// floor height/origin. Such a distinction does not exist for other AR trackables like
-        /// spatial anchors or SR meshes; they are always reported relative to the XROrigin's true origin.
+        /// floor height/origin.
         /// </remarks>
         public static Transform OriginOffsetTransform => XROrigin.CameraFloorOffsetObject.transform;
 
         /// <summary>
-        /// The origin transform used for trackables like spatial anchors and SR meshes.
-        /// Will always be equal to the XROrigin's origin base transform. This may not necessarily
-        /// be the origin/coordinate space that the user's head and hands are reported in;
-        /// use the <see cref="OriginOffsetTransform"/> when working with the user's head or input
-        /// device poses.
+        /// The rig's physical origin. This is used for locomotion, colliders, avatars, or other
+        /// properties that should reflect the user's floor. The transform will always be at the user's
+        /// physical floor elevation. Locomotion scripts should use this transform to physically
+        /// move the user throughout the world. When teleporting the user, compare this transform's
+        /// position to the camera's position to determine the relative teleport target offset, or
+        /// use <see cref="XROrigin.CameraInOriginSpacePos"/>.
         /// </summary>
-        /// <remarks>
-        /// Input devices such as the HMD, controllers, or hands, depending on the XROrigin's 
-        /// TrackingOriginMode, will report their poses as either relative to the precalibrated
-        /// floor height (in the runtime) or relative to some arbitrary point in space (generally,
-        /// when the device was first initialized.) Therefore, their poses will not necessarily
-        /// be relative to the <see cref="OriginTransform"/>, but will always be relative to the
-        /// <see cref="OriginOffsetTransform"/>.
-        /// </remarks>
-        public static Transform OriginTransform => XROrigin.Origin.transform;
+        /// <seealso cref="OriginOffsetTransform"/>
+        public static Transform RigTransform => XROrigin.Origin.transform;
 
         /// <summary>
-        /// Given a raw joint pose in floor-offset-relative space, transform the pose into
-        /// absolute Unity world coordinates.
+        /// Transforms a <see cref="Pose"/> from OpenXR scene-origin-space to Unity world-space.
+        /// Uses the XROrigin's CameraFloorOffsetObject transform.
+        /// </summary>
+        public static Pose TransformPose(Pose pose)
+        {
+            Transform origin = OriginOffsetTransform;
+            return new Pose(
+                origin.TransformPoint(pose.position),
+                origin.rotation * pose.rotation
+            );
+        }
+
+        /// <summary>
+        /// Transforms a <see cref="HandJointPose"/> from OpenXR scene-origin-space to Unity world-space.
         /// </summary>
         /// <remarks>
         /// Internally, this uses <see cref="OriginOffsetTransform"/>, as input devices
         /// are reported relative to the floor offset of the rig.
         /// </remarks>
-        public static HandJointPose TransformJointPose(HandJointPose playspaceLocalJoint)
+        public static HandJointPose TransformJointPose(HandJointPose joint)
         {
             // Null-checking Unity objects can be expensive. Caching this here cuts two null checks into one.
             // Here, we use OriginOffsetTransform, because joint poses are reported local to the floor offset.
-            Transform referenceTransform = OriginOffsetTransform;
+            Transform origin = OriginOffsetTransform;
             return new HandJointPose(
-                referenceTransform.TransformPoint(playspaceLocalJoint.Position),
-                referenceTransform.rotation * playspaceLocalJoint.Rotation,
-                playspaceLocalJoint.Radius
+                origin.TransformPoint(joint.Position),
+                origin.rotation * joint.Rotation,
+                joint.Radius
             );
         }
     }
