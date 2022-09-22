@@ -95,9 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return false;
                         }
 
-                        // Here, we use the origin transform (rather than the offset transform)
-                        // as joints are reported in rig-local space.
-                        Transform playspaceTransform = PlayspaceUtilities.OriginTransform;
+                        // Joints are relative to the camera floor offset object.
+                        Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
                         if (playspaceTransform == null)
                         {
                             pose = handJoints[HandsUtils.ConvertToIndex(joint)];

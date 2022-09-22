@@ -40,9 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Transform the pose into worldspace, as input actions are returned
                 // in floor-offset-relative coordinates.
-                pose.position = PlayspaceUtilities.OriginOffsetTransform.TransformPoint(positionAction.ReadValue<Vector3>());
-                pose.rotation = PlayspaceUtilities.OriginOffsetTransform.rotation * rotationAction.ReadValue<Quaternion>();
-
+                pose = PlayspaceUtilities.TransformPose(
+                    new Pose(
+                        positionAction.ReadValue<Vector3>(),
+                        rotationAction.ReadValue<Quaternion>()));
                 return true;
             }
             else

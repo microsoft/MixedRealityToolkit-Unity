@@ -94,12 +94,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Returns the current position, in worldspace, of the simulated controller.
         /// </summary>
-        public Vector3 WorldPosition => PlayspaceUtilities.OriginOffsetTransform.TransformPoint(simulatedControllerState.devicePosition);
+        public Vector3 WorldPosition =>
+            PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform.TransformPoint(simulatedControllerState.devicePosition);
 
         /// <summary>
         /// Returns the current rotation, in worldspace, of the simulated controller.
         /// </summary>
-        public Quaternion WorldRotation => PlayspaceUtilities.OriginOffsetTransform.rotation * simulatedControllerState.deviceRotation;
+        public Quaternion WorldRotation =>
+            PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform.rotation * simulatedControllerState.deviceRotation;
 
         /// <summary>
         /// Returns the position of the index finger joint on the simulated device,
