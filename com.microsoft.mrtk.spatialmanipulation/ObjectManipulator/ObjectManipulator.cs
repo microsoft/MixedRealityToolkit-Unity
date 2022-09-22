@@ -778,6 +778,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // when player is moving, we need to anticipate where the targetTransform is going to be one time step from now
             distance -= referenceFrameVelocity * Time.fixedDeltaTime;
 
+            var acceleration = -distance * omega * omega;  // acceleration caused by spring force
+
             // Apply damping - mathematically, we need e^(-2 * omega * dt)
             // To compensate for the finite time step, this is split in two equal factors,
             // one applied before, the other after the spring force
@@ -791,7 +793,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             var oldVelocity = velocity;
 
             velocity *= halfDampingFactor;  // 1/2 damping
-            velocity -= distance * omega * omega * Time.fixedDeltaTime; // spring force
+            velocity += acceleration * Time.fixedDeltaTime; // integration step of spring force
             velocity *= halfDampingFactor;  // 1/2 damping
 
             float maxDeltaVelocity = springForceLimit * Time.fixedDeltaTime;
