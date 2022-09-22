@@ -54,6 +54,21 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Transforms a <see cref="Pose"/> from Unity world-space to OpenXR scene-origin-space.
+        /// Uses the XROrigin's CameraFloorOffsetObject transform.
+        /// </summary>
+        public static Pose InverseTransformPose(Pose pose)
+        {
+            // Null-checking Unity objects can be expensive. Caching this here cuts two null checks into one.
+            // Here, we use CameraFloorOffsetObject, because poses are reported local to the floor offset.
+            Transform origin = XROrigin.CameraFloorOffsetObject.transform;
+            return new Pose(
+                origin.InverseTransformPoint(pose.position),
+                Quaternion.Inverse(origin.rotation) * pose.rotation
+            );
+        }
+
+        /// <summary>
         /// Transforms a <see cref="HandJointPose"/> from OpenXR scene-origin-space to Unity world-space.
         /// Uses the XROrigin's CameraFloorOffsetObject transform.
         /// </summary>

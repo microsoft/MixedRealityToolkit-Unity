@@ -80,16 +80,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             synthHandsSubsystem ??= XRSubsystemHelpers.GetFirstRunningSubsystem<SyntheticHandsSubsystem>();
 
         /// <summary>
-        /// Returns the current position, in camera relative space, of the input device which controls this simulated controller.
-        /// This is different from the devicePosition, which may be offset from this due to anchoring at a different point
+        /// Returns the current camera relative pose of the simulated controller.
+        /// This is different from the devicePosition, which may be offset from this due to anchoring at a different point.
         /// </summary>
-        public Vector3 SimulatedInputPosition { get; private set; } = Vector3.zero;
-
-        /// <summary>
-        /// Returns the current rotation, in camera relative space, of the input device which controls this simulated controller
-        /// This is separated from the deviceRotation, which may be offset from this due to anchoring at a different point
-        /// </summary>
-        public Quaternion SimulatedInputRotation { get; private set; } = Quaternion.identity;
+        public Pose CameraRelativePose { get; private set; } = Pose.identity;
 
         /// <summary>
         /// Returns the current position, in worldspace, of the simulated controller.
@@ -187,13 +181,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
             simulatedController.SimulationMode = controllerSimulationSettings.SimulationMode;
 
-            SimulatedInputPosition = initialRelativePosition;
+            CameraRelativePose = new Pose(initialRelativePosition, Quaternion.identity);
 
             SetUsage();
 
             SetRelativePoseWithOffset(
-                initialRelativePosition,
-                Quaternion.identity,
+                CameraRelativePose,
                 Vector3.zero,
                 ControllerRotationMode.UserControl,
                 true);
@@ -310,17 +303,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     const float jitterSeverity = 0.002f;
                     Vector3 jitter = jitterStrength * jitterSeverity * UnityEngine.Random.insideUnitSphere;
 
-                    SimulatedInputPosition += smoothedMoveDelta + jitter;
+                    CameraRelativePose = new Pose(
+                        CameraRelativePose.position + smoothedMoveDelta + jitter,
 
-                    // If we not have been told to face the camera, apply the rotation delta.
-                    if (rotationMode == ControllerRotationMode.UserControl)
-                    {
-                        SimulatedInputRotation *= rotationDelta;
-                    }
+                        // If we not have been told to face the camera, apply the rotation delta.
+                        rotationMode == ControllerRotationMode.UserControl ? 
+                            CameraRelativePose.rotation * rotationDelta :
+                            CameraRelativePose.rotation
+                    );
 
                     Vector3 offset = WorldPosition - anchorPosition;
 
-                    SetRelativePoseWithOffset(SimulatedInputPosition, SimulatedInputRotation, offset, rotationMode, shouldUseRayVector);
+                    SetRelativePoseWithOffset(CameraRelativePose, offset, rotationMode, shouldUseRayVector);
                 }
 
                 ApplyState(controls);
@@ -345,14 +339,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Update the controller simulation with a specified absolute pose in world-space.
         /// </summary>
-        /// <param name="position">The worldspace position.</param>
-        /// <param name="rotation">The worldspace rotation.</param>
+        /// <param name="worldPose">The worldspace controller pose.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
         public void UpdateAbsolute(
-            Vector3 position,
-            Quaternion rotation,
+            Pose worldPose,
             ControllerControls controls,
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
@@ -361,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             {
                 if (simulatedController == null) { return; }
 
-                SetWorldPose(position, rotation, rotationMode, shouldUseRayVector);
+                SetWorldPose(worldPose, rotationMode, shouldUseRayVector);
                 ApplyState(controls);
             }
         }
@@ -373,59 +365,56 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// Update the controller simulation with a specified absolute pose in world-space at which the
         /// poking position (usually index-tip) should be. 
         /// </summary>
-        /// <param name="position">The worldspace position.</param>
-        /// <param name="rotation">The worldspace rotation.</param>
+        /// <param name="worldPose">The worldspace pose.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
         public void UpdateAbsoluteWithPokeAnchor(
-            Vector3 position,
-            Quaternion rotation,
+            Pose worldPose,
             ControllerControls controls,
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
         {
-            UpdateAbsoluteWithAnchor(position, rotation, controls, rotationMode, shouldUseRayVector, PokePosition);
+            UpdateAbsoluteWithAnchor(worldPose, controls, rotationMode, shouldUseRayVector, PokePosition);
         }
 
         /// <summary>
         /// Update the controller simulation with a specified absolute pose in world-space at which the
         /// poking position (usually index-tip) should be. 
         /// </summary>
-        /// <param name="position">The worldspace position.</param>
-        /// <param name="rotation">The worldspace rotation.</param>
+        /// <param name="worldPose">The worldspace pose.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
         public void UpdateAbsoluteWithGrabAnchor(
-            Vector3 position,
-            Quaternion rotation,
+            Pose worldPose,
             ControllerControls controls,
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
         {
-            UpdateAbsoluteWithAnchor(position, rotation, controls, rotationMode, shouldUseRayVector, GrabPosition);
+            UpdateAbsoluteWithAnchor(worldPose, controls, rotationMode, shouldUseRayVector, GrabPosition);
         }
 
         /// <summary>
         /// Update the controller simulation with a specified absolute pose in world-space anchored at the specified point.
         /// </summary>
-        /// <param name="position">The worldspace position.</param>
-        /// <param name="rotation">The worldspace rotation.</param>
+        /// <param name="worldPose">The pose in worldspace.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
-        public void UpdateAbsoluteWithAnchor(Vector3 position,
-            Quaternion rotation,
+        public void UpdateAbsoluteWithAnchor(
+            Pose worldPose,
             ControllerControls controls,
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector,
             Vector3 anchorPoint)
         {
-            Vector3 handToAnchorDelta = (anchorPoint - WorldPosition);
-            Vector3 adjustedWorldPos = position - handToAnchorDelta;
+            // Adjust the *new* world pose by the anchor delta.
+            Pose adjustedWorldPose = new Pose(
+                worldPose.position -  (anchorPoint - WorldPosition),
+                worldPose.rotation);
 
-            UpdateAbsolute(adjustedWorldPos, rotation, controls, rotationMode, shouldUseRayVector);
+            UpdateAbsolute(adjustedWorldPose, controls, rotationMode, shouldUseRayVector);
         }
 
         private static readonly ProfilerMarker ApplyStatePerfMarker =
@@ -482,16 +471,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// camera relative space is not necessarily the same as the rig relative space (due to the offset GameObject in between).
         /// Transform the parameters into world space and call SetWorldPose where they will be transformed into rig relative space.</para></remarks>
         private void SetRelativePoseWithOffset(
-            Vector3 position,
-            Quaternion rotation,
+            Pose cameraRelativePose,
             Vector3 offset,
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
         {
-            Vector3 worldPosition = Camera.main.transform.TransformPoint(position) + offset;
-            Quaternion worldRotation = Camera.main.transform.rotation * rotation;
+            Pose worldPose = new Pose(
+                Camera.main.transform.TransformPoint(cameraRelativePose.position) + offset,
+                Camera.main.transform.rotation * cameraRelativePose.rotation
+            );
 
-            SetWorldPose(worldPosition, worldRotation, rotationMode, shouldUseRayVector);
+            SetWorldPose(worldPose, rotationMode, shouldUseRayVector);
         }
 
         private static readonly ProfilerMarker SetWorldPosePerfMarker =
@@ -500,23 +490,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Sets a controller to the specified worldspace pose.
         /// </summary>
-        /// <param name="position">The desired controller position, in world space.</param>
-        /// <param name="rotation">The desired controller rotation, in world space.</param>
+        /// <param name="worldPose">The desired controller pose, in world space.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="shouldUseRayVector">
         /// Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?
         /// </param>
         private void SetWorldPose(
-            Vector3 position,
-            Quaternion rotation,
+            Pose worldPose,
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
         {
             using (SetWorldPosePerfMarker.Auto())
             {
-                Vector3 rigLocalPosition = PlayspaceUtilities.OriginOffsetTransform.InverseTransformPoint(position);
-                Quaternion rigLocalRotation = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * rotation;
-                SetRigLocalPose(rigLocalPosition, rigLocalRotation, rotationMode, shouldUseRayVector);
+                Pose cameraOffsetLocalPose = PlayspaceUtilities.InverseTransformPose(worldPose);
+                SetCameraOffsetLocalPose(cameraOffsetLocalPose, rotationMode, shouldUseRayVector);
             }
         }
 
@@ -524,60 +511,66 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             new ProfilerMarker("[MRTK] SimulatedController.SetRigLocalPose");
 
         /// <summary>
-        /// Sets a controller to the specified rig-local pose.
+        /// Sets a controller to the specified camera-offset-local pose.
         /// </summary>
-        /// <param name="position">The desired controller position, in rig-local space.</param>
-        /// <param name="rotation">The desired controller rotation, in rig-local space.</param>
+        /// <param name="localPose">The desired controller pose, in camera-offset-local space.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="shouldUseRayVector">
         /// Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?
         /// </param>
-        private void SetRigLocalPose(
-            Vector3 position,
-            Quaternion rotation,
+        private void SetCameraOffsetLocalPose(
+            Pose localPose,
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
         {
             using (SetRigLocalPosePerfMarker.Auto())
             {
                 // First set the device pose using the provided position and rotation.
-                simulatedControllerState.devicePosition = position;
+                simulatedControllerState.devicePosition = localPose.position;
 
                 if (rotationMode == ControllerRotationMode.FaceCamera)
                 {
-                    Quaternion worldLookAtCamera = Quaternion.LookRotation(Camera.main.transform.position - position);
-                    Quaternion rigLocalLookAtCamera = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * worldLookAtCamera;
+                    Quaternion localLookAt = Quaternion.LookRotation(Camera.main.transform.localPosition - localPose.position);
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
-                        rigLocalLookAtCamera,
+                        localLookAt,
                         0.1f,
                         MoveSmoothingTime);
                 }
                 else if (rotationMode == ControllerRotationMode.CameraAligned)
                 {
-                    Quaternion worldCameraForward = Quaternion.LookRotation(Camera.main.transform.forward);
-                    Quaternion rigLocalCameraForward = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * worldCameraForward;
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
-                        rigLocalCameraForward,
+                        Camera.main.transform.localRotation,
                         0.1f,
                         MoveSmoothingTime);
                 }
                 else
                 {
-                    simulatedControllerState.deviceRotation = rotation;
+                    simulatedControllerState.deviceRotation = localPose.rotation;
                 }
 
                 // Then set the pointer pose.
                 if (shouldUseRayVector && Handedness.ToXRNode().HasValue && HandSubsystem != null &&
-                    HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose))
+                    HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose) &&
+                    HandSubsystem.TryGetJoint(TrackedHandJoint.IndexProximal, Handedness.ToXRNode().Value, out HandJointPose knucklePose))
                 {
-                    // If prompted to use the ray vector, this is pose is calculated by simulating a hand ray initialized at the device pose.
-                    // This occurs when the simulation mode is set to ArticulatedHand
-                    handRay.Update(PlayspaceUtilities.OriginOffsetTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, Camera.main.transform, Handedness);
-                    Ray ray = handRay.Ray;
-                    simulatedControllerState.pointerPosition = PlayspaceUtilities.OriginOffsetTransform.InverseTransformPoint(ray.origin);
-                    simulatedControllerState.pointerRotation = Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * Quaternion.LookRotation(ray.direction);
+                    // If prompted to use the ray vector, this pose is calculated by simulating a hand ray.
+                    // This occurs only when the simulation mode is set to ArticulatedHand.
+                    handRay.Update(
+                        knucklePose.Position,
+                        -palmPose.Up,
+                        Camera.main.transform,
+                        Handedness);
+                    
+                    // Transform world ray back into local pose.
+                    Pose localRayPose = PlayspaceUtilities.InverseTransformPose(
+                        new Pose(
+                            handRay.Ray.origin,
+                            Quaternion.LookRotation(handRay.Ray.direction, palmPose.Up)));
+
+                    simulatedControllerState.pointerPosition = localRayPose.position;
+                    simulatedControllerState.pointerRotation = localRayPose.rotation;
                 }
                 else
                 {
