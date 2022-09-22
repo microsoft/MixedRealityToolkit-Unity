@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [SerializeField]
         [Range(0, 10000f)]
         [Tooltip("The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.")]
-        private float springForceLimit = 1000.0f;
+        private float springForceLimit = 100.0f;
 
         /// <summary>
         /// The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.
@@ -778,12 +778,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // when player is moving, we need to anticipate where the targetTransform is going to be one time step from now
             distance -= referenceFrameVelocity * Time.fixedDeltaTime;
 
+            var velocity = rigidBody.velocity;
+
             var acceleration = -distance * omega * omega;  // acceleration caused by spring force
 
             var accelerationMagnitude = acceleration.magnitude;
-            if(accelerationMagnitude > springForceLimit)
+
+            // apply springForceLimit only for slow-moving body (e.g. pressed against wall)
+            // when body is already moving fast, also allow strong acceleration
+            var maxAcceleration = Mathf.Max(springForceLimit, 10 * velocity.magnitude / Time.fixedDeltaTime);
+
+            if (accelerationMagnitude > maxAcceleration)
             {
-                acceleration *= springForceLimit / accelerationMagnitude;
+                acceleration *= maxAcceleration / accelerationMagnitude;
             }
 
             // Apply damping - mathematically, we need e^(-2 * omega * dt)
@@ -791,8 +798,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // one applied before, the other after the spring force
             // equivalent with applying damping as well as spring force continuously
             float halfDampingFactor = Mathf.Exp(-springForceDamping * omega * Time.fixedDeltaTime);
-
-            var velocity = rigidBody.velocity;
 
             velocity -= referenceFrameVelocity;  // change to the player's frame of reference before damping
 
