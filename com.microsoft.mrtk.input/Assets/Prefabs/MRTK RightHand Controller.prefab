@@ -315,6 +315,10 @@ PrefabInstance:
       propertyPath: m_TranslateAnchorAction.m_Reference
       value: 
       objectReference: {fileID: 875253871413052681, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    - target: {fileID: 6937621743165281871, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7215522641424853407, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: settings.handedness
       value: 2
@@ -329,6 +333,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7678414244376504105, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: jointPoseSource.hand
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833497039863265739, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8326700373702288692, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
