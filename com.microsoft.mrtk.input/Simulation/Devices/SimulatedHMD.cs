@@ -136,7 +136,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     moveDelta;
 
                 simulatedHmdState.trackingState = (int)(InputTrackingState.Position | InputTrackingState.Rotation);
-                simulatedHmdState.centerEyePosition += Quaternion.Inverse(PlayspaceUtilities.OriginOffsetTransform.rotation) * Camera.main.transform.rotation * (smoothedMoveDelta * moveSpeed);
+
+                // HMD poses are relative to the camera floor offset.
+                Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
+                simulatedHmdState.centerEyePosition += Quaternion.Inverse(origin.rotation) * Camera.main.transform.rotation * (smoothedMoveDelta * moveSpeed);
                 simulatedHmdState.devicePosition = simulatedHmdState.centerEyePosition;
 
                 cameraRotation += rotationDelta * rotationSensitivity;

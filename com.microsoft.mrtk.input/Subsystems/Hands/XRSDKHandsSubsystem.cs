@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         // Joints are relative to the camera floor offset object.
                         Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
-                        if (playspaceTransform == null)
+                        if (origin == null)
                         {
                             pose = handJoints[HandsUtils.ConvertToIndex(joint)];
                             return false;
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (joint == TrackedHandJoint.Palm)
                         {
                             handDevice.Value.TryGetRootBone(out Bone rootBone);
-                            thisQueryValid |= TryUpdateJoint(TrackedHandJoint.Palm, rootBone, playspaceTransform);
+                            thisQueryValid |= TryUpdateJoint(TrackedHandJoint.Palm, rootBone, origin);
                         }
                         else
                         {
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             if (handDevice.Value.TryGetFingerBones(finger, fingerBones))
                             {
                                 Bone bone = fingerBones[HandsUtils.GetOffsetFromBase(joint)];
-                                thisQueryValid |= TryUpdateJoint(joint, bone, playspaceTransform);
+                                thisQueryValid |= TryUpdateJoint(joint, bone, origin);
                             }
                         }
                     }
