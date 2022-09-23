@@ -67,7 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SetReticleShrink(0);
         }
 
-        [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         /// <inheritdoc />
         public void UpdateVisuals(float value)
         {
