@@ -7,6 +7,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// The reticle visual for a poke interactor. This behavior takes care of
+    /// showing the reticle when the interactor is hovering over a target.
+    /// </summary>
     public class MRTKPokeReticleVisual : BaseReticleVisual
     {
         [SerializeField]
@@ -36,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdateVisualsPerfMarker.Auto())
             {
-                reticle.SetActive(pokeInteractor.enabled && pokeInteractor.isHoverActive);
+                Reticle.SetActive(pokeInteractor.enabled && pokeInteractor.isHoverActive);
 
                 // TODO: Ideally we'd want the ReticleVisualScript to be responsible for all aspects of a visuals appearance.
                 // This is because it would allow us to freely use different reticle icons without changing other behavior.
@@ -47,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // The proximity light should only be active when the reticle is
                 if (proximityLight.gameObject != null)
                 {
-                    proximityLight.SetActive(reticle.activeSelf);
+                    proximityLight.SetActive(Reticle.activeSelf);
                 }
             }
         }
