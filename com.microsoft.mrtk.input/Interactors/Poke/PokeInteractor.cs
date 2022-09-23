@@ -18,8 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class PokeInteractor :
         XRBaseControllerInteractor,
         IPokeInteractor,
-        IHandedInteractor,
-        IMRTKInteractorVisuals
+        IHandedInteractor
     {
         #region PokeInteractor
 
@@ -51,44 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
 
         #endregion IHandedInteractor
-
-        #region IMRTKInteractorVisuals
-
-        [Header("Interactor visuals settings")]
-
-        [SerializeField]
-        [Tooltip("The visuals representing the interaction point, such as a cursor, donut, or other marker.")]
-        private GameObject touchVisuals;
-
-        /// <summary>
-        /// The visuals representing the interaction point, such as a cursor, donut, or other marker.
-        /// </summary>
-        public GameObject TouchVisuals { get => touchVisuals; set => touchVisuals = value; }
-
-        private static readonly ProfilerMarker SetVisualsPerfMarker =
-            new ProfilerMarker("[MRTK] PokeInteractor.SetVisuals");
-
-        /// <inheritdoc/>
-        public virtual void SetVisuals(bool isVisible)
-        {
-            using (SetVisualsPerfMarker.Auto())
-            {
-                if (TouchVisuals == null) { return; }
-
-                TouchVisuals.SetActive(isVisible);
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void UpdateVisuals(XRBaseInteractable interactable)
-        {
-            if (TouchVisuals != null)
-            {
-                TouchVisuals.transform.SetPositionAndRotation(pokeTrajectory.End, attachTransform.rotation);
-            }
-        }
-
-        #endregion IMRTKInteractorVisuals
 
         #region IPokeInteractor
 
