@@ -32,13 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Application.onBeforeRender -= UpdateReticle;
         }
 
-        private static readonly ProfilerMarker UpdateVisualsPerfMarker =
+        private static readonly ProfilerMarker UpdateReticlePerfMarker =
             new ProfilerMarker("[MRTK] MRTKPokeReticleVisual.UpdateReticle");
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()
         {
-            using (UpdateVisualsPerfMarker.Auto())
+            using (UpdateReticlePerfMarker.Auto())
             {
                 Reticle.SetActive(pokeInteractor.enabled && pokeInteractor.isHoverActive);
 
