@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private float previousNearFadeValue;
 
-        protected void OnEnable()
+        void Awake()
         {
             propertyBlock = new MaterialPropertyBlock();
 
@@ -60,7 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // if we want to re-enable fading after disabling it (through InitializeShaderFadeEnabled).
                 previousNearFadeValue = reticleRenderer.material.GetFloat("_Fade_Near_Distance_");
             }
+        }
 
+        protected void OnEnable()
+        {
             InitializeFadeBehavior(fadeEnabled);
 
             // Set the initial size of the reticle.
