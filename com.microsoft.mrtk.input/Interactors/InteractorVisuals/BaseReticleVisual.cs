@@ -1,5 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -22,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected GameObject customReticle;
         protected bool customReticleAttached;
 
-        public GameObject reticle => customReticleAttached ? customReticle : baseReticle;
+        public GameObject Reticle => customReticleAttached ? customReticle : baseReticle;
 
         #region IXRCustomReticleProvider Implementation
 

@@ -1,5 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -49,11 +50,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
             Application.onBeforeRender += UpdateReticle;
 
-            variableReticle = reticle?.GetComponentInChildren<IVariableReticle>();
+            if (Reticle != null)
+            {
+                variableReticle = Reticle.GetComponentInChildren<IVariableReticle>();
+            }
         }
 
         protected void OnDisable()
         {
+            rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
+
             UpdateReticle();
             Application.onBeforeRender -= UpdateReticle;
         }
@@ -70,12 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
                     reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
-                    reticle.SetActive(true);
+                    Reticle.SetActive(true);
                 }
                 else
                 {
                     bool rayHasHit = rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int _, out bool _);
-                    reticle.SetActive(rayHasHit);
+                    Reticle.SetActive(rayHasHit);
                 }
 
                 // Ensure that our visuals position and normal are set correctly.
@@ -98,13 +104,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                reticle.SetActive(false);
+                Reticle.SetActive(false);
             }
 
             // The proximity light should only be active when the reticle is
             if (proximityLight.gameObject != null)
             {
-                proximityLight.SetActive(reticle.activeSelf);
+                proximityLight.SetActive(Reticle.activeSelf);
             }
         }
 
