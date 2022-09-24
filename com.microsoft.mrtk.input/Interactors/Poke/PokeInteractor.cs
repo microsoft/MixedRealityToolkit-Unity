@@ -77,14 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pokeTrajectory.End = attachTransform.position;
         }
 
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            // Hiding interactor visuals
-            SetVisuals(false);
-        }
-
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(pokeTrajectory.Start, PokeRadius);
@@ -203,10 +195,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                         }
                     }
-
-                    // Update visuals (cursor)
-                    SetVisuals(isHoverActive);
-                    UpdateVisuals(interactablesHovered.Count > 0 ? interactablesHovered[0] as XRBaseInteractable : null);
                 }
             }
         }

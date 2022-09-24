@@ -35,26 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion IHandedInteractor
 
-        #region MonoBehaviour
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            // Showing interactor visuals
-            SetVisuals(true);
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            // Hiding interactor visuals
-            SetVisuals(false);
-        }
-
-        #endregion MonoBehaviour
-
         #region XRBaseInteractor
 
         /// <summary>
@@ -103,11 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // Ensure that the attachTransform tightly follows the interactor's transform
                     attachTransform.SetPositionAndRotation(transform.position, transform.rotation);
-
-                    SetVisuals(isHoverActive);
-
-                    // UpdateVisuals still needs to be defined, this is a placeholder for future functionality, hence why null is passed in as the argument
-                    UpdateVisuals(null);
                 }
             }
         }
