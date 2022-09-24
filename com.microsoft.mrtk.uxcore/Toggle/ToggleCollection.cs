@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 allowSwitchOff = value;
                 foreach (var toggle in Toggles)
                 {
+                    if (toggle == null) { continue; }
                     toggle.ToggleMode = value ? StatefulInteractable.ToggleType.Toggle : StatefulInteractable.ToggleType.OneWayToggle;
                 }
             }
@@ -173,6 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             for (int i = 0; i < Toggles.Count; i++)
             {
+                if (Toggles[i] == null) { continue; }
+
                 if (index != i)
                 {
                     Toggles[i].ForceSetToggled(false);
@@ -191,12 +194,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Add listeners to new list
             for (int i = 0; i < Toggles.Count; i++)
             {
+                if (Toggles[i] == null) { continue; }
+                
                 int itemIndex = i;
-
-                UnityAction<float> setSelectionAction = (_) =>
-                {
-                    SetSelection(itemIndex);
-                };
+                UnityAction<float> setSelectionAction = (_) => SetSelection(itemIndex);
 
                 toggleActions.Add(setSelectionAction);
 
@@ -209,12 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             for (int i = 0; i < toggleActions.Count; i++)
             {
-                StatefulInteractable toggle = Toggles[i];
-
-                if (toggle != null)
-                {
-                    toggle.IsToggled.OnEntered.RemoveListener(toggleActions[i]);
-                }
+                if (Toggles[i] == null) { continue; }
+                
+                Toggles[i].IsToggled.OnEntered.RemoveListener(toggleActions[i]);
             }
 
             toggleActions.Clear();
