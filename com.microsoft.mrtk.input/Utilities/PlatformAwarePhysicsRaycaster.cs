@@ -21,9 +21,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </remarks>
     internal class PlatformAwarePhysicsRaycaster : PhysicsRaycaster
     {
+        [SerializeField]
+        [Tooltip("For which layers should the interactor use a planar projection " +
+            "instead of spherical projection?")]
+        private LayerMask planarLayers;
+
+        /// <summary>
+        /// For which layers should the raycast use a planar projection
+        /// instead of spherical projection when dragging off of a 3D object?
+        /// </summary>
+        /// <remarks>
+        /// This is useful for UI elements, which are typically flat. Spherical
+        /// projection (default) is more intuitive for manipulating 3D objects, but
+        /// can cause issues when working with flat UI panels.
+        /// </remarks>
+        public LayerMask PlanarLayers { get => planarLayers; set => planarLayers = value; }
+
+        // Last known good hit distance, measured from the ray origin to the hit point.
+        // (note: not the same as from the camera position to the hit point!)
+        private float lastDistance = 1.0f;
+
+        private GameObject lastGameObject = null;
+
+        // Are we using a planar projection for the current hit?
+        private bool isPlanar = false;
+
+        // The plane used for planar projection.
+        private Plane plane;
+
         protected override void Awake()
         {
             base.Awake();
+
+            if (planarLayers == 0)
+            {
+                // If no mask is specified, default to UI.
+                planarLayers = LayerMask.GetMask("UI");
+            }
 
             // Are we on an XR device? If so, we don't want to
             // use camera raycasting at all.
@@ -60,14 +94,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // will continue firing OnDrags on the currently-selected Selectable.
             if (resultAppendList.Count == 0)
             {
+                // Debug.Log("rayOrigin = " + ray.origin.ToString("F5") + ", direction = " + ray.direction);
+                // Debug.Log("Near plane offset: " + (ray.origin - Camera.main.transform.position).magnitude.ToString("F3"));
+                // Debug.Log("ray magnitude: " + ray.direction.magnitude.ToString("F3"));
+                // Debug.Log("distanceToClipPlane: " + distanceToClipPlane.ToString("F3"));
+
+                float newDistance;
+                Vector3 newPoint;
+                Vector3 newNormal;
+
+                if (!plane.Raycast(ray, out newDistance))
+                {
+                    // Planar projection; intersects the new ray with the
+                    // plane formed by the orginal hit point and the hit normal.
+                    newPoint = ray.origin + ray.direction * newDistance;
+                    newNormal = plane.normal;
+                }
+                else
+                {
+                    Debug.Log("no intersection, plane normal = " + plane.normal.ToString("F3") + ", closest point = " + plane.ClosestPointOnPlane(ray.origin).ToString("F3"));
+                    Debug.Log("ray origin = " + ray.origin.ToString("F3") + ", direction = " + ray.direction.ToString("F3"));
+                    // Spherical projection. Equidistant from ray origin,
+                    // same distance as the last known good hit.
+                    newDistance = lastDistance;
+                    newPoint = ray.origin + ray.direction * newDistance;
+                    newNormal = -ray.direction;
+                }
+
                 var result = new RaycastResult
                 {
                     // We need an arbitrary GameObject to feed it; null will prevent
                     // the event from being processed by the system, strangely enough.
                     gameObject = gameObject, 
                     module = this,
-                    distance = ray.direction.magnitude, // arbitrary
-                    worldPosition = ray.origin + ray.direction, // arbitrary distance from camera
+                    distance = newDistance,
+                    worldPosition = ray.origin + ray.direction * lastDistance, // arbitrary distance from camera
                     worldNormal = -ray.direction, // arbitrary; reasonable enough
                     screenPosition = eventData.position,
                     displayIndex = displayIndex,
@@ -76,6 +137,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     sortingOrder = 0
                 };
                 resultAppendList.Add(result);
+            }
+            else
+            {
+                // Compute distance from the hit to the start of the ray.
+                // This will be used to construct to
+                lastDistance = (eventData.pointerCurrentRaycast.worldPosition - ray.origin).magnitude;
+                lastGameObject = eventData.pointerCurrentRaycast.gameObject;
+
+                // Should we use a planar projection or a spherical projection?
+                // if (lastGameObject != null)
+                // {
+                //     // isPlanar = ((1 << lastGameObject.layer) & planarLayers) != 0;
+                    isPlanar = true;
+                    plane = new Plane(-ray.direction.normalized, eventData.pointerCurrentRaycast.worldPosition);
+                // }
+                // else
+                // {
+                //     isPlanar = true;
+                // }
+                
             }
         }
     }
