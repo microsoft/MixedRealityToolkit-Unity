@@ -13,21 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     [AddComponentMenu("MRTK/UX/Canvas Proxy Interactor")]
     public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor, IModeManagedInteractor
     {
-        [SerializeField]
-        [Tooltip("For which layers should the interactor use a planar projection " +
-            "instead of spherical projection?")]
-        private LayerMask planarLayers;
-
-        /// <summary>
-        /// For which layers should the interactor use a planar projection
-        /// instead of spherical projection?
-        /// </summary>
-        /// <remarks>
-        /// This is useful for UI elements, which are typically flat. Spherical
-        /// projection (default) is more intuitive for manipulating 3D objects, but
-        /// can cause issues with nearby UI panels.
-        /// </remarks>
-        public LayerMask PlanarLayers { get => planarLayers; set => planarLayers = value; }
+        
 
         protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();
 
