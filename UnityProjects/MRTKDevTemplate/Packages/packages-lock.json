@@ -33,11 +33,11 @@
       }
     },
     "com.microsoft.mixedreality.visualprofiler": {
-      "version": "https://github.com/microsoft/VisualProfiler-Unity.git",
+      "version": "https://github.com/microsoft/VisualProfiler-Unity.git#v2.2.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "ad16f8fcba7b38346c09b21c8adf1b749eef2190"
+      "hash": "22d727d4d1641c27fa85a7519cf76b81890c8f3d"
     },
     "com.microsoft.mrtk.accessibility": {
       "version": "file:../../../com.microsoft.mrtk.accessibility",
