@@ -120,17 +120,21 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
         #region Monobehaviour methods
 
-        private AccessibilitySubsystem accessibilitySubsystem = null;
+        private static bool suppressSubsystemNotFound = false;
 
         private void Awake()
         {
-            accessibilitySubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<AccessibilitySubsystem>();
+            if ((AccessibilityHelpers.Subsystem == null) && !suppressSubsystemNotFound)
+            {
+                Debug.LogWarning("The accessibility subsystem is not enabled or has not yet started.");
+                suppressSubsystemNotFound = true;
+            }
         }
 
         private void OnEnable()
         {
-            if (accessibilitySubsystem == null) { return; }
-            if (!accessibilitySubsystem.TryRegisterDescribableObject(gameObject, Classification))
+            if (AccessibilityHelpers.Subsystem == null) { return; }
+            if (!AccessibilityHelpers.Subsystem.TryRegisterDescribableObject(gameObject, Classification))
             {
                 Debug.LogError($"Failed to register {gameObject.name} with the accessibility subsystem.");
             }
@@ -138,8 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
         private void OnDisable()
         {
-            if (accessibilitySubsystem == null) { return; }
-            if (!accessibilitySubsystem.TryUnregisterDescribableObject(gameObject, Classification))
+            if (AccessibilityHelpers.Subsystem == null) { return; }
+            if (!AccessibilityHelpers.Subsystem.TryUnregisterDescribableObject(gameObject, Classification))
             {
                 Debug.LogError($"Failed to unregister {gameObject.name} with the accessibility subsystem.");
             }
