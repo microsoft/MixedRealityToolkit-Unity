@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -8,39 +9,16 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Interactor helper object aligns a <see cref="LineRenderer"/> with the Interactor.
+    /// This visual component helps align a <see cref="LineRenderer"/> with the Interactor, while giving it "bendy" qualities
+    /// via the Bezier Data Provider
     /// </summary>
-    [AddComponentMenu("MRTK/Input/MRTK Ray Interactor Visual")]
+    [AddComponentMenu("MRTK/Input/MRTK Line Visual")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(LineRenderer))]
     [DefaultExecutionOrder(XRInteractionUpdateOrder.k_LineVisual)]
-    public class MRTKRayInteractorVisual : MonoBehaviour, IXRCustomReticleProvider
+    public class MRTKLineVisual : MonoBehaviour
     {
         [Header("Visual Settings")]
-
-        [SerializeField]
-        [Tooltip("The reticle (cursor), usually an IVariableReticle, along with a proximity light.")]
-        private GameObject reticle;
-
-        /// <summary>
-        /// The reticle (cursor), usually an IVariableReticle, along with a proximity light.
-        /// </summary>
-        public GameObject Reticle
-        {
-            get => reticle;
-            set
-            {
-                if (reticle != value)
-                {
-                    reticle = value;
-                    if (reticle != null)
-                    {
-                        variableSelectReticle = reticle.GetComponentInChildren<IVariableReticle>();
-                    }
-                }
-            }
-        }
-
         [SerializeField]
         [Tooltip("Color gradient when there is no applicable target")]
         Gradient noTargetColorGradient = new Gradient
@@ -225,11 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             propertyBlock = new MaterialPropertyBlock();
 
-            if (Reticle != null)
-            {
-                variableSelectReticle = Reticle.GetComponentInChildren<IVariableReticle>();
-            }
-
             // mafinc - Start the line renderer off disabled (invisible), we'll enable it
             // when we have enough data for it to render properly.
             if (lineRenderer != null)
@@ -238,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             Reset();
-            Application.onBeforeRender += OnBeforeRenderLineVisual;
+            Application.onBeforeRender += UpdateLineVisual;
             UpdateLineRendererProperties();
         }
 
@@ -252,10 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 lineRenderer.enabled = false;
             }
 
-            // Update reticle one last time to shut it off.
-            UpdateReticle(false);
-
-            Application.onBeforeRender -= OnBeforeRenderLineVisual;
+            Application.onBeforeRender -= UpdateLineVisual;
         }
 
         private bool stopLineAtFirstRaycastHit = true;
@@ -313,56 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #region IXRCustomReticleProvider Implementation
-
-        /// <inheritdoc />
-        public bool AttachCustomReticle(GameObject reticleInstance)
-        {
-            // If we don't already have a custom reticle,
-            // disable our standard reticle.
-            if (customReticle == null)
-            {
-                if (Reticle != null)
-                {
-                    Reticle.SetActive(false);
-                }
-            }
-            else if (customReticle != null)
-            {
-                // Otherwise, disable our current custom reticle.
-                customReticle.SetActive(false);
-            }
-
-            // Install the new custom reticle.
-            customReticle = reticleInstance;
-            if (customReticle != null)
-            {
-                customReticle.SetActive(true);
-                customVariableReticle = customReticle.GetComponentInChildren<IVariableReticle>();
-            }
-            return false;
-        }
-
-        /// <inheritdoc />
-        public bool RemoveCustomReticle()
-        {
-            if (customReticle != null)
-            {
-                customReticle.SetActive(false);
-            }
-
-            // If we have a standard reticle, re-enable that one.
-            if (Reticle != null)
-            {
-                Reticle.SetActive(true);
-            }
-
-            customReticle = null;
-            return false;
-        }
-
-        #endregion IXRCustomReticleProvider Implementation
-
         private void ClearLineRenderer()
         {
             if (TryFindLineRenderer())
@@ -370,194 +290,146 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 lineRenderer.SetPositions(clearPositions);
                 lineRenderer.positionCount = 0;
             }
-
-            UpdateReticle(false);
         }
+
+        private static readonly ProfilerMarker UpdateLinePerfMarker = new ProfilerMarker("[MRTK] MRTKLineVisual.UpdateLineVisual");
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
-        private void OnBeforeRenderLineVisual()
-        {
-            UpdateLineVisual();
-        }
-
         private void UpdateLineVisual()
         {
-            UpdateLineRendererProperties();
-
-            if (lineRenderer == null)
+            using(UpdateLinePerfMarker.Auto())
             {
-                return;
-            }
-            if (rayInteractor == null)
-            {
-                lineRenderer.enabled = false;
-                return;
-            }
+                UpdateLineRendererProperties();
 
-            // Get all the line sample points from the ILineRenderable interface
-            if (!rayInteractor.GetLinePoints(ref rayPositions, out rayPositionsCount))
-            {
-                lineRenderer.enabled = false;
-                ClearLineRenderer();
-                return;
-            }
-
-            // Sanity check.
-            if (rayPositions == null ||
-                rayPositions.Length == 0 ||
-                rayPositionsCount == 0 ||
-                rayPositionsCount > rayPositions.Length)
-            {
-                lineRenderer.enabled = false;
-                ClearLineRenderer();
-                return;
-            }
-
-            // Finally enable the line renderer if we pass the other checks
-            lineRenderer.enabled = rayInteractor.isHoverActive;
-
-            // Assign the first point to the ray origin
-            lineDataProvider.FirstPoint = rayPositions[0];
-
-            IVariableSelectInteractor variableSelectInteractor = rayInteractor as IVariableSelectInteractor;
-
-            if (variableSelectInteractor != null)
-            {
-                lineRenderer.GetPropertyBlock(propertyBlock);
-                propertyBlock.SetFloat("_Shift_", variableSelectInteractor.SelectProgress);
-                lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, variableSelectInteractor.SelectProgress);
-                lineRenderer.SetPropertyBlock(propertyBlock);
-            }
-
-            // If the interactor is currently selecting, lock the end of the ray to the selected object
-            if (rayInteractor.interactablesSelected.Count > 0)
-            {
-                // Assign the last point to the one saved by the callback
-                lineDataProvider.LastPoint = hitTargetTransform.TransformPoint(targetLocalHitPoint);
-                // Cursor and proximity light should follow the same last point
-                reticlePosition = lineDataProvider.LastPoint;
-                reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
-                rayHasHit = true;
-            }
-            // Otherwise draw out the line exactly as the Ray Interactor prescribes
-            else
-            {
-                // If the ray hits an object, truncate the visual appropriately
-                // Remove the last point in the list to keep the number of points consistent.
-                if (rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int endPositionInLine, out bool isValidTarget))
+                if (lineRenderer == null)
                 {
-                    // End the line at the current hit point.
-                    if ((isValidTarget || stopLineAtFirstRaycastHit) && endPositionInLine > 0 && endPositionInLine < rayPositionsCount)
-                    {
-                        rayPositions[endPositionInLine] = reticlePosition;
-                        rayPositionsCount = endPositionInLine + 1;
+                    return;
+                }
+                if (rayInteractor == null)
+                {
+                    lineRenderer.enabled = false;
+                    return;
+                }
 
-                        hitDistance = (reticlePosition - rayPositions[0]).magnitude;
-                        rayHasHit = true;
+                // Get all the line sample points from the ILineRenderable interface
+                if (!rayInteractor.GetLinePoints(ref rayPositions, out rayPositionsCount))
+                {
+                    lineRenderer.enabled = false;
+                    ClearLineRenderer();
+                    return;
+                }
+
+                // Sanity check.
+                if (rayPositions == null ||
+                    rayPositions.Length == 0 ||
+                    rayPositionsCount == 0 ||
+                    rayPositionsCount > rayPositions.Length)
+                {
+                    lineRenderer.enabled = false;
+                    ClearLineRenderer();
+                    return;
+                }
+
+                // Finally enable the line renderer if we pass the other checks
+                lineRenderer.enabled = rayInteractor.isHoverActive;
+
+                // Assign the first point to the ray origin
+                lineDataProvider.FirstPoint = rayPositions[0];
+
+                IVariableSelectInteractor variableSelectInteractor = rayInteractor as IVariableSelectInteractor;
+
+                if (variableSelectInteractor != null)
+                {
+                    lineRenderer.GetPropertyBlock(propertyBlock);
+                    propertyBlock.SetFloat("_Shift_", variableSelectInteractor.SelectProgress);
+                    lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, variableSelectInteractor.SelectProgress);
+                    lineRenderer.SetPropertyBlock(propertyBlock);
+                }
+
+                // If the interactor is currently selecting, lock the end of the ray to the selected object
+                if (rayInteractor.interactablesSelected.Count > 0)
+                {
+                    // Assign the last point to the one saved by the callback
+                    lineDataProvider.LastPoint = hitTargetTransform.TransformPoint(targetLocalHitPoint);
+                    rayHasHit = true;
+                }
+                // Otherwise draw out the line exactly as the Ray Interactor prescribes
+                else
+                {
+                    // If the ray hits an object, truncate the visual appropriately
+                    // Remove the last point in the list to keep the number of points consistent.
+                    if (rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int endPositionInLine, out bool isValidTarget))
+                    {
+                        // End the line at the current hit point.
+                        if ((isValidTarget || stopLineAtFirstRaycastHit) && endPositionInLine > 0 && endPositionInLine < rayPositionsCount)
+                        {
+                            rayPositions[endPositionInLine] = reticlePosition;
+                            rayPositionsCount = endPositionInLine + 1;
+
+                            hitDistance = (reticlePosition - rayPositions[0]).magnitude;
+                            rayHasHit = true;
+                        }
+                        else
+                        {
+                            rayHasHit = false;
+                        }
                     }
                     else
                     {
                         rayHasHit = false;
                     }
-                }
-                else
-                {
-                    rayHasHit = false;
+
+                    // Assign the last point to last point in the data structure
+                    lineDataProvider.LastPoint = rayPositions[rayPositionsCount - 1];
+
+                    // If we are hovering over a valid object, lerp the color based on pinchedness if applicable
+                    if (rayHasHit)
+                    {
+                        if (variableSelectInteractor != null)
+                        {
+                            lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, variableSelectInteractor.SelectProgress);
+                        }
+                        else
+                        {
+                            lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, rayInteractor.hasSelection ? 1 : 0);
+                        }
+                    }
+                    else
+                    {
+                        lineRenderer.colorGradient = NoTargetColorGradient;
+                    }
                 }
 
-                // Assign the last point to last point in the data structure
-                lineDataProvider.LastPoint = rayPositions[rayPositionsCount - 1];
-
-                // If we are hovering over a valid object, lerp the color based on pinchedness if applicable
+                // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
                 if (rayHasHit)
                 {
-                    if (variableSelectInteractor != null)
-                    {
-                        lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, variableSelectInteractor.SelectProgress);
-                    }
-                    else
-                    {
-                        lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, rayInteractor.hasSelection ? 1 : 0);
-                    }
+                    Vector3 startPoint = lineDataProvider.FirstPoint;
+                    Vector3 expectedPoint = startPoint + rayInteractor.rayOriginTransform.forward * hitDistance;
+
+                    // Lerp between the expected position and the expected point if we've hit an object
+                    lineDataProvider.SetPoint(1, Vector3.Lerp(startPoint, expectedPoint, startPointLerp));
+
+                    // Get our next 'expected' position by lerping between the expected point and the end point
+                    // The result will be a line that starts moving in the pointer's direction then bends towards the target
+                    expectedPoint = Vector3.Lerp(expectedPoint, lineDataProvider.LastPoint, endPointLerp);
+
+                    lineDataProvider.SetPoint(2, Vector3.Lerp(startPoint, expectedPoint, endPointLerp));
                 }
-                else
+
+                // Set positions for the rendered ray visual after passing it through the lineDataProvider
+                lineRenderer.positionCount = lineStepCount;
+
+                if (rendererPositions == null || rendererPositions.Length != lineRenderer.positionCount)
                 {
-                    lineRenderer.colorGradient = NoTargetColorGradient;
+                    rendererPositions = new Vector3[lineStepCount];
                 }
-            }
 
-            UpdateReticle(rayInteractor.hasHover ||
-                          rayInteractor.hasSelection ||
-                          (rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _)));
-
-            // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
-            if (rayHasHit)
-            {
-                Vector3 startPoint = lineDataProvider.FirstPoint;
-                Vector3 expectedPoint = startPoint + rayInteractor.rayOriginTransform.forward * hitDistance;
-
-                // Lerp between the expected position and the expected point if we've hit an object
-                lineDataProvider.SetPoint(1, Vector3.Lerp(startPoint, expectedPoint, startPointLerp));
-
-                // Get our next 'expected' position by lerping between the expected point and the end point
-                // The result will be a line that starts moving in the pointer's direction then bends towards the target
-                expectedPoint = Vector3.Lerp(expectedPoint, lineDataProvider.LastPoint, endPointLerp);
-
-                lineDataProvider.SetPoint(2, Vector3.Lerp(startPoint, expectedPoint, endPointLerp));
-            }
-
-            // Set positions for the rendered ray visual after passing it through the lineDataProvider
-            lineRenderer.positionCount = lineStepCount;
-
-            if (rendererPositions == null || rendererPositions.Length != lineRenderer.positionCount)
-            {
-                rendererPositions = new Vector3[lineStepCount];
-            }
-
-            for (int i = 0; i < lineStepCount; i++)
-            {
-                float normalizedDistance = GetNormalizedPointAlongLine(i);
-                rendererPositions[i] = lineDataProvider.GetPoint(normalizedDistance);
-            }
-            lineRenderer.SetPositions(rendererPositions);
-        }
-
-        // Based on whether the ray hit anything, the current hit position, normal, etc,
-        // update the current reticle (either standard or custom).
-        private void UpdateReticle(bool showCursor)
-        {
-            // Grab the reticle we're currently using
-            GameObject reticleToUse = customReticle != null ? customReticle : Reticle;
-            IVariableReticle variableReticleToUse = customReticle != null ? customVariableReticle : variableSelectReticle;
-
-            if (reticleToUse == null) { return; }
-
-            if (showCursor)
-            {
-                // Set the relevant reticle position/normal and ensure it's active.
-                reticleToUse.transform.position = reticlePosition;
-                reticleToUse.transform.forward = reticleNormal;
-
-                if (!reticleToUse.activeSelf)
+                for (int i = 0; i < lineStepCount; i++)
                 {
-                    reticleToUse.SetActive(true);
+                    float normalizedDistance = GetNormalizedPointAlongLine(i);
+                    rendererPositions[i] = lineDataProvider.GetPoint(normalizedDistance);
                 }
-
-                if (variableReticleToUse != null)
-                {
-                    if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
-                    {
-                        variableReticleToUse.UpdateVisuals(variableSelectInteractor.SelectProgress);
-                    }
-                    else
-                    {
-                        variableReticleToUse.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
-                    }
-                }
-            }
-            else
-            {
-                reticleToUse.SetActive(false);
+                lineRenderer.SetPositions(rendererPositions);
             }
         }
 
