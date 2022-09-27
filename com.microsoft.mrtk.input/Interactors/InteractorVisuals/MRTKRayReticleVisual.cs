@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // The proximity light should only be active when the reticle is
-                if (proximityLight.gameObject != null)
+                if (proximityLight != null)
                 {
                     proximityLight.SetActive(Reticle.activeSelf);
                 }
