@@ -107,6 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         {
             Debug.Log(Time.time + " | Press Enter...");
 #if ENABLE_INPUT_SYSTEM
+            if (Keyboard.current == null)
+            {
+                throw new System.Exception("Keyboard not detected, ensure that the application is in focus/not running in batch mode");
+            }
+
             while (!Keyboard.current[Key.Enter].wasPressedThisFrame)
             {
                 yield return null;
