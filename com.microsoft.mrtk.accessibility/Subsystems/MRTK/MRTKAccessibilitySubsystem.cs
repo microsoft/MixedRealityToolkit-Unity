@@ -123,19 +123,19 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 {
                     objectList.AddRange(describableObjects[ObjectClassification.People]);
                 }
-                else if ((int)(classifications & ObjectClassification.Places) != 0)
+                if ((int)(classifications & ObjectClassification.Places) != 0)
                 {
                     objectList.AddRange(describableObjects[ObjectClassification.Places]);
                 }
-                else if ((int)(classifications & ObjectClassification.Things) != 0)
+                if ((int)(classifications & ObjectClassification.Things) != 0)
                 {
                     objectList.AddRange(describableObjects[ObjectClassification.Things]);
                 }
-                else if ((int)(classifications & ObjectClassification.UserInterface) != 0)
+                if ((int)(classifications & ObjectClassification.UserInterface) != 0)
                 {
                     objectList.AddRange(describableObjects[ObjectClassification.UserInterface]);
                 }
-                else if ((int)(classifications & ObjectClassification.Background) != 0)
+                if ((int)(classifications & ObjectClassification.Background) != 0)
                 {
                     objectList.AddRange(describableObjects[ObjectClassification.Background]);
                 }
@@ -153,6 +153,10 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 float maxDistance,
                 List<GameObject> objectList)
             {
+                // Ensure there is a collection to filter.
+                if (objectList.Count == 0) { return; }
+
+                // Walk the list backwards, so that it does not hit a collection changed exception.
                 for (int i = (objectList.Count - 1); i != 0; i--)
                 {
                     GameObject obj = objectList[i];

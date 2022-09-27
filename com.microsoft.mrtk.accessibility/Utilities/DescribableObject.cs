@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     {
         [SerializeField]
         [Tooltip("What is the classification (ex: person, place, ui element, etc.) is this object?")]
-        private ObjectClassification classification = (ObjectClassification)0;
+        private ObjectClassification classification = ObjectClassification.Things;
 
         /// <summary>
         /// What is the classification (ex: person, place, ui element, etc.) is this object?
@@ -122,18 +122,15 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
         private static bool suppressSubsystemNotFound = false;
 
-        private void Awake()
+        private void OnEnable()
         {
             if ((AccessibilityHelpers.Subsystem == null) && !suppressSubsystemNotFound)
             {
                 Debug.LogWarning("The accessibility subsystem is not enabled or has not yet started.");
                 suppressSubsystemNotFound = true;
+                return;
             }
-        }
 
-        private void OnEnable()
-        {
-            if (AccessibilityHelpers.Subsystem == null) { return; }
             if (!AccessibilityHelpers.Subsystem.TryRegisterDescribableObject(gameObject, Classification))
             {
                 Debug.LogError($"Failed to register {gameObject.name} with the accessibility subsystem.");

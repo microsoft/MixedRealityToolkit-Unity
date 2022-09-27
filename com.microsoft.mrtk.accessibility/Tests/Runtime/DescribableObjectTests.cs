@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Core.Tests;
+using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -19,6 +20,18 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
         #region Setup / TearDown
 
         private readonly SCG.List<GameObject> sceneContents = new SCG.List<GameObject>();
+
+        [UnitySetUp]
+        public override IEnumerator Setup()
+        {
+            base.Setup();
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // The accessibility subsystem requires the MRTK lifecycle manager. This
+            // is currently attached to the rig, which resides in the input package.
+            InputTestUtilities.InstantiateRig();
+        }
 
         /// <summary>
         /// Cleans up the scene contents after testing describable object registration
@@ -91,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
             GameObject gameObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             gameObj.transform.position = location;
             gameObj.transform.localScale = testObjectScale;
+            sceneContents.Add(gameObj);
 
             if (isDescribable)
             {
@@ -102,8 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
         public IEnumerator EmptyScene()
         {
             yield return RuntimeTestUtilities.WaitForUpdates();
-
-            for (int i = 0; i < 10; i++) { yield return null; }
 
             Assert.IsTrue(AccessibilityHelpers.Subsystem != null, "Accessibility subsystem not found.");
 
@@ -141,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
                     (ObjectClassification)(-1),
-                    ReaderView.Surround,
+                    ReaderView.FieldOfView,
                     float.MaxValue,
                     describableObjects);
                 Assert.IsTrue(success, "Failed to get the collection of describable objects.");
@@ -180,8 +192,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
                     float.MaxValue,
                     describableObjects);
                 Assert.IsTrue(success, "Failed to get the collection of describable objects.");
-                Assert.IsTrue(
-                    describableObjects.Count == inViewPositions.Length,
+                Assert.AreEqual(
+                    inViewPositions.Length,
+                    describableObjects.Count,
                     "Failed to find the correct number of describable objects in the scene.");
             }
 
@@ -215,12 +228,13 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
                     (ObjectClassification)(-1),
-                    ReaderView.FieldOfView,
+                    ReaderView.Surround,
                     float.MaxValue,
                     describableObjects);
                 Assert.IsTrue(success, "Failed to get the collection of describable objects.");
-                Assert.IsTrue(
-                    describableObjects.Count == (inViewPositions.Length + outOfViewPositions.Length),
+                Assert.AreEqual(
+                    inViewPositions.Length + outOfViewPositions.Length,
+                    describableObjects.Count,
                     "Failed to find the correct number of describable objects in the scene.");
             }
 
