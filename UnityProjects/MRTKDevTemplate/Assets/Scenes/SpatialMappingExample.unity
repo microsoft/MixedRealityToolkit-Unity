@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -439,12 +439,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 566361764857432160, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -75.9
+      value: -68.468
       objectReference: {fileID: 0}
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_text
-      value: Spatial Mesh capabilities are represented through the addition of the
-        ARSpatialMeshManager object to the MRTK XR Rig.
+      value: 'MRTK3 uses ARFoundation for spatial awareness features. Add an ARMeshManager
+        to the XR Rig (underneath the Camera Offset) as well as a mesh prefab to
+        start spawning scene reconstruction (SR) meshes!
+
+
+        SR meshes can
+        be used for occlusion as well as collision. Try grabbing the icosahedron
+        and pushing/throwing it against the wall, or placing it underneath a table.'
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_Pivot.x
@@ -552,7 +558,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5493534032387613222, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalScale.y
-      value: 134.7046
+      value: 166.01642
+      objectReference: {fileID: 0}
+    - target: {fileID: 5493534032387613222, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -16.41
       objectReference: {fileID: 0}
     - target: {fileID: 6540126486176102408, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_Name
@@ -564,9 +574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6809291684801504143, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_text
-      value: 'ARSessionOrigin.cs
-
-        ARMeshManager.cs'
+      value: ARMeshManager.cs
       objectReference: {fileID: 0}
     - target: {fileID: 9182356717869552287, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_AnchoredPosition.y
