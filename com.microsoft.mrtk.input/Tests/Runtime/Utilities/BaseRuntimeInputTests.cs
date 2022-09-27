@@ -20,12 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
     {
         // Isolates/sandboxes the input system state for each test instance.
         private InputTestFixture input = new InputTestFixture();
-
-        // We only want to isolate the input system state when a test is running in batch mode.
-        // This is indicated by the test either running in the background or explicitly in batch mode.
-        // We do this because some runtime tests utilities rely on keyboard input, and isolating the
-        // input system state means that the phyiscal keyboard is never registered with the application
-        private bool useInputFixture => !Application.isFocused || Application.isBatchMode;
+        private bool useInputFixture;
 
         private XRInteractionManager cachedInteractionManager = null;
 
@@ -70,6 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public override IEnumerator Setup()
         {
             yield return base.Setup();
+
+            // We only want to isolate the input system state when a test is running in batch mode.
+            // This is indicated by the test either running in the background or explicitly in batch mode.
+            // We do this because some runtime tests utilities rely on keyboard input, and isolating the
+            // input system state means that the phyiscal keyboard is never registered with the application
+            useInputFixture = !Application.isFocused || Application.isBatchMode;
 
             if (useInputFixture)
             {
