@@ -13,8 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
     [AddComponentMenu("MRTK/UX/Canvas Proxy Interactor")]
     public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor, IModeManagedInteractor
     {
-        
-
         protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();
 
         protected IXRSelectInteractable manualSelectTarget;
@@ -22,16 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // We set this flag whenever we're cancelling an interaction. This will suppress
         // events (like OnClicked) on any StatefulInteractable.
         private bool isCancellingInteraction = false;
-
-        // The camera-depth of the last interaction ray; used to stabilize
-        // the cursor as it leaves the selected interactable.
-        // Reset when a new interactable is selected.
-        private float currentDepth;
-
-        // Should we use a planar projection for the currently-selected object?
-        private bool isPlanar = false;
-
-        private Plane plane;
 
         /// <inheritdoc />
         public void StartHover(IXRHoverInteractable target)
@@ -44,14 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (target != null)
             {
-                // Determine whether the target interactable should use planar projection.
-                // Typically, UI.
-                isPlanar = ((target is MonoBehaviour mb) && ((1 << mb.gameObject.layer) & planarLayers) != 0);
-                
-                plane = new Plane(Camera.main.transform.forward, worldPosition);
-
-                transform.position = Project(target, worldPosition, isPlanar);
-
+                transform.position = worldPosition;
                 validTargets.Add(target);
             }
         }
@@ -85,14 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
 
                 transform.position = worldPosition;
-                currentDepth = Vector3.Distance(Camera.main.transform.position, worldPosition);
-                
-                // Determine whether the target interactable should use planar projection.
-                // Typically, UI.
-                isPlanar = ((target is MonoBehaviour mb) && ((1 << mb.gameObject.layer) & planarLayers) != 0);
-
-                plane = new Plane(Camera.main.transform.forward, worldPosition);
-
                 manualSelectTarget = target;
                 StartManualInteraction(target);
             }
@@ -101,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <inheritdoc />
         public void UpdateSelect(IXRSelectInteractable interactable, Vector3 worldPosition)
         {
-            transform.position = Project(interactable, worldPosition, isPlanar);
+            transform.position = worldPosition;
         }
 
         /// <inheritdoc />
@@ -124,23 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
         }
-
-        private Vector3 Project(IXRInteractable interactable, Vector3 eventPosition, bool isPlanar)
-        {
-            return eventPosition;
-            // if (isPlanar)
-            // {
-            //     Vector3 cameraDelta = eventPosition - Camera.main.transform.position;
-            //     plane.Raycast(new Ray(Camera.main.transform.position, cameraDelta), out float t);
-            //     return Camera.main.transform.position + cameraDelta.normalized * t;
-            // }
-            // else
-            // {
-            //     Vector3 cameraDelta = eventPosition - Camera.main.transform.position;
-            //     return Camera.main.transform.position + cameraDelta.normalized * currentDepth;
-            // }
-        }
-
+        
         /// <inheritdoc />
         public override void GetValidTargets(List<IXRInteractable> targets)
         {
