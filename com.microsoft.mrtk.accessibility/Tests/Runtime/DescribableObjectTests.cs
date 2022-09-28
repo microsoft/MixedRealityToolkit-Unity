@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
         /// <summary>
         /// Ensures that the scene is properly prepared.
         /// </summary>
-        /// <returns></returns>
         [UnitySetUp]
         public override IEnumerator Setup()
         {
