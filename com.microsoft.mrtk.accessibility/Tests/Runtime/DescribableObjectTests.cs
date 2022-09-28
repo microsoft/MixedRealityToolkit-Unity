@@ -21,6 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
         private readonly SCG.List<GameObject> sceneContents = new SCG.List<GameObject>();
 
+        /// <summary>
+        /// Ensures that the scene is properly prepared.
+        /// </summary>
+        /// <returns></returns>
         [UnitySetUp]
         public override IEnumerator Setup()
         {
