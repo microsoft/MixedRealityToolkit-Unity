@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// Extended version of XRBaseInteractable to enable multi-hand interactions.
     /// </summary>
     [AddComponentMenu("MRTK/Core/MRTK Base Interactable")]
-    public class MRTKBaseInteractable : XRBaseInteractable, ISerializationCallbackReceiver
+    public class MRTKBaseInteractable : XRBaseInteractable
     {
         #region Gaze
 
@@ -189,11 +189,6 @@ namespace Microsoft.MixedReality.Toolkit
         private List<SystemInterfaceType> disabledInteractorTypes = new List<SystemInterfaceType>();
 
         /// <summary>
-        /// The set of interactors that are not allowed to select this interactable
-        /// </summary>
-        private HashSet<SystemInterfaceType> DisabledInteractorTypes { get; } = new HashSet<SystemInterfaceType>();
-
-        /// <summary>
         /// Adds the specified type to the set of interactors which cannot select this interactable
         /// </summary>
         public void DisableInteractorType(SystemInterfaceType type)
@@ -201,7 +196,6 @@ namespace Microsoft.MixedReality.Toolkit
             if (!disabledInteractorTypes.Contains(type))
             {
                 disabledInteractorTypes.Add(type);
-                SyncDisabledInteractorTypes();
             }
         }
         /// <summary>
@@ -210,7 +204,6 @@ namespace Microsoft.MixedReality.Toolkit
         public void EnableInteractorType(SystemInterfaceType type)
         {
             disabledInteractorTypes.Remove(type);
-            SyncDisabledInteractorTypes();
         }
 
         /// <summary>
@@ -230,24 +223,6 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             return true;
-        }
-
-        void ISerializationCallbackReceiver.OnAfterDeserialize()
-        {
-            SyncDisabledInteractorTypes();
-        }
-
-        // We don't need to do anything before serialization
-        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
-
-        private void SyncDisabledInteractorTypes()
-        {
-            // load contents from the SystemType List into the Type HashSet
-            DisabledInteractorTypes.Clear();
-            foreach (SystemInterfaceType allowedType in disabledInteractorTypes)
-            {
-                DisabledInteractorTypes.Add(allowedType);
-            }
         }
 
         #endregion Interactor Filtering
