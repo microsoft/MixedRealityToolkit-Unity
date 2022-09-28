@@ -291,6 +291,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             Assert.IsTrue(interactable.isSelected);
             Assert.IsTrue(interactable.IsGazePinchSelected);
+
+            yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            
+            Assert.IsFalse(interactable.isSelected);
+            Assert.IsFalse(interactable.IsGazePinchSelected);
+            Assert.IsTrue(interactable.isHovered);
+            Assert.IsTrue(interactable.IsGazePinchHovered);
         }
 
         /// <summary>
