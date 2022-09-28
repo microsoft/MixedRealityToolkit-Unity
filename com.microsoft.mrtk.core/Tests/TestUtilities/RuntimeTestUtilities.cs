@@ -107,11 +107,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         public static IEnumerator PauseTest()
         {
 #if UNITY_EDITOR
-            PauseDialogWindow.ShowWindow();
-            while (testPaused)
+            if(!Application.isBatchMode)
             {
-                yield return null;
-            };
+                PauseDialogWindow.ShowWindow();
+                while (testPaused)
+                {
+                    yield return null;
+                };
+            }
 #endif
         }
 
@@ -130,8 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             void OnGUI()
             {
                 GUILayout.Label("Test Paused for Debugging", EditorStyles.boldLabel);
-
-                if(GUILayout.Button("Resume Test"))
+                if (GUILayout.Button("Resume Test"))
                 {
                     testPaused = false;
                     Close();
