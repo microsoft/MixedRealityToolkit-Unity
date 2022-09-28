@@ -20,7 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
     {
         // Isolates/sandboxes the input system state for each test instance.
         private InputTestFixture input = new InputTestFixture();
-        private bool useInputFixture;
 
         private XRInteractionManager cachedInteractionManager = null;
 
@@ -34,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             {
                 if (cachedInteractionManager == null)
                 {
-                    cachedInteractionManager = UnityEngine.Object.FindObjectOfType<XRInteractionManager>();
+                    cachedInteractionManager = Object.FindObjectOfType<XRInteractionManager>();
                 }
                 return cachedInteractionManager;
             }
@@ -66,21 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         {
             yield return base.Setup();
 
-            // We only want to isolate the input system state when a test is running in batch mode.
-            // This is indicated by the test either running in the background or explicitly in batch mode.
-            // We do this because some runtime tests utilities rely on keyboard input, and isolating the
-            // input system state means that the phyiscal keyboard is never registered with the application
-            useInputFixture = !(UnityEditorInternal.InternalEditorUtility.isApplicationActive && Application.isFocused) || Application.isBatchMode;
+            input.Setup();
 
-            if (useInputFixture)
-            {
-                input.Setup();
-
-                // XRI needs these... ugh
-                InputSystem.RegisterInteraction<SectorInteraction>();
-                InputSystem.RegisterBindingComposite<Vector3FallbackComposite>();
-                InputSystem.RegisterBindingComposite<QuaternionFallbackComposite>();
-            }
+            // XRI needs these... ugh
+            InputSystem.RegisterInteraction<SectorInteraction>();
+            InputSystem.RegisterBindingComposite<Vector3FallbackComposite>();
+            InputSystem.RegisterBindingComposite<QuaternionFallbackComposite>();
 
             InputTestUtilities.InstantiateRig();
             InputTestUtilities.SetupSimulation();
@@ -95,10 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             cachedInteractionManager = null;
             cachedLookup = null;
 
-            if (useInputFixture)
-            {
-                input.TearDown();
-            }
+            input.TearDown();
 
             yield return base.TearDown();
         }

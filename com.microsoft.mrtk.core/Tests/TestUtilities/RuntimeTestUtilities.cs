@@ -100,28 +100,47 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 #endif
         }
 
+        private static bool testPaused;
         /// <summary>
-        /// Used for debugging. Pauses the test until the enter key is pressed.
+        /// Used for debugging. Pauses the test until the dialog is cleared.
         /// </summary>
-        public static IEnumerator WaitForEnterKey()
+        public static IEnumerator PauseTest()
         {
-            Debug.Log(Time.time + " | Press Enter...");
-#if ENABLE_INPUT_SYSTEM
-            if (Keyboard.current == null)
+            PauseDialogWindow.ShowWindow();
+            while (testPaused)
             {
-                throw new System.Exception("Keyboard not detected, ensure that the application is in focus/not running in batch mode");
+                yield return null;
+            };
+        }
+
+        private class PauseDialogWindow : EditorWindow
+        {
+            public static void ShowWindow()
+            {
+                testPaused = true;
+                var window = GetWindow(typeof(PauseDialogWindow));
+                var position = window.position;
+                position.center = new Rect(0f, 0f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+                window.position = position;
+                window.Show();
             }
 
-            while (!Keyboard.current[Key.Enter].wasPressedThisFrame)
+            void OnGUI()
             {
-                yield return null;
+                GUILayout.Label("Test Paused for Debugging", EditorStyles.boldLabel);
+
+                if(GUILayout.Button("Resume Test"))
+                {
+                    testPaused = false;
+                    Close();
+                }
             }
-#else
-            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+
+            // Make sure that we unpause the test if this window is closed
+            void OnDestroy()
             {
-                yield return null;
+                testPaused = false;
             }
-#endif
         }
 
         /// <summary>
