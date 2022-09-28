@@ -106,11 +106,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         /// </summary>
         public static IEnumerator PauseTest()
         {
+#if UNITY_EDITOR
             PauseDialogWindow.ShowWindow();
             while (testPaused)
             {
                 yield return null;
             };
+#endif
         }
 
         private class PauseDialogWindow : EditorWindow
