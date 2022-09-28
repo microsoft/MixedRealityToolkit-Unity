@@ -95,8 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
         /// <summary>
         /// Creates a test object and places it at the specified location.
         /// </summary>
-        /// <param name="location"></param>
-        /// <param name="isDescribable"></param>
+        /// <param name="location">The position at which to place the created object.</param>
+        /// <param name="isDescribable">Should the object have the DescribableObject script attached?</param>
         private void CreateTestObject(
             Vector3 location,
             bool isDescribable)
@@ -112,6 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
             }
         }
 
+        /// <summary>
+        /// Test case to verify that an empty scene is properly handled.
+        /// </summary>
         [UnityTest]
         public IEnumerator EmptyScene()
         {
@@ -132,6 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
             }
         }
 
+        /// <summary>
+        /// Test case to verify that a scene with only objects that are not describable is properly handled.
+        /// </summary>
         [UnityTest]
         public IEnumerator ObjectsNotDescribable()
         {
@@ -161,6 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
             }
         }
 
+        /// <summary>
+        /// Test case to verify that only describable objects in the camera view are reported.
+        /// </summary>
         [UnityTest]
         public IEnumerator CameraViewObjects()
         {
@@ -201,6 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Test case to verify that all describable objects in the scene are reported.
+        /// </summary>
         [UnityTest]
         public IEnumerator SurroundObjects()
         {
