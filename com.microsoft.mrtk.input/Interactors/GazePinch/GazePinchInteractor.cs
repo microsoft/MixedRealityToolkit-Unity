@@ -214,6 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="interactable">The interactable to compute the attach transform for.</param>
         private void ComputeAttachTransform(IXRSelectInteractable interactable)
         {
+            if (!AimPoseSource.TryGetPose(out Pose aimPose)) { return; }
+
             // Separate vars for fused position/rotation setting.
             Quaternion rotationToApply = attachTransform.rotation;
             Vector3 positionToApply = attachTransform.position;
@@ -222,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // we recorded on selection. Used to linearly scale the attach transform's
             // distance to the body for easier manipulation. Same as the equivalent
             // math done in the ray interactor.
-            float distanceRatio = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation)) / bodyDistanceOnSelect;
+            float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / bodyDistanceOnSelect;
 
             // Get the actual device/grab rotation. The controller transform is the aiming pose;
             // we must get the underlying grab rotation.
@@ -235,15 +237,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     var pinchCentroid = GetPinchCentroid(interactable);
 
-                    if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
-                    {
-                        // Compute the "virtual hand" position as the vector from this pinch to the average pinch.
-                        Vector3 objectOffset = pinchPose.position - pinchCentroid.position;
+                    // Compute the "virtual hand" position as the vector from this pinch to the average pinch.
+                    Vector3 objectOffset = pinchPose.position - pinchCentroid.position;
 
-                        // Compute the final attachTransform's position by transforming the interactor-local original attach point
-                        // by the aiming ray's rotation, scaling by the body-distance ratio, and then finally applying the virtual hand offset.
-                        positionToApply = aimPose.position + objectOffset + (aimPose.rotation * interactorLocalAttachPoint) * distanceRatio;
-                    }
+                    // Compute the final attachTransform's position by transforming the interactor-local original attach point
+                    // by the aiming ray's rotation (sans roll), scaling by the body-distance ratio, and then finally applying
+                    // the virtual hand offset.
+
+                    // The "noRollRay" is a rotation obtained by removing the roll component from the aim pose's orientation.
+                    // This is useful when transforming the interactor-local attach point, without the influence of the hand's roll.
+                    Quaternion noRollRay = Quaternion.LookRotation(aimPose.rotation * Vector3.forward);
+                    positionToApply = aimPose.position + objectOffset + (noRollRay * interactorLocalAttachPoint) * distanceRatio;
                 }
                 else
                 {
@@ -251,7 +255,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     positionToApply = pinchPose.position;
                 }
             }
-            
 
             attachTransform.SetPositionAndRotation(positionToApply, rotationToApply);
         }
@@ -318,9 +321,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var pinchCentroid = GetPinchCentroid(interactable);
 
-            // transform.rotation is the ray/aim rotation of the controller.
-            // Get a rotation that points in the direction of this aiming ray.
-            Quaternion rayRotation = Quaternion.LookRotation(transform.rotation * Vector3.forward);
+            if (!AimPoseSource.TryGetPose(out Pose aimPose)) { return;}
+
+            // The "noRollRay" is a rotation obtained by removing the roll component from the aim pose's orientation.
+            // This is useful when transforming the interactor-local attach point, without the influence of the hand's roll.
+            Quaternion noRollRay = Quaternion.LookRotation(aimPose.rotation * Vector3.forward);
 
             // Compute the "virtual hand" position as the vector from this pinch to the average pinch.
             Vector3 objectOffset = PinchPose.position - pinchCentroid.position;
@@ -343,14 +348,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 snapPoint = interactable.colliders[0].bounds.center;
             }
 
+            // Store a cached version of the attachTransform. We'll transform this into a no-roll-ray-relative
+            // coordinate space, store it, and then transform it back into world coordinates throughout the
+            // duration of the manipulation.
             Vector3 virtualAttachTransform = snapPoint + objectOffset;
 
             // Transform this virtual attachTransform into the interactor-local coordinate space.
-            interactorLocalAttachPoint = Quaternion.Inverse(rayRotation) * (virtualAttachTransform - transform.position);
+            interactorLocalAttachPoint = Quaternion.Inverse(noRollRay) * (virtualAttachTransform - aimPose.position);
 
             // Record the distance from the controller to the body of the user, to use as reference for subsequent
-            // distance measurements.
-            bodyDistanceOnSelect = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation));
+            // distance measurements. 
+            bodyDistanceOnSelect = PoseUtilities.GetDistanceToBody(aimPose);
         }
 
         /// <summary>
