@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // This is indicated by the test either running in the background or explicitly in batch mode.
             // We do this because some runtime tests utilities rely on keyboard input, and isolating the
             // input system state means that the phyiscal keyboard is never registered with the application
-            useInputFixture = !Application.isFocused || Application.isBatchMode;
+            useInputFixture = !(UnityEditorInternal.InternalEditorUtility.isApplicationActive && Application.isFocused) || Application.isBatchMode;
 
             if (useInputFixture)
             {
