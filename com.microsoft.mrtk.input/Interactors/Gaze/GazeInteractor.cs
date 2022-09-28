@@ -8,20 +8,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// An XRRayInteractor that enables eye gaze for focus and interaction.
+    /// Functionally empty while we learn more about the tooling necessary for successful gaze interaction development
     /// </summary>
     [AddComponentMenu("MRTK/Input/Gaze Interactor")]
-    public class GazeInteractor : XRRayInteractor, IMRTKInteractorVisuals, IGazeInteractor
+    public class GazeInteractor : XRRayInteractor, IGazeInteractor
     {
-        #region IMRTKInteractorVisuals
-
-        // No gaze visuals/reticles/rays/etc yet.
-        /// <inheritdoc />
-        public virtual void SetVisuals(bool isVisible) { }
-
-        // No gaze visuals/reticles/rays/etc yet.
-        /// <inheritdoc />
-        public virtual void UpdateVisuals(XRBaseInteractable interactable) { }
-
-        #endregion IMRTKInteractorVisuals
     }
 }

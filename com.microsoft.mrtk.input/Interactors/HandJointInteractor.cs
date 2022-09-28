@@ -15,8 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public abstract class HandJointInteractor :
         XRDirectInteractor,
-        IHandedInteractor,
-        IMRTKInteractorVisuals
+        IHandedInteractor
     {
         #region HandJointInteractor
 
@@ -35,64 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
 
         #endregion IHandedInteractor
-
-        #region IMRTKInteractorVisuals
-
-        [Header("Interactor visuals settings")]
-
-        [SerializeField]
-        [Tooltip("The visuals representing the interaction point, such as a cursor, donut, or other marker.")]
-        private GameObject touchVisuals;
-
-        /// <summary>
-        /// The visuals representing the interaction point, such as a cursor, donut, or other marker.
-        /// </summary>
-        public GameObject TouchVisuals { get => touchVisuals; set => touchVisuals = value; }
-
-        private static readonly ProfilerMarker SetVisualsPerfMarker =
-            new ProfilerMarker("[MRTK] HandJointInteractor.SetVisuals");
-
-        /// <inheritdoc/>
-        public virtual void SetVisuals(bool isVisible)
-        {
-            using (SetVisualsPerfMarker.Auto())
-            {
-                if (TouchVisuals == null) { return; }
-
-                TouchVisuals.SetActive(isVisible);
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void UpdateVisuals(XRBaseInteractable interactable)
-        {
-            if (TouchVisuals != null)
-            {
-                TouchVisuals.transform.SetPositionAndRotation(attachTransform.position, attachTransform.rotation);
-            }
-        }
-
-        #endregion IMRTKInteractorVisuals
-
-        #region MonoBehaviour
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            // Showing interactor visuals
-            SetVisuals(true);
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            // Hiding interactor visuals
-            SetVisuals(false);
-        }
-
-        #endregion MonoBehaviour
 
         #region XRBaseInteractor
 
@@ -142,11 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // Ensure that the attachTransform tightly follows the interactor's transform
                     attachTransform.SetPositionAndRotation(transform.position, transform.rotation);
-
-                    SetVisuals(isHoverActive);
-
-                    // UpdateVisuals still needs to be defined, this is a placeholder for future functionality, hence why null is passed in as the argument
-                    UpdateVisuals(null);
                 }
             }
         }

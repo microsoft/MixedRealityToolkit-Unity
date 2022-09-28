@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         displayName = "Eye Gaze (MRTK)",
         isGenericTypeOfDevice = false),
         Preserve]
-    internal class SimulatedEyeGazeDevice : InputDevice
+    public class SimulatedEyeGazeDevice : InputDevice
     {
         /// <summary>
         /// A <see cref="PoseControl"/> representing the <see cref="EyeGazeInteraction.pose"/> OpenXR binding.
