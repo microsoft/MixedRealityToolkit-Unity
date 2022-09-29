@@ -54,22 +54,22 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         [SerializeField]
         [Tooltip("Whether the collider should be affected by Rect2DMasks in parent components")]
-        private bool masked = true;
+        private bool useMask = true;
 
         /// <summary>
         /// Whether this object is added to a parent RectMask2D's IClippable
         /// </summary>
-        public bool ApplyMask
+        public bool UseMask
         {
-            get => masked;
+            get => useMask;
             set
             {
-                if (value != masked)
+                if (value != useMask)
                 {
-                    masked = value;
+                    useMask = value;
                     if (mask != null)
                     {
-                        if (masked)
+                        if (useMask)
                         {
                             mask.AddClippable(this);
                         }
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 mask = GetComponentInParent<RectMask2D>();
             }
 
-            if (mask != null && ApplyMask)
+            if (mask != null && UseMask)
             {
                 mask.AddClippable(this);
             }
@@ -209,12 +209,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 Rect computedRect = attachedRectTransform.rect;
 
-                if (masked != ApplyMask)
+                if (useMask != UseMask)
                 {
-                    ApplyMask = masked;
+                    UseMask = useMask;
                 }
 
-                if (mask != null && ApplyMask)
+                if (mask != null && UseMask)
                 {
                     // Transform the mask's rect to our local space.
                     Matrix4x4 matrix = rectTransform.worldToLocalMatrix * mask.transform.localToWorldMatrix;
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         }
                     }
                 }
-                else if (!ApplyMask && thisCollider != null && !thisCollider.enabled)
+                else if (!UseMask && thisCollider != null && !thisCollider.enabled)
                 {
                     thisCollider.enabled = true;
                 }
