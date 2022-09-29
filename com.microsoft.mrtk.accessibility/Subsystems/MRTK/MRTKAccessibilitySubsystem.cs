@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 {
                     if (list.Contains(gameObj))
                     {
-                        Debug.LogError($"{gameObj.name} has already been registerd as a describable object");
+                        Debug.LogError($"{gameObj.name} has already been registered as a describable object");
                         return false;
                     }
                 }
