@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         private static AccessibilitySubsystem subsystem = null;
 
         /// <summary>
-        /// The first running AccessibilitySubsystem instance    .
+        /// The first running AccessibilitySubsystem instance.
         /// </summary>
         public static AccessibilitySubsystem Subsystem
         {
