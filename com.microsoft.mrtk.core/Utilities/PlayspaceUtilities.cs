@@ -54,6 +54,18 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Transforms a <see cref="HandJointPose"/> from OpenXR scene-origin-space to Unity world-space.
+        /// Uses the XROrigin's CameraFloorOffsetObject transform.
+        /// </summary>
+        public static HandJointPose TransformPose(HandJointPose pose)
+        {
+            return new HandJointPose(
+                TransformPose(pose.Pose),
+                pose.Radius
+            );
+        }
+
+        /// <summary>
         /// Transforms a <see cref="Pose"/> from Unity world-space to OpenXR scene-origin-space.
         /// Uses the XROrigin's CameraFloorOffsetObject transform.
         /// </summary>
@@ -69,18 +81,14 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Transforms a <see cref="HandJointPose"/> from OpenXR scene-origin-space to Unity world-space.
+        /// Transforms a <see cref="HandJointPose"/> from Unity world-space to OpenXR scene-origin-space.
         /// Uses the XROrigin's CameraFloorOffsetObject transform.
         /// </summary>
-        public static HandJointPose TransformJointPose(HandJointPose joint)
+        public static HandJointPose InverseTransformPose(HandJointPose pose)
         {
-            // Null-checking Unity objects can be expensive. Caching this here cuts two null checks into one.
-            // Here, we use CameraFloorOffsetObject, because joint poses are reported local to the floor offset.
-            Transform origin = XROrigin.CameraFloorOffsetObject.transform;
             return new HandJointPose(
-                origin.TransformPoint(joint.Position),
-                origin.rotation * joint.Rotation,
-                joint.Radius
+                InverseTransformPose(pose.Pose),
+                pose.Radius
             );
         }
     }
