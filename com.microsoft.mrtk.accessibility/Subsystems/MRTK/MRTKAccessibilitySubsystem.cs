@@ -45,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 describableObjects.Add(ObjectClassification.Places, new List<GameObject>());
                 describableObjects.Add(ObjectClassification.Things, new List<GameObject>());
                 describableObjects.Add(ObjectClassification.UserInterface, new List<GameObject>());
-                describableObjects.Add(ObjectClassification.Background, new List<GameObject>());
 
                 Config = XRSubsystemHelpers.GetConfiguration<AccessibilitySubsystemConfig, MRTKAccessibilitySubsystem>();
                 invertTextColor = Config.InvertTextColor;
@@ -134,10 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 if ((int)(classifications & ObjectClassification.UserInterface) != 0)
                 {
                     objectList.AddRange(describableObjects[ObjectClassification.UserInterface]);
-                }
-                if ((int)(classifications & ObjectClassification.Background) != 0)
-                {
-                    objectList.AddRange(describableObjects[ObjectClassification.Background]);
                 }
             }
 

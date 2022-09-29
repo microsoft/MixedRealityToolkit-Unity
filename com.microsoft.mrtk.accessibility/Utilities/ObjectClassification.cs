@@ -29,12 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <summary>
         /// The object is a user interface component.
         /// </summary>
-        UserInterface = 1 << 3,
-
-        /// <summary>
-        /// The object is part of the scene background and is, generally,
-        /// not interactable.
-        /// </summary>
-        Background = 1 << 31
+        UserInterface = 1 << 3
     }
 }
