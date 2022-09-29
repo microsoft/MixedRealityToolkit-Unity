@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 List<GameObject> objCollection = describableObjects[classification];
                 if (!objCollection.Contains(gameObj))
                 {
-                    Debug.LogError($"{gameObj.name} has not been registerd as a describable object of classification {classification}");
+                    Debug.LogError($"{gameObj.name} has not been registered as a describable object of classification {classification}");
                     return false;
                 }
 
