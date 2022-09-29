@@ -52,6 +52,36 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [Tooltip("2D padding around the RectTransform.")]
         private Vector2 padding = Vector2.zero;
 
+        [SerializeField]
+        [Tooltip("Whether the collider should be affected by Rect2DMasks in parent components")]
+        private bool masked = true;
+
+        /// <summary>
+        /// Whether this object is added to a parent RectMask2D's IClippable
+        /// </summary>
+        public bool ApplyMask
+        {
+            get => masked;
+            set
+            {
+                if (value != masked)
+                {
+                    masked = value;
+                    if (mask != null)
+                    {
+                        if (masked)
+                        {
+                            mask.AddClippable(this);
+                        }
+                        else
+                        {
+                            mask.RemoveClippable(this);
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 2D padding around the rect transform.
         /// </summary>
@@ -109,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 mask = GetComponentInParent<RectMask2D>();
             }
 
-            if (mask != null)
+            if (mask != null && ApplyMask)
             {
                 mask.AddClippable(this);
             }
@@ -179,7 +209,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 Rect computedRect = attachedRectTransform.rect;
 
-                if (mask != null)
+                if (masked != ApplyMask)
+                {
+                    ApplyMask = masked;
+                }
+
+                if (mask != null && ApplyMask)
                 {
                     // Transform the mask's rect to our local space.
                     Matrix4x4 matrix = rectTransform.worldToLocalMatrix * mask.transform.localToWorldMatrix;
@@ -202,6 +237,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
                             thisCollider.enabled = true;
                         }
                     }
+                }
+                else if (!ApplyMask && thisCollider != null && !thisCollider.enabled)
+                {
+                    thisCollider.enabled = true;
                 }
 
                 // Apply the rect to the collider.
