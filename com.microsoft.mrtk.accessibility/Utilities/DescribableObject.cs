@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         private ObjectClassification classification = ObjectClassification.Things;
 
         /// <summary>
-        /// What is the classification (ex: person, place, ui element, etc.) is this object?
+        /// What is the classification (ex: person, place, ui element, etc.) of this object?
         /// </summary>
         public ObjectClassification Classification => classification;
 
