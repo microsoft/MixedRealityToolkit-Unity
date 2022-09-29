@@ -840,7 +840,6 @@ MonoBehaviour:
   m_HapticHoverCancelDuration: 0
   pokePoseSource:
     id: 0
-  touchVisuals: {fileID: 4299642553587339577}
   references:
     version: 1
     00000000:
@@ -1787,6 +1786,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+--- !u!1 &3552666654439622812 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 1009008764017234214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8086910922498750391 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
@@ -1802,7 +1806,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4368997581537000626
+--- !u!114 &6256940305535466658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1811,10 +1815,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4299642553587339577}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94d0a3cfa70939b4c802013c695e5d72, type: 3}
+  m_Script: {fileID: 11500000, guid: 518e5c0e6d2c664478d85d0ceae60c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   baseReticle: {fileID: 8086910922498750391}
+  pokeInteractor: {fileID: 1948193616346090107}
+  proximityLight: {fileID: 3552666654439622812}
 --- !u!114 &943052423812839532
 MonoBehaviour:
   m_ObjectHideFlags: 0

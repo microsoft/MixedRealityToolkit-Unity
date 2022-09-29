@@ -33,11 +33,11 @@
       }
     },
     "com.microsoft.mixedreality.visualprofiler": {
-      "version": "https://github.com/microsoft/VisualProfiler-Unity.git",
+      "version": "https://github.com/microsoft/VisualProfiler-Unity.git#v2.2.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "ad16f8fcba7b38346c09b21c8adf1b749eef2190"
+      "hash": "22d727d4d1641c27fa85a7519cf76b81890c8f3d"
     },
     "com.microsoft.mrtk.accessibility": {
       "version": "file:../../../com.microsoft.mrtk.accessibility",
@@ -64,7 +64,7 @@
       "dependencies": {
         "com.unity.xr.interaction.toolkit": "2.0.3",
         "com.unity.xr.management": "4.2.1",
-        "com.unity.xr.core-utils": "2.1.0-pre.1"
+        "com.unity.xr.core-utils": "2.1.0"
       }
     },
     "com.microsoft.mrtk.data": {
@@ -119,7 +119,7 @@
         "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.inputsystem": "1.3.0",
         "com.unity.xr.interaction.toolkit": "2.0.3",
-        "com.unity.xr.core-utils": "2.1.0-pre.1"
+        "com.unity.xr.core-utils": "2.1.0"
       }
     },
     "com.microsoft.mrtk.spatialmanipulation": {
@@ -370,7 +370,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.core-utils": {
-      "version": "2.1.0-pre.1",
+      "version": "2.1.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
