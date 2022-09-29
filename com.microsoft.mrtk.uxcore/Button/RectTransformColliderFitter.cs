@@ -76,6 +76,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         else
                         {
                             mask.RemoveClippable(this);
+                            if (thisCollider != null && !thisCollider.enabled)
+                            {
+                                thisCollider.enabled = true;
+                            }
                         }
                     }
                 }
@@ -237,10 +241,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                             thisCollider.enabled = true;
                         }
                     }
-                }
-                else if (!UseMask && thisCollider != null && !thisCollider.enabled)
-                {
-                    thisCollider.enabled = true;
                 }
 
                 // Apply the rect to the collider.
