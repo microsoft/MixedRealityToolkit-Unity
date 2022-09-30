@@ -35,10 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     variableReticle = Reticle.GetComponent<IVariableReticle>();
                 }
-                else
-                {
-                    Debug.LogWarning("No IVariableReticle found for the Reticle Visual.", this);
-                }
 
                 return variableReticle;
             }

@@ -63,9 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()
         {
-            if(Reticle != null)
+            using (UpdateReticlePerfMarker.Auto())
             {
-                using (UpdateReticlePerfMarker.Auto())
+                if (Reticle != null)
                 {
                     bool showReticle = VisibilitySettings == ReticleVisibilitySettings.AllValidSurfaces || rayInteractor.hasHover || rayInteractor.hasSelection ||
                         rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _);

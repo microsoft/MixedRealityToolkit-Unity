@@ -38,9 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()
         {
-            if(Reticle != null)
+            using (UpdateReticlePerfMarker.Auto())
             {
-                using (UpdateReticlePerfMarker.Auto())
+                if (Reticle != null)
                 {
                     Reticle.SetActive(pokeInteractor.enabled && pokeInteractor.isHoverActive);
 
