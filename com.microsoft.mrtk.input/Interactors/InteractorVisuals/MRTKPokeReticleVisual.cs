@@ -38,20 +38,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()
         {
-            using (UpdateReticlePerfMarker.Auto())
+            if(Reticle != null)
             {
-                Reticle.SetActive(pokeInteractor.enabled && pokeInteractor.isHoverActive);
-
-                // TODO: Ideally we'd want the ReticleVisualScript to be responsible for all aspects of a visuals appearance.
-                // This is because it would allow us to freely use different reticle icons without changing other behavior.
-                // However, until the ReticleMagnetism class is revisited and potentially incorporated into this class, we'll
-                // leave all pose related responsibilities to the ReticleMagnetism component.
-                // reticle.transform.SetPositionAndRotation(pokeInteractor.PokeTrajectory.End, pokeInteractor.attachTransform.rotation);
-
-                // The proximity light should only be active when the reticle is
-                if (proximityLight != null)
+                using (UpdateReticlePerfMarker.Auto())
                 {
-                    proximityLight.SetActive(Reticle.activeSelf);
+                    Reticle.SetActive(pokeInteractor.enabled && pokeInteractor.isHoverActive);
+
+                    // TODO: Ideally we'd want the ReticleVisualScript to be responsible for all aspects of a visuals appearance.
+                    // This is because it would allow us to freely use different reticle icons without changing other behavior.
+                    // However, until the ReticleMagnetism class is revisited and potentially incorporated into this class, we'll
+                    // leave all pose related responsibilities to the ReticleMagnetism component.
+                    // reticle.transform.SetPositionAndRotation(pokeInteractor.PokeTrajectory.End, pokeInteractor.attachTransform.rotation);
+
+                    // The proximity light should only be active when the reticle is
+                    if (proximityLight != null)
+                    {
+                        proximityLight.SetActive(Reticle.activeSelf);
+                    }
                 }
             }
         }

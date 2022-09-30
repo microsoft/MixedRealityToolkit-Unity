@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // reusable vectors for determining the raycast hit data
         private Vector3 reticlePosition;
         private Vector3 reticleNormal;
-        private IVariableReticle variableReticle;
 
         /// <summary>
         /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only
@@ -50,11 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
             Application.onBeforeRender += UpdateReticle;
-
-            if (Reticle != null)
-            {
-                variableReticle = Reticle.GetComponentInChildren<IVariableReticle>();
-            }
         }
 
         protected void OnDisable()
@@ -69,52 +63,55 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()
         {
-            using (UpdateReticlePerfMarker.Auto())
+            if(Reticle != null)
             {
-                bool showReticle = VisibilitySettings == ReticleVisibilitySettings.AllValidSurfaces || rayInteractor.hasHover || rayInteractor.hasSelection ||
-                    rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _);
-
-                if (showReticle)
+                using (UpdateReticlePerfMarker.Auto())
                 {
-                    if (rayInteractor.interactablesSelected.Count > 0)
-                    {
-                        reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
-                        reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
-                        Reticle.SetActive(true);
-                    }
-                    else
-                    {
-                        bool rayHasHit = rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int _, out bool _);
-                        Reticle.SetActive(rayHasHit);
-                    }
+                    bool showReticle = VisibilitySettings == ReticleVisibilitySettings.AllValidSurfaces || rayInteractor.hasHover || rayInteractor.hasSelection ||
+                        rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _);
 
-                    // Ensure that our visuals position and normal are set correctly.
-                    // The reticle should be a direct child of this gameobject, so it's position and rotation should match this gameobject's
-                    transform.position = reticlePosition;
-                    transform.forward = reticleNormal;
-
-                    // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
-                    if (variableReticle != null)
+                    if (showReticle)
                     {
-                        if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
+                        if (rayInteractor.interactablesSelected.Count > 0)
                         {
-                            variableReticle.UpdateVisuals(variableSelectInteractor.SelectProgress);
+                            reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
+                            reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
+                            Reticle.SetActive(true);
                         }
                         else
                         {
-                            variableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
+                            bool rayHasHit = rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int _, out bool _);
+                            Reticle.SetActive(rayHasHit);
+                        }
+
+                        // Ensure that our visuals position and normal are set correctly.
+                        // The reticle should be a direct child of this gameobject, so it's position and rotation should match this gameobject's
+                        transform.position = reticlePosition;
+                        transform.forward = reticleNormal;
+
+                        // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
+                        if (VariableReticle != null)
+                        {
+                            if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
+                            {
+                                VariableReticle.UpdateVisuals(variableSelectInteractor.SelectProgress);
+                            }
+                            else
+                            {
+                                VariableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Reticle.SetActive(false);
-                }
+                    else
+                    {
+                        Reticle.SetActive(false);
+                    }
 
-                // The proximity light should only be active when the reticle is
-                if (proximityLight != null)
-                {
-                    proximityLight.SetActive(Reticle.activeSelf);
+                    // The proximity light should only be active when the reticle is
+                    if (proximityLight != null)
+                    {
+                        proximityLight.SetActive(Reticle.activeSelf);
+                    }
                 }
             }
         }

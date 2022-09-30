@@ -25,7 +25,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public GameObject Reticle => customReticleAttached ? customReticle : baseReticle;
 
-        #region IXRCustomReticleProvider Implementation
+        private IVariableReticle variableReticle;
+
+        public IVariableReticle VariableReticle
+        {
+            get
+            {
+                if (variableReticle == null)
+                {
+                    variableReticle = Reticle.GetComponent<IVariableReticle>();
+                }
+                else
+                {
+                    Debug.LogWarning("No IVariableReticle found for the Reticle Visual.", this);
+                }
+
+                return variableReticle;
+            }
+        }
+        #region IXRCustomReticleProvider
 
         /// <inheritdoc />
         public bool AttachCustomReticle(GameObject reticleInstance)
@@ -57,6 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             customReticleAttached = true;
+
+            // Make sure that the variable reticle now refers to the correct reticle
+            variableReticle = Reticle.GetComponent<IVariableReticle>();
 
             return true;
         }
