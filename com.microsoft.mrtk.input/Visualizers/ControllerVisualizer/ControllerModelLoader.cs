@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return null;
             }
 
-            if (controllerModelDictionary.TryGetValue(modelKey, out gltfGameObject))
+            if (controllerModelDictionary.TryGetValue(modelKey, out gltfGameObject) && gltfGameObject != null)
             {
                 gltfGameObject.SetActive(true);
                 return gltfGameObject;

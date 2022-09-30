@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using Microsoft.MixedReality.Toolkit.Subsystems;
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
@@ -89,6 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             RenderControllerVisuals(context.control.device);
         }
 
+        /// <summary>
+        /// A cache used internally to store the platform visuals that are used for an input device
+        /// </summary>
+        private static Dictionary<UnityInputSystem.InputDevice, (bool, GameObject)> inputDevicePlatformVisualsCache = new Dictionary<UnityInputSystem.InputDevice, (bool, GameObject)>();
+
         private void RenderControllerVisuals(UnityInputSystem.InputDevice inputDevice)
         {
             // This process may change in the future as unity updates its input subsystem.
@@ -113,7 +118,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     useFallbackVisuals = HandsAggregator == null || !HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handNode, out _);
                     isSimulatedController = false;
                 }
-                InstantiateControllerVisuals(!isSimulatedController, useFallbackVisuals);
+
+                InstantiateControllerVisuals(inputDevice, !isSimulatedController, useFallbackVisuals);
             }
         }
 
@@ -125,11 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly Quaternion controllerModelRotatedOffset = Quaternion.Euler(0, 180, 0);
 
         /// <summary>
-        /// Tries to instantiate controller visuals for the specified hand node.
+        /// Tries to instantiate controller visuals for the specified input device
         /// </summary>
+        /// <param name="inputDevice">The input device we want to generate visuals for</param>
         /// <param name="usePlatformVisuals">Whether or not to try to load visuals from the platform provider</param>
         /// <param name="useFallbackVisuals">Whether or not to use the fallback controller visuals</param>
-        private async void InstantiateControllerVisuals(bool usePlatformVisuals, bool useFallbackVisuals)
+        private async void InstantiateControllerVisuals(UnityInputSystem.InputDevice inputDevice, bool usePlatformVisuals, bool useFallbackVisuals)
         {
             // Disable any preexisting controller models before trying to render new ones.
             if (platformLoadedGameObject != null)
@@ -148,19 +155,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Try to load the controller model from the platform
             if (usePlatformVisuals)
             {
-                platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(handNode.ToHandedness());
-                if (platformLoadedGameObject != null)
-                {
-                    // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
-                    // We need to rotate these models in order to have them pointing in the correct direction on device.
-                    if (platformLoadedGameObjectRoot == null)
-                    {
-                        platformLoadedGameObjectRoot = new GameObject("Platform Model Root");
-                    }
-                    platformLoadedGameObject.transform.parent = platformLoadedGameObjectRoot.transform;
-                    platformLoadedGameObject.transform.SetPositionAndRotation(platformLoadedGameObjectRoot.transform.position, platformLoadedGameObjectRoot.transform.rotation * controllerModelRotatedOffset);
+                // First check if we've loaded visuals for this input device before.
+                // Only try to load models from the platform sdk if the controllerGameObject is now null or if
+                bool existsInCache = inputDevicePlatformVisualsCache.TryGetValue(inputDevice, out var results);
+                var (loadableFromPlatform, cachedControllerGameObject) = existsInCache ? results : (false, null);
 
-                    controllerGameObject = platformLoadedGameObjectRoot;
+                if (!existsInCache || (loadableFromPlatform && cachedControllerGameObject == null))
+                {
+                    platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(handNode.ToHandedness());
+                    if (platformLoadedGameObject != null)
+                    {
+                        // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
+                        // We need to rotate these models in order to have them pointing in the correct direction on device.
+                        if (platformLoadedGameObjectRoot == null)
+                        {
+                            platformLoadedGameObjectRoot = new GameObject("Platform Model Root");
+                        }
+                        platformLoadedGameObject.transform.parent = platformLoadedGameObjectRoot.transform;
+                        platformLoadedGameObject.transform.SetPositionAndRotation(platformLoadedGameObjectRoot.transform.position, platformLoadedGameObjectRoot.transform.rotation * controllerModelRotatedOffset);
+
+                        controllerGameObject = platformLoadedGameObjectRoot;
+                    }
+
+                    // Finally cache whether we were able to load the controller model as well as the model itself
+                    if (!existsInCache)
+                    {
+                        inputDevicePlatformVisualsCache.Add(inputDevice, (platformLoadedGameObject != null, platformLoadedGameObject));
+                    }
+                    else
+                    {
+                        inputDevicePlatformVisualsCache[inputDevice] = (platformLoadedGameObject != null, platformLoadedGameObject);
+                    }
+                }
+                else
+                {
+                    controllerGameObject = cachedControllerGameObject;
                 }
             }
 
