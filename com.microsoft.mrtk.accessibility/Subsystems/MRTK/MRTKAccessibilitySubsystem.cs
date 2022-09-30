@@ -151,6 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 // Ensure there is a collection to filter.
                 if (objectList.Count == 0) { return; }
 
+                float maxDistanceSquared = maxDistance * maxDistance;
+
                 // Walk the list backwards, so that it does not hit a collection changed exception.
                 for (int i = (objectList.Count - 1); i != 0; i--)
                 {
@@ -172,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                     }
 
                     // Is it closer than the maximum distance?
-                    if (maxDistance < Mathf.Abs(Vector3.Distance(Camera.main.transform.position, obj.transform.position)))
+                    if (maxDistanceSquared < (Camera.main.transform.position - obj.transform.position).sqrMagnitude)
                     {
                         objectList.Remove(obj);
                     }
