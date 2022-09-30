@@ -9,19 +9,23 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// This script disables the GameObject if the first detected XRDisplaySubsystem is
-    /// not opaque. (If no XRDisplaySubsystem is found, the script assumes the platform's
-    /// display is opaque.) Useful for only showing environment models on opaque/VR devices.
+    /// This script disables the target gameObject if the first detected XRDisplaySubsystem is
+    /// not opaque. Useful for only showing environment models on opaque/VR devices.
     /// </summary>
     internal class OnlyShowWhileOpaque : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("GameObject to enable/disable based on XR display opacity. If null, defaults to this GameObject.")]
+        private GameObject targetObject;
+
         private XRDisplaySubsystem displaySubsystem = null;
-        
-        private bool isVisible = false;
 
         private void Awake()
         {
-            isVisible = gameObject.activeSelf;
+            if (targetObject == null)
+            {
+                targetObject = gameObject;
+            }
         }
 
         private void Update()
@@ -34,10 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             // If we've successfully found a displaySubsystem, but the current visibility
             // doesn't match the opacity of the XR display...
-            if (displaySubsystem != null && isVisible != displaySubsystem.displayOpaque)
+            if (displaySubsystem != null && targetObject.activeSelf != displaySubsystem.displayOpaque)
             {
-                isVisible = displaySubsystem.displayOpaque;
-                gameObject.SetActive(isVisible);
+                targetObject.SetActive(displaySubsystem.displayOpaque);
             }
         }
     }
