@@ -35,8 +35,8 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
         
-        [ObsoleteAttribute("For transforming trackables poses into worldspace, use XROrigin.FloorOffsetObject.transform.")]
-        public static Transform ReferenceTransform;
+        [ObsoleteAttribute("For transforming trackables poses into worldspace, use XROrigin.CameraFloorOffsetObject.transform.")]
+        public static Transform ReferenceTransform => XROrigin.CameraFloorOffsetObject.transform;
 
         /// <summary>
         /// Transforms a <see cref="Pose"/> from OpenXR scene-origin-space to Unity world-space.

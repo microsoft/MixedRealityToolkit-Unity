@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             // Adjust the *new* world pose by the anchor delta.
             Pose adjustedWorldPose = new Pose(
-                worldPose.position -  (anchorPoint - WorldPosition),
+                worldPose.position - (anchorPoint - WorldPosition),
                 worldPose.rotation);
 
             UpdateAbsolute(adjustedWorldPose, controls, rotationMode, shouldUseRayVector);
