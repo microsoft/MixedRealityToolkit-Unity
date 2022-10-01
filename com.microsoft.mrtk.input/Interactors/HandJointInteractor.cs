@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -17,101 +15,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public abstract class HandJointInteractor :
         XRDirectInteractor,
-        IHandedInteractor,
-        IMRTKInteractorVisuals
+        IHandedInteractor
     {
         #region HandJointInteractor
-
-        [Header("Hand joint interactor settings")]
-
-        [SerializeField]
-        [Tooltip("The XRNode on which this hand is located.")]
-        private XRNode handNode;
-
-        /// <summary>
-        /// The XRNode on which this hand is located.
-        /// </summary>
-        protected XRNode HandNode => handNode;
-
-        /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
-        /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
 
         /// <summary>
         /// Concrete implementations should override this function to specify the point
         /// at which the interaction occurs. This would be the tip of the index finger
         /// for a poke interactor, or some other computed position from other data sources.
         /// </summary>
-        protected abstract bool TryGetInteractionPoint(out HandJointPose jointPose);
+        protected abstract bool TryGetInteractionPoint(out Pose pose);
 
         #endregion HandJointInteractor
 
         #region IHandedInteractor
 
         /// <inheritdoc/>
-        Handedness IHandedInteractor.Handedness => HandNode.ToHandedness();
+        Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
 
         #endregion IHandedInteractor
-
-        #region IMRTKInteractorVisuals
-
-        [Header("Interactor visuals settings")]
-
-        [SerializeField]
-        [Tooltip("The visuals representing the interaction point, such as a cursor, donut, or other marker.")]
-        private GameObject touchVisuals;
-
-        /// <summary>
-        /// The visuals representing the interaction point, such as a cursor, donut, or other marker.
-        /// </summary>
-        public GameObject TouchVisuals { get => touchVisuals; set => touchVisuals = value; }
-
-        private static readonly ProfilerMarker SetVisualsPerfMarker =
-            new ProfilerMarker("[MRTK] HandJointInteractor.SetVisuals");
-
-        /// <inheritdoc/>
-        public virtual void SetVisuals(bool isVisible)
-        {
-            using (SetVisualsPerfMarker.Auto())
-            {
-                if (TouchVisuals == null) { return; }
-
-                TouchVisuals.SetActive(isVisible);
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void UpdateVisuals(XRBaseInteractable interactable)
-        {
-            if (TouchVisuals != null)
-            {
-                TouchVisuals.transform.SetPositionAndRotation(attachTransform.position, attachTransform.rotation);
-            }
-        }
-
-        #endregion IMRTKInteractorVisuals
-
-        #region MonoBehaviour
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            // Showing interactor visuals
-            SetVisuals(true);
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            // Hiding interactor visuals
-            SetVisuals(false);
-        }
-
-        #endregion MonoBehaviour
 
         #region XRBaseInteractor
 
@@ -143,31 +65,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             using (ProcessInteractorPerfMarker.Auto())
             {
-                if (HandsAggregator == null)
-                {
-                    return;
-                }
-
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
                     // Obtain near interaction point, and set our interactor's
                     // position/rotation to the interaction point's pose.
-                    interactionPointTracked = TryGetInteractionPoint(out HandJointPose interactionPoint);
+                    interactionPointTracked = TryGetInteractionPoint(out Pose interactionPose);
                     if (interactionPointTracked)
                     {
-                        attachTransform.SetPositionAndRotation(interactionPoint.Position, interactionPoint.Rotation);
+                        transform.SetPositionAndRotation(interactionPose.position, interactionPose.rotation);
                     }
                     else
                     {
-                        // If we have no valid tracked interaction point, reset to whatever our parent XRController's pose is.
-                        attachTransform.localPosition = Vector3.zero;
-                        attachTransform.localRotation = Quaternion.identity;
+                        // If we don't have a joint pose, reset to whatever our parent XRController's pose is.
+                        transform.localPosition = Vector3.zero;
+                        transform.localRotation = Quaternion.identity;
                     }
 
-                    SetVisuals(isHoverActive);
-
-                    // UpdateVisuals still needs to be defined, this is a placeholder for future functionality, hence why null is passed in as the argument
-                    UpdateVisuals(null);
+                    // Ensure that the attachTransform tightly follows the interactor's transform
+                    attachTransform.SetPositionAndRotation(transform.position, transform.rotation);
                 }
             }
         }

@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -16,49 +15,70 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// not depend on XRI.
     /// </remarks>
     [AddComponentMenu("MRTK/Input/Follow Joint")]
-    internal class FollowJoint : MonoBehaviour
+    internal class FollowJoint : MonoBehaviour, ISerializationCallbackReceiver
     {
         [SerializeField]
-        [Tooltip("The hand on which to track the joint.")]
+        [Tooltip("The pose source representing the hand joint this interactor tracks")]
+        private HandJointPoseSource jointPoseSource;
+
+        /// <summary>
+        /// The pose source representing the hand joint this interactor tracks
+        /// </summary>
+        protected HandJointPoseSource JointPoseSource { get => jointPoseSource; set => jointPoseSource = value; }
+
+        // A temporary variable used to migrate instances of FollowJoint to use the jointPoseSource class as the source of truth
+        // rather than its own separately serialized values.
+        // TODO: Remove this after some time to ensure users have successfully migrated.
+        [SerializeField, HideInInspector]
+        private bool migratedSuccessfully = false;
+
+        [SerializeField]
+        [HideInInspector]
         private Handedness hand;
 
         /// <summary>
         /// The hand on which to track the joint.
         /// </summary>
-        protected Handedness Hand { get => hand; set => hand = value; }
+        [Obsolete("Please change the Hand value on the jointPoseSource instead")]
+        protected Handedness Hand { get => JointPoseSource.Hand; set => JointPoseSource.Hand = value; }
 
         [SerializeField]
-        [Tooltip("The specific joint to track.")]
+        [HideInInspector]
         private TrackedHandJoint joint;
 
         /// <summary>
         /// The specific joint to track.
         /// </summary>
-        protected TrackedHandJoint Joint { get => joint; set => joint = value; }
+        [Obsolete("Please change the Joint value on the jointPoseSource instead")]
+        protected TrackedHandJoint Joint { get => JointPoseSource.Joint; set => JointPoseSource.Joint = value; }
 
-        private HandsAggregatorSubsystem handsAggregator;
+        #region ISerializationCallbackReceiver
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
         /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
+        /// Using ISerializationCallbackReceiver to ensure that instances of FollowJoint are migrated to the new HandJointPoseSource
+        /// Doesn't work perfectly due to complications with prefab variants :(
+        ///
+        /// TODO: Remove this after some time to ensure users have successfully migrated.
         /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            get
+            if (!migratedSuccessfully)
             {
-                if (handsAggregator == null)
-                {
-                    handsAggregator = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
-                }
-                return handsAggregator;
+                JointPoseSource.Hand = hand;
+                JointPoseSource.Joint = joint;
+                migratedSuccessfully = true;
             }
         }
 
+        #endregion ISerializationCallbackReceiver
+
         void Update()
         {
-            XRNode? node = Hand.ToXRNode();
-            if (node.HasValue && HandsAggregator != null && HandsAggregator.TryGetJoint(joint, node.Value, out var jointPose))
+            if (JointPoseSource != null && JointPoseSource.TryGetPose(out Pose pose))
             {
-                transform.SetPositionAndRotation(jointPose.Position, jointPose.Rotation);
+                transform.SetPositionAndRotation(pose.position, pose.rotation);
             }
             else
             {

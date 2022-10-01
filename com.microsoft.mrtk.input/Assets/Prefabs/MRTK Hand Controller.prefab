@@ -142,6 +142,115 @@ MonoBehaviour:
   m_RotateSpeed: 180
   m_TranslateSpeed: 1
   m_AnchorRotateReferenceFrame: {fileID: 0}
+  aimPoseSource:
+    id: 0
+  devicePoseSource:
+    id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        poseSources:
+        - source:
+            id: 2
+        - source:
+            id: 3
+    00000001:
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        poseSources:
+        - source:
+            id: 4
+        - source:
+            id: 5
+    00000002:
+      type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        trackingStateActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Tracking State Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 5ee17213-f2bf-4f1e-932b-e1b8ba883ff2
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -7613329581162844239, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        positionActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Position Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: a1850a99-0424-41aa-9337-1575f275c8de
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -2024308242397127297, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        rotationActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Rotation Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: bfd50135-aeb4-48a5-b8c7-7fc00efa1968
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    00000003:
+      type: {class: PolyfillHandRayPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        hand: 0
+    00000004:
+      type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        trackingStateActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Tracking State Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 93a2b8b5-15a2-4adf-addb-bbb5aab652d9
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -7613329581162844239, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        positionActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Position Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 621cb8fb-2c7d-4a1f-8f98-81cd05033f44
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: 5671224385460781980, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        rotationActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Rotation Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 51d14811-8d5f-4e99-9599-dbedead350e5
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -4531104493956672492, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    00000005:
+      type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        hand: 0
+        joint: 0
 --- !u!114 &1180895169275043612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,8 +429,62 @@ MonoBehaviour:
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
-  handNode: 4
   touchVisuals: {fileID: 0}
+  pinchPoseSource:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        poseSources:
+        - source:
+            id: 1
+        - source:
+            id: 2
+    00000001:
+      type: {class: PinchPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        hand: 0
+    00000002:
+      type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        trackingStateActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Tracking State Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 431cd752-bb90-418f-81ab-9ccb25619703
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -7613329581162844239, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        positionActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Position Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 49e2037f-6b65-4c71-b43e-e60d8a28ea25
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -2024308242397127297, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        rotationActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Rotation Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 855e8d57-429e-4cdd-a756-0acafe9a3c73
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
 --- !u!54 &5296314582960356879
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -429,7 +592,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -2024308242397127297, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    m_Reference: {fileID: 5671224385460781980, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   m_RotationAction:
     m_UseReference: 1
     m_Action:
@@ -441,7 +604,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    m_Reference: {fileID: -4531104493956672492, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   m_TrackingStateAction:
     m_UseReference: 1
     m_Action:
@@ -675,9 +838,62 @@ MonoBehaviour:
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
-  handNode: 4
-  joint: 10
-  touchVisuals: {fileID: 4299642553587339577}
+  pokePoseSource:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        poseSources:
+        - source:
+            id: 1
+        - source:
+            id: 2
+    00000001:
+      type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        hand: 0
+        joint: 10
+    00000002:
+      type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        trackingStateActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Tracking State Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 75079f03-3a9a-4abe-b362-eeb4e32d2960
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -7613329581162844239, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        positionActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Position Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 31850730-8e81-433b-b673-e8b8211ce2b8
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -2024308242397127297, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        rotationActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Rotation Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 6b2b7030-a7a3-4004-8532-842eeae079c6
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
 --- !u!1 &4299642553989019656
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,6 +990,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb2a8d0053b7d3e4d82d6169d852feff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jointPoseSource:
+    hand: 0
+    joint: 10
+  migratedSuccessfully: 1
   hand: 0
   joint: 10
 --- !u!1 &5224294193116514423
@@ -887,9 +1107,124 @@ MonoBehaviour:
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
   handController: {fileID: 6164080946324827545}
+  devicePoseSource:
+    id: 0
+  pinchPoseSource:
+    id: 1
+  aimPoseSource:
+    id: 2
   dependentInteractor: {fileID: 0}
   stickyHoverThreshold: 0.5
   relaxationThreshold: 0.1
+  references:
+    version: 1
+    00000000:
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        poseSources:
+        - source:
+            id: 3
+        - source:
+            id: 4
+    00000001:
+      type: {class: PinchPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        hand: 0
+    00000002:
+      type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        poseSources:
+        - source:
+            id: 5
+        - source:
+            id: 6
+    00000003:
+      type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        trackingStateActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Tracking State Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: f870ae6c-df78-4182-a2e2-e70b286a570b
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -7613329581162844239, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        positionActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Position Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 15532a33-c83e-41d1-84d0-95751a045a42
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: 5671224385460781980, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        rotationActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Rotation Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 3922c7d9-9304-4c7d-8daf-2ccaf6eb1fef
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -4531104493956672492, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    00000004:
+      type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        hand: 0
+        joint: 0
+    00000005:
+      type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        trackingStateActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Tracking State Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 7fd01eeb-b1cc-4182-9bba-a0e49a6ad85d
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -7613329581162844239, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        positionActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Position Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 4097a54f-24f1-475b-8db8-0e6929a8384d
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: -2024308242397127297, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+        rotationActionProperty:
+          m_UseReference: 1
+          m_Action:
+            m_Name: Rotation Action Property
+            m_Type: 0
+            m_ExpectedControlType: 
+            m_Id: 16efb8f2-297f-4977-8ac7-f8fbb4d00646
+            m_Processors: 
+            m_Interactions: 
+            m_SingletonActionBindings: []
+            m_Flags: 0
+          m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+    00000006:
+      type: {class: PolyfillHandRayPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
+      data:
+        hand: 0
 --- !u!114 &6618093373316033540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,10 +1301,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1307666228887773622}
+  - component: {fileID: 6767587444862779328}
   - component: {fileID: 5409732680908794997}
   - component: {fileID: 3681755664881842967}
   - component: {fileID: 6598864090782150916}
-  - component: {fileID: 6767587444862779328}
   m_Layer: 0
   m_Name: BendyRay
   m_TagString: Untagged
@@ -991,6 +1326,138 @@ Transform:
   m_Father: {fileID: 4332395624789801014}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6767587444862779328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822000602352085715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7b82b7c0a82d944a12da9283d254e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noTargetColorGradient:
+    serializedVersion: 2
+    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 0.5254902}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 1}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 1315
+    atime1: 1592
+    atime2: 12392
+    atime3: 65535
+    atime4: 63029
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 3
+  validColorGradient:
+    serializedVersion: 2
+    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 1}
+    key3: {r: 0, g: 0, b: 0, a: 1}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 19037
+    atime1: 50051
+    atime2: 52543
+    atime3: 65535
+    atime4: 63029
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  selectActiveColorGradient:
+    serializedVersion: 2
+    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 1}
+    key3: {r: 0, g: 0, b: 0, a: 1}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 19037
+    atime1: 23883
+    atime2: 65535
+    atime3: 65535
+    atime4: 63029
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  lineWidth:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  widthMultiplier: 0.0015
+  startPointLerp: 0.267
+  endPointLerp: 0.637
+  rayInteractor: {fileID: 2940030942784507886}
+  roundedEdges: 1
+  roundedCaps: 1
+  lineRenderer: {fileID: 5409732680908794997}
+  lineDataProvider: {fileID: 3681755664881842967}
+  lineStepCount: 16
 --- !u!120 &5409732680908794997
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1137,139 +1604,6 @@ MonoBehaviour:
   seekTargetStrength: 6.26
   p1Target: {x: 0, y: 0, z: 0.33}
   p2Target: {x: 0, y: 0, z: 0.66}
---- !u!114 &6767587444862779328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8822000602352085715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b7b82b7c0a82d944a12da9283d254e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reticle: {fileID: 3988544559415115453}
-  noTargetColorGradient:
-    serializedVersion: 2
-    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 0.5254902}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 1}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 1315
-    atime1: 1592
-    atime2: 12392
-    atime3: 65535
-    atime4: 63029
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 3
-  validColorGradient:
-    serializedVersion: 2
-    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 1}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 19037
-    atime1: 50051
-    atime2: 52543
-    atime3: 65535
-    atime4: 63029
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  selectActiveColorGradient:
-    serializedVersion: 2
-    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 1}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 19037
-    atime1: 23883
-    atime2: 65535
-    atime3: 65535
-    atime4: 63029
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  lineWidth:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  widthMultiplier: 0.0015
-  startPointLerp: 0.267
-  endPointLerp: 0.637
-  rayInteractor: {fileID: 2940030942784507886}
-  roundedEdges: 1
-  roundedCaps: 1
-  lineRenderer: {fileID: 5409732680908794997}
-  lineDataProvider: {fileID: 3681755664881842967}
-  lineStepCount: 16
 --- !u!1001 &212221299525418658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1277,6 +1611,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4332395624789801014}
     m_Modifications:
+    - target: {fileID: 916568500123441303, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: rayInteractor
+      value: 
+      objectReference: {fileID: 2940030942784507886}
+    - target: {fileID: 916568500123441303, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: visibilitySettings
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1323,20 +1665,58 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_Name
-      value: Cursor
+      value: RayReticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7113035467055917293, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: settings.handedness
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
---- !u!1 &3988544559415115453 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 212221299525418658}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3988544559415115452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 212221299525418658}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8992338914735331379 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 212221299525418658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4448665028262160152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 212221299525418658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3988544559415115453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 212221299525418658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5167647099609509214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3988544559415115453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ec73306ca3ef44a95bbb45b96f0538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseReticle: {fileID: 8992338914735331379}
+  rayInteractor: {fileID: 2940030942784507886}
+  proximityLight: {fileID: 4448665028262160152}
+  visibilitySettings: 0
 --- !u!1001 &1009008764017234214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1390,14 +1770,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_Name
-      value: Cursor
+      value: PokeReticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7113035467055917293, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: settings.handedness
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7949002557058872435, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: fadeEnabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+--- !u!1 &3552666654439622812 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 1009008764017234214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8086910922498750391 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
@@ -1413,6 +1806,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6256940305535466658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4299642553587339577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518e5c0e6d2c664478d85d0ceae60c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseReticle: {fileID: 8086910922498750391}
+  pokeInteractor: {fileID: 1948193616346090107}
+  proximityLight: {fileID: 3552666654439622812}
 --- !u!114 &943052423812839532
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
                 {
-                    float dotProduct = Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward);
+                    float dotProduct = Vector3.Dot(palmPose.Up, Camera.main.transform.forward);
                     if (dotProduct >= 0)
                     {
                         float palmCameraAngle = Mathf.Acos(dotProduct) * Mathf.Rad2Deg;
@@ -285,8 +285,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 else
                 {
                     gazeRay = new Ray(
-                        CameraCache.Main.transform.position,
-                        CameraCache.Main.transform.forward);
+                        Camera.main.transform.position,
+                        Camera.main.transform.forward);
                 }
 
                 if (gazeRay.HasValue)
@@ -462,7 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
                     {
-                        float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
+                        float palmCameraAngle = Vector3.Angle(palmPose.Up, Camera.main.transform.forward);
                         if (IsPalmMeetingThresholdRequirements(hand.Value, palmPose, palmCameraAngle) &&
                             IsUserGazeMeetingThresholdRequirements(hand.Value))
                         {

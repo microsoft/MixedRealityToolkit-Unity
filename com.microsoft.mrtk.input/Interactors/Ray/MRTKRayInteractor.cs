@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
@@ -14,6 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A wrapper for the XRRayInteractor which stores extra information for MRTK management/services
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Interactor")]
+
+    // This execution order ensures that the MRTKRayInteractor runs its update function right after the
+    // XRController. We do this because the MRTKRayInteractor needs to set its own pose after the parent controller transform,
+    // but before any physics raycast calls are made to determine selection. The earliest a physics call can be made is within
+    // the UIInputModule, which has an update order much higher than XRControllers.
+    // TODO: Examine the update order of other interactors in the future with respect to when their physics calls happen,
+    // or create a system to keep ensure interactor poses aren't ever implicitly set via parenting.
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_Controllers + 1)]
     public class MRTKRayInteractor :
         XRRayInteractor,
         IRayInteractor,
@@ -140,6 +147,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        [SerializeReference]
+        [InterfaceSelector(true)]
+        [Tooltip("The pose source representing the pose this interactor uses for aiming and positioning. Follows the 'pointer pose'")]
+        private IPoseSource aimPoseSource;
+
+        /// <summary>
+        /// The pose source representing the ray this interactor uses for aiming and positioning.
+        /// </summary>
+        protected IPoseSource AimPoseSource { get => aimPoseSource; set => aimPoseSource = value; }
+
+        [SerializeReference]
+        [InterfaceSelector(true)]
+        [Tooltip("The pose source representing the device this interactor uses for rotation.")]
+        private IPoseSource devicePoseSource;
+
+        /// <summary>
+        /// The pose source representing the device this interactor uses for rotation.
+        /// </summary>
+        protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
+
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
 
@@ -162,28 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         isRelaxedBeforeSelect = false;
                     }
-
-                    if (xrController is ActionBasedController abController &&
-                            abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
-                    {
-                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
-                    }
-                    else
-                    {
-                        // If we don't have a valid device pose, let's use the palm pose; closest thing we've got!
-                        if (HandsAggregator != null &&
-                            xrController is ArticulatedHandController handController &&
-                            HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handController.HandNode, out HandJointPose palmPose))
-                        {
-                            attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * palmPose.Rotation;
-                        }
-                    }
-
-                    if (hasSelection)
-                    {
-                        float distanceRatio = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation)) / refDistance;
-                        attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
-                    }
                 }
             }
         }
@@ -198,5 +203,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion XRBaseInteractor
+
+        private void Update()
+        {
+            // Use Pose Sources to calculate the interactor's pose and the attach transform's position
+            // We have to make sure the ray interactor is oriented appropriately before calling
+            // lower level raycasts
+            if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+            {
+                transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
+
+                if (hasSelection)
+                {
+                    float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
+                    attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
+                }
+            }
+
+            // Use the Device Pose Sources to calculate the attach transform's pose
+            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
+            {
+                attachTransform.rotation = devicePose.rotation;
+            }
+        }
     }
 }

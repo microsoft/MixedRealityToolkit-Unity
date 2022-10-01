@@ -393,34 +393,45 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Preserve]
         class SynthesisProvider : Provider
         {
-            protected SyntheticHandsConfig config;
+            protected SyntheticHandsConfig Config { get; private set; }
 
-            private Dictionary<XRNode, SyntheticHandContainer> hands;
+            private Dictionary<XRNode, SyntheticHandContainer> hands = null;
 
-            public SynthesisProvider() : base()
+            public override void Start()
             {
-                config = XRSubsystemHelpers.GetConfiguration<SyntheticHandsConfig, SyntheticHandsSubsystem>();
+                base.Start();
 
-                hands = new Dictionary<XRNode, SyntheticHandContainer>
+                Config = XRSubsystemHelpers.GetConfiguration<SyntheticHandsConfig, SyntheticHandsSubsystem>();
+
+                hands ??= new Dictionary<XRNode, SyntheticHandContainer>
                 {
                     { XRNode.LeftHand, new SyntheticHandContainer(
                                                                 XRNode.LeftHand,
                                                                 HandshapeId.Flat,
-                                                                config.LeftHandPosition,
-                                                                config.LeftHandRotation,
-                                                                config.LeftHandSelect,
-                                                                config.PoseOffset) },
+                                                                Config.LeftHandPosition,
+                                                                Config.LeftHandRotation,
+                                                                Config.LeftHandSelect,
+                                                                Config.PoseOffset) },
                     { XRNode.RightHand, new SyntheticHandContainer(
                                                                 XRNode.RightHand,
                                                                 HandshapeId.Flat,
-                                                                config.RightHandPosition,
-                                                                config.RightHandRotation,
-                                                                config.RightHandSelect,
-                                                                config.PoseOffset) }
+                                                                Config.RightHandPosition,
+                                                                Config.RightHandRotation,
+                                                                Config.RightHandSelect,
+                                                                Config.PoseOffset) }
                 };
+
+                InputSystem.onBeforeUpdate += ResetHands;
             }
 
-            public override void Update()
+            public override void Stop()
+            {
+                ResetHands();
+                InputSystem.onBeforeUpdate -= ResetHands;
+                base.Stop();
+            }
+
+            private void ResetHands()
             {
                 hands[XRNode.LeftHand].Reset();
                 hands[XRNode.RightHand].Reset();
@@ -513,9 +524,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, "Non-hand XRNode used in GetHand query");
 
-                if (!config.ShouldSynthesize())
+                if (!Config.ShouldSynthesize())
                 {
-                    jointPoses = System.Array.Empty<HandJointPose>();
+                    jointPoses = Array.Empty<HandJointPose>();
                     return false;
                 }
 
@@ -527,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, "Non-hand XRNode used in GetHand query");
 
-                if (!config.ShouldSynthesize())
+                if (!Config.ShouldSynthesize())
                 {
                     jointPose = default;
                     return false;
