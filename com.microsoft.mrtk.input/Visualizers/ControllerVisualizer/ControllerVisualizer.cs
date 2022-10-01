@@ -89,11 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             RenderControllerVisuals(context.control.device);
         }
 
-        /// <summary>
-        /// A cache used internally to store the platform visuals that are used for an input device
-        /// </summary>
-        private static Dictionary<UnityInputSystem.InputDevice, (bool, GameObject)> inputDevicePlatformVisualsCache = new Dictionary<UnityInputSystem.InputDevice, (bool, GameObject)>();
-
         private void RenderControllerVisuals(UnityInputSystem.InputDevice inputDevice)
         {
             // This process may change in the future as unity updates its input subsystem.
@@ -155,42 +150,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Try to load the controller model from the platform
             if (usePlatformVisuals)
             {
-                // First check if we've loaded visuals for this input device before.
-                // Only try to load models from the platform sdk if the controllerGameObject is now null or if
-                bool existsInCache = inputDevicePlatformVisualsCache.TryGetValue(inputDevice, out var results);
-                var (loadableFromPlatform, cachedControllerGameObject) = existsInCache ? results : (false, null);
-
-                if (!existsInCache || (loadableFromPlatform && cachedControllerGameObject == null))
+                platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(inputDevice, handNode.ToHandedness());
+                if (platformLoadedGameObject != null)
                 {
-                    platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(handNode.ToHandedness());
-                    if (platformLoadedGameObject != null)
+                    // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
+                    // We need to rotate these models in order to have them pointing in the correct direction on device.
+                    if (platformLoadedGameObjectRoot == null)
                     {
-                        // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
-                        // We need to rotate these models in order to have them pointing in the correct direction on device.
-                        if (platformLoadedGameObjectRoot == null)
-                        {
-                            platformLoadedGameObjectRoot = new GameObject("Platform Model Root");
-                        }
-                        platformLoadedGameObject.transform.parent = platformLoadedGameObjectRoot.transform;
-                        platformLoadedGameObject.transform.SetPositionAndRotation(platformLoadedGameObjectRoot.transform.position, platformLoadedGameObjectRoot.transform.rotation * controllerModelRotatedOffset);
+                        platformLoadedGameObjectRoot = new GameObject("Platform Model Root");
+                    }
+                    platformLoadedGameObject.transform.parent = platformLoadedGameObjectRoot.transform;
+                    platformLoadedGameObject.transform.SetPositionAndRotation(platformLoadedGameObjectRoot.transform.position, platformLoadedGameObjectRoot.transform.rotation * controllerModelRotatedOffset);
 
-                        controllerGameObject = platformLoadedGameObjectRoot;
-                    }
+                    controllerGameObject = platformLoadedGameObjectRoot;
+                }
 
-                    // Finally cache whether we were able to load the controller model as well as the model itself
-                    if (!existsInCache)
-                    {
-                        inputDevicePlatformVisualsCache.Add(inputDevice, (platformLoadedGameObject != null, platformLoadedGameObject));
-                    }
-                    else
-                    {
-                        inputDevicePlatformVisualsCache[inputDevice] = (platformLoadedGameObject != null, platformLoadedGameObject);
-                    }
-                }
-                else
-                {
-                    controllerGameObject = cachedControllerGameObject;
-                }
             }
 
             // If the ControllerGameObject is still not initialized after this, then use the fallback model if told to
