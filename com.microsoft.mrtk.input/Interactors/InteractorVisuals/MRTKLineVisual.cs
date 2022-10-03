@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         [Header("Visual Settings")]
         [SerializeField]
-        [Tooltip("Color gradient when there is no applicable target")]
+        [Tooltip("Color gradient when there is no applicable target.")]
         Gradient noTargetColorGradient = new Gradient
         {
             colorKeys = new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <summary>
-        /// Controls the color of the line as a gradient from start to end to indicate a valid state.
+        ///Color gradient when there is no applicable target.
         /// </summary>
         public Gradient NoTargetColorGradient
         {
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Color gradient when hovering over a valid target")]
+        [Tooltip("Color gradient when hovering over a valid target.")]
         Gradient validColorGradient = new Gradient
         {
             colorKeys = new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <summary>
-        /// Controls the color of the line as a gradient from start to end to indicate a valid state.
+        /// Color gradient when hovering over a valid target.
         /// </summary>
         public Gradient ValidColorGradient
         {
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Color gradient during a selection")]
+        [Tooltip("Color gradient during a selection.")]
         Gradient selectActiveColorGradient = new Gradient
         {
             colorKeys = new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <summary>
-        /// Controls the color of the line as a gradient from start to end to indicate a valid state.
+        /// Color gradient during a selection.
         /// </summary>
         public Gradient SelectActiveColorGradient
         {
@@ -70,8 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("The width of the line.")]
         private AnimationCurve lineWidth = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
+        /// <summary>
+        /// The width of the line.
+        /// </summary>
         public AnimationCurve LineWidth
         {
             get => lineWidth;
@@ -80,21 +84,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Range(0.0001f, 1f)]
         [SerializeField]
+        [Tooltip("The overall multiplier that is applied to the LineRenderer to get the final width of the line.")]
         private float widthMultiplier = 0.0015f;
 
+        /// <summary>
+        /// The overall multiplier that is applied to the LineRenderer to get the final width of the line.
+        /// </summary>
         public float WidthMultiplier
         {
             get => widthMultiplier;
             set => widthMultiplier = Mathf.Clamp(value, 0f, 10f);
         }
 
-        [Tooltip("Where to place the first control point of the bezier curve")]
+        [Tooltip("Where to place the first control point of the bezier curve.")]
         [SerializeField]
         [Range(0f, 0.5f)]
         private float startPointLerp = 0.267f;
 
         [SerializeField]
-        [Tooltip("Where to place the second control point of the bezier curve")]
+        [Tooltip("Where to place the second control point of the bezier curve.")]
         [Range(0.5f, 1f)]
         private float endPointLerp = 0.637f;
 
@@ -104,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private XRRayInteractor rayInteractor;
 
         [SerializeField]
-        [Tooltip("The line renderer this visual has control over")]
+        [Tooltip("The line renderer this visual has control over.")]
         private LineRenderer lineRenderer = null;
 
         [SerializeField]
@@ -112,9 +120,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private BaseMixedRealityLineDataProvider lineDataProvider = null;
 
         [SerializeField]
-        [Tooltip("Whether to round the edges of the line renderer")]
+        [Tooltip("Whether to round the edges of the line renderer.")]
         private bool roundedEdges = true;
 
+        /// <summary>
+        /// Whether to round the edges of the line renderer.
+        /// </summary>
         public bool RoundedEdges
         {
             get => roundedEdges;
@@ -122,9 +133,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Whether to round the endpoints of the line renderer")]
+        [Tooltip("Whether to round the endpoints of the line renderer.")]
         private bool roundedCaps = true;
 
+        /// <summary>
+        /// Whether to round the endpoints of the line renderer.
+        /// </summary>
         public bool RoundedCaps
         {
             get => roundedCaps;
@@ -135,6 +149,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Whether the line renderer stops after hitting an object.")]
         private bool stopLineAtFirstRaycastHit = true;
 
+        /// <summary>
+        /// Whether the line renderer stops after hitting an object.
+        /// </summary>
         public bool StopLineAtFirstRaycastHit
         {
             get => stopLineAtFirstRaycastHit;
@@ -148,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // reusable lists of the points used for the line renderer
         private Vector3[] rendererPositions;
 
-        // reusable values used derived from raycast hit data
+        // reusable values derived from raycast hit data
         private Vector3 reticlePosition;
         private Transform hitTargetTransform;
         private Vector3 targetLocalHitPoint;
