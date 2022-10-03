@@ -86,15 +86,6 @@
         "com.unity.xr.management": "4.2.1"
       }
     },
-    "com.microsoft.mrtk.environment": {
-      "version": "file:../../../com.microsoft.mrtk.environment",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.unity.xr.management": "4.2.1"
-      }
-    },
     "com.microsoft.mrtk.extendedassets": {
       "version": "file:../../../com.microsoft.mrtk.extendedassets",
       "depth": 0,
