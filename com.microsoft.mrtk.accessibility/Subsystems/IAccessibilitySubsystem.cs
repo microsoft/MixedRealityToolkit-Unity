@@ -17,25 +17,34 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         #region Describable object management
 
         /// <summary>
-        /// Attempts to register the specified <see cref="GameObject"/> using the associated <see cref="ObjectClassification"/>.
+        /// 
         /// </summary>
-        /// <param name="gameObj">The <see cref="GameObject"/> to be registered.</param>
+        /// <param name=""></param>
+        /// <param name=""></param>
+        /// <returns>True if classifications have been successfully retrieved, or false.</returns>
+        /// <remarks></remarks>
+        bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications);
+
+        /// <summary>
+        /// Attempts to register the specified <see cref="GameObject"/> using the associated <see cref="DescribableObjectClassification"/>.
+        /// </summary>
+        /// <param name="describableObject">The <see cref="GameObject"/> to be registered.</param>
         /// <param name="classification">The classification (people, places, things, etc.) for the <see cref="GameObject"/>.</param>
         /// <returns>True if successfully registered or false.</returns>
         /// <remarks>
         /// The registration process requires that a <see cref="GameObject"/> belongs to exactly one classification.
         /// </remarks>
-        bool TryRegisterDescribableObject(GameObject gameObj, ObjectClassification classification);
+        bool TryRegisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
 
         /// <summary>
-        /// Attempts to unregister the specified <see cref="GameObject"/> using the associated <see cref="ObjectClassification"/>
+        /// Attempts to unregister the specified <see cref="GameObject"/> using the associated <see cref="DescribableObjectClassification"/>
         /// </summary>
-        /// <param name="gameObj">The <see cref="GameObject"/> to be unregistered.</param>
+        /// <param name="describableObject">The <see cref="GameObject"/> to be unregistered.</param>
         /// <param name="classification">The classification (people, places, things, etc.) for the <see cref="GameObject"/>.</param>
         /// <remarks>
         /// The registration process requires that a <see cref="GameObject"/> belongs to exactly one classification.
         /// </remarks>
-        bool TryUnregisterDescribableObject(GameObject gameObj, ObjectClassification classification);
+        bool TryUnregisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
 
         #endregion Describable object management
 

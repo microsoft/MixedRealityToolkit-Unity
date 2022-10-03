@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// The 'visibility window' that the accessibility subsystem will use to determine the object
     /// descriptions to send to a screen reader.
     /// </summary>
-    public enum ReaderView
+    public enum DescribableObjectVisibility
     {
         /// <summary>
         /// Objects that are in front of the user and visible within the field of view.

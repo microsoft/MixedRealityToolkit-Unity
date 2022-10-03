@@ -14,12 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     {
         [SerializeField]
         [Tooltip("What is the classification (ex: person, place, ui element, etc.) is this object?")]
-        private ObjectClassification classification = ObjectClassification.Things;
+        private DescribableObjectClassification classification = null;
 
         /// <summary>
         /// What is the classification (ex: person, place, ui element, etc.) of this object?
         /// </summary>
-        public ObjectClassification Classification => classification;
+        public DescribableObjectClassification Classification => classification;
 
         [SerializeField]
         [Tooltip("The full contents of the object.")]

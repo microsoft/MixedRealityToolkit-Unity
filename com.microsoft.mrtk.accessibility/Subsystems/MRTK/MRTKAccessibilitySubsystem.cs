@@ -41,22 +41,17 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
             public AccessibilityProvider() : base()
             {
-                describableObjects.Add(ObjectClassification.People, new List<GameObject>());
-                describableObjects.Add(ObjectClassification.Places, new List<GameObject>());
-                describableObjects.Add(ObjectClassification.Things, new List<GameObject>());
-                describableObjects.Add(ObjectClassification.UserInterface, new List<GameObject>());
-
                 Config = XRSubsystemHelpers.GetConfiguration<AccessibilitySubsystemConfig, MRTKAccessibilitySubsystem>();
                 invertTextColor = Config.InvertTextColor;
             }
 
             #region Describable object management
 
-            private readonly Dictionary<ObjectClassification, List<GameObject>> describableObjects =
-                new Dictionary<ObjectClassification, List<GameObject>>();
+            private readonly Dictionary<DescribableObjectClassification, List<GameObject>> describableObjects =
+                new Dictionary<DescribableObjectClassification, List<GameObject>>();
 
             /// <inheritdoc/>
-            internal override bool TryGetDescribableObjects(ObjectClassification classifications, ReaderView readerView, float maxDistance, List<GameObject> objectList)
+            internal override bool TryGetDescribableObjects(List<DescribableObjectClassification> classifications, DescribableObjectVisibility visibility, float maxDistance, List<GameObject> describableObjectsList)
             {
                 if (maxDistance <= 0)
                 {
@@ -64,44 +59,57 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                     return false;
                 }
 
-                objectList.Clear();
+                describableObjectsList.Clear();
 
-                AssembleDescribableObjects(classifications, objectList);
-                FilterDescribableObjects(readerView, maxDistance, objectList);
+                AssembleDescribableObjects(classifications, describableObjectsList);
+                FilterDescribableObjects(visibility, maxDistance, describableObjectsList);
 
                 return true;
             }
 
             /// <inheritdoc/>
-            public override bool TryRegisterDescribableObject(GameObject gameObj, ObjectClassification classification)
+            public override bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications)
+            {
+                classifications.Clear();
+                classifications.AddRange(describableObjects.Keys);
+                return true;
+            }
+
+            /// <inheritdoc/>
+            public override bool TryRegisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification)
             {
                 // Make sure the specified game object has not been previously registered in any classification.
                 foreach (IList<GameObject> list in describableObjects.Values)
                 {
-                    if (list.Contains(gameObj))
+                    if (list.Contains(describableObject))
                     {
-                        Debug.LogError($"{gameObj.name} has already been registered as a describable object");
+                        Debug.LogError($"{describableObject.name} has already been registered as a describable object");
                         return false;
                     }
                 }
 
-                describableObjects[classification].Add(gameObj);
+                if (!describableObjects.ContainsKey(classification))
+                {
+                    describableObjects.Add(classification, new List<GameObject>());
+                }
+                describableObjects[classification].Add(describableObject);
+
                 return true;
             }
 
             /// <inheritdoc/>
-            public override bool TryUnregisterDescribableObject(GameObject gameObj, ObjectClassification classification)
+            public override bool TryUnregisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification)
             {
                 List<GameObject> objCollection = describableObjects[classification];
-                if (!objCollection.Contains(gameObj))
+                if (!objCollection.Contains(describableObject))
                 {
-                    Debug.LogError($"{gameObj.name} has not been registered as a describable object of classification {classification}");
+                    Debug.LogError($"{describableObject.name} has not been registered as a describable object of classification {classification}");
                     return false;
                 }
 
-                if (!describableObjects[classification].Remove(gameObj))
+                if (!describableObjects[classification].Remove(describableObject))
                 {
-                    Debug.LogError($"Failed to unregister {gameObj.name} as a describable object of classification {classification}");
+                    Debug.LogError($"Failed to unregister {describableObject.name} as a describable object of classification {classification}");
                     return false;
                 }
 
@@ -109,30 +117,18 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
 
             /// <summary>
-            /// Collects the registered <see cref="GameObject"/>s from the requested <see cref="ObjectClassification"/>s.
+            /// Collects the registered <see cref="GameObject"/>s from the requested <see cref="DescribableObjectClassification"/>s.
             /// </summary>
             /// <param name="classifications">The combined flags specifiying the desired classification(s) (people, places, things, etc.).</param>
-            /// <param name="objectList">The collection which will receive the requested <see cref="GameObject"/>s.</param>
+            /// <param name="describableObjectsList">The collection which will receive the requested <see cref="GameObject"/>s.</param>
             /// <remarks>When this method is called, the objectList will be cleared prior to adding the requested <see cref="GameObject"/>s.</remarks>
             private void AssembleDescribableObjects(
-                ObjectClassification classifications,
-                List<GameObject> objectList)
+                List<DescribableObjectClassification> classifications,
+                List<GameObject> describableObjectsList)
             {
-                if ((int)(classifications & ObjectClassification.People) != 0)
+                foreach (DescribableObjectClassification classification in classifications)
                 {
-                    objectList.AddRange(describableObjects[ObjectClassification.People]);
-                }
-                if ((int)(classifications & ObjectClassification.Places) != 0)
-                {
-                    objectList.AddRange(describableObjects[ObjectClassification.Places]);
-                }
-                if ((int)(classifications & ObjectClassification.Things) != 0)
-                {
-                    objectList.AddRange(describableObjects[ObjectClassification.Things]);
-                }
-                if ((int)(classifications & ObjectClassification.UserInterface) != 0)
-                {
-                    objectList.AddRange(describableObjects[ObjectClassification.UserInterface]);
+                    describableObjectsList.AddRange(describableObjects[classification]);
                 }
             }
 
@@ -140,11 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             /// Filters the provided collection of <see cref="GameObject"/>s based on the visibility to the main camera
             /// and the maximum allowed distance.
             /// </summary>
-            /// <param name="readerView">The desired visibility (in field of view, full surround, etc.) of the <see cref="GameObject"/>s.</param>
+            /// <param name="visibility">The desired visibility (in field of view, full surround, etc.) of the <see cref="GameObject"/>s.</param>
             /// <param name="maxDistance">The distance, in meters, beyond which <see cref="GameObject"/>s will be filtered.</param>
             /// <param name="objectList">The collection of <see cref="GameObject"/>s that will be filtered based on visibility and distance.</param>
             private void FilterDescribableObjects(
-                ReaderView readerView,
+                DescribableObjectVisibility visibility,
                 float maxDistance,
                 List<GameObject> objectList)
             {
@@ -167,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                     }
 
                     // If requested, is it within the main camera's field of view?
-                    if ((readerView == ReaderView.FieldOfView) &&
+                    if ((visibility == DescribableObjectVisibility.FieldOfView) &&
                         !CameraFOVChecker.IsInFOVCached(Camera.main, collider))
                     {
                         objectList.Remove(obj);

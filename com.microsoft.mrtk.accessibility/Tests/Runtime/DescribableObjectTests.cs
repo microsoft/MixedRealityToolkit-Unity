@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -61,7 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
         #region Test cases
 
-        private readonly Vector3 testObjectScale = Vector3.one * 0.1f;
+        private static string testCubeGuid = "d10f05ae3a6402045b70860918544ed9";
+        private static string testCubeAssetPath = AssetDatabase.GUIDToAssetPath(testCubeGuid);
 
         private readonly Vector3[] inViewPositions =
         {
@@ -104,15 +106,20 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
             Vector3 location,
             bool isDescribable)
         {
-            GameObject gameObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            gameObj.transform.position = location;
-            gameObj.transform.localScale = testObjectScale;
-            sceneContents.Add(gameObj);
+            GameObject gameObj;
 
             if (isDescribable)
             {
-                gameObj.AddComponent<DescribableObject>();
+                gameObj = Object.Instantiate(
+                    AssetDatabase.LoadAssetAtPath<GameObject>(testCubeAssetPath));
             }
+            else
+            {
+                gameObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                gameObj.transform.localScale = Vector3.one * 0.1f;
+            }
+            gameObj.transform.position = location;
+            sceneContents.Add(gameObj);
         }
 
         /// <summary>
@@ -127,10 +134,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
             if (AccessibilityHelpers.Subsystem != null)
             {
+                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+
                 SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
-                    (ObjectClassification)(-1),
-                    ReaderView.Surround,
+                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                    classifications,
+                    DescribableObjectVisibility.Surround,
                     float.MaxValue,
                     describableObjects);
                 Assert.IsTrue(success, "Failed to get the collection of describable objects.");
@@ -150,8 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
             if (AccessibilityHelpers.Subsystem != null)
             {
-                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
-
                 foreach (Vector3 pos in inViewPositions)
                 {
                     // Create the objects without adding DescribableObject.
@@ -160,9 +169,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
-                    (ObjectClassification)(-1),
-                    ReaderView.FieldOfView,
+                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+
+                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
+                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                    classifications,
+                    DescribableObjectVisibility.FieldOfView,
                     float.MaxValue,
                     describableObjects);
                 Assert.IsTrue(success, "Failed to get the collection of describable objects.");
@@ -182,8 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
             if (AccessibilityHelpers.Subsystem != null)
             {
-                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
-
                 // Create objects in the field of view.
                 foreach (Vector3 pos in inViewPositions)
                 {
@@ -198,9 +210,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
-                    (ObjectClassification)(-1),
-                    ReaderView.FieldOfView,
+                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+
+                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
+                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                    classifications,
+                    DescribableObjectVisibility.FieldOfView,
                     float.MaxValue,
                     describableObjects);
                 Assert.IsTrue(success, "Failed to get the collection of describable objects.");
@@ -225,8 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
             if (AccessibilityHelpers.Subsystem != null)
             {
-                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
-
                 // Create objects in the field of view.
                 foreach (Vector3 pos in inViewPositions)
                 {
@@ -241,9 +256,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
-                    (ObjectClassification)(-1),
-                    ReaderView.Surround,
+                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+
+                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
+                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                    classifications,
+                    DescribableObjectVisibility.Surround,
                     float.MaxValue,
                     describableObjects);
                 Assert.IsTrue(success, "Failed to get the collection of describable objects.");
