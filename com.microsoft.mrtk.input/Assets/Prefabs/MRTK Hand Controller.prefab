@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseReticle: {fileID: 8992338914735331379}
+  reticleRoot: {fileID: 3988544559415115452}
   rayInteractor: {fileID: 2940030942784507886}
   proximityLight: {fileID: 4448665028262160152}
   visibilitySettings: 0

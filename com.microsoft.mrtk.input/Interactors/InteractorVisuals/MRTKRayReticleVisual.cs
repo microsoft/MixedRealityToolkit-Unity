@@ -12,8 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// aligning the reticle with a surface hit by the ray interactor.
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Reticle Visual")]
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
     public class MRTKRayReticleVisual : BaseReticleVisual
     {
+        [SerializeField]
+        [Tooltip("The root of the reticle visuals")]
+        private Transform reticleRoot;
+
         [SerializeField]
         [Tooltip("The interactor which this visual represents.")]
         private XRRayInteractor rayInteractor;
@@ -86,8 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         // Ensure that our visuals position and normal are set correctly.
                         // The reticle should be a direct child of this gameobject, so it's position and rotation should match this gameobject's
-                        transform.position = reticlePosition;
-                        transform.forward = reticleNormal;
+                        reticleRoot.transform.position = reticlePosition;
+                        reticleRoot.transform.forward = reticleNormal;
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)
