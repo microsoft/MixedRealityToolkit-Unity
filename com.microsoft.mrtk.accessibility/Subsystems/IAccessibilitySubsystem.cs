@@ -17,12 +17,16 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         #region Describable object management
 
         /// <summary>
-        /// 
+        /// Attempts to retrieve the collection of <see cref="DescribableObjectClassification"/>s for the objects
+        /// that have been registered.
         /// </summary>
-        /// <param name=""></param>
-        /// <param name=""></param>
+        /// <param name="classifications">List to receive the collection of registered <see cref="DescribableObjectClassification"/>s.</param>
         /// <returns>True if classifications have been successfully retrieved, or false.</returns>
-        /// <remarks></remarks>
+        /// <remarks>
+        /// The passed in list will be cleared then filled with all <see cref="DescribableObjectClassification"/>s that matach
+        /// a previously registered object. Classifications are not removed after all matching objects have been
+        /// unregistered.
+        /// </remarks>
         bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications);
 
         /// <summary>
