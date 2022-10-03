@@ -69,10 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (IsHitValidPerfMarker.Auto())
             {
-                // Immediately reject our hit if we can't select or target it.
-                // This lets the ray "pass through" any non-selectable objects.
-                if ((target is IXRSelectInteractable selectInteractable && !selectInteractable.IsSelectableBy(this)) ||
-                    (target is IXRHoverInteractable hoverInteractable && !hoverInteractable.IsHoverableBy(this)))
+                // Immediately reject our hit if we can't hover it.
+                // This lets the ray "pass through" any objects that reject gaze hovers.
+                if (target is IXRHoverInteractable hoverInteractable && !hoverInteractable.IsHoverableBy(this))
                 {
                     return false;
                 }
