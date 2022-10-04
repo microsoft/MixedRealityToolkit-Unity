@@ -17,7 +17,7 @@ using GLTFast;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// A helper class which loads and caches controller models fetched from the controller's platform sdk
+    /// A helper class which loads and caches controller models fetched from the controller's platform SDK.
     /// </summary>
     public static class ControllerModelLoader
     {

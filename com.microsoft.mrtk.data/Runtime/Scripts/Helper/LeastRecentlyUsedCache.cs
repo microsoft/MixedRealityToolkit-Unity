@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (_lruList.Count != _lruIndexLookup.Count)
             {
-                Debug.LogError("Linked list and lookkup are out of sync.");
+                Debug.LogError("Linked list and lookup are out of sync.");
             }
         }
 
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (_lruList.Count != _lruIndexLookup.Count)
                 {
-                    Debug.LogError("Linked list and lookkup are out of sync.");
+                    Debug.LogError("Linked list and lookup are out of sync.");
                 }
                 return true;
             }

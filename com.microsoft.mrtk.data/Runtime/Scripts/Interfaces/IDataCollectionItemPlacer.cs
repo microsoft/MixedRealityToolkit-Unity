@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Interface for placing items from a list into the gameobject heirarchy in a meaningful way.
+    /// Interface for placing items from a list into the gameobject hierarchy in a meaningful way.
     /// </summary>
     ///
     /// <remarks>
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///
     /// When a list has changed, this object will be notified. It can then request a range of game objects to be provided for placement,
     /// where each game object has been modified to reflect the data associated with that entry in the list. The game object will
-    /// typically be a prefab of arbitrary copmlexity.
+    /// typically be a prefab of arbitrary complexity.
     ///
     /// </remarks>
     public interface IDataCollectionItemPlacer
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         /// <summary>
         /// set the data consumer for a collection that can provide gameobjects to be placed. This will normally be set by the data consumer
-        /// that was assigned this placer during intialization phase.
+        /// that was assigned this placer during initialization phase.
         /// </summary>
         ///
         /// <param name="dataConsumerCollection">Data consumer for a collection that will provide game objects to place.</param>
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <remarks>
         /// This method will typically trigger a IDataConsumer.RequestCollectionItems() method call to
         /// request all or a subset of the items being managed in the collection.  This back and forth
-        /// allows for precise control of paging and virtualization to optimze the presentation of
+        /// allows for precise control of paging and virtualization to optimize the presentation of
         /// information.</remarks>
         ///
         /// <param name="dataChangeType">The nature of the data change, typically CollectionItemAdded, or CollectionItemRemoved.</param>
