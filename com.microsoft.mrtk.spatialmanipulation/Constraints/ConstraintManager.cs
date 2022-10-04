@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
-        [Tooltip("Manually selected list of transform constraints. Note that this list will only be processed by the" +
+        [Tooltip("Manually selected list of transform constraints. Note that this list will only be processed by the " +
             "manager if AutoConstraintSelection is disabled.")]
         private List<TransformConstraint> selectedConstraints = new List<TransformConstraint>();
         /// <summary>
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        [Obsolete("Use Setup instead for first-time intialization, and OnManipulationStarted for subsequent manipulation.")]
+        [Obsolete("Use Setup instead for first-time initialization, and OnManipulationStarted for subsequent manipulation.")]
         public void Initialize(MixedRealityTransform worldPose) { }
 
         /// <summary>

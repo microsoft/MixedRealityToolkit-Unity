@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             return new BuildValidationRule()
             {
                 Category = "MRTK3",
-                Message = "The skin weights setting under quality settings needs to be set to TwoBones or higher for optimal rigged hand mesh visaulizations.",
+                Message = "The skin weights setting under quality settings needs to be set to TwoBones or higher for optimal rigged hand mesh visualizations.",
                 CheckPredicate = () => QualitySettings.skinWeights > SkinWeights.OneBone,
                 FixIt = () => QualitySettings.skinWeights = SkinWeights.TwoBones,
                 FixItMessage = "Set the skin weights to TwoBones",

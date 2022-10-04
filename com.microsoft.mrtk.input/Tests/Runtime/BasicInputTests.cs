@@ -495,9 +495,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Tests to make sure that untracked controllers can't initiate any new interactions and that their interactos can no longer hover.
+        /// Tests to make sure that untracked controllers can't initiate any new interactions and that their interactors can no longer hover.
         /// However, the interactions should still maintaining any original selected states, as the loss of tracking is usually just temporary
-        /// i.e. we don't want to immeidately let go of a gripped object due to a momentary loss in tracking
+        /// i.e. we don't want to immediately let go of a gripped object due to a momentary loss in tracking
         /// </summary>
         [UnityTest]
         public IEnumerator UntrackedControllerNearInteractions()

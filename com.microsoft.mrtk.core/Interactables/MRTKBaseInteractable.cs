@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit
         // private field to ensure serialization
         // todo: can we rework/get rid of this? in the NEAR FUTURE??
         [SerializeField]
-        [Tooltip("Subtracively specifies the set of interactors allowed to select this interactable")]
+        [Tooltip("Subtractively specifies the set of interactors allowed to select this interactable")]
         [Implements(typeof(IXRInteractor), TypeGrouping.ByNamespaceFlat, AllowAbstract = true)]
         private List<SystemInterfaceType> disabledInteractorTypes = new List<SystemInterfaceType>();
 

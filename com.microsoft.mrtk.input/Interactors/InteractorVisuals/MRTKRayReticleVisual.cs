@@ -40,14 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public ReticleVisibilitySettings VisibilitySettings
         {
-            get
-            {
-                return visibilitySettings;
-            }
-            set
-            {
-                visibilitySettings = value;
-            }
+            get => visibilitySettings;
+            set => visibilitySettings = value;
         }
 
         protected void OnEnable()
@@ -63,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
             Application.onBeforeRender -= UpdateReticle;
         }
+
         private static readonly ProfilerMarker UpdateReticlePerfMarker = new ProfilerMarker("[MRTK] MRTKRayReticleVisual.UpdateReticle");
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
@@ -90,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         // Ensure that our visuals position and normal are set correctly.
-                        // The reticle should be a direct child of this gameobject, so it's position and rotation should match this gameobject's
+                        // The reticle should be a direct child of this GameObject, so its position and rotation should match this GameObject's
                         reticleRoot.transform.position = reticlePosition;
                         reticleRoot.transform.forward = reticleNormal;
 
@@ -144,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
                 targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
             }
-            // Otherwise, calcualte the reticle pose based on the raycast hit.
+            // Otherwise, calculate the reticle pose based on the raycast hit.
             else if (raycastHit.HasValue)
             {
                 // In the case of affordances/handles, we can stick the ray right on to the handle.
