@@ -79,7 +79,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 return hostTransform;
             }
-            set => hostTransform = value;
+            set
+            {
+                if (hostTransform != value)
+                {
+                    hostTransform = value;
+
+                    // If we're using constraints, make sure to re-initialize
+                    // the constraints manager with a fresh HostTransform.
+                    if (constraintsManager != null)
+                    {
+                        constraintsManager.Setup(new MixedRealityTransform(HostTransform));
+                    }
+                }
         }
 
         [SerializeField]
