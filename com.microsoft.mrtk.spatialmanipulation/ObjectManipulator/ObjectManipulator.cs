@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
             set
             {
-                if (interactorsSelecting.Count == 0)
+                if (interactorsSelecting.Count != 0)
                 {
                     Debug.LogWarning("Changing the host transform while the object is being manipulated is not yet supported. " + 
                         "Check interactorsSelecting.Count before changing the host transform.");
