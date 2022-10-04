@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// Friendly description of the classification (ex: "Places in the world").
         /// </summary>
         [SerializeField]
-        [Tooltip("Friendly description of the classification(ex: 'Places in the world').")]
+        [Tooltip("Friendly description of the classification (ex: 'Places in the world').")]
         private string description;
 
         /// <summary>
