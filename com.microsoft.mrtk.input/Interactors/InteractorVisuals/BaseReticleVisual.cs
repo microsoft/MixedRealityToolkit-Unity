@@ -17,17 +17,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class BaseReticleVisual : MonoBehaviour, IXRCustomReticleProvider
     {
         [SerializeField]
+        [Tooltip("The reticle model to use when the interactable doesn't specify a custom one.")]
         private GameObject baseReticle;
 
-        // Staging area for custom reticles that interactors can attach to show unique visuals
+        /// <summary>
+        /// Staging area for custom reticles that interactors can attach to show unique visuals.
+        /// </summary>
         protected GameObject customReticle;
+
+        /// <summary>
+        /// Is there a custom reticle currently attached to this interactor?
+        /// </summary>
         protected bool customReticleAttached;
 
+        /// <summary>
+        /// The current reticle that the interactor is using.
+        /// </summary>
         public GameObject Reticle => customReticleAttached ? customReticle : baseReticle;
 
         private IVariableReticle variableReticle;
 
-        public IVariableReticle VariableReticle
+        /// <summary>
+        /// Cached variable reticle reference.
+        /// </summary>
+        protected IVariableReticle VariableReticle
         {
             get
             {

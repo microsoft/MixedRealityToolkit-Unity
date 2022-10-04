@@ -48,6 +48,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
             Application.onBeforeRender += UpdateReticle;
+
+            // If no custom reticle root is specified, just use the interactor's transform.
+            if (reticleRoot == null)
+            {
+                reticleRoot = transform;
+            }
         }
 
         protected void OnDisable()
@@ -84,10 +90,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             Reticle.SetActive(rayHasHit);
                         }
 
-                        // Ensure that our visuals position and normal are set correctly.
-                        // The reticle should be a direct child of this GameObject, so its position and rotation should match this GameObject's
-                        reticleRoot.transform.position = reticlePosition;
-                        reticleRoot.transform.forward = reticleNormal;
+                        // If we have a reticle, set its position and rotation.
+                        if (reticleRoot != null)
+                        {
+                            reticleRoot.transform.position = reticlePosition;
+                            reticleRoot.transform.forward = reticleNormal;
+                        }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)
@@ -153,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     hitTargetTransform = raycastHit.Value.collider.transform;
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
-                    targetLocalHitNormal = hitTargetTransform.InverseTransformPoint(raycastHit.Value.normal);
+                    targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
                 }
             }
         }
