@@ -14,13 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Line Visual")]
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(LineRenderer))]
     [DefaultExecutionOrder(XRInteractionUpdateOrder.k_LineVisual)]
     public class MRTKLineVisual : MonoBehaviour
     {
         [Header("Visual Settings")]
         [SerializeField]
-        [Tooltip("Color gradient when there is no applicable target")]
+        [Tooltip("Color gradient when there is no applicable target.")]
         Gradient noTargetColorGradient = new Gradient
         {
             colorKeys = new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
@@ -28,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <summary>
-        /// Controls the color of the line as a gradient from start to end to indicate a valid state.
+        ///Color gradient when there is no applicable target.
         /// </summary>
         public Gradient NoTargetColorGradient
         {
@@ -37,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Color gradient when hovering over a valid target")]
+        [Tooltip("Color gradient when hovering over a valid target.")]
         Gradient validColorGradient = new Gradient
         {
             colorKeys = new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
@@ -45,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <summary>
-        /// Controls the color of the line as a gradient from start to end to indicate a valid state.
+        /// Color gradient when hovering over a valid target.
         /// </summary>
         public Gradient ValidColorGradient
         {
@@ -54,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Color gradient during a selection")]
+        [Tooltip("Color gradient during a selection.")]
         Gradient selectActiveColorGradient = new Gradient
         {
             colorKeys = new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
@@ -62,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <summary>
-        /// Controls the color of the line as a gradient from start to end to indicate a valid state.
+        /// Color gradient during a selection.
         /// </summary>
         public Gradient SelectActiveColorGradient
         {
@@ -71,8 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("The width of the line.")]
         private AnimationCurve lineWidth = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
+        /// <summary>
+        /// The width of the line.
+        /// </summary>
         public AnimationCurve LineWidth
         {
             get => lineWidth;
@@ -81,21 +84,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Range(0.0001f, 1f)]
         [SerializeField]
+        [Tooltip("The overall multiplier that is applied to the LineRenderer to get the final width of the line.")]
         private float widthMultiplier = 0.0015f;
 
+        /// <summary>
+        /// The overall multiplier that is applied to the LineRenderer to get the final width of the line.
+        /// </summary>
         public float WidthMultiplier
         {
             get => widthMultiplier;
             set => widthMultiplier = Mathf.Clamp(value, 0f, 10f);
         }
 
-        [Tooltip("Where to place the first control point of the bezier curve")]
+        [Tooltip("Where to place the first control point of the bezier curve.")]
         [SerializeField]
         [Range(0f, 0.5f)]
         private float startPointLerp = 0.267f;
 
         [SerializeField]
-        [Tooltip("Where to place the second control point of the bezier curve")]
+        [Tooltip("Where to place the second control point of the bezier curve.")]
         [Range(0.5f, 1f)]
         private float endPointLerp = 0.637f;
 
@@ -105,8 +112,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private XRRayInteractor rayInteractor;
 
         [SerializeField]
+        [Tooltip("The line renderer this visual has control over.")]
+        private LineRenderer lineRenderer = null;
+
+        [SerializeField]
+        [Tooltip("The line data that represented by this visual.")]
+        private BaseMixedRealityLineDataProvider lineDataProvider = null;
+
+        [SerializeField]
+        [Tooltip("Whether to round the edges of the line renderer.")]
         private bool roundedEdges = true;
 
+        /// <summary>
+        /// Whether to round the edges of the line renderer.
+        /// </summary>
         public bool RoundedEdges
         {
             get => roundedEdges;
@@ -114,8 +133,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("Whether to round the endpoints of the line renderer.")]
         private bool roundedCaps = true;
 
+        /// <summary>
+        /// Whether to round the endpoints of the line renderer.
+        /// </summary>
         public bool RoundedCaps
         {
             get => roundedCaps;
@@ -123,40 +146,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [HideInInspector]
-        private LineRenderer lineRenderer = null;
+        [Tooltip("Whether the line renderer stops after hitting an object.")]
+        private bool stopLineAtFirstRaycastHit = true;
 
-        [SerializeField]
-        [Tooltip("The line data that represented by this visual.")]
-        internal BaseMixedRealityLineDataProvider lineDataProvider = null;
+        /// <summary>
+        /// Whether the line renderer stops after hitting an object.
+        /// </summary>
+        public bool StopLineAtFirstRaycastHit
+        {
+            get => stopLineAtFirstRaycastHit;
+            set => stopLineAtFirstRaycastHit = value;
+        }
 
         // Reusable array for retrieving points from the XRRayInteractor
-        Vector3[] rayPositions = null;
-
-        int rayPositionsCount = -1;
+        private Vector3[] rayPositions = null;
+        private int rayPositionsCount = -1;
 
         // reusable lists of the points used for the line renderer
         private Vector3[] rendererPositions;
 
-        // reusable vectors for determining the raycast hit data
+        // reusable values derived from raycast hit data
         private Vector3 reticlePosition;
-        private Vector3 reticleNormal;
+        private Transform hitTargetTransform;
+        private Vector3 targetLocalHitPoint;
+        private float hitDistance;
+
+        /// <summary>
+        /// Used internally to determine if the ray we are visualizing hit an object or not.
+        /// </summary>
+        private bool rayHasHit;
 
         // private array used to clear the line renderer when needed
-        readonly Vector3[] clearPositions = { Vector3.zero, Vector3.zero };
+        private readonly Vector3[] clearPositions = { Vector3.zero, Vector3.zero };
 
         // Property block for writing per-object material properties
         private MaterialPropertyBlock propertyBlock;
 
-        // If an interactable requests a custom reticle, it'll be referenced
-        // here.
-        private GameObject customReticle;
-
-        // The IVariableReticle associated with our standard, non-custom reticle.
-        private IVariableReticle variableSelectReticle;
-
-        // The IVariableReticle associated with a custom reticle.
-        private IVariableReticle customVariableReticle;
+        #region MonoBehaviour
 
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
@@ -169,8 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 UpdateLineRendererProperties();
             }
 
-            // Try to find a corresponding line data source and raise a warning if it does not exist
-            if (!TryGetComponent(out lineDataProvider))
+            // Try to find a corresponding line data source and raise a warning if it was not initialized and does not exist
+            if (lineDataProvider == null && !TryGetComponent(out lineDataProvider))
             {
                 Debug.LogWarning("No Line Data Provider found for Interactor Line Visual.", this);
                 enabled = false;
@@ -228,69 +254,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Application.onBeforeRender -= UpdateLineVisual;
         }
 
-        private bool stopLineAtFirstRaycastHit = true;
-        private Vector3 targetLocalHitPoint;
-        private Vector3 targetLocalHitNormal;
-        private float hitDistance;
-        private Transform hitTargetTransform;
+        #endregion
 
-        /// <summary>
-        /// Used internally to determine if the ray we are visualizing hit an object or not.
-        /// </summary>
-        private bool rayHasHit;
-
-        public void LocateTargetHitPoint(SelectEnterEventArgs args)
-        {
-            // If no hit, abort.
-            if (!rayInteractor.TryGetCurrentRaycast(
-                out RaycastHit? raycastHit,
-                out _,
-                out UnityEngine.EventSystems.RaycastResult? raycastResult,
-                out _,
-                out bool isUIHitClosest))
-            {
-                return;
-            }
-
-            // If we haven't even gotten any ray positions yet, abort.
-            if (rayPositions == null || rayPositionsCount <= 0) { return; }
-
-            // Record relevant data about the hit point.
-            if (raycastResult.HasValue && isUIHitClosest)
-            {
-                hitTargetTransform = raycastResult.Value.gameObject.transform;
-                targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
-                targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
-                hitDistance = (raycastResult.Value.worldPosition - rayPositions[0]).magnitude;
-            }
-            else if (raycastHit.HasValue)
-            {
-                // In the case of affordances/handles, we can stick the ray right on to the handle.
-                if (args.interactableObject is ISnapInteractable snappable)
-                {
-                    hitTargetTransform = snappable.HandleTransform;
-                    targetLocalHitPoint = Vector3.zero;
-                    targetLocalHitNormal = Vector3.up;
-                }
-                else
-                {
-                    hitTargetTransform = raycastHit.Value.collider.transform;
-                    targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
-                    targetLocalHitNormal = hitTargetTransform.InverseTransformPoint(raycastHit.Value.normal);
-                }
-
-                hitDistance = (raycastHit.Value.point - rayPositions[0]).magnitude;
-            }
-        }
-
-        private void ClearLineRenderer()
-        {
-            if (TryFindLineRenderer())
-            {
-                lineRenderer.SetPositions(clearPositions);
-                lineRenderer.positionCount = 0;
-            }
-        }
+        #region LineVisual Updates
 
         private static readonly ProfilerMarker UpdateLinePerfMarker = new ProfilerMarker("[MRTK] MRTKLineVisual.UpdateLineVisual");
 
@@ -358,10 +324,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // If the ray hits an object, truncate the visual appropriately
                     // Remove the last point in the list to keep the number of points consistent.
-                    if (rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int endPositionInLine, out bool isValidTarget))
+                    if (rayInteractor.TryGetHitInfo(out reticlePosition, out _, out int endPositionInLine, out bool isValidTarget))
                     {
                         // End the line at the current hit point.
-                        if ((isValidTarget || stopLineAtFirstRaycastHit) && endPositionInLine > 0 && endPositionInLine < rayPositionsCount)
+                        if ((isValidTarget || StopLineAtFirstRaycastHit) && endPositionInLine > 0 && endPositionInLine < rayPositionsCount)
                         {
                             rayPositions[endPositionInLine] = reticlePosition;
                             rayPositionsCount = endPositionInLine + 1;
@@ -452,6 +418,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Used to locate and lock the raycast hit data on a select
+        /// </summary>
+        private void LocateTargetHitPoint(SelectEnterEventArgs args)
+        {
+            // If no hit, abort.
+            if (!rayInteractor.TryGetCurrentRaycast(
+                out RaycastHit? raycastHit,
+                out _,
+                out UnityEngine.EventSystems.RaycastResult? raycastResult,
+                out _,
+                out bool isUIHitClosest))
+            {
+                return;
+            }
+
+            // If we haven't even gotten any ray positions yet, abort.
+            if (rayPositions == null || rayPositionsCount <= 0) { return; }
+
+            // Record relevant data about the hit point.
+            if (raycastResult.HasValue && isUIHitClosest)
+            {
+                hitTargetTransform = raycastResult.Value.gameObject.transform;
+                targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
+                hitDistance = (raycastResult.Value.worldPosition - rayPositions[0]).magnitude;
+            }
+            else if (raycastHit.HasValue)
+            {
+                // In the case of affordances/handles, we can stick the ray right on to the handle.
+                if (args.interactableObject is ISnapInteractable snappable)
+                {
+                    hitTargetTransform = snappable.HandleTransform;
+                    targetLocalHitPoint = Vector3.zero;
+                }
+                else
+                {
+                    hitTargetTransform = raycastHit.Value.collider.transform;
+                    targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
+                }
+
+                hitDistance = (raycastHit.Value.point - rayPositions[0]).magnitude;
+            }
+        }
+
+        #endregion
+
         private bool TryFindLineRenderer()
         {
             if (lineRenderer == null)
@@ -466,7 +478,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return true;
         }
 
-        [Range(2, 2048)]
+        private void ClearLineRenderer()
+        {
+            if (TryFindLineRenderer())
+            {
+                lineRenderer.SetPositions(clearPositions);
+                lineRenderer.positionCount = 0;
+            }
+        }
+
+        [Range(2, 128)]
         [SerializeField]
         [Tooltip("Number of steps to interpolate along line in Interpolated step mode")]
         private int lineStepCount = 16;

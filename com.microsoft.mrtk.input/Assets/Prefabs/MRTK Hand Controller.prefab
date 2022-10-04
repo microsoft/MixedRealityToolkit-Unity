@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2940030942784507886}
   - component: {fileID: 1180895169275043612}
   - component: {fileID: 2105872328799679035}
+  - component: {fileID: 1360334431692699758}
+  - component: {fileID: 1011521807071173904}
   m_Layer: 0
   m_Name: Far Ray
   m_TagString: Untagged
@@ -287,6 +289,156 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dwellTriggerTime: 0.3
+--- !u!114 &1360334431692699758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33891623947274355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ec73306ca3ef44a95bbb45b96f0538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseReticle: {fileID: 8992338914735331379}
+  reticleRoot: {fileID: 3988544559415115452}
+  rayInteractor: {fileID: 2940030942784507886}
+  proximityLight: {fileID: 4448665028262160152}
+  visibilitySettings: 0
+--- !u!114 &1011521807071173904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33891623947274355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7b82b7c0a82d944a12da9283d254e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noTargetColorGradient:
+    serializedVersion: 2
+    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 0.5254902}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 1}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 1315
+    atime1: 1592
+    atime2: 12392
+    atime3: 65535
+    atime4: 63029
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 3
+  validColorGradient:
+    serializedVersion: 2
+    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 1}
+    key3: {r: 0, g: 0, b: 0, a: 1}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 19037
+    atime1: 50051
+    atime2: 52543
+    atime3: 65535
+    atime4: 63029
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  selectActiveColorGradient:
+    serializedVersion: 2
+    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 1}
+    key3: {r: 0, g: 0, b: 0, a: 1}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 19037
+    atime1: 23883
+    atime2: 65535
+    atime3: 65535
+    atime4: 63029
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  lineWidth:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  widthMultiplier: 0.0015
+  startPointLerp: 0.267
+  endPointLerp: 0.637
+  rayInteractor: {fileID: 2940030942784507886}
+  lineRenderer: {fileID: 5409732680908794997}
+  lineDataProvider: {fileID: 3681755664881842967}
+  roundedEdges: 1
+  roundedCaps: 1
+  stopLineAtFirstRaycastHit: 1
+  lineStepCount: 16
 --- !u!1 &313520819636509231
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +581,6 @@ MonoBehaviour:
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
-  touchVisuals: {fileID: 0}
   pinchPoseSource:
     id: 0
   references:
@@ -737,6 +888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1948193616346090106}
   - component: {fileID: 1948193616346090107}
+  - component: {fileID: 2149070630719831301}
   m_Layer: 0
   m_Name: IndexTip PokeInteractor
   m_TagString: Untagged
@@ -894,6 +1046,21 @@ MonoBehaviour:
             m_SingletonActionBindings: []
             m_Flags: 0
           m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+--- !u!114 &2149070630719831301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948193616346090105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518e5c0e6d2c664478d85d0ceae60c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseReticle: {fileID: 8086910922498750391}
+  pokeInteractor: {fileID: 1948193616346090107}
+  proximityLight: {fileID: 3552666654439622812}
 --- !u!1 &4299642553989019656
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,7 +1468,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1307666228887773622}
-  - component: {fileID: 6767587444862779328}
   - component: {fileID: 5409732680908794997}
   - component: {fileID: 3681755664881842967}
   - component: {fileID: 6598864090782150916}
@@ -1326,138 +1492,6 @@ Transform:
   m_Father: {fileID: 4332395624789801014}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6767587444862779328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8822000602352085715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b7b82b7c0a82d944a12da9283d254e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  noTargetColorGradient:
-    serializedVersion: 2
-    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 0.5254902}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 1}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 1315
-    atime1: 1592
-    atime2: 12392
-    atime3: 65535
-    atime4: 63029
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 3
-  validColorGradient:
-    serializedVersion: 2
-    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 1}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 19037
-    atime1: 50051
-    atime2: 52543
-    atime3: 65535
-    atime4: 63029
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  selectActiveColorGradient:
-    serializedVersion: 2
-    key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 1}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 19037
-    atime1: 23883
-    atime2: 65535
-    atime3: 65535
-    atime4: 63029
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  lineWidth:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  widthMultiplier: 0.0015
-  startPointLerp: 0.267
-  endPointLerp: 0.637
-  rayInteractor: {fileID: 2940030942784507886}
-  roundedEdges: 1
-  roundedCaps: 1
-  lineRenderer: {fileID: 5409732680908794997}
-  lineDataProvider: {fileID: 3681755664881842967}
-  lineStepCount: 16
 --- !u!120 &5409732680908794997
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1696,27 +1730,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 212221299525418658}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3988544559415115453 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 212221299525418658}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5167647099609509214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3988544559415115453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70ec73306ca3ef44a95bbb45b96f0538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseReticle: {fileID: 8992338914735331379}
-  rayInteractor: {fileID: 2940030942784507886}
-  proximityLight: {fileID: 4448665028262160152}
-  visibilitySettings: 0
 --- !u!1001 &1009008764017234214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1786,11 +1799,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
---- !u!1 &3552666654439622812 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 1009008764017234214}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8086910922498750391 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
@@ -1801,26 +1809,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4299642553587339577 stripped
+--- !u!1 &3552666654439622812 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 3867428799850922015, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6256940305535466658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4299642553587339577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 518e5c0e6d2c664478d85d0ceae60c36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseReticle: {fileID: 8086910922498750391}
-  pokeInteractor: {fileID: 1948193616346090107}
-  proximityLight: {fileID: 3552666654439622812}
 --- !u!114 &943052423812839532
 MonoBehaviour:
   m_ObjectHideFlags: 0

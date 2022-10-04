@@ -32,7 +32,6 @@
 /com.microsoft.mrtk.core/ @davidkline-ms @keveleigh @Zee2
 /com.microsoft.mrtk.data/ @maluoi @Zee2
 /com.microsoft.mrtk.diagnostics/ @davidkline-ms
-/com.microsoft.mrtk.environment/ @davidkline-ms @keveleigh
 /com.microsoft.mrtk.input/ @Zee2 @RogPodge @MaxWang-MS
 /com.microsoft.mrtk.spatialmanipulation/ @RogPodge @Zee2
 /com.microsoft.mrtk.tools/ @davidkline-ms @keveleigh
