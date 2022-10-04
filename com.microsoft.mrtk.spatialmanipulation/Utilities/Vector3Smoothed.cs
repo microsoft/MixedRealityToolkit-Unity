@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         public Vector3 Goal { get; set; }
 
         /// <summary>
-        /// The length of time the smoothing should use to to reach the goal.
+        /// The length of time the smoothing should use to reach the goal.
         /// </summary>
         public float SmoothTime { get; set; }
 

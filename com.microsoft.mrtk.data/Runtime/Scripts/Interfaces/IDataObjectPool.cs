@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Add a prefetched object to the pool with the specified ID.
         /// </summary>
         /// <remarks>
-        /// A typical scenario would first call TryGetPrefetchedObject to get either an already prefectched
+        /// A typical scenario would first call TryGetPrefetchedObject to get either an already prefetched
         /// object or if it does not exist, to get an unused object to then prefetch. Then, once
         /// prefetched, add it to the object pool using this method.
         ///

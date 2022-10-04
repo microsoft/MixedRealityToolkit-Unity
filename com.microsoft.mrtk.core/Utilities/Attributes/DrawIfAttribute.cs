@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit
     public sealed class DrawIfAttribute : PropertyAttribute
     {
         /// <summary>
-        /// Types of comperisons.
+        /// Types of comparisons.
         /// </summary>
         public enum ComparisonType
         {
