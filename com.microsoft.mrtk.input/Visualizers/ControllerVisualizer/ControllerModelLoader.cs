@@ -22,10 +22,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public static class ControllerModelLoader
     {
         /// <summary>
-        /// A dictionary which caches the controller model gameobject associated with a specified input device
-        /// Stores a boolean indicating whether the controller model was successfully loaded to prevent repeated failed loads.
+        /// A dictionary which caches the controller model GameObject associated with a specified model key
         /// </summary>
-        private static Dictionary<InputDevice, (bool, GameObject)> controllerModelDictionary = new Dictionary<InputDevice, (bool, GameObject)>();
+        private static Dictionary<ulong, GameObject> controllerModelDictionary = new Dictionary<ulong, GameObject>();
+
+        /// <summary>
+        /// A dictionary which caches the controller model gameobject associated with a specified input device
+        /// Stores a boolean indicating whether a warning was recenlty raised when trying to get the model key for this input device.
+        /// </summary>
+        private static Dictionary<InputDevice, bool> warningCache = new Dictionary<InputDevice, bool>();
+
+        /// <summary>
+        /// A dictionary which caches the controller model gameobject associated with a specified input device
+        /// Stores a boolean indicating whether an error was recenlty raised when trying to get the model for this model key.
+        /// </summary>
+        private static Dictionary<ulong, bool> errorCache = new Dictionary<ulong, bool>();
 
         /// <summary>
         /// Tries to load the controller model game object of the specified input device with the corresponding handedness
@@ -40,72 +51,71 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InternedString targetUsage = handedness == Handedness.Left ? CommonUsages.LeftHand : CommonUsages.RightHand;
             Debug.Assert(inputDevice.usages.Contains(targetUsage));
 
-            bool existsInCahce = controllerModelDictionary.TryGetValue(inputDevice, out var results);
-            var (isLoadable, cachedGameObject) = existsInCahce ? results : (false, null);
-
-            // Try to fetch the controller model from our cache and exit early if we are able to get a valid model
-            if (existsInCahce)
-            {
-                if (!isLoadable)
-                {
-                    // If the object wasn't loadable, return null and exit early
-                    return null;
-                }
-                else if (cachedGameObject != null)
-                {
-                    // If the object was loadable and the cached object is not null, set it active and return it.
-                    cachedGameObject.SetActive(true);
-                    return cachedGameObject;
-                }
-            }
-
-            // Otherwise, proceed with trying to load the model from the platform
+            // Proceed with trying to load the model from the platform
             GameObject gltfGameObject = null;
 
 #if MROPENXR_PRESENT && (UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_ANDROID) && GLTFAST_PRESENT && KTX_PRESENT
             ControllerModel controllerModelProvider = handedness == Handedness.Left ? ControllerModel.Left :
                                                         handedness == Handedness.Right ?  ControllerModel.Right :
                                                         null;
-
             if (controllerModelProvider == null)
             {
                 Debug.LogWarning("Controller model provider does not exist for this handedness");
                 return null;
             }
 
+            // Try to obtain a model key
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
-                // Make sure we record in our cache that a model is not loadable
-                controllerModelDictionary[inputDevice] = (false, null);
+                if(warningCache.ContainsKey(inputDevice) && !warningCache[inputDevice])
+                {
+                    Debug.LogWarning("Failed to obtain controller model key from platform.");
+                }
 
-                Debug.LogWarning("Failed to obtain controller model key from platform.");
+                // Make sure we record in our cache that we've previously raised a warning for this input device
+                warningCache[inputDevice] = true;
+
                 return null;
             }
 
-            byte[] modelStream = await controllerModelProvider.TryGetControllerModel(modelKey);
+            // Make sure we record in our cache that we've succeeded in loading this model without warnings
+            warningCache[inputDevice] = false;
 
+            // Check if a gameobject already exists for this modelkey. If so, set it active and return it
+            if (controllerModelDictionary.TryGetValue(modelKey, out gltfGameObject) && gltfGameObject != null)
+            {
+                gltfGameObject.SetActive(true);
+                return gltfGameObject;
+            }
+
+            // Otherwise, try to load the model from the model provider
+            byte[] modelStream = await controllerModelProvider.TryGetControllerModel(modelKey);
             if (modelStream == null || modelStream.Length == 0)
             {
-                // Make sure we record in our cache that a model is not loadable
-                controllerModelDictionary[inputDevice] = (false, null);
+                if (errorCache.ContainsKey(modelKey) && !errorCache[modelKey])
+                {
+                    Debug.LogError("Failed to obtain controller model from platform.");
+                }
 
-                Debug.LogError("Failed to obtain controller model from platform.");
+                // Make sure we record in our cache that we've previously raised a warning for this input device
+                errorCache[modelKey] = true;
+
                 return null;
             }
+            // Make sure we record in our cache that we've succeeded in loading this model without warnings
+            errorCache[modelKey] = false;
 
+            // Finally try to create a gameobject from the model data
             GltfImport gltf = new GltfImport();
             bool success = await gltf.LoadGltfBinary(modelStream);
             gltfGameObject = new GameObject(modelKey.ToString());
             if (success && gltf.InstantiateMainScene(gltfGameObject.transform))
             {
-                // After all the awaits, double check that another task didn't finish earlier and write into this cache
-                existsInCahce = controllerModelDictionary.TryGetValue(inputDevice, out var previousResults);
-                (isLoadable, cachedGameObject) = existsInCahce ? previousResults : (false, null);
-
-                if (existsInCahce && isLoadable && cachedGameObject != null && gltfGameObject != null)
+                // After all the awaits, double check that another task didn't finish earlier
+                if (controllerModelDictionary.TryGetValue(modelKey, out GameObject existingGameObject) && existingGameObject != null)
                 {
                     Object.Destroy(gltfGameObject);
-                    return cachedGameObject;
+                    return existingGameObject;
                 }
 
 #if MROPENXR_ANIM_PRESENT
@@ -117,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 #endif
 
-                controllerModelDictionary[inputDevice] = (true, gltfGameObject);
+                controllerModelDictionary[modelKey] = gltfGameObject;
             }
             else
             {
