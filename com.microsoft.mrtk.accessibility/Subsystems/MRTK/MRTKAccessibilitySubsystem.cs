@@ -155,8 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                     GameObject obj = objectList[i];
 
                     // Does the object have a collider?
-                    Collider collider = obj.GetComponent<Collider>();
-                    if (collider == null)
+                    if (!obj.TryGetComponent<Collider>(out Collider collider))
                     {
                         objectList.Remove(obj);
                         continue;
