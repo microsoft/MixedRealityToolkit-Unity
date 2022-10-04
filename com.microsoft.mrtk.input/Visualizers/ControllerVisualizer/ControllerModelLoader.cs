@@ -13,12 +13,12 @@ using GLTFast;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// A helper class which loads and caches controller models fetched from the controller's platform sdk
+    /// A helper class which loads and caches controller models fetched from the controller's platform SDK.
     /// </summary>
     public static class ControllerModelLoader
     {
         /// <summary>
-        /// A dictionary which caches the controller model gameobject associated with a specified model key
+        /// A dictionary which caches the controller model GameObject associated with a specified model key
         /// </summary>
         private static Dictionary<ulong, GameObject> controllerModelDictionary = new Dictionary<ulong, GameObject>();
 
@@ -26,8 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Tries to load the controller model game object from the provided OpenXR ControllerModel.
         /// Requires the MR OpenXR plugin to work.
         /// </summary>
-        /// <param name="controllerModelProvider">The OpenXR ControllerModel to loade from</param>
-        /// <returns>A gameobject representing the generated controller model in the scene</returns>
+        /// <param name="controllerModelProvider">The OpenXR ControllerModel to load from.</param>
+        /// <returns>A GameObject representing the generated controller model in the scene.</returns>
         public async static Task<GameObject> TryGenerateControllerModelFromPlatformSDK(Handedness handedness)
         {
             GameObject gltfGameObject = null;

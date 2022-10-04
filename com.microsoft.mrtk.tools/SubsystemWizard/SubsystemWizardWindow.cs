@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         {
             List<string> errors = new List<string>();
 
-            // Validate the tempate files we will use,
+            // Validate the template files we will use,
             subsystemGenerator.ValidateTemplates(
                 errors,
                 out FileInfo descriptorTemplate,

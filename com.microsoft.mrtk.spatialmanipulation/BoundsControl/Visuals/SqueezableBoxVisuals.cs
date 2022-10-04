@@ -446,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        // Peek the seocnd-from-top item on the stack.
+        // Peek the second-from-top item on the stack.
         private T PeekSecond<T>(Stack<T> stack)
         {
             T temp = stack.Pop();

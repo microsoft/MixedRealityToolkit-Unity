@@ -749,7 +749,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // We need to query the raw device rotation from the interactor; however,
             // the controller may have its rotation bound to the pointerRotation, which is unsuitable
-            // for modelling rotations with far rays. Therefore, we cast down to the base TrackedDevice,
+            // for modeling rotations with far rays. Therefore, we cast down to the base TrackedDevice,
             // and query the device rotation directly. If any of this is un-castable, we return the
             // interactor's attachTransform's rotation.
             if (interactor is XRBaseControllerInteractor controllerInteractor &&
