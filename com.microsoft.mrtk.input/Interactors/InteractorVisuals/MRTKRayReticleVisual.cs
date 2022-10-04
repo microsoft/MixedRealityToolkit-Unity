@@ -12,8 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// aligning the reticle with a surface hit by the ray interactor.
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Reticle Visual")]
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
     public class MRTKRayReticleVisual : BaseReticleVisual
     {
+        [SerializeField]
+        [Tooltip("The root of the reticle visuals")]
+        private Transform reticleRoot;
+
         [SerializeField]
         [Tooltip("The interactor which this visual represents.")]
         private XRRayInteractor rayInteractor;
@@ -29,32 +34,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // reusable vectors for determining the raycast hit data
         private Vector3 reticlePosition;
         private Vector3 reticleNormal;
-        private IVariableReticle variableReticle;
 
         /// <summary>
         /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only
         /// </summary>
         public ReticleVisibilitySettings VisibilitySettings
         {
-            get
-            {
-                return visibilitySettings;
-            }
-            set
-            {
-                visibilitySettings = value;
-            }
+            get => visibilitySettings;
+            set => visibilitySettings = value;
         }
 
         protected void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
             Application.onBeforeRender += UpdateReticle;
-
-            if (Reticle != null)
-            {
-                variableReticle = Reticle.GetComponentInChildren<IVariableReticle>();
-            }
         }
 
         protected void OnDisable()
@@ -64,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
             Application.onBeforeRender -= UpdateReticle;
         }
+
         private static readonly ProfilerMarker UpdateReticlePerfMarker = new ProfilerMarker("[MRTK] MRTKRayReticleVisual.UpdateReticle");
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
@@ -71,50 +65,53 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdateReticlePerfMarker.Auto())
             {
-                bool showReticle = VisibilitySettings == ReticleVisibilitySettings.AllValidSurfaces || rayInteractor.hasHover || rayInteractor.hasSelection ||
-                    rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _);
-
-                if (showReticle)
+                if (Reticle != null)
                 {
-                    if (rayInteractor.interactablesSelected.Count > 0)
-                    {
-                        reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
-                        reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
-                        Reticle.SetActive(true);
-                    }
-                    else
-                    {
-                        bool rayHasHit = rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int _, out bool _);
-                        Reticle.SetActive(rayHasHit);
-                    }
+                    bool showReticle = VisibilitySettings == ReticleVisibilitySettings.AllValidSurfaces || rayInteractor.hasHover || rayInteractor.hasSelection ||
+                        rayInteractor.enableUIInteraction && rayInteractor.TryGetCurrentUIRaycastResult(out _);
 
-                    // Ensure that our visuals position and normal are set correctly.
-                    // The reticle should be a direct child of this gameobject, so it's position and rotation should match this gameobject's
-                    transform.position = reticlePosition;
-                    transform.forward = reticleNormal;
-
-                    // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
-                    if (variableReticle != null)
+                    if (showReticle)
                     {
-                        if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
+                        if (rayInteractor.interactablesSelected.Count > 0)
                         {
-                            variableReticle.UpdateVisuals(variableSelectInteractor.SelectProgress);
+                            reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
+                            reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
+                            Reticle.SetActive(true);
                         }
                         else
                         {
-                            variableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
+                            bool rayHasHit = rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int _, out bool _);
+                            Reticle.SetActive(rayHasHit);
+                        }
+
+                        // Ensure that our visuals position and normal are set correctly.
+                        // The reticle should be a direct child of this GameObject, so its position and rotation should match this GameObject's
+                        reticleRoot.transform.position = reticlePosition;
+                        reticleRoot.transform.forward = reticleNormal;
+
+                        // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
+                        if (VariableReticle != null)
+                        {
+                            if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
+                            {
+                                VariableReticle.UpdateVisuals(variableSelectInteractor.SelectProgress);
+                            }
+                            else
+                            {
+                                VariableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Reticle.SetActive(false);
-                }
+                    else
+                    {
+                        Reticle.SetActive(false);
+                    }
 
-                // The proximity light should only be active when the reticle is
-                if (proximityLight != null)
-                {
-                    proximityLight.SetActive(Reticle.activeSelf);
+                    // The proximity light should only be active when the reticle is
+                    if (proximityLight != null)
+                    {
+                        proximityLight.SetActive(Reticle.activeSelf);
+                    }
                 }
             }
         }
@@ -142,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
                 targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
             }
-            // Otherwise, calcualte the reticle pose based on the raycast hit.
+            // Otherwise, calculate the reticle pose based on the raycast hit.
             else if (raycastHit.HasValue)
             {
                 // In the case of affordances/handles, we can stick the ray right on to the handle.

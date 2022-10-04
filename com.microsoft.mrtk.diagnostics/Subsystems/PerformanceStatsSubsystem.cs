@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         { }
 
         /// <summary>
-        /// Interface for providing hardare status functionality for the implementation.
+        /// Interface for providing hardware status functionality for the implementation.
         /// </summary>
         public abstract class Provider : MRTKSubsystemProvider<PerformanceStatsSubsystem>, IPerformanceStatsSubsystem
         {

@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         private string semantic = string.Empty;
 
         /// <summary>
-        /// A string describing the semantic usage of the object. Common semanitic include;
+        /// A string describing the semantic usage of the object. Common semantics include:
         /// "login button", "rocking chair", etc.
         /// </summary>
         public string Semantic => semantic;

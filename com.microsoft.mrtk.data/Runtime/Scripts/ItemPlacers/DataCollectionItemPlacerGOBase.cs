@@ -965,7 +965,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 if (_totalItemCount != newTotalItemCount)
                 {
                     // For misc mods or deletions, it's safer to just re-fetch all at current scroll position since we don't
-                    // necessarily know where a deletion or modification occured.
+                    // necessarily know where a deletion or modification occurred.
                     PurgeAllVisibleAndRemovableItems();
 
                     _totalItemCount = newTotalItemCount;
