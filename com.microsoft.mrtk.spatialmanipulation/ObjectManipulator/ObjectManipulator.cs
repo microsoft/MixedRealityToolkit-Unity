@@ -81,7 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
             set
             {
-                if (hostTransform != value)
+                if (interactorsSelecting.Count == 0)
+                {
+                    Debug.LogWarning("Changing the host transform while the object is being manipulated is not yet supported. " + 
+                        "Check interactorsSelecting.Count before changing the host transform.");
+                    return;
+                }
+                if (hostTransform != value )
                 {
                     hostTransform = value;
 
@@ -91,7 +97,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     {
                         constraintsManager.Setup(new MixedRealityTransform(HostTransform));
                     }
+                  
+                    // Re-aquire reference to the rigidbody.
+                    rigidBody = HostTransform.GetComponent<Rigidbody>();
                 }
+            }
         }
 
         [SerializeField]
