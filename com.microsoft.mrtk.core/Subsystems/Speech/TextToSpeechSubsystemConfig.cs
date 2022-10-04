@@ -13,6 +13,17 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         menuName = "MRTK/Subsystems/TextToSpeechSubsystem Config")]
     public class TextToSpeechSubsystemConfig : BaseSubsystemConfig
     {
-        // TODO: Add subsystem specific configuration properties.
+        [SerializeField]
+        [Tooltip("The rate at which synthesized speech should be spoken.")]
+        private int rateOfSpeech;
+
+        /// <summary>
+        /// The rate at which synthesized speech should be spoken.
+        /// </summary>
+        public int RateOfSpeech
+        {
+            get => rateOfSpeech;
+            set => rateOfSpeech = value;    // todo: validate range
+        }
     }
 }

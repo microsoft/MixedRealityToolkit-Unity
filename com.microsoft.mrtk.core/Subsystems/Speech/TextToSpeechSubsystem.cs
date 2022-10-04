@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.SubsystemsImplementation;
 
@@ -22,14 +23,16 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         {
             #region ITextToSpeechSubsystem implementation
 
-            // TODO: Implement abstract Provider class.
+            /// <inheritdoc/>
+            public abstract void Speak(string phrase, AudioSource audioSource);
 
             #endregion ITextToSpeechSubsystem implementation
         }
 
         #region ITextToSpeechSubsystem implementation
 
-        // TODO: Calls into abstract Provider (ex: public int MaxValue => provider.MaxValue;
+        /// <inheritdoc/>
+        public virtual void Speak(string phrase, AudioSource audioSource) => provider.Speak(phrase, audioSource);
 
         #endregion ITextToSpeechSubsystem implementation
 
