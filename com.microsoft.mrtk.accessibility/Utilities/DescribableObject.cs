@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     public class DescribableObject : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("What is the classification (ex: person, place, ui element, etc.) is this object?")]
+        [Tooltip("What is the classification (ex: person, place, ui element, etc.) of this object?")]
         private DescribableObjectClassification classification = null;
 
         /// <summary>
