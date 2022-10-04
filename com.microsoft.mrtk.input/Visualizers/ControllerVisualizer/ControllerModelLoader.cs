@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// A dictionary which caches the controller model gameobject associated with a specified input device
-        /// Stores a boolean indicating whether a warning was recenlty raised when trying to get the model key for this input device.
+        /// Stores a boolean indicating whether a warning was recently raised when trying to get the model key for this input device.
         /// </summary>
         private static Dictionary<InputDevice, bool> warningCache = new Dictionary<InputDevice, bool>();
 
