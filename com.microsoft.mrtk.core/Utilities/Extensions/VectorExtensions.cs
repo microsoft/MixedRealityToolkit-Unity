@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>True if the distance between the two vectors is within the tolerance, false otherwise.</returns>
         public static bool CloseEnoughTo(this Vector3 v1, Vector3 v2, float distanceTolerance = 0.001f)
         {
-            return Mathf.Abs(Vector3.Distance(v1, v2)) < distanceTolerance;
+            return Vector3.Distance(v1, v2) < distanceTolerance;
         }
 
         /// <summary>
