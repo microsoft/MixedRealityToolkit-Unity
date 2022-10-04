@@ -8,7 +8,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 {
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             objectManipulator.selectExited.AddListener((eventData) => selectCount--);
             Assert.AreEqual(0, selectCount, $"ObjectManipulator is not selected, because we haven't pinched yet");
 
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
 
             Assert.AreEqual(1, selectCount, $"ObjectManipulator is selected");
 
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             TestHand hand = new TestHand(Handedness.Right);
 
             yield return hand.Show(initialHandPosition);
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
 
             // non-uniform constraints with uniform scaling
             var scaleConstraint = testObject.AddComponent<MinMaxScaleConstraint>();
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // This time, we are going to release the selection and start a new
             // selection when the target it distorted by the constraints.
 
-            yield return hand.SetGesture(GestureId.Open);
+            yield return hand.SetHandshape(HandshapeId.Open);
 
             // center the object if it moved due to scaling
             testObject.transform.position = new Vector3(0, 0, 1f);
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // reset attachTransform (many use cases will reset for each gesture)
             rayInteractor.attachTransform.localScale = Vector3.one;
 
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
 
             // Because the scale was already non-uniform when the gesture started,
             // it will stay non-uniform as it scales (unless distorted by additional
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             TestHand hand = new TestHand(Handedness.Right);
 
             yield return hand.Show(initialHandPosition);
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
 
             // Change the attachTransform of the selecting Interator
             var rayInteractor = (MRTKRayInteractor)objectManipulator.firstInteractorSelecting;
@@ -246,19 +246,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
 
             yield return hand.Show(initialHandPosition);
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
 
             // Get the interactor
             var rayInteractor = (MRTKRayInteractor)objectManipulator.firstInteractorSelecting;
 
-            yield return hand.SetGesture(GestureId.Open);
+            yield return hand.SetHandshape(HandshapeId.Open);
 
             // Scaling the attachTransform when there is no target
             rayInteractor.attachTransform.localScale = Vector3.one * 2f;
             yield return null;
 
             // Select cube again (attachTransform starts at 200%)
-            yield return hand.SetGesture(GestureId.Pinch);
+            yield return hand.SetHandshape(HandshapeId.Pinch);
 
             // Scaling attachTransform to one should scale down the cube
             rayInteractor.attachTransform.localScale = Vector3.one;

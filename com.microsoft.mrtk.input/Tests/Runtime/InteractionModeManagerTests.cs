@@ -78,14 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.AreEqual(currentMode, rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnDetection);
             ValidateInteractionModeActive(rightHandController, currentMode);
 
-            yield return rightHand.SetGesture(GestureTypes.GestureId.Grab);
+            yield return rightHand.SetHandshape(HandshapeTypes.HandshapeId.Grab);
             yield return RuntimeTestUtilities.WaitForUpdates();
             currentMode = rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnSelect;
             Assert.AreEqual(currentMode, rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnDetection);
             ValidateInteractionModeActive(rightHandController, currentMode);
 
             // move the hand far away and validate that we are in the default mode
-            yield return rightHand.SetGesture(GestureTypes.GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeTypes.HandshapeId.Open);
             yield return rightHand.MoveTo(cube.transform.position + new Vector3(3.0f,0,0));
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Finally move in for a grab
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return rightHand.SetGesture(GestureTypes.GestureId.Grab);
+            yield return rightHand.SetHandshape(HandshapeTypes.HandshapeId.Grab);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             InteractionMode grabMode = rightHandController.GetComponentInChildren<GrabInteractor>().GetComponent<InteractionDetector>().ModeOnSelect;
@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Run it all in reverse and make sure the interaction stack is in order
             // Now move the hand in range for the proximity detector
-            yield return rightHand.SetGesture(GestureTypes.GestureId.Open);
+            yield return rightHand.SetHandshape(HandshapeTypes.HandshapeId.Open);
             yield return rightHand.MoveTo(cube.transform.position - Vector3.forward * 0.09f);
             yield return RuntimeTestUtilities.WaitForUpdates();
 

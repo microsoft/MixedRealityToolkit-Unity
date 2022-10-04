@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.UX;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    [AddComponentMenu("MRTX/Examples/Virtualized Scroll Rect List Tester")]
+    [AddComponentMenu("MRTK/Examples/Virtualized Scroll Rect List Tester")]
     public class VirtualizedScrollRectListTester : MonoBehaviour
     {
         [SerializeField]
@@ -25,7 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             list = GetComponent<VirtualizedScrollRectList>();
             list.OnVisible = (go, i) =>
             {
-                go.GetComponentInChildren<TextMeshProUGUI>().text = i.ToString() + " " + words[i%words.Length];
+                foreach (var text in go.GetComponentsInChildren<TextMeshProUGUI>())
+                {
+                    if (text.gameObject.name == "Text")
+	                    text.text = $"{i} {words[i%words.Length]}";
+                }
             };
         }
 

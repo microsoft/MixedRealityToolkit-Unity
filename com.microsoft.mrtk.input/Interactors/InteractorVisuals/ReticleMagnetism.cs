@@ -128,6 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnEnable()
         {
             Application.onBeforeRender += OnBeforeRender;
+
+            // On enabling, snap the reticle immediately to the anchor point, to 
+            // avoid any chance of suddenly lerping the moment the reticle is visible.
+            smoothedMagnetRotation = transform.parent.rotation;
+            smoothedMagnetPosition = transform.parent.position;
         }
 
         private void OnDisable()
@@ -149,6 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             foreach (Collider nearbyCollider in detector.DetectedColliders)
             {
+                // Sometimes things can be destroyed in between when we detect them
+                // and when we want to magnetize to them!
+                if (nearbyCollider == null) { continue; }
+
                 Vector3 nearestPoint = nearbyCollider.ClosestPoint(root);
                 float distance = Vector3.Distance(root, nearestPoint);
 
@@ -181,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bool insideCollider = Mathf.Approximately(ray.direction.sqrMagnitude, 0.0f);
 
             // Is the surface facing the camera? Don't magnetize to surfaces facing away from the user.
-            bool surfaceFacingCamera = Vector3.Dot(ray.direction, CameraCache.Main.transform.forward) > 0.0f;
+            bool surfaceFacingCamera = Vector3.Dot(ray.direction, Camera.main.transform.forward) > 0.0f;
 
             if (!insideCollider && surfaceFacingCamera)
             {

@@ -100,23 +100,51 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 #endif
         }
 
+        private static bool testPaused;
         /// <summary>
-        /// Used for debugging. Pauses the test until the enter key is pressed.
+        /// Used for debugging. Pauses the test until the dialog is cleared.
         /// </summary>
-        public static IEnumerator WaitForEnterKey()
+        public static IEnumerator PauseTest()
         {
-            Debug.Log(Time.time + " | Press Enter...");
-#if ENABLE_INPUT_SYSTEM
-            while (!Keyboard.current[Key.Enter].wasPressedThisFrame)
+#if UNITY_EDITOR
+            if(!Application.isBatchMode)
             {
-                yield return null;
-            }
-#else
-            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
-            {
-                yield return null;
+                PauseDialogWindow.ShowWindow();
+                while (testPaused)
+                {
+                    yield return null;
+                };
             }
 #endif
+        }
+
+        private class PauseDialogWindow : EditorWindow
+        {
+            public static void ShowWindow()
+            {
+                testPaused = true;
+                var window = GetWindow(typeof(PauseDialogWindow));
+                var position = window.position;
+                position.center = new Rect(0f, 0f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+                window.position = position;
+                window.Show();
+            }
+
+            void OnGUI()
+            {
+                GUILayout.Label("Test Paused for Debugging", EditorStyles.boldLabel);
+                if (GUILayout.Button("Resume Test"))
+                {
+                    testPaused = false;
+                    Close();
+                }
+            }
+
+            // Make sure that we unpause the test if this window is closed
+            void OnDestroy()
+            {
+                testPaused = false;
+            }
         }
 
         /// <summary>
@@ -128,6 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         /// </summary>
         public static IEnumerator WaitForUpdates(int frameCount = 10)
         {
+            yield return new WaitForFixedUpdate();
             for (int i = 0; i < frameCount; i++)
             {
                 yield return null;

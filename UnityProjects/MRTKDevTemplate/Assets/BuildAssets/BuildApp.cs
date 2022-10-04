@@ -43,11 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             }
 
             Debug.Log($"Finished build... Build success? {success}");
+
+            EditorApplication.Exit(success ? 0 : 1);
         }
 
         private static void ParseBuildCommandLine()
         {
-            string[] arguments = System.Environment.GetCommandLineArgs();
+            string[] arguments = Environment.GetCommandLineArgs();
 
             for (int i = 0; i < arguments.Length; ++i)
             {

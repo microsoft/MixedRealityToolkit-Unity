@@ -1,0 +1,50 @@
+# This file contains information about the code owners for various
+# files in the MRTK codebase.
+#
+# For more information on CODEOWNERS, see:
+# https://help.github.com/en/articles/about-code-owners
+#
+# For syntax, see:
+# https://help.github.com/en/articles/about-code-owners#codeowners-syntax
+#
+# The intent of this file is to list, on a per-file/per-area basis:
+# 1) Who is the most familiar with an area of code.
+# OR
+# 2) Who can take a first pass at pull request review, or delegate the review
+# to someone else who may be more appropriate.
+#
+# Note that order in this file is EXTREMELY important - the last matching
+# rule will win. This means that the most general rules should be listed
+# first in this file, followed by more specific rules.
+
+# Build / CI Pipeline
+/Pipelines/ @keveleigh
+
+# Checked-in external dependencies
+/ExternalDependencies/ @keveleigh @davidkline-ms
+
+# Tooling
+/Tooling/ @keveleigh @Zee2
+
+# Feature packages
+/com.microsoft.mrtk.accessibility/ @davidkline-ms
+/com.microsoft.mrtk.audio/ @davidkline-ms
+/com.microsoft.mrtk.core/ @davidkline-ms @keveleigh @Zee2
+/com.microsoft.mrtk.data/ @maluoi @Zee2
+/com.microsoft.mrtk.diagnostics/ @davidkline-ms
+/com.microsoft.mrtk.input/ @Zee2 @RogPodge @MaxWang-MS
+/com.microsoft.mrtk.spatialmanipulation/ @RogPodge @Zee2
+/com.microsoft.mrtk.tools/ @davidkline-ms @keveleigh
+/com.microsoft.mrtk.uxcomponents/ @Zee2 @RogPodge
+/com.microsoft.mrtk.uxcore/ @Zee2 @RogPodge
+/com.microsoft.mrtk.windowsspeech/ @MaxWang-MS
+
+# Input Simulation
+/com.microsoft.mrtk.input/Simulation/ @davidkline-ms @Zee2 @RogPodge
+
+# Examples and templates
+/UnityProjects/ @davidkline-ms @keveleigh @maluoi @MaxWang-MS @RogPodge @Zee2
+
+# Packaging
+*.asmdef @keveleigh @davidkline-ms
+package.json @davidkline-ms @keveleigh

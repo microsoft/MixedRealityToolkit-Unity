@@ -105,14 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [FormerlySerializedAs("Controllers")]
-        [Tooltip("List of XR Base Controllers that this interaction mode detector has jurisdiction over. Interaction modes will be set on all specified controllers.")]
-        private List<XRBaseController> controllers;
+        [Tooltip("List of GameObjects which represent the 'controllers' that this interaction mode detector has jurisdiction over. Interaction modes will be set on all specified controllers.")]
+        private List<GameObject> controllers;
 
         /// <inheritdoc />
-        public List<XRBaseController> GetControllers()
-        {
-            return controllers;
-        }
+        public List<GameObject> GetControllers() => controllers;
 
         /// <inheritdoc />
         public bool IsModeDetected()

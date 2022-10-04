@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 using UnityEngine.XR;
 
@@ -48,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public AggregateHandContainer(XRNode handNode) : base(handNode)
             {
-                handsSubsystems = XRSubsystemHelpers.GetAllSubsystems<HandsSubsystem>();
+                SubsystemManager.GetSubsystems(handsSubsystems);
             }
 
             private static readonly ProfilerMarker TryGetEntireHandPerfMarker =
@@ -165,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // If we are tracked and also have a cached finger length, return that.
-                if (indexFingerLength.HasValue)
+                if (indexFingerLength.HasValue && indexFingerLength.Value != 0.0f)
                 {
                     length = indexFingerLength.Value;
                     return true;
@@ -173,9 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     // Otherwise, we compute a fresh finger length.
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexKnuckle, out HandJointPose indexKnuckle);
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexMiddleJoint, out HandJointPose indexMiddle);
-                    gotData &= TryGetJoint(TrackedHandJoint.IndexDistalJoint, out HandJointPose indexDistal);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexProximal, out HandJointPose indexKnuckle);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexIntermediate, out HandJointPose indexMiddle);
+                    gotData &= TryGetJoint(TrackedHandJoint.IndexDistal, out HandJointPose indexDistal);
 
                     if (gotData)
                     {
@@ -199,28 +200,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Preserve]
         protected class MRTKAggregator : Provider
         {
-            protected MRTKHandsAggregatorConfig Config { get; }
+            protected MRTKHandsAggregatorConfig Config { get; private set; }
 
-            public MRTKAggregator() : base()
-            {
-                Config = XRSubsystemHelpers.GetConfiguration<MRTKHandsAggregatorConfig, MRTKHandsAggregatorSubsystem>();
-            }
-
-            private Dictionary<XRNode, AggregateHandContainer> hands;
+            private Dictionary<XRNode, AggregateHandContainer> hands = null;
 
             // Reusable pinch pose structs to reduce allocs.
             private HandJointPose leftPinchPose, rightPinchPose;
 
             public override void Start()
             {
-                hands = new Dictionary<XRNode, AggregateHandContainer>
+                base.Start();
+
+                Config = XRSubsystemHelpers.GetConfiguration<MRTKHandsAggregatorConfig, MRTKHandsAggregatorSubsystem>();
+
+                hands ??= new Dictionary<XRNode, AggregateHandContainer>
                 {
                     { XRNode.LeftHand, new AggregateHandContainer(XRNode.LeftHand) },
                     { XRNode.RightHand, new AggregateHandContainer(XRNode.RightHand) }
                 };
+
+                InputSystem.onBeforeUpdate += ResetHands;
             }
 
-            public override void Update()
+            public override void Stop()
+            {
+                ResetHands();
+                InputSystem.onBeforeUpdate -= ResetHands;
+                base.Stop();
+            }
+
+            private void ResetHands()
             {
                 hands[XRNode.LeftHand].Reset();
                 hands[XRNode.RightHand].Reset();
@@ -235,6 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <inheritdoc/>
+            [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
             public override bool TryGetHandCenter(XRNode handNode, out HandJointPose jointPose)
             {
                 return TryGetJoint(TrackedHandJoint.Palm, handNode, out jointPose);
@@ -244,8 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public override bool TryGetPinchingPoint(XRNode handNode, out HandJointPose jointPose)
             {
                 // GetJoint will reuse existing joint data if the hand was already queried this frame.
-                bool gotData = true;
-                gotData &= TryGetJoint(TrackedHandJoint.ThumbTip, handNode, out HandJointPose thumbPose);
+                bool gotData = TryGetJoint(TrackedHandJoint.ThumbTip, handNode, out HandJointPose thumbPose);
                 gotData &= TryGetJoint(TrackedHandJoint.IndexTip, handNode, out HandJointPose indexPose);
                 gotData &= TryGetJoint(TrackedHandJoint.Palm, handNode, out HandJointPose palmPose);
 
@@ -266,11 +275,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc/>
             public override bool TryGetPinchProgress(XRNode handNode, out bool isReadyToPinch, out bool isPinching, out float pinchAmount)
             {
-                bool gotData = true;
-                gotData &= TryGetJoint(TrackedHandJoint.Palm, handNode, out HandJointPose palm);
+                bool gotData = TryGetJoint(TrackedHandJoint.Palm, handNode, out HandJointPose palm);
 
                 // Is the hand far enough up/in view to be eligible for pinching?
-                bool handIsUp = Vector3.Angle(CameraCache.Main.transform.forward, (palm.Position - CameraCache.Main.transform.position)) < Config.HandRaiseCameraFov;
+                bool handIsUp = Vector3.Angle(Camera.main.transform.forward, (palm.Position - Camera.main.transform.position)) < Config.HandRaiseCameraFov;
 
                 gotData &= TryGetJoint(TrackedHandJoint.ThumbTip, handNode, out HandJointPose thumbTip);
                 gotData &= TryGetJoint(TrackedHandJoint.IndexTip, handNode, out HandJointPose indexTip);
@@ -311,8 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc/>
             public override bool TryGetPalmFacingAway(XRNode hand, out bool palmFacingAway)
             {
-                bool gotData = true;
-                gotData &= TryGetJoint(TrackedHandJoint.Palm, hand, out HandJointPose palm);
+                bool gotData = TryGetJoint(TrackedHandJoint.Palm, hand, out HandJointPose palm);
 
                 if (!gotData)
                 {
@@ -335,7 +342,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ///<inheritdoc/>
             public override bool TryGetEntireHand(XRNode handNode, out IReadOnlyList<HandJointPose> jointPoses)
             {
-
                 Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, "Non-hand XRNode used in GetHand query");
 
                 return hands[handNode].TryGetEntireHand(out jointPoses);
@@ -350,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             private bool IsPalmFacingAway(HandJointPose palmJoint)
             {
-                if (CameraCache.Main == null)
+                if (Camera.main == null)
                 {
                     return false;
                 }
@@ -359,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // The original palm orientation is based on a horizontal palm facing down.
                 // So, if you bring your hand up and face it away from you, the palm.up is the forward vector.
-                if (Mathf.Abs(Vector3.Angle(palmDown, CameraCache.Main.transform.forward)) > Config.HandFacingAwayToleranceInDegrees)
+                if (Mathf.Abs(Vector3.Angle(palmDown, Camera.main.transform.forward)) > Config.HandFacingAwayToleranceInDegrees)
                 {
                     return false;
                 }

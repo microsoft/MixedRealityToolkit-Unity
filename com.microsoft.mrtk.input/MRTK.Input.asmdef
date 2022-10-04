@@ -7,11 +7,12 @@
         "Unity.InputSystem",
         "Unity.XR.CoreUtils",
         "Unity.XR.Interaction.Toolkit",
-        "Unity.XR.OpenXR"
+        "glTFast",
+        "Ktx"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
@@ -21,6 +22,21 @@
             "name": "com.microsoft.mixedreality.openxr",
             "expression": "",
             "define": "MROPENXR_PRESENT"
+        },
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "1.5",
+            "define": "MROPENXR_ANIM_PRESENT"
+        },
+        {
+            "name": "com.atteneder.gltfast",
+            "expression": "",
+            "define": "GLTFAST_PRESENT"
+        },
+        {
+            "name": "com.atteneder.ktx",
+            "expression": "",
+            "define": "KTX_PRESENT"
         }
     ],
     "noEngineReferences": false

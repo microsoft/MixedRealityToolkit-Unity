@@ -71,28 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// The associated <see cref="XRBaseInteractable"> on behalf of which
         /// this shim will translate input events.
         /// </summary>
-        protected IProxyInteractor ProxyInteractor
-        {
-            get
-            {
-                if (proxyInteractor == null && ThisInteractable != null && InteractionManager != null)
-                {
-                    // Go find the proxy interactor that this shim is associated with.
-                    interactorQueryList.Clear();
-                    InteractionManager.GetRegisteredInteractors(interactorQueryList);
-
-                    foreach (var interactor in interactorQueryList)
-                    {
-                        if (interactor is IProxyInteractor)
-                        {
-                            proxyInteractor = interactor as IProxyInteractor;
-                            break;
-                        }
-                    }
-                }
-                return proxyInteractor;
-            }
-        }
+        protected IProxyInteractor ProxyInteractor => proxyInteractor;
 
         private XRInteractionManager interactionManager;
 
@@ -123,6 +102,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => interactionManager = value;
         }
 
+#if UNITY_EDITOR
+        protected override void OnValidate()
+        {   
+            base.OnValidate();
+            
+            // Validate that no transition type is set. You shouldn't be using this
+            // for any sort of UI visuals; use a StatefulInteractable and a 
+            // StateVisualizer instead, even for UI.
+            transition = UnityEngine.UI.Selectable.Transition.None;
+        }
+#endif
+
         protected override void Awake()
         {
             base.Awake();
@@ -130,6 +121,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 InteractionManager.interactorRegistered += OnInteractorRegistered;
                 InteractionManager.interactorUnregistered += OnInteractorUnregistered;
+            }
+
+            // Some interactors (all?) get registered before we have a chance to subscribe to the
+            // registration events. As a result; let's manually scrape the manager for the proxy interactor.
+            if (proxyInteractor == null && ThisInteractable != null && InteractionManager != null)
+            {
+                // Go find the proxy interactor that this shim is associated with.
+                InteractionManager.GetRegisteredInteractors(interactorQueryList);
+
+                foreach (var interactor in interactorQueryList)
+                {
+                    if (interactor is IProxyInteractor proxy)
+                    {
+                        proxyInteractor = proxy;
+                        break;
+                    }
+                }
             }
         }
 
@@ -191,7 +199,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // and we don't want to duplicate them.
             if (IsXRUIEvent(pointerEventData)) { return; }
 
-            if (ThisInteractable is IXRHoverInteractable hoverInteractable)
+            if (ThisInteractable is IXRHoverInteractable hoverInteractable &&
+                ProxyInteractor != null)
             {
                 ProxyInteractor.StartHover(hoverInteractable, pointerEventData.pointerCurrentRaycast.worldPosition);
             }
@@ -225,7 +234,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // and we don't want to duplicate them.
             if (IsXRUIEvent(pointerEventData)) { return; }
 
-            if (ThisInteractable is IXRSelectInteractable selectInteractable)
+            if (ThisInteractable is IXRSelectInteractable selectInteractable &&
+                ProxyInteractor != null)
             {
                 ProxyInteractor.StartSelect(selectInteractable, pointerEventData.pointerCurrentRaycast.worldPosition);
             }
@@ -244,9 +254,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // and we don't want to duplicate them.
             if (IsXRUIEvent(pointerEventData)) { return; }
 
-            if (ThisInteractable is IXRSelectInteractable selectInteractable)
+            if (ThisInteractable is IXRSelectInteractable selectInteractable &&
+                ProxyInteractor != null)
             {
-                ProxyInteractor.EndSelect(selectInteractable, pointerEventData.dragging);
+                // Cancel the click if the event is a drag event, or if we've stopped hovering the interactable
+                // (i.e., we've rolled off)
+                bool shouldCancel = pointerEventData.dragging || !ProxyInteractor.IsHovering(ThisInteractable as IXRHoverInteractable);
+
+                ProxyInteractor.EndSelect(selectInteractable, shouldCancel);
             }
         }
 
@@ -255,7 +270,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             base.OnSelect(eventData);
 
-            if (ThisInteractable is IXRHoverInteractable hoverInteractable)
+            if (ThisInteractable is IXRHoverInteractable hoverInteractable &&
+                ProxyInteractor != null)
             {
                 ProxyInteractor.StartHover(hoverInteractable);
             }
@@ -266,7 +282,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             base.OnDeselect(eventData);
 
-            if (ThisInteractable is IXRHoverInteractable hoverInteractable)
+            if (ThisInteractable is IXRHoverInteractable hoverInteractable &&
+                ProxyInteractor != null)
             {
                 ProxyInteractor.EndHover(hoverInteractable);
             }
@@ -321,13 +338,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <remarks>
         /// We may/will be implementing true directional input on our interactables instead of this.
-        /// This implements things like slider input by literally moving the attachtransform of the
+        /// This implements things like slider input by literally moving the attachTransform of the
         /// proxy interactor. In the future, things like Sliders may implement some kind of interface
         /// that will enable directional/discrete input.
         /// </remarks>
         protected IEnumerator Move(Vector3 objectLocalDelta)
         {
-            if (ThisInteractable is IXRSelectInteractable selectInteractable)
+            if (ThisInteractable is IXRSelectInteractable selectInteractable &&
+                ProxyInteractor != null)
             {
                 bool interactorWasSelecting = ProxyInteractor.IsSelecting(selectInteractable);
 
@@ -380,7 +398,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // off chance anyone is listening to canvas states.
             DoStateTransition(SelectionState.Pressed, false);
 
-            if (ThisInteractable is IXRSelectInteractable selectInteractable)
+            if (ThisInteractable is IXRSelectInteractable selectInteractable &&
+                ProxyInteractor != null)
             {
                 ProxyInteractor.StartSelect(selectInteractable);
             }
@@ -400,7 +419,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Again, making the Canvas state machine happy.
             DoStateTransition(currentSelectionState, false);
 
-            if (ThisInteractable is IXRSelectInteractable selectInteractable)
+            if (ThisInteractable is IXRSelectInteractable selectInteractable &&
+                ProxyInteractor != null)
             {
                 ProxyInteractor.EndSelect(selectInteractable);
             }

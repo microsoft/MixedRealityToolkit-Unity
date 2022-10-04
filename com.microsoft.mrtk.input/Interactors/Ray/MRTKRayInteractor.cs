@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
@@ -14,8 +13,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A wrapper for the XRRayInteractor which stores extra information for MRTK management/services
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Interactor")]
-    public class MRTKRayInteractor : XRRayInteractor, IRayInteractor, IHandedInteractor, IVariableSelectInteractor
+
+    // This execution order ensures that the MRTKRayInteractor runs its update function right after the
+    // XRController. We do this because the MRTKRayInteractor needs to set its own pose after the parent controller transform,
+    // but before any physics raycast calls are made to determine selection. The earliest a physics call can be made is within
+    // the UIInputModule, which has an update order much higher than XRControllers.
+    // TODO: Examine the update order of other interactors in the future with respect to when their physics calls happen,
+    // or create a system to keep ensure interactor poses aren't ever implicitly set via parenting.
+    [DefaultExecutionOrder(XRInteractionUpdateOrder.k_Controllers + 1)]
+    public class MRTKRayInteractor :
+        XRRayInteractor,
+        IRayInteractor,
+        IHandedInteractor,
+        IVariableSelectInteractor
     {
+        #region MRTKRayInteractor
+
         /// <summary>
         /// Is this ray currently hovering a UnityUI/Canvas element?
         /// </summary>
@@ -26,18 +39,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool HasUISelection => HasUIHover && isUISelectActive;
 
-        public Handedness Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
-
-        /// <summary>
-        /// Cached reference to hands aggregator for efficient per-frame use.
-        /// </summary>
-        private HandsAggregatorSubsystem handsAggregator;
-
         /// <summary>
         /// Used to check if the parent controller is tracked or not
         /// Hopefully this becomes part of the base Unity XRI API.
         /// </summary>
         private bool IsTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
+
+        /// <summary>
+        /// Cached reference to hands aggregator for efficient per-frame use.
+        /// </summary>
+        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
+        private HandsAggregatorSubsystem handsAggregator;
 
         /// <summary>
         /// How unselected the interactor must be to initiate a new hover or selection on a new target.
@@ -60,14 +72,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Pose initialLocalAttach = Pose.identity;
 
+        #endregion MRTKRayInteractor
+
+        #region IHandedInteractor
+
+        Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
+
+        #endregion IHandedInteractor
+
         #region IVariableSelectInteractor
 
         /// <inheritdoc />
         public float SelectProgress => xrController.selectInteractionState.value;
 
-        #endregion
+        #endregion IVariableSelectInteractor
 
-        #region XRBaseControllerInteractor
+        #region XRBaseInteractor
 
         /// <inheritdoc />
         public override bool CanHover(IXRHoverInteractable interactable)
@@ -93,8 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override bool CanSelect(IXRSelectInteractable interactable)
         {
-            var selectActivated = base.CanSelect(interactable);
-
             return base.CanSelect(interactable) && (!hasSelection || IsSelecting(interactable)) && isRelaxedBeforeSelect;
         }
 
@@ -106,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // When the gaze pinch interactor is already selecting an object, use the default interactor behavior
                 if (hasSelection)
                 {
-                    return base.isHoverActive;
+                    return base.isHoverActive && IsTracked;
                 }
                 // Otherwise, this selector is only allowed to hover if we can tell that the palm for the corresponding hand/controller is facing away from the user.
                 else
@@ -116,15 +134,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (xrController is ArticulatedHandController handController)
                         {
-                            // Get hands aggregator subsystem reference, if still null.
-                            // Should avoid per-frame allocs by only acquiring aggregator reference once.
-                            if (handsAggregator == null)
-                            {
-                                handsAggregator = HandsUtils.GetSubsystem();
-                            }
-
                             bool isPalmFacingAway = false;
-                            if (handsAggregator?.TryGetPalmFacingAway(handController.HandNode, out isPalmFacingAway) ?? true)
+                            if (HandsAggregator?.TryGetPalmFacingAway(handController.HandNode, out isPalmFacingAway) ?? true)
                             {
                                 hoverActive &= isPalmFacingAway;
                             }
@@ -135,6 +146,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        [SerializeReference]
+        [InterfaceSelector(true)]
+        [Tooltip("The pose source representing the pose this interactor uses for aiming and positioning. Follows the 'pointer pose'")]
+        private IPoseSource aimPoseSource;
+
+        /// <summary>
+        /// The pose source representing the ray this interactor uses for aiming and positioning.
+        /// </summary>
+        protected IPoseSource AimPoseSource { get => aimPoseSource; set => aimPoseSource = value; }
+
+        [SerializeReference]
+        [InterfaceSelector(true)]
+        [Tooltip("The pose source representing the device this interactor uses for rotation.")]
+        private IPoseSource devicePoseSource;
+
+        /// <summary>
+        /// The pose source representing the device this interactor uses for rotation.
+        /// </summary>
+        protected IPoseSource DevicePoseSource { get => devicePoseSource; set => devicePoseSource = value; }
 
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
@@ -158,18 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         isRelaxedBeforeSelect = false;
                     }
-
-                    if (xrController is ActionBasedController abController &&
-                            abController.rotationAction.action?.activeControl?.device is TrackedDevice device)
-                    {
-                        attachTransform.rotation = PlayspaceUtilities.ReferenceTransform.rotation * device.deviceRotation.ReadValue();
-                    }
-
-                    if (hasSelection)
-                    {
-                        float distanceRatio = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation)) / refDistance;
-                        attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
-                    }
                 }
             }
         }
@@ -183,6 +202,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             refDistance = PoseUtilities.GetDistanceToBody(new Pose(transform.position, transform.rotation));
         }
 
-        #endregion
+        #endregion XRBaseInteractor
+
+        private void Update()
+        {
+            // Use Pose Sources to calculate the interactor's pose and the attach transform's position
+            // We have to make sure the ray interactor is oriented appropriately before calling
+            // lower level raycasts
+            if (AimPoseSource != null && AimPoseSource.TryGetPose(out Pose aimPose))
+            {
+                transform.SetPositionAndRotation(aimPose.position, aimPose.rotation);
+
+                if (hasSelection)
+                {
+                    float distanceRatio = PoseUtilities.GetDistanceToBody(aimPose) / refDistance;
+                    attachTransform.localPosition = new Vector3(initialLocalAttach.position.x, initialLocalAttach.position.y, initialLocalAttach.position.z * distanceRatio);
+                }
+            }
+
+            // Use the Device Pose Sources to calculate the attach transform's pose
+            if (DevicePoseSource != null && DevicePoseSource.TryGetPose(out Pose devicePose))
+            {
+                attachTransform.rotation = devicePose.rotation;
+            }
+        }
     }
 }

@@ -54,7 +54,7 @@
             "id": "5fe596f9-1b7b-49b7-80a7-3b5195caf74d",
             "actions": [
                 {
-                    "name": "Position",
+                    "name": "PointerPosition",
                     "type": "Value",
                     "id": "83a7af0b-87e3-42c3-a909-95fbf8091e4f",
                     "expectedControlType": "Vector3",
@@ -63,7 +63,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Rotation",
+                    "name": "PointerRotation",
                     "type": "Value",
                     "id": "cb6b7130-2bac-4ef7-abe4-6991ae7d419d",
                     "expectedControlType": "Quaternion",
@@ -78,7 +78,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Select Value",
@@ -105,7 +105,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Teleport Select",
@@ -187,6 +187,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Tracking State",
+                    "type": "Value",
+                    "id": "48230de8-6959-4cb7-848f-6acf8b7d24a5",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -263,7 +272,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Position",
+                    "action": "PointerPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -461,7 +470,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rotation",
+                    "action": "PointerRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -519,6 +528,28 @@
                     "action": "Select Value",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4d87855e-c552-4fb0-aea1-62c767d03b3c",
+                    "path": "<XRController>{LeftHand}/trackingState",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Tracking State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64b25aa0-b13c-4f13-989a-8ef56a57527b",
+                    "path": "<OpenXRHandTracking>{LeftHand}/trackingState",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Tracking State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -527,7 +558,7 @@
             "id": "7960f8ef-2bf3-4281-aecc-4c03809d6c8c",
             "actions": [
                 {
-                    "name": "Position",
+                    "name": "PointerPosition",
                     "type": "Value",
                     "id": "c4990d70-7b8a-4ce1-b03c-da86716b8352",
                     "expectedControlType": "Vector3",
@@ -536,7 +567,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Rotation",
+                    "name": "PointerRotation",
                     "type": "Value",
                     "id": "ee6bf5bf-bb0a-4a50-8327-cb654b19e298",
                     "expectedControlType": "Quaternion",
@@ -551,7 +582,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Select Value",
@@ -578,7 +609,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Teleport Select",
@@ -660,6 +691,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Tracking State",
+                    "type": "Value",
+                    "id": "c4674f84-b0c2-4451-a830-21da08904b78",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -736,7 +776,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Position",
+                    "action": "PointerPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -912,7 +952,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rotation",
+                    "action": "PointerRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -981,6 +1021,28 @@
                     "action": "Select Value",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d65f0c5d-ee8f-47b7-ad50-8909e77626ef",
+                    "path": "<XRController>{RightHand}/trackingState",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Tracking State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19895a07-186c-4585-9df9-773cdec92eea",
+                    "path": "<OpenXRHandTracking>{RightHand}/trackingState",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Tracking State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1018,31 +1080,86 @@
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "899c9b8b-e94b-486f-a267-3eaf0b8fe703",
-                    "path": "*/{gaze}/position",
+                    "name": "Vector 3 Fallback",
+                    "id": "102eaa91-e56e-4f09-a6a4-7b5d7c0933a6",
+                    "path": "Vector3Fallback",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Generic XR Controller",
+                    "groups": "",
                     "action": "Position",
-                    "isComposite": false,
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "d28b27b9-0628-4f3d-b4ff-02fb70c564b2",
+                    "name": "first",
+                    "id": "766df8af-7f51-4bcc-a415-a24d97dd949c",
+                    "path": "*/{gaze}/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "ca8a9a3a-1867-4a6a-b474-91fbe0e43ba1",
+                    "path": "<XRHMD>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Quaternion Fallback",
+                    "id": "ece733df-1f75-47f5-90f4-587ff5399449",
+                    "path": "QuaternionFallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "3d17da8b-725e-4654-a53b-9c2937f2a795",
                     "path": "*/{gaze}/rotation",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Generic XR Controller",
+                    "groups": "",
                     "action": "Rotation",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "268352fc-e230-418a-89a0-260d24aed907",
+                    "path": "<XRHMD>/centerEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
                     "id": "5767d3c1-74f7-41e1-813e-eb3f37f19ce3",
                     "path": "*/{gaze}/trackingState",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Tracking State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42f8190d-9546-47e5-96e1-4d4d8b32c950",
+                    "path": "<XRHMD>/trackingState",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",

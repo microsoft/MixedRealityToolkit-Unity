@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 
@@ -51,6 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private bool indicatorShown = false;
 
+        // Private scratchpad to reduce allocs.
+        private static List<Renderer> childRenderers = new List<Renderer>();
+
         protected override void Start()
         {
             base.Start();
@@ -81,15 +85,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             return !MathUtilities.IsInFOV(DirectionalTarget.position, SolverHandler.TransformTarget,
-                VisibilityScaleFactor * CameraCache.Main.fieldOfView, VisibilityScaleFactor * CameraCache.Main.GetHorizontalFieldOfViewDegrees(),
-                CameraCache.Main.nearClipPlane, CameraCache.Main.farClipPlane);
+                VisibilityScaleFactor * Camera.main.fieldOfView, VisibilityScaleFactor * Camera.main.GetHorizontalFieldOfViewDegrees(),
+                Camera.main.nearClipPlane, Camera.main.farClipPlane);
         }
 
         private void SetIndicatorVisibility(bool showIndicator)
         {
             SolverHandler.UpdateSolvers = showIndicator;
+            childRenderers.Clear();
+            GetComponentsInChildren<Renderer>(childRenderers);
 
-            foreach (var renderer in GetComponentsInChildren<Renderer>())
+            foreach (var renderer in childRenderers)
             {
                 renderer.enabled = showIndicator;
             }
@@ -137,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 GoalRotation = Quaternion.LookRotation(solverReferenceFrame.forward, indicatorDirection);
 
                 // Scale the solver based to be more prominent if the object is far away from the field of view
-                float minVisibilityAngle = VisibilityScaleFactor * CameraCache.Main.fieldOfView * 0.5f;
+                float minVisibilityAngle = VisibilityScaleFactor * Camera.main.fieldOfView * 0.5f;
 
                 float angleToVisibilityFOV = Vector3.Angle(trackerToTargetDirection - solverReferenceFrame.position, solverReferenceFrame.forward) - minVisibilityAngle;
                 float visibilityScale = 180f - minVisibilityAngle;

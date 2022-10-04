@@ -1,0 +1,28 @@
+{
+  "name": "com.microsoft.mrtk.uxcomponents.noncanvas",
+  "version": "3.0.0-development",
+  "description": "MRTK non-Canvas UX component library, for building 3D UX without Canvas layout. For most production-grade UI, we recommend the dynamic hybrid Canvas-based UX systems, located in com.microsoft.mrtk.uxcomponents. However, in some circumstances, static/non-Canvas UI may offer improved performance and batching, and may be desirable in resource-constrained scenarios.",
+  "displayName": "MRTK UX Components (Non-Canvas)",
+  "msftFeatureCategory": "MRTK3",
+  "author": "Microsoft",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+  },
+  "unity": "2020.3",
+  "dependencies": {
+    "com.microsoft.mrtk.uxcore": "3.0.0-development",
+    "com.microsoft.mrtk.spatialmanipulation": "3.0.0-development",
+    "com.microsoft.mrtk.standardassets": "3.0.0-development"
+  },
+  "msftOptionalPackages": {
+    "com.microsoft.mrtk.data": "1.0.0-development"
+  },
+  "msftTestDependencies": {
+    "com.microsoft.mrtk.input": "3.0.0-development"
+  }
+}

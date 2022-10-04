@@ -3,7 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using System.Collections;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Interactions;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Composites;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
@@ -14,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
     /// </summary>
     public abstract class BaseRuntimeInputTests : BaseRuntimeTests
     {
+        // Isolates/sandboxes the input system state for each test instance.
+        private InputTestFixture input = new InputTestFixture();
+
         private XRInteractionManager cachedInteractionManager = null;
 
         /// <summary>
@@ -26,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             {
                 if (cachedInteractionManager == null)
                 {
-                    cachedInteractionManager = UnityEngine.Object.FindObjectOfType<XRInteractionManager>();
+                    cachedInteractionManager = Object.FindObjectOfType<XRInteractionManager>();
                 }
                 return cachedInteractionManager;
             }
@@ -57,6 +64,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public override IEnumerator Setup()
         {
             yield return base.Setup();
+
+            input.Setup();
+
+            // XRI needs these... ugh
+            InputSystem.RegisterInteraction<SectorInteraction>();
+            InputSystem.RegisterBindingComposite<Vector3FallbackComposite>();
+            InputSystem.RegisterBindingComposite<QuaternionFallbackComposite>();
+
             InputTestUtilities.InstantiateRig();
             InputTestUtilities.SetupSimulation();
             yield return null;
@@ -64,10 +79,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
         public override IEnumerator TearDown()
         {
+            yield return null; // Make sure the input system gets one last tick.
             InputTestUtilities.TeardownRig();
             InputTestUtilities.TeardownSimulation();
             cachedInteractionManager = null;
             cachedLookup = null;
+
+            input.TearDown();
+
             yield return base.TearDown();
         }
     }

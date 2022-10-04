@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine.Scripting;
 using UnityEngine.SubsystemsImplementation;
@@ -40,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             public abstract bool TryGetNearInteractionPoint(XRNode hand, out HandJointPose jointPose);
 
             /// <inheritdoc/>
+            [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
             public abstract bool TryGetHandCenter(XRNode hand, out HandJointPose jointPose);
 
             /// <inheritdoc/>
@@ -67,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             => provider.TryGetNearInteractionPoint(hand, out jointPose);
 
         /// <inheritdoc/>
+        [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
         public bool TryGetHandCenter(XRNode hand, out HandJointPose jointPose)
             => provider.TryGetHandCenter(hand, out jointPose);
 
@@ -106,5 +109,4 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             return true;
         }
     }
-
 }

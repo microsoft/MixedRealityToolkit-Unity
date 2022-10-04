@@ -13,7 +13,7 @@ using UnityEngine.Scripting;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation;
 
-using GestureId = Microsoft.MixedReality.Toolkit.Input.GestureTypes.GestureId;
+using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
@@ -29,6 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         Preserve]
     internal class MRTKSimulatedController : XRSimulatedController
     {
+        /// <summary>
+        /// The current simulation mode for this controller;
+        /// </summary>
+        public ControllerSimulationMode SimulationMode { get; set; }
+
         /// <summary>
         /// The device's pointerPosition
         /// </summary>
@@ -46,6 +51,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             PointerPosition = GetChildControl<Vector3Control>(nameof(PointerPosition));
             PointerRotation = GetChildControl<QuaternionControl>(nameof(PointerRotation));
         }
+
+        /// <inheritdoc />
+        protected override unsafe long ExecuteCommand(InputDeviceCommand* commandPtr)
+        {
+            return InputSimulator.TryExecuteCommand(commandPtr, out var result)
+                ? result
+                : base.ExecuteCommand(commandPtr);
+        }
     }
 
     /// <summary>
@@ -55,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     {
         private readonly MRTKSimulatedController simulatedController = null;
         private readonly IHandRay handRay = new HandRay();
+        private readonly ControllerSimulationSettings controllerSimulationSettings;
 
         private MRTKSimulatedControllerState simulatedControllerState;
 
@@ -145,17 +159,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         public SimulatedController(
             Handedness handedness,
-            SimulatedHandPose defaultPose,
+            ControllerSimulationSettings ctrlSettings,
             Vector3 initialRelativePosition)
         {
             Handedness = handedness;
+            controllerSimulationSettings = ctrlSettings;
 
             // Set the default hand pose when initially tracked.
             XRNode? handNode = Handedness.ToXRNode();
             if (handNode.HasValue && SynthHands != null)
             {
-                SynthHands.SetNeutralPose(handNode.Value,
-                    defaultPose == SimulatedHandPose.Ready ? GestureId.Open : GestureId.Flat);
+                SynthHands.SetNeutralHandshape(handNode.Value,
+                    controllerSimulationSettings.NeutralHandshape);
+                SynthHands.SetSelectionHandshape(handNode.Value,
+                    controllerSimulationSettings.TriggerHandshape);
             }
 
             simulatedController = InputSystem.AddDevice<MRTKSimulatedController>();
@@ -165,6 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 return;
             }
             simulatedControllerState.Reset();
+
+            simulatedController.SimulationMode = controllerSimulationSettings.SimulationMode;
 
             SimulatedInputPosition = initialRelativePosition;
 
@@ -204,6 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         /// <summary>
         /// Toggles the simulated hand between flat or ready poses.
+        /// Not quite sure why this option is present
         /// </summary>
         public void ToggleNeutralPose()
         {
@@ -212,10 +232,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 XRNode? handNode = Handedness.ToXRNode();
                 if (handNode.HasValue && SynthHands != null)
                 {
-                    GestureId neutralPose = SynthHands.GetNeutralPose(handNode.Value);
-                    SynthHands.SetNeutralPose(
+                    HandshapeId neutralPose = SynthHands.GetNeutralHandshape(handNode.Value);
+                    SynthHands.SetNeutralHandshape(
                                             handNode.Value,
-                                            (neutralPose == GestureId.Flat) ? GestureId.Open : GestureId.Flat);
+                                            (neutralPose == controllerSimulationSettings.NeutralHandshape) ? controllerSimulationSettings.SecondaryNeutralHandshape : controllerSimulationSettings.NeutralHandshape);
+
+                    HandshapeId selectionPose = SynthHands.GetSelectionHandshape(handNode.Value);
+                    SynthHands.SetSelectionHandshape(
+                                            handNode.Value,
+                                            (selectionPose == controllerSimulationSettings.TriggerHandshape) ? controllerSimulationSettings.SecondaryTriggerHandshape : controllerSimulationSettings.TriggerHandshape);
                 }
                 else
                 {
@@ -435,6 +460,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // simulatedControllerState.WithButton(ControllerButton.Primary2DAxisTouch, controls.Primary2DAxisTouch);
                 // simulatedControllerState.WithButton(ControllerButton.Secondary2DAxisTouch, controls.Secondary2DAxisTouch);
 
+                simulatedController.SimulationMode = controllerSimulationSettings.SimulationMode;
+
                 InputState.Change(simulatedController, simulatedControllerState);
             }
         }
@@ -459,8 +486,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             ControllerRotationMode rotationMode,
             bool shouldUseRayVector)
         {
-            Vector3 worldPosition = CameraCache.Main.transform.TransformPoint(position) + offset;
-            Quaternion worldRotation = CameraCache.Main.transform.rotation * rotation;
+            Vector3 worldPosition = Camera.main.transform.TransformPoint(position) + offset;
+            Quaternion worldRotation = Camera.main.transform.rotation * rotation;
 
             SetWorldPose(worldPosition, worldRotation, rotationMode, shouldUseRayVector);
         }
@@ -511,11 +538,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             using (SetRigLocalPosePerfMarker.Auto())
             {
+                // First set the device pose using the provided position and rotation.
                 simulatedControllerState.devicePosition = position;
 
                 if (rotationMode == ControllerRotationMode.FaceCamera)
                 {
-                    Quaternion worldLookAtCamera = Quaternion.LookRotation(CameraCache.Main.transform.position - position);
+                    Quaternion worldLookAtCamera = Quaternion.LookRotation(Camera.main.transform.position - position);
                     Quaternion rigLocalLookAtCamera = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * worldLookAtCamera;
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
@@ -525,7 +553,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 }
                 else if (rotationMode == ControllerRotationMode.CameraAligned)
                 {
-                    Quaternion worldCameraForward = Quaternion.LookRotation(CameraCache.Main.transform.forward);
+                    Quaternion worldCameraForward = Quaternion.LookRotation(Camera.main.transform.forward);
                     Quaternion rigLocalCameraForward = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * worldCameraForward;
                     simulatedControllerState.deviceRotation = Smoothing.SmoothTo(
                         simulatedControllerState.deviceRotation,
@@ -538,16 +566,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     simulatedControllerState.deviceRotation = rotation;
                 }
 
+                // Then set the pointer pose.
                 if (shouldUseRayVector && Handedness.ToXRNode().HasValue && HandSubsystem != null &&
-                        HandSubsystem.TryGetHandCenter(Handedness.ToXRNode().Value, out HandJointPose palmPose))
+                    HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose))
                 {
-                    handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, CameraCache.Main.transform, Handedness);
+                    // If prompted to use the ray vector, this is pose is calculated by simulating a hand ray initialized at the device pose.
+                    // This occurs when the simulation mode is set to ArticulatedHand
+                    handRay.Update(PlayspaceUtilities.ReferenceTransform.TransformPoint(simulatedControllerState.devicePosition), -palmPose.Up, Camera.main.transform, Handedness);
                     Ray ray = handRay.Ray;
                     simulatedControllerState.pointerPosition = PlayspaceUtilities.ReferenceTransform.InverseTransformPoint(ray.origin);
                     simulatedControllerState.pointerRotation = Quaternion.Inverse(PlayspaceUtilities.ReferenceTransform.rotation) * Quaternion.LookRotation(ray.direction);
                 }
                 else
                 {
+                    // Otherwise, set the pointer pose to match the device pose.
                     simulatedControllerState.pointerPosition = simulatedControllerState.devicePosition;
                     simulatedControllerState.pointerRotation = simulatedControllerState.deviceRotation;
                 }

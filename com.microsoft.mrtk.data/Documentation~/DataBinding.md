@@ -8,48 +8,47 @@ data source, and also dynamically update as the supplied data changes.
 It enables the following functionality:
 
 1. Visualize variable data via data consumers. Currently supported:
-  * TextMeshPro text
-  * TextMesh text
-  * Text stylesheets (for theming)
-  * Sprite - via sprite lookup
-  * Sprite/Quad - via image fetch and replace
-  * Lists - prefabs populated with variable data
-  * Any other consumer that supports the IDataConsumer interface
-2. Provide variable data via a variety of data sources:
-  * JSON text (directly or via URL fetch)
-  * Dictionary of variable data elements
-  * Object - Node based structured data
-  * Reflection of any C# object
-  * Programmatically altered data
-  * Any other method that supports the IDataSource interface
-3. List item placer to manage the visual manifestation of a list
-4. List paging, scrolling and virtualization
-  * Data is only fetched when visible or in process
-  * Supports arbitrarily large back-end data sets
-  * Fetching is load balanced across multiple frames
-5. List prefab pooling
-  * Prefabs are reused and repopulated to reduce GC and instantiation time.
-6. Apply themes dynamically to elements at runtime.
-
+    * TextMeshPro text
+    * TextMesh text
+    * Text stylesheets (for theming)
+    * Sprite - via sprite lookup
+    * Sprite/Quad - via image fetch and replace
+    * Lists - prefabs populated with variable data
+    * Any other consumer that supports the IDataConsumer interface
+1. Provide variable data via a variety of data sources:
+    * JSON text (directly or via URL fetch)
+    * Dictionary of variable data elements
+    * Object - Node based structured data
+    * Reflection of any C# object
+    * Programmatically altered data
+    * Any other method that supports the IDataSource interface
+1. List item placer to manage the visual manifestation of a list
+1. List paging, scrolling and virtualization
+    * Data is only fetched when visible or in process
+    * Supports arbitrarily large back-end data sets
+    * Fetching is load balanced across multiple frames
+1. List prefab pooling
+    * Prefabs are reused and repopulated to reduce GC and instantiation time.
+1. Apply themes dynamically to elements at runtime.
 
 Functionality on the roadmap:
 
 1. Data Manipulator
-  * Conversion between data side and view side values
-  * Localization (seemless integration with Unity localization)
-  * Formatting
-  * Validation
-2. Predictive list item prefetch for faster/smoother scrolling/paging
-3. More Data Consumers
-  * Set any public property on a Component
-  * Set checkbox on/off state
-  * Set slider value
-  * Set a radio button in a group
-  * Individual Material properties such as set color
-4. Theming
-  * See themes applied in Editor even when not running application
-  * Change default "baked" theme of a set of prefabs
-  * Theme / style inheritance
+    * Conversion between data side and view side values
+    * Localization (seamless integration with Unity localization)
+    * Formatting
+    * Validation
+1. Predictive list item pre-fetch for faster/smoother scrolling/paging
+1. More Data Consumers
+    * Set any public property on a Component
+    * Set checkbox on/off state
+    * Set slider value
+    * Set a radio button in a group
+    * Individual Material properties such as set color
+1. Theming
+    * See themes applied in Editor even when not running application
+    * Change default "baked" theme of a set of prefabs
+    * Theme / style inheritance
 
 ## Design Objectives
 
@@ -81,21 +80,20 @@ that have registered to receive change notifications.
 
 ### Data Source Provider
 
-A simple interface that has a single method to retrieve a data source. This is designed to allow a MonoBehavior scripting component to be auto-discovered in the game object hierarchy by data consumer components, but without the need to implement a data source directly on the game object itself.  This is useful when an existing MonoBehaviour must derive from another class and multiple inheritence prevents deriving from DataSourceGOBase. It also allows more code to have no Unity dependencies.
-
+A simple interface that has a single method to retrieve a data source. This is designed to allow a MonoBehavior scripting component to be auto-discovered in the game object hierarchy by data consumer components, but without the need to implement a data source directly on the game object itself.  This is useful when an existing MonoBehaviour must derive from another class and multiple inheritance prevents deriving from DataSourceGOBase. It also allows more code to have no Unity dependencies.
 
 ### Key Path (string)
 
 A key path is the mechanism to uniquely identify any piece of information in a data source.
 
 Although a key path can be any unique identifier per data item, all
-current impmlementations use the concept of a logical user readable
+current implementations use the concept of a logical user readable
 specifier that indicates the navigational position of the data of interest
 relative to the entire structured data set. It is modelled on javascript's concept of
 lists, dictionaries and primitives, such that key paths are syntactically correct javascript
 statements for accessing data that can be represented in JSON. The advantage
 of this approach is that it correlates very well with both JSON and XML,
-which are the two most prevalent means of transfering information from back*end services.
+which are the two most prevalent means of transferring information from back*end services.
 
 Example key paths:
 
@@ -115,6 +113,7 @@ Furthermore Key Path Mappers can be implemented to translate between different s
 ### Resolving a Key Path
 
 Resolving a key path means combining two keypaths:
+
 1. An absolute keypath that describes how to access a specific
 subset of a larger dataset, such as one entry in a list of many entries.
 2. A partial (relative) keypath that represents a specific datum within that list or map entry.
@@ -138,16 +137,14 @@ The fully resolved key paths for one prefab entry in a list might look like this
 * "f3cb1906-d8b3-489d-9f74-725e5542b55d/date_taken"
 * "f3cb1906-d8b3-489d-9f74-725e5542b55d/description"
 
-
 ### Key Path Mapper (IDataKeyPathMapper)
 
 A key path mapper allows data sources and data consumers to use different namespaces and conventions for key paths and still work together.
 
-A prefab for a commonly used element, such as a slate to show a persons contact information, can cantain variable fields managed by data consumers. To make this possible , the identifier used for any variable aspect of the prefab needs a way to map to the identifier for the correct datum in the data source that will, in each use of the prefab, determine the contents of that variable element. The Key Path Mapper makes this possible.
+A prefab for a commonly used element, such as a slate to show a persons contact information, can contain variable fields managed by data consumers. To make this possible , the identifier used for any variable aspect of the prefab needs a way to map to the identifier for the correct datum in the data source that will, in each use of the prefab, determine the contents of that variable element. The Key Path Mapper makes this possible.
 
-The prefab may be used with different data sources where the data is stored in a different organizationl structure and uses field names. To use a
+The prefab may be used with different data sources where the data is stored in a different organizational structure and uses field names. To use a
 template prefab with each data source, a key path mapper can resolve any differences in how the data is organized.
-
 
 ### Data Consumer (IDataConsumer)
 
@@ -168,7 +165,7 @@ and the keypath for the photos would be relative to the person, and the keypath 
 to either the nearest parent list, or the root of the data set.
 
 When processing collections, the correct resolved keypath for the specific entry in the collection is assigned to each data consumer found in the prefab
-that is instantiaged for each collection item. That is then used to full resolve the key path for any relative (local) view data within that prefab.
+that is instantiated for each collection item. That is then used to full resolve the key path for any relative (local) view data within that prefab.
 
 ### Data Collection Item Placer
 
@@ -180,7 +177,7 @@ that have been populated with variable data, and then present them to the user, 
 
 # Theming
 
-Theming uses all of the plumbing of data sources and data consumers.  It is possible to theme any hierarchy of GameObjects whether they are static or are dynamically data bound to other data sources.  This allows for both data binding and theming to be applied in combination. It is even possible to theme the data coming from another data source. 
+Theming uses all of the plumbing of data sources and data consumers.  It is possible to theme any hierarchy of GameObjects whether they are static or are dynamically data bound to other data sources.  This allows for both data binding and theming to be applied in combination. It is even possible to theme the data coming from another data source.
 
 ## Theming UXComponents
 
@@ -194,7 +191,7 @@ Each control, typically on the topmost GameObject of the root prefab, has a scri
 
 Theming is accomplished by Data Consumers, particularly ones that inherit from DataConsumerThemeBase\<T\>, DataConsumerTextStyle and custom DataConsumer classes that any developer can implement to enhance the theming support.
 
-The DataConsumerThemeBase\<T\> base class provides logic to use an integer or key datum from a primary data source to then look up the desired final value from a secondary theme database. This is accomplished by mapping the input data to a theme keypath, and then using that theme keypath to retrieve the final value. This allows for any element to be both data bound and themed at the same time.  As an example, imagine a status field in a database with statuses of New, Started, and Done represented by values 0, 1 and 2.  Each of these can be represented by a Sprite icon.  For data binding, a value from 0 to 2 is used to lookup the desired sprite.  With theming and data binding, the theme profile points to the correct list of 3 sprites in the theme profile and then the value from 0 to 2 is used to select the correct sprite from that list.  This allows the styling of these icons to differ per theme. 
+The DataConsumerThemeBase\<T\> base class provides logic to use an integer or key datum from a primary data source to then look up the desired final value from a secondary theme database. This is accomplished by mapping the input data to a theme keypath, and then using that theme keypath to retrieve the final value. This allows for any element to be both data bound and themed at the same time.  As an example, imagine a status field in a database with statuses of New, Started, and Done represented by values 0, 1 and 2.  Each of these can be represented by a Sprite icon.  For data binding, a value from 0 to 2 is used to lookup the desired sprite.  With theming and data binding, the theme profile points to the correct list of 3 sprites in the theme profile and then the value from 0 to 2 is used to select the correct sprite from that list.  This allows the styling of these icons to differ per theme.
 
 When both runtime theming and dynamic data binding are used together, a DataConsumerThemeHelper class can be specified in any DataConsumerThemeBase derived class to notify when a theme has changed.
 
@@ -203,10 +200,11 @@ Swapping themes at runtime is accomplished by replacing the data at the theme da
 The method of applying a theme to dynamic data can be automatically detect in most cases, or it can be explicitly specified.
 
 When the datum is used to select the correct item from the theme data source, the process is:
-- a datum from the primary data source is used to select or construct the correct _theme keypath_
-- the theme keypath is used to retrieve a value from the theme data source specified on the DataConsumerThemeHelper
-- the retrieved theme value is analyzed to auto-detect correct retrieval method
-- the final data item of correct type (eg. Material, Sprite, Image) is then retrieved using the auto-detected method.
+
+* a datum from the primary data source is used to select or construct the correct *theme keypath*
+* the theme keypath is used to retrieve a value from the theme data source specified on the DataConsumerThemeHelper
+* the retrieved theme value is analyzed to auto-detect correct retrieval method
+* the final data item of correct type (eg. Material, Sprite, Image) is then retrieved using the auto-detected method.
 
 ### Data Types
 
@@ -220,15 +218,15 @@ DirectLookup | An integral index or string key used to look up the desired value
 StaticThemedValue | Static themed object of the correct type is retrieved from the theme data source at specified theme keypath.
 ThemeKeypathLookup |  An integral index or string key is used to look up the desired theme keypath.
 ThemeKeypathProperty | A string property name that will be appended to the theme base keypath provided in the Theme .
-ResourcePath | A resource path for retrieving the value from a Unity resource. (May begin with "reesource://")
+ResourcePath | A resource path for retrieving the value from a Unity resource. (May begin with "resource://")
 FilePath | A file path for retrieving a Unity streaming asset. (May begin with "file://")
 
 ### Auto-detect Data Type
-Autodetect analyzes the data received and decides the retrieval method automatically. In the table below, T represeents the desired type such as Material, Sprite, Image. Autodetect can occur at two places in the process:
 
-- On the primary datum value itself.
-- On the themed value retrieved via the primary datum.
+Autodetect analyzes the data received and decides the retrieval method automatically. In the table below, T represents the desired type such as Material, Sprite, Image. Autodetect can occur at two places in the process:
 
+* On the primary datum value itself.
+* On the themed value retrieved via the primary datum.
 
 Datum Type | Considerations | Has Theme Helper | Behavior
 :---:|---|:---:|---
@@ -251,15 +249,15 @@ An example for retrieving a themed status icon from a database containing a nume
 
 ### TextMeshPro StyleSheets
 
-Theming is able to activate TMPro stylesheets.  "TMP Settings" ScriptableObject dictates where stylesheets are expected to be in the Resources.  It's the "Default Font Asset => Path" property. 
+Theming is able to activate TMPro stylesheets.  "TMP Settings" ScriptableObject dictates where stylesheets are expected to be in the Resources.  It's the "Default Font Asset => Path" property.
 
 Make sure to place any app specific StyleSheets in the same sub-path off of Resources. If you wish to organize them differently, make sure to update "TMP Settings" to match.
 
 ### Making New UX Controls Themable
 
-If you are developing new UX controls, it is relatively easy to make them themable. To the extent that the control uses Materials, Sprites, and other assets already in use by other UX controls, it is generally a matter of naming the various game objects in a discoverable way. 
+If you are developing new UX controls, it is relatively easy to make them themable. To the extent that the control uses Materials, Sprites, and other assets already in use by other UX controls, it is generally a matter of naming the various game objects in a discoverable way.
 
-It's possible to inherit from the MRTK_UXCore_ThemeProfile and add more themable fields, or point your controls to your own ScriptableObject.  There is nothing magical about the ones provided other than the organization of the ScriptableObject will determine the keypaths need to access individual data items, via C# Reflection. 
+It's possible to inherit from the MRTK_UXCore_ThemeProfile and add more themable fields, or point your controls to your own ScriptableObject.  There is nothing magical about the ones provided other than the organization of the ScriptableObject will determine the keypaths need to access individual data items, via C# Reflection.
 
 By adding a BindingConfigurator.cs script to the top level of the new control, you can then specify your own serialized BindingProfile ScriptableObject to provide the necessary GameObject name to KeyPath mappings needed to associate your themable elements with the data provided in the theme profile. This script will automatically add any needed DataConsumerXXX components at runtime to support the theming you wish to use.
 
@@ -267,25 +265,19 @@ By adding a BindingConfigurator.cs script to the top level of the new control, y
 
 ### Requirements
 
-- Unity 2019.4 or later
-- TextMeshPro 2.1.4 or later
-
+* Unity 2019.4 or later
+* TextMeshPro 2.1.4 or later
 
 ### Sample Scene
 
 For a first step, take a close look at the "Data Binding Test" scene that demonstrates a variety of variable data scenarios.  Simply load the scene and play. A few things to notice:
 
-- The Text Input field of TextMeshPro components contain variables that look like this: {{ firstName }}
-
-- Game objects for sprites and text have some form of Data Consumer component that manages receiving data and updating views.
-
-- A single Data Consumer may be shared by multiple components of the same type by being placed higher in the GO hierarchy.
-
-- A Data Consumer can find its own Data Source so long as it is on the same game object or higher in the GO hierarchy.
-
-- A parent game object has a Data Source component that provides data for all child game objects that present a related set of variable information.
-
-- A collection Data Consumer specifies a prefab which itself contains data consumers that will be used to populate that prefab with variable data.
+* The Text Input field of TextMeshPro components contain variables that look like this: {{ firstName }}
+* Game objects for sprites and text have some form of Data Consumer component that manages receiving data and updating views.
+* A single Data Consumer may be shared by multiple components of the same type by being placed higher in the GO hierarchy.
+* A Data Consumer can find its own Data Source so long as it is on the same game object or higher in the GO hierarchy.
+* A parent game object has a Data Source component that provides data for all child game objects that present a related set of variable information.
+* A collection Data Consumer specifies a prefab which itself contains data consumers that will be used to populate that prefab with variable data.
 
 ### First Data Binding project
 
@@ -295,7 +287,7 @@ Create a new scene. On the Mixed Reality Toolkit menu, select "Add to Scene and 
 
 Create an empty game object and rename it to "Data Binding". Add a DataSourceJsonTest component.
 
-In the inspector, change the Url to: https://www.boredapi.com/api/activity
+In the inspector, change the Url to: <https://www.boredapi.com/api/activity>
 
 Add a UI -> Text - TextMeshPro object to the Data Binding game object.  It will add a canvas and then a "Text (TMP)" object.
 
@@ -313,7 +305,7 @@ Congratulations. You've created your first Data Binding project with MRTK!
 
 A data source provides data to one or more data consumers.  It's data can be anything: algorithmically generated, in RAM, on disk, or fetched from a central database.
 
-All Data sources must provide the IDataSource interface. Some of the basic functionality is offered in a base class called DataSourceBase. You most likely want to derive from this class to add the specific data management funcationality specific to your need.
+All Data sources must provide the IDataSource interface. Some of the basic functionality is offered in a base class called DataSourceBase. You most likely want to derive from this class to add the specific data management functionality specific to your need.
 
 To make it possible to drop a data source as a component onto a game object, another base object exists called DataSourceGOBase where GO stands for GameObject. This is a MonoBehavior that can be dropped onto a GameObject as a Component. It is a thin proxy that is designed to delegate work to a non-Unity specific core data source.
 
@@ -331,16 +323,16 @@ The majority of the work of a data consumer is to accept new data and then prepa
 
 A data collection item placer is responsible for managing which parts of a collection are currently visible and how to present that visible collection, whether the collection is a small static list, or a giant million record database.
 
-All item placers must provide the IDataCollectionItemPlacer interface.  Some of the basic funcationality is offered in a base class called DataColletionItemPlacerGOBase.  All item placers should derive from this class.
+All item placers must provide the IDataCollectionItemPlacer interface.  Some of the basic functionality is offered in a base class called DataCollectionItemPlacerGOBase.  All item placers should derive from this class.
 
-# Known Limitations and Missing Features #
+# Known Limitations and Missing Features
 
-- Need to verify proper cleanup of resources in all use cases, particularly lists.
-- Dynamic changes to list data completely refreshes entire list instead of incrementally updating.
-- Data validation (eg. number in correct range) and formatting (eg. data and currency formats)
-- Predictive data fetching for faster list navigation
-- Material selector is work in progress
-- Font style selector is a work in progress
-- Populating other UX elements such as sliders, radio buttons, and checkboxes not yet supported
-- DataSourceJson nodes should implement IDataNode interface to be interoperable with DataSourceObjects
-- Not yet integrated with Volumetric Layouts and Scrolling Object Collection
+* Need to verify proper cleanup of resources in all use cases, particularly lists.
+* Dynamic changes to list data completely refreshes entire list instead of incrementally updating.
+* Data validation (eg. number in correct range) and formatting (eg. data and currency formats)
+* Predictive data fetching for faster list navigation
+* Material selector is work in progress
+* Font style selector is a work in progress
+* Populating other UX elements such as sliders, radio buttons, and checkboxes not yet supported
+* DataSourceJson nodes should implement IDataNode interface to be interoperable with DataSourceObjects
+* Not yet integrated with Volumetric Layouts and Scrolling Object Collection

@@ -1,7 +1,29 @@
 {
   "dependencies": {
+    "com.atteneder.gltfast": {
+      "version": "https://github.com/atteneder/glTFast.git#v4.8.3",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequesttexture": "1.0.0",
+        "com.unity.mathematics": "1.2.6",
+        "com.unity.burst": "1.6.6"
+      },
+      "hash": "04962b47618cdab46943217d30c6c6de33d3c3f7"
+    },
+    "com.atteneder.ktx": {
+      "version": "https://github.com/atteneder/KtxUnity.git#v2.1.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "hash": "7747a48d5e994db800b4c60a0a8b95a5ae2ce39f"
+    },
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.4.2.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.5.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
@@ -11,11 +33,11 @@
       }
     },
     "com.microsoft.mixedreality.visualprofiler": {
-      "version": "https://github.com/microsoft/VisualProfiler-Unity.git",
+      "version": "https://github.com/microsoft/VisualProfiler-Unity.git#v2.2.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "ad16f8fcba7b38346c09b21c8adf1b749eef2190"
+      "hash": "22d727d4d1641c27fa85a7519cf76b81890c8f3d"
     },
     "com.microsoft.mrtk.accessibility": {
       "version": "file:../../../com.microsoft.mrtk.accessibility",
@@ -23,7 +45,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.textmeshpro": "3.0.6"
       }
     },
@@ -40,8 +62,9 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.unity.xr.interaction.toolkit": "2.0.0",
-        "com.unity.xr.management": "4.2.1"
+        "com.unity.xr.interaction.toolkit": "2.0.3",
+        "com.unity.xr.management": "4.2.1",
+        "com.unity.xr.core-utils": "2.1.0"
       }
     },
     "com.microsoft.mrtk.data": {
@@ -56,15 +79,6 @@
     },
     "com.microsoft.mrtk.diagnostics": {
       "version": "file:../../../com.microsoft.mrtk.diagnostics",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.unity.xr.management": "4.2.1"
-      }
-    },
-    "com.microsoft.mrtk.environment": {
-      "version": "file:../../../com.microsoft.mrtk.environment",
       "depth": 0,
       "source": "local",
       "dependencies": {
@@ -93,12 +107,10 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.inputsystem": "1.3.0",
-        "com.unity.xr.interaction.toolkit": "2.0.0",
-        "com.unity.xr.management": "4.2.1",
-        "com.unity.xr.openxr": "1.3.1",
-        "com.unity.xr.arfoundation": "4.1.9"
+        "com.unity.xr.interaction.toolkit": "2.0.3",
+        "com.unity.xr.core-utils": "2.1.0"
       }
     },
     "com.microsoft.mrtk.spatialmanipulation": {
@@ -109,7 +121,7 @@
         "com.microsoft.mrtk.core": "3.0.0-development",
         "com.microsoft.mrtk.uxcore": "3.0.0-development",
         "com.unity.inputsystem": "1.3.0",
-        "com.unity.xr.interaction.toolkit": "2.0.0"
+        "com.unity.xr.interaction.toolkit": "2.0.3"
       }
     },
     "com.microsoft.mrtk.standardassets": {
@@ -117,11 +129,29 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15"
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0"
+      }
+    },
+    "com.microsoft.mrtk.tools": {
+      "version": "file:../../../com.microsoft.mrtk.tools",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.microsoft.mrtk.core": "3.0.0-development"
       }
     },
     "com.microsoft.mrtk.uxcomponents": {
       "version": "file:../../../com.microsoft.mrtk.uxcomponents",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.microsoft.mrtk.uxcore": "3.0.0-development",
+        "com.microsoft.mrtk.spatialmanipulation": "3.0.0-development",
+        "com.microsoft.mrtk.standardassets": "3.0.0-development"
+      }
+    },
+    "com.microsoft.mrtk.uxcomponents.noncanvas": {
+      "version": "file:../../../com.microsoft.mrtk.uxcomponents.noncanvas",
       "depth": 0,
       "source": "local",
       "dependencies": {
@@ -136,10 +166,10 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.microsoft.mrtk.graphicstools.unity": "0.3.15",
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.inputsystem": "1.3.0",
         "com.unity.textmeshpro": "3.0.6",
-        "com.unity.xr.interaction.toolkit": "2.0.0"
+        "com.unity.xr.interaction.toolkit": "2.0.3"
       }
     },
     "com.microsoft.mrtk.windowsspeech": {
@@ -156,8 +186,17 @@
       "source": "local-tarball",
       "dependencies": {}
     },
+    "com.unity.burst": {
+      "version": "1.6.6",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.collab-proxy": {
-      "version": "1.15.18",
+      "version": "1.17.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -182,7 +221,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.15",
+      "version": "2.0.16",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -204,6 +243,13 @@
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0"
       },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.mathematics": {
+      "version": "1.2.6",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.mono-cecil": {
@@ -296,13 +342,12 @@
       }
     },
     "com.unity.xr.arfoundation": {
-      "version": "4.1.9",
+      "version": "4.1.7",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.xr.arsubsystems": "4.1.9",
-        "com.unity.xr.management": "4.0.1",
-        "com.unity.modules.particlesystem": "1.0.0"
+        "com.unity.xr.arsubsystems": "4.1.7",
+        "com.unity.xr.management": "4.0.1"
       },
       "url": "https://packages.unity.com"
     },
@@ -316,8 +361,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.core-utils": {
-      "version": "2.0.0",
-      "depth": 2,
+      "version": "2.1.0",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.xr": "1.0.0"
@@ -325,7 +370,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.interaction.toolkit": {
-      "version": "2.0.0",
+      "version": "2.0.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -363,13 +408,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.openxr": {
-      "version": "1.4.2",
+      "version": "1.5.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.xr.management": "4.0.1",
         "com.unity.xr.legacyinputhelpers": "2.1.2",
-        "com.unity.inputsystem": "1.3.0"
+        "com.unity.inputsystem": "1.4.1"
       },
       "url": "https://packages.unity.com"
     },

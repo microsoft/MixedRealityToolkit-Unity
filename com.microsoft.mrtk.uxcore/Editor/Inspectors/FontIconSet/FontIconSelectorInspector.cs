@@ -14,10 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
 
         private const string defaultShaderName = "TextMeshPro/Distance Field SSD";
-        private const int glyphDrawSize = 75;
-        private const int buttonWidth = 75;
-        private const int buttonHeight = 75;
-        private const int maxButtonsPerColumn = 6;
+        private float fontTileSize = 32;
 
         private static Material fontRenderMaterial;
 
@@ -28,15 +25,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty currentIconNameProp = null;
         private SerializedProperty tmProProp = null;
 
+        private GUIStyle currentButtonStyle;
+
+        private bool initializedStyle = false;
+
         private void OnEnable()
         {
             fontIconsProp = serializedObject.FindProperty("fontIcons");
             currentIconNameProp = serializedObject.FindProperty("currentIconName");
             tmProProp = serializedObject.FindProperty("textMeshProComponent");
+            
         }
 
         public override void OnInspectorGUI()
         {
+            if (!initializedStyle)
+            {
+                currentButtonStyle = new GUIStyle(GUI.skin.button);
+                initializedStyle = true;
+            }
+
             FontIconSelector fontIconSelector = (FontIconSelector)target;
             FontIconSet fontIconSet = fontIconSelector.FontIcons;
 
@@ -65,7 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     using (new EditorGUILayout.VerticalScope())
                     {
-                        DrawIconGrid(fontIconSelector, maxButtonsPerColumn, buttonHeight, buttonWidth);
+                        fontTileSize = EditorGUILayout.Slider("Zoom", fontTileSize, 16, 64, GUILayout.ExpandWidth(false));
+                        DrawIconGrid(fontIconSelector, fontTileSize);
                     }
                 }
             }
@@ -73,27 +82,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
-        public void DrawIconGrid(FontIconSelector fontIconSelector, int maxButtonsPerColumn, int buttonHeight, int buttonWidth)
+        private int numColumns = 4;
+
+        private Vector2 scrollAmount;
+
+        public void DrawIconGrid(FontIconSelector fontIconSelector, float tileSize)
         {
             FontIconSet fontIconSet = fontIconSelector.FontIcons;
             TMP_FontAsset fontAsset = fontIconSet.IconFontAsset;
             int column = 0;
-            EditorGUILayout.BeginHorizontal();
 
+            scrollAmount = EditorGUILayout.BeginScrollView(scrollAmount, GUILayout.MaxHeight(128), GUILayout.MinHeight(64));
+            EditorGUILayout.BeginHorizontal();
+            
             foreach (string iconName in fontIconSet.GlyphIconsByName.Keys)
             {
                 uint unicodeValue = fontIconSet.GlyphIconsByName[iconName];
                 bool selected = (iconName == fontIconSelector.CurrentIconName);
-                if (column >= maxButtonsPerColumn)
+                if (column >= numColumns)
                 {
                     column = 0;
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                 }
                 if (GUILayout.Button(" ",
-                    GUILayout.MinHeight(buttonHeight),
-                    GUILayout.MaxHeight(buttonHeight),
-                    GUILayout.MaxWidth(buttonWidth)))
+                    GUILayout.MinHeight(tileSize),
+                    GUILayout.MaxHeight(tileSize),
+                    GUILayout.MinWidth(tileSize),
+                    GUILayout.MaxWidth(tileSize)))
                 {
                     Undo.RecordObjects(new UnityEngine.Object[]{fontIconSelector, fontIconSelector.TextMeshProComponent}, "Changed icon");
                     fontIconSelector.CurrentIconName = iconName;
@@ -101,6 +117,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     PrefabUtility.RecordPrefabInstancePropertyModifications(fontIconSelector.TextMeshProComponent);
                 }
                 Rect textureRect = GUILayoutUtility.GetLastRect();
+                if (textureRect.yMin + 8 < scrollAmount.y || textureRect.yMax - 8 > scrollAmount.y + 128)
+                {
+                    unicodeValue = 0;
+                }
+
+                textureRect.width = tileSize;
+                textureRect.height = tileSize;
                 FontIconSetInspector.EditorDrawTMPGlyph(textureRect, unicodeValue, fontAsset, selected);
                 column++;
             }
@@ -109,6 +132,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.EndHorizontal();
             }
+            
+            if (Event.current.type == EventType.Repaint)
+            {
+                float editorWindowWidth = GUILayoutUtility.GetLastRect().width;
+                numColumns = (int)Mathf.Floor(editorWindowWidth / (tileSize + currentButtonStyle.margin.right));
+            }
+
+            EditorGUILayout.EndScrollView();
         }
     }
 }

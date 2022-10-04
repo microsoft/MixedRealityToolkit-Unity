@@ -2,7 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.Speech.Windows",
     "rootNamespace": "Microsoft.MixedReality.Toolkit.Speech.Windows",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core"
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Microsoft.MixedReality.OpenXR"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,6 +12,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "1.5.0",
+            "define": "MSFT_OPENXR_1_5_0_OR_NEWER"
+        }
+    ],
     "noEngineReferences": false
 }

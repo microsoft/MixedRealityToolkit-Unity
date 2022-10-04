@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// A simple proxy interactor which will select + hover things on our behalf, for canvas input.
     /// </summary>
     [AddComponentMenu("MRTK/UX/Canvas Proxy Interactor")]
-    public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor
+    public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor, IModeManagedInteractor
     {
         protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();
 
@@ -20,13 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // We set this flag whenever we're cancelling an interaction. This will suppress
         // events (like OnClicked) on any StatefulInteractable.
         private bool isCancellingInteraction = false;
-
-        /// <summary>
-        /// The camera-depth of the last interaction ray; used to stabilize
-        /// the cursor as it leaves the selected interactable.
-        /// Reset when a new interactable is selected.
-        /// </summary>
-        private float currentDepth;
 
         /// <inheritdoc />
         public void StartHover(IXRHoverInteractable target)
@@ -39,9 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (target != null)
             {
-                Vector3 cameraLocal = worldPosition - CameraCache.Main.transform.position;
-                cameraLocal = cameraLocal.normalized * currentDepth;
-                transform.position = CameraCache.Main.transform.position + cameraLocal;
+                transform.position = worldPosition;
                 validTargets.Add(target);
             }
         }
@@ -75,7 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
 
                 transform.position = worldPosition;
-                currentDepth = Vector3.Distance(CameraCache.Main.transform.position, worldPosition);
                 manualSelectTarget = target;
                 StartManualInteraction(target);
             }
@@ -84,9 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <inheritdoc />
         public void UpdateSelect(IXRSelectInteractable interactable, Vector3 worldPosition)
         {
-            Vector3 cameraLocal = worldPosition - CameraCache.Main.transform.position;
-            cameraLocal = cameraLocal.normalized * currentDepth;
-            transform.position = CameraCache.Main.transform.position + cameraLocal;
+            transform.position = worldPosition;
         }
 
         /// <inheritdoc />
@@ -109,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
         }
-
+        
         /// <inheritdoc />
         public override void GetValidTargets(List<IXRInteractable> targets)
         {
@@ -146,5 +134,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // We combine the base hoverActive with our flag for whether we're suppressing events.
         // Our interactors use isHoverActive = false to indicate interaction cancellation.
         public override bool isHoverActive => base.isHoverActive && !isCancellingInteraction;
+
+        /// <inheritdoc />
+        public GameObject GetModeManagedController() => gameObject;
     }
 }

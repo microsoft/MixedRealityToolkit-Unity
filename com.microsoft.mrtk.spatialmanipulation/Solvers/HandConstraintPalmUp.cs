@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
                 {
-                    float dotProduct = Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward);
+                    float dotProduct = Vector3.Dot(palmPose.Up, Camera.main.transform.forward);
                     if (dotProduct >= 0)
                     {
                         float palmCameraAngle = Mathf.Acos(dotProduct) * Mathf.Rad2Deg;
@@ -232,10 +232,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (requireFlatHand)
                 {
                     // Check if the triangle's normal formed from the palm, to index, to ring finger tip roughly matches the palm normal.
-                    HandJointPose indexTipPose, ringTipPose = new HandJointPose();
-
-                    if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexTip, hand, out indexTipPose) &&
-                        SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.RingTip, hand, out ringTipPose))
+                    if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexTip, hand, out HandJointPose indexTipPose) &&
+                        SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.RingTip, hand, out HandJointPose ringTipPose))
                     {
                         var handNormal = Vector3.Cross(indexTipPose.Position - palmPose.Position,
                                                        ringTipPose.Position - indexTipPose.Position).normalized;
@@ -287,20 +285,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 else
                 {
                     gazeRay = new Ray(
-                        CameraCache.Main.transform.position,
-                        CameraCache.Main.transform.forward);
+                        Camera.main.transform.position,
+                        Camera.main.transform.forward);
                 }
 
                 if (gazeRay.HasValue)
                 {
                     // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
-                    Vector3 activationPoint;
-                    Plane handPlane;
-                    float distanceToHandPlane;
-
                     // If we can generate the handplane/are able to set an activation point on it, and then are able to raycast against it
-                    if (TryGenerateHandPlaneAndActivationPoint(hand, out handPlane, out activationPoint) &&
-                        handPlane.Raycast(gazeRay.Value, out distanceToHandPlane))
+                    if (TryGenerateHandPlaneAndActivationPoint(hand, out Plane handPlane, out Vector3 activationPoint) &&
+                        handPlane.Raycast(gazeRay.Value, out float distanceToHandPlane))
                     {
                         // Now that we know the dist to the plane, create a vector at that point
                         Vector3 gazePosOnPlane = gazeRay.Value.origin + gazeRay.Value.direction.normalized * distanceToHandPlane;
@@ -358,17 +352,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 // Generate the hand plane that we're using to generate a distance value.
                 // This is done by using the index knuckle, pinky knuckle, and wrist
-                HandJointPose indexKnuckle;
-                HandJointPose pinkyKnuckle;
-                HandJointPose wrist;
-
-                if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexKnuckle, hand, out indexKnuckle) &&
-                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.PinkyKnuckle, hand, out pinkyKnuckle) &&
-                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Wrist, hand, out wrist))
+                if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexProximal, hand, out HandJointPose indexKnuckle) &&
+                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.LittleProximal, hand, out HandJointPose pinkyKnuckle) &&
+                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Wrist, hand, out HandJointPose wrist))
                 {
                     handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
-                    Vector3 generatedActivationPoint;
-                    if (TryGenerateActivationPoint(hand, out generatedActivationPoint))
+                    if (TryGenerateActivationPoint(hand, out Vector3 generatedActivationPoint))
                     {
                         activationPoint = handPlane.ClosestPointOnPlane(generatedActivationPoint);
                         return true;
@@ -435,13 +424,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         break;
 
                     case SolverSafeZone.RadialSide:
-                        referenceJoint1 = TrackedHandJoint.IndexKnuckle;
-                        referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
+                        referenceJoint1 = TrackedHandJoint.IndexProximal;
+                        referenceJoint2 = TrackedHandJoint.ThumbProximal;
                         break;
 
                     case SolverSafeZone.UlnarSide:
                     default:
-                        referenceJoint1 = TrackedHandJoint.PinkyKnuckle;
+                        referenceJoint1 = TrackedHandJoint.LittleProximal;
                         referenceJoint2 = TrackedHandJoint.Wrist;
                         break;
                 }
@@ -467,15 +456,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             while (!SolverHandler.UpdateSolvers && useGazeActivation)
             {
-                HandJointPose palmPose;
-
                 XRNode? hand = SolverHandler.CurrentTrackedHandedness.ToXRNode();
 
                 if (hand.HasValue)
                 {
-                    if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out palmPose))
+                    if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
                     {
-                        float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
+                        float palmCameraAngle = Vector3.Angle(palmPose.Up, Camera.main.transform.forward);
                         if (IsPalmMeetingThresholdRequirements(hand.Value, palmPose, palmCameraAngle) &&
                             IsUserGazeMeetingThresholdRequirements(hand.Value))
                         {

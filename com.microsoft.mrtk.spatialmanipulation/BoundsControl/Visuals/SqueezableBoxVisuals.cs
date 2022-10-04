@@ -106,15 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => activationLerpTime = value;
         }
 
-        #region IBoundsVisuals Implementation
-        /// <inheritdoc />
-        public bool IsFlat { get; set; }
-
-        /// <inheritdoc />
-        public bool IsManipulated { get; set; }
-
-        #endregion IBoundsVisuals Implementation
-
         // Reference to a BoundsControl component that
         // will inform this visual of flattening, manipulation events,
         // and active handle types.
@@ -185,6 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             foreach (BoundsHandleInteractable handle in handles)
             {
                 projectedHandles.Add(new HandlePoint() { Handle = handle, Position = Vector3.zero });
+                handle.BoundsControlRoot = boundsControl;
             }
 
             // Read the box properties out of the material. This will inform our (un)pinchScaleOffsets to keep
@@ -359,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     projectedHandles[i] = new HandlePoint()
                     {
                         Handle = projectedHandles[i].Handle,
-                        Position = CameraCache.Main.WorldToScreenPoint(projectedHandles[i].Handle.transform.position + (projectedHandles[i].Handle.transform.position - transform.position).normalized * convexPadding),
+                        Position = Camera.main.WorldToScreenPoint(projectedHandles[i].Handle.transform.position + (projectedHandles[i].Handle.transform.position - transform.position).normalized * convexPadding),
                     };
                 }
 
@@ -417,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // If the vector points away, we need to correct it to point towards the user.
                 // Handles use this vector to determine their orientation for flattened visuals.
                 bool flattenPointsAway = Vector3.Dot(handlesContainer.TransformVector(flattenVector),
-                                                    handlesContainer.position - CameraCache.Main.transform.position) > 0;
+                                                    handlesContainer.position - Camera.main.transform.position) > 0;
                 if (flattenPointsAway)
                 {
                     flattenVector = -flattenVector;
