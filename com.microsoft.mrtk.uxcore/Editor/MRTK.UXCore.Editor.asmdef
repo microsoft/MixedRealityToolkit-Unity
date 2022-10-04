@@ -1,6 +1,6 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.UXCore.Editor",
-    "rootNamespace": "Microsoft.MixedReality.Toolkit.UX.Editor",
+    "rootNamespace": "Microsoft.MixedReality.Toolkit.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
         "Microsoft.MixedReality.Toolkit.Core.Editor",

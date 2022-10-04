@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public int Id { get; internal set; }
 
         /// <summary>
-        /// Constructor for a mode definintion, requires a name and the interactor types which are to be enabled while in this mode.
+        /// Constructor for a mode definition, requires a name and the interactor types which are to be enabled while in this mode.
         /// </summary>
         public InteractionModeDefinition(string name, List<SystemType> associatedTypes)
         {

@@ -21,13 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // events (like OnClicked) on any StatefulInteractable.
         private bool isCancellingInteraction = false;
 
-        /// <summary>
-        /// The camera-depth of the last interaction ray; used to stabilize
-        /// the cursor as it leaves the selected interactable.
-        /// Reset when a new interactable is selected.
-        /// </summary>
-        private float currentDepth;
-
         /// <inheritdoc />
         public void StartHover(IXRHoverInteractable target)
         {
@@ -39,9 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (target != null)
             {
-                Vector3 cameraLocal = worldPosition - CameraCache.Main.transform.position;
-                cameraLocal = cameraLocal.normalized * currentDepth;
-                transform.position = CameraCache.Main.transform.position + cameraLocal;
+                transform.position = worldPosition;
                 validTargets.Add(target);
             }
         }
@@ -75,7 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
 
                 transform.position = worldPosition;
-                currentDepth = Vector3.Distance(CameraCache.Main.transform.position, worldPosition);
                 manualSelectTarget = target;
                 StartManualInteraction(target);
             }
@@ -84,9 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <inheritdoc />
         public void UpdateSelect(IXRSelectInteractable interactable, Vector3 worldPosition)
         {
-            Vector3 cameraLocal = worldPosition - CameraCache.Main.transform.position;
-            cameraLocal = cameraLocal.normalized * currentDepth;
-            transform.position = CameraCache.Main.transform.position + cameraLocal;
+            transform.position = worldPosition;
         }
 
         /// <inheritdoc />
@@ -109,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
         }
-
+        
         /// <inheritdoc />
         public override void GetValidTargets(List<IXRInteractable> targets)
         {

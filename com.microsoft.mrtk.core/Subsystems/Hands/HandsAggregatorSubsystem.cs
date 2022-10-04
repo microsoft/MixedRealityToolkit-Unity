@@ -109,5 +109,4 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             return true;
         }
     }
-
 }

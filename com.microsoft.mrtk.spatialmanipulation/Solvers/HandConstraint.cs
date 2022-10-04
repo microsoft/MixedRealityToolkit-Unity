@@ -334,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         if (palmPose.HasValue)
                         {
                             goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
-                            Vector3 goalToCam = CameraCache.Main.transform.position - goalPosition;
+                            Vector3 goalToCam = Camera.main.transform.position - goalPosition;
                             if (goalToCam.magnitude > Mathf.Epsilon)
                             {
                                 goalPosition += (goalToCam).normalized * ForwardOffset;
@@ -364,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     case SolverRotationBehavior.LookAtMainCamera:
                         {
-                            goalRotation = Quaternion.LookRotation(GoalPosition - CameraCache.Main.transform.position);
+                            goalRotation = Quaternion.LookRotation(GoalPosition - Camera.main.transform.position);
                         }
                         break;
 
@@ -443,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Debug.Assert(hand.HasValue);
 
                 Vector3 direction;
-                Vector3 lookAtCamera = targetTransform.transform.position - CameraCache.Main.transform.position;
+                Vector3 lookAtCamera = targetTransform.transform.position - Camera.main.transform.position;
 
                 switch (handSafeZone)
                 {
@@ -495,7 +495,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             }
                             else
                             {
-                                direction = CameraCache.Main.transform.up;
+                                direction = Camera.main.transform.up;
                             }
                         }
                         break;
@@ -508,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             }
                             else
                             {
-                                direction = -CameraCache.Main.transform.up;
+                                direction = -Camera.main.transform.up;
                             }
                         }
                         break;
@@ -632,7 +632,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if (palmPose.HasValue)
             {
-                return (Vector3.Dot(palmPose.Value.Up, CameraCache.Main.transform.forward) > 0.0f);
+                return (Vector3.Dot(palmPose.Value.Up, Camera.main.transform.forward) > 0.0f);
             }
 
             return false;

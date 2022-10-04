@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             using (UpdateCameraSettingsPerfMarker.Auto())
             {
-                UnityEngine.Camera mainCamera = CameraCache.Main;
+                UnityEngine.Camera mainCamera = Camera.main;
 
                 switch (type)
                 {

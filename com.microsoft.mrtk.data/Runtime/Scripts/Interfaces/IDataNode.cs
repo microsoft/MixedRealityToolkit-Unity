@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// accessing members of a collection.
         ///
         /// If this node is a map node, the value is an IEnumerable<string> object
-        /// that contians the full keypath for every key in the map.
+        /// that contains the full keypath for every key in the map.
         /// </remarks>
         ///
         /// <returns>The value associated with this node of arbitrary type and complexity</returns>

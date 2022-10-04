@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// </summary>
         private void UpdateActiveInfluencerCollection()
         {
-            Transform cameraTransform = CameraCache.Main.transform;
+            Transform cameraTransform = Camera.main.transform;
 
             // Influencers take effect only when between the emitter and the user.
             // Perform a raycast from the user toward the object.

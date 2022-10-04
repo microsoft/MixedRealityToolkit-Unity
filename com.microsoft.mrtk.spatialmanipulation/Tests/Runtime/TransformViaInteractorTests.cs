@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             Assert.AreEqual(1, selectCount, $"ObjectManipulator is selected");
 
-            // Change the attachTransform of the selecting Interator
+            // Change the attachTransform of the selecting Interactor
             var rayInteractor = (MRTKRayInteractor)objectManipulator.firstInteractorSelecting;
 
             rayInteractor.attachTransform.localScale = Vector3.one * 20f;
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var scaleConstraint = testObject.AddComponent<MinMaxScaleConstraint>();
             scaleConstraint.MaximumScale = new Vector3(1f, 2f, 3f);
 
-            // Change the attachTransform of the selecting Interator
+            // Change the attachTransform of the selecting Interactor
             var rayInteractor = (MRTKRayInteractor)objectManipulator.firstInteractorSelecting;
             rayInteractor.attachTransform.localScale = Vector3.one * 4f;
             yield return null;
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return hand.Show(initialHandPosition);
             yield return hand.SetHandshape(HandshapeId.Pinch);
 
-            // Change the attachTransform of the selecting Interator
+            // Change the attachTransform of the selecting Interactor
             var rayInteractor = (MRTKRayInteractor)objectManipulator.firstInteractorSelecting;
 
             rayInteractor.attachTransform.localScale = Vector3.one * 2f;

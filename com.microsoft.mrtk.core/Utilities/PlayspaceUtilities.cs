@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     // Unfortunately, the XROrigin has no singleton property.
                     // Instead, we can find it through the main camera.
-                    var rig = CameraCache.Main.GetComponentInParent<XROrigin>();
+                    var rig = Camera.main.GetComponentInParent<XROrigin>();
                     Debug.Assert(rig != null, "PlayspaceUtilities requires the use of an XROrigin. Check if your main camera is a child of an XROrigin.");
 
                     if (rig != null)

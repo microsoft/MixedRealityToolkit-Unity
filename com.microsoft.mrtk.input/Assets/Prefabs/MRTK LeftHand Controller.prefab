@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: jointPoseSource.hand
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pokePoseSource.poseSources.Array.data[0].source.hand
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2082243679387671466, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: settings.handedness
       value: 1
@@ -71,12 +75,40 @@ PrefabInstance:
       propertyPath: pinchPoseSource.hand
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2572330550550829917, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pinchPoseSource.poseSources.Array.data[0].source.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: aimPoseSource.poseSources.Array.data[0].source.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: aimPoseSource.poseSources.Array.data[1].source.hand
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: devicePoseSource.poseSources.Array.data[1].source.hand
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pointerPoseSource.poseSources.Array.data[0].source.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: pointerPoseSource.poseSources.Array.data[1].source.hand
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: pinchPoseSource.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: aimPoseSource.poseSources.Array.data[0].source.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: aimPoseSource.poseSources.Array.data[1].source.hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
@@ -91,6 +123,10 @@ PrefabInstance:
       propertyPath: m_ModelPrefab
       value: 
       objectReference: {fileID: 1768293572455847265, guid: 2b468cc4fe6d2b44ebc53b958b38b91a, type: 3}
+    - target: {fileID: 6937621743165281871, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7215522641424853407, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: settings.handedness
       value: 1
@@ -105,6 +141,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7678414244376504105, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: jointPoseSource.hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833497039863265739, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
+      propertyPath: settings.handedness
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

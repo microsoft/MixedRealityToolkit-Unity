@@ -27,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     /// ship a corresponding PoseState struct along with their version of PoseControl, and
     /// thus we cannot inject simulated input data into that control from the managed layer.
     /// 
-    /// When the duplicated PoseControl version is either removed, or recieves a corresponding
+    /// When the duplicated PoseControl version is either removed, or receives a corresponding
     /// state struct, we can inherit directly from the OpenXR eye device.
     /// </remarks>
     [InputControlLayout(
         displayName = "Eye Gaze (MRTK)",
         isGenericTypeOfDevice = false),
         Preserve]
-    internal class SimulatedEyeGazeDevice : InputDevice
+    public class SimulatedEyeGazeDevice : InputDevice
     {
         /// <summary>
         /// A <see cref="PoseControl"/> representing the <see cref="EyeGazeInteraction.pose"/> OpenXR binding.
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         public void Dispose()
         {
-            if ((simulatedEyeDevice != null))
+            if (simulatedEyeDevice != null)
             {
                 InputSystem.RemoveDevice(simulatedEyeDevice);
             }
@@ -158,6 +158,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             if (simulatedEyeDevice == null) { return; }
 
+            if (!simulatedEyeDevice.added)
+            {
+                simulatedEyeDevice = InputSystem.GetDeviceById(simulatedEyeDevice.deviceId) as SimulatedEyeGazeDevice;
+                if (simulatedEyeDevice == null) { return; }
+            }
+
             using (UpdatePerfMarker.Auto())
             {
                 poseState.isTracked = isTracked;
@@ -165,12 +171,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     TrackingState.Position | TrackingState.Rotation :
                     TrackingState.None;
 
-                // Update the camera-relative euler angle look rotation.
+                // Update the camera-relative Euler angle look rotation.
                 CameraRelativeRotation += lookDelta;
 
-                poseState.position = CameraCache.Main.transform.localPosition + (CameraCache.Main.transform.localRotation * eyeOffset);
+                poseState.position = Camera.main.transform.localPosition + (Camera.main.transform.localRotation * eyeOffset);
                 // todo - saccade support
-                poseState.rotation = CameraCache.Main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
+                poseState.rotation = Camera.main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
 
                 InputState.Change(simulatedEyeDevice.pose, poseState);
             }

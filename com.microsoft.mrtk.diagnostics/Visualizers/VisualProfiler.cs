@@ -224,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update window transformation.
-            Transform cameraTransform = CameraCache.Main ? CameraCache.Main.transform : null;
+            Transform cameraTransform = Camera.main ? Camera.main.transform : null;
 
             if (window.activeSelf && cameraTransform != null)
             {
@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private Vector3 CalculateWindowPosition(Transform cameraTransform)
         {
-            float windowDistance = Mathf.Max(16.0f / CameraCache.Main.fieldOfView, CameraCache.Main.nearClipPlane + 0.25f);
+            float windowDistance = Mathf.Max(16.0f / Camera.main.fieldOfView, Camera.main.nearClipPlane + 0.25f);
             Vector3 position = cameraTransform.position + (cameraTransform.forward * windowDistance);
             Vector3 horizontalOffset = cameraTransform.right * windowOffset.x;
             Vector3 verticalOffset = cameraTransform.up * windowOffset.y;

@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// This tests the one hand near movement while camera (character) is moving around.
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test should be the same in all rotation setups
-        /// This test also has a santity check to ensure behavior is still the same for objects of different scale
+        /// This test also has a sanity check to ensure behavior is still the same for objects of different scale
         /// </summary>
         [UnityTest]
         public IEnumerator ObjectManipulatorOneHandMoveNear()
@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test is the same for all objects that won't change
         /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
-        /// This test also has a santity check to ensure behavior is still the same for objects of different scale
+        /// This test also has a sanity check to ensure behavior is still the same for objects of different scale
         /// </summary>
         [UnityTest]
         public IEnumerator ObjectManipulatorOneHandMoveFar()
@@ -605,7 +605,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                         Quaternion objectRotation = objectManipulator.transform.rotation;
                         TestUtilities.AssertAboutEqual(Quaternion.AngleAxis(degreeStep * i, Vector3.up).normalized, objectRotation.normalized, $"Rotation incorrect using {rotationAnchorType}");
 
-                        // Also check that the object stays approximately infront of the hand
+                        // Also check that the object stays approximately in front of the hand
                         Assert.IsTrue(objectManipulator.firstInteractorSelecting.transform.InverseTransformPoint(objectManipulator.transform.position).z > 0);
                     }
 

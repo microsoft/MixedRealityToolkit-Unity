@@ -18,13 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class PokeInteractor :
         XRBaseControllerInteractor,
         IPokeInteractor,
-        IHandedInteractor,
-        IMRTKInteractorVisuals
+        IHandedInteractor
     {
         #region PokeInteractor
 
         [SerializeReference]
-        [InterfaceSelector]
+        [InterfaceSelector(true)]
         [Tooltip("The pose source representing the poke pose")]
         private IPoseSource pokePoseSource;
 
@@ -52,44 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion IHandedInteractor
 
-        #region IMRTKInteractorVisuals
-
-        [Header("Interactor visuals settings")]
-
-        [SerializeField]
-        [Tooltip("The visuals representing the interaction point, such as a cursor, donut, or other marker.")]
-        private GameObject touchVisuals;
-
-        /// <summary>
-        /// The visuals representing the interaction point, such as a cursor, donut, or other marker.
-        /// </summary>
-        public GameObject TouchVisuals { get => touchVisuals; set => touchVisuals = value; }
-
-        private static readonly ProfilerMarker SetVisualsPerfMarker =
-            new ProfilerMarker("[MRTK] PokeInteractor.SetVisuals");
-
-        /// <inheritdoc/>
-        public virtual void SetVisuals(bool isVisible)
-        {
-            using (SetVisualsPerfMarker.Auto())
-            {
-                if (TouchVisuals == null) { return; }
-
-                TouchVisuals.SetActive(isVisible);
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void UpdateVisuals(XRBaseInteractable interactable)
-        {
-            if (TouchVisuals != null)
-            {
-                TouchVisuals.transform.SetPositionAndRotation(pokeTrajectory.End, attachTransform.rotation);
-            }
-        }
-
-        #endregion IMRTKInteractorVisuals
-
         #region IPokeInteractor
 
         /// <summary>
@@ -114,14 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Awake();
             pokeTrajectory.Start = attachTransform.position;
             pokeTrajectory.End = attachTransform.position;
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            // Hiding interactor visuals
-            SetVisuals(false);
         }
 
         private void OnDrawGizmos()
@@ -149,11 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc/>
         public override bool isHoverActive
         {
-            get
-            {
-                // Only be available for hovering if the joint or controller is tracked.
-                return base.isHoverActive && (xrController.currentControllerState.inputTrackingState.HasPositionAndRotation() || pokePointTracked);
-            }
+            // Only be available for hovering if the joint or controller is tracked.
+            get => base.isHoverActive && (xrController.currentControllerState.inputTrackingState.HasPositionAndRotation() || pokePointTracked);
         }
 
         /// <inheritdoc/>
@@ -183,20 +133,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // The start of our new trajectory is the end of the last frame's trajectory.
                     pokeTrajectory.Start = pokeTrajectory.End;
 
-                    // If we can get a joint pose, set out attachTransform accordingly.
                     // pokePointTracked is used to help set isHoverActive.
                     pokePointTracked = TryGetPokePose(out Pose pose);
                     if (pokePointTracked)
                     {
-                        // If we can get a joint pose, set our attachTransform accordingly.
-                        attachTransform.SetPositionAndRotation(pose.position, pose.rotation);
+                        // If we can get a joint pose, set our transform accordingly.
+                        transform.SetPositionAndRotation(pose.position, pose.rotation);
                     }
                     else
                     {
-                        // If we don't have a joint pose, just reset the attachTransform back to neutral.
-                        attachTransform.localPosition = Vector3.zero;
-                        attachTransform.localRotation = Quaternion.identity;
+                        // If we don't have a poke pose, reset to whatever our parent XRController's pose is.
+                        transform.localPosition = Vector3.zero;
+                        transform.localRotation = Quaternion.identity;
                     }
+
+                    // Ensure that the attachTransform tightly follows the interactor's transform
+                    attachTransform.SetPositionAndRotation(transform.position, transform.rotation);
 
                     // The endpoint of our trajectory is the current attachTransform, regardless
                     // if this interactor set the attachTransform or whether we are just on a motion controller.
@@ -242,10 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                         }
                     }
-
-                    // Update visuals (cursor)
-                    SetVisuals(isHoverActive);
-                    UpdateVisuals(interactablesHovered.Count > 0 ? interactablesHovered[0] as XRBaseInteractable : null);
                 }
             }
         }

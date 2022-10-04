@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     projectedHandles[i] = new HandlePoint()
                     {
                         Handle = projectedHandles[i].Handle,
-                        Position = CameraCache.Main.WorldToScreenPoint(projectedHandles[i].Handle.transform.position + (projectedHandles[i].Handle.transform.position - transform.position).normalized * convexPadding),
+                        Position = Camera.main.WorldToScreenPoint(projectedHandles[i].Handle.transform.position + (projectedHandles[i].Handle.transform.position - transform.position).normalized * convexPadding),
                     };
                 }
 
@@ -409,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // If the vector points away, we need to correct it to point towards the user.
                 // Handles use this vector to determine their orientation for flattened visuals.
                 bool flattenPointsAway = Vector3.Dot(handlesContainer.TransformVector(flattenVector),
-                                                    handlesContainer.position - CameraCache.Main.transform.position) > 0;
+                                                    handlesContainer.position - Camera.main.transform.position) > 0;
                 if (flattenPointsAway)
                 {
                     flattenVector = -flattenVector;
@@ -446,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        // Peek the seocnd-from-top item on the stack.
+        // Peek the second-from-top item on the stack.
         private T PeekSecond<T>(Stack<T> stack)
         {
             T temp = stack.Pop();

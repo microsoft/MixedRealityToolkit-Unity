@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -17,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// not depend on XRI.
     /// </remarks>
     [AddComponentMenu("MRTK/Input/Follow Joint")]
-    internal class FollowJoint : MonoBehaviour
+    internal class FollowJoint : MonoBehaviour, ISerializationCallbackReceiver
     {
         [SerializeField]
         [Tooltip("The pose source representing the hand joint this interactor tracks")]
@@ -28,13 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected HandJointPoseSource JointPoseSource { get => jointPoseSource; set => jointPoseSource = value; }
 
-        [SerializeField]
-        [HideInInspector]
         // A temporary variable used to migrate instances of FollowJoint to use the jointPoseSource class as the source of truth
         // rather than its own separately serialized values.
         // TODO: Remove this after some time to ensure users have successfully migrated.
+        [SerializeField, HideInInspector]
         private bool migratedSuccessfully = false;
-
 
         [SerializeField]
         [HideInInspector]
@@ -56,13 +52,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Obsolete("Please change the Joint value on the jointPoseSource instead")]
         protected TrackedHandJoint Joint { get => JointPoseSource.Joint; set => JointPoseSource.Joint = value; }
 
+        #region ISerializationCallbackReceiver
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
+
         /// <summary>
-        /// Using OnValidate to ensure that instances of FollowJoint are migrated to the new HandJointPoseSource
+        /// Using ISerializationCallbackReceiver to ensure that instances of FollowJoint are migrated to the new HandJointPoseSource
         /// Doesn't work perfectly due to complications with prefab variants :(
         ///
         /// TODO: Remove this after some time to ensure users have successfully migrated.
         /// </summary>
-        private void OnValidate()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (!migratedSuccessfully)
             {
@@ -71,6 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 migratedSuccessfully = true;
             }
         }
+
+        #endregion ISerializationCallbackReceiver
 
         void Update()
         {
