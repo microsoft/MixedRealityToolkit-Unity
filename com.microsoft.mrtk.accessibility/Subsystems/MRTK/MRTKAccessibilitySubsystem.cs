@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                     return false;
                 }
 
-                if (!describableObjects[classification].Remove(describableObject))
+                if (!objCollection.Remove(describableObject))
                 {
                     Debug.LogError($"Failed to unregister {describableObject.name} as a describable object of classification {classification}");
                     return false;
