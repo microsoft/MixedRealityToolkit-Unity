@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Try to obtain a model key
             if (!controllerModelProvider.TryGetControllerModelKey(out ulong modelKey))
             {
-                if(!warningCache.ContainsKey(inputDevice) || !warningCache[inputDevice])
+                if(!warningCache.TryGetValue(inputDevice, out bool warningLogged) || !warningLogged)
                 {
                     Debug.LogWarning("Failed to obtain controller model key from platform.");
                 }
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             byte[] modelStream = await controllerModelProvider.TryGetControllerModel(modelKey);
             if (modelStream == null || modelStream.Length == 0)
             {
-                if (!errorCache.ContainsKey(modelKey) || !errorCache[modelKey])
+                if (!errorCache.TryGetValue(modelKey, out bool errorLogged) || !errorLogged)
                 {
                     Debug.LogError("Failed to obtain controller model from platform.");
                 }
