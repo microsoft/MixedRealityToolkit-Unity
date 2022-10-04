@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// A dictionary which caches the controller model gameobject associated with a specified input device
-        /// Stores a boolean indicating whether an error was recenlty raised when trying to get the model for this model key.
+        /// Stores a boolean indicating whether an error was recently raised when trying to get the model for this model key.
         /// </summary>
         private static Dictionary<ulong, bool> errorCache = new Dictionary<ulong, bool>();
 
