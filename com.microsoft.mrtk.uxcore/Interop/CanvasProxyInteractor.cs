@@ -65,9 +65,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     isCancellingInteraction = false;
                 }
 
-                //no space in this comment
 
                 // but this one is good asdf
+
+                // another commit
 
                 transform.position = worldPosition;
                 manualSelectTarget = target;
