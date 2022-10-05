@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// The configuration object for all AccessibilitySubsystems
     /// </summary>
     [CreateAssetMenu(
-        fileName = "MRTKAccessibilityConfig.asset",
+        fileName = "AccessibilitySubsystemConfig.asset",
         menuName = "MRTK/Subsystems/Accessibility Config")]
     public class AccessibilitySubsystemConfig : BaseSubsystemConfig
     {
