@@ -1,8 +1,8 @@
 {
   "name": "com.microsoft.mrtk.windowsspeech",
   "version": "3.0.0-development",
-  "description": "Speech subsystem implementation for native Windows speech APIs. Allows for the use of native Windows speech recognition to fire events and drive XRI interactions.",
-  "displayName": "MRTK Windows Speech Recognition",
+  "description": "Speech subsystem implementation for native Windows speech APIs. Allows for the use of native Windows text to speech and speech recognition to fire events and drive XRI interactions.",
+  "displayName": "Windows Speech",
   "msftFeatureCategory": "MRTK3",
   "author": "Microsoft",
   "license": "MIT",
