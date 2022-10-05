@@ -35,6 +35,37 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Converts two bytes to one float in the range -1 to 1.
+        /// </summary>
+        /// <param name="a">The least significant byte.</param>
+        /// <param name="b"> The most significant byte.</param>
+        /// <returns>Float value between -1 and 1.</returns>
+        public static float BytesToFloat(byte a, byte b)
+        {
+            // Convert two bytes to one short (little endian)
+            short s = (short)((b << 8) | a);
+
+            // Convert to range from -1 to (just below) 1
+            return s / (float)(short.MaxValue + 1);
+        }
+
+        /// <summary>
+        /// Converts an array of four bytes to an integer.
+        /// </summary>
+        /// <param name="bytes">Array of bytes (must be at least four bytes in length).</param>
+        /// <param name="offset">Offset within the array at which to begin reading.</param>
+        /// <returns>Integer value created the provided bytes.</returns>
+        public static int BytesToInt(byte[] bytes, int offset = 0)
+        {
+            int value = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                value |= ((int)bytes[offset + i]) << (i * 8);
+            }
+            return value;
+        }
+
+        /// <summary>
         /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct
         /// point in the coordinate space specified by the "to" transform applies rotation, scale and translation.
         /// </summary>
