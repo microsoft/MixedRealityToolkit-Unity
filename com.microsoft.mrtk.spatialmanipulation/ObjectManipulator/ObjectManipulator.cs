@@ -668,7 +668,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 // Evaluate user input in the UI Update() function.
                 // If we are using physics, targetTransform is not applied directly but instead deferred
-                // to the ApplyForces() function called from FixedUpdate()
+                // to the ApplyForcesToRigidbody() function called from FixedUpdate()
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
                     RotateAnchorType rotateType = CurrentInteractionType == InteractionFlags.Near ? RotationAnchorNear : RotationAnchorFar;
