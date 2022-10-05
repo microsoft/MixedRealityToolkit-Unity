@@ -1,4 +1,6 @@
 name: Lint (MRTK3)
+permissions:
+  statuses: write
 
 on:
   push:
