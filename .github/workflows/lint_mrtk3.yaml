@@ -1,8 +1,6 @@
 name: Lint (MRTK3)
 
 on:
-  push:
-    branches-ignore: ["mrtk3"]
   pull_request:
     branches: ["mrtk3"]
 
