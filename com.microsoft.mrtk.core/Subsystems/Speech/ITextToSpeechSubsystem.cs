@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Subsystems
@@ -10,6 +11,16 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// </summary>
     internal interface ITextToSpeechSubsystem
     {
+        /// <summary>
+        /// The rate at which the converted text will be spoken by the speech synthesizer;
+        /// </summary>
+        int RateOfSpeech { get; set; }
+
+        /// <summary>
+        /// Indicates that the value of <see cref="RateOfSpeech"/> has been changed.
+        /// </summary>
+        event Action<int> RateOfSpeechChanged;
+
         /// <summary>
         /// Synthesizes and speaks a text phrase.
         /// </summary>

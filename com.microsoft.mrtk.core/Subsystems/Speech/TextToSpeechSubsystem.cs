@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.SubsystemsImplementation;
@@ -24,12 +25,32 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             #region ITextToSpeechSubsystem implementation
 
             /// <inheritdoc/>
+            public abstract int RateOfSpeech { get; set; }
+
+            /// <inheritdoc/>
+            public abstract event Action<int> RateOfSpeechChanged;
+
+            /// <inheritdoc/>
             public abstract void Speak(string phrase, AudioSource audioSource);
 
             #endregion ITextToSpeechSubsystem implementation
         }
 
         #region ITextToSpeechSubsystem implementation
+
+        /// <inheritdoc/>
+        public int RateOfSpeech
+        {
+            get => provider.RateOfSpeech;
+            set => provider.RateOfSpeech = value;
+        }
+
+        /// <inheritdoc/>
+        public event Action<int> RateOfSpeechChanged
+        {
+            add => provider.RateOfSpeechChanged += value;
+            remove => provider.RateOfSpeechChanged -= value;
+        }
 
         /// <inheritdoc/>
         public virtual void Speak(string phrase, AudioSource audioSource) => provider.Speak(phrase, audioSource);
