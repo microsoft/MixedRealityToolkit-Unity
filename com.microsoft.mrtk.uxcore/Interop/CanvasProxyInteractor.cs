@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 //no space in this comment
 
-                // but this one is good
+                // but this one is good asdf
 
                 transform.position = worldPosition;
                 manualSelectTarget = target;
