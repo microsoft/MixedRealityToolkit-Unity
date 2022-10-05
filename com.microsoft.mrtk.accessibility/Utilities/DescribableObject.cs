@@ -13,6 +13,15 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     public class DescribableObject : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("What is the classification (ex: person, place, ui element, etc.) of this object?")]
+        private DescribableObjectClassification classification = null;
+
+        /// <summary>
+        /// What is the classification (ex: person, place, ui element, etc.) of this object?
+        /// </summary>
+        public DescribableObjectClassification Classification => classification;
+
+        [SerializeField]
         [Tooltip("The full contents of the object.")]
         private string contents = string.Empty;
 
@@ -55,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </remarks>
         public string Description => description;
 
+        /* todo: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/11020 - (partially?) replaced by classification?
         [SerializeField]
         [Tooltip("Information used to help the user determine the contextual importance of the object.")]
         private DescribableFlag flags = DescribableFlag.Static | DescribableFlag.Item;
@@ -72,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             get => flags;
             set => flags = value;
         }
+        */
 
         [SerializeField]
         [Tooltip("Instructions on how to interact with the object.")]
@@ -106,5 +117,35 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// "login button", "rocking chair", etc.
         /// </summary>
         public string Semantic => semantic;
+
+        #region Monobehaviour methods
+
+        private static bool suppressSubsystemNotFound = false;
+
+        private void OnEnable()
+        {
+            if ((AccessibilityHelpers.Subsystem == null) && !suppressSubsystemNotFound)
+            {
+                Debug.LogWarning("The accessibility subsystem is not enabled or has not yet started.");
+                suppressSubsystemNotFound = true;
+                return;
+            }
+
+            if (!AccessibilityHelpers.Subsystem.TryRegisterDescribableObject(gameObject, Classification))
+            {
+                Debug.LogError($"Failed to register {gameObject.name} with the accessibility subsystem.");
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (AccessibilityHelpers.Subsystem == null) { return; }
+            if (!AccessibilityHelpers.Subsystem.TryUnregisterDescribableObject(gameObject, Classification))
+            {
+                Debug.LogError($"Failed to unregister {gameObject.name} with the accessibility subsystem.");
+            }
+        }
+
+        #endregion Monobehavior methods
     }
 }
