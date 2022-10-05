@@ -65,6 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     isCancellingInteraction = false;
                 }
 
+                //no space in this comment
+
                 transform.position = worldPosition;
                 manualSelectTarget = target;
                 StartManualInteraction(target);
