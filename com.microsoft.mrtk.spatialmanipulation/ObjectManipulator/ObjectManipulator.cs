@@ -761,7 +761,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// In case a Rigidbody gets the targetTransform applied using physical forcees, this function is called within the
         /// FixedUpdate() routine with physics-conforming time stepping.
         /// </summary>
-        void ApplyForcesToRigidbody()
+        private void ApplyForcesToRigidbody()
         {
             var referenceFrameVelocity = referenceFrameHasLastPos
                 ? (referenceFrameTransform.position - referenceFrameLastPos) / Time.fixedDeltaTime
