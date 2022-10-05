@@ -128,6 +128,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #endregion Private Fields
 
+        #region Hand-tuned constants
+
+        // The range to inverse-lerp across when damping the movement of the menu
+        // based on the opposite hand's proximity.
+        private static readonly float minOppositeHandDistance = 0.05f;
+        private static readonly float maxOppositeHandDistance = 0.25f;
+
+        // When the menu is less-activated than this threshold, it'll be hidden.
+        private static readonly float minActivationToHide = 0.1f;
+
+        // How "activated" must a hand be to consider it available for the menu to attach to?
+        private static readonly float minActivationThreshold = 0.01f;
+
+        // A non-framerate-independent filtering to reduce jitter.
+        private static readonly float perFrameFiltering = 0.7f;
+
+        #endregion Hand-tuned constants
+
         private void Start()
         {
             if (visibleRoot != null)
@@ -168,8 +186,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             bool gotRightAttach = (target & Handedness.Right) != 0 && rightHand.TryGetAttachPose(out rightPose);
 
             // Construct bitflag for which hand targets are actually available.
-            Handedness available = (((gotLeftAttach && leftHand.Activation > 0) ? Handedness.Left : Handedness.None) |
-                                   ((gotRightAttach && rightHand.Activation > 0) ? Handedness.Right : Handedness.None)) & target;
+            Handedness available = (((gotLeftAttach && leftHand.Activation > minActivationThreshold) ? Handedness.Left : Handedness.None) |
+                                   ((gotRightAttach && rightHand.Activation > minActivationThreshold) ? Handedness.Right : Handedness.None)) & target;
 
             TargetedHand lastTarget = currentTarget;
 
@@ -200,14 +218,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 currentTarget = null;
             }
 
-            // Flag if we've switched to a new hand this frame,
-            // and the menu is sufficiently "behind" the hand.
-            // This is to avoid the menu "lerping" between hands
-            // when very small (causing distracting visuals.)
-            bool snapToNewHand = lastTarget != currentTarget &&
-                                 currentTarget != null &&
-                                 currentTarget.Activation < 0.5f;
-
             // No target? Disable the menu.
             if (currentTarget == null)
             {
@@ -224,9 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (visibleRoot.activeSelf == false)
                 {
                     visibleRoot.SetActive(true);
-                    // If we've just set the menu active,
-                    // make sure we snap to the hand immediately.
-                    snapToNewHand = true;
                 }
             }
 
@@ -238,23 +245,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // If the menu is sufficiently "deactivated", just disable it.
-            visibleRoot.SetActive(currentTarget.Activation > 0.15f);
+            visibleRoot.SetActive(currentTarget.Activation > minActivationToHide);
 
             // "Genie effect".
             transform.localScale = Vector3.one * currentTarget.Activation;
-
-            Pose attach = currentTarget == leftHand ? leftPose : rightPose;
             
-            if (snapToNewHand)
-            {
-                transform.position = attach.position;
-                transform.rotation = attach.rotation;
-            }
-            else
-            {
-                transform.position = Vector3.Lerp(transform.position, attach.position, Mathf.Lerp(0.1f, 0.5f, currentTarget.OppositeHandDistance));
-                transform.rotation = Quaternion.Slerp(transform.rotation, attach.rotation, Mathf.Lerp(0.1f, 0.5f, currentTarget.OppositeHandDistance));
-            }
+            // Apply pose to the menu. Dampen the movement when the opposite hand is nearby for precision.
+            Pose attach = currentTarget == leftHand ? leftPose : rightPose;
+            float dampingFactor = Mathf.Lerp(0.5f, 0.01f, Mathf.InverseLerp(maxOppositeHandDistance, minOppositeHandDistance, currentTarget.OppositeHandDistance));
+            transform.position = Vector3.Lerp(attach.position, transform.position, dampingFactor);
+            transform.rotation = Quaternion.Slerp(attach.rotation, transform.rotation, dampingFactor);
         }
 
         private class TargetedHand
@@ -271,6 +271,27 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             public float Padding;
             public InputAction PositionAction;
             public InputAction RotationAction;
+
+            #region Hand-tuned constants
+
+            // Above this activation threshold, the menu will be considered "locked"
+            // and secondary activation factors like gaze and hand-flatness will be ignored.
+            private readonly float lockThreshold = 0.9f;
+
+            // Below this activation threshold, if the menu is locked, it will be unlocked
+            // and secondary activation factors like gaze and hand-flatness will be considered.
+            private readonly float unlockThreshold = 0.2f;
+
+            // The range (in degrees) between the Menu.MinimumViewAngle and the angle at which
+            // the menu will be completely deactivated by gaze.
+            private readonly float gazeLerpRange = 30f;
+
+            // We don't know exactly how large the user's hand is,
+            // so we'll make an educated guess when we're attaching a hand menu
+            // to a motion controller.
+            private readonly float controllerBasedHandRadius = 0.04f;
+
+            #endregion
 
             /// <summary>
             /// Tries to get the attach pose from the hand joints on the given <paramref name="hand"/>.
@@ -336,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // the user's view direction. The activation amount is then computed
                 // from this dot product, multiplied by the flatness of the hand, as
                 // evaluated by the activation curve.
-                Activation = Mathf.Clamp01(Vector3.Dot(anchor.rotation * Vector3.forward, Camera.main.transform.forward));
+                float tempActivation = Mathf.Clamp01(Vector3.Dot(anchor.rotation * Vector3.forward, (anchor.position - Camera.main.transform.position).normalized));
 
                 // // Compute the "flatness" of the hand, but only when we haven't "locked on" to the hand.
                 // if (XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip, Hand.ToXRNode().Value, out HandJointPose indexTipPose) &&
@@ -351,24 +372,32 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 //     Activation *= Mathf.InverseLerp(0.5f, 1.0f, flatness);
                 // }
 
-                // if (!Locked)
-                // {
-                //     // Compute the view angle to determine whether the hand is
-                //     // within the "FOV" restriction specified by the user (minimumViewAngle)
-                //     float viewAngle = Vector3.Angle(
-                //         Camera.main.transform.forward,
-                //         anchor.position - Camera.main.transform.position
-                //     );
+                if (!Locked)
+                {
+                    // Compute the view angle to determine whether the hand is
+                    // within the "FOV" restriction specified by the user (minimumViewAngle)
+                    float viewAngle = Vector3.Angle(
+                        Camera.main.transform.forward,
+                        anchor.position - Camera.main.transform.position
+                    );
 
-                //     Activation *= Mathf.InverseLerp(25, 0, viewAngle);
-                // }
+                    // Multiply the activation by this gaze angle, lerped across gazeLerpRange for smoothness.
+                    tempActivation *= Mathf.InverseLerp(Menu.MinimumViewAngle + gazeLerpRange, Menu.MinimumViewAngle, viewAngle);
+                }
 
-                Activation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(Activation));
+                tempActivation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(tempActivation));
 
-                if (Activation >= 1.0f)
+                if (tempActivation >= lockThreshold)
                 {
                     Locked = true; // We're active! Hand flatness and gaze won't be able to deactivate, only the hand rotation.
                 }
+                else if (tempActivation <= unlockThreshold)
+                {
+                    Locked = false; // We're inactive! Hand flatness and gaze can deactivate.
+                }
+
+                // Do a very small amount of per-frame filtering to reduce jitter.
+                Activation = Mathf.Lerp(Activation, tempActivation, HandMenu.perFrameFiltering);
 
                 // Finally, compute the actual attach pose.
                 pose = GetAttach(anchor, oppositeHandPose, offsetVector, Padding);
@@ -407,10 +436,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     oppositeHandPose = oppositeGripPose;
                 }
 
-                // We don't know exactly how large the user's hand is,
-                // so we'll make an educated guess.
-                const float averageHandRadius = 0.04f;
-
                 // Compute the dot product between the anchor (hand) rotation and
                 // the user's view direction. The activation amount is then computed
                 // from this dot product as evaluated by the activation curve.
@@ -418,14 +443,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     Menu.ActivationCurve.Evaluate(
                         Vector3.Dot(
                             anchor.rotation * Vector3.forward,
-                            Camera.main.transform.forward
+                            (anchor.position - Camera.main.transform.position).normalized
                         )
                     )
                 );
 
-                if (Activation <= 0) { return default; }
+                if (Activation <= HandMenu.minActivationThreshold) { return false; }
 
-                pose = GetAttach(anchor, oppositeHandPose, offsetVector, Padding + averageHandRadius);
+                // Use controllerBasedHandRadius to estimate the average hand size when we don't
+                // have any hand joints to go off of.
+                pose = GetAttach(anchor, oppositeHandPose, offsetVector, Padding + controllerBasedHandRadius);
                 return true;
             }
 
@@ -435,6 +462,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                                     Vector3 offsetVector, float padding)
             {
                 OppositeHandDistance = 1.0f;
+                
+                // An additional small # of degrees to bias the rotation of the menu towards
+                // the user for easier use.
+                float LookTowardsUserDegrees = 15;
 
                 Pose attach = new Pose(
                     // Compute the attach pose. The position is the anchor position offset
@@ -443,7 +474,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     // The rotation is the anchor's rotation, mixed with a 0-90 rotation blended by
                     // the activation amount. This results in a procedural "flipping" effect as the user
                     // flips their hand over.
-                    anchor.rotation * Quaternion.Euler(0, -90 * (1.0f - Activation) * (Hand == Handedness.Left ? 1 : -1), 0)
+                    anchor.rotation * Quaternion.Euler(-LookTowardsUserDegrees, (-90 * (1.0f - Activation) + LookTowardsUserDegrees) * (Hand == Handedness.Left ? 1 : -1) , 0)
                 );
 
                 // If we have a pose for the opposite hand, compute the distance
@@ -452,9 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (oppositeHandPose.HasValue)
                 {
                     Vector3 menuCenter = attach.position + offsetVector * (Menu.MenuSize.width * 0.5f);
-                    OppositeHandDistance = Mathf.Clamp01(
-                        Mathf.InverseLerp(0.05f, 0.2f, (oppositeHandPose.Value.position - menuCenter).magnitude)
-                    );
+                    OppositeHandDistance = (oppositeHandPose.Value.position - menuCenter).magnitude;
                 }
 
                 return attach;
