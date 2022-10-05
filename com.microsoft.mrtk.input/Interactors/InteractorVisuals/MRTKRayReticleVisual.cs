@@ -40,20 +40,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public ReticleVisibilitySettings VisibilitySettings
         {
-            get
-            {
-                return visibilitySettings;
-            }
-            set
-            {
-                visibilitySettings = value;
-            }
+            get => visibilitySettings;
+            set => visibilitySettings = value;
         }
 
         protected void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
             Application.onBeforeRender += UpdateReticle;
+
+            // If no custom reticle root is specified, just use the interactor's transform.
+            if (reticleRoot == null)
+            {
+                reticleRoot = transform;
+            }
         }
 
         protected void OnDisable()
@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
             Application.onBeforeRender -= UpdateReticle;
         }
+
         private static readonly ProfilerMarker UpdateReticlePerfMarker = new ProfilerMarker("[MRTK] MRTKRayReticleVisual.UpdateReticle");
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
@@ -89,10 +90,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             Reticle.SetActive(rayHasHit);
                         }
 
-                        // Ensure that our visuals position and normal are set correctly.
-                        // The reticle should be a direct child of this gameobject, so it's position and rotation should match this gameobject's
-                        reticleRoot.transform.position = reticlePosition;
-                        reticleRoot.transform.forward = reticleNormal;
+                        // If we have a reticle, set its position and rotation.
+                        if (reticleRoot != null)
+                        {
+                            reticleRoot.transform.position = reticlePosition;
+                            reticleRoot.transform.forward = reticleNormal;
+                        }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)
@@ -144,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
                 targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
             }
-            // Otherwise, calcualte the reticle pose based on the raycast hit.
+            // Otherwise, calculate the reticle pose based on the raycast hit.
             else if (raycastHit.HasValue)
             {
                 // In the case of affordances/handles, we can stick the ray right on to the handle.
@@ -158,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     hitTargetTransform = raycastHit.Value.collider.transform;
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
-                    targetLocalHitNormal = hitTargetTransform.InverseTransformPoint(raycastHit.Value.normal);
+                    targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
                 }
             }
         }

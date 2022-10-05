@@ -79,7 +79,29 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 return hostTransform;
             }
-            set => hostTransform = value;
+            set
+            {
+                if (interactorsSelecting.Count != 0)
+                {
+                    Debug.LogWarning("Changing the host transform while the object is being manipulated is not yet supported. " + 
+                        "Check interactorsSelecting.Count before changing the host transform.");
+                    return;
+                }
+                if (hostTransform != value )
+                {
+                    hostTransform = value;
+
+                    // If we're using constraints, make sure to re-initialize
+                    // the constraints manager with a fresh HostTransform.
+                    if (constraintsManager != null)
+                    {
+                        constraintsManager.Setup(new MixedRealityTransform(HostTransform));
+                    }
+                  
+                    // Re-aquire reference to the rigidbody.
+                    rigidBody = HostTransform.GetComponent<Rigidbody>();
+                }
+            }
         }
 
         [SerializeField]
@@ -749,7 +771,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // We need to query the raw device rotation from the interactor; however,
             // the controller may have its rotation bound to the pointerRotation, which is unsuitable
-            // for modelling rotations with far rays. Therefore, we cast down to the base TrackedDevice,
+            // for modeling rotations with far rays. Therefore, we cast down to the base TrackedDevice,
             // and query the device rotation directly. If any of this is un-castable, we return the
             // interactor's attachTransform's rotation.
             if (interactor is XRBaseControllerInteractor controllerInteractor &&

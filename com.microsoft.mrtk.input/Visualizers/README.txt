@@ -10,4 +10,4 @@ To add these packages to your project. go to
 glTFast : https://github.com/atteneder/glTFast.git#v4.8.3
 KTX: https://github.com/atteneder/KtxUnity.git#v2.1.2
 
-We anticipate both of these packages to be available within Unity by default in the future, afterwhich we will add the dependency to the MRTK3 Input Package.
+We anticipate both of these packages to be available within Unity by default in the future, after which we will add the dependency to the MRTK3 Input Package.
