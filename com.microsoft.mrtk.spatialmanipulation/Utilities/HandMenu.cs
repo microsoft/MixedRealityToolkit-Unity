@@ -388,6 +388,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 tempActivation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(tempActivation));
 
+                // Reduce activation for out-of-view hands.
+                Activation *= FOVFactor(anchor);
+
                 // Do a very small amount of per-frame filtering to reduce jitter.
                 Activation = Mathf.Lerp(Activation, tempActivation, HandMenu.perFrameFiltering);
 
