@@ -7,7 +7,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// Base class for all constraints
+    /// Base class for all constraints.
+    /// We're looking to rework this system in the future. These existing components will be deprecated in then.
     /// </summary>
     public abstract class TransformConstraint : MonoBehaviour
     {

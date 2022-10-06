@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Component for setting the min/max scale values for ObjectManipulator
     /// or BoundsControl
+    /// We're looking to rework this system in the future. These existing components will be deprecated in then.
     /// </summary>
     public class MaintainApparentSizeConstraint : TransformConstraint
     {

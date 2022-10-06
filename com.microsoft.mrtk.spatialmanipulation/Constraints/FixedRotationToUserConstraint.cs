@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
     /// Component for fixing the rotation of a manipulated object relative to the user
+    /// We're looking to rework this system in the future. These existing components will be deprecated in then.
     /// </summary>
     public class FixedRotationToUserConstraint : TransformConstraint
     {

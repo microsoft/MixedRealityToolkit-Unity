@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Manages constraints for a given object and ensures that Scale/Rotation/Translation 
     /// constraints are executed separately.
+    /// We're looking to rework this system in the future. These existing components will be deprecated in then. 
     /// </summary>
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/constraint-manager")]
     [AddComponentMenu("MRTK/Spatial Manipulation/Constraint Manager")]
