@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using UnityEngine;
-using System.Threading.Tasks;
-using UnityEngine.InputSystem.XR;
 using System.Linq;
+using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
