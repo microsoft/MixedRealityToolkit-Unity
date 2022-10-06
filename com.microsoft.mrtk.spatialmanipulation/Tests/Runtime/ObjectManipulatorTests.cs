@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
+using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -635,6 +637,81 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     testObject.transform.position = initialObjectPosition;
                 }
             }
+        }
+
+        /// <summary>
+        /// Verifies that changing the ObjectManipulator's target transform at runtime works as expected.
+        /// (GH#10889)
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestObjManipTargetChange()
+        {
+            GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ObjectManipulator objmanip1 = cube1.AddComponent<ObjectManipulator>();
+            objmanip1.SmoothingNear = false;
+            cube1.transform.position = new Vector3(0.1f, 0.1f, 1);
+            cube1.transform.localScale = Vector3.one * 0.2f;
+
+            // First cube gets a FaceUserConstraint
+            cube1.AddComponent<FaceUserConstraint>();
+
+            GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ObjectManipulator objmanip2 = cube2.AddComponent<ObjectManipulator>();
+            objmanip2.SmoothingNear = false;
+            cube2.transform.position = new Vector3(0.5f, 0.1f, 1);
+            cube2.transform.localScale = Vector3.one * 0.2f;
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Verify that a ConstraintManager was automatically added.
+            Assert.IsTrue(cube1.GetComponent<ConstraintManager>() != null, "Runtime-spawned ObjManip didn't also spawn ConstraintManager");
+            Assert.IsTrue(cube2.GetComponent<ConstraintManager>() != null, "Runtime-spawned ObjManip didn't also spawn ConstraintManager");
+
+            // Assert that HostTransform defualts to the object's transform.
+            Assert.IsTrue(objmanip1.HostTransform == cube1.transform, "ObjManip's HostTransform didn't default to the object itself!");
+            Assert.IsTrue(objmanip2.HostTransform == cube2.transform, "ObjManip's HostTransform didn't default to the object itself!");
+
+            var rightHand = new TestHand(Handedness.Right);
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Left, ControllerAnchorPoint.Grab);
+            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+
+            yield return rightHand.MoveTo(cube1.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsFalse(objmanip1.IsPokeHovered, "ObjManip shouldn't get IsPokeHovered");
+            Assert.IsTrue(objmanip1.IsGrabHovered, "ObjManip didn't report IsGrabHovered");
+
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(objmanip1.IsGrabSelected, "ObjManip didn't report IsGrabSelected");
+            Assert.IsFalse(objmanip1.IsPokeSelected, "ObjManip was PokeSelected. Should not be possible.");
+
+            yield return rightHand.Move(Vector3.left * 0.5f); // Move the hand, cube should stay facing user.
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(cube1.transform.forward.CloseEnoughTo(-(cube1.transform.position - Camera.main.transform.position).normalized), "Cube1 didn't stay facing user!");
+
+            yield return rightHand.SetHandshape(HandshapeId.Open);
+
+            // Reassign the HostTransform to cube2.
+            objmanip1.HostTransform = cube2.transform;
+
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
+
+            Vector3 cube1Pos = cube1.transform.position;
+            Vector3 cube2Pos = cube2.transform.position;
+
+            yield return rightHand.Move(Vector3.right * 0.5f); // Move hand. Cube1 should stay in place, cube2 should move.
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(cube1.transform.position.CloseEnoughTo(cube1Pos), "Cube1 moved when it shouldn't have!");
+            Assert.IsTrue(cube2.transform.position.CloseEnoughTo(cube2Pos + Vector3.right * 0.5f), "Cube2 didn't move when it should have!");
+            
+            // Cube2 should be facing the user.
+            Assert.IsTrue(cube2.transform.forward.CloseEnoughTo(-(cube2.transform.position - Camera.main.transform.position).normalized), "Cube2 didn't stay facing user!");
+
         }
 
         #endregion
