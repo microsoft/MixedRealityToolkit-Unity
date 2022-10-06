@@ -158,17 +158,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bool poseRetrieved = false;
             Handedness handedness = HandNode.ToHandedness();
 
+            // palmPose retrieved in global space.
             if (HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, HandNode, out HandJointPose palmPose))
             {
-                devicePose.position = palmPose.Position;
+                // XRControllers work in OpenXR scene-origin-space, so we need to transform
+                // our global palm pose back into scene-origin-space.
+                devicePose = PlayspaceUtilities.InverseTransformPose(palmPose.Pose);
+
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        devicePose.rotation = palmPose.Rotation * leftPalmOffset;
+                        devicePose.rotation = devicePose.rotation * leftPalmOffset;
                         poseRetrieved = true;
                         break;
                     case Handedness.Right:
-                        devicePose.rotation = palmPose.Rotation * rightPalmOffset;
+                        devicePose.rotation = devicePose.rotation * rightPalmOffset;
                         poseRetrieved = true;
                         break;
                     default:
