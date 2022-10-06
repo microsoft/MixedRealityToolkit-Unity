@@ -96,15 +96,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return false;
                         }
 
-                        Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
-                        if (playspaceTransform == null)
+                        // Joints are relative to the camera floor offset object.
+                        Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
+                        if (origin == null)
                         {
                             pose = handJoints[index];
                             return false;
                         }
 
                         var jointLocation = HandJointLocations[HandJointIndexFromTrackedHandJointIndex[index]];
-                        UpdateJoint(index, jointLocation, playspaceTransform);
+                        UpdateJoint(index, jointLocation, origin);
                         thisQueryValid = true;
                     }
                     else
@@ -141,15 +142,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Null checks against Unity objects can be expensive, especially when you do
                     // it 52 times per frame (26 hand joints across 2 hands). Instead, we manage
                     // the playspace transformation internally for hand joints.
-                    Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
-                    if (playspaceTransform == null)
+                    // Joints are relative to the camera floor offset object.
+                    Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
+                    if (origin == null)
                     {
                         return;
                     }
 
                     for (int i = 0; i < HandTracker.JointCount; i++)
                     {
-                        UpdateJoint(TrackedHandJointIndexFromHandJointIndex[i], HandJointLocations[i], playspaceTransform);
+                        UpdateJoint(TrackedHandJointIndexFromHandJointIndex[i], HandJointLocations[i], origin);
                     }
 
                     // Mark this hand as having been fully queried this frame.

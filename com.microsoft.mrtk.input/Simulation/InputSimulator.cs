@@ -463,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
                     Vector3 inputPosition = ScreenToCameraRelative(mouseScreenPos);
 
-                    positionDelta = inputPosition - simCtrl.SimulatedInputPosition;
+                    positionDelta = inputPosition - simCtrl.CameraRelativePose.position;
                     positionDelta.z = ctrlSettings.MoveDepth.action.ReadValue<float>();
                 }
                 else
