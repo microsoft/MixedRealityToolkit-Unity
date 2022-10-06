@@ -603,6 +603,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     {
                         RotateAnchorType rotateType = CurrentInteractionType == InteractionFlags.Near ? RotationAnchorNear : RotationAnchorFar;
                         bool useCenteredAnchor = rotateType == RotateAnchorType.RotateAboutObjectCenter;
+                        bool isOneHanded = interactorsSelecting.Count == 1;
 
                         MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
@@ -614,6 +615,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             }
                         }
 
+                        // Immediately apply scale constraints after computing the user's desired scale input.
+                        if (EnableConstraints && constraintsManager != null)
+                        {
+                            constraintsManager.ApplyScaleConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                        }
+
                         using (RotateLogicMarker.Auto())
                         {
                             if (allowedManipulations.IsMaskSet(TransformFlags.Rotate))
@@ -622,12 +629,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             }
                         }
 
+                        // Immediately apply rotation constraints after computing the user's desired rotation input.
+                        if (EnableConstraints && constraintsManager != null)
+                        {
+                            constraintsManager.ApplyRotationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                        }
+
                         using (MoveLogicMarker.Auto())
                         {
                             if (allowedManipulations.IsMaskSet(TransformFlags.Move))
                             {
                                 targetTransform.Position = ManipulationLogic.moveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                             }
+                        }
+
+                        // Immediately apply translation constraints after computing the user's desired scale input.
+                        if (EnableConstraints && constraintsManager != null)
+                        {
+                            constraintsManager.ApplyTranslationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
                         }
 
                         ApplyTargetPose(targetTransform);
@@ -708,27 +727,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <param/>
         protected virtual void ModifyTargetPose(ref MixedRealityTransform targetPose, ref TransformFlags modifiedTransformFlags)
         {
-            // TODO: Elastics. Compute elastics here and apply to modifiedTransformFlags
-
-            if (EnableConstraints && constraintsManager != null)
-            {
-                bool isOneHanded = interactorsSelecting.Count == 1;
-
-                if (allowedManipulations.IsMaskSet(TransformFlags.Scale))
-                {
-                    constraintsManager.ApplyScaleConstraints(ref targetPose, isOneHanded, IsGrabSelected);
-                }
-
-                if (allowedManipulations.IsMaskSet(TransformFlags.Rotate))
-                {
-                    constraintsManager.ApplyRotationConstraints(ref targetPose, isOneHanded, IsGrabSelected);
-                }
-
-                if (allowedManipulations.IsMaskSet(TransformFlags.Move))
-                {
-                    constraintsManager.ApplyTranslationConstraints(ref targetPose, isOneHanded, IsGrabSelected);
-                }
-            }
+            // TODO: Elastics. Compute elastics here and apply to modifiedTransformFlags.
 
             bool applySmoothing = ShouldSmooth && smoothingLogic != null && (rigidBody == null || rigidBody.isKinematic);
 
