@@ -389,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 tempActivation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(tempActivation));
 
                 // Reduce activation for out-of-view hands.
-                Activation *= FOVFactor(anchor);
+                tempActivation *= FOVFactor(anchor);
 
                 // Do a very small amount of per-frame filtering to reduce jitter.
                 Activation = Mathf.Lerp(Activation, tempActivation, HandMenu.perFrameFiltering);
@@ -450,7 +450,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 );
 
                 // Reduce activation for out-of-view controllers.
-                Activation *= FOVFactor(anchor);
+                tempActivation *= FOVFactor(anchor);
 
                 // Do a very small amount of per-frame filtering to reduce jitter.
                 Activation = Mathf.Lerp(Activation, tempActivation, HandMenu.perFrameFiltering);
@@ -475,6 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         Camera.main.transform.forward,
                         anchor.position - Camera.main.transform.position
                     );
+                    Debug.Log(viewAngle);
                     // Multiply the activation by this gaze angle, lerped across gazeLerpRange for smoothness.
                     return Mathf.InverseLerp(Menu.MinimumViewAngle + gazeLerpRange, Menu.MinimumViewAngle, viewAngle);
                 }
