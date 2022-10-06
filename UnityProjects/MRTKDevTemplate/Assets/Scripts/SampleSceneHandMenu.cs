@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void SetHandRaysActive(bool value)
         {
-            var handRays = PlayspaceUtilities.ReferenceTransform.GetComponentsInChildren<MRTKRayInteractor>(true);
+            var handRays = PlayspaceUtilities.XROrigin.GetComponentsInChildren<MRTKRayInteractor>(true);
 
             foreach (var interactor in handRays)
             {
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void SetGazePinchActive(bool value)
         {
-            var gazePinchInteractors = PlayspaceUtilities.ReferenceTransform.GetComponentsInChildren<GazePinchInteractor>(true);
+            var gazePinchInteractors = PlayspaceUtilities.XROrigin.GetComponentsInChildren<GazePinchInteractor>(true);
 
             foreach (var interactor in gazePinchInteractors)
             {
