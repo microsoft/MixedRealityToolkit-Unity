@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Component for limiting the rotation axes for ObjectManipulator
     /// or BoundsControl
-    /// We're looking to rework this system in the future. These existing components will be deprecated in then.
+    /// We're looking to rework this system in the future. These existing components will be deprecated then.
     /// </summary>
     public class RotationAxisConstraint : TransformConstraint
     {

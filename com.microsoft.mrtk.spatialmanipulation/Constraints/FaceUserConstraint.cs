@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Component for fixing the rotation of a manipulated object such that
     /// it always faces or faces away from the user
-    /// We're looking to rework this system in the future. These existing components will be deprecated in then.
+    /// We're looking to rework this system in the future. These existing components will be deprecated then.
     /// </summary>
     [AddComponentMenu("MRTK/Spatial Manipulation/Face User Constraint")]
     public class FaceUserConstraint : TransformConstraint
