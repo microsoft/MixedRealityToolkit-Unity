@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using Microsoft.MixedReality.Toolkit.Subsystems;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
