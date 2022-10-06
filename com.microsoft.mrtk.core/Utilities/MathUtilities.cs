@@ -45,7 +45,9 @@ namespace Microsoft.MixedReality.Toolkit
             // Convert two bytes to one short (little endian)
             short s = (short)((b << 8) | a);
 
-            // Convert to range from -1 to (just below) 1
+            // Convert to range from -1 to 1
+            // Note: This does not overflow the short since the 1 is considered
+            // by the compiler to be an int, which promotes the short.
             return s / (float)(short.MaxValue + 1);
         }
 
@@ -63,6 +65,22 @@ namespace Microsoft.MixedReality.Toolkit
                 value |= ((int)bytes[offset + i]) << (i * 8);
             }
             return value;
+        }
+
+        /// <summary>
+        /// Converts an array of two bytes to a short integer.
+        /// </summary>
+        /// <param name="bytes">Array of bytes (must be at least two bytes in length).</param>
+        /// <param name="offset">Offset within the array at which to begin reading.</param>
+        /// <returns>Short integer value created the provided bytes.</returns>
+        public static short BytesToShort(byte[] bytes, int offset = 0)
+        {
+            int value = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                value |= ((int)bytes[offset + i]) << (i * 8);
+            }
+            return (short)value;
         }
 
         /// <summary>

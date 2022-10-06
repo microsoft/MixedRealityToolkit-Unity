@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+//#if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using UnityEngine;
@@ -75,10 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSpeech
             /// <inheritdoc/>
             public override void Speak(string phrase, AudioSource audioSource)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             #endregion TextToSpeechSubsystem implementation
         }
     }
 }
+//#endif WINDOWS_UWP
