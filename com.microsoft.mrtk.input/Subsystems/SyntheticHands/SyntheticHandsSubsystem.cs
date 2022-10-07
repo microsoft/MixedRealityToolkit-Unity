@@ -333,8 +333,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Null checks against Unity objects can be expensive, especially when you do
                     // it 52 times per frame (26 hand joints across 2 hands). Instead, we manage
                     // the playspace transformation internally for hand joints.
-                    Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
-                    if (playspaceTransform == null)
+                    // Joints are relative to the camera floor offset object.
+                    Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
+                    if (origin == null)
                     {
                         return;
                     }
@@ -349,8 +350,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         handJoints[i] = new HandJointPose(
-                            playspaceTransform.TransformPoint((handRotation * currentHandshape[i].Position) + handPosition),
-                            playspaceTransform.rotation * (handRotation * currentHandshape[i].Rotation),
+                            origin.TransformPoint((handRotation * currentHandshape[i].Position) + handPosition),
+                            origin.rotation * (handRotation * currentHandshape[i].Rotation),
                             currentHandshape[i].Radius);
                     }
                 }
