@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using UnityEngine;
 using UnityEngine.Scripting;
+#if WINDOWS_UWP
 using Windows.Foundation;
 using Windows.Media.SpeechSynthesis;
 using Windows.Storage.Streams;
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
@@ -41,15 +42,22 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 
             public WindowsUWPTextToSpeechSubsystemProvider() : base()
             {
+#if WINDOWS_UWP
                 Config = XRSubsystemHelpers.GetConfiguration<TextToSpeechSubsystemConfig, WindowsUWPTextToSpeechSubsystem>();
 
                 rateOfSpeech = Config.RateOfSpeech;
+                speechSynthesizer = new SpeechSynthesizer();
+#else
+                Debug.Log("The Windows UWP Text-To-Speech Subsystem requires building as a UWP target.");
+#endif // WINDOWS_UWP
             }
 
-            protected void Destroy()
+            public override void Destroy()
             {
+#if WINDOWS_UWP
                 speechSynthesizer.Dispose();
                 speechSynthesizer = null;
+#endif // WINDOWS_UWP
             }
 
 #region ITextToSpeechSubsystem implementation
@@ -82,11 +90,14 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 RateOfSpeechChanged?.Invoke(rate);
             }
 
+#if WINDOWS_UWP
             private SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer();
+#endif // WINDOWS_UWP
 
             /// <inheritdoc/>
             public override async void Speak(string phrase, AudioSource audioSource)
             {
+#if WINDOWS_UWP
                 if (string.IsNullOrWhiteSpace(phrase))
                 {
                     Debug.LogWarning("Nothing to speek");
@@ -140,10 +151,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     samples,
                     channels,
                     sampleRate);
+#endif //WINDOWS_UWP
             }
 
 #endregion TextToSpeechSubsystem implementation
         }
     }
 }
-#endif // WINDOWS_UWP
