@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {

@@ -6,11 +6,11 @@ using System;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsSpeech
+namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     [Preserve]
     [MRTKSubsystem(
-        Name = "com.microsoft.mixedreality.windo",
+        Name = "com.microsoft.mixedreality.speech",
         DisplayName = "Windows Win32 Text-To-Speech Subsystem",
         Author = "Microsoft",
         ProviderType = typeof(WindowsWin32TextToSpeechSubsystemProvider),
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSpeech
             // Fetch subsystem metadata from the attribute.
             var cinfo = XRSubsystemHelpers.ConstructCinfo<WindowsWin32TextToSpeechSubsystem, TextToSpeechSubsystemCinfo>();
 
-            if (!WindowsUWPTextToSpeechSubsystem.Register(cinfo))
+            if (!WindowsWin32TextToSpeechSubsystem.Register(cinfo))
             {
                 Debug.LogError($"Failed to register the {cinfo.Name} subsystem.");
             }
