@@ -46,6 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 rateOfSpeech = Config.RateOfSpeech;
             }
 
+            protected void Destroy()
+            {
+                speechSynthesizer.Dispose();
+                speechSynthesizer = null;
+            }
+
 #region ITextToSpeechSubsystem implementation
 
             private int rateOfSpeech = 0;
