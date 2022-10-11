@@ -181,9 +181,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             // Read the box properties out of the material. This will inform our (un)pinchScaleOffsets to keep
             // the handles aligned.
-            GetBoxProperties(boundsRenderer, out float padding, out float shrinkFraction);
-            unpinchScaleOffset = (Vector3.one * (2.0f * (padding)));
-            pinchScaleOffset = (Vector3.one * (2.0f * (padding * shrinkFraction)));
+            if (boundsRenderer != null)
+            {
+                GetBoxProperties(boundsRenderer, out float padding, out float shrinkFraction);
+                unpinchScaleOffset = (Vector3.one * (2.0f * (padding)));
+                pinchScaleOffset = (Vector3.one * (2.0f * (padding * shrinkFraction)));
+            }
+            
 
             // Compute flatten vector at startup.
             flattenVector = BoundsCalculator.CalculateFlattenVector(transform.lossyScale);
