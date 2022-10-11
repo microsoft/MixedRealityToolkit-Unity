@@ -64,8 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             // by 2 times the channel count (ex: 16 bit stereo == number of samples / 4).
             samples = (waveBytes.Length - (int)WaveHeaderOffset.FirstSample) / (2 * channels);
 
-            // Allocate memory (supporting left channel only)
-            floatData = new float[samples];
+            // Allocate memory for the floating point audio data.
+            floatData = new float[samples * channels];
 
             // Write to the float array.
             int i = 0;
