@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private string baseClassName = DefaultBaseSubsystemName;
 
         /// <summary>
-        /// The name of the base class from which the subsysten will derive.
+        /// The name of the base class from which the subsystem will derive.
         /// </summary>
         public string BaseClassName
         {
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private bool createConfiguration = DefaultCreateConfiguration;
 
         /// <summary>
-        /// Inidcates whether or not the wizard should generate a subsystem configuration
+        /// Indicates whether or not the wizard should generate a subsystem configuration
         /// source file.
         /// </summary>
         public bool CreateConfiguration
@@ -85,12 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools
 
         /// <summary>
         /// Name of configuration class, if enabled by <see cref="CreateConfiguration"/>
-        /// to create for new subystem.
+        /// to create for new subsystem.
         /// </summary>
         public string ConfigurationName => CreateConfiguration ? $"{BaseClassName}Config" : "BaseSubsystemConfig"; 
 
         /// <summary>
-        /// Name of descriptor class to create for new subystem.
+        /// Name of descriptor class to create for new subsystem.
         /// </summary>
         public string DescriptorName => $"{BaseClassName}Descriptor";
 
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public string DisplayName => $"{OrganizationName} {BaseClassName}";
 
         /// <summary>
-        /// Name of interface to create for new subystem.
+        /// Name of interface to create for new subsystem.
         /// </summary>
         public string InterfaceName => $"I{BaseClassName}";
 
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// </param>
         /// <param name="applyConfigTemplate">
         /// <see cref="FileInfo"/> object representing the template file that contains information on
-        /// the code to apply when configuraton is desired.
+        /// the code to apply when configuration is desired.
         /// </param>
         /// <returns>True if the collection of templates can all be validated, or false.</returns>
         public bool ValidateTemplates(
@@ -537,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         }
 
         /// <summary>
-        /// Validates that the specified name is a valid indentifier for C#.
+        /// Validates that the specified name is a valid identifier for C#.
         /// </summary>
         /// <param name="name">The name to validate/</param>
         /// <returns>True if the name is a valid C# identifier, or false.</returns>

@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         ///
         /// <param name="viewKeyPath">The keyPath used in a data view.</param>
         ///
-        /// <returns>A string tha can be used to map to the data source.</returns>
+        /// <returns>A string that can be used to map to the data source.</returns>
         string GetDataKeyPathFromViewKeyPath(string viewKeyPath);
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         ///
         /// <param name="dataKeyPath">The keyPath used in a data view.</param>
         ///
-        /// <returns>A string tha can be used to map to a view data consumer.</returns>
+        /// <returns>A string that can be used to map to a view data consumer.</returns>
         string GetViewKeyPathFromDataKeyPath(string dataKeyPath);
     }
 }

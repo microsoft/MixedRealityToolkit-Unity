@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     [AddComponentMenu("MRTK/Examples/Toggle Collection Object Activate")]
     public class ToggleCollectionObjectActivate : MonoBehaviour
     {
-        [Tooltip("The ToggleCollection")]
+        [Tooltip("The ToggleCollection to listen to.")]
         [SerializeField]
         private ToggleCollection toggleCollection;
 
@@ -17,23 +17,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private GameObject[] targetObjects;
 
-        /// <summary>
-        /// The ToggleCollection for this color changer.
-        /// </summary>
-        public ToggleCollection ToggleCollection
-        {
-            get => toggleCollection;
-            set => toggleCollection = value;
-        }
-
         private void Start()
         {
-            for(int i = 0; i < targetObjects.Length; i++)
+            Set(toggleCollection.CurrentIndex);
+            toggleCollection.OnToggleSelected.AddListener((toggleSelectedIndex) => Set(toggleSelectedIndex));
+        }
+
+        private void Set(int index)
+        {
+            for (int i = 0; i < targetObjects.Length; i++)
             {
-                if(ToggleCollection.CurrentIndex != i)
-                {
-                    targetObjects[i].SetActive(false);
-                }
+                targetObjects[i].SetActive(i == index);
             }
         }
     }

@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
         }
 
-        #region Monobehaviour
+        #region MonoBehaviour
 
         private void Start()
         {
@@ -105,6 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             accessibilitySubsystem = null;
         }
 
-        #endregion Monobehaviour
+        #endregion MonoBehaviour
     }
 }

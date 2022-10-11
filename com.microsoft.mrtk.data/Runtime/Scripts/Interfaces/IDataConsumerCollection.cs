@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
         /// The individual items will be provided one at a time to PlaceItem() method of the calling itemPlacer. This allows data fetching and data presenting to occur
-        /// in a psuedo parallel fashion.
+        /// in a pseudo parallel fashion.
         ///
         /// This is used by an Item Placer to request only the subset of items in the collection that are currently relevant, usually those that are currently visible.
         /// </remarks>

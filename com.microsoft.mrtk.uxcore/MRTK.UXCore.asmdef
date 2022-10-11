@@ -7,7 +7,8 @@
         "Microsoft.MixedReality.GraphicsTools",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
-        "Unity.XR.Interaction.Toolkit"
+        "Unity.XR.Interaction.Toolkit",
+        "Microsoft.MixedReality.Toolkit.SpatialManipulation"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -21,6 +22,11 @@
             "name": "com.microsoft.mrtk.data",
             "expression": "",
             "define": "MRTK_DATA_PRESENT"
+        },
+        {
+            "name": "com.microsoft.mrtk.spatialmanipulation",
+            "expression": "",
+            "define": "MRTK_SPATIAL_PRESENT"
         }
     ],
     "noEngineReferences": false
