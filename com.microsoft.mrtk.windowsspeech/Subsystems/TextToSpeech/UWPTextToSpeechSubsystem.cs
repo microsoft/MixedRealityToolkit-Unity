@@ -94,6 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             private SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer();
 #endif // WINDOWS_UWP
 
+#if !WINDOWS_UWP
+// On non-UWP platforms, there will be no awaits in this method, suppress the warning to avoid
+// cluttering the console window in the Editor.
+#pragma warning disable 1998
+#endif // !WINDOWS_UWP
+
             /// <inheritdoc/>
             public override async void Speak(string phrase, AudioSource audioSource)
             {
@@ -151,8 +157,14 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     samples,
                     channels,
                     sampleRate);
+
+                audioSource.Play();
 #endif //WINDOWS_UWP
             }
+#if !WINDOWS_UWP
+// On non-UWP platforms, restore the missing await warnings.
+#pragma warning disable 1998
+#endif // !WINDOWS_UWP
 
 #endregion TextToSpeechSubsystem implementation
         }
