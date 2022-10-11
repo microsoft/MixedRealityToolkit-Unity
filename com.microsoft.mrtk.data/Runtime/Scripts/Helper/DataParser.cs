@@ -185,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return result;
         }
 
-        /// <summary> This parses a string to find the first occurance of a
+        /// <summary> This parses a string to find the first occurrence of a
         /// '[]' token. You can get the token contents excluding the brackets
         /// with a Substring call:
         /// `str.Substring(start, end - start)`

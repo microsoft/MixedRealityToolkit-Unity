@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Accessibility.Runtime.Tests")]
 
 [assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Accessibility")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]

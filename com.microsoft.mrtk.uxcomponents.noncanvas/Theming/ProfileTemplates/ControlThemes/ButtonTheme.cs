@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// Note that by default whenever a themable element
     /// is shared by different control types, the same
     /// element is repeated in UX.Common and the default
-    /// theme for that elmeent is pointed to UX.Common.xxx
+    /// theme for that element is pointed to UX.Common.xxx
     /// instead of UX.Button.xxx.
     /// </summary>
     [Serializable]

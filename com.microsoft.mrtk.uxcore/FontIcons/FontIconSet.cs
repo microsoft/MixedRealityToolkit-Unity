@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Add icon to the available set based on a glyph in the TMP_FontAsset.
         /// </summary>
         /// <param name="name">Name for this icon glyph,</param>
-        /// <param name="unicodeValue">Unocide value for the glyph.</param>
+        /// <param name="unicodeValue">Unicode value for the glyph.</param>
         /// <returns>Whether it was able to add this icon.</returns>
         public bool AddIcon(string name, uint unicodeValue)
         {

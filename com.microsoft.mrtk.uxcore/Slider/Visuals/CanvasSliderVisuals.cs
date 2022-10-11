@@ -102,11 +102,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("The direction of the slider. Setting this will flip/reoganize the slider.")]
+        [Tooltip("The direction of the slider. Setting this will flip/reorganize the slider.")]
         private Direction sliderDirection;
 
         /// <summary>
-        /// The direction of the slider. Setting this will flip/reoganize the slider.
+        /// The direction of the slider. Setting this will flip/reorganize the slider.
         /// </summary>
         public Direction SliderDirection
         {

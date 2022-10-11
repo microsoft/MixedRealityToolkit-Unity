@@ -29,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///
     /// Key Path (string) - a unique accessor to specific data items within a data set.
     ///   Although a Key Path can be any unique identifier per data item, all
-    ///   current impmlementations use the concept of a logical user readable
+    ///   current implementations use the concept of a logical user readable
     ///   specifier that indicates the navigational position of the data of interest
     ///   relative to the entire data set. It is modelled on javascript's concept of
     ///   lists, dictionaries and primitives, such that keypaths are correct javascript
     ///   statements for accessing data that can be represented in JSON. The advantage
     ///   of this approach is that it correlates very well with both JSON and XML,
-    ///   which are the two most prevalent means of transfering information from back-end services.
+    ///   which are the two most prevalent means of transferring information from back-end services.
     ///
     ///   Example key paths:
     ///
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///   Data Consumer(s) will be notified.
     ///
     /// Collection - Any subset of the data source that is a repeated array of the same types of information. This
-    ///   special consideration of the strucure of the data is critical for populating list views where items
+    ///   special consideration of the structure of the data is critical for populating list views where items
     ///   are presented in a list.  Data sources and data consumers can support nested lists, such as a list of keywords
     ///   associated with each photo in a list of photos. The keypath for the keywords would be relative to the photo,
     ///   and the keypath for the photos would be relative to the list, and the keypath of the list would be relative
@@ -139,11 +139,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="resolvedkeyPathPrefix">The data path prefix.</param>
         /// <param name="locakKeyPath">The local keyPat to resolve. Note that this may be mapped by a DataKeyPathMapper</param>
         ///
-        /// <returns>A string tha can be used to map to a view data consumer.</returns>
+        /// <returns>A string that can be used to map to a view data consumer.</returns>
         string ResolveKeyPath(string resolvedkeyPathPrefix, string locakKeyPath);
 
         /// <summary>
-        /// Get the value associted with the specified keyPath and prefix
+        /// Get the value associated with the specified keyPath and prefix
         /// </summary>
         ///
         /// <remarks>
@@ -151,9 +151,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// dictionaries and arrays, to image or audio data.
         ///
         /// The fullyQualifiedPrefix is provided for lists (or collection of lists) to find the correct instance of a specific local keypath.
-        /// If not processing a collection, this can be either null or "". It is considered fully qualified becuase it has been resolved
+        /// If not processing a collection, this can be either null or "". It is considered fully qualified because it has been resolved
         /// to the namespaces of the data source where each subcomponent may have been mapped from a view keyPath to a data keyPath.
-        /// This means that the path may not be recognizeable on casual observation relative to the keyPath variables
+        /// This means that the path may not be recognizable on casual observation relative to the keyPath variables
         /// embedded in views and subviews.
         ///
         /// Note that a keyPath for a collection is useful for regenerating an entire collection. If the object is a collection,
@@ -177,9 +177,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// This is currently useful when the data embedding is being used for local, realtime changes of presented information.
         ///
         /// The fullyQualifiedPrefix is provided for lists (or collection of lists) to find the correct instance of a specific local keypath.
-        /// If not processing a collection, this can be either null or "". It is considered fully qualified becuase it has been resolved
+        /// If not processing a collection, this can be either null or "". It is considered fully qualified because it has been resolved
         /// to the namespaces of the data source where each subcomponent may have been mapped from a view keyPath to a data keyPath.
-        /// This means that the path may not be recognizeable on casual observation relative to the keyPath variables
+        /// This means that the path may not be recognizable on casual observation relative to the keyPath variables
         /// embedded in views and subviews.
         ///
         /// Although not fully implemented yet, it could also be used to persist changes to a back-end data store of some kind,
@@ -320,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         ///
         /// <param name="keyPath">The resolved keypath of the data that has changed.</param>
         /// <param name="value">The value of the changed item</param>
-        /// <param name="changeType">The type of change that has occured.</param>
+        /// <param name="changeType">The type of change that has occurred.</param>
         /// <param name="isAtomicChange">Is this the only change notification in a set of related changes.</param>
         void NotifyDataChanged(string keyPath, object value, DataChangeType changeType, bool isAtomicChange);
 

@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         void OnEndPlacement();
 
         /// <summary>
-        /// One item placement has just occured.
+        /// One item placement has just occurred.
         /// </summary>
         void OnItemPlaced();
 

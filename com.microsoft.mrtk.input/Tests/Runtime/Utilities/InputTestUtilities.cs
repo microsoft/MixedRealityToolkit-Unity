@@ -213,21 +213,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             {
                 float t = i / (float)numSteps;
 
-                Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
-                Quaternion handRot = Quaternion.Slerp(startRot, endRot, t);
+                Pose handPose = new Pose(
+                    Vector3.Lerp(startPos, endPos, t),
+                    Quaternion.Lerp(startRot, endRot, t)
+                );
                 float pinchAmount = Mathf.Lerp(startPinch, isPinching ? 1 : 0, t);
 
                 controls.TriggerAxis = pinchAmount;
                 switch (anchorPoint)
                 {
                     case ControllerAnchorPoint.Device:
-                        controller.UpdateAbsolute(handPos, handRot, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
+                        controller.UpdateAbsolute(handPose, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
                         break;
                     case ControllerAnchorPoint.IndexFinger:
-                        controller.UpdateAbsoluteWithPokeAnchor(handPos, handRot, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
+                        controller.UpdateAbsoluteWithPokeAnchor(handPose, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
                         break;
                     case ControllerAnchorPoint.Grab:
-                        controller.UpdateAbsoluteWithGrabAnchor(handPos, handRot, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
+                        controller.UpdateAbsoluteWithGrabAnchor(handPose, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
                         break;
                 }
 

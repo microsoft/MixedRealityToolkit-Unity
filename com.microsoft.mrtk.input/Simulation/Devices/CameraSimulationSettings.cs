@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         public const float MinimumRotationSensitivity = 0.1f;
 
         /// <summary>
-        /// The highest sensitivity for the sumulated head rotation.
+        /// The highest sensitivity for the simulated head rotation.
         /// </summary>
         public const float MaximumRotationSensitivity = 5f;
 
