@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 sampleRate = 0;
                 channels = 0;
                 floatData = null;
-                Debug.LogError("Data is not in wave format.");
+                Debug.LogError("The audio data is not in the expected wave format.");
                 return false;
             }
 
