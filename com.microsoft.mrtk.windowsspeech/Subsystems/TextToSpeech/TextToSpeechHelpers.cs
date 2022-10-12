@@ -38,21 +38,15 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 (waveBytes[(int)WaveHeaderOffset.Format + 0] != 0x66) || // 'f'
                 (waveBytes[(int)WaveHeaderOffset.Format + 1] != 0x6D) || // 'm'
                 (waveBytes[(int)WaveHeaderOffset.Format + 2] != 0x74) || // 't'
-                (waveBytes[(int)WaveHeaderOffset.Format + 3] != 0x20) || // ' '
-                (waveBytes[(int)WaveHeaderOffset.Data + 0] != 0x64) || // 'd'
-                (waveBytes[(int)WaveHeaderOffset.Data + 1] != 0x61) || // 'a'
-                (waveBytes[(int)WaveHeaderOffset.Data + 2] != 0x74) || // 't'
-                (waveBytes[(int)WaveHeaderOffset.Data + 3] != 0x61))   // 'a'
+                (waveBytes[(int)WaveHeaderOffset.Format + 3] != 0x20))   // ' '
             {
                 samples = 0;
                 sampleRate = 0;
                 channels = 0;
                 floatData = null;
-                Debug.LogError("The audio data is not in the expected wave format.");
+                Debug.LogError("Invalid wave data: malformed header.");
                 return false;
             }
-
-            // todo: should we force the format to be PCM for simplicity?
 
             // Read the channel count
             channels = MathUtilities.BytesToShort(waveBytes, (int)WaveHeaderOffset.Channels);
@@ -60,16 +54,40 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             // Read the sample rate
             sampleRate = MathUtilities.BytesToInt(waveBytes, (int)WaveHeaderOffset.SampleRate);
 
+            // Determine how much, if any, extra info precedes the data chunk
+            short extraInfoSize = MathUtilities.BytesToShort(waveBytes, (int)WaveHeaderOffset.ExtraInfoSize);
+
+            // Add the extra info size to the offset in the header to find the data chunk offset
+            int dataChunkOffset = (int)WaveHeaderOffset.ExtraInfoSize + 2 + extraInfoSize;
+
+            // Confirm that we found the data chunk
+            if ((waveBytes[dataChunkOffset + 0] != 0x64) || // 'd'
+                (waveBytes[dataChunkOffset + 1] != 0x61) || // 'a'
+                (waveBytes[dataChunkOffset + 2] != 0x74) || // 't'
+                (waveBytes[dataChunkOffset + 3] != 0x61))   // 'a'
+            {
+                samples = 0;
+                sampleRate = 0;
+                channels = 0;
+                floatData = null;
+                Debug.LogError("Invalid wave data: could not locate the audio data.");
+                return false;
+            }
+
+            // The first sample offset immediately follows the data size,
+            // which immediately follows the data chunk. Both are four bites in length.
+            int firstSampleOffset = dataChunkOffset + 4 + 4;
+
             // Determine the length of the data, in samples, by dividing the length of the wave data
             // by 2 times the channel count (ex: 16 bit stereo == number of samples / 4).
-            samples = (waveBytes.Length - (int)WaveHeaderOffset.FirstSample) / (2 * channels);
+            samples = (waveBytes.Length - firstSampleOffset) / (2 * channels);
 
             // Allocate memory for the floating point audio data.
             floatData = new float[samples * channels];
 
             // Write to the float array.
             int i = 0;
-            int index = (int)WaveHeaderOffset.FirstSample;
+            int index = firstSampleOffset;
 
             while (index < waveBytes.Length) 
             {

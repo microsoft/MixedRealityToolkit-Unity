@@ -89,23 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         BitsPerSample = 34,
 
         /// <summary>
-        /// The chunk that identifies the beginning of the data section.
+        /// The size of any extra format information that will precede the data chunk.
         /// <para/>
-        /// This chunk contains the letters 'd', 'a', 't', 'a' and is
-        /// four bytes in length.
+        /// This chunk is two bytes in length.
         /// </summary>
-        Data = 36,
-
-        /// <summary>
-        /// The size of the wave data.
-        /// <para/>
-        /// This chunk is four bytes in length.
-        /// </summary>
-        DataSize = 40,
-
-        /// <summary>
-        /// The location of the first audio sample
-        /// </summary>
-        FirstSample = 44
+        ExtraInfoSize = 36
     }
 }
