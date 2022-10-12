@@ -45,9 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         #region Public Methods
 
         /// <inheritdoc />
-        public override void Initialize(MixedRealityTransform worldPose)
+        public override void OnManipulationStarted(MixedRealityTransform worldPose)
         {
-            base.Initialize(worldPose);
+            base.OnManipulationStarted(worldPose);
             EnsureConstraintTransform();
             distanceAtManipulationStart = Vector3.Distance(worldPose.Position, constraintTransform.position);
         }
