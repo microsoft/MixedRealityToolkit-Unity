@@ -244,8 +244,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         case DeviceInputType.PrimaryButtonPress:
                             buttonUsage = CommonUsages.primaryButton;
                             break;
+                        case DeviceInputType.PrimaryButtonTouch:
+                            buttonUsage = CommonUsages.primaryTouch;
+                            break;
                         case DeviceInputType.SecondaryButtonPress:
                             buttonUsage = CommonUsages.secondaryButton;
+                            break;
+                        case DeviceInputType.SecondaryButtonTouch:
+                            buttonUsage = CommonUsages.secondaryTouch;
                             break;
                         case DeviceInputType.TouchpadTouch:
                             buttonUsage = CommonUsages.secondary2DAxisTouch;
