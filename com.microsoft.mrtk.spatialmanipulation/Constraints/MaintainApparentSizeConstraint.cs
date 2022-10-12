@@ -23,9 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         #region Public Methods
 
         /// <inheritdoc />
-        public override void Initialize(MixedRealityTransform worldPose)
+        public override void OnManipulationStarted(MixedRealityTransform worldPose)
         {
-            base.Initialize(worldPose);
+            base.OnManipulationStarted(worldPose);
 
             initialDist = (worldPose.Position - Camera.main.transform.position).magnitude;
         }
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
             float dist = (transform.Position - Camera.main.transform.position).magnitude;
-            transform.Scale = (dist / initialDist) * worldPoseOnManipulationStart.Scale;
+            transform.Scale = (dist / initialDist) * WorldPoseOnManipulationStart.Scale;
         }
 
         #endregion Public Methods

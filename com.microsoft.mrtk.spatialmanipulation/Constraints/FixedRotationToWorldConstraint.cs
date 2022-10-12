@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            transform.Rotation = this.worldPoseOnManipulationStart.Rotation;
+            transform.Rotation = this.WorldPoseOnManipulationStart.Rotation;
         }
 
         #endregion Public Methods

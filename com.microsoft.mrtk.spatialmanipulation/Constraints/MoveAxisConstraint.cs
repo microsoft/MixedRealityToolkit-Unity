@@ -53,19 +53,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            Quaternion inverseRotation = Quaternion.Inverse(worldPoseOnManipulationStart.Rotation);
+            Quaternion inverseRotation = Quaternion.Inverse(WorldPoseOnManipulationStart.Rotation);
             Vector3 position = transform.Position;
             if (constraintOnMovement.IsMaskSet(AxisFlags.XAxis))
             {
                 if (useLocalSpaceForConstraint)
                 {
                     position = inverseRotation * position;
-                    position.x = (inverseRotation * worldPoseOnManipulationStart.Position).x;
-                    position = worldPoseOnManipulationStart.Rotation * position;
+                    position.x = (inverseRotation * WorldPoseOnManipulationStart.Position).x;
+                    position = WorldPoseOnManipulationStart.Rotation * position;
                 }
                 else
                 {
-                    position.x = worldPoseOnManipulationStart.Position.x;
+                    position.x = WorldPoseOnManipulationStart.Position.x;
                 }
             }
             if (constraintOnMovement.IsMaskSet(AxisFlags.YAxis))
@@ -73,12 +73,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (useLocalSpaceForConstraint)
                 {
                     position = inverseRotation * position;
-                    position.y = (inverseRotation * worldPoseOnManipulationStart.Position).y;
-                    position = worldPoseOnManipulationStart.Rotation * position;
+                    position.y = (inverseRotation * WorldPoseOnManipulationStart.Position).y;
+                    position = WorldPoseOnManipulationStart.Rotation * position;
                 }
                 else
                 {
-                    position.y = worldPoseOnManipulationStart.Position.y;
+                    position.y = WorldPoseOnManipulationStart.Position.y;
                 }
             }
             if (constraintOnMovement.IsMaskSet(AxisFlags.ZAxis))
@@ -86,12 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (useLocalSpaceForConstraint)
                 {
                     position = inverseRotation * position;
-                    position.z = (inverseRotation * worldPoseOnManipulationStart.Position).z;
-                    position = worldPoseOnManipulationStart.Rotation * position;
+                    position.z = (inverseRotation * WorldPoseOnManipulationStart.Position).z;
+                    position = WorldPoseOnManipulationStart.Rotation * position;
                 }
                 else
                 {
-                    position.z = worldPoseOnManipulationStart.Position.z;
+                    position.z = WorldPoseOnManipulationStart.Position.z;
                 }
             }
             transform.Position = position;
