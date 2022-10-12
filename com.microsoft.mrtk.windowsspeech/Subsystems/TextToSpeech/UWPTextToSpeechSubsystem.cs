@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 
                     using (DataReader reader = new DataReader(stream))
                     {
-                        await reader.LoadAsync((uint)synthStream.Size);
+                        await reader.LoadAsync((uint)waveBytes.Length);
                         reader.ReadBytes(waveBytes);
                     }
                 }
@@ -162,11 +162,11 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 #endif //WINDOWS_UWP
             }
 #if !WINDOWS_UWP
-// On non-UWP platforms, restore the missing await warnings.
-#pragma warning disable 1998
+            // On non-UWP platforms, restore the missing await warnings.
+#pragma warning restore 1998
 #endif // !WINDOWS_UWP
 
-#endregion TextToSpeechSubsystem implementation
+            #endregion TextToSpeechSubsystem implementation
         }
     }
 }
