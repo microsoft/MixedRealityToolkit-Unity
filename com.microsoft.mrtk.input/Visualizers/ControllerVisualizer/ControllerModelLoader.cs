@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                                         null;
             if (controllerModelProvider == null)
             {
-                Debug.LogWarning("Controller model provider does not exist for this handedness");
+                Debug.Log("Controller model provider does not exist for this handedness");
                 return null;
             }
 
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if(!warningCache.TryGetValue(inputDevice, out bool warningLogged) || !warningLogged)
                 {
-                    Debug.LogWarning("Failed to obtain controller model key from platform.");
+                    Debug.LogFormat("{0} didn't provide a key for a controller model from the platform.", inputDevice.name);
                 }
 
                 // Make sure we record in our cache that we've previously raised a warning for this input device
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (!errorCache.TryGetValue(modelKey, out bool errorLogged) || !errorLogged)
                 {
-                    Debug.LogError("Failed to obtain controller model from platform.");
+                    Debug.LogErrorFormat("Failed to obtain controller model from platform for model key {0}.", modelKey);
                 }
 
                 // Make sure we record in our cache that we've previously raised a warning for this input device
@@ -128,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                Debug.LogError("Failed to obtain controller model from platform.");
                 Object.Destroy(gltfGameObject);
             }
 #else
