@@ -151,14 +151,18 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     return;
                 }
 
-                audioSource.clip = TextToSpeechHelpers.CreateAudioClip(
-                    "SyntgesizedText",
-                    audioFloats,
-                    samples,
-                    channels,
-                    sampleRate);
+                // Working with Unity objects requires being on the main app thread.
+                UnityEngine.WSA.Application.InvokeOnAppThread(() =>
+                {
+                    audioSource.clip = TextToSpeechHelpers.CreateAudioClip(
+                        "SyntgesizedText",
+                        audioFloats,
+                        samples,
+                        channels,
+                        sampleRate);
 
-                audioSource.Play();
+                    audioSource.Play();
+                }
 #endif //WINDOWS_UWP
             }
 #if !WINDOWS_UWP
