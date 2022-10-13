@@ -709,7 +709,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// own modifications to the object's pose.
         /// </summary>
         /// <param name="targetPose">
-        /// The target position, rotation, and scale, pre-smoothing/constraints/etc. Modified by-reference.
+        /// The target position, rotation, and scale, pre-smoothing, but post-input and post-constraints. Modified by-reference.
         /// <param/>
         /// <param name="modifiedTransformFlags">
         /// Flags which parts of the transform (position, rotation, scale) have been altered by an external source (like Elastics).
