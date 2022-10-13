@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.SpatialManipulation;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+
+#if MRTK_SPATIAL_PRESENT
+using Microsoft.MixedReality.Toolkit.SpatialManipulation;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -108,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void ToggleSolvers()
         {
+#if MRTK_SPATIAL_PRESENT
             var solverHandler = GetComponent<SolverHandler>();
 
             if (solverHandler != null)
@@ -119,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     ApplyShellSolverParameters();
                 }
             }
+#endif
         }
 
         #region MonoBehaviour Implementation
@@ -181,6 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void ApplyShellSolverParameters()
         {
+#if MRTK_SPATIAL_PRESENT
             var solver = GetComponent<Follow>();
 
             if (solver != null)
@@ -207,6 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     solver.SolverUpdate();
                 }
             }
+#endif
         }
     }
 }

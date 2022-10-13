@@ -18,6 +18,17 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.atteneder.gltfast",
+            "expression": "",
+            "define": "GLTFAST_PRESENT"
+        },
+        {
+            "name": "com.atteneder.ktx",
+            "expression": "",
+            "define": "KTX_PRESENT"
+        }
+    ],
     "noEngineReferences": false
 }
