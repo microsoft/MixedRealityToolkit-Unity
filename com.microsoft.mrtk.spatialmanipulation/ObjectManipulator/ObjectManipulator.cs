@@ -665,24 +665,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <param/>
         private void ApplyTargetPose(MixedRealityTransform targetPose)
         {
+            // modifiedTransformFlags currently unused.
             TransformFlags modifiedTransformFlags = TransformFlags.None;
-
             ModifyTargetPose(ref targetPose, ref modifiedTransformFlags);
 
             if (rigidBody == null)
             {
-                if (!modifiedTransformFlags.IsMaskSet(TransformFlags.Move))
-                {
-                    HostTransform.position = targetPose.Position;
-                }
-                if (!modifiedTransformFlags.IsMaskSet(TransformFlags.Rotate))
-                {
-                    HostTransform.rotation = targetPose.Rotation;
-                }
-                if (!modifiedTransformFlags.IsMaskSet(TransformFlags.Scale))
-                {
-                    HostTransform.localScale = targetPose.Scale;
-                }
+                HostTransform.SetPositionAndRotation(targetPose.Position, targetPose.Rotation);
+                HostTransform.localScale = targetPose.Scale;
             }
             else
             {
@@ -715,8 +705,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Called by ApplyTargetPose to modify the target pose with the relevant constraints, smoothing,
-        /// elastic, or any other derived/overridden behavior.
+        /// Called by ApplyTargetPose to apply smoothing and give subclassed implementations the chance to apply their
+        /// own modifications to the object's pose.
         /// </summary>
         /// <param name="targetPose">
         /// The target position, rotation, and scale, pre-smoothing/constraints/etc. Modified by-reference.
