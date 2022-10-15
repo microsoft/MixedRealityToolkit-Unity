@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         [SerializeField]
         [Tooltip("Should this spawner only be allowed to spawn one dialog at a time?")]
-        private bool enforceSingleInstance = false;
+        private bool enforceSingleInstance = true;
 
         /// <summary>
         /// Should this spawner only be allowed to spawn one dialog at a time?
@@ -73,9 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (enforceSingleInstance && dialogInstances.Count > 0)
             {
-                Debug.LogWarning("A dialog is already active, and 'enforceSingleInstance' is true. " +
-                                 "Dismissing all active dialogs before building a new one!", this);
-                
                 // Dismiss all. Copy to a list beforehand as Dismiss()ing
                 // dialogs will mutate the HashSet.
                 List<Dialog> dialogsToDismiss = new List<Dialog>(dialogInstances);

@@ -39,5 +39,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             dialog.Show();
         }
+
+        public void SpawnAllThreeDialogFromCode()
+        {
+            Dialog dialog = dialogSpawner.Build()
+                .SetHeader("You can even have three!")
+                .SetBody("Yes, in fact, you can request all three option types and they'll still be laid out correctly.")
+                .SetPositive("Yes, please!", ( args ) => Debug.Log("Code-driven dialog says " + args.ButtonType))
+                .SetNegative("No, thanks.", ( args ) => Debug.Log("Code-driven dialog says " + args.ButtonType))
+                .SetNeutral("Neutral option!", ( args ) => Debug.Log("Code-driven dialog says " + args.ButtonType));
+
+            dialog.Show();
+        }
     }
 }
