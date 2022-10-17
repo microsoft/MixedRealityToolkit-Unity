@@ -811,17 +811,33 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if (applyTorque)
             {
-                var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
-                relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
+                // Torque calculations: same calculation & parameters as for linear velocity
+                // skipping referenceFrameVelocity and springForceLimit which do not exactly apply here
 
-                if (axis.IsValidVector())
+                var angularDistance = HostTransform.rotation * Quaternion.Inverse(targetTransform.Rotation);
+                angularDistance.ToAngleAxis(out float angle, out Vector3 axis);
+
+                if (!axis.IsValidVector())
                 {
-                    if (angle > 180f)
-                    {
-                        angle -= 360f;
-                    }
-                    rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.fixedDeltaTime)) / Time.fixedDeltaTime) * (angle * Mathf.Deg2Rad * axis.normalized);
+                    // ToAngleAxis is numerically unstable, returning NaN axis for near-zero angles
+                    angle = 0;
+                    axis = Vector3.up;
                 }
+
+                if (angle > 180f)
+                {
+                    angle -= 360f;
+                }
+
+                var angularVelocity = rigidBody.angularVelocity;
+
+                var angularAcceleration = -angle * omega * omega;  // acceleration caused by spring force
+
+                angularVelocity *= halfDampingFactor;  // 1/2 damping
+                angularVelocity += angularAcceleration * Time.fixedDeltaTime * Mathf.Deg2Rad * axis.normalized; // integration step of spring force
+                angularVelocity *= halfDampingFactor;  // 1/2 damping
+
+                rigidBody.angularVelocity = angularVelocity;
             }
         }
 
