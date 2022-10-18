@@ -20,11 +20,10 @@ parameters:
   default: ''
 #test
 
-name: Tests.yaml
 jobs:
   - job: A
     pool: Unity_2021.3.3f1_Pool
-    displayName: Tests.yml
+    displayName: Tests.yaml
     steps:
       - pwsh: |
           Install-Module UnitySetup -Scope CurrentUser -Force -AllowPrerelease
