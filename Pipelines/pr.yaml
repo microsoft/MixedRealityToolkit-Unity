@@ -29,10 +29,3 @@ jobs:
     parameters:
       BuildStandalone: true
       BuildUWP: true
-
-  - template: tests.yaml
-    parameters:
-      UnityVersion: ${{ parameters.UnityVersion }}
-      BuildTarget: StandaloneWindows64
-      PathToProject: ${{ parameters.PathToProject }}
-      AdditionalArguments: -noGraphics -EnableCacheServer -cacheServerEndpoint 10.0.0.6 -cacheServerNamespacePrefix MRTK3 -cacheServerEnableDownload true
