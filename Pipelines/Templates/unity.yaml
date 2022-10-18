@@ -57,7 +57,7 @@ steps:
 
   # Run tests early, but don't bother if the standalone build failed.
 - ${{ if eq(parameters.RunTests, true) }}:
-  - template: tests.yaml
+  - template: Templates/tests.yaml
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
       BuildTarget: StandaloneWindows64
