@@ -78,7 +78,7 @@ steps:
     displayName: 'Run PlayMode tests'
   - task: CopyFiles@2
     inputs:
-      SourceFolder: '/home/vsts/work/_temp'
+      SourceFolder: 'D:\a\_work\1\a'
       Contents: '**'
       TargetFolder: $(Build.ArtifactStagingDirectory)\Temp
   - task: PublishTestResults@2
