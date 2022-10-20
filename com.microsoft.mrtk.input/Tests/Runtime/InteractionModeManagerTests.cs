@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-
-using Microsoft.MixedReality.Toolkit.Core.Tests;
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Core.Tests;
+using Microsoft.MixedReality.Toolkit.Input.Simulation;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -60,18 +60,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public IEnumerator InteractionDetectorTest()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(0.0f, 0.0f, 1.5f);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(1.5f);
             cube.transform.localScale = Vector3.one * 0.2f;
             cube.AddComponent<StatefulInteractable>();
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
 
             XRBaseController rightHandController = CachedLookup.RightHandController;
             Assert.IsTrue(rightHandController != null, "No controllers found for right hand.");
 
             // Moving the hand to a position where it's far ray is hovering over the cube
-            yield return rightHand.MoveTo(cube.transform.position + new Vector3(0.02f, -0.02f, -0.8f));
+            yield return rightHand.AimAt(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             InteractionMode currentMode = rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnHover;
@@ -101,18 +101,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public IEnumerator ModeMediationTest()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(0f, 0.1f, 1.5f);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(1.5f);
             cube.transform.localScale = Vector3.one * 0.2f;
             cube.AddComponent<StatefulInteractable>();
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
 
             XRBaseController rightHandController = CachedLookup.RightHandController;
             Assert.IsTrue(rightHandController != null, "No controllers found for right hand.");
 
+            // Grab stabilization == ray stabilization
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.Grab);
+
             // Moving the hand to a position where it's far ray is hovering over the cube
-            yield return rightHand.MoveTo(cube.transform.position + new Vector3(0.02f, -0.1f, -0.8f));
+            yield return rightHand.AimAt(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             InteractionMode farRayMode = rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnHover;
             Assert.AreEqual(farRayMode, rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnDetection);
