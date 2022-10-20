@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                            "StatefulInteractable was not hovered by FuzzyGazeInteractor.");
 
             // Move background cube further back
-            backgroundCube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 4));
+            backgroundCube.transform.position = InputTestUtilities.InFrontOfUser(4f);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Cube 1 should now be hovered
