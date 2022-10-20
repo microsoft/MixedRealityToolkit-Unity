@@ -4,62 +4,18 @@
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-
-using SCG = System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 {
     /// <summary>
     /// Tests for verifying the behavior of the describable objects.
     /// </summary>
-    public class DescribableObjectTests : BaseRuntimeTests
+    public class DescribableObjectTests : BaseRuntimeInputTests
     {
-        #region Setup / TearDown
-
-        private readonly SCG.List<GameObject> sceneContents = new SCG.List<GameObject>();
-
-        /// <summary>
-        /// Ensures that the scene is properly prepared.
-        /// </summary>
-        [UnitySetUp]
-        public override IEnumerator Setup()
-        {
-            base.Setup();
-
-            yield return RuntimeTestUtilities.WaitForUpdates();
-
-            // The accessibility subsystem requires the MRTK lifecycle manager. This
-            // is currently attached to the rig, which resides in the input package.
-            InputTestUtilities.InstantiateRig();
-        }
-
-        /// <summary>
-        /// Cleans up the scene contents after testing describable object registration
-        /// and filtering.
-        /// </summary>
-        [UnityTearDown]
-        public override IEnumerator TearDown()
-        {
-            foreach (GameObject gameObj in sceneContents)
-            {
-                GameObject.Destroy(gameObj);
-            }
-
-            yield return null;
-
-            sceneContents.Clear();
-
-            base.TearDown();
-
-            yield return null;
-        }
-
-        #endregion Setup / TearDown
-
         #region Test cases
 
         private static string testCubeGuid = "d10f05ae3a6402045b70860918544ed9";
@@ -119,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
                 gameObj.transform.localScale = Vector3.one * 0.1f;
             }
             gameObj.transform.position = location;
-            sceneContents.Add(gameObj);
         }
 
         /// <summary>
@@ -134,11 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
             if (AccessibilityHelpers.Subsystem != null)
             {
-                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
                 bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
                 Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
 
-                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
+                List<GameObject> describableObjects = new List<GameObject>();
                 success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
                     classifications,
                     DescribableObjectVisibility.Surround,
@@ -169,11 +124,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
                 bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
                 Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
 
-                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
+                List<GameObject> describableObjects = new List<GameObject>();
                 success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
                     classifications,
                     DescribableObjectVisibility.FieldOfView,
@@ -210,11 +165,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
                 bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
                 Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
 
-                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
+                List<GameObject> describableObjects = new List<GameObject>();
                 success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
                     classifications,
                     DescribableObjectVisibility.FieldOfView,
@@ -256,11 +211,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                SCG.List<DescribableObjectClassification> classifications = new SCG.List<DescribableObjectClassification>();
+                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
                 bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
                 Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
 
-                SCG.List<GameObject> describableObjects = new SCG.List<GameObject>();
+                List<GameObject> describableObjects = new List<GameObject>();
                 success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
                     classifications,
                     DescribableObjectVisibility.Surround,
