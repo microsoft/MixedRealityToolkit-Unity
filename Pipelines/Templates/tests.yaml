@@ -1,7 +1,7 @@
 parameters:
 - name: UnityVersion
   type: string
-  default: '2021.3.3f1'
+  default: ''
 
 - name: BuildTarget
   type: string
@@ -22,12 +22,13 @@ parameters:
 steps:
   - pwsh: |
       Write-Host "======================= PlayMode Tests ======================="
+      
       $logFile = Join-Path $(Build.ArtifactStagingDirectory) "playmode-test-run.log"
       New-Item -Path $logFile -ItemType File -Force
-      Write-Host "*******************" + $logFile + "*********************"
+      
       $resultFile = Join-Path $(Build.ArtifactStagingDirectory) "test-results-playmode.xml"
-      Write-Host '()()()()()()()()()()()()()()()()()()()()()()()' + $resultFile + '()()()()()()()()()()()()()()'
       New-Item -Path $resultFile -ItemType File -Force
+
       try {
       if ("${{ parameters.UnityVersion }}" -eq "Latest") {
         $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
@@ -75,6 +76,7 @@ steps:
         }
       Write-Output $($proc.ExitCode)
       }
+
     displayName: 'Run PlayMode tests'
   - task: CopyFiles@2
     inputs:
@@ -89,14 +91,3 @@ steps:
       failTaskOnFailedTests: true
   - pwsh:
       Write-Output $(Build.ArtifactStagingDirectory)\Temp
-
-  #- job: B
-  #  dependsOn: A
-  #  displayName: 'Publish Test Results'
-  #  steps:
-  #  - task: PublishTestResults@2
-  #    inputs:
-  #      testResultsFormat: NUnit
-  #      testResultsFiles: 'test-results-playmode.xml'
-  #      searchFolder: $(Agent.TempDirectory)
-  #      failTaskOnFailedTests: true
