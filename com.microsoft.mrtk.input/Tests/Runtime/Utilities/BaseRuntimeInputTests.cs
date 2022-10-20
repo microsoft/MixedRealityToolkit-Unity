@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             InputSystem.RegisterBindingComposite<QuaternionFallbackComposite>();
 
             InputTestUtilities.InstantiateRig();
-            InputTestUtilities.SetupSimulation();
+            InputTestUtilities.SetupSimulation(0.0f);
             yield return null;
         }
 
