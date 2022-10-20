@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float CursorBeamUpTolerance = 0.8f;
 
         // Smoothing factor for ray stabilization.
-        private float stabilizedRayHalfLife = 0.01f;
+        private readonly float stabilizedRayHalfLife = 0.01f;
 
         private readonly StabilizedRay stabilizedRay;
         private Vector3 palmNormal;
