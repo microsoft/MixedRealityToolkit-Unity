@@ -125,11 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
         /// <summary>
         /// Returns a position placed in front of the user's head, offset by the given vector, which
-        /// is transformed by the XROrigin's camera offset object's reference frame.
+        /// is transformed by the camera's reference frame.
         /// </summary>
         public static Vector3 InFrontOfUser(Vector3 offset)
         {
-            return Camera.main.transform.position + PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform.TransformVector(offset);
+            return Camera.main.transform.position + Camera.main.transform.TransformVector(offset);
         }
 
         /// <summary>
