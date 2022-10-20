@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             cube.AddComponent<Animator>();
             StateVisualizer sv = cube.AddComponent<StateVisualizer>() as StateVisualizer;
 
-            cube.transform.position = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.1f, 1));
             cube.transform.localScale = Vector3.one * 0.1f;
 
             GameObject cubeToToggle = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsFalse(cubeToToggle.activeSelf, "The cube should be immediately toggled off when the effect is added.");
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             cube.AddComponent<Animator>();
             StateVisualizer sv = cube.AddComponent<StateVisualizer>() as StateVisualizer;
 
-            cube.transform.position = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.1f, 1));
             cube.transform.localScale = Vector3.one * 0.1f;
 
             // Attach a toggle effect to the Select state.
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             sv.AddEffect("Select", customEffect);
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             cube.AddComponent<Animator>();
             StateVisualizer sv = cube.AddComponent<StateVisualizer>() as StateVisualizer;
 
-            cube.transform.position = new Vector3(0.5f, 0.5f, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.5f, 0.5f, 1));
             cube.transform.localScale = Vector3.one * 0.1f;
 
             // Attach a test effect to the Select state.
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsFalse(sv.Animator.enabled, "The animator should be disabled after the keepAliveTime has elapsed.");
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return null;
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             cube.AddComponent<Animator>();
             StateVisualizer sv = cube.AddComponent<StateVisualizer>() as StateVisualizer;
 
-            cube.transform.position = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.1f, 1));
             cube.transform.localScale = Vector3.one * 0.1f;
 
             // Attach a test effect to the Select state.
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsFalse(sv.Animator.enabled, "The animator should be disabled after the keepAliveTime has elapsed.");
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return null;
