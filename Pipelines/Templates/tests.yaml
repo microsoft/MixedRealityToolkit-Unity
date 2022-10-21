@@ -116,14 +116,10 @@ steps:
       }
 
     displayName: 'Run PlayMode tests'
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'D:\a\_work\1\a'
-      Contents: '**'
-      TargetFolder: $(Build.ArtifactStagingDirectory)\Temp
+
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: NUnit
-      testResultsFiles: 'test-results-playmode.xml'
-      searchFolder: $(Build.ArtifactStagingDirectory)\Temp
+      testResultsFiles: 'test*.xml'
+      searchFolder: $(Build.ArtifactStagingDirectory)
       failTaskOnFailedTests: true
