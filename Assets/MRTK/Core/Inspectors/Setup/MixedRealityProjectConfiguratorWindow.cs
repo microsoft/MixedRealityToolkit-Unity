@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             CreateSpace(15);
 
             if (GUILayout.Button("\n<b>Unity OpenXR plugin (recommended)</b><size=4>\n\n</size>"
-            + "Choose this if you want to embrace the new industry standard and easily support a wide range of AR/VR devices in the future! Currently officially supports HoloLens 2 and Windows Mixed Reality headsets with other devices coming soon. The Unity OpenXR Plugin will be installed.\n", multiLineButtonStyle))
+            + "Choose this if you want to embrace the new industry standard and easily support a wide range of AR/VR devices in the future! Officially supports HoloLens 2, Windows Mixed Reality headsets, Quest 1 and 2, and other conformant runtimes. The Unity OpenXR Plugin will be installed.\n", multiLineButtonStyle))
             {
 
 #if UNITY_2020_2_OR_NEWER
