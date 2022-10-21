@@ -31,7 +31,7 @@ steps:
     # $logFile = Join-Path $(Build.ArtifactStagingDirectory) "editmode-test-run.log"
     # New-Item -Path $logFile -ItemType File -Force
 
-    # $resultFile = Join-Path $(Build.ArtifactStagingDirectory) "editmode-test-run.xml"
+    # $resultFile = Join-Path $(Build.ArtifactStagingDirectory) "test-results-editmode.xml"
     # New-Item -Path $resultFile -ItemType File -Force
 
     # if ("${{ parameters.UnityVersion }}" -eq "Latest") {
