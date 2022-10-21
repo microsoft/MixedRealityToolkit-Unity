@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public override IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)
         {
             yield return InputTestUtilities.SetHandTrackingState(handedness, true);
-            yield return MoveTo(position, 1);
+            yield return MoveTo(position, 2);
             if (waitForFixedUpdate)
             {
                 yield return new WaitForFixedUpdate();
@@ -74,6 +74,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public override IEnumerator RotateTo(Quaternion newRotation, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
             yield return InputTestUtilities.RotateHandTo(newRotation, handshapeId, handedness, numSteps);
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+        }
+
+        /// <inheritdoc />
+        public override IEnumerator AimAt(Vector3 target, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
+        {
+            InputTestUtilities.SetHandAnchorPoint(handedness, Simulation.ControllerAnchorPoint.Device);
+            Vector3 currentPosition = InputTestUtilities.GetHandPose(handedness).position;
+            yield return InputTestUtilities.RotateHandTo(Quaternion.LookRotation(target - currentPosition, Vector3.up), handshapeId, handedness);
             if (waitForFixedUpdate)
             {
                 yield return new WaitForFixedUpdate();

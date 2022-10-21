@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     internal class SimulatedController : IDisposable
     {
         private readonly MRTKSimulatedController simulatedController = null;
-        private readonly IHandRay handRay = new HandRay();
+        private readonly IHandRay handRay;
         private readonly ControllerSimulationSettings controllerSimulationSettings;
 
         private MRTKSimulatedControllerState simulatedControllerState;
@@ -156,8 +156,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         public SimulatedController(
             Handedness handedness,
             ControllerSimulationSettings ctrlSettings,
-            Vector3 initialRelativePosition)
+            Vector3 initialRelativePosition,
+            float rayHalfLife = 0.01f)
         {
+            handRay = new HandRay(rayHalfLife);
             Handedness = handedness;
             controllerSimulationSettings = ctrlSettings;
 
@@ -556,7 +558,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     HandSubsystem.TryGetJoint(TrackedHandJoint.IndexProximal, Handedness.ToXRNode().Value, out HandJointPose knucklePose))
                 {
                     // If prompted to use the ray vector, this pose is calculated by simulating a hand ray.
-                    // This occurs only when the simulation mode is set to ArticulatedHand.
                     handRay.Update(
                         knucklePose.Position,
                         -palmPose.Up,
