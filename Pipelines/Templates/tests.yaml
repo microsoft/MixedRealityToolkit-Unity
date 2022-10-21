@@ -88,11 +88,14 @@ steps:
         Write-Output '====================================================='
         Write-Output '               PlayMode Tests Finished               '
         Write-Output '====================================================='
+
         if (Test-Path $logFile) {
           Write-Output '====================================================='
           Write-Output '             Begin PlayMode Tests Logs               '
           Write-Output '====================================================='
+
           Get-Content $logFile
+
           Write-Output '====================================================='
           Write-Output '              End PlayMode Tests Logs                '
           Write-Output '====================================================='
@@ -104,7 +107,9 @@ steps:
           Write-Output '====================================================='
           Write-Output '            Begin PlayMode Tests Results             '
           Write-Output '====================================================='
+
           Get-Content $resultFile
+          
           Write-Output '====================================================='
           Write-Output '             End PlayMode Tests Results              '
           Write-Output '====================================================='
