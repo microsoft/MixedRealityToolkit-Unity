@@ -35,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.Editor
             {
                 serializedObject.Update();
 
+                EditorGUILayout.HelpBox("Render from PV camera is now enabled by default when running with the Mixed Reality OpenXR Plugin.", MessageType.Info);
+
                 EditorGUILayout.Space();
                 using (new EditorGUILayout.HorizontalScope())
                 {

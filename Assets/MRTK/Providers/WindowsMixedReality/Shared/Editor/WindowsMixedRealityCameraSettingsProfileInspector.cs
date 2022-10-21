@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
 
                 EditorGUILayout.HelpBox("On legacy XR, render from PV camera is supported in Unity 2018.4.35f1 and newer if using Unity 2018 and Unity 2019.4.26f1 and newer if using Unity 2019.", MessageType.Info);
                 EditorGUILayout.HelpBox("On Windows XR Plugin, render from PV camera is supported in versions 2.8.0, 4.5.0, and 5.3.0 (and newer in each respective major version).", MessageType.Info);
+                EditorGUILayout.HelpBox("This checkbox is ignored on OpenXR and is enabled by default.", MessageType.Info);
                 EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, PVCameraRenderingTitle);
 
                 EditorGUILayout.Space();
