@@ -35,7 +35,7 @@ steps:
     # New-Item -Path $resultFile -ItemType File -Force
 
     # if ("${{ parameters.UnityVersion }}" -eq "Latest") {
-    #   $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Quit -PassThru -LogFile $logFile -EditorTestsResultFile ".\test-editmode-default.xml" -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+    #   $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform EditMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Quit -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
     # }
     # else {
     #   $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -Quit -PassThru -LogFile $logFile -EditorTestsResultFile ".\test-editmode-default.xml" -AdditionalArguments "${{ parameters.AdditionalArguments }}"
