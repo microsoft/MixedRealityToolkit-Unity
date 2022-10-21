@@ -109,7 +109,7 @@ steps:
           Write-Output '====================================================='
 
           Get-Content $resultFile
-          
+
           Write-Output '====================================================='
           Write-Output '             End PlayMode Tests Results              '
           Write-Output '====================================================='
@@ -123,6 +123,7 @@ steps:
     displayName: 'Run PlayMode tests'
 
   - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
     inputs:
       testResultsFormat: NUnit
       testResultsFiles: 'test*.xml'
