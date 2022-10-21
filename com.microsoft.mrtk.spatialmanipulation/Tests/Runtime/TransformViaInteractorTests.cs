@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Create cube with ObjectManipulator
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one;
-            testObject.transform.position = new Vector3(0, 0, 1.0f);
+            testObject.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1.0f));
             var objectManipulator = testObject.AddComponent<ObjectManipulator>();
             objectManipulator.SmoothingFar = false; // by default scale changes have smoothing but disabling makes testing quicker
 
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.AreEqual(1, hoverEnterCount, $"ObjectManipulator did not receive hover enter event, count is {hoverEnterCount}");
 
             // Select the cube with a pinch
-            Vector3 initialHandPosition = new Vector3(0.1f, 0.0f, 0.3f);
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.0f, 0.3f));
             TestHand hand = new TestHand(Handedness.Right);
 
             yield return hand.Show(initialHandPosition);
@@ -195,12 +195,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var initialLocalScale = new Vector3(1.5f, 1f, 0.9f); // non-uniform scale
             testObject.transform.localScale = initialLocalScale;
-            testObject.transform.position = new Vector3(0, 0, 1.0f);
+            testObject.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1.0f));
             var objectManipulator = testObject.AddComponent<ObjectManipulator>();
             objectManipulator.SmoothingFar = false; // by default scale changes have smoothing but disabling makes testing quicker
 
             // Select the cube with a pinch
-            Vector3 initialHandPosition = new Vector3(0.3f, 0.0f, 0.3f);
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.3f, 0.0f, 0.3f));
             TestHand hand = new TestHand(Handedness.Right);
 
             yield return hand.Show(initialHandPosition);
@@ -236,12 +236,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var initialLocalScale = Vector3.one;
             testObject.transform.localScale = initialLocalScale;
-            testObject.transform.position = new Vector3(0, 0, 1.0f);
+            testObject.transform.position = InputTestUtilities.InFrontOfUser(1.0f);
             var objectManipulator = testObject.AddComponent<ObjectManipulator>();
             objectManipulator.SmoothingFar = false; // by default scale changes have smoothing but disabling makes testing quicker
 
             // Select the cube with a pinch
-            Vector3 initialHandPosition = new Vector3(0.1f, 0.0f, 0.3f);
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.0f, 0.3f));
             TestHand hand = new TestHand(Handedness.Right);
 
 
