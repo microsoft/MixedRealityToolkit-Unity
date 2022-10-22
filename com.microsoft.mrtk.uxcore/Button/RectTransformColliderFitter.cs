@@ -57,36 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private bool useMask = true;
 
         /// <summary>
-        /// Whether this object is added to a parent RectMask2D's IClippable
-        /// </summary>
-        public bool UseMask
-        {
-            get => useMask;
-            set
-            {
-                if (value != useMask)
-                {
-                    useMask = value;
-                    if (mask != null)
-                    {
-                        if (useMask)
-                        {
-                            mask.AddClippable(this);
-                        }
-                        else
-                        {
-                            mask.RemoveClippable(this);
-                            if (thisCollider != null && !thisCollider.enabled)
-                            {
-                                thisCollider.enabled = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// 2D padding around the rect transform.
         /// </summary>
         public Vector2 Padding
@@ -107,6 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private RectMask2D mask;
 
         private ScrollRect scrollRect;
+
+        private bool maskApplied = false;
 
         #region IClippable
 
@@ -141,11 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (mask == null)
             {
                 mask = GetComponentInParent<RectMask2D>();
-            }
-
-            if (mask != null && UseMask)
-            {
-                mask.AddClippable(this);
             }
 
             if (scrollRect == null)
@@ -213,12 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 Rect computedRect = attachedRectTransform.rect;
 
-                if (useMask != UseMask)
-                {
-                    UseMask = useMask;
-                }
-
-                if (mask != null && UseMask)
+                if (UpdateMask())
                 {
                     // Transform the mask's rect to our local space.
                     Matrix4x4 matrix = rectTransform.worldToLocalMatrix * mask.transform.localToWorldMatrix;
@@ -250,6 +212,35 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     thisCollider.center = new Vector3(computedRect.center.x, computedRect.center.y, thisCollider.center.z);
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates whether this object is added to the parent Rect2DColliderFitter's clippables.
+        /// </summary>
+        /// <returns>True if a mask is currently active and applied</returns>
+        private bool UpdateMask()
+        {
+            if (mask == null)
+            {
+                return false;
+            }
+
+            if (useMask && !maskApplied)
+            {
+                mask.AddClippable(this);
+                maskApplied = true;
+            }
+            else if (!useMask && maskApplied)
+            {
+                maskApplied = false;
+                mask.RemoveClippable(this);
+                if (thisCollider != null && !thisCollider.enabled)
+                {
+                    thisCollider.enabled = true;
+                }
+            }
+
+            return maskApplied;
         }
     }
 }
