@@ -4,11 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
-using InputAction = UnityEngine.InputSystem.InputAction;
-using InputActionProperty = UnityEngine.InputSystem.InputActionProperty;
 using UnityInputSystem = UnityEngine.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Input
