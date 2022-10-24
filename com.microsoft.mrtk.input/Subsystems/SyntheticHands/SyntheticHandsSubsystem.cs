@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 using UnityEngine.XR;
-
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -185,6 +185,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.rotationAction = rotationAction;
                 this.selectAction = selectAction;
                 this.poseOffset = poseOffset;
+            }
+
+            public void Start()
+            {
+                positionAction.EnableDirectAction();
+                rotationAction.EnableDirectAction();
+                selectAction.EnableDirectAction();
+            }
+
+            public void Stop()
+            {
+                positionAction.DisableDirectAction();
+                rotationAction.DisableDirectAction();
+                selectAction.DisableDirectAction();
             }
 
             private static readonly ProfilerMarker TryGetEntireHandPerfMarker =
@@ -409,6 +423,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                                                 Config.PoseOffset) }
                 };
 
+                hands[XRNode.LeftHand].Start();
+                hands[XRNode.RightHand].Start();
+
                 InputSystem.onBeforeUpdate += ResetHands;
             }
 
@@ -416,6 +433,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 ResetHands();
                 InputSystem.onBeforeUpdate -= ResetHands;
+
+                hands[XRNode.LeftHand].Stop();
+                hands[XRNode.RightHand].Stop();
+
                 base.Stop();
             }
 
