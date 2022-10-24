@@ -464,6 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
 
                 EditorUserBuildSettings.wsaUWPSDK = windowsSdkPaths[latestIndex];
+                Debug.Log($"Using SDK version {EditorUserBuildSettings.wsaUWPSDK}");
             }
 
             string maxVersionTested = EditorUserBuildSettings.wsaUWPSDK;
