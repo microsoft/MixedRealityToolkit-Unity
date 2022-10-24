@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// A simple general use keyboard that is ideal for AR/VR applications that do not provide a native keyboard.
+    /// Class representing a function key in the non native keyboard
     /// </summary>
     public class NonNativeFunctionKey : NonNativeKey
     {
         /// <summary>
-        /// Possible functionality for a button.
+        /// Possible functionalities for a function key.
         /// </summary>
         public enum Function
         {
@@ -28,12 +28,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
             Space,
             Backspace,
 
-            UNDEFINED,
+            UNDEFINED = 255,
         }
 
-        [field: SerializeField, Tooltip("The type of this button.")]
-        public Function ButtonFunction { get; private set; } = Function.UNDEFINED;
+        /// <summary>
+        /// The function of this key.
+        /// </summary>
+        [field: SerializeField, Tooltip("The function of this key.")]
+        public Function KeyFunction { get; private set; } = Function.UNDEFINED;
 
+        /// <inheritdoc/>
         protected override void FireKey()
         {
             NonNativeKeyboard.Instance.ProcessFunctionKeyPress(this);

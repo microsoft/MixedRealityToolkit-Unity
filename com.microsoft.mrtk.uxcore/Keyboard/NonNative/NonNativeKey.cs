@@ -6,28 +6,28 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// A simple general use keyboard that is ideal for AR/VR applications that do not provide a native keyboard.
+    /// Abstract class representing a key in the non native keyboard
     /// </summary>
     public abstract class NonNativeKey : MonoBehaviour
     {
         /// <summary>
         /// Reference to the GameObject's button component.
         /// </summary>
-        [field: SerializeField]
-        protected PressableButton button { get; set; }
+        [field: SerializeField, Tooltip("Reference to the GameObject's button component.")]
+        protected PressableButton Button { get; set; }
 
-        /// <summary>
-        /// Get the button component.
-        /// </summary>
         protected virtual void Awake()
         {
-            if (button == null)
+            if (Button == null)
             {
-                button = GetComponent<PressableButton>();
+                Button = GetComponent<PressableButton>();
             }
-            button.OnClicked.AddListener(FireKey);
+            Button.OnClicked.AddListener(FireKey);
         }
 
+        /// <summary>
+        /// Function executed when the key is pressed.
+        /// </summary>
         protected abstract void FireKey();
     }
 }
