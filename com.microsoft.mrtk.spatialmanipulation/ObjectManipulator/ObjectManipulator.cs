@@ -580,8 +580,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         // When the player is carrying a Rigidbody, the physics damping of interaction should act within the moving frame of reference of the player.
         // The reference frame logic allows compensating for that 
-        private Transform referenceFrameTransform;
-        private bool referenceFrameHasLastPos;
+        private Transform referenceFrameTransform = null;
+        private bool referenceFrameHasLastPos = false;
         private Vector3 referenceFrameLastPos;
 
         private MixedRealityTransform targetTransform;
@@ -589,6 +589,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private static readonly ProfilerMarker OnSelectEnteredPerfMarker =
             new ProfilerMarker("[MRTK] ObjectManipulator.OnSelectEntered");
+
+        /// <summary>
+        /// Override this class to provide the transform of the reference frame (e.g. the camera) against which to compute the damping.
+        ///
+        /// This intended for the situation of FPS-style controllers moving forward at constant speed while holding an object,
+        /// to prevent damping from pushing the body towards the player.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        protected virtual Transform GetReferenceFrameTransform(SelectEnterEventArgs args) => null;
 
         /// <inheritdoc />
         protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -623,7 +633,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 useForces = rigidBody != null && !rigidBody.isKinematic && (!IsGrabSelected || useForcesForNearManipulation);
 
                 // ideally, the reference frame should be that of the camera. Here the interactorObject transform is the best available alternative.
-                referenceFrameTransform = args.interactorObject.transform;
+                referenceFrameTransform = GetReferenceFrameTransform(args);
                 referenceFrameHasLastPos = false;
             }
         }
@@ -763,12 +773,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void ApplyForcesToRigidbody()
         {
-            var referenceFrameVelocity = referenceFrameHasLastPos
-                ? (referenceFrameTransform.position - referenceFrameLastPos) / Time.fixedDeltaTime
-                : Vector3.zero;
+            var referenceFrameVelocity = Vector3.zero;
 
-            referenceFrameLastPos = referenceFrameTransform.position;
-            referenceFrameHasLastPos = true;
+            if (referenceFrameTransform != null)
+            {
+                if (referenceFrameHasLastPos)
+                {
+                    referenceFrameVelocity = (referenceFrameTransform.position - referenceFrameLastPos) / Time.fixedDeltaTime;
+                }
+
+                referenceFrameLastPos = referenceFrameTransform.position;
+                referenceFrameHasLastPos = true;
+            }
 
             // implement critically dampened spring force, scaled to mass-independent frequency
             float omega = Mathf.PI / springForceSoftness;  // angular frequency, sqrt(k/m)
