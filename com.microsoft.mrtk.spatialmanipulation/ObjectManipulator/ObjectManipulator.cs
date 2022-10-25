@@ -175,16 +175,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         [SerializeField]
         [Range(0, 2.0f)]
-        [Tooltip("The damping of the spring force: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
-        private float springForceDamping = 1.0f;
+        [Tooltip("The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
+        private float springDamping = 1.0f;
 
         /// <summary>
-        /// The damping of the spring force: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).
+        /// The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).
         /// </summary>
-        public float SpringForceDamping
+        public float SpringDamping
         {
-            get => springForceDamping;
-            set => springForceDamping = value;
+            get => springDamping;
+            set => springDamping = value;
         }
 
         [SerializeField]
@@ -806,7 +806,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // To compensate for the finite time step, this is split in two equal factors,
             // one applied before, the other after the spring force
             // equivalent with applying damping as well as spring force continuously
-            float halfDampingFactor = Mathf.Exp(-springForceDamping * omega * Time.fixedDeltaTime);
+            float halfDampingFactor = Mathf.Exp(-springDamping * omega * Time.fixedDeltaTime);
 
             velocity -= referenceFrameVelocity;  // change to the player's frame of reference before damping
 
