@@ -851,10 +851,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // TODO: Elastics. Compute elastics here and apply to modifiedTransformFlags.
 
-            bool applySmoothing = ShouldSmooth && smoothingLogic != null && (rigidBody == null || rigidBody.isKinematic);
+            bool applySmoothing = ShouldSmooth && smoothingLogic != null;
 
-            targetPose.Position = applySmoothing ? smoothingLogic.SmoothPosition(HostTransform.position, targetPose.Position, moveLerpTime, Time.deltaTime) : targetPose.Position;
-            targetPose.Rotation = applySmoothing ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetPose.Rotation, rotateLerpTime, Time.deltaTime) : targetPose.Rotation;
+            targetPose.Position = (applySmoothing && !useForces) ? smoothingLogic.SmoothPosition(HostTransform.position, targetPose.Position, moveLerpTime, Time.deltaTime) : targetPose.Position;
+            targetPose.Rotation = (applySmoothing && !useForces) ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetPose.Rotation, rotateLerpTime, Time.deltaTime) : targetPose.Rotation;
             targetPose.Scale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetPose.Scale, scaleLerpTime, Time.deltaTime) : targetPose.Scale;
         }
 

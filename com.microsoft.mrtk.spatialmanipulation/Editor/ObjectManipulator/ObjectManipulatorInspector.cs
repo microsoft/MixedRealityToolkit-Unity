@@ -145,17 +145,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             {
                 if (rb == null || rb.isKinematic)
                 {
-                    EditorGUILayout.PropertyField(transformSmoothingLogicType);
-                    EditorGUILayout.PropertyField(smoothingFar);
-                    EditorGUILayout.PropertyField(smoothingNear);
                     EditorGUILayout.PropertyField(moveLerpTime);
                     EditorGUILayout.PropertyField(rotateLerpTime);
-                    EditorGUILayout.PropertyField(scaleLerpTime);
                 }
                 else
                 {
-                    EditorGUILayout.HelpBox("Smoothing disabled for dynamic Rigidbody. Use Physics smoothing instead.", MessageType.Info);
+                    EditorGUILayout.HelpBox("Move&Rotation smoothing disabled for dynamic Rigidbody. Use Physics smoothing instead.", MessageType.Info);
                 }
+
+                EditorGUILayout.PropertyField(scaleLerpTime);
+                EditorGUILayout.PropertyField(transformSmoothingLogicType);
+                EditorGUILayout.PropertyField(smoothingFar);
+                EditorGUILayout.PropertyField(smoothingNear);
             }
 
             EditorGUILayout.Space();
