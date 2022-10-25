@@ -147,16 +147,30 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         [SerializeField]
         [Range(0.001f, 2.0f)]
-        [Tooltip("The time scale at which a Rigidbody reacts to input defined as oscillation period of the dampened spring force.")]
+        [Tooltip("The time scale at which a Rigidbody reacts to input movement defined as oscillation period of the dampened spring force.")]
         private float springForceSoftness = 0.1f;
 
         /// <summary>
-        /// The time scale at which a Rigidbody reacts to input defined as oscillation period of the dampened spring force.
+        /// The time scale at which a Rigidbody reacts to input movement defined as oscillation period of the dampened spring force.
         /// </summary>
         public float SpringForceSoftness
         {
             get => springForceSoftness;
             set => springForceSoftness = value;
+        }
+
+        [SerializeField]
+        [Range(0.001f, 2.0f)]
+        [Tooltip("The time scale at which a Rigidbody reacts to input rotation defined as oscillation period of the dampened spring torque.")]
+        private float springTorqueSoftness = 0.1f;
+
+        /// <summary>
+        /// The time scale at which a Rigidbody reacts to input rotation defined as oscillation period of the dampened angular spring force.
+        /// </summary>
+        public float SpringTorqueSoftness
+        {
+            get => springTorqueSoftness;
+            set => springTorqueSoftness = value;
         }
 
         [SerializeField]
@@ -809,6 +823,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // Torque calculations: same calculation & parameters as for linear velocity
                 // skipping referenceFrameVelocity and springForceLimit which do not exactly apply here
 
+                // implement critically dampened spring force, scaled to mass-independent frequency
+                float angularOmega = Mathf.PI / springTorqueSoftness;  // angular frequency, sqrt(k/m)
+
                 var angularDistance = HostTransform.rotation * Quaternion.Inverse(targetTransform.Rotation);
                 angularDistance.ToAngleAxis(out float angle, out Vector3 axis);
 
@@ -826,7 +843,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 var angularVelocity = rigidBody.angularVelocity;
 
-                var angularAcceleration = -angle * omega * omega;  // acceleration caused by spring force
+                var angularAcceleration = -angle * angularOmega * angularOmega;  // acceleration caused by spring force
 
                 angularVelocity *= halfDampingFactor;  // 1/2 damping
                 angularVelocity += angularAcceleration * Time.fixedDeltaTime * Mathf.Deg2Rad * axis.normalized; // integration step of spring force
