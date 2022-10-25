@@ -105,6 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private string text;
 
         /// <summary>
+        /// Whether the keyboard is currently active
+        /// </summary>
+        public bool Active => gameObject.activeInHierarchy;
+
+        /// <summary>
         /// Whether submit on enter.
         /// </summary>
         [field: SerializeField, Tooltip("Whether submit on enter.")]
@@ -509,12 +514,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             DisableAllKeyboards();
             ResetKeyboardState();
-            lastKeyboardLayout = keyboardType;
 
             switch (keyboardType)
             {
                 case LayoutType.URL:
                     {
+                        lastKeyboardLayout = keyboardType;
                         ShowAlphaKeyboardUpperSection();
                         ShowAlphaKeyboardURLBottomKeysSection();
                         break;
@@ -522,6 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 case LayoutType.Email:
                     {
+                        lastKeyboardLayout = keyboardType;
                         ShowAlphaKeyboardUpperSection();
                         ShowAlphaKeyboardEmailBottomKeysSection();
                         break;
@@ -536,6 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 case LayoutType.Alpha:
                 default:
                     {
+                        lastKeyboardLayout = keyboardType;
                         ShowAlphaKeyboardUpperSection();
                         ShowAlphaKeyboardDefaultBottomKeysSection();
                         break;
