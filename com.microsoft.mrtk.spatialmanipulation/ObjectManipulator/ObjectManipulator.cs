@@ -589,8 +589,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// This intended for the situation of FPS-style controllers moving forward at constant speed while holding an object,
         /// to prevent damping from pushing the body towards the player.
         /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <param name="args">Arguments of the OnSelectEntered event that called this function</param>
+        /// <returns>The Transform that should be used to define the reference frame or null to use the global reference frame</returns>
         protected virtual Transform GetReferenceFrameTransform(SelectEnterEventArgs args) => null;
 
         /// <inheritdoc />
