@@ -4,10 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
-using InputAction = UnityEngine.InputSystem.InputAction;
-using InputActionProperty = UnityEngine.InputSystem.InputActionProperty;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using UnityInputSystem = UnityEngine.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -72,13 +72,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (controllerDetectedAction == null || controllerDetectedAction.action == null) { return; }
             controllerDetectedAction.action.started += RenderControllerVisuals;
             controllerDetectedAction.action.canceled += RemoveControllerVisuals;
-            controllerDetectedAction.action.Enable();
+            controllerDetectedAction.EnableDirectAction();
         }
 
         protected void OnDisable()
         {
             if (controllerDetectedAction == null || controllerDetectedAction.action == null) { return; }
-            controllerDetectedAction.action.Disable();
+            controllerDetectedAction.DisableDirectAction();
             controllerDetectedAction.action.started -= RenderControllerVisuals;
             controllerDetectedAction.action.canceled -= RemoveControllerVisuals;
         }
