@@ -133,27 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         [SerializeField]
         [Tooltip(
-             "Whether physics forces are used to move the object when performing near manipulations. " +
-             "Off will make the object feel more directly connected to the hand. On will honor the mass and inertia of the object. " +
-             "The default is off.")]
-        private bool useForcesForNearManipulation = false;
-
-        /// <summary>
-        /// Whether physics forces are used to move the object when performing near manipulations.
-        /// </summary>
-        /// <remarks>
-        /// <para>Setting this to <c>false</c> will make the object feel more directly connected to the
-        /// users hand. Setting this to <c>true</c> will honor the mass and inertia of the object,
-        /// but may feel as though the object is connected through a spring. The default is <c>false</c>.</para>
-        /// </remarks>
-        public bool UseForcesForNearManipulation
-        {
-            get => useForcesForNearManipulation;
-            set => useForcesForNearManipulation = value;
-        }
-
-        [SerializeField]
-        [Tooltip(
             "Apply torque to control orientation of the body")]
         private bool applyTorque = true;
 
@@ -630,7 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     constraintsManager.OnManipulationStarted(targetTransform);
                 }
 
-                useForces = rigidBody != null && !rigidBody.isKinematic && (!IsGrabSelected || useForcesForNearManipulation);
+                useForces = rigidBody != null && !rigidBody.isKinematic;
 
                 // ideally, the reference frame should be that of the camera. Here the interactorObject transform is the best available alternative.
                 referenceFrameTransform = GetReferenceFrameTransform(args);

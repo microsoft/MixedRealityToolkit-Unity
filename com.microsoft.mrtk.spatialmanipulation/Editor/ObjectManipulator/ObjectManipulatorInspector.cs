@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty hostTransform;
         private SerializedProperty allowedManipulations;
         private SerializedProperty allowedInteractionTypes;
-        private SerializedProperty useForcesForNearManipulation;
         private SerializedProperty applyTorque;
         private SerializedProperty springForceSoftness;
         private SerializedProperty springForceDamping;
@@ -71,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
             // Physics
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
-            useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
             applyTorque = serializedObject.FindProperty("applyTorque");
             springForceSoftness = serializedObject.FindProperty("springForceSoftness");
             springForceDamping = serializedObject.FindProperty("springForceDamping");
@@ -130,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
                 if (rb != null && !rb.isKinematic)
                 {
                     EditorGUILayout.PropertyField(releaseBehavior);
-                    EditorGUILayout.PropertyField(useForcesForNearManipulation);
                     EditorGUILayout.PropertyField(applyTorque);
                     EditorGUILayout.PropertyField(springForceSoftness);
                     EditorGUILayout.PropertyField(springForceDamping);
