@@ -11,18 +11,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public abstract class NonNativeKey : MonoBehaviour
     {
         /// <summary>
-        /// Reference to the GameObject's button component.
+        /// Reference to the GameObject's interactable component.
         /// </summary>
-        [field: SerializeField, Tooltip("Reference to the GameObject's button component.")]
-        protected PressableButton Button { get; set; }
+        [field: SerializeField, Tooltip("Reference to the GameObject's interactable component.")]
+        protected StatefulInteractable Interactable { get; set; }
 
         protected virtual void Awake()
         {
-            if (Button == null)
+            if (Interactable == null)
             {
-                Button = GetComponent<PressableButton>();
+                Interactable = GetComponent<StatefulInteractable>();
             }
-            Button.OnClicked.AddListener(FireKey);
+            Interactable.OnClicked.AddListener(FireKey);
         }
 
         /// <summary>

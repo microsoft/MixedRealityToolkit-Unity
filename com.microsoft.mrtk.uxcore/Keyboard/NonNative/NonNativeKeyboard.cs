@@ -518,35 +518,35 @@ namespace Microsoft.MixedReality.Toolkit.UX
             switch (keyboardType)
             {
                 case LayoutType.URL:
-                    {
-                        lastKeyboardLayout = keyboardType;
-                        ShowAlphaKeyboardUpperSection();
-                        ShowAlphaKeyboardURLBottomKeysSection();
-                        break;
-                    }
+                {
+                    lastKeyboardLayout = keyboardType;
+                    ShowAlphaKeyboardUpperSection();
+                    ShowAlphaKeyboardURLBottomKeysSection();
+                    break;
+                }
 
                 case LayoutType.Email:
-                    {
-                        lastKeyboardLayout = keyboardType;
-                        ShowAlphaKeyboardUpperSection();
-                        ShowAlphaKeyboardEmailBottomKeysSection();
-                        break;
-                    }
+                {
+                    lastKeyboardLayout = keyboardType;
+                    ShowAlphaKeyboardUpperSection();
+                    ShowAlphaKeyboardEmailBottomKeysSection();
+                    break;
+                }
 
                 case LayoutType.Symbol:
-                    {
-                        ShowSymbolKeyboard();
-                        break;
-                    }
+                {
+                    ShowSymbolKeyboard();
+                    break;
+                }
 
                 case LayoutType.Alpha:
                 default:
-                    {
-                        lastKeyboardLayout = keyboardType;
-                        ShowAlphaKeyboardUpperSection();
-                        ShowAlphaKeyboardDefaultBottomKeysSection();
-                        break;
-                    }
+                {
+                    lastKeyboardLayout = keyboardType;
+                    ShowAlphaKeyboardUpperSection();
+                    ShowAlphaKeyboardDefaultBottomKeysSection();
+                    break;
+                }
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
         }
