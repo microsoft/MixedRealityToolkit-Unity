@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <see cref="Equals(AccessibilitySubsystemCinfo)"/> also returns `true`; otherwise `false`.</returns>
         public override bool Equals(System.Object obj)
         {
-            return ((obj is AccessibilitySubsystemCinfo) && Equals((AccessibilitySubsystemCinfo)obj));
+            return (obj is AccessibilitySubsystemCinfo cinfo) && Equals(cinfo);
         }
 
         /// <summary>
