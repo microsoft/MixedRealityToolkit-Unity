@@ -78,16 +78,16 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         public string Instructions => instructions;
 
         [SerializeField]
-        [Tooltip("Is the object salient to the current state of the experience?")]
-        private bool isSalient = true;
+        [Tooltip("Is the object relevant to the current context of the experience?")]
+        private bool isContextuallyRelevant = true;
 
         /// <summary>
-        /// Is the object salient to the current state of the experience?
+        /// Is the object relevant to the current context of the experience?
         /// </summary>
-        public bool IsSalient
+        public bool IsContextuallyRelevant
         {
-            get => isSalient;
-            set => isSalient = value;
+            get => isContextuallyRelevant;
+            set => isContextuallyRelevant = value;
         }
 
         [SerializeField]
