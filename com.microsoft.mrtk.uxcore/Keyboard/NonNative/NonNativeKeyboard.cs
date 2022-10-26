@@ -88,10 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public string Text
         {
-            get
-            {
-                return text;
-            }
+            get => text;
             set
             {
                 if (text != value)
@@ -298,64 +295,44 @@ namespace Microsoft.MixedReality.Toolkit.UX
             switch (functionKey.KeyFunction)
             {
                 case Function.Enter:
-                {
                     Enter();
                     break;
-                }
 
                 case Function.Tab:
-                {
                     Tab();
                     break;
-                }
 
                 case Function.ABC:
-                {
                     ActivateSpecificKeyboard(lastKeyboardLayout);
                     break;
-                }
 
                 case Function.Symbol:
-                {
                     ActivateSpecificKeyboard(LayoutType.Symbol);
                     break;
-                }
 
                 case Function.Close:
-                {
                     Close();
                     break;
-                }
 
                 case Function.Shift:
-                {
                     Shift(!IsShifted);
                     break;
-                }
 
                 case Function.CapsLock:
-                {
                     CapsLock(!IsCapsLocked);
                     break;
-                }
 
                 case Function.Space:
-                {
                     Space();
                     break;
-                }
 
                 case Function.Backspace:
-                {
                     Backspace();
                     break;
-                }
 
                 case Function.UNDEFINED:
-                {
                     Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
                     break;
-                }
             }
         }
 
