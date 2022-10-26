@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty DeselectThreshold;
         private SerializedProperty ToggleMode;
         private SerializedProperty TriggerOnRelease;
-        private SerializedProperty AllowSelectByVoice;
-        private SerializedProperty SpeechRecognitionKeyword;
+        private SerializedProperty allowSelectByVoice;
+        private SerializedProperty speechRecognitionKeyword;
         private SerializedProperty VoiceRequiresFocus;
         private SerializedProperty UseGazeDwell;
         private SerializedProperty GazeDwellTime;
@@ -44,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             ToggleMode = SetUpAutoProp(nameof(ToggleMode));
             TriggerOnRelease = SetUpAutoProp(nameof(TriggerOnRelease));
 
-            AllowSelectByVoice = SetUpAutoProp(nameof(AllowSelectByVoice));
-            SpeechRecognitionKeyword = SetUpAutoProp(nameof(SpeechRecognitionKeyword));
+            allowSelectByVoice = SetUpProperty(nameof(allowSelectByVoice));
+            speechRecognitionKeyword = SetUpProperty(nameof(speechRecognitionKeyword));
             VoiceRequiresFocus = SetUpAutoProp(nameof(VoiceRequiresFocus));
 
             UseGazeDwell = SetUpAutoProp(nameof(UseGazeDwell));
@@ -148,12 +148,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                     }
 
-                    EditorGUILayout.PropertyField(AllowSelectByVoice);
-                    if (AllowSelectByVoice.boolValue)
+                    EditorGUILayout.PropertyField(allowSelectByVoice);
+                    if (allowSelectByVoice.boolValue)
                     {
                         using (new EditorGUI.IndentLevelScope())
                         {
-                            EditorGUILayout.PropertyField(SpeechRecognitionKeyword);
+                            EditorGUILayout.PropertyField(speechRecognitionKeyword);
                             EditorGUILayout.PropertyField(VoiceRequiresFocus);
                         }
                     }
