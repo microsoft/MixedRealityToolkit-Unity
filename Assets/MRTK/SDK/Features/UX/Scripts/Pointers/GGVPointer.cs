@@ -196,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                bool didHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(Rays[0], Rays[0].Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
-                hitInfo = new MixedRealityRaycastHit(didHit, physicsHit);
+				var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+				bool didHit = raycastProvider.Raycast(Rays[0], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo);
                 Ray = Rays[0];
                 rayStepIndex = 0;
                 return didHit;
@@ -212,7 +212,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                bool didHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(Rays[0], Rays[0].Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
+				var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+				bool didHit = raycastProvider.Raycast(Rays[0], prioritizedLayerMasks, focusIndividualCompoundCollider, out MixedRealityRaycastHit physicsHit);
                 if (didHit)
                 {
                     hitObject = physicsHit.collider.gameObject;
