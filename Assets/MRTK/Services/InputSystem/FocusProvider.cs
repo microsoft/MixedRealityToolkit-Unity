@@ -193,6 +193,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public int rayStepIndex = -1;
             public float rayDistance;
 
+			public bool isSet;
+
             public void Clear()
             {
                 raycastHit = default(MixedRealityRaycastHit);
@@ -205,7 +207,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ray = default(RayStep);
                 rayStepIndex = -1;
                 rayDistance = 0.0f;
-            }
+
+				isSet = false;
+			}
 
             /// <summary>
             /// Set hit focus information from a closest-colliders-to pointer check.
@@ -222,7 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.ray = ray;
                 this.rayStepIndex = rayStepIndex;
                 this.rayDistance = rayDistance;
-            }
+
+				isSet = true;
+			}
 
             /// <summary>
             /// Set hit focus information from a physics raycast.
@@ -239,7 +245,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.ray = ray;
                 this.rayStepIndex = rayStepIndex;
                 this.rayDistance = rayDistance;
-            }
+
+				isSet = true;
+			}
 
             /// <summary>
             /// Set hit information from a canvas raycast.
@@ -262,7 +270,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.ray = ray;
                 this.rayStepIndex = rayStepIndex;
                 this.rayDistance = rayDistance;
-            }
+
+				isSet = true;
+			}
+
+			public void CopyFrom(PointerHitResult other)
+			{
+				raycastHit = other.raycastHit;
+				graphicsRaycastResult = other.graphicsRaycastResult;
+				hitObject = other.hitObject;
+				hitPointOnObject = other.hitPointOnObject;
+				hitNormalOnObject = other.hitNormalOnObject;
+				ray = other.ray;
+				rayStepIndex = other.rayStepIndex;
+				rayDistance = other.rayDistance;
+				isSet = other.isSet;
+			}
         }
 
         [Serializable]
@@ -565,7 +588,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// to do a gaze raycast even if gaze isn't used for focus.
         /// </summary>
         private PointerEventData gazeProviderPointingData;
-        private PointerHitResult gazeHitResult;
+        private PointerHitResult gazeHitResult = new PointerHitResult();
 
         /// <summary>
         /// Updates the gaze raycast provider even in scenarios where gaze isn't used for focus
@@ -579,7 +602,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 bool gazeProviderEnabled = gazeProvider.IsNotNull() && gazeProvider.Enabled;
                 // The gaze hit result may be populated from the UpdatePointers call. If it has not, then perform
                 // another raycast if it's not populated
-                if (gazeProviderEnabled && gazeHitResult == null)
+                if (gazeProviderEnabled && !gazeHitResult.isSet)
                 {
                     IMixedRealityPointer gazePointer = gazeProvider?.GazePointer;
                     // Check that the gazePointer isn't null and that it has been properly registered as a pointer.
@@ -601,22 +624,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         // set gaze hit according to distance and prioritization layer mask
-                        gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
-                    }
+                        gazeHitResult.CopyFrom(GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks));
+					}
                     else
                     {
                         return;
                     }
                 }
 
-                if (gazeProvider.IsNotNull() && gazeHitResult.IsNotNull())
+                if (gazeProvider.IsNotNull() && gazeHitResult.isSet)
                 {
-                    gazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+					gazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
                 }
 
                 // Zero out value after every use to ensure the hit result is updated every frame.
-                gazeHitResult = null;
-            }
+                gazeHitResult.Clear();
+			}
         }
 
         #endregion IMixedRealityService Implementation
@@ -1098,8 +1121,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         IMixedRealityPointer gazePointer = InputSystem?.GazeProvider.GazePointer;
                         if (gazePointer.IsNotNull() && pointerData.Pointer.PointerId == gazePointer.PointerId)
                         {
-                            gazeHitResult = hit;
-                        }
+                            gazeHitResult.CopyFrom(hit);
+						}
 
                         // Set the pointer's result last
                         pointerData.Pointer.Result = pointerData;
