@@ -159,18 +159,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 Menu = this,
                 Hand = Handedness.Left,
-                PositionAction = leftHandPosition.action,
-                RotationAction = leftHandRotation.action,
-                Padding = padding
+                PositionAction = LeftHandPosition.action,
+                RotationAction = LeftHandRotation.action,
+                Padding = Padding
             };
 
             rightHand = new TargetedHand()
             {
                 Menu = this,
                 Hand = Handedness.Right,
-                PositionAction = rightHandPosition.action,
-                RotationAction = rightHandRotation.action,
-                Padding = padding
+                PositionAction = RightHandPosition.action,
+                RotationAction = RightHandRotation.action,
+                Padding = Padding
             };
 
             leftHand.Opposite = rightHand;
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             // Construct bitflag for which hand targets are actually available.
             Handedness available = (((gotLeftAttach && leftHand.Activation > minActivationThreshold) ? Handedness.Left : Handedness.None) |
-                                   ((gotRightAttach && rightHand.Activation > minActivationThreshold) ? Handedness.Right : Handedness.None)) & target;
+                                   ((gotRightAttach && rightHand.Activation > minActivationThreshold) ? Handedness.Right : Handedness.None)) & Target;
 
             TargetedHand lastTarget = currentTarget;
 
@@ -235,9 +235,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // No target? Disable the menu.
             if (currentTarget == null)
             {
-                if (visibleRoot.activeSelf)
+                if (VisibleRoot.activeSelf)
                 {
-                    visibleRoot.SetActive(false); // Disable the menu.
+                    VisibleRoot.SetActive(false); // Disable the menu.
                 }
 
                 // Return early, nothing else to do.
@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 if (VisibleRoot.activeSelf == false)
                 {
-                    visibleRoot.SetActive(true);
+                    VisibleRoot.SetActive(true);
                 }
             }
 
@@ -259,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // If the menu is sufficiently "deactivated", just disable it.
-            visibleRoot.SetActive(currentTarget.Activation > minActivationToHide);
+            VisibleRoot.SetActive(currentTarget.Activation > minActivationToHide);
 
             // "Genie effect".
             transform.localScale = Vector3.one * currentTarget.Activation;
