@@ -123,7 +123,28 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #endregion Private Fields
 
-        protected virtual void Start()
+        #region Hand-tuned constants
+
+        // The range to inverse-lerp across when damping the movement of the menu
+        // based on the opposite hand's proximity.
+        private static readonly float minOppositeHandDistance = 0.05f;
+        private static readonly float maxOppositeHandDistance = 0.25f;
+
+        // When the menu is less-activated than this threshold, it'll be hidden.
+        private static readonly float minActivationToHide = 0.1f;
+
+        // How "activated" must a hand be to consider it available for the menu to attach to?
+        private static readonly float minActivationThreshold = 0.01f;
+
+        // A non-framerate-independent filtering to reduce jitter.
+        private static readonly float perFrameFiltering = 0.4f;
+
+        private static readonly float minHandNearDamping = 0.4f;
+        private static readonly float maxHandNearDamping = 0.9f;
+
+        #endregion Hand-tuned constants
+
+        private void Start()
         {
             if (VisibleRoot != null)
             {
@@ -138,21 +159,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 Menu = this,
                 Hand = Handedness.Left,
-                PositionAction = LeftHandPosition.action,
-                RotationAction = LeftHandRotation.action,
-                Opposite = rightHand,
-                Padding = Padding
+                PositionAction = leftHandPosition.action,
+                RotationAction = leftHandRotation.action,
+                Padding = padding
             };
 
             rightHand = new TargetedHand()
             {
                 Menu = this,
                 Hand = Handedness.Right,
-                PositionAction = RightHandPosition.action,
-                RotationAction = LeftHandPosition.action,
-                Opposite = leftHand,
-                Padding = Padding
+                PositionAction = rightHandPosition.action,
+                RotationAction = rightHandRotation.action,
+                Padding = padding
             };
+
+            leftHand.Opposite = rightHand;
+            rightHand.Opposite = leftHand;
         }
 
         protected virtual void OnEnable()
@@ -178,8 +200,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             bool gotRightAttach = (Target & Handedness.Right) != 0 && rightHand.TryGetAttachPose(out rightPose);
 
             // Construct bitflag for which hand targets are actually available.
-            Handedness available = (((gotLeftAttach && leftHand.Activation > 0) ? Handedness.Left : Handedness.None) |
-                                   ((gotRightAttach && rightHand.Activation > 0) ? Handedness.Right : Handedness.None)) & Target;
+            Handedness available = (((gotLeftAttach && leftHand.Activation > minActivationThreshold) ? Handedness.Left : Handedness.None) |
+                                   ((gotRightAttach && rightHand.Activation > minActivationThreshold) ? Handedness.Right : Handedness.None)) & target;
 
             TargetedHand lastTarget = currentTarget;
 
@@ -210,25 +232,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 currentTarget = null;
             }
 
-            // Flag if we've switched to a new hand this frame,
-            // and the menu is sufficiently "behind" the hand.
-            // This is to avoid the menu "lerping" between hands
-            // when very small (causing distracting visuals.)
-            bool snapToNewHand = lastTarget != currentTarget && currentTarget.Activation < 0.5f;
-
             // No target? Disable the menu.
-            if (currentTarget == null && VisibleRoot.activeSelf)
+            if (currentTarget == null)
             {
-                VisibleRoot.SetActive(false); // Disable the menu.
+                if (visibleRoot.activeSelf)
+                {
+                    visibleRoot.SetActive(false); // Disable the menu.
+                }
+
+                // Return early, nothing else to do.
+                return;
             }
             else // Otherwise, make sure it's visible.
             {
                 if (VisibleRoot.activeSelf == false)
                 {
-                    VisibleRoot.SetActive(true);
-                    // If we've just set the menu active,
-                    // make sure we snap to the hand immediately.
-                    snapToNewHand = true;
+                    visibleRoot.SetActive(true);
                 }
             }
 
@@ -240,43 +259,65 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // If the menu is sufficiently "deactivated", just disable it.
-            VisibleRoot.SetActive(currentTarget.Activation > 0.15f);
+            visibleRoot.SetActive(currentTarget.Activation > minActivationToHide);
 
             // "Genie effect".
             transform.localScale = Vector3.one * currentTarget.Activation;
-
-            Pose attach = currentTarget == leftHand ? leftPose : rightPose;
             
-            if (snapToNewHand)
-            {
-                transform.position = attach.position;
-                transform.rotation = attach.rotation;
-            }
-            else
-            {
-                transform.position = Vector3.Lerp(transform.position, attach.position, Mathf.Lerp(0.1f, 0.5f, currentTarget.OppositeHandDistance));
-                transform.rotation = Quaternion.Slerp(transform.rotation, attach.rotation, Mathf.Lerp(0.1f, 0.5f, currentTarget.OppositeHandDistance));
-            }
+            // Apply pose to the menu. Dampen the movement when the opposite hand is nearby for precision.
+            Pose attach = currentTarget == leftHand ? leftPose : rightPose;
+
+            // Depending on how close the other hand is, we damp more or less.
+            float dampingFactor = Mathf.Lerp(minHandNearDamping, maxHandNearDamping, Mathf.InverseLerp(maxOppositeHandDistance, minOppositeHandDistance, currentTarget.OppositeHandDistance));
+            transform.position = Vector3.Lerp(attach.position, transform.position, dampingFactor);
+            transform.rotation = Quaternion.Slerp(attach.rotation, transform.rotation, dampingFactor);
         }
 
         private class TargetedHand
         {
             public HandMenu Menu { get; set; }
             public Handedness Hand { get; set; }
-
             public float Activation { get; set; }
-
             public bool Locked {
                 get;
                 set;
             }
-
             public TargetedHand Opposite;
-
             public float OppositeHandDistance { get; private set; }
             public float Padding;
             public InputAction PositionAction;
             public InputAction RotationAction;
+
+            #region Hand-tuned constants
+
+            // Above this activation threshold, the menu will be considered "locked"
+            // and secondary activation factors like gaze and hand-flatness will be ignored.
+            private readonly float lockThreshold = 0.9f;
+
+            // Below this activation threshold, if the menu is locked, it will be unlocked
+            // and secondary activation factors like gaze and hand-flatness will be considered.
+            private readonly float unlockThreshold = 0.2f;
+
+            // The range (in degrees) between the Menu.MinimumViewAngle and the angle at which
+            // the menu will be completely deactivated by gaze.
+            private readonly float gazeLerpRange = 10f;
+
+            // We don't know exactly how large the user's hand is,
+            // so we'll make an educated guess when we're attaching a hand menu
+            // to a motion controller.
+            private readonly float controllerBasedHandRadius = 0.04f;
+
+            // Minimum flatness value. Below this, the menu won't be able to activate.
+            private readonly float minFlatness = 0.75f;
+
+            // Maximum flatness value. Above this, the menu will be fully activated.
+            private readonly float maxFlatness = 0.9f;
+
+            // An additional small # of degrees to bias the rotation of the menu towards
+            // the user for easier use.
+            private readonly float LookTowardsUserDegrees = 15;
+
+            #endregion
 
             /// <summary>
             /// Tries to get the attach pose from the hand joints on the given <paramref name="hand"/>.
@@ -286,7 +327,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 pose = default;
 
                 // Short-circuits.
-                return !TryGetJointAttach(out pose) || TryGetControllerAttach(out pose);
+                if (XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, Hand.ToXRNode().Value, out _))
+                {
+                    return TryGetJointAttach(out pose);
+                }
+                else
+                {
+                    return TryGetControllerAttach(out pose);
+                }
             }
 
             private bool TryGetJointAttach(out Pose pose)
@@ -314,13 +362,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     Quaternion.LookRotation(palm.Up, palm.Forward)
                 );
 
-                // The offset vector (direction from the hand in which the menu will be positioned)
-                // is the averaged away-from-pinky vector of the proximal and metacarpal joints.
-                Vector3 offsetVector = (-proximal.Right + -metacarpal.Right).normalized * (Hand == Handedness.Left ? 1 : -1);
-
                 // Making an assumption here; if we're getting joints on the left hand, we probably aren't in "motion controller"
                 // mode, and we can use joints for getting the opposite hand's position.
                 Pose? oppositeHandPose = null;
+
+                Debug.Assert(Opposite != null, "Opposite hand is null!");
+                Debug.Assert(XRSubsystemHelpers.HandsAggregator != null, "Hands aggregator is null!");
                 if (XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip,
                                                                    Opposite.Hand.ToXRNode().Value,
                                                                    out var oppositeIndexTip))
@@ -332,42 +379,40 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // the user's view direction. The activation amount is then computed
                 // from this dot product, multiplied by the flatness of the hand, as
                 // evaluated by the activation curve.
-                Activation = Mathf.Clamp01(Vector3.Dot(anchor.rotation * Vector3.forward, CameraCache.Main.transform.forward));
+                float tempActivation = Mathf.Clamp01(Vector3.Dot(anchor.rotation * Vector3.forward, (anchor.position - Camera.main.transform.position).normalized));
+
+                // Save us some work if the hand is *really* not ready yet.
+                if (tempActivation < 0.01f) { return false; }
 
                 // Compute the "flatness" of the hand, but only when we haven't "locked on" to the hand.
                 if (XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip, Hand.ToXRNode().Value, out HandJointPose indexTipPose) &&
                     XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.RingTip, Hand.ToXRNode().Value, out HandJointPose ringTipPose) &&
-                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.MiddleKnuckle, Hand.ToXRNode().Value, out HandJointPose middleKnucklePose) &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.MiddleProximal, Hand.ToXRNode().Value, out HandJointPose middleProximalPose) &&
                     Locked == false)
                 {
-                    Vector3 fingerNormal = Vector3.Cross(indexTipPose.Position - middleKnucklePose.Position,
+                    Vector3 fingerNormal = Vector3.Cross(indexTipPose.Position - middleProximalPose.Position,
                                                     ringTipPose.Position - indexTipPose.Position).normalized;
                     fingerNormal *= (Hand == Handedness.Right) ? 1.0f : -1.0f;
                     float flatness = (Vector3.Dot(fingerNormal, palm.Up) + 1.0f) / 2.0f;
-                    Activation *= Mathf.InverseLerp(0.5f, 1.0f, flatness);
+                    tempActivation *= Mathf.InverseLerp(minFlatness, maxFlatness, flatness);
                 }
 
-                if (!Locked)
-                {
-                    // Compute the view angle to determine whether the hand is
-                    // within the "FOV" restriction specified by the user (minimumViewAngle)
-                    float viewAngle = Vector3.Angle(
-                        CameraCache.Main.transform.forward,
-                        anchor.position - CameraCache.Main.transform.position
-                    );
+                tempActivation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(tempActivation));
 
-                    Activation *= Mathf.InverseLerp(25, 0, viewAngle);
-                }
+                // Reduce activation for out-of-view hands.
+                tempActivation *= FOVFactor(anchor);
 
-                Activation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(Activation));
+                // Do a very small amount of per-frame filtering to reduce jitter.
+                Activation = Mathf.Lerp(Activation, tempActivation, HandMenu.perFrameFiltering);
 
-                if (Activation >= 1.0f)
-                {
-                    Locked = true; // We're active! Hand flatness and gaze won't be able to deactivate, only the hand rotation.
-                }
+                if (Activation <= HandMenu.minActivationThreshold) { return false; }
+
+                // The offset vector (direction from the hand in which the menu will be positioned)
+                // is the averaged away-from-pinky vector of the proximal and metacarpal joints.
+                Vector3 offsetVector = (-proximal.Right + -metacarpal.Right).normalized * (Hand == Handedness.Left ? 1 : -1);
 
                 // Finally, compute the actual attach pose.
-                pose = GetAttach(anchor, oppositeHandPose, offsetVector, Padding, Activation);
+                pose = GetAttach(anchor, oppositeHandPose, offsetVector, Padding);
                 return true;
             }
 
@@ -380,69 +425,112 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             private bool TryGetControllerAttach(out Pose pose)
             {
                 pose = default;
-                if (!PoseFromActions(RotationAction, PositionAction, out Pose gripPose)) { return false;}
+                if (!PoseFromActions(PositionAction, RotationAction, out Pose gripPose)) { return false; }
 
                 // The controller-based anchor point is calculated from the grip pose.
                 // Imagine the hand menu extending out from the bottom of a controller,
                 // with the vertical axis of the menu aligned with the grip pose's Z axis.
-                Vector3 offsetVector = -gripPose.up;
+                Vector3 offsetVector = gripPose.right * (Hand == Handedness.Right ? 1 : -1);
                 Pose anchor = new Pose(
                     gripPose.position,
                     Quaternion.LookRotation(
-                        -gripPose.right * (Hand == XRNode.LeftHand ? 1 : -1),
+                        gripPose.up,
                         gripPose.forward
                     )
                 );
 
-                // We don't know exactly how large the user's hand is,
-                // so we'll make an educated guess.
-                const float averageHandRadius = 0.04f;
+                // Making an assumption here; if we're reading input actions from this hand,
+                // we can probably read them from the other hand. (i.e., if one hand is a motion controller,
+                // both are probably motion controllers!)
+                Pose? oppositeHandPose = null;
+                if (PoseFromActions(Opposite.PositionAction, Opposite.RotationAction, out Pose oppositeGripPose))
+                {
+                    oppositeHandPose = oppositeGripPose;
+                }
 
                 // Compute the dot product between the anchor (hand) rotation and
                 // the user's view direction. The activation amount is then computed
                 // from this dot product as evaluated by the activation curve.
-                activation = Mathf.Clamp01(
-                    ActivationCurve.Evaluate(
+                float tempActivation = Mathf.Clamp01(
+                    Menu.ActivationCurve.Evaluate(
                         Vector3.Dot(
                             anchor.rotation * Vector3.forward,
-                            CameraCache.Main.transform.forward
+                            (anchor.position - Camera.main.transform.position).normalized
                         )
                     )
                 );
 
-                if (activation <= 0) { return default; }
+                // Reduce activation for out-of-view controllers.
+                tempActivation *= FOVFactor(anchor);
 
-                return GetAttach(hand, anchor, oppositeGripPose,
-                                offsetVector, Padding + averageHandRadius,
-                                activation, out oppositeHandDistance);
+                // Do a very small amount of per-frame filtering to reduce jitter.
+                Activation = Mathf.Lerp(Activation, tempActivation, HandMenu.perFrameFiltering);
+
+                if (Activation <= HandMenu.minActivationThreshold) { return false; }
+
+                // Use controllerBasedHandRadius to estimate the average hand size when we don't
+                // have any hand joints to go off of.
+                pose = GetAttach(anchor, oppositeHandPose, offsetVector, Padding + controllerBasedHandRadius);
+                return true;
+            }
+
+            // Returns a 0..1 range, where 0.0 is completely out of view, and 1.0 is completely in view.
+            // If the hand menu is locked, this will always return 1.0.
+            private float FOVFactor(Pose anchor)
+            {
+                if (!Locked)
+                {
+                    // Compute the view angle to determine whether the hand is
+                    // within the "FOV" restriction specified by the user (minimumViewAngle)
+                    float viewAngle = Vector3.Angle(
+                        Camera.main.transform.forward,
+                        anchor.position - Camera.main.transform.position
+                    );
+                    Debug.Log(viewAngle);
+                    // Multiply the activation by this gaze angle, lerped across gazeLerpRange for smoothness.
+                    return Mathf.InverseLerp(Menu.MinimumViewAngle + gazeLerpRange, Menu.MinimumViewAngle, viewAngle);
+                }
+                else
+                {
+                    // If the hand menu is in "locked mode", gaze direction can't deactivate it.
+                    return 1.0f;
+                }
             }
 
             // Computes the hand menu attach pose from a hand/controller agnostic
             // set of poses and information.
-            private Pose GetAttach(Pose anchor, Pose? opposite,
-                                    Vector3 offsetVector, float Padding,
-                                    float activation)
+            private Pose GetAttach(Pose anchor, Pose? oppositeHandPose,
+                                    Vector3 offsetVector, float padding)
             {
                 OppositeHandDistance = 1.0f;
 
-                // Compute the attach pose. The position is the anchor position offset
-                // along the offset vector, by the Padding amount.
-                attach.position = anchor.position + offsetVector * Padding;
-
-                // The rotation is the anchor's rotation, mixed with a 0-90 rotation blended by
-                // the activation amount. This results in a procedural "flipping" effect as the user
-                // flips their hand over.
-                attach.rotation = anchor.rotation * Quaternion.Euler(0, -90 * (1.0f - activation) * (hand == XRNode.LeftHand ? 1 : -1), 0);
+                Pose attach = new Pose(
+                    // Compute the attach pose. The position is the anchor position offset
+                    // along the offset vector, by the padding amount.
+                    anchor.position + offsetVector * padding,
+                    // The rotation is the anchor's rotation, mixed with a 0-90 rotation blended by
+                    // the activation amount. This results in a procedural "flipping" effect as the user
+                    // flips their hand over.
+                    anchor.rotation * Quaternion.Euler(-LookTowardsUserDegrees, (-90 * (1.0f - Activation) + LookTowardsUserDegrees) * (Hand == Handedness.Left ? 1 : -1) , 0)
+                );
 
                 // If we have a pose for the opposite hand, compute the distance
                 // between the opposite hand and the center of the hand menu. This will
                 // be used to dampen the motion of the hand menu as the opposite hand approaches.
-                if (opposite.HasValue)
+                if (oppositeHandPose.HasValue)
                 {
-                    Vector3 menuCenter = attach.position + offsetVector * (MenuSize.width * 0.5f);
-                    OppositeHandDistance = Mathf.Clamp01(
-                        Mathf.InverseLerp(0.05f, 0.2f, (opposite.Value.position - menuCenter).magnitude)
-                    );
+                    Vector3 menuCenter = Menu.VisibleRoot.transform.position + Menu.VisibleRoot.transform.right.normalized * (Menu.MenuSize.width / 2) * (Hand == Handedness.Left ? 1 : -1);
+                    OppositeHandDistance = (oppositeHandPose.Value.position - menuCenter).magnitude;
+                }
+
+                // Update locking state.
+                if (Activation >= lockThreshold)
+                {
+                    Locked = true; // We're active! Hand flatness and gaze won't be able to deactivate, only the hand rotation.
+                }
+                else if (Activation <= unlockThreshold)
+                {
+                    Locked = false; // We're inactive! Hand flatness and gaze can deactivate.
                 }
 
                 return attach;

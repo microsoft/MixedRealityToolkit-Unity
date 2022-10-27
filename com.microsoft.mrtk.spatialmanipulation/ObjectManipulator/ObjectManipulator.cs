@@ -12,9 +12,20 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// ObjectManipulator is an interactable that enables the grabbing/moving of objects, with one or two hands,
-    /// with near, far, and gaze interaction.
+    /// ObjectManipulator allows for the manipulation (move, rotate, scale)
+    /// of an object by any interactor with a valid attach transform.
+    /// Multi-handed interactions and physics-enabled objects are also supported.
     /// </summary>
+    /// <remarks>
+    /// ObjectManipulator works with both rigidbody and non-rigidbody objects,
+    /// and allows for throwing and catching interactions. Any interactor
+    /// with a well-formed attach transform can interact with and manipulate
+    /// an ObjectManipulator. This is a drop-in replacement for the built-in
+    /// XRI XRGrabInteractable, that allows for flexible multi-handed interactions.
+    /// ObjectManipulator doesn't track controller velocity, so for precise fast-paced
+    /// throwing interactions that only need one hand, XRGrabInteractable may
+    /// give better results.
+    /// </remarks>
     [RequireComponent(typeof(ConstraintManager))]
     [AddComponentMenu("MRTK/Spatial Manipulation/Object Manipulator")]
     public class ObjectManipulator : StatefulInteractable
@@ -55,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private Transform hostTransform = null;
 
         /// <summary>
-        /// Transform that will be dragged. Defaults to the object of the component.
+        /// Transform to be manipulated. Defaults to the object of the component.
         /// </summary>
         public Transform HostTransform
         {
@@ -68,24 +79,30 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 return hostTransform;
             }
-            set => hostTransform = value;
+            set
+            {
+                if (interactorsSelecting.Count != 0)
+                {
+                    Debug.LogWarning("Changing the host transform while the object is being manipulated is not yet supported. " + 
+                        "Check interactorsSelecting.Count before changing the host transform.");
+                    return;
+                }
+                if (hostTransform != value )
+                {
+                    hostTransform = value;
+
+                    // If we're using constraints, make sure to re-initialize
+                    // the constraints manager with a fresh HostTransform.
+                    if (constraintsManager != null)
+                    {
+                        constraintsManager.Setup(new MixedRealityTransform(HostTransform));
+                    }
+                  
+                    // Re-aquire reference to the rigidbody.
+                    rigidBody = HostTransform.GetComponent<Rigidbody>();
+                }
+            }
         }
-
-        // TODO: Interactable needs support for this.
-
-        // [SerializeField]
-        // [EnumFlags]
-        // [Tooltip("Can manipulation be done only with one hand, only with two hands, or with both?")]
-        // private ManipulationHandFlags manipulationType = ManipulationHandFlags.OneHanded | ManipulationHandFlags.TwoHanded;
-
-        // /// <summary>
-        // /// Can manipulation be done only with one hand, only with two hands, or with both?
-        // /// </summary>
-        // public ManipulationHandFlags ManipulationType
-        // {
-        //     get => manipulationType;
-        //     set => manipulationType = value;
-        // }
 
         [SerializeField]
         [EnumFlags]
@@ -515,7 +532,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 base.OnSelectEntered(args);
 
-                if (rigidBody != null)
+                // Only record rigidbody settings if this is the *first*
+                // selection event! Otherwise, we'll record the during-interaction
+                // rigidbody information, which we've already dirtied.
+                if (rigidBody != null && interactorsSelecting.Count == 1)
                 {
                     wasGravity = rigidBody.useGravity;
                     wasKinematic = rigidBody.isKinematic;
@@ -547,7 +567,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 base.OnSelectExited(args);
 
-                if (rigidBody != null)
+                // Only release the rigidbody (restore rigidbody settings/configuration)
+                // if this is the last select event!
+                if (rigidBody != null && interactorsSelecting.Count == 0)
                 {
                     ReleaseRigidBody(rigidBody.velocity, rigidBody.angularVelocity);
                 }
@@ -749,7 +771,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // We need to query the raw device rotation from the interactor; however,
             // the controller may have its rotation bound to the pointerRotation, which is unsuitable
-            // for modelling rotations with far rays. Therefore, we cast down to the base TrackedDevice,
+            // for modeling rotations with far rays. Therefore, we cast down to the base TrackedDevice,
             // and query the device rotation directly. If any of this is un-castable, we return the
             // interactor's attachTransform's rotation.
             if (interactor is XRBaseControllerInteractor controllerInteractor &&

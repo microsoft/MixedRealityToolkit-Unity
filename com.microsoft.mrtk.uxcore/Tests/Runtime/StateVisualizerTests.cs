@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
         [UnityTest]
         /// <summary>
-        /// Tests to see whether StateVisualizer can propertly evaluate/execute a custom effect,
+        /// Tests to see whether StateVisualizer can properly evaluate/execute a custom effect,
         /// defined above (CustomTestEffect).
         /// </summary>
         public IEnumerator TestCustomEffect()
