@@ -6,110 +6,112 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// A dedicated script for controlling hand menus. Best used in conjuction with
+    /// A dedicated script for controlling hand menus. Best used in conjunction with
     /// a Canvas-based menu object, this will automatically position the menu
-    /// to conform to the edge of a user's hand, with proper spacing/padding as well
+    /// to conform to the edge of a user's hand, with proper spacing/Padding as well
     /// as logic for switching between hands.
     /// </summary>
     internal class HandMenu : MonoBehaviour
     {
-        [SerializeField]
-        [Tooltip("The visible root of the hand menu object. This is the object that " +
-                 "will be enabled/disabled and positioned to fit the hand.")]
-        private GameObject visibleRoot;
-
         /// <summary>
         /// The visible root of the hand menu object. This is the
         /// object that will be enabled/disabled and positioned to fit the hand.
         /// </summary>
-        public GameObject VisibleRoot { get => visibleRoot; set => visibleRoot = value; }
-
-        [SerializeField]
-        [Tooltip("A bitflag representing the hands that should be used for this menu. " +
-                 "If both hands are selected, the menu will be visible on either.")]
-        private Handedness target;
+        [field: SerializeField, Tooltip("The visible root of the hand menu object. " +
+            "This is the object that will be enabled/disabled and positioned to fit the hand.")]
+        public GameObject VisibleRoot { get; set; }
 
         /// <summary>
         /// A bitflag representing the hands that should be used for this menu.
         /// If both hands are selected, the menu will be visible on either.
         /// </summary>
-        public Handedness Target { get => target; set => target = value; }
-
-        [SerializeField]
-        [Tooltip("The mapping between the dot product and the activation amount.")]
-        private AnimationCurve activationCurve = AnimationCurve.Linear(0, 0, 1, 1.4f);
+        [field: SerializeField, Tooltip("A bitflag representing the hands that should be used for this menu. " +
+            "If both hands are selected, the menu will be visible on either.")]
+        public Handedness Target { get; set; }
 
         /// <summary>
         /// The mapping between the dot product and the activation amount.
         /// </summary>
-        public AnimationCurve ActivationCurve { get => activationCurve; set => activationCurve = value; }
-
-        [SerializeField]
-        [Tooltip("The minimum view angle (angle between the hand and the user's view direction) " +
-                 "at which the menu can activate.")]
-        private float minimumViewAngle = 45f;
+        [field: SerializeField, Tooltip("The mapping between the dot product and the activation amount.")]
+        public AnimationCurve ActivationCurve { get; set; } = AnimationCurve.Linear(0, 0, 1, 1.4f);
 
         /// <summary>
         /// The minimum view angle (angle between the hand and the user's view direction)
         /// at which the menu can activate.
         /// </summary>
-        public float MinimumViewAngle { get => minimumViewAngle; set => minimumViewAngle = value; }
+        [field: SerializeField, Tooltip("The minimum view angle (angle between the hand and the " +
+            "user's view direction) at which the menu can activate.")]
+        public float MinimumViewAngle { get; set; } = 45f;
 
-        [SerializeField]
-        [Tooltip("The input action representing the left hand's position. " +
-                 "This is used if no joint data is available.")]
-        private InputActionProperty leftHandPosition = new InputActionProperty(
+        /// <summary>
+        /// The input action representing the left hand's position.
+        /// This is used if no joint data is available.
+        /// </summary>
+        [field: SerializeField, Tooltip("The input action representing the left hand's position. " +
+            "This is used if no joint data is available.")]
+        public InputActionProperty LeftHandPosition = new InputActionProperty(
             new InputAction(binding: "<XRController>{LeftHand}/devicePosition")
         );
 
-        [SerializeField]
-        [Tooltip("The input action representing the left hand's rotation. " +
-                 "This is used if no joint data is available.")]
-        private InputActionProperty leftHandRotation = new InputActionProperty(
+        /// <summary>
+        /// The input action representing the left hand's rotation.
+        /// This is used if no joint data is available.
+        /// </summary>
+        [field: SerializeField, Tooltip("The input action representing the left hand's rotation. " +
+            "This is used if no joint data is available.")]
+        public InputActionProperty LeftHandRotation = new InputActionProperty(
             new InputAction(binding: "<XRController>{LeftHand}/deviceRotation")
         );
 
-        [SerializeField]
-        [Tooltip("The input action representing the right hand's position. " +
+        /// <summary>
+        /// The input action representing the right hand's position.
+        /// This is used if no joint data is available.
+        /// </summary>
+        [field: SerializeField, Tooltip("The input action representing the right hand's position. " +
                  "This is used if no joint data is available.")]
-        private InputActionProperty rightHandPosition = new InputActionProperty(
+        public InputActionProperty RightHandPosition = new InputActionProperty(
             new InputAction(binding: "<XRController>{RightHand}/devicePosition")
         );
-
-        [SerializeField]
-        [Tooltip("The input action representing the left hand's rotation. " +
+        
+        /// <summary>
+        /// The input action representing the right hand's rotation.
+        /// This is used if no joint data is available.
+        /// </summary>
+        [field: SerializeField, Tooltip("The input action representing the right hand's rotation. " +
                  "This is used if no joint data is available.")]
-        private InputActionProperty rightHandRotation = new InputActionProperty(
+        public InputActionProperty RightHandRotation = new InputActionProperty(
             new InputAction(binding: "<XRController>{RightHand}/deviceRotation")
         );
 
         [Header("Menu Positioning")]
 
-        [SerializeField]
-        [Tooltip("This is automatically set if a Canvas-based menu is used. " +
+        /// <summary>
+        /// This is automatically set if a Canvas-based menu is used. 
+        /// If a non-canvas object is used, this should be set to approximate
+        /// the 2D footprint of the menu object.
+        /// </summary>
+        [field: SerializeField, Tooltip("This is automatically set if a Canvas-based menu is used. " +
                  "If a non-canvas object is used, this should be set to approximate " +
                  "2D footprint of the menu object.")]
-        private Rect menuSize;
-
-        [SerializeField]
-        [Tooltip("The amount of padding between the edge of the user's hand " +
-                 "and the edge of the menu.")]
-        private float padding = 0.04f;
+        public Rect MenuSize;
 
         /// <summary>
         /// The amount of padding between the edge of the user's hand and the edge of the menu.
         /// </summary>
-        public float Padding { get => padding; set => padding = value; }
+        [field: SerializeField, Tooltip("The amount of padding between the edge of the user's hand " +
+            "and the edge of the menu.")]
+        public float Padding { get; set; } = 0.04f;
 
         #region Private Fields
 
-        // The rect transform located at the visibleRoot (if one exists)
+        // The rect transform located at the VisibleRoot (if one exists)
         private RectTransform rootRectTransform = null;
 
         // The hand target we're currently targeting.
@@ -121,14 +123,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #endregion Private Fields
 
-        private void Start()
+        protected virtual void Start()
         {
-            if (visibleRoot != null)
+            if (VisibleRoot != null)
             {
-                rootRectTransform = visibleRoot.GetComponent<RectTransform>();
+                rootRectTransform = VisibleRoot.GetComponent<RectTransform>();
                 if (rootRectTransform != null)
                 {
-                    menuSize.width = rootRectTransform.sizeDelta.x * rootRectTransform.lossyScale.x;
+                    MenuSize.width = rootRectTransform.sizeDelta.x * rootRectTransform.lossyScale.x;
                 }
             }
 
@@ -136,32 +138,48 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 Menu = this,
                 Hand = Handedness.Left,
-                PositionAction = leftHandPosition.action,
-                RotationAction = leftHandRotation.action,
+                PositionAction = LeftHandPosition.action,
+                RotationAction = LeftHandRotation.action,
                 Opposite = rightHand,
-                Padding = padding
+                Padding = Padding
             };
 
             rightHand = new TargetedHand()
             {
                 Menu = this,
                 Hand = Handedness.Right,
-                PositionAction = rightHandPosition.action,
-                RotationAction = leftHandPosition.action,
+                PositionAction = RightHandPosition.action,
+                RotationAction = LeftHandPosition.action,
                 Opposite = leftHand,
-                Padding = padding
+                Padding = Padding
             };
         }
 
-        private void Update()
+        protected virtual void OnEnable()
+        {
+            LeftHandPosition.EnableDirectAction();
+            RightHandPosition.EnableDirectAction();
+            LeftHandRotation.EnableDirectAction();
+            RightHandRotation.EnableDirectAction();
+        }
+
+        protected virtual void OnDisable()
+        {
+            LeftHandPosition.DisableDirectAction();
+            RightHandPosition.DisableDirectAction();
+            LeftHandRotation.DisableDirectAction();
+            RightHandRotation.DisableDirectAction();
+        }
+
+        protected virtual void Update()
         {
             Pose leftPose = default, rightPose = default;
-            bool gotLeftAttach = (target & Handedness.Left) != 0 && leftHand.TryGetAttachPose(out leftPose);
-            bool gotRightAttach = (target & Handedness.Right) != 0 && rightHand.TryGetAttachPose(out rightPose);
+            bool gotLeftAttach = (Target & Handedness.Left) != 0 && leftHand.TryGetAttachPose(out leftPose);
+            bool gotRightAttach = (Target & Handedness.Right) != 0 && rightHand.TryGetAttachPose(out rightPose);
 
             // Construct bitflag for which hand targets are actually available.
             Handedness available = (((gotLeftAttach && leftHand.Activation > 0) ? Handedness.Left : Handedness.None) |
-                                   ((gotRightAttach && rightHand.Activation > 0) ? Handedness.Right : Handedness.None)) & target;
+                                   ((gotRightAttach && rightHand.Activation > 0) ? Handedness.Right : Handedness.None)) & Target;
 
             TargetedHand lastTarget = currentTarget;
 
@@ -199,15 +217,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             bool snapToNewHand = lastTarget != currentTarget && currentTarget.Activation < 0.5f;
 
             // No target? Disable the menu.
-            if (currentTarget == null && visibleRoot.activeSelf)
+            if (currentTarget == null && VisibleRoot.activeSelf)
             {
-                visibleRoot.SetActive(false); // Disable the menu.
+                VisibleRoot.SetActive(false); // Disable the menu.
             }
             else // Otherwise, make sure it's visible.
             {
-                if (visibleRoot.activeSelf == false)
+                if (VisibleRoot.activeSelf == false)
                 {
-                    visibleRoot.SetActive(true);
+                    VisibleRoot.SetActive(true);
                     // If we've just set the menu active,
                     // make sure we snap to the hand immediately.
                     snapToNewHand = true;
@@ -222,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // If the menu is sufficiently "deactivated", just disable it.
-            visibleRoot.SetActive(currentTarget.Activation > 0.15f);
+            VisibleRoot.SetActive(currentTarget.Activation > 0.15f);
 
             // "Genie effect".
             transform.localScale = Vector3.one * currentTarget.Activation;
@@ -341,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     Activation *= Mathf.InverseLerp(25, 0, viewAngle);
                 }
 
-                Activation = Mathf.Clamp01(Menu.activationCurve.Evaluate(Activation));
+                Activation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(Activation));
 
                 if (Activation >= 1.0f)
                 {
@@ -349,7 +367,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
 
                 // Finally, compute the actual attach pose.
-                return GetAttach(anchor, oppositeHandPose, offsetVector, Padding, Activation);
+                pose = GetAttach(anchor, oppositeHandPose, offsetVector, Padding, Activation);
+                return true;
             }
 
             /// <summary>
@@ -370,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Pose anchor = new Pose(
                     gripPose.position,
                     Quaternion.LookRotation(
-                        -gripPose.right * (hand == XRNode.LeftHand ? 1 : -1),
+                        -gripPose.right * (Hand == XRNode.LeftHand ? 1 : -1),
                         gripPose.forward
                     )
                 );
@@ -383,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // the user's view direction. The activation amount is then computed
                 // from this dot product as evaluated by the activation curve.
                 activation = Mathf.Clamp01(
-                    activationCurve.Evaluate(
+                    ActivationCurve.Evaluate(
                         Vector3.Dot(
                             anchor.rotation * Vector3.forward,
                             CameraCache.Main.transform.forward
@@ -401,14 +420,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // Computes the hand menu attach pose from a hand/controller agnostic
             // set of poses and information.
             private Pose GetAttach(Pose anchor, Pose? opposite,
-                                    Vector3 offsetVector, float padding,
+                                    Vector3 offsetVector, float Padding,
                                     float activation)
             {
                 OppositeHandDistance = 1.0f;
 
                 // Compute the attach pose. The position is the anchor position offset
-                // along the offset vector, by the padding amount.
-                attach.position = anchor.position + offsetVector * padding;
+                // along the offset vector, by the Padding amount.
+                attach.position = anchor.position + offsetVector * Padding;
 
                 // The rotation is the anchor's rotation, mixed with a 0-90 rotation blended by
                 // the activation amount. This results in a procedural "flipping" effect as the user
@@ -420,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // be used to dampen the motion of the hand menu as the opposite hand approaches.
                 if (opposite.HasValue)
                 {
-                    Vector3 menuCenter = attach.position + offsetVector * (menuSize.width * 0.5f);
+                    Vector3 menuCenter = attach.position + offsetVector * (MenuSize.width * 0.5f);
                     OppositeHandDistance = Mathf.Clamp01(
                         Mathf.InverseLerp(0.05f, 0.2f, (opposite.Value.position - menuCenter).magnitude)
                     );
@@ -438,8 +457,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 pose = default;
                 if (positionAction == null || rotationAction == null) { return false; }
                 
-                if (!positionAction.enabled) { positionAction.Enable(); }
-                if (!rotationAction.enabled) { rotationAction.Enable(); }
 
                 // If the device isn't tracked, no pose is available.
                 TrackedDevice device = positionAction.activeControl?.device as TrackedDevice;
