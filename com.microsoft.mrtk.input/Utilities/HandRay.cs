@@ -7,6 +7,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class HandRay : IHandRay
     {
+        /// <summary>
+        /// Constructs the hand ray generator with an optional
+        /// customized half-life value for the smoothing/filtering function.
+        /// A smaller half-life results in less smoothing.
+        /// </summary>
+        public HandRay(float halfLife = 0.01f)
+        {
+            stabilizedRayHalfLife = halfLife;
+            stabilizedRay = new StabilizedRay(stabilizedRayHalfLife);
+        }
+
         /// <inheritdoc />
         public Ray Ray
         {
@@ -58,9 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float CursorBeamUpTolerance = 0.8f;
 
         // Smoothing factor for ray stabilization.
-        private const float StabilizedRayHalfLife = 0.01f;
+        private readonly float stabilizedRayHalfLife = 0.01f;
 
-        private readonly StabilizedRay stabilizedRay = new StabilizedRay(StabilizedRayHalfLife);
+        private readonly StabilizedRay stabilizedRay;
         private Vector3 palmNormal;
         private Vector3 headForward;
 

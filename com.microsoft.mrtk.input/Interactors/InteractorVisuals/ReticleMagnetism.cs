@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Sometimes things can be destroyed in between when we detect them
                 // and when we want to magnetize to them!
-                if (nearbyCollider == null) { continue; }
+                if (nearbyCollider == null || (nearbyCollider is MeshCollider meshCollider && !meshCollider.convex)) { continue; }
 
                 Vector3 nearestPoint = nearbyCollider.ClosestPoint(root);
                 float distance = Vector3.Distance(root, nearestPoint);

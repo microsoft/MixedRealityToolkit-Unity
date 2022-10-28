@@ -116,6 +116,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
+        /// Returns a position placed in front of the user's head, offset forward by the given distance.
+        /// </summary>
+        public static Vector3 InFrontOfUser(float distanceFromHead = 0.4f)
+        {
+            return Camera.main.transform.position + Camera.main.transform.forward * distanceFromHead;
+        }
+
+        /// <summary>
+        /// Returns a position placed in front of the user's head, offset by the given vector, which
+        /// is transformed by the camera's reference frame.
+        /// </summary>
+        public static Vector3 InFrontOfUser(Vector3 offset)
+        {
+            return Camera.main.transform.position + Camera.main.transform.TransformVector(offset);
+        }
+
+        /// <summary>
         /// Destroys the MRTK rig object.
         /// </summary>
         public static void TeardownRig()
@@ -130,7 +147,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Creates the simulated devices (two <see cref="SimulatedController"/>s and a <see cref="SimulatedHMD"/>)
         /// as well as the associated <see cref="ControllerControls"/> for each.
         /// </summary>
-        public static void SetupSimulation()
+        /// <param name="rayHalfLife">
+        /// Optional value for ray smoothing halflife, handy for suppressing smoothing during automated tests.
+        /// </param>
+        public static void SetupSimulation(float rayHalfLife = 0.01f)
         {
             // See comments for UseSlowTestController for why this is reset to false on each test case.
             UseSlowTestController = false;
@@ -139,9 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             rightControllerSettings = new ControllerSimulationSettings();
 
             leftController = new SimulatedController(
-                Handedness.Left, leftControllerSettings, Vector3.zero);
+                Handedness.Left, leftControllerSettings, Vector3.zero, rayHalfLife);
             rightController = new SimulatedController(
-                Handedness.Right, rightControllerSettings, Vector3.zero);
+                Handedness.Right, rightControllerSettings, Vector3.zero, rayHalfLife);
 
             leftControls = new ControllerControls();
             rightControls = new ControllerControls();
@@ -203,31 +223,34 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             ControllerControls controls = handedness == Handedness.Right ? rightControls : leftControls;
-            ControllerSimulationMode controllerSimulationMode = handedness == Handedness.Right ? rightControllerSettings.SimulationMode : leftControllerSettings.SimulationMode;
             ControllerAnchorPoint anchorPoint = handedness == Handedness.Right ? rightControllerSettings.AnchorPoint : leftControllerSettings.AnchorPoint;
 
             float startPinch = controls.TriggerAxis;
-            bool shouldUseRayVector = controllerSimulationMode == ControllerSimulationMode.ArticulatedHand;
 
             for (int i = 1; i <= numSteps; i++)
             {
                 float t = i / (float)numSteps;
 
-                Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
-                Quaternion handRot = Quaternion.Slerp(startRot, endRot, t);
+                Pose handPose = new Pose(
+                    Vector3.Lerp(startPos, endPos, t),
+                    Quaternion.Lerp(startRot, endRot, t)
+                );
                 float pinchAmount = Mathf.Lerp(startPinch, isPinching ? 1 : 0, t);
 
                 controls.TriggerAxis = pinchAmount;
                 switch (anchorPoint)
                 {
+                    // We always pass in useRayVector = false during unit tests, because we always want the pointerPosition
+                    // to match the devicePosition so that we can aim the "hand" wherever we'd like. Otherwise, we'd
+                    // be using the generated hand-joint-based ray vector which is unreliable to aim from automated tests.
                     case ControllerAnchorPoint.Device:
-                        controller.UpdateAbsolute(handPos, handRot, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
+                        controller.UpdateAbsolute(handPose, controls, ControllerRotationMode.UserControl, false);
                         break;
                     case ControllerAnchorPoint.IndexFinger:
-                        controller.UpdateAbsoluteWithPokeAnchor(handPos, handRot, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
+                        controller.UpdateAbsoluteWithPokeAnchor(handPose, controls, ControllerRotationMode.UserControl, false);
                         break;
                     case ControllerAnchorPoint.Grab:
-                        controller.UpdateAbsoluteWithGrabAnchor(handPos, handRot, controls, ControllerRotationMode.UserControl, shouldUseRayVector);
+                        controller.UpdateAbsoluteWithGrabAnchor(handPose, controls, ControllerRotationMode.UserControl, false);
                         break;
                 }
 

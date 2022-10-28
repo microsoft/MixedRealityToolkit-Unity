@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using NUnit.Framework;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Core.Tests;
+using Microsoft.MixedReality.Toolkit.Input.Simulation;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -22,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // Instantiate a cube and attach the StatefulInteractable component
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             StatefulInteractable interactable = cube.AddComponent<StatefulInteractable>();
-            cube.transform.position = new Vector3(0, 0, 2);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(1.5f);
+            cube.transform.localScale = Vector3.one * 0.2f;
 
             // Configure the StatefulInteractable component to use far ray dwell
             const float dwellTime = 1f;
@@ -36,7 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Show the hand and confirm the interactable is being hovered but not selected yet
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f), true);
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+            yield return rightHand.AimAt(cube.transform.position);
+
             Assert.IsTrue(interactable.IsRayHovered,
                           "StatefulInteractable did not get RayHovered.");
             Assert.IsFalse(interactable.isSelected,
@@ -64,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // Instantiate a cube and attach the StatefulInteractable component
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             StatefulInteractable interactable = cube.AddComponent<StatefulInteractable>();
-            cube.transform.position = new Vector3(0, 0, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser();
             cube.transform.localScale = Vector3.one * 0.1f;
 
             // Configure the StatefulInteractable component to use gaze dwell

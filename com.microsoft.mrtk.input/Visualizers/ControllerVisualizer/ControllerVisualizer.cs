@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using Microsoft.MixedReality.Toolkit.Subsystems;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
@@ -113,7 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     useFallbackVisuals = HandsAggregator == null || !HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handNode, out _);
                     isSimulatedController = false;
                 }
-                InstantiateControllerVisuals(!isSimulatedController, useFallbackVisuals);
+
+                InstantiateControllerVisuals(inputDevice, !isSimulatedController, useFallbackVisuals);
             }
         }
 
@@ -125,11 +125,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly Quaternion controllerModelRotatedOffset = Quaternion.Euler(0, 180, 0);
 
         /// <summary>
-        /// Tries to instantiate controller visuals for the specified hand node.
+        /// Tries to instantiate controller visuals for the specified input device
         /// </summary>
+        /// <param name="inputDevice">The input device we want to generate visuals for</param>
         /// <param name="usePlatformVisuals">Whether or not to try to load visuals from the platform provider</param>
         /// <param name="useFallbackVisuals">Whether or not to use the fallback controller visuals</param>
-        private async void InstantiateControllerVisuals(bool usePlatformVisuals, bool useFallbackVisuals)
+        private async void InstantiateControllerVisuals(UnityInputSystem.InputDevice inputDevice, bool usePlatformVisuals, bool useFallbackVisuals)
         {
             // Disable any preexisting controller models before trying to render new ones.
             if (platformLoadedGameObject != null)
@@ -148,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Try to load the controller model from the platform
             if (usePlatformVisuals)
             {
-                platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(handNode.ToHandedness());
+                platformLoadedGameObject = await ControllerModelLoader.TryGenerateControllerModelFromPlatformSDK(inputDevice, handNode.ToHandedness());
                 if (platformLoadedGameObject != null)
                 {
                     // Platform models are "rotated" 180 degrees because their forward vector points towards the user.
@@ -162,6 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     controllerGameObject = platformLoadedGameObjectRoot;
                 }
+
             }
 
             // If the ControllerGameObject is still not initialized after this, then use the fallback model if told to
