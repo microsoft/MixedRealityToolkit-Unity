@@ -139,8 +139,37 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // A non-framerate-independent filtering to reduce jitter.
         private static readonly float perFrameFiltering = 0.4f;
 
+        // Minimum and maximum damping values for how much the menu
+        // should be damped as the opposite hand approaches.
         private static readonly float minHandNearDamping = 0.4f;
         private static readonly float maxHandNearDamping = 0.9f;
+
+        // Above this activation threshold, the menu will be considered "locked"
+        // and secondary activation factors like gaze and hand-flatness will be ignored.
+        private static readonly float lockThreshold = 0.9f;
+
+        // Below this activation threshold, if the menu is locked, it will be unlocked
+        // and secondary activation factors like gaze and hand-flatness will be considered.
+        private static readonly float unlockThreshold = 0.2f;
+
+        // The range (in degrees) between the Menu.MinimumViewAngle and the angle at which
+        // the menu will be completely deactivated by gaze.
+        private static readonly float gazeLerpRange = 10f;
+
+        // We don't know exactly how large the user's hand is,
+        // so we'll make an educated guess when we're attaching a hand menu
+        // to a motion controller.
+        private static readonly float controllerBasedHandRadius = 0.04f;
+
+        // Minimum flatness value. Below this, the menu won't be able to activate.
+        private static readonly float minFlatness = 0.75f;
+
+        // Maximum flatness value. Above this, the menu will be fully activated.
+        private static readonly float maxFlatness = 0.9f;
+
+        // An additional small # of degrees to bias the rotation of the menu towards
+        // the user for easier use.
+        private static readonly float LookTowardsUserDegrees = 15;
 
         #endregion Hand-tuned constants
 
@@ -288,37 +317,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             public InputAction PositionAction;
             public InputAction RotationAction;
 
-            #region Hand-tuned constants
-
-            // Above this activation threshold, the menu will be considered "locked"
-            // and secondary activation factors like gaze and hand-flatness will be ignored.
-            private readonly float lockThreshold = 0.9f;
-
-            // Below this activation threshold, if the menu is locked, it will be unlocked
-            // and secondary activation factors like gaze and hand-flatness will be considered.
-            private readonly float unlockThreshold = 0.2f;
-
-            // The range (in degrees) between the Menu.MinimumViewAngle and the angle at which
-            // the menu will be completely deactivated by gaze.
-            private readonly float gazeLerpRange = 10f;
-
-            // We don't know exactly how large the user's hand is,
-            // so we'll make an educated guess when we're attaching a hand menu
-            // to a motion controller.
-            private readonly float controllerBasedHandRadius = 0.04f;
-
-            // Minimum flatness value. Below this, the menu won't be able to activate.
-            private readonly float minFlatness = 0.75f;
-
-            // Maximum flatness value. Above this, the menu will be fully activated.
-            private readonly float maxFlatness = 0.9f;
-
-            // An additional small # of degrees to bias the rotation of the menu towards
-            // the user for easier use.
-            private readonly float LookTowardsUserDegrees = 15;
-
-            #endregion
-
             /// <summary>
             /// Tries to get the attach pose from the hand joints on the given <paramref name="hand"/>.
             /// </summary>
@@ -394,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                                                     ringTipPose.Position - indexTipPose.Position).normalized;
                     fingerNormal *= (Hand == Handedness.Right) ? 1.0f : -1.0f;
                     float flatness = (Vector3.Dot(fingerNormal, palm.Up) + 1.0f) / 2.0f;
-                    tempActivation *= Mathf.InverseLerp(minFlatness, maxFlatness, flatness);
+                    tempActivation *= Mathf.InverseLerp(HandMenu.minFlatness, HandMenu.maxFlatness, flatness);
                 }
 
                 tempActivation = Mathf.Clamp01(Menu.ActivationCurve.Evaluate(tempActivation));
