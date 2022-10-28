@@ -91,18 +91,5 @@ namespace Microsoft.MixedReality.Toolkit
                 pose.Radius
             );
         }
-
-        /// <summary>
-        /// Transforms a pose from rigspace to worldspace.
-        /// </summary>
-        public static Pose TransformPose(Pose playspaceLocalPose)
-        {
-            // Null-checking Unity objects can be expensive. Caching this here cuts two null checks into one.
-            Transform referenceTransform = ReferenceTransform;
-            return new Pose(
-                referenceTransform.TransformPoint(playspaceLocalPose.position),
-                referenceTransform.rotation * playspaceLocalPose.rotation
-            );
-        }
     }
 }
