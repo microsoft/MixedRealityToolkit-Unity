@@ -29,81 +29,58 @@ namespace Microsoft.MixedReality.Toolkit
             OneWayToggle
         }
 
-        [SerializeField]
-        [Tooltip("The toggle behavior of the interactable. Set OneWayToggle for radio buttons.")]
-        private ToggleType toggleMode = ToggleType.Button;
-
         /// <summary>
         /// The toggle behavior of the interactable. Set OneWayToggle for radio buttons.
         /// </summary>
-        public ToggleType ToggleMode
-        {
-            get => toggleMode;
-            set => toggleMode = value;
-        }
-
-        [SerializeField]
-        [Tooltip("The threshold of variable Selectedness at which the interactable will be selected.")]
-        private float selectThreshold = 0.9f;
+        [field: SerializeField, FormerlySerializedAs("toggleMode"),
+            Tooltip("The toggle behavior of the interactable. Set OneWayToggle for radio buttons.")]
+        public ToggleType ToggleMode { get; set; } = ToggleType.Button;
 
         /// <summary>
         /// The threshold of variable Selectedness at which the interactable will be selected.
         /// </summary>
-        public float SelectThreshold { get => selectThreshold; set => selectThreshold = value; }
-
-        [SerializeField]
-        [Tooltip("The threshold of variable Selectedness at which the interactable will be deselected.")]
-        private float deselectThreshold = 0.1f;
+        [field: SerializeField, FormerlySerializedAs("selectThreshold"),
+            Tooltip("The threshold of variable Selectedness at which the interactable will be selected.")]
+        public float SelectThreshold { get; set; } = 0.9f;
 
         /// <summary>
         /// The threshold of variable Selectedness at which the interactable will be deselected.
         /// </summary>
-        public float DeselectThreshold { get => deselectThreshold; set => deselectThreshold = value; }
-
-        [SerializeField]
-        [Tooltip("Should the user be required to fully select and deselect the interactable for Click and Toggle to fire?")]
-        private bool triggerOnRelease = true;
+        [field: SerializeField, FormerlySerializedAs("deselectThreshold"),
+            Tooltip("The threshold of variable Selectedness at which the interactable will be deselected.")]
+        public float DeselectThreshold { get; set; } = 0.1f;
 
         /// <summary>
         /// Should the user be required to fully select and deselect the interactable for Click and Toggle to fire?
         /// </summary>
-        public bool TriggerOnRelease { get => triggerOnRelease; set => triggerOnRelease = value; }
-
-        [SerializeField]
-        [Tooltip("Should gazing at the object for a certain amount of time select it?")]
-        private bool useGazeDwell = false;
+        [field: SerializeField, FormerlySerializedAs("triggerOnRelease"),
+            Tooltip("Should the user be required to fully select and deselect the interactable for Click and Toggle to fire?")]
+        public bool TriggerOnRelease { get; set; } = true;
 
         /// <summary>
         /// Should gazing at the object for a certain amount of time select it?
         /// </summary>
-        public bool UseGazeDwell { get => useGazeDwell; set => useGazeDwell = value; }
-
-        [SerializeField]
-        [Tooltip("Time required for gaze dwell")]
-        private float gazeDwellTime = 1.0f;
+        [field: SerializeField, FormerlySerializedAs("useGazeDwell"),
+            Tooltip("Should gazing at the object for a certain amount of time select it?")]
+        public bool UseGazeDwell { get; set; } = false;
 
         /// <summary>
         /// Time required for gaze dwell
         /// </summary>
-        public float GazeDwellTime { get => gazeDwellTime; set => gazeDwellTime = value; }
-
-        [SerializeField]
-        [Tooltip("Should hovering the object with a far ray for a certain amount of time select it?")]
-        private bool useFarDwell = false;
+        [field: SerializeField, FormerlySerializedAs("gazeDwellTime"), Tooltip("Time required for gaze dwell")]
+        public float GazeDwellTime { get; set; } = 1.0f;
 
         /// <summary>
         /// Should hovering the object with a far ray for a certain amount of time select it?
         /// </summary>
-        public bool UseFarDwell { get => useFarDwell; set => useFarDwell = value; }
-
-        [SerializeField]
-        [Tooltip("Time required for far ray dwell")]
-        private float farDwellTime = 1.0f;
+        [field: SerializeField, FormerlySerializedAs("useFarDwell"), Tooltip("Should hovering the object with a far ray for a certain amount of time select it?")]
+        public bool UseFarDwell { get; set; } = false;
 
         /// <summary>
         /// Time required for far ray dwell
         /// </summary>
-        public float FarDwellTime { get => farDwellTime; set => farDwellTime = value; }
+        [field: SerializeField, FormerlySerializedAs("farDwellTime"), Tooltip("Time required for far ray dwell")]
+        public float FarDwellTime { get; set; } = 1.0f;
 
         [SerializeField]
         [Tooltip("If true, voice command can be used to trigger \"select\" of the interactable")]
@@ -149,66 +126,46 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
         }
-
-        [SerializeField]
-        [Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
-        private bool voiceRequiresFocus = true;
-
+        
         /// <summary>
         /// Does the voice command require this to have focus?
         /// If true, then the voice command will only respond to voice commands while this Interactable has focus.
         /// </summary>
-        public bool VoiceRequiresFocus
-        {
-            get => voiceRequiresFocus;
-        }
+        [field: SerializeField, FormerlySerializedAs("voiceRequiresFocus"),
+            Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
+        public bool VoiceRequiresFocus { get; private set; } = true;
 
         #endregion Settings
 
         #region Public state
 
-        [Obsolete("Please use Selectedness() instead.")]
-        public float PinchAmount => Selectedness();
-
-        [SerializeField]
-        [EditableTimedFlag]
-        [Tooltip("Is the interactable toggled?")]
-        private TimedFlag isToggled = new TimedFlag();
-
         /// <summary>
         /// Is the interactable toggled?
         /// </summary>
-        public TimedFlag IsToggled => isToggled;
+        [field: SerializeField, EditableTimedFlag, FormerlySerializedAs("isToggled"), Tooltip("Is the interactable toggled?")]
+        public TimedFlag IsToggled { get; private set; } = new TimedFlag();
 
         #endregion Public state
 
         #region Events
 
-        [SerializeField]
-        [Tooltip("Fired when the interactable is fully clicked (select + deselect)")]
-        [FormerlySerializedAs("OnClicked")]
-        private UnityEvent onClicked = new UnityEvent();
-
         /// <summary>
         /// Fired when the interactable is fully clicked (select + deselect)
         /// </summary>
-        public UnityEvent OnClicked => onClicked;
-
-        [SerializeField]
-        private UnityEvent onEnabled = new UnityEvent();
+        [field: SerializeField, FormerlySerializedAs("onClicked"), Tooltip("Fired when the interactable is fully clicked")]
+        public UnityEvent OnClicked { get; private set; } = new UnityEvent();
 
         /// <summary>
         /// Fired when the interactable is enabled
         /// </summary>
-        public UnityEvent OnEnabled => onEnabled;
-
-        [SerializeField]
-        private UnityEvent onDisabled = new UnityEvent();
+        [field: SerializeField, FormerlySerializedAs("onEnabled"), Tooltip("Fired when the interactable is enabled")]
+        public UnityEvent OnEnabled { get; private set; } = new UnityEvent();
 
         /// <summary>
         /// Fired when the interactable is disabled
         /// </summary>
-        public UnityEvent OnDisabled => onDisabled;
+        [field: SerializeField, FormerlySerializedAs("onDisabled"), Tooltip("Fired when the interactable is disabled")]
+        public UnityEvent OnDisabled { get; private set; } = new UnityEvent();
 
         #endregion
 
@@ -217,13 +174,13 @@ namespace Microsoft.MixedReality.Toolkit
         protected override void OnEnable()
         {
             base.OnEnable();
-            onEnabled.Invoke();
+            OnEnabled.Invoke();
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            onDisabled.Invoke();
+            OnDisabled.Invoke();
         }
 
         protected override void Awake()
