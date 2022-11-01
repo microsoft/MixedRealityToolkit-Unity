@@ -897,6 +897,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return null;
 
             yield return hand.Move(Vector3.forward * 3f);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.Less(testObject.transform.position.z, backgroundObject.transform.position.z);
             Assert.AreEqual(1, collisionListener.CollisionCount);
@@ -943,6 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return null;
 
             yield return hand.Move(Vector3.forward * 3f);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.AreNotEqual(Vector3.zero, backgroundRigidbody.velocity);
             Assert.AreEqual(1, collisionListener.CollisionCount);
