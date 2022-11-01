@@ -9,6 +9,7 @@
         "Unity.InputSystem.TestFramework",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
+        "Unity.XR.CoreUtils",
         "Unity.XR.Interaction.Toolkit"
     ],
     "includePlatforms": [],

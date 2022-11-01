@@ -109,6 +109,7 @@
         "com.microsoft.mrtk.core": "3.0.0-development",
         "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.unity.inputsystem": "1.3.0",
+        "com.unity.xr.arfoundation": "4.2.6",
         "com.unity.xr.interaction.toolkit": "2.0.3",
         "com.unity.xr.core-utils": "2.1.0"
       }
@@ -342,21 +343,23 @@
       }
     },
     "com.unity.xr.arfoundation": {
-      "version": "4.1.7",
+      "version": "4.2.6",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.xr.arsubsystems": "4.1.7",
-        "com.unity.xr.management": "4.0.1"
+        "com.unity.xr.arsubsystems": "4.2.6",
+        "com.unity.xr.management": "4.0.1",
+        "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.arsubsystems": {
-      "version": "4.1.10",
+      "version": "4.2.6",
       "depth": 2,
       "source": "registry",
       "dependencies": {
-        "com.unity.subsystemregistration": "1.1.0"
+        "com.unity.subsystemregistration": "1.1.0",
+        "com.unity.xr.management": "4.0.1"
       },
       "url": "https://packages.unity.com"
     },
