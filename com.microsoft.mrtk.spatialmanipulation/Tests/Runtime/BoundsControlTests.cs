@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                 boundsControlGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             }
 
-            boundsControlGameObject.transform.position = Vector3.forward * 0.75f;
+            boundsControlGameObject.transform.position = InputTestUtilities.InFrontOfUser(0.75f);
             boundsControlGameObject.transform.localScale = Vector3.one * 0.1f;
 
             BoundsControl boundsControl = boundsControlGameObject.AddComponent<BoundsControl>();
@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             }
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             Assert.IsFalse(bc.IsManipulated, "BC thought we were already manipulated");
 

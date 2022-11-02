@@ -48,10 +48,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             disabledInteractorTypes = SetUpProperty(nameof(disabledInteractorTypes));
         }
 
-        protected SerializedProperty SetUpProperty(string propertyName)
+        /// <summary>
+        /// Sets up a serialized property based on the name of the backing serialized field.
+        /// </summary>
+        protected SerializedProperty SetUpProperty(string serializedFieldName)
         {
-            serializedPropertyNames.Add(propertyName);
-            return serializedObject.FindProperty(propertyName);
+            serializedPropertyNames.Add(serializedFieldName);
+            return serializedObject.FindProperty(serializedFieldName);
+        }
+
+        /// <summary>
+        /// Sets up a serialized property based on the name of the autoproperty with an
+        /// implicitly-defindd backing serialized field.
+        /// </summary>
+        /// <seealso cref="SetUpProperty(string)"/>
+        /// <seealso cref="InspectorUIUtility.GetBackingField(string)"/>
+        protected SerializedProperty SetUpAutoProp(string autoPropName)
+        {
+            string backingField = InspectorUIUtility.GetBackingField(autoPropName);
+            return SetUpProperty(backingField);
         }
 
         protected override List<string> GetDerivedSerializedPropertyNames()
