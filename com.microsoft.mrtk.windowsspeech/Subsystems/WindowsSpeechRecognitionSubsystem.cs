@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         DisplayName = "MRTK Windows SpeechRecognition Subsystem",
         Author = "Microsoft",
         ProviderType = typeof(WindowsSpeechRecognitionProvider),
-        SubsystemTypeOverride = typeof(WindowsSpeechRecognitionSubsystem))]
+        SubsystemTypeOverride = typeof(WindowsSpeechRecognitionSubsystem),
+        ConfigType = typeof(WindowsSpeechRecognitionSubsystemConfig))]
     public class WindowsSpeechRecognitionSubsystem : SpeechRecognitionSubsystem
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -36,8 +37,54 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         class WindowsSpeechRecognitionProvider : Provider
         {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
+            /// <summary>
+            /// The confidence threshold for the recognizer to return its result.
+            /// </summary>
+            public ConfidenceLevel ConfidenceLevel => confidenceLevel;
+
+            /// <summary>
+            /// The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.
+            /// </summary>
+            public float InitialSilenceTimeoutSeconds
+            {
+                get => initialSilenceTimeoutSeconds;
+                set
+                {
+                    if (initialSilenceTimeoutSeconds != value)
+                    {
+                        initialSilenceTimeoutSeconds = value;
+                        if (dictationRecognizer != null)
+                        {
+                            dictationRecognizer.InitialSilenceTimeoutSeconds = value;
+                        }
+                    }
+                }
+            }
+
+            /// <summary>
+            /// The time length in seconds before dictation recognizer session ends due to lack of audio input.
+            /// </summary>
+            public float AutoSilenceTimeout
+            {
+                get => autoSilenceTimeout;
+                set
+                {
+                    if (autoSilenceTimeout != value)
+                    {
+                        autoSilenceTimeout = value;
+                        if (dictationRecognizer != null)
+                        {
+                            dictationRecognizer.AutoSilenceTimeoutSeconds = value;
+                        }
+                    }
+                }
+            }
+
+            private WindowsSpeechRecognitionSubsystemConfig config;
             private DictationRecognizer dictationRecognizer;
-            private ConfidenceLevel currentConfidenceLevel = ConfidenceLevel.Medium;
+            private ConfidenceLevel confidenceLevel;
+            private float initialSilenceTimeoutSeconds;
+            private float autoSilenceTimeout;
 #endif
 
             /// <summary>
@@ -49,6 +96,18 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 Debug.LogError("Cannot create WindowsSpeechRecognitionSubsystem because WindowsSpeechRecognitionSubsystem is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
             }
+
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
+            /// <inheritdoc/>
+            public override void Start()
+            {
+                base.Start();
+                config = XRSubsystemHelpers.GetConfiguration<WindowsSpeechRecognitionSubsystemConfig, WindowsSpeechRecognitionSubsystem>();
+                confidenceLevel = config.ConfidenceLevel;
+                initialSilenceTimeoutSeconds = config.InitialSilenceTimeoutSeconds;
+                autoSilenceTimeout = config.AutoSilenceTimeout;
+            }
+#endif
 
 
             /// <inheritdoc/>
@@ -70,11 +129,13 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// </summary>
             public void StartRecognition(ConfidenceLevel confidenceLevel)
             {
-                if (dictationRecognizer == null || currentConfidenceLevel != confidenceLevel)
+                if (dictationRecognizer == null || this.confidenceLevel != confidenceLevel)
                 {
                     Destroy();
-                    currentConfidenceLevel = confidenceLevel;
+                    this.confidenceLevel = confidenceLevel;
                     dictationRecognizer = new DictationRecognizer(confidenceLevel);
+                    dictationRecognizer.InitialSilenceTimeoutSeconds = initialSilenceTimeoutSeconds;
+                    dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
                 }
                 if (dictationRecognizer.Status != SpeechSystemStatus.Running)
                 {
@@ -92,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             public override void StartRecognition()
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                StartRecognition(currentConfidenceLevel);
+                StartRecognition(confidenceLevel);
 #else
                 Debug.LogError("Cannot call StartRecognition because WindowsSpeechRecognitionSubsystem is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
@@ -139,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <param name="text">The currently hypothesized recognition.</param>
             private void DictationRecognizer_DictationHypothesis(string text)
             {
-                SpeechRecognitionResultEventArgs eventArgs = new(text, null);
+                SpeechRecognitionResultEventArgs eventArgs = new SpeechRecognitionResultEventArgs(text, null);
                 OnRecognizing(eventArgs);
             }
 
@@ -150,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <param name="confidence">A representation of how confident (rejected, low, medium, high) the recognizer is of this recognition.</param>
             private void DictationRecognizer_DictationResult(string text, ConfidenceLevel confidence)
             {
-                SpeechRecognitionResultEventArgs eventArgs = new(text, ConfidenceLevelToFloat(confidence));
+                SpeechRecognitionResultEventArgs eventArgs = new SpeechRecognitionResultEventArgs(text, ConfidenceLevelToFloat(confidence));
                 OnRecognized(eventArgs);
             }
 
@@ -161,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <param name="cause">An enumerated reason for the session completing.</param>
             private void DictationRecognizer_DictationComplete(DictationCompletionCause cause)
             {
-                SpeechRecognitionSessionEventArgs eventArgs = new(cause.ToString());
+                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(cause.ToString());
                 OnRecognitionFinished(eventArgs);
             }
 
@@ -172,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <param name="hresult">The int representation of the hresult.</param>
             private void DictationRecognizer_DictationError(string error, int hresult)
             {
-                SpeechRecognitionSessionEventArgs eventArgs = new(error.ToString() + "\nHRESULT: " + hresult);
+                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(error.ToString() + "\nHRESULT: " + hresult);
                 OnRecognitionFaulted(eventArgs);
             }
 
