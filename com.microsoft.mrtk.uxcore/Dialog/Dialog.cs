@@ -1,12 +1,17 @@
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Events;
+
+#if MRTK_SPATIAL_PRESENT
+using Microsoft.MixedReality.Toolkit.SpatialManipulation;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -21,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// The Dialog script hydrates and controls the various sub-components
     /// of the dialog view.
     /// </summary>
-    [ExecuteAlways]
     [AddComponentMenu("MRTK/UX/Dialog")]
     public class Dialog : MonoBehaviour
     {
@@ -107,6 +111,27 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return this;
         }
 
+        /// <summary>
+        /// Clears all content, events, and configuration from the dialog.
+        /// Useful when pooling Dialog objects, to ensure that subsequent
+        /// uses of the object don't retain stale data.
+        /// </summary>
+        /// <remarks>
+        /// When implementing custom dialog types, be sure to override
+        /// this method to clear any custom state or fields.
+        /// </remarks>
+        public virtual void Reset()
+        {
+            header = null;
+            body = null;
+            positiveAction?.RemoveAllListeners();
+            positiveAction = null;
+            negativeAction?.RemoveAllListeners();
+            negativeAction = null;
+            neutralAction?.RemoveAllListeners();
+            neutralAction = null;
+        }
+
         protected virtual void Awake()
         {
             if (negativeButton.Interactable != null)
@@ -144,9 +169,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     Dismiss();
                 });
             }
+
+#if MRTK_SPATIAL_PRESENT
+            Follow followSolver = gameObject.AddComponent<Follow>();
+#endif
+
         }
 
-        public void Show()
+        
+    
+
+        public virtual void Show()
         {
             headerText.gameObject.SetActive(header != null);
             headerText.text = header;
@@ -160,12 +193,37 @@ namespace Microsoft.MixedReality.Toolkit.UX
             gameObject.SetActive(true);
         }
 
-        public void Dismiss()
+        /// <summary>
+        /// Dismisses the dialog. Unsubscribes all listeners from the dialog's
+        /// events, plays the dismiss animation, and then invokes onDismissed.
+        /// </summary>
+        /// <remarks>
+        /// Those writing subclassed Dialogs should unsubscribe listeners from their custom
+        /// events, if any, as well.
+        /// </remarks>
+        public virtual void Dismiss()
         {
-            gameObject.SetActive(false);
             negativeAction?.RemoveAllListeners();
             positiveAction?.RemoveAllListeners();
             neutralAction?.RemoveAllListeners();
+            
+            // Only invoke the Dismissed callback after we've played the full dismissal animation.
+            StartCoroutine(InvokeDismissalAfterAnimation());
+        }
+
+        protected IEnumerator InvokeDismissalAfterAnimation()
+        {
+            Animator animator = GetComponent<Animator>();
+            animator.SetTrigger("Dismiss");
+            yield return null;
+
+            // Spin while we're still animating.
+            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1 || animator.IsInTransition(0))
+            {
+                yield return null;
+            }
+            
+            gameObject.SetActive(false);
             onDismissed.Invoke(this);
         }
     }

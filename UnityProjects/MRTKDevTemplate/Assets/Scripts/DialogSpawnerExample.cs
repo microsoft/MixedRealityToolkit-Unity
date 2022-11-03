@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SpawnDialogFromCode()
         {
-            Dialog dialog = dialogSpawner.Build()
+            Dialog dialog = dialogSpawner.Get()
                 .SetHeader("This dialog is spawned from code.")
                 .SetBody("All of the dialog's properties can be set from code, using a friendly API.")
                 .SetPositive("Yes, please!", ( args ) => Debug.Log("Code-driven dialog says " + args.ButtonType))
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SpawnNeutralDialogFromCode()
         {
-            Dialog dialog = dialogSpawner.Build()
+            Dialog dialog = dialogSpawner.Get()
                 .SetHeader("Demonstration of a neutral optioned dialog")
                 .SetBody("As you can see, only the options requested will be shown in the dialog. " +
                          "Here's a neutral option, neither negative nor positive.")
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SpawnAllThreeDialogFromCode()
         {
-            Dialog dialog = dialogSpawner.Build()
+            Dialog dialog = dialogSpawner.Get()
                 .SetHeader("You can even have three!")
                 .SetBody("Yes, in fact, you can request all three option types and they'll still be laid out correctly.")
                 .SetPositive("Yes, please!", ( args ) => Debug.Log("Code-driven dialog says " + args.ButtonType))

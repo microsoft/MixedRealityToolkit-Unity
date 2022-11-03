@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             neutral.Text = neutral.Text != "" ? neutral.Text : null;
 
             // Build and show the dialog.
-            dialogSpawner.Build()
+            dialogSpawner.Get()
                 .SetHeader(header)
                 .SetBody(body)
                 .SetNegative(negative.Text, ( args ) => negative.Action.Invoke(args))
