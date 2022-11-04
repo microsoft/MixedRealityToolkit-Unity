@@ -148,14 +148,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Vector3 attachTransform = objManip.firstInteractorSelecting.GetAttachTransform(objManip).position;
             Vector3 originalAttachOffset = attachTransform - originalPosition;
 
-            Vector3 newPosition = originalPosition + Vector3.right * 0.5f;
+            Vector3 newPosition = originalPosition + Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Smoothing should mean that the cube has lagged behind the hand.
             attachTransform = objManip.firstInteractorSelecting.GetAttachTransform(objManip).position;
             Vector3 attachOffset = attachTransform - cube.transform.position;
-            Assert.IsTrue((attachOffset - originalAttachOffset).magnitude > 0.2f,
+            Assert.IsTrue((attachOffset - originalAttachOffset).magnitude > 0.1f,
                 "Smoothing didn't seem to work. Current attachTransform offset should be different than the original, indicating lag.");
 
             // Wait long enough for the object to catch up.
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Disable smoothing, to check that it properly sticks to the hand once disabled.
             objManip.SmoothingNear = false;
 
-            newPosition = originalPosition - Vector3.right * 0.5f;
+            newPosition = originalPosition - Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
