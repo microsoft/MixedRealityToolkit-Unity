@@ -22,9 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
         private static readonly GUIContent PVCameraRenderingTitle = new GUIContent("Render from PV Camera (Align holograms)");
         private static readonly GUIContent ReprojectionMethodTitle = new GUIContent("HoloLens 2 Reprojection Method");
 
-        private const string MRCDocURL = "https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
-        private const string DepthReprojectionDocURL = "https://docs.microsoft.com/windows/mixed-reality/hologram-stability#reprojection";
-        private const string ReadingModeDocURL = "https://docs.microsoft.com/en-us/hololens/hololens2-display#what-improvements-are-coming-that-will-improve-hololens-2-image-quality";
+        private const string MRCDocURL = "https://learn.microsoft.com/windows/mixed-reality/develop/advanced-concepts/mixed-reality-capture-overview#render-from-the-pv-camera-opt-in";
+        private const string DepthReprojectionDocURL = "https://learn.microsoft.com/windows/mixed-reality/develop/advanced-concepts/hologram-stability#reprojection";
+        private const string ReadingModeDocURL = "https://learn.microsoft.com/hololens/hololens2-display#what-improvements-are-coming-that-will-improve-hololens-2-image-quality";
 
         protected override void OnEnable()
         {
@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
 
                 EditorGUILayout.HelpBox("On legacy XR, render from PV camera is supported in Unity 2018.4.35f1 and newer if using Unity 2018 and Unity 2019.4.26f1 and newer if using Unity 2019.", MessageType.Info);
                 EditorGUILayout.HelpBox("On Windows XR Plugin, render from PV camera is supported in versions 2.8.0, 4.5.0, and 5.3.0 (and newer in each respective major version).", MessageType.Info);
+                EditorGUILayout.HelpBox("This checkbox is ignored on OpenXR and is now enabled by default when running with the Mixed Reality OpenXR Plugin. See the OpenXR Camera Settings profile for more info.", MessageType.Info);
                 EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, PVCameraRenderingTitle);
 
                 EditorGUILayout.Space();
