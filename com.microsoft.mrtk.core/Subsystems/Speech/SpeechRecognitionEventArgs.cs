@@ -37,14 +37,19 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// The reason for this speech recognition session event.
         /// </summary>
-        public string Reason { get; private set; }
+        public SpeechRecognitionEventReason Reason { get; private set; }
+        /// <summary>
+        /// The reason for this speech recognition session event in string.
+        /// </summary>
+        public string ReasonString { get; private set; }
 
         /// <summary>
         /// Construct the <c>SpeechRecognitionSessionEventArgs</c>.
         /// </summary>
-        public SpeechRecognitionSessionEventArgs(string reason)
+        public SpeechRecognitionSessionEventArgs(SpeechRecognitionEventReason reason, string reasonString)
         {
             Reason = reason;
+            ReasonString = reasonString;
         }
     }
 }

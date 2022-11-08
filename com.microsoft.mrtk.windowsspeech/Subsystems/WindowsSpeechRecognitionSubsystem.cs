@@ -222,7 +222,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <param name="cause">An enumerated reason for the session completing.</param>
             private void DictationRecognizer_DictationComplete(DictationCompletionCause cause)
             {
-                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(cause.ToString());
+                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(DictationCompletionCauseToSpeechRecognitionEventReason(cause),
+                    cause.ToString());
                 OnRecognitionFinished(eventArgs);
             }
 
@@ -233,7 +234,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <param name="hresult">The int representation of the hresult.</param>
             private void DictationRecognizer_DictationError(string error, int hresult)
             {
-                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(error.ToString() + "\nHRESULT: " + hresult);
+                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(SpeechRecognitionEventReason.UnknownFailure,
+                    error.ToString() + "\nHRESULT: " + hresult);
                 OnRecognitionFaulted(eventArgs);
             }
 
@@ -246,6 +248,22 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     ConfidenceLevel.Medium => 0.5f,
                     ConfidenceLevel.High => 0.75f,
                     _ => 0,
+                };
+            }
+
+            private SpeechRecognitionEventReason DictationCompletionCauseToSpeechRecognitionEventReason(DictationCompletionCause cause)
+            {
+                return cause switch
+                {
+                    DictationCompletionCause.Complete => SpeechRecognitionEventReason.Complete,
+                    DictationCompletionCause.AudioQualityFailure => SpeechRecognitionEventReason.AudioQualityFailure,
+                    DictationCompletionCause.Canceled => SpeechRecognitionEventReason.Canceled,
+                    DictationCompletionCause.TimeoutExceeded => SpeechRecognitionEventReason.TimeoutExceeded,
+                    DictationCompletionCause.PauseLimitExceeded => SpeechRecognitionEventReason.PauseLimitExceeded,
+                    DictationCompletionCause.NetworkFailure => SpeechRecognitionEventReason.NetworkFailure,
+                    DictationCompletionCause.MicrophoneUnavailable => SpeechRecognitionEventReason.MicrophoneUnavailable,
+                    DictationCompletionCause.UnknownError => SpeechRecognitionEventReason.UnknownFailure,
+                    _ => SpeechRecognitionEventReason.Unknown,
                 };
             }
 #endif

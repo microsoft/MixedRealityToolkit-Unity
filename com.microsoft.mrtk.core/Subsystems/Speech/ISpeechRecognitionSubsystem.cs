@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         public event Action<SpeechRecognitionSessionEventArgs> RecognitionFinished;
 
         /// <summary>
-        /// Action triggered when the recognition session is faulted (i.e. error occurred).
+        /// Action triggered when the recognition is faulted (i.e. error occurred).
         /// </summary>
         public event Action<SpeechRecognitionSessionEventArgs> RecognitionFaulted;
     }
