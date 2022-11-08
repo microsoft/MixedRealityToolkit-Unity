@@ -16,34 +16,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -64,7 +36,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1948193616346090107, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: pokePoseSource.poseSources.Array.data[0].source.hand
+      propertyPath: pokePoseSource.poseSourceList.Array.data[0].hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2082243679387671466, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
@@ -76,27 +48,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2572330550550829917, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: pinchPoseSource.poseSources.Array.data[0].source.hand
+      propertyPath: pinchPoseSource.poseSourceList.Array.data[0].hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: aimPoseSource.poseSources.Array.data[0].source.hand
+      propertyPath: aimPoseSource.poseSourceList.Array.data[1].hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: aimPoseSource.poseSources.Array.data[1].source.hand
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: devicePoseSource.poseSources.Array.data[1].source.hand
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: pointerPoseSource.poseSources.Array.data[0].source.hand
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2940030942784507886, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: pointerPoseSource.poseSources.Array.data[1].source.hand
+      propertyPath: devicePoseSource.poseSourceList.Array.data[1].hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
@@ -104,15 +64,11 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: aimPoseSource.poseSources.Array.data[0].source.hand
+      propertyPath: aimPoseSource.poseSourceList.Array.data[1].hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: aimPoseSource.poseSources.Array.data[1].source.hand
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3419360757097544916, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
-      propertyPath: devicePoseSource.poseSources.Array.data[1].source.hand
+      propertyPath: devicePoseSource.poseSourceList.Array.data[1].hand
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4299642553989019654, guid: a9ae130324a36134e99beedf50e7be6f, type: 3}
