@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Workaround for missing select actions on devices without interaction profiles
                     // for hands, such as Varjo and Quest. Should be removed once we have universal
                     // hand interaction profile(s) across vendors.
-                    if ((selectAction.action?.controls.Count ?? 0) == 0)
+                    if (!selectAction.action.HasAnyControls())
                     {
                         // Debounced.
                         bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // In case the position input action is not provided, we will try to polyfill it with the device position.
             // Should be removed once we have universal hand interaction profile(s) across vendors.
 
-            if ((positionAction.action?.controls.Count ?? 0) == 0 && TryGetPolyfillDevicePose(out Pose devicePose))
+            if (!positionAction.action.HasAnyControls() && TryGetPolyfillDevicePose(out Pose devicePose))
             {
                 controllerState.position = devicePose.position;
                 controllerState.rotation = devicePose.rotation;
