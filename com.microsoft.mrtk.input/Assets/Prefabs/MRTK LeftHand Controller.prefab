@@ -694,7 +694,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8544718171901067399}
-  - component: {fileID: 4041565961123392645}
+  - component: {fileID: 6164080946324827545}
   m_Layer: 0
   m_Name: MRTK LeftHand Controller
   m_TagString: Untagged
@@ -721,7 +721,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4041565961123392645
+--- !u!114 &6164080946324827545
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1199,7 +1199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9148848192675160673}
-  - component: {fileID: 4821581000001043912}
+  - component: {fileID: 3419360757097544916}
   - component: {fileID: 6618093373316033540}
   m_Layer: 0
   m_Name: GazePinchInteractor
@@ -1222,7 +1222,7 @@ Transform:
   m_Father: {fileID: 8544718171901067399}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4821581000001043912
+--- !u!114 &3419360757097544916
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1306,7 +1306,7 @@ MonoBehaviour:
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
   m_AllowHoverHapticsWhileSelecting: 1
-  handController: {fileID: 4041565961123392645}
+  handController: {fileID: 6164080946324827545}
   devicePoseSource:
     id: 0
   pinchPoseSource:
@@ -1435,7 +1435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c320ab91be1e04e81076323f7b3021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactor: {fileID: 4821581000001043912}
+  interactor: {fileID: 3419360757097544916}
   detectHover: 0
   modeOnHover:
     name: 
