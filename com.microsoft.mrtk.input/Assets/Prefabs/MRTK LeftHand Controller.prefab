@@ -696,7 +696,7 @@ GameObject:
   - component: {fileID: 1948193615953854875}
   - component: {fileID: 6164080946324827545}
   m_Layer: 0
-  m_Name: MRTK Left Hand Controller
+  m_Name: MRTK LeftHand Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
