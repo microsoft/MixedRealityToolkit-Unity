@@ -213,7 +213,7 @@ MonoBehaviour:
     00000003:
       type: {class: PolyfillHandRayPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
-        hand: 0
+        hand: 1
     00000004:
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
@@ -256,7 +256,7 @@ MonoBehaviour:
     00000005:
       type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
-        hand: 0
+        hand: 1
         joint: 0
 --- !u!114 &1180895169275043612
 MonoBehaviour:
@@ -606,7 +606,7 @@ MonoBehaviour:
     00000001:
       type: {class: PinchPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
-        hand: 0
+        hand: 1
     00000002:
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
@@ -736,7 +736,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 0}
+  m_ModelPrefab: {fileID: 1768293572455847265, guid: 2b468cc4fe6d2b44ebc53b958b38b91a, type: 3}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -1032,7 +1032,7 @@ MonoBehaviour:
     00000001:
       type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
-        hand: 0
+        hand: 1
         joint: 10
     00000002:
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
@@ -1185,10 +1185,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jointPoseSource:
-    hand: 0
+    hand: 1
     joint: 10
   migratedSuccessfully: 1
-  hand: 0
+  hand: 1
   joint: 10
 --- !u!1 &5224294193116514423
 GameObject:
@@ -1328,7 +1328,7 @@ MonoBehaviour:
     00000001:
       type: {class: PinchPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
-        hand: 0
+        hand: 1
     00000002:
       type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
@@ -1378,7 +1378,7 @@ MonoBehaviour:
     00000004:
       type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
-        hand: 0
+        hand: 1
         joint: 0
     00000005:
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
@@ -1422,7 +1422,7 @@ MonoBehaviour:
     00000006:
       type: {class: PolyfillHandRayPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
-        hand: 0
+        hand: 1
 --- !u!114 &6618093373316033540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1738,7 +1738,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7113035467055917293, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: settings.handedness
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_IsActive
@@ -1818,7 +1818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7113035467055917293, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: settings.handedness
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7949002557058872435, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: fadeEnabled
