@@ -17,7 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.Editor
         private const string DepthReprojectionDocURL = "https://docs.microsoft.com/windows/mixed-reality/hologram-stability#reprojection";
 
         private static readonly GUIContent ReprojectionMethodTitle = new GUIContent("HoloLens 2 Reprojection Method");
+
+#if MSFT_OPENXR
         private static GUIContent mrcSettingsButtonContent = null;
+#endif
 
         private SerializedProperty reprojectionMethod;
 
@@ -40,14 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.Editor
                     "Look for \"Disable First Person Observer\".", MessageType.Info);
 
 #if MSFT_OPENXR
-                if (mrcSettingsButtonContent == null)
+                mrcSettingsButtonContent ??= new GUIContent()
                 {
-                    mrcSettingsButtonContent = new GUIContent()
-                    {
-                        image = EditorGUIUtility.IconContent("Settings").image,
-                        text = " OpenXR plug-in settings",
-                    };
-                }
+                    image = EditorGUIUtility.IconContent("Settings").image,
+                    text = " OpenXR plug-in settings",
+                };
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
