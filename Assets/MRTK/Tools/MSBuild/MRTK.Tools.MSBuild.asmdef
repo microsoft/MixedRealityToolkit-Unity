@@ -10,5 +10,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": false,
-    "defineConstraints": []
+    "defineConstraints": [
+        "!UNITY_2023_1_OR_NEWER"
+    ]
 }
