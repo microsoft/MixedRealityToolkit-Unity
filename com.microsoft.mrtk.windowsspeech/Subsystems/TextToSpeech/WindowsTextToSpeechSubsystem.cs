@@ -143,17 +143,17 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                         reader.ReadBytes(waveData);
                     }
                 }
-//#elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-//                if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
-//                {
-//                    Debug.LogError("Failed to synthesize the phrase");
-//                    return false;
-//                }
+#elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+                if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
+                {
+                    Debug.LogError("Failed to synthesize the phrase");
+                    return false;
+                }
 
-//                waveData = new byte[length];
-//                Marshal.Copy(nativeData, waveData, 0, length);
-//                // We can safely free the native data.
-//                WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
+                waveData = new byte[length];
+                Marshal.Copy(nativeData, waveData, 0, length);
+                // We can safely free the native data.
+                WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
 #endif
                 return true;
             }
