@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
+#if UNITY_2023_1_OR_NEWER
+using UnityEditor.Build;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
@@ -25,9 +29,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (symbols == null || symbols.Length == 0) { return; }
 
             List<string> toAdd = new List<string>(symbols);
+
+#if UNITY_2023_1_OR_NEWER
+            NamedBuildTarget target = NamedBuildTarget.FromBuildTargetGroup(targetGroup);
+            List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbols(target).Split(';'));
+
+            PlayerSettings.SetScriptingDefineSymbols(target, string.Join(";", defines.Union(toAdd).ToArray()));
+#else
             List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';'));
 
             PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.Union(toAdd).ToArray()));
+#endif
         }
 
         /// <summary>
@@ -43,9 +55,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (symbols == null || symbols.Length == 0) { return; }
 
             List<string> toRemove = new List<string>(symbols);
+
+#if UNITY_2023_1_OR_NEWER
+            NamedBuildTarget target = NamedBuildTarget.FromBuildTargetGroup(targetGroup);
+            List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbols(target).Split(';'));
+
+            PlayerSettings.SetScriptingDefineSymbols(target, string.Join(";", defines.Except(toRemove).ToArray()));
+#else
             List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';'));
 
             PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.Except(toRemove).ToArray()));
+#endif
         }
     }
 }

@@ -17,6 +17,10 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 using FileInfo = System.IO.FileInfo;
 
+#if UNITY_2023_1_OR_NEWER
+using UnityEditor.Build;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     /// <summary>
@@ -671,7 +675,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 GUILayout.FlexibleSpace();
 
                 // Open AppX packages location
-                string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+                bool isIL2CPP =
+#if UNITY_2023_1_OR_NEWER
+                    PlayerSettings.GetScriptingBackend(NamedBuildTarget.WindowsStoreApps) == ScriptingImplementation.IL2CPP;
+#else
+                    PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP;
+#endif
+
+                string appxDirectory = isIL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
                 string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
 
                 using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
@@ -1277,8 +1288,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             Builds.Clear();
 
-            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
-            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? Path.Combine("AppPackages", PlayerSettings.productName) : Path.Combine(PlayerSettings.productName, "AppPackages");
+            bool isIL2CPP =
+#if UNITY_2023_1_OR_NEWER
+                PlayerSettings.GetScriptingBackend(NamedBuildTarget.WindowsStoreApps) == ScriptingImplementation.IL2CPP;
+#else
+                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP;
+#endif
+
+            string appxDirectory = isIL2CPP ? Path.Combine("AppPackages", PlayerSettings.productName) : Path.Combine(PlayerSettings.productName, "AppPackages");
 
             try
             {
