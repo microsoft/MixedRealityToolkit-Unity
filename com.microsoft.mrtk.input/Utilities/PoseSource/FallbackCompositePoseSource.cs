@@ -11,16 +11,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// which successfully returns a pose.
     /// </summary>
     [Serializable]
-    public class FallbackCompositePoseSource : IPoseSource
+    public class FallbackCompositePoseSource : IPoseSource, ISerializationCallbackReceiver
     {
+        [SerializeReference]
+        [InterfaceSelector]
+        [Tooltip("An ordered list of pose sources to query.")]
+        private IPoseSource[] poseSourceList;
+
         [SerializeField]
         [Tooltip("An ordered list of pose sources to query.")]
+        [Obsolete, HideInInspector]
         private PoseSourceWrapper[] poseSources;
 
         /// <summary>
         /// An ordered list of pose sources to query.
         /// </summary>
-        protected PoseSourceWrapper[] PoseSources { get => poseSources; set => poseSources = value; }
+        protected IPoseSource[] PoseSources { get => poseSourceList; set => poseSourceList = value; }
 
         /// <summary>
         /// Tries to get a pose from each pose source in order, returning the result of the first pose source
@@ -28,30 +34,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool TryGetPose(out Pose pose)
         {
-            pose = Pose.identity;
-            bool poseRetrieved = false;
-
-            for (int i = 0; i < poseSources.Length; i++)
+            for (int i = 0; i < poseSourceList.Length; i++)
             {
-                IPoseSource currentPoseSource = poseSources[i].source;
-                poseRetrieved = currentPoseSource != null && currentPoseSource.TryGetPose(out pose);
-                if (poseRetrieved)
+                IPoseSource currentPoseSource = poseSourceList[i];
+                if (currentPoseSource != null && currentPoseSource.TryGetPose(out pose))
                 {
-                    break;
+                    return true;
                 }
             }
 
-            return poseRetrieved;
+            pose = Pose.identity;
+            return false;
         }
 
-        /// <summary>
-        /// An internal wrapper class which is required to allow the pose source to be properly selectable in editor
-        /// This is needed because GenericMenu's cannot be set as the active context when embedded inside other GUI contexts,
-        /// which in this particular instance, is the list element's container context.
-        /// Reference: https://forum.unity.com/threads/genericmenu-used-as-context-inside-a-menuitem.330235/
-        /// </summary>
-        [Serializable]
-        protected struct PoseSourceWrapper
+        [Obsolete]
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            if (poseSources != null && poseSources.Length > 0)
+            {
+                poseSourceList = new IPoseSource[poseSources.Length];
+
+                for (int i = 0; i < poseSources.Length; i++)
+                {
+                    PoseSourceWrapper poseSource = poseSources[i];
+                    poseSourceList[i] = poseSource.source;
+                }
+
+                poseSources = null;
+            }
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize() { }
+
+        [Serializable, Obsolete]
+        private struct PoseSourceWrapper
         {
             [SerializeReference]
             [InterfaceSelector]
