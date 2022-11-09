@@ -41,11 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         class WindowsTextToSpeechSubsystemProvider : Provider
         {
             public WindowsTextToSpeechSubsystemProvider() : base()
-            {
-#if WINDOWS_UWP
-                synthesizer = new SpeechSynthesizer();
-#endif // WINDOWS_UWP
-            }
+            { }
 
             public override void Destroy()
             {
@@ -147,23 +143,23 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                         reader.ReadBytes(waveData);
                     }
                 }
-#elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-                if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
-                {
-                    Debug.LogError("Failed to synthesize the phrase");
-                    return false;
-                }
+//#elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+//                if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
+//                {
+//                    Debug.LogError("Failed to synthesize the phrase");
+//                    return false;
+//                }
 
-                waveData = new byte[length];
-                Marshal.Copy(nativeData, waveData, 0, length);
-                // We can safely free the native data.
-                WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
+//                waveData = new byte[length];
+//                Marshal.Copy(nativeData, waveData, 0, length);
+//                // We can safely free the native data.
+//                WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
 #endif
                 return true;
             }
 
 #if WINDOWS_UWP
-            private SpeechSynthesizer synthesizer;
+            private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
 #endif
 
 #endregion TextToSpeechSubsystem implementation
