@@ -40,11 +40,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.Editor
                     "Look for \"Disable First Person Observer\".", MessageType.Info);
 
 #if MSFT_OPENXR
-                mrcSettingsButtonContent ??= new GUIContent()
+                if (mrcSettingsButtonContent == null)
                 {
-                    image = EditorGUIUtility.IconContent("Settings").image,
-                    text = " OpenXR plug-in settings",
-                };
+                    mrcSettingsButtonContent = new GUIContent()
+                    {
+                        image = EditorGUIUtility.IconContent("Settings").image,
+                        text = " OpenXR plug-in settings",
+                    };
+                }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
