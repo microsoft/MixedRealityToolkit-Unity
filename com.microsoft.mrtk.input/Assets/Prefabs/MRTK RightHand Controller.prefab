@@ -11,6 +11,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: MRTK RightHand Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1948193616346090107, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
       propertyPath: pokePoseSource.poseSourceList.Array.data[0].hand
       value: 2
@@ -166,22 +182,6 @@ PrefabInstance:
     - target: {fileID: 7833497039863265739, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
       propertyPath: settings.handedness
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1948193615953854875, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c89f12cb641c27e47b7b71af1d6518a5, type: 3}
