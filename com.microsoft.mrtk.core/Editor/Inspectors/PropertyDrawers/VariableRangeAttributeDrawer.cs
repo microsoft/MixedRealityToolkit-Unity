@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            string minVariablePath = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, range.MinVariableName) : range.MinVariableName;
+            string minVariablePath = range.MinVariableName;
             SerializedProperty minVariableProperty = property.serializedObject.FindProperty(minVariablePath);
             if (minVariableProperty == null || !(minVariableProperty.propertyType == SerializedPropertyType.Float || minVariableProperty.propertyType == SerializedPropertyType.Integer))
             {
@@ -38,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            string maxVariablePath = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, range.MaxVariableName) : range.MaxVariableName;
+            string maxVariablePath = range.MaxVariableName;
             SerializedProperty maxVariableProperty = property.serializedObject.FindProperty(maxVariablePath);
             if (maxVariableProperty == null || !(maxVariableProperty.propertyType == SerializedPropertyType.Float || maxVariableProperty.propertyType == SerializedPropertyType.Integer))
             {
@@ -53,10 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Rect labelRect = new Rect(position.x, position.y, labelWidth, EditorGUIUtility.singleLineHeight);
             EditorGUI.PrefixLabel(labelRect, label);
 
-            Rect sliderRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, EditorGUIUtility.singleLineHeight);
-            property.floatValue = EditorGUI.Slider(sliderRect, property.floatValue, minValue, maxValue);
-
             EditorGUI.BeginChangeCheck();
+            Rect sliderRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, EditorGUIUtility.singleLineHeight);
             property.floatValue = EditorGUI.Slider(sliderRect, property.floatValue, minValue, maxValue);
             if (EditorGUI.EndChangeCheck())
             {
