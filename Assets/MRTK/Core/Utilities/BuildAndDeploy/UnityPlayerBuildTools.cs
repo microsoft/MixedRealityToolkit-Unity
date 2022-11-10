@@ -14,6 +14,10 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
+#if UNITY_2023_1_OR_NEWER
+using UnityEditor.Build;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     /// <summary>
@@ -38,7 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             buildInfo.PreBuildAction?.Invoke(buildInfo);
 
             BuildTargetGroup buildTargetGroup = buildInfo.BuildTarget.GetGroup();
+
+#if UNITY_2023_1_OR_NEWER
+            string playerBuildSymbols = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(buildTargetGroup));
+#else
             string playerBuildSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+#endif
 
             if (!string.IsNullOrEmpty(playerBuildSymbols))
             {
@@ -54,7 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (!string.IsNullOrEmpty(buildInfo.BuildSymbols))
             {
+#if UNITY_2023_1_OR_NEWER
+                PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(buildTargetGroup), buildInfo.BuildSymbols);
+#else
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, buildInfo.BuildSymbols);
+#endif
             }
 
             if ((buildInfo.BuildOptions & BuildOptions.Development) == BuildOptions.Development &&
@@ -85,7 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (buildInfo.ScriptingBackend.HasValue)
             {
+#if UNITY_2023_1_OR_NEWER
+                PlayerSettings.SetScriptingBackend(NamedBuildTarget.FromBuildTargetGroup(buildTargetGroup), buildInfo.ScriptingBackend.Value);
+#else
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, buildInfo.ScriptingBackend.Value);
+#endif
             }
 
             BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;

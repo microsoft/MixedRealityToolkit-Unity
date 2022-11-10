@@ -12,6 +12,10 @@ using UnityEngine;
 using System.IO;
 #endif // !UNITY_2019_3_OR_NEWER
 
+#if UNITY_2023_1_OR_NEWER
+using UnityEditor.Build;
+#endif // UNITY_2023_1_OR_NEWER
+
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
@@ -148,12 +152,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
+#if UNITY_2023_1_OR_NEWER
+            { Configurations.AndroidMultiThreadedRendering, new ConfigGetter(() => !PlayerSettings.GetMobileMTRendering(NamedBuildTarget.Android), BuildTarget.Android) },
+#else
             { Configurations.AndroidMultiThreadedRendering, new ConfigGetter(() => !PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android), BuildTarget.Android) },
+#endif // UNITY_2023_1_OR_NEWER
             { Configurations.AndroidMinSdkVersion, new ConfigGetter(() =>  PlayerSettings.Android.minSdkVersion >= MinAndroidSdk, BuildTarget.Android) },
 
             // iOS Settings
             { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out float version) && version >= iOSMinOsVersion, BuildTarget.iOS) },
+#if UNITY_2023_1_OR_NEWER
+            { Configurations.IOSArchitecture, new ConfigGetter(() => PlayerSettings.GetArchitecture(NamedBuildTarget.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
+#else
             { Configurations.IOSArchitecture, new ConfigGetter(() => PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
+#endif // UNITY_2023_1_OR_NEWER
             { Configurations.IOSCameraUsageDescription, new ConfigGetter(() => !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription), BuildTarget.iOS) },
 
 #if UNITY_2019_3_OR_NEWER
@@ -205,12 +217,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
+#if UNITY_2023_1_OR_NEWER
+            { Configurations.AndroidMultiThreadedRendering, () => PlayerSettings.SetMobileMTRendering(NamedBuildTarget.Android, false) },
+#else
             { Configurations.AndroidMultiThreadedRendering, () => PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false) },
+#endif // UNITY_2023_1_OR_NEWER
             { Configurations.AndroidMinSdkVersion, () => PlayerSettings.Android.minSdkVersion = MinAndroidSdk },
 
             // iOS Settings
             { Configurations.IOSMinOSVersion, () => PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString("n1", CultureInfo.InvariantCulture) },
+#if UNITY_2023_1_OR_NEWER
+            { Configurations.IOSArchitecture, () => PlayerSettings.SetArchitecture(NamedBuildTarget.iOS, RequirediOSArchitecture) },
+#else
             { Configurations.IOSArchitecture, () => PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture) },
+#endif // UNITY_2023_1_OR_NEWER
             { Configurations.IOSCameraUsageDescription, () => PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription },
 
 #if UNITY_2019_3_OR_NEWER
