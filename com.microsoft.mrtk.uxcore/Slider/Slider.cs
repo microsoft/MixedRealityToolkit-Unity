@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             set
             {
-                minValue = value;
+                minValue = Mathf.Min(value, maxValue);
             }
         }
 
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             set
             {
-                maxValue = value;
+                maxValue = Mathf.Max(minValue, value);
             }
         }
 
@@ -144,6 +144,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value));
             }
         }
+
+        public float NormalizedSliderValue => (MaxValue - MinValue) != 0 ? (sliderValue - MinValue) / (MaxValue - MinValue) : 0;
 
         [SerializeField]
         [Tooltip("Controls whether this slider is increments in steps or continuously.")]
@@ -280,6 +282,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void OnValidate()
         {
             ApplyRequiredSettings();
+
+            // Ensure that the proper constraints are applied to the possible values of the slider
+            MinValue = minValue;
+            MaxValue = maxValue;
+            SliderValue = sliderValue;
         }
 
         #endregion
