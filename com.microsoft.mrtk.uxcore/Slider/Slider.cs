@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -134,7 +135,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [SerializeField]
         private float sliderValue = 0.5f;
 
-        public float SliderValue
+        [Obsolete("Use Value instead")]
+        public float SliderValue => Value;
+
+        /// <summary>
+        /// The current value of the slider
+        /// </summary>
+        public float Value
         {
             get => sliderValue;
             set
@@ -145,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        public float NormalizedSliderValue => (MaxValue - MinValue) != 0 ? (sliderValue - MinValue) / (MaxValue - MinValue) : 0;
+        public float NormalizedValue => (MaxValue - MinValue) != 0 ? (sliderValue - MinValue) / (MaxValue - MinValue) : 0;
 
         [SerializeField]
         [Tooltip("Controls whether this slider is increments in steps or continuously.")]
@@ -286,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Ensure that the proper constraints are applied to the possible values of the slider
             MinValue = minValue;
             MaxValue = maxValue;
-            SliderValue = sliderValue;
+            Value = sliderValue;
         }
 
         #endregion
@@ -305,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void InitializeStepDivisions()
         {
-            SliderValue = SnapSliderToStepPositions(SliderValue);
+            Value = SnapSliderToStepPositions(Value);
         }
 
         private float SnapSliderToStepPositions(float value)
@@ -325,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             float unsnappedValue = Mathf.Clamp(StartSliderValue + handDelta / SliderTrackDirection.magnitude, MinValue, MaxValue);
 
-            SliderValue = useSliderStepDivisions ? SnapSliderToStepPositions(unsnappedValue) : unsnappedValue;
+            Value = useSliderStepDivisions ? SnapSliderToStepPositions(unsnappedValue) : unsnappedValue;
         }
 
         #endregion

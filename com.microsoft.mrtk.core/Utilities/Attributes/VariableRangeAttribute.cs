@@ -7,12 +7,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// An attribute that allows a particular field to be rendered as multi-selectable
-    /// set of flags.
+    /// An attribute that allows a particular field to be constrained to a range dependent on other variables
     /// </summary>
-    /// <remarks>
-    /// From https://answers.unity.com/questions/486694/default-editor-enum-as-flags-.html
-    /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class VariableRangeAttribute : PropertyAttribute
     {

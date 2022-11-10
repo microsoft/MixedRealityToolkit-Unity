@@ -10,13 +10,13 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomPropertyDrawer(typeof(VariableRangeAttribute))]
-    public class VariableRangePropertyDrawerer : PropertyDrawer
+    public class VariableRangePropertyDrawer : PropertyDrawer
     {
-        private GUIContent dropLabel;
         private GUIStyle labelStyle;
 
-        public VariableRangePropertyDrawerer()
+        public VariableRangePropertyDrawer()
         {
+            labelStyle = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).label;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -49,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             float minValue = minVariableProperty.floatValue;
             float maxValue = maxVariableProperty.floatValue;
 
-            labelStyle = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).label;
             float labelWidth = labelStyle.CalcSize(label).x + EditorGUIUtility.singleLineHeight;
             Rect labelRect = new Rect(position.x, position.y, labelWidth, EditorGUIUtility.singleLineHeight);
             EditorGUI.PrefixLabel(labelRect, label);
