@@ -92,7 +92,45 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => trackCollider = value;
         }
 
-        [Range(minVal, maxVal)]
+        [SerializeField]
+        [Tooltip("The minimum value that the slider can take on")]
+        private float minValue = 0.0f;
+
+        /// <summary>
+        /// The minimum value that the slider can take on
+        /// </summary>
+        public float MinValue
+        {
+            get
+            {
+                return minValue;
+            }
+            set
+            {
+                minValue = value;
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("The maximum value that the slider can take on")]
+        private float maxValue = 1.0f;
+
+        /// <summary>
+        /// The maximum value that the slider can take on
+        /// </summary>
+        public float MaxValue
+        {
+            get
+            {
+                return maxValue;
+            }
+            set
+            {
+                maxValue = value;
+            }
+        }
+
+        [VariableRange("minValue", "maxValue")]
         [SerializeField]
         private float sliderValue = 0.5f;
 
@@ -178,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Private member used to adjust slider values
         /// </summary>
-        private float SliderStepVal => (maxVal - minVal) / sliderStepDivisions;
+        private float SliderStepVal => (MaxValue - MinValue) / sliderStepDivisions;
 
         #endregion
 
@@ -194,20 +232,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Computed by <see cref="GetInteractionPoint"> in <see cref="SetupForInteraction">
         /// </summary>
         protected Vector3 StartInteractionPoint { get; private set; }
-
-        #endregion
-
-        #region Constants
-
-        /// <summary>
-        /// The minimum value that the slider can take on
-        /// </summary>
-        private const float minVal = 0.0f;
-
-        /// <summary>
-        /// The maximum value that the slider can take on
-        /// </summary>
-        private const float maxVal = 1.0f;
 
         #endregion
 
@@ -281,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             var stepCount = value / SliderStepVal;
             var snappedValue = SliderStepVal * Mathf.RoundToInt(stepCount);
-            Mathf.Clamp(snappedValue, minVal, maxVal);
+            Mathf.Clamp(snappedValue, MinValue, MaxValue);
             return snappedValue;
         }
 
@@ -292,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             var handDelta = Vector3.Dot(SliderTrackDirection.normalized, interactorDelta);
 
-            float unsnappedValue = Mathf.Clamp(StartSliderValue + handDelta / SliderTrackDirection.magnitude, minVal, maxVal);
+            float unsnappedValue = Mathf.Clamp(StartSliderValue + handDelta / SliderTrackDirection.magnitude, MinValue, MaxValue);
 
             SliderValue = useSliderStepDivisions ? SnapSliderToStepPositions(unsnappedValue) : unsnappedValue;
         }
