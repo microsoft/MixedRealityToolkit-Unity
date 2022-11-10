@@ -447,12 +447,24 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 var windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
 
+                int latestIndex = -1;
+                int latestVersion = -1;
+
                 for (int i = 0; i < windowsSdkPaths.Length; i++)
                 {
                     windowsSdkPaths[i] = windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1);
+                    string[] versionSplit = windowsSdkPaths[i].Split('.');
+                    if (versionSplit.Length >= 3
+                        && int.TryParse(versionSplit[2], out int currentVersion)
+                        && currentVersion > latestVersion)
+                    {
+                        latestVersion = currentVersion;
+                        latestIndex = i;
+                    }
                 }
 
-                EditorUserBuildSettings.wsaUWPSDK = windowsSdkPaths[windowsSdkPaths.Length - 1];
+                EditorUserBuildSettings.wsaUWPSDK = windowsSdkPaths[latestIndex];
+                Debug.Log($"Using SDK version {EditorUserBuildSettings.wsaUWPSDK}");
             }
 
             string maxVersionTested = EditorUserBuildSettings.wsaUWPSDK;

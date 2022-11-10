@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return GetAwaiterReturnVoid(instruction);
         }
 
+#if !UNITY_2023_1_OR_NEWER
         public static SimpleCoroutineAwaiter<AsyncOperation> GetAwaiter(this AsyncOperation instruction)
         {
             return GetAwaiterReturnSelf(instruction);
@@ -104,6 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 InstructionWrappers.AssetBundleRequest(awaiter, instruction)));
             return awaiter;
         }
+#endif
 
         public static SimpleCoroutineAwaiter<T> GetAwaiter<T>(this IEnumerator<T> coroutine)
         {

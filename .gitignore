@@ -20,8 +20,8 @@ project.json
 project.lock.json
 *.package
 **/.DS_Store
-Assets/Oculus/
-Assets/Oculus.meta
+**/Assets/Oculus/
+**/Assets/Oculus.meta
 
 # ============ #
 # Certificates #
