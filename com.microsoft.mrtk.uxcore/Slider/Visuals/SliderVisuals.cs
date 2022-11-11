@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         void Update()
         {
-            handle.position = SliderState.SliderStart.position + (SliderState.SliderValue * SliderState.SliderTrackDirection);
+            handle.position = SliderState.SliderStart.position + (SliderState.NormalizedValue * SliderState.SliderTrackDirection);
             trackArea.transform.position = (SliderState.SliderStart.position + SliderState.SliderEnd.position) * 0.5f;
 
             Vector2 localSliderTrackDirection = SliderState.transform.InverseTransformDirection(SliderState.SliderTrackDirection);
@@ -88,8 +88,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (fillVisual != null)
             {
-                fillVisual.localPosition = new Vector3(-0.5f + SliderState.SliderValue * 0.5f, fillVisual.localPosition.y, fillVisual.localPosition.z);
-                fillVisual.localScale = new Vector3(SliderState.SliderValue, fillVisual.localScale.y, fillVisual.localScale.z);
+                fillVisual.localPosition = new Vector3(-0.5f + SliderState.NormalizedValue * 0.5f, fillVisual.localPosition.y, fillVisual.localPosition.z);
+                fillVisual.localScale = new Vector3(SliderState.NormalizedValue, fillVisual.localScale.y, fillVisual.localScale.z);
             }
         }
     }
