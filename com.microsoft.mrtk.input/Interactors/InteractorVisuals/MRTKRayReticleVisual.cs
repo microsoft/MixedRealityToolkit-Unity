@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
 
-            UpdateReticle();
+            ReticleSetActive(false);
             Application.onBeforeRender -= UpdateReticle;
         }
 
@@ -82,19 +82,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
                             reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
-                            Reticle.SetActive(true);
+                            ReticleSetActive(true);
                         }
                         else
                         {
                             bool rayHasHit = rayInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out int _, out bool _);
-                            Reticle.SetActive(rayHasHit);
+                            ReticleSetActive(rayHasHit);
                         }
 
                         // If we have a reticle, set its position and rotation.
                         if (reticleRoot != null)
                         {
                             reticleRoot.transform.position = reticlePosition;
-                            reticleRoot.transform.forward = reticleNormal;
+                            reticleRoot.transform.rotation = Quaternion.LookRotation(reticleNormal, Vector3.up);
                         }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
@@ -112,15 +112,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        Reticle.SetActive(false);
-                    }
-
-                    // The proximity light should only be active when the reticle is
-                    if (proximityLight != null)
-                    {
-                        proximityLight.SetActive(Reticle.activeSelf);
+                        ReticleSetActive(false);
                     }
                 }
+            }
+        }
+
+        private void ReticleSetActive(bool value)
+        {
+            Reticle.SetActive(value);
+
+            // The proximity light should only be active when the reticle is
+            if (proximityLight != null)
+            {
+                proximityLight.SetActive(value);
             }
         }
 
