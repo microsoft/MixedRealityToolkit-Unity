@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // binding and grab the control list ourselves, and assume the first control is
                     // the one we want.
                     InputControl positionControl = positionAction.action?.activeControl ??
-                        (positionAction.action?.controls.Count > 0 ? positionAction.action?.controls[0] : null);
+                        (positionAction.action.HasAnyControls() ? positionAction.action?.controls[0] : null);
 
                     if (positionControl?.device is TrackedDevice positionTrackedDevice)
                     {
@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // binding and grab the control list ourselves, and assume the first control is
                     // the one we want.
                     InputControl rotationControl = rotationAction.action?.activeControl ??
-                        (rotationAction.action?.controls.Count > 0 ? rotationAction.action?.controls[0] : null);
+                        (rotationAction.action.HasAnyControls() ? rotationAction.action.controls[0] : null);
 
                     if (rotationControl?.device is TrackedDevice rotationTrackedDevice)
                     {

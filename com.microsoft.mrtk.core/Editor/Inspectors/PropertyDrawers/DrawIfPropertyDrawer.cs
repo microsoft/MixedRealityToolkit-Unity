@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit
             DrawIfAttribute drawIf = attribute as DrawIfAttribute;
             if (drawIf == null) { return true; }
 
-            string path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, drawIf.ComparedPropertyName) : drawIf.ComparedPropertyName;
+            string path = drawIf.ComparedPropertyName;
 
             SerializedProperty propertyToCheck = property.serializedObject.FindProperty(path);
             if (propertyToCheck == null)
