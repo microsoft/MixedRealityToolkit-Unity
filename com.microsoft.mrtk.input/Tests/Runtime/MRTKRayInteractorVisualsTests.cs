@@ -10,13 +10,12 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
     /// <summary>
-    /// Tests for verifying the behavior of FuzzyGazeInteractor.
+    /// Tests for verifying the behavior of visuals related to the MRTKRayInteractor
     /// </summary>
-    public class FarRayInteractorVisualsTests : BaseRuntimeInputTests
+    public class MRTKRayInteractorVisualsTests : BaseRuntimeInputTests
     {
         /// <summary>
-        /// Basic test of FuzzyGazeInteractor. Confirm a FuzzyGazeInteractor is active in the scene, and then
-        /// make sure Interactable can be hovered even when not on the direct raycast from the interactor.
+        /// Ensure that far ray interactor visuals are set active/inactive appropriately.
         /// </summary>
         [UnityTest]
         public IEnumerator ReticleAndLineVisualActiveTest()
