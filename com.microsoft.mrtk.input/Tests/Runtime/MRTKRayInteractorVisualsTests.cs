@@ -32,18 +32,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
-            Vector3 hoverPosition = InputTestUtilities.InFrontOfUser(0.6f);
-            Quaternion hoverRotation = Quaternion.identity;
 
             // Check that our components are enabled
             var lineVisual = CachedLookup.RightHandController.GetComponentInChildren<MRTKLineVisual>();
             var reticleVisual = CachedLookup.RightHandController.GetComponentInChildren<MRTKRayReticleVisual>();
             Assert.IsTrue(lineVisual.enabled);
             Assert.IsTrue(reticleVisual.enabled);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check that the ray is active and the reticle is not
             Assert.IsTrue(lineVisual.GetComponentInChildren<LineRenderer>().enabled);
             Assert.IsFalse(reticleVisual.Reticle.activeSelf);
+
+            Vector3 hoverPosition = InputTestUtilities.InFrontOfUser(0.6f);
+            Quaternion hoverRotation = Quaternion.identity;
 
             yield return hand.MoveTo(hoverPosition);
             yield return hand.RotateTo(hoverRotation);
