@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <param name="cause">An enumerated reason for the session completing.</param>
             private void DictationRecognizer_DictationComplete(DictationCompletionCause cause)
             {
-                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(DictationCompletionCauseToSpeechRecognitionEventReason(cause),
+                SpeechRecognitionSessionEventArgs eventArgs = new SpeechRecognitionSessionEventArgs(ToSpeechRecognitionEventReason(cause),
                     cause.ToString());
                 OnRecognitionFinished(eventArgs);
             }
@@ -251,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 };
             }
 
-            private SpeechRecognitionEventReason DictationCompletionCauseToSpeechRecognitionEventReason(DictationCompletionCause cause)
+            private SpeechRecognitionEventReason ToSpeechRecognitionEventReason(DictationCompletionCause cause)
             {
                 return cause switch
                 {
