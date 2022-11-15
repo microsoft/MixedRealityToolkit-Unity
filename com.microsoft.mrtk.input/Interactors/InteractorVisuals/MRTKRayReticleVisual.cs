@@ -54,14 +54,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 reticleRoot = transform;
             }
+            UpdateReticle();
         }
 
         protected void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
+            Application.onBeforeRender -= UpdateReticle;
 
             ReticleSetActive(false);
-            Application.onBeforeRender -= UpdateReticle;
         }
 
         private static readonly ProfilerMarker UpdateReticlePerfMarker = new ProfilerMarker("[MRTK] MRTKRayReticleVisual.UpdateReticle");
