@@ -20,6 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         [UnityTest]
         public IEnumerator ReticleAndLineVisualActiveTest()
         {
+            // Because many of our visual scripts rely on OnBeforeRender, exit early if this test
+            // is being run in batchmode (which does not rendering)
+            if (Application.isBatchMode)
+            {
+                Debug.Log("Skipping test ReticleAndLineVisualActiveTest, as it does not work in batch mode settings");
+                yield break;
+            }
+
             // Disable gaze interactions for this unit test;
             InputTestUtilities.DisableGaze();
 
