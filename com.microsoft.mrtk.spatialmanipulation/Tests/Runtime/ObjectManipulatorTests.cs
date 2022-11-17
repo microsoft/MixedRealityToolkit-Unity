@@ -889,15 +889,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             backgroundObject.GetComponent<MeshRenderer>().material.color = Color.green;
 
             TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.Show(InputTestUtilities.InFrontOfUser(new Vector3(0.1f, -0.1f, 0.5f)));
-            yield return null;
+            yield return hand.Show(testObject.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Grab the cube and move towards the collider
             yield return hand.SetHandshape(HandshapeId.Pinch);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return hand.Move(Vector3.forward * 3f);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return RuntimeTestUtilities.WaitForFixedUpdates();
 
             Assert.Less(testObject.transform.position.z, backgroundObject.transform.position.z);
             Assert.AreEqual(1, collisionListener.CollisionCount);
@@ -936,15 +936,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             backgroundRigidbody.useGravity = false;
 
             TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.Show(InputTestUtilities.InFrontOfUser(new Vector3(0.1f, -0.1f, 0.5f)));
-            yield return null;
+            yield return hand.Show(testObject.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Grab the cube and move towards the collider
             yield return hand.SetHandshape(HandshapeId.Pinch);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return hand.Move(Vector3.forward * 3f);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return RuntimeTestUtilities.WaitForFixedUpdates();
 
             Assert.AreNotEqual(Vector3.zero, backgroundRigidbody.velocity);
             Assert.AreEqual(1, collisionListener.CollisionCount);
