@@ -75,7 +75,8 @@ crashlytics-build.properties
 */[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Project Specific List
+*/[Aa]ssets/[Bb]uild[Rr]eports*
+*/[Aa]ssets/[Oo]culus*
 */[Aa]ssets/TextMesh Pro*
 *.pfx
 *.pfx.meta
-*/[Aa]ssets/[Bb]uild[Rr]eports*

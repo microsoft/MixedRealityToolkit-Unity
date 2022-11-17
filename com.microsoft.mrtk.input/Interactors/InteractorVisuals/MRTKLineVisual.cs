@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (TryFindLineRenderer())
             {
                 ClearLineRenderer();
-                UpdateLineRendererProperties();
+                InitializeLineRendererProperties();
             }
 
             // Try to find a corresponding line data source and raise a warning if it was not initialized and does not exist
@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Unity to try to save "changes" to a prefab in an immutable folder.
             if (UnityEditor.EditorUtility.IsDirty(this))
             {
-                UpdateLineRendererProperties();
+                InitializeLineRendererProperties();
             }
         }
 #endif // UNITY_EDITOR
@@ -225,20 +225,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected void OnEnable()
         {
-            rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
-
             propertyBlock = new MaterialPropertyBlock();
 
-            // mafinc - Start the line renderer off disabled (invisible), we'll enable it
-            // when we have enough data for it to render properly.
-            if (lineRenderer != null)
-            {
-                lineRenderer.enabled = false;
-            }
+            rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
+            Application.onBeforeRender += UpdateLineVisual;
 
             Reset();
-            Application.onBeforeRender += UpdateLineVisual;
-            UpdateLineRendererProperties();
+            UpdateLineVisual();
         }
 
         /// <summary>
@@ -246,12 +239,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected void OnDisable()
         {
+            rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
+            Application.onBeforeRender -= UpdateLineVisual;
+
             if (lineRenderer != null)
             {
                 lineRenderer.enabled = false;
             }
-
-            Application.onBeforeRender -= UpdateLineVisual;
         }
 
         #endregion
@@ -265,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using(UpdateLinePerfMarker.Auto())
             {
-                UpdateLineRendererProperties();
+                InitializeLineRendererProperties();
 
                 if (lineRenderer == null)
                 {
@@ -399,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void UpdateLineRendererProperties()
+        private void InitializeLineRendererProperties()
         {
             if (TryFindLineRenderer())
             {
