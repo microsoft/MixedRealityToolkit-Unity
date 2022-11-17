@@ -25,7 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         DisplayName = "MRTK Windows PhraseRecognition Subsystem",
         Author = "Microsoft",
         ProviderType = typeof(WindowsPhraseRecognitionProvider),
-        SubsystemTypeOverride = typeof(WindowsPhraseRecognitionSubsystem))]
+        SubsystemTypeOverride = typeof(WindowsPhraseRecognitionSubsystem),
+        ConfigType = typeof(WindowsPhraseRecognitionSubsystemConfig))]
     public class WindowsPhraseRecognitionSubsystem : PhraseRecognitionSubsystem
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -34,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             // Fetch subsystem metadata from the attribute.
             var cinfo = XRSubsystemHelpers.ConstructCinfo<WindowsPhraseRecognitionSubsystem, PhraseRecognitionSubsystemCinfo>();
 
-            if (!PhraseRecognitionSubsystem.Register(cinfo))
+            if (!Register(cinfo))
             {
                 Debug.LogError($"Failed to register the {cinfo.Name} subsystem.");
             }
@@ -44,12 +45,33 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         class WindowsPhraseRecognitionProvider : Provider
         {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
+            /// <summary>
+            /// The confidence threshold for the recognizer to return its result.
+            /// </summary>
+            public ConfidenceLevel ConfidenceLevel
+            {
+                get => confidenceLevel;
+                set
+                {
+                    if (confidenceLevel != value)
+                    {
+                        confidenceLevel = value;
+                        if (keywordRecognizer != null)
+                        {
+                            reinitRecognizerRequired = true;
+                        }
+                    }
+                }
+            }
+
+            private WindowsPhraseRecognitionSubsystemConfig config;
+            private ConfidenceLevel confidenceLevel;
             private KeywordRecognizer keywordRecognizer;
 #if MSFT_OPENXR_1_5_0_OR_NEWER
             private SelectKeywordRecognizer selectKeywordRecognizer;
 #endif // MSFT_OPENXR_1_5_0_OR_NEWER
             private ConcurrentQueue<UnityEvent> eventQueue;
-            private bool keywordListChanged;
+            private bool reinitRecognizerRequired;
 #endif
 
             /// <summary>
@@ -59,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
                 eventQueue = new ConcurrentQueue<UnityEvent>();
-                keywordListChanged = false;
+                reinitRecognizerRequired = false;
 #else
                 Debug.LogError("Cannot create WindowsPhraseRecognitionProvider because WindowsPhraseRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
@@ -69,6 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <inheritdoc/>
             public override void Start()
             {
+                config = XRSubsystemHelpers.GetConfiguration<WindowsPhraseRecognitionSubsystemConfig, WindowsPhraseRecognitionProvider>();
+                confidenceLevel = config.ConfidenceLevel;
                 if (keywordRecognizer != null)
                 {
                     keywordRecognizer.OnPhraseRecognized += Recognizer_OnPhraseRecognized;
@@ -91,11 +115,11 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             {
                 using (UpdatePerfMarker.Auto())
                 {
-                    if (keywordListChanged)
+                    if (reinitRecognizerRequired)
                     {
-                        keywordListChanged = false;
+                        reinitRecognizerRequired = false;
                         Destroy();
-                        keywordRecognizer = new KeywordRecognizer(phraseDictionary.Keys.ToArray());
+                        keywordRecognizer = new KeywordRecognizer(phraseDictionary.Keys.ToArray(), confidenceLevel);
 #if MSFT_OPENXR_1_5_0_OR_NEWER
                         if (SelectKeywordRecognizer.IsSupported)
                         {
@@ -160,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 }
                 else
                 {
-                    keywordListChanged = true;
+                    reinitRecognizerRequired = true;
                     UnityEvent unityEvent = new UnityEvent();
                     phraseDictionary.Add(phrase, unityEvent);
                     return unityEvent;
@@ -176,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
                 phraseDictionary.Remove(phrase);
-                keywordListChanged = true;
+                reinitRecognizerRequired = true;
 #else
                 Debug.LogError("Cannot call RemovePhrase because WindowsPhraseRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
