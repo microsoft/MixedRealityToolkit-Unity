@@ -6,9 +6,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Accessibility
 {
     /// <summary>
-    /// Classifications for describable objects that may appear in the scene.
+    /// Classification for describable objects that may appear in the scene.
     /// </summary>
-    [CreateAssetMenu(fileName = "DescribableObjectClassification.asset", menuName = "MRTK/Accessibility/Describable Object Classification")]
+    [CreateAssetMenu(
+        fileName = "DescribableObjectClassification.asset",
+        menuName = "MRTK/Accessibility/Describable Object Classification")]
     public class DescribableObjectClassification : ScriptableObject
     {
         /// <summary>

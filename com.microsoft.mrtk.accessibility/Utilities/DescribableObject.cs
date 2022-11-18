@@ -91,14 +91,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         }
 
         [SerializeField]
-        [Tooltip("Information provided to assistive technologies to describe the role of the component within the scene.")]
-        private ComponentRole role = ComponentRole.None;
+        [Tooltip("Information provided to assistive technologies to describe the role of the object within the scene.")]
+        private ObjectRole role = null;
 
         /// <summary>
         /// Information provided to assistive technologies to describe the role (ex: a progress
-        /// bar) of the component within the scene.
+        /// bar) of the object within the scene.
         /// </summary>
-        public ComponentRole Role => role;
+        public ObjectRole Role => role;
 
         [SerializeField]
         [Tooltip("The semantic (ex: 'antique rocking chair') of the object.")]
