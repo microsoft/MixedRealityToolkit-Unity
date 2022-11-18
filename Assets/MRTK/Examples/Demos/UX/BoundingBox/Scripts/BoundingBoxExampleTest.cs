@@ -7,6 +7,7 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using MRTKObjectManipulator = Microsoft.MixedReality.Toolkit.UI.ObjectManipulator;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -64,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 bbox.HideElementsInInspector = false;
                 bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
                 var cm = cube.AddComponent<ConstraintManager>();
-                var om = cube.AddComponent<ObjectManipulator>();
+                var om = cube.AddComponent<MRTKObjectManipulator>();
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Set Target bounds override");
