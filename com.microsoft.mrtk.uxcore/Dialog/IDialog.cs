@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// provide your own delegates through the fluent methods, such as
         /// <see cref="SetPositive(string label, UnityAction<DialogButtonEventArgs> action)"/>
         /// </remarks>
-        UnityEvent<Dialog> OnDismissed;
+        UnityEvent<Dialog> OnDismissed { get; }
 
         /// <summary>
         /// Clears all content, events, and configuration from the dialog.
