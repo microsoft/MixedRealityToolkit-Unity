@@ -170,7 +170,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
 #if MRTK_SPATIAL_PRESENT
-            Follow followSolver = gameObject.AddComponent<Follow>();
+            if (gameObject.GetComponent<Follow>() == null)
+            {
+                Follow followSolver = gameObject.AddComponent<Follow>();
+                followSolver.Smoothing = true;
+                followSolver.MoveLerpTime = 1.0f;
+                followSolver.RotateLerpTime = 1.0f;
+                followSolver.OrientToControllerDeadzoneDegrees = 25.0f;
+            }
 #endif
 
         }
@@ -200,6 +207,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Only invoke the Dismissed callback after we've played the full dismissal animation.
             StartCoroutine(InvokeDismissalAfterAnimation());
         }
+
+        /// <inheritdoc />
+        public GameObject VisibleRoot => gameObject;
 
         /// <summary>
         /// Coroutine to set the animation trigger, wait for the animation to finish,

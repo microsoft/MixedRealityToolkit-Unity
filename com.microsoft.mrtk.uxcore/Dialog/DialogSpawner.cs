@@ -39,10 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         // Static reference to the dialog instance, if active and spawned.
         // Will be null when no dialog is open.
-        private static Dialog dialogInstance = null;
+        private static IDialog dialogInstance = null;
 
         // Previously-dismissed dialogs pooled by type.
-        private static Dictionary<Type, Queue<Dialog>> dialogPool = new Dictionary<Type, Queue<Dialog>>();
+        private static Dictionary<Type, Queue<IDialog>> dialogPool = new Dictionary<Type, Queue<IDialog>>();
 
         /// <summary>
         /// Retrieves or creates a new dialog instance. Specify a <paramref name="spawnPolicy"/> to
@@ -51,13 +51,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// will be pooled independently. Only one dialog can be visible at a time, globally.
         /// </summary>
         /// <remarks>
-        /// To build your dialog, call the fluent builder methods on the <see cref="Dialog"/> instance retuirned
+        /// To build your dialog, call the fluent builder methods on the <see cref="IDialog"/> instance retuirned
         /// by this method.
         /// </remarks>
         /// <param name="spawnPolicy">How the spawner should deal with existing dialogs (dismiss or abort)</param>
         /// <param name="prefab">The prefab to use for the dialog. If null, the spawner's <see cref="DialogPrefab"/> will be used.</param>
         /// <returns>A dialog instance, or null if the spawner was unable to spawn a dialog.</returns>
-        public Dialog Get(Policy spawnPolicy = Policy.DismissExisting, GameObject prefab = null)
+        public IDialog Get(Policy spawnPolicy = Policy.DismissExisting, GameObject prefab = null)
         {
             if (prefab == null) { prefab = DialogPrefab; }
 
@@ -82,11 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 return null;
             }
 
-            Dialog dialog = null;
+            IDialog dialog = null;
 
             // Do we have a pooled dialog available for use?
             // Dialog pool is keyed by type, so we can pool derived dialog types.
-            Type dialogType = prefab.GetComponent<Dialog>().GetType();
+            Type dialogType = prefab.GetComponent<IDialog>().GetType();
             if (dialogPool.ContainsKey(dialogType))
             {
                 // Pop through our pooled queue until we find a valid dialog;
@@ -101,10 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (dialog == null)
             {
                 // The pool is empty. We need to instantiate a new one!
-                dialog = Instantiate(prefab).GetComponent<Dialog>();
+                dialog = Instantiate(prefab).GetComponent<IDialog>();
             }
             
-            dialog.gameObject.SetActive(false);
+            dialog.VisibleRoot.SetActive(false);
             dialog.OnDismissed.AddListener(OnDialogDismissed);
             
             // Put it on the pile of dialogs we're managing.
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return dialog;
         }
 
-        private void OnDialogDismissed(Dialog dismissedDialog)
+        private void OnDialogDismissed(IDialog dismissedDialog)
         {
             dismissedDialog.Reset(); // Reset the dialog to its default state for next use out of the pool.
             dismissedDialog.OnDismissed?.RemoveListener(OnDialogDismissed);
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             Type dialogType = dismissedDialog.GetType();
             if (!dialogPool.ContainsKey(dialogType))
             {
-                dialogPool[dialogType] = new Queue<Dialog>();
+                dialogPool[dialogType] = new Queue<IDialog>();
             }
             
             dialogPool[dialogType].Enqueue(dismissedDialog);

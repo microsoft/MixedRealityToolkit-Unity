@@ -29,7 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
     /// <summary>
     /// An IDialog hydrates and controls the various sub-components
-    /// of the dialog view.
+    /// of the dialog view. IDialogs are spawned, pooled, and killed
+    /// by DialogSpawners. Generally, developers should not directly
+    /// manage or instantiate instances of their dialogs, as it is
+    /// essential that they are pooled and managed correctly by a spawner.
     /// </summary>
     public interface IDialog
     {
@@ -117,5 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// and invoke the onDismissed event for you.
         /// </remarks>
         void Dismiss();
+
+        /// <summary>
+        /// The dialog's root GameObject, used for setting visibility.
+        /// </summary>
+        GameObject VisibleRoot { get; }
     }
 }
