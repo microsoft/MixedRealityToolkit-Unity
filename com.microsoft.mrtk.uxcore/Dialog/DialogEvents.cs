@@ -19,16 +19,35 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// </summary>
     public abstract class BaseDialogEventArgs
     {
+        /// <summary>
+        /// A reference to the <see cref="Dialog"/> that
+        /// emitted this event.
+        /// </summary>
         public Dialog Dialog { get; set; }
     }
 
     /// <summary>
-    /// Button events emit these parameters.
+    /// Button events emit these parameters. For subclassed dialogs
+    /// with custom buttons or other types of events, return
+    /// a <see cref="DialogButtonType.Other"/> with some additional
+    /// context in a subclassed <see cref="DialogButtonEventArgs" type.
     /// </summary>
     public class DialogButtonEventArgs : BaseDialogEventArgs
     {
+        /// <summary>
+        /// The semantic type of the button that generated this event.
+        /// </summary>
+        /// <remarks>
+        /// Subclassed Dialog classes that utilize more specific
+        /// semantic types may specify a <see cref="DialogButtonType.Other"/>
+        /// button type. You should cast the button event args down to the
+        /// derived type to obtain more specific information about the action.
+        /// </remarks>
         public DialogButtonType ButtonType { get; set; }
 
+        /// <summary>
+        /// The text on the button that generated this event.
+        /// </summary>
         public string ButtonText { get; set; }
     }
 

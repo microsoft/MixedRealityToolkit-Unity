@@ -15,19 +15,12 @@ using Microsoft.MixedReality.Toolkit.SpatialManipulation;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    public enum DialogButtonType
-    {
-        Negative = 0,
-        Positive = 1,
-        Neutral = 2
-    }
-
     /// <summary>
     /// The Dialog script hydrates and controls the various sub-components
     /// of the dialog view.
     /// </summary>
     [AddComponentMenu("MRTK/UX/Dialog")]
-    public class Dialog : MonoBehaviour
+    public class Dialog : MonoBehaviour, IDialog
     {
         #region View components
 
@@ -42,12 +35,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private TMP_Text bodyText;
 
         [SerializeField]
+        [Tooltip("The button representing the positive action. If specified by the user, " +
+                 "the button will be enabled and activated, with actions hooked up through code.")]
         private DialogButton positiveButton = new DialogButton();
 
         [SerializeField]
+        [Tooltip("The button representing the negative action. If specified by the user, " +
+                 "the button will be enabled and activated, with actions hooked up through code.")]
         private DialogButton negativeButton = new DialogButton();
 
         [SerializeField]
+        [Tooltip("The button representing the neutral action. If specified by the user, " +
+                 "the button will be enabled and activated, with actions hooked up through code.")]
         private DialogButton neutralButton = new DialogButton();
         
         #endregion
@@ -66,24 +65,26 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private UnityEvent<Dialog> onDismissed = new UnityEvent<Dialog>();
 
+        /// <inheritdoc />
         public UnityEvent<Dialog> OnDismissed => onDismissed;
-
-        // public bool IsVisible => isVisible;
 
         #endregion
 
+        /// <inheritdoc />
         public Dialog SetHeader(string header)
         {
             this.header = header;
             return this;
         }
 
+        /// <inheritdoc />
         public Dialog SetBody(string body)
         {
             this.body = body;
             return this;
         }
-
+        
+        /// <inheritdoc />
         public Dialog SetPositive(string label, UnityAction<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
@@ -93,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return this;
         }
 
+        /// <inheritdoc />
         public Dialog SetNegative(string label, UnityAction<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
@@ -102,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return this;
         }
 
+        /// <inheritdoc />
         public Dialog SetNeutral(string label, UnityAction<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
@@ -111,15 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return this;
         }
 
-        /// <summary>
-        /// Clears all content, events, and configuration from the dialog.
-        /// Useful when pooling Dialog objects, to ensure that subsequent
-        /// uses of the object don't retain stale data.
-        /// </summary>
-        /// <remarks>
-        /// When implementing custom dialog types, be sure to override
-        /// this method to clear any custom state or fields.
-        /// </remarks>
+        /// <inheritdoc />
         public virtual void Reset()
         {
             header = null;
@@ -132,6 +127,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             neutralAction = null;
         }
 
+        /// <summary>
+        /// Adds the listeners/actions to the buttons that have been
+        /// specified/added to the dialog.
+        /// </summary>
         protected virtual void Awake()
         {
             if (negativeButton.Interactable != null)
@@ -175,10 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
 #endif
 
         }
-
         
-    
-
+        /// <inheritdoc />
         public virtual void Show()
         {
             headerText.gameObject.SetActive(header != null);
@@ -193,14 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             gameObject.SetActive(true);
         }
 
-        /// <summary>
-        /// Dismisses the dialog. Unsubscribes all listeners from the dialog's
-        /// events, plays the dismiss animation, and then invokes onDismissed.
-        /// </summary>
-        /// <remarks>
-        /// Those writing subclassed Dialogs should unsubscribe listeners from their custom
-        /// events, if any, as well.
-        /// </remarks>
+        /// <inheritdoc />
         public virtual void Dismiss()
         {
             negativeAction?.RemoveAllListeners();
@@ -211,7 +201,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             StartCoroutine(InvokeDismissalAfterAnimation());
         }
 
-        protected IEnumerator InvokeDismissalAfterAnimation()
+        /// <summary>
+        /// Coroutine to set the animation trigger, wait for the animation to finish,
+        /// and then hide the dialog and invoke the dismissal action. This coroutine
+        /// is started by the base <see cref="Dismiss"/> method once all listeners
+        /// have been removed.
+        private IEnumerator InvokeDismissalAfterAnimation()
         {
             Animator animator = GetComponent<Animator>();
             animator.SetTrigger("Dismiss");
