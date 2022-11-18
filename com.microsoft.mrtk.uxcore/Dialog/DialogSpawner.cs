@@ -119,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (dialogInstance == dismissedDialog) dialogInstance = null;
 
             // Return dialog instance back to pool.
-            Debug.Log("Adding dialog back to pool.");
             Type dialogType = dismissedDialog.GetType();
             if (!dialogPool.ContainsKey(dialogType))
             {
