@@ -29,3 +29,4 @@ jobs:
     parameters:
       BuildStandalone: true
       BuildUWP: true
+      RunTests: true

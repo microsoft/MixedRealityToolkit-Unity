@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Workaround for missing select actions on devices without interaction profiles
                     // for hands, such as Varjo and Quest. Should be removed once we have universal
                     // hand interaction profile(s) across vendors.
-                    if ((selectAction.action?.controls.Count ?? 0) == 0)
+                    if (!selectAction.action.HasAnyControls())
                     {
                         // Debounced.
                         bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // In case the position input action is not provided, we will try to polyfill it with the device position.
             // Should be removed once we have universal hand interaction profile(s) across vendors.
 
-            if ((positionAction.action?.controls.Count ?? 0) == 0 && TryGetPolyfillDevicePose(out Pose devicePose))
+            if (!positionAction.action.HasAnyControls() && TryGetPolyfillDevicePose(out Pose devicePose))
             {
                 controllerState.position = devicePose.position;
                 controllerState.rotation = devicePose.rotation;
@@ -158,17 +158,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bool poseRetrieved = false;
             Handedness handedness = HandNode.ToHandedness();
 
+            // palmPose retrieved in global space.
             if (HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, HandNode, out HandJointPose palmPose))
             {
-                devicePose.position = palmPose.Position;
+                // XRControllers work in OpenXR scene-origin-space, so we need to transform
+                // our global palm pose back into scene-origin-space.
+                devicePose = PlayspaceUtilities.InverseTransformPose(palmPose.Pose);
+
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        devicePose.rotation = palmPose.Rotation * leftPalmOffset;
+                        devicePose.rotation = devicePose.rotation * leftPalmOffset;
                         poseRetrieved = true;
                         break;
                     case Handedness.Right:
-                        devicePose.rotation = palmPose.Rotation * rightPalmOffset;
+                        devicePose.rotation = devicePose.rotation * rightPalmOffset;
                         poseRetrieved = true;
                         break;
                     default:

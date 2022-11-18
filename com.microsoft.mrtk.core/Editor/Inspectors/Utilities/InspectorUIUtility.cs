@@ -710,7 +710,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed gameobject.
+        /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed GameObject.
         /// Adds a button for adding any of the component (or derived types) and a follow button to highlight existing attached components.
         /// </summary>
         static public bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
@@ -769,5 +769,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.EndVertical();
             }
         }
+
+        public static string GetBackingField(string propertyName) => $"<{propertyName}>k__BackingField";
     }
 }

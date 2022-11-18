@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.SubsystemsImplementation;
@@ -33,6 +34,36 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         {
             #region IAccessibilitySubsystem implementation
 
+            #region Describable object management
+
+            /// <summary>
+            /// Attempts to get the collection of describable objects based on the specified constraints.
+            /// </summary>
+            /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
+            /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
+            /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
+            /// <param name="describableObjectsList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+            /// <returns>True if the collection of (zero or more) describable objects is being returned, or false.</returns>
+            /// <remarks>
+            /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
+            /// <para/>
+            /// The contents of the objectList collection is indeterminate when this method returns false.
+            /// </remarks>
+            internal abstract bool TryGetDescribableObjects(List<DescribableObjectClassification> classifications, DescribableObjectVisibility readerView, float maxDistance, List<GameObject> describableObjectsList);
+
+            /// <inheritdoc/>
+            public abstract bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications);
+
+            /// <inheritdoc/>
+            public abstract bool TryRegisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
+
+            /// <inheritdoc/>
+            public abstract bool TryUnregisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
+
+            #endregion Describable object management
+
+            #region Text color inversion
+
             /// <inheritdoc/>
             public abstract bool InvertTextColor { get; set; }
 
@@ -42,10 +73,46 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             /// <inheritdoc/>
             public abstract void ApplyTextColorInversion(Material material, bool enable);
 
+            #endregion Text color inversion
+
             #endregion IAccessibilitySubsystem implementation
         }
 
         #region IAccessibilitySubsystem implementation
+
+        #region Describable object management
+
+        /// <summary>
+        /// Attempts to get the collection of describable objects based on the specified constraints.
+        /// </summary>
+        /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
+        /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
+        /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
+        /// <param name="describableObjectList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+        /// <returns>True if the collection of (zero or more) describable objects is being returned, or false.</returns>
+        /// <remarks>
+        /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
+        /// <para/>
+        /// The contents of the objectList collection is indeterminate when this method returns false.
+        /// </remarks>
+        internal bool TryGetDescribableObjects(List<DescribableObjectClassification> classifications, DescribableObjectVisibility readerView, float maxDistance, List<GameObject> describableObjectList) =>
+            provider.TryGetDescribableObjects(classifications, readerView, maxDistance, describableObjectList);
+
+        /// <inheritdoc/>
+        public bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications) =>
+            provider.TryGetDescribableObjectClassifications(classifications);
+
+        /// <inheritdoc/>
+        public bool TryRegisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification) =>
+            provider.TryRegisterDescribableObject(describableObject, classification);
+
+        /// <inheritdoc/>
+        public bool TryUnregisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification) =>
+            provider.TryUnregisterDescribableObject(describableObject, classification);
+
+        #endregion Describable object management
+
+        #region Text color inversion
 
         /// <inheritdoc/>
         public bool InvertTextColor
@@ -65,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         public void ApplyTextColorInversion(
             Material material,
             bool enable) => provider.ApplyTextColorInversion(material, enable);
+
+        #endregion Text color inversion
 
         #endregion IAccessibilitySubsystem implementation
 

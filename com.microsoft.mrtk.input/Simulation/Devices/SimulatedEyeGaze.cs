@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     /// ship a corresponding PoseState struct along with their version of PoseControl, and
     /// thus we cannot inject simulated input data into that control from the managed layer.
     /// 
-    /// When the duplicated PoseControl version is either removed, or recieves a corresponding
+    /// When the duplicated PoseControl version is either removed, or receives a corresponding
     /// state struct, we can inherit directly from the OpenXR eye device.
     /// </remarks>
     [InputControlLayout(

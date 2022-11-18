@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // Make room for ellipses
             maxChars--;
 
-            // if the characters wanted to display for trialing chars is longer than the max allowed,
+            // if the characters wanted to display for trailing chars is longer than the max allowed,
             // set trailing chars to the max allowed.
             if (trailingChars > maxChars)
             {

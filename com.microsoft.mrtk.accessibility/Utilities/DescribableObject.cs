@@ -13,6 +13,15 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     public class DescribableObject : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("What is the classification (ex: person, place, ui element, etc.) of this object?")]
+        private DescribableObjectClassification classification = null;
+
+        /// <summary>
+        /// What is the classification (ex: person, place, ui element, etc.) of this object?
+        /// </summary>
+        public DescribableObjectClassification Classification => classification;
+
+        [SerializeField]
         [Tooltip("The full contents of the object.")]
         private string contents = string.Empty;
 
@@ -56,24 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         public string Description => description;
 
         [SerializeField]
-        [Tooltip("Information used to help the user determine the contextual importance of the object.")]
-        private DescribableFlag flags = DescribableFlag.Static | DescribableFlag.Item;
-
-        /// <summary>
-        /// Information used to help the user determine the contextual importance
-        /// of the object.
-        /// </summary>
-        /// <remarks>
-        /// Flags can be used to provide appropriate audio notifications. These sounds
-        /// help the user to determine the type, purpose and importance of the object.
-        /// </remarks>
-        public DescribableFlag Flags
-        {
-            get => flags;
-            set => flags = value;
-        }
-
-        [SerializeField]
         [Tooltip("Instructions on how to interact with the object.")]
         private string instructions = string.Empty;
 
@@ -85,6 +76,19 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// "Select the Start button to begin."
         /// </remarks>
         public string Instructions => instructions;
+
+        [SerializeField]
+        [Tooltip("Is the object relevant to the current context of the experience?")]
+        private bool isContextuallyRelevant = true;
+
+        /// <summary>
+        /// Is the object relevant to the current context of the experience?
+        /// </summary>
+        public bool IsContextuallyRelevant
+        {
+            get => isContextuallyRelevant;
+            set => isContextuallyRelevant = value;
+        }
 
         [SerializeField]
         [Tooltip("Information provided to assistive technologies to describe the role of the component within the scene.")]
@@ -102,9 +106,39 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         private string semantic = string.Empty;
 
         /// <summary>
-        /// A string describing the semantic usage of the object. Common semanitic include;
+        /// A string describing the semantic usage of the object. Common semantics include:
         /// "login button", "rocking chair", etc.
         /// </summary>
         public string Semantic => semantic;
+
+        #region Monobehaviour methods
+
+        private static bool suppressSubsystemNotFound = false;
+
+        private void OnEnable()
+        {
+            if ((AccessibilityHelpers.Subsystem == null) && !suppressSubsystemNotFound)
+            {
+                Debug.LogWarning("The accessibility subsystem is not enabled or has not yet started.");
+                suppressSubsystemNotFound = true;
+                return;
+            }
+
+            if (!AccessibilityHelpers.Subsystem.TryRegisterDescribableObject(gameObject, Classification))
+            {
+                Debug.LogError($"Failed to register {gameObject.name} with the accessibility subsystem.");
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (AccessibilityHelpers.Subsystem == null) { return; }
+            if (!AccessibilityHelpers.Subsystem.TryUnregisterDescribableObject(gameObject, Classification))
+            {
+                Debug.LogError($"Failed to unregister {gameObject.name} with the accessibility subsystem.");
+            }
+        }
+
+        #endregion Monobehavior methods
     }
 }
