@@ -9,24 +9,24 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// Class enabling assistive technologies to provide descriptive data (ex: purpose,
     /// description, role, etc.) for an object in the scene.
     /// </summary>
-    [AddComponentMenu("MRTK/Accessibility/Describable Object")]
-    public class DescribableObject : MonoBehaviour
+    [AddComponentMenu("MRTK/Accessibility/Accessible Object")]
+    public class AccessibleObject : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("What is the classification (ex: person, place, ui element, etc.) of this object?")]
-        private DescribableObjectClassification classification = null;
+        private AccessibleObjectClassification classification = null;
 
         /// <summary>
         /// What is the classification (ex: person, place, ui element, etc.) of this object?
         /// </summary>
-        public DescribableObjectClassification Classification => classification;
+        public AccessibleObjectClassification Classification => classification;
 
         [SerializeField]
         [Tooltip("The full contents of the object.")]
         private string contents = string.Empty;
 
         /// <summary>
-        /// The contents of the describable object.
+        /// The contents of the accessible object.
         /// </summary>
         /// <remarks>
         /// The contents of the object are generally the complete, readable text. For
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         private string contentSummary = string.Empty;
 
         /// <summary>
-        /// A short version of the describable object's contents.
+        /// A short version of the accessible object's contents.
         /// </summary>
         /// <remarks>
         /// A good summary provides a clear and concise version of the data contained in
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
                 return;
             }
 
-            if (!AccessibilityHelpers.Subsystem.TryRegisterDescribableObject(gameObject, Classification))
+            if (!AccessibilityHelpers.Subsystem.TryRegisterAccessibleObject(gameObject, Classification))
             {
                 Debug.LogError($"Failed to register {gameObject.name} with the accessibility subsystem.");
             }
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         private void OnDisable()
         {
             if (AccessibilityHelpers.Subsystem == null) { return; }
-            if (!AccessibilityHelpers.Subsystem.TryUnregisterDescribableObject(gameObject, Classification))
+            if (!AccessibilityHelpers.Subsystem.TryUnregisterAccessibleObject(gameObject, Classification))
             {
                 Debug.LogError($"Failed to unregister {gameObject.name} with the accessibility subsystem.");
             }
