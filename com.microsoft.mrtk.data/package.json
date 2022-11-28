@@ -14,7 +14,6 @@
     "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
   },
   "unity": "2020.3",
-  "unityRelease": "42f1",
   "dependencies": {
     "com.microsoft.mrtk.core": "3.0.0-development",
     "com.unity.nuget.newtonsoft-json": "2.0.2",
