@@ -1,19 +1,24 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
-using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
+using ObsoleteAttribute = System.ObsoleteAttribute;
+
+using DialogButtonType = Microsoft.MixedReality.Toolkit.UX.Deprecated.DialogButtonType;
+
+namespace Microsoft.MixedReality.Toolkit.UX.Deprecated.Runtime.Tests
 {
     /// <summary>
     /// Tests for the Static Dialog UX component.
     /// </summary>
+    [Obsolete("Tests for obsolete Dialog component. Will be removed in a future release.")]
     public class DialogTests : BaseRuntimeInputTests
     {
         // UXComponents/Dialogs/Prefabs/Dialog_168x88mm.prefab
@@ -28,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
         public override IEnumerator TearDown()
         {
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
+            UnityEngine.Object.Destroy(dialogGameObject);
+            UnityEngine.Object.Destroy(dialogComponent);
             yield return base.TearDown();
         }
 

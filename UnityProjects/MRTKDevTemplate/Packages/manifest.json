@@ -79,6 +79,7 @@
     "com.microsoft.mrtk.spatialmanipulation",
     "com.microsoft.mrtk.standardassets",
     "com.microsoft.mrtk.uxcomponents",
+    "com.microsoft.mrtk.uxcomponents.noncanvas",
     "com.microsoft.mrtk.uxcore",
     "com.microsoft.mrtk.windowsspeech"
   ]
