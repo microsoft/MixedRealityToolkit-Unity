@@ -1,0 +1,29 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.UXComponents.Runtime.Tests",
+    "rootNamespace": "",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Core",
+        "Microsoft.MixedReality.Toolkit.Core.TestUtilities",
+        "Microsoft.MixedReality.Toolkit.UXComponents",
+        "Microsoft.MixedReality.Toolkit.UXCore",
+        "Microsoft.MixedReality.Toolkit.Input",
+        "Microsoft.MixedReality.Toolkit.Input.Runtime.Tests",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner",
+        "Unity.XR.Interaction.Toolkit",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
