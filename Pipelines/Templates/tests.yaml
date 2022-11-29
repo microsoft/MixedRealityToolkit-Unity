@@ -124,7 +124,6 @@ steps:
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
-    condition: 
     inputs:
       testResultsFormat: NUnit
       testResultsFiles: 'test*.xml'
