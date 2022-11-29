@@ -41,12 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// in a more prominent position and/or with more prominent styling
         /// than the body text.
         /// </summary>
-        Dialog SetHeader(string header);
+        /// <returns> Itself, for chaining. </returns>
+        IDialog SetHeader(string header);
 
         /// <summary>
         /// Sets the body text on the dialog.
         /// </summary>
-        Dialog SetBody(string body);
+        /// <returns> Itself, for chaining. </returns>
+        IDialog SetBody(string body);
         
         /// <summary>
         /// Adds a positive option on the Dialog. <paramref name="action"/> will be invoked
@@ -55,7 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <param name="label"/> The text to affix to the button.</param>
         /// <param name="action"/> The action to invoke when the button is selected.</param>
-        Dialog SetPositive(string label, UnityAction<DialogButtonEventArgs> action);
+        /// <returns> Itself, for chaining. </returns>
+        IDialog SetPositive(string label, UnityAction<DialogButtonEventArgs> action);
 
         /// <summary>
         /// Adds a negative option on the Dialog. <paramref name="action"/> will be invoked
@@ -64,7 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <param name="label"/> The text to affix to the button.</param>
         /// <param name="action"/> The action to invoke when the button is selected.</param>
-        Dialog SetNegative(string label, UnityAction<DialogButtonEventArgs> action);
+        /// <returns> Itself, for chaining. </returns>
+        IDialog SetNegative(string label, UnityAction<DialogButtonEventArgs> action);
 
         /// <summary>
         /// Adds a neutral option on the Dialog. <paramref name="action"/> will be invoked
@@ -73,7 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <param name="label"/> The text to affix to the button.</param>
         /// <param name="action"/> The action to invoke when the button is selected.</param>
-        Dialog SetNeutral(string label, UnityAction<DialogButtonEventArgs> action);
+        /// <returns> Itself, for chaining. </returns>
+        IDialog SetNeutral(string label, UnityAction<DialogButtonEventArgs> action);
         
         /// <summary>
         /// This event is fired when the dialog is dismissed, either
@@ -107,7 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// When implementing custom dialog types, be sure to override this to
         /// show your custom dialog in an appropriate way.
         /// </remarks>
-        void Show();
+        /// <returns> Itself, for chaining. </returns>
+        IDialog Show();
 
         /// <summary>
         /// Dismisses the dialog. Unsubscribes all listeners from the dialog's

@@ -71,21 +71,21 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #endregion
 
         /// <inheritdoc />
-        public Dialog SetHeader(string header)
+        public IDialog SetHeader(string header)
         {
             this.header = header;
             return this;
         }
 
         /// <inheritdoc />
-        public Dialog SetBody(string body)
+        public IDialog SetBody(string body)
         {
             this.body = body;
             return this;
         }
         
         /// <inheritdoc />
-        public Dialog SetPositive(string label, UnityAction<DialogButtonEventArgs> action)
+        public IDialog SetPositive(string label, UnityAction<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
             positiveButton.Label.text = label;
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <inheritdoc />
-        public Dialog SetNegative(string label, UnityAction<DialogButtonEventArgs> action)
+        public IDialog SetNegative(string label, UnityAction<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
             negativeButton.Label.text = label;
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <inheritdoc />
-        public Dialog SetNeutral(string label, UnityAction<DialogButtonEventArgs> action)
+        public IDialog SetNeutral(string label, UnityAction<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
             neutralButton.Label.text = label;
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
         
         /// <inheritdoc />
-        public virtual void Show()
+        public virtual IDialog Show()
         {
             headerText.gameObject.SetActive(header != null);
             headerText.text = header;
@@ -195,6 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             neutralButton.Interactable.gameObject.SetActive(neutralAction != null);
 
             gameObject.SetActive(true);
+
+            return this;
         }
 
         /// <inheritdoc />
