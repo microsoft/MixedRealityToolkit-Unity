@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 using ObsoleteAttribute = System.ObsoleteAttribute;
-
 using DialogButtonType = Microsoft.MixedReality.Toolkit.UX.Deprecated.DialogButtonType;
 
 namespace Microsoft.MixedReality.Toolkit.UX.Deprecated.Runtime.Tests
