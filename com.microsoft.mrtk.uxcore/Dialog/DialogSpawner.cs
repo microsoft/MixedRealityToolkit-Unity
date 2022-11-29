@@ -68,12 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
             // Is there a dialog already open, and is our policy to dismiss the existing dialog?
-            if (dialogInstance != null && spawnPolicy == Policy.DismissExisting)
+            if (dialogInstance != null && !IsDialogDestroyed(dialogInstance) && spawnPolicy == Policy.DismissExisting)
             {
                 // Dismiss the existing dialog.
                 dialogInstance.Dismiss();
             }
-            else if (dialogInstance != null && spawnPolicy == Policy.AbortIfExisting)
+            else if (dialogInstance != null && !IsDialogDestroyed(dialogInstance) && spawnPolicy == Policy.AbortIfExisting)
             {
                 // Otherwise, we abort.
                 Debug.LogWarning("Tried to open a dialog, but one is already open. " +
@@ -91,14 +91,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 // Pop through our pooled queue until we find a valid dialog;
                 // these might have been destroyed by some external event (scene load, etc)
-                while (dialog == null && dialogPool[dialogType].Count > 0)
+                while (dialog == null && !IsDialogDestroyed(dialog) && dialogPool[dialogType].Count > 0)
                 {
                     dialog = dialogPool[dialogType].Dequeue();
                 }
             }
             
             // If we didn't find a pooled dialog, instantiate a new one.
-            if (dialog == null)
+            if (dialog == null || IsDialogDestroyed(dialog))
             {
                 // The pool is empty. We need to instantiate a new one!
                 dialog = Instantiate(prefab).GetComponent<IDialog>();
@@ -126,6 +126,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             
             dialogPool[dialogType].Enqueue(dismissedDialog);
+        }
+
+        // Checks the MonoBehaviour-specific null check, which
+        // asks Unity whether the object is actually destroyed.
+        private bool IsDialogDestroyed(IDialog dialog)
+        {
+            if (dialog is MonoBehaviour dialogBehaviour)
+            {
+                return dialogBehaviour == null;
+            }
+
+            return dialog == null;
         }
     }
 }
