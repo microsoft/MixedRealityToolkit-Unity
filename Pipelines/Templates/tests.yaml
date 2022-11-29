@@ -129,3 +129,4 @@ steps:
       testResultsFiles: 'test*.xml'
       searchFolder: $(Build.ArtifactStagingDirectory)
       failTaskOnFailedTests: true
+      continueOnError: false
