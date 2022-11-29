@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.UXComponents.Runtime.Tests",
+    "name": "Microsoft.MixedReality.Toolkit.UXComponents.NonCanvas.Runtime.Tests",
     "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
