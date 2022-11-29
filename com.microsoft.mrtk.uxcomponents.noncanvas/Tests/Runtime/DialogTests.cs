@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated.Runtime.Tests
     /// Tests for the Static Dialog UX component.
     /// </summary>
     [Obsolete("Tests for obsolete Dialog component. Will be removed in a future release.")]
-    public class DialogTests : BaseRuntimeInputTests
+    public class LegacyDialogTests : BaseRuntimeInputTests
     {
         // UXComponents/Dialogs/Prefabs/Dialog_168x88mm.prefab
         private const string SmallDialogPrefabAssetGuid = "175cf7e8b8559f342806a0f7d7f3082a";
