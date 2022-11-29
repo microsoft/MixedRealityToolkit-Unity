@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c6fa1bae690a3419606a5e4af0f24d, type: 3}
   m_Name: TreeItem
   m_EditorClassIdentifier: 
-  description: A grid whose rows can be expanded and collapsed in the same manner
-    as for a tree.
-  formalName: treegrid
+  description: An option item of a tree. This is an element within a tree that may
+    be expanded or collapsed if it contains a sub-level group of tree item elements.
+  formalName: treeitem
   isAria: 1
