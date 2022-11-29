@@ -769,5 +769,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.EndVertical();
             }
         }
+
+        public static string GetBackingField(string propertyName) => $"<{propertyName}>k__BackingField";
     }
 }

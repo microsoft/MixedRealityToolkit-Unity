@@ -162,5 +162,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
                 yield return null;
             }
         }
+
+        /// <summary>
+        /// Waits for the specified number of FixedUpdate intervals.
+        /// </summary>
+        public static IEnumerator WaitForFixedUpdates(int frameCount = 10)
+        {
+            for (int i = 0; i < frameCount; i++)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+        }
     }
 }

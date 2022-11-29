@@ -19,7 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty hostTransform;
         private SerializedProperty allowedManipulations;
         private SerializedProperty allowedInteractionTypes;
-        private SerializedProperty useForcesForNearManipulation;
+        private SerializedProperty applyTorque;
+        private SerializedProperty springForceSoftness;
+        private SerializedProperty springTorqueSoftness;
+        private SerializedProperty springDamping;
+        private SerializedProperty springForceLimit;
 
         private SerializedProperty rotationAnchorNear;
         private SerializedProperty rotationAnchorFar;
@@ -67,7 +71,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
             // Physics
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
-            useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
+            applyTorque = serializedObject.FindProperty("applyTorque");
+            springForceSoftness = serializedObject.FindProperty("springForceSoftness");
+            springTorqueSoftness = serializedObject.FindProperty("springTorqueSoftness");
+            springDamping = serializedObject.FindProperty("springDamping");
+            springForceLimit = serializedObject.FindProperty("springForceLimit");
 
             // Smoothing
             transformSmoothingLogicType = serializedObject.FindProperty("transformSmoothingLogicType");
@@ -119,10 +127,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
             if (physicsFoldout)
             {
-                if (rb != null)
+                if (rb != null && !rb.isKinematic)
                 {
                     EditorGUILayout.PropertyField(releaseBehavior);
-                    EditorGUILayout.PropertyField(useForcesForNearManipulation);
+                    EditorGUILayout.PropertyField(applyTorque);
+                    EditorGUILayout.PropertyField(springForceSoftness);
+                    EditorGUILayout.PropertyField(springTorqueSoftness);
+                    EditorGUILayout.PropertyField(springDamping);
+                    EditorGUILayout.PropertyField(springForceLimit);
                 }
                 else
                 {
@@ -134,12 +146,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
             if (smoothingFoldout)
             {
+                if (rb == null || rb.isKinematic)
+                {
+                    EditorGUILayout.PropertyField(moveLerpTime);
+                    EditorGUILayout.PropertyField(rotateLerpTime);
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("Move&Rotation smoothing disabled for dynamic Rigidbody. Use Physics smoothing instead.", MessageType.Info);
+                }
+
+                EditorGUILayout.PropertyField(scaleLerpTime);
                 EditorGUILayout.PropertyField(transformSmoothingLogicType);
                 EditorGUILayout.PropertyField(smoothingFar);
                 EditorGUILayout.PropertyField(smoothingNear);
-                EditorGUILayout.PropertyField(moveLerpTime);
-                EditorGUILayout.PropertyField(rotateLerpTime);
-                EditorGUILayout.PropertyField(scaleLerpTime);
             }
 
             EditorGUILayout.Space();
