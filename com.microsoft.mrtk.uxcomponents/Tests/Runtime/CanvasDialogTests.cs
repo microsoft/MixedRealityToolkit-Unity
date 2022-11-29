@@ -210,5 +210,62 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             yield return null;
         }
+
+        /// <summary>
+        /// Tests that only one Dialog object is left in the scene after many dialogs are opened and closed,
+        /// with enough time left between opening each dialog to allow for the dismissal animation.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPoolingPolitely()
+        {
+            bool wasDismissed = false;
+
+            IDialog dialog;
+            
+            for (int i = 0; i < 5; i++)
+            {
+                dialog = spawner.Get()
+                    .SetHeader("This is a test header.")
+                    .SetBody("This is a test body.")
+                    .SetNeutral("OK", ( args ) => {  })
+                    .Show();
+
+                dialog.Dismiss();
+                yield return new WaitForSeconds(DialogCloseTime);
+            }
+            
+            // We have to query by the impl here.
+            object[] dialogs = GameObject.FindObjectsOfType(typeof(Dialog), true);
+            Assert.AreEqual(1, dialogs.Length, "There should be only one pooled dialog in the scene.");
+        }
+
+        /// <summary>
+        /// Tests that many dialog objects are concurrently managed when opening many dialogs
+        /// without waiting for the dismissal animation to complete.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPoolingRudely()
+        {
+            bool wasDismissed = false;
+
+            IDialog dialog;
+            
+            for (int i = 0; i < 5; i++)
+            {
+                dialog = spawner.Get()
+                    .SetHeader("This is a test header.")
+                    .SetBody("This is a test body.")
+                    .SetNeutral("OK", ( args ) => {  })
+                    .Show();
+
+                dialog.Dismiss();
+                yield return null; // Don't wait! Rude!
+            }
+            
+            // We have to query by the impl here.
+            object[] dialogs = GameObject.FindObjectsOfType(typeof(Dialog), true);
+            Assert.AreEqual(5, dialogs.Length, "There should have been 5 total dialogs used.");
+            
+        }
     }
 }

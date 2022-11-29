@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 // Pop through our pooled queue until we find a valid dialog;
                 // these might have been destroyed by some external event (scene load, etc)
-                while (dialog == null && !IsDialogDestroyed(dialog) && dialogPool[dialogType].Count > 0)
+                while ((dialog == null || IsDialogDestroyed(dialog)) && dialogPool[dialogType].Count > 0)
                 {
                     dialog = dialogPool[dialogType].Dequeue();
                 }
