@@ -82,4 +82,4 @@ The roadmap from public preview to GA is detailed in the following table.
 | --- | --- |
 | Public Preview | June 8, 2022 |
 | Preview updates | Approximately every 2-4 weeks until GA |
-| General Availability | First quarter of  2023 |
+| General Availability | First quarter of 2023 |
