@@ -58,7 +58,6 @@ steps:
 #   displayName: 'Run EditMode tests'
 
   - pwsh: |
-      Write-Output '1'
       Write-Host "======================= PlayMode Tests ======================="
       
       $logFile = Join-Path $(Build.ArtifactStagingDirectory) "playmode-test-run.log"
@@ -66,8 +65,6 @@ steps:
       
       $resultFile = Join-Path $(Build.ArtifactStagingDirectory) "test-results-playmode.xml"
       New-Item -Path $resultFile -ItemType File -Force
-      
-      Write-Output '2'
 
       try {
       if ("${{ parameters.UnityVersion }}" -eq "Latest") {
@@ -87,7 +84,6 @@ steps:
       Remove-Job $ljob
       Stop-Process $proc
       }
-      Write-Output '3'
       finally {
         Write-Output '====================================================='
         Write-Output '               PlayMode Tests Finished               '
@@ -121,7 +117,6 @@ steps:
         else {
           Write-Output 'PlayMode Tests results missing!'
         }
-        Write-Output '4'
       Write-Output "Exit code: $($proc.ExitCode)"
       }
 
