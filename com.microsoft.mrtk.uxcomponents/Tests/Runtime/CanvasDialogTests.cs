@@ -27,8 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
         private DialogSpawner spawner;
         private TestInteractor testInteractor;
-
-        private const float DialogOpenTime = 0.2f;
+        
         private const float DialogCloseTime = 0.5f;
 
         public override IEnumerator Setup()
@@ -218,8 +217,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestPoolingPolitely()
         {
-            bool wasDismissed = false;
-
             IDialog dialog;
             
             for (int i = 0; i < 5; i++)
@@ -246,8 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestPoolingRudely()
         {
-            bool wasDismissed = false;
-
             IDialog dialog;
             
             for (int i = 0; i < 5; i++)
