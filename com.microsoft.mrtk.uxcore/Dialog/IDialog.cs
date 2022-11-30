@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// </summary>
     public enum DialogButtonType
     {
-        Negative = 0,
-        Positive = 1,
+        Positive = 0,
+        Negative = 1,
         Neutral = 2,
         Other
     }
