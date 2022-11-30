@@ -172,7 +172,7 @@ Material:
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
     - _FadeMinValue: 0
-    - _Fade_Out_: 0
+    - _Fade_Out_: 0.1
     - _Fade_Width_: 1.5
     - _Filter_Width_: 1
     - _FluentLightIntensity: 1
