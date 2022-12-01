@@ -25,6 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private GUIContent profileLabel = new GUIContent("Profile");
 
+        private const string MRTKDefaultProfileGUID = "c677e5c4eb85b7849a8da406775c299d";
+
         private void OnEnable()
         {
             profileDict = serializedObject.FindProperty("settings");
@@ -50,6 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (profile.objectReferenceValue == null)
             {
                 EditorGUILayout.HelpBox("MixedRealityToolkit cannot initialize unless an Active Profile is assigned!", MessageType.Error);
+                if (GUILayout.Button(new GUIContent("Assign MRTK Default")))
+                {
+                    profile.objectReferenceValue = AssetDatabase.LoadAssetAtPath<MRTKProfile>(AssetDatabase.GUIDToAssetPath(MRTKDefaultProfileGUID));
+                }
             }
 
             EditorGUILayout.PropertyField(profile, profileLabel);
