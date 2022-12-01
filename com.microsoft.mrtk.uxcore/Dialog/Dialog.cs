@@ -70,6 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #endregion
 
+        #region Private helper fields
+
+        private bool hasDismissed = false;
+
+        #endregion
+
         /// <inheritdoc />
         public IDialog SetHeader(string header)
         {
@@ -125,6 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             negativeAction = null;
             neutralAction?.RemoveAllListeners();
             neutralAction = null;
+
+            hasDismissed = false;
         }
 
         /// <summary>
@@ -205,6 +213,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             negativeAction?.RemoveAllListeners();
             positiveAction?.RemoveAllListeners();
             neutralAction?.RemoveAllListeners();
+            
+            // Lock. Dismissal idempotent.
+            if (hasDismissed) { return; }
+            hasDismissed = true;
             
             // Only invoke the Dismissed callback after we've played the full dismissal animation.
             StartCoroutine(InvokeDismissalAfterAnimation());
