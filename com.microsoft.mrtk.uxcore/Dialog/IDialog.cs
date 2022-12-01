@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// An IDialog hydrates and controls the various sub-components
     /// of the dialog view. IDialogs are spawned, pooled, and killed
-    /// by DialogSpawners. Generally, developers should not directly
+    /// by DialogPools. Generally, developers should not directly
     /// manage or instantiate instances of their dialogs, as it is
     /// essential that they are pooled and managed correctly by a spawner.
     /// </summary>

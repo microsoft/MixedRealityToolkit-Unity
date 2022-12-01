@@ -7292,7 +7292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogSpawnerExample,
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
         Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -7309,7 +7309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogSpawnerExample,
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
         Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -9510,7 +9510,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogSpawnerExample,
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
         Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -9527,7 +9527,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogSpawnerExample,
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
         Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -25363,7 +25363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogSpawnerExample,
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
         Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -25380,7 +25380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogSpawnerExample,
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
         Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -26979,7 +26979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f4f479c366ee24f8af5312081fb8ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogSpawner: {fileID: 1854885403}
+  DialogPool: {fileID: 1854885403}
 --- !u!114 &1854885406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27050,11 +27050,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c1b7fdcb0605945a98acc0ba322998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogSpawner: {fileID: 1854885403}
+  DialogPool: {fileID: 1854885403}
   header: Inspector Driven Dialog
   body: This dialog was specified in the inspector in InspectorDrivenDialog.cs. The
     header, body, and button parameters were then passed to the Dialog after having
-    built one with DialogSpawner.
+    built one with DialogPool.
   negative:
     Text: Negative option
     Action:

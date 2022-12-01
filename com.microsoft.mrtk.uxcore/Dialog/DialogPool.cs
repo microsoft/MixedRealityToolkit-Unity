@@ -8,6 +8,10 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Events;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
@@ -15,11 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// the lifecycle of the resulting dialog component.
     /// </summary>
     [ExecuteAlways]
-    [AddComponentMenu("MRTK/UX/Dialog Spawner")]
-    public class DialogSpawner : MonoBehaviour
+    [AddComponentMenu("MRTK/UX/Dialog Pool")]
+    public class DialogPool : MonoBehaviour
     {
         /// <summary>
-        /// Specifies the <see cref="DialogSpawner"/>'s behavior
+        /// Specifies the <see cref="DialogPool"/>'s behavior
         /// when opening a dialog while one is already active.
         /// </summary>
         public enum Policy
@@ -44,6 +48,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // Previously-dismissed dialogs pooled by type.
         private static Dictionary<Type, Queue<IDialog>> dialogPool = new Dictionary<Type, Queue<IDialog>>();
 
+        // Used to pre-populate the prefab slot at edit-time.
+        // User can always set the prefab themselves, either in inspector
+        // or through the API itself.
+        private const string CanvasDialogPrefabGUID = "cca6164bb2744884a92a100266f5f3aa";
+
+        protected virtual void OnValidate()
+        {
+#if UNITY_EDITOR
+            if (DialogPrefab == null)
+            {
+                // This is all editor-specific, locked behind the UNITY_EDITOR ifdef.
+                DialogPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                    AssetDatabase.GUIDToAssetPath(CanvasDialogPrefabGUID));
+            }
+#endif // UNITY_EDITOR
+        }
+
         /// <summary>
         /// Retrieves or creates a new dialog instance. Specify a <paramref name="spawnPolicy"/> to
         /// determine how existing dialogs are handled. By default, the spawner will use its <see cref="DialogPrefab"/>,
@@ -63,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (prefab == null)
             {
-                Debug.LogError("DialogSpawner's default dialog prefab is null.", this);
+                Debug.LogError("DialogPool's default dialog prefab is null.", this);
                 return null;
             }
 
@@ -78,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // Otherwise, we abort.
                 Debug.LogWarning("Tried to open a dialog, but one is already open. " +
                                  "To dismiss existing dialogs when opening a new one, " + 
-                                 "use DialogSpawner.Policy.DismissExisting.", this);
+                                 "use DialogPool.Policy.DismissExisting.", this);
                 return null;
             }
 

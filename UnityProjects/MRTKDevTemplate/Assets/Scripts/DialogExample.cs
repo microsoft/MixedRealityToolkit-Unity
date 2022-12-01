@@ -6,21 +6,21 @@ using Microsoft.MixedReality.Toolkit.UX;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public class DialogSpawnerExample : MonoBehaviour
+    public class DialogExample : MonoBehaviour
     {
-        public DialogSpawner dialogSpawner;
+        public DialogPool DialogPool;
 
         public void Awake()
         {
-            if (dialogSpawner == null)
+            if (DialogPool == null)
             {
-                dialogSpawner = GetComponent<DialogSpawner>();
+                DialogPool = GetComponent<DialogPool>();
             }
         }
 
         public void SpawnDialogFromCode()
         {
-            IDialog dialog = dialogSpawner.Get()
+            IDialog dialog = DialogPool.Get()
                 .SetHeader("This dialog is spawned from code.")
                 .SetBody("All of the dialog's properties can be set from code, using a friendly API.")
                 .SetPositive("Yes, please!", ( args ) => Debug.Log("Code-driven dialog says " + args.ButtonType))
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SpawnNeutralDialogFromCode()
         {
-            IDialog dialog = dialogSpawner.Get()
+            IDialog dialog = DialogPool.Get()
                 .SetHeader("Demonstration of a neutral optioned dialog")
                 .SetBody("As you can see, only the options requested will be shown in the dialog. " +
                          "Here's a neutral option, neither negative nor positive.")
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SpawnAllThreeDialogFromCode()
         {
-            IDialog dialog = dialogSpawner.Get()
+            IDialog dialog = DialogPool.Get()
                 .SetHeader("You can even have three!")
                 .SetBody("Yes, in fact, you can request all three option types and they'll still be laid out correctly.")
                 .SetPositive("Yes, please!", ( args ) => Debug.Log("Code-driven dialog says " + args.ButtonType))

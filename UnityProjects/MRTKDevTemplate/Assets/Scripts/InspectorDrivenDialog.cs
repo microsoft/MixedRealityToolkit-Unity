@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
         
         [SerializeField]
-        private DialogSpawner dialogSpawner;
+        private DialogPool DialogPool;
 
         [SerializeField]
         private string header;
@@ -40,9 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         protected virtual void OnEnable()
         {
-            if (dialogSpawner == null)
+            if (DialogPool == null)
             {
-                dialogSpawner = GetComponent<DialogSpawner>();
+                DialogPool = GetComponent<DialogPool>();
             }
         }
 
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             neutral.Text = neutral.Text != "" ? neutral.Text : null;
 
             // Build and show the dialog.
-            dialogSpawner.Get()
+            DialogPool.Get()
                 .SetHeader(header)
                 .SetBody(body)
                 .SetNegative(negative.Text, ( args ) => negative.Action.Invoke(args))

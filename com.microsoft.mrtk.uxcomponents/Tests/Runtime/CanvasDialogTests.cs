@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         private const string CanvasDialogPrefabGUID = "cca6164bb2744884a92a100266f5f3aa";
         private static readonly string CanvasDialogPrefabAssetPath = AssetDatabase.GUIDToAssetPath(CanvasDialogPrefabGUID);
 
-        private DialogSpawner spawner;
+        private DialogPool spawner;
         private TestInteractor testInteractor;
         
         private const float DialogCloseTime = 0.5f;
@@ -34,8 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             yield return base.Setup();
 
-            var spawnerObj = new GameObject("DialogSpawner");
-            spawner = spawnerObj.AddComponent<DialogSpawner>();
+            var spawnerObj = new GameObject("DialogPool");
+            spawner = spawnerObj.AddComponent<DialogPool>();
             spawner.DialogPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(CanvasDialogPrefabAssetPath);
 
             var interactorObj = new GameObject("TestInteractor");
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             dialog.OnDismissed.AddListener(( args ) => { wasDismissed = true; });
 
-            IDialog anotherDialog = spawner.Get(spawnPolicy: DialogSpawner.Policy.DismissExisting)
+            IDialog anotherDialog = spawner.Get(spawnPolicy: DialogPool.Policy.DismissExisting)
                 .SetHeader("This is a test header.")
                 .SetBody("This is a test body.")
                 .SetNeutral("OK", ( args ) => {  })
@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Assert.IsTrue(wasDismissed, "The previous dialog was not dismissed.");
 
-            IDialog thirdDialog = spawner.Get(spawnPolicy: DialogSpawner.Policy.AbortIfExisting);
+            IDialog thirdDialog = spawner.Get(spawnPolicy: DialogPool.Policy.AbortIfExisting);
 
             Assert.IsNull(thirdDialog, "The third dialog should not have been spawned.");
 
