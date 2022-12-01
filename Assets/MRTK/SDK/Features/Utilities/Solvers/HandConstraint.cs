@@ -289,11 +289,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 if (isValidController && SolverHandler.TransformTarget != null)
                 {
-                    if (updateWhenOppositeHandNear || !IsOppositeHandNear(trackedController))
-                    {
+                    // The following lines on being commented solves the issue where Oculus Controllers are not Detected on first 
+                    // when using HandConstraint
+
+                    //if (updateWhenOppositeHandNear || !IsOppositeHandNear(trackedController))
+                    //{
                         GoalPosition = CalculateGoalPosition();
                         GoalRotation = CalculateGoalRotation();
-                    }
+                    //}
                 }
             }
             else
