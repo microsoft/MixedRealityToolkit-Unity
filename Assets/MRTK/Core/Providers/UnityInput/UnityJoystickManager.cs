@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private const float DeviceRefreshInterval = 3.0f;
 
-        protected static readonly Dictionary<string, GenericJoystickController> ActiveControllers = new Dictionary<string, GenericJoystickController>();
+        protected readonly Dictionary<string, GenericJoystickController> ActiveControllers = new Dictionary<string, GenericJoystickController>();
 
         private float deviceRefreshTimer;
         private string[] lastDeviceList;

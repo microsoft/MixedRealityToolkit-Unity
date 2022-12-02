@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             return (capability == MixedRealityCapability.MotionController);
         }
 
-        protected static readonly Dictionary<InputDevice, GenericXRSDKController> ActiveControllers = new Dictionary<InputDevice, GenericXRSDKController>();
+        protected readonly Dictionary<InputDevice, GenericXRSDKController> ActiveControllers = new Dictionary<InputDevice, GenericXRSDKController>();
 
         private readonly List<InputDevice> inputDevices = new List<InputDevice>();
         private readonly List<InputDevice> inputDevicesSubset = new List<InputDevice>();
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             InputDevices.deviceDisconnected -= InputDevices_deviceDisconnected;
 
             var controllersCopy = ActiveControllers.ToReadOnlyCollection();
-            foreach (var controller in controllersCopy)
+            foreach (KeyValuePair<InputDevice, GenericXRSDKController> controller in controllersCopy)
             {
                 RemoveController(controller.Key);
             }
