@@ -1,17 +1,17 @@
 # Authors
 
-The Microsoft Mixed Reality Toolkit is a collaborative project containing contributions from individuals around the world. Our sincere thanks to all who have, and continue to contribute.
+The Microsoft Mixed Reality Toolkit is a collaborative project containing contributions from individuals around the world. Our sincere thanks to all who have contributed and all who continue to contribute.
 
 - achaperon
 - Adam Mitchell (AdamMitchell-ms)
 - Addison Linville (radicalad)
 - ADP-JoNeff
-- afarchy
 - Against Lightning (AgainstLightning)
 - Agredek
 - alandergrouse (alandergrouse)
 - Alex Floyd (elbuhofantasma)
 - Alexander Seeck (Alexees)
+- Alon Farchy (afarchy)
 - Andrew Hall (ryzngard)
 - Anton Zachesov (googlan)
 - Anuraag Puri (anuraag016)
@@ -22,7 +22,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Bertrand Oustrière (BertrandOustriere)
 - Billy Franscois (BillyFrcs)
 - Blake Gross (blgrossMS)
-- Bowen Zhang (BerwinZ)
+- Bowen Zhang (BowenBZ)
 - Brandon Furtwangler (brandf)
 - Bryan Truong (bhtruong93)
 - C. M. Barth (chrisfromwork)
@@ -52,6 +52,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Eric Fiscus (MRW-Eric)
 - Eric O'Brien (ericob)
 - Eric prvncher (provencher)
+- Esteban Fuentealba (EstebanFuentealba)
 - etiennemargraff (meulta)
 - Eusebiu Marcu (eusebiu)
 - Evan Tice (in2dair)
@@ -69,8 +70,10 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Harrison Yu (harrisonyu)
 - hybridherbst
 - Hyung-il Kim (hyungilkim)
+- Iulian Radu (iuli4n)
 - Jack Yang (jackyangzzh)
 - James Provan (JamesProvan-UL)
+- Jamie Magee (JamieMagee)
 - Jared Bienz [MSFT] (jbienzms)
 - Jarod (jshowacre)
 - Jerome Humbert (djee-ms)
@@ -88,6 +91,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - julianloehr-kg
 - JungJik Lee (fnwinter)
 - jverral
+- keith-phillips
 - Ken Jakubzak (KenJakubzak)
 - Kent1 (Kent1LG)
 - Kevin Foley (kevinfoley)
@@ -108,6 +112,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Malcolm Tyrrell (MalcolmTyrrell)
 - maleicacid (kazuki0824)
 - malnas01
+- Manuel Pezzera (manuelpezzera)
 - Marek Stój (marek-stoj)
 - Mark Finch (fast-slow-still)
 - Matteo Valoriani (mvaloriani)
@@ -130,7 +135,6 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - PatientEz
 - Patrick Cook (darax)
 - Philipp (AllBecomesGood)
-- Proton-V
 - ritijain
 - Robert Butterworth (RobertButterworthMS)
 - Robert Onulak (Ziugy)
@@ -144,6 +148,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Shawn Gwin (sgwin)
 - Shinya Tachihara (decoc)
 - Simon (Darkside) Jackson (SimonDarksideJ)
+- Simon Ferquel (simonferquel)
 - sostel
 - Srinjoy Majumdar (srinjoym)
 - Stefan Wasserbauer (wassx)
@@ -155,6 +160,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Todd Williams (killerantz)
 - Troy Ferrell (Troy-Ferrell)
 - Vanessa Oliva (vaoliva)
+- Vsevolod Belskiy (Proton-V)
 - Weasy (Weasy666)
 - Will (wiwei)
 - William Tian (witian)
