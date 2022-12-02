@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c6fa1bae690a3419606a5e4af0f24d, type: 3}
   m_Name: Tree
   m_EditorClassIdentifier: 
-  description: ' A type of list that may contain sub-level nested groups that can
-    be collapsed and expanded.'
+  description: A type of list that may contain sub-level nested groups that can be
+    collapsed and expanded.
   formalName: tree
   isAria: 1

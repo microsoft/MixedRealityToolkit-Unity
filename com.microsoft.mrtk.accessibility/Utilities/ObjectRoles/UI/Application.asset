@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c6fa1bae690a3419606a5e4af0f24d, type: 3}
   m_Name: Application
   m_EditorClassIdentifier: 
-  description: ' A structure containing one or more focusable elements requiring
-    user input, such as keyboard or gesture events.'
+  description: A structure containing one or more focusable elements requiring user
+    input, such as keyboard or gesture events.
   formalName: application
   isAria: 1
