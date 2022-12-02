@@ -206,6 +206,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public float DragToggleThreshold { get => dragToggleThreshold; set => dragToggleThreshold = value; }
 
+        [SerializeField]
+        [Tooltip("Enabling this will track total distance the object was moved, instead of displacement to determine if the interactable is dragged/moded or clicked")]
+        bool useScalarToggleDistance;
+
+        /// <summary>
+        /// Enabling this will track total distance the object was moved throughout the frames, instead of final displacement to determine
+        /// if the interactable is dragged/moded or clicked.
+        /// </summary>
+        public bool UseScalarToggleDistance
+        {
+            get => useScalarToggleDistance;
+            set => useScalarToggleDistance = value;
+        }
+
         [Header("Manipulation")]
 
         [SerializeField]
@@ -493,6 +507,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // BC cannot scale below this "epsilon" value
         private const float lowerAbsoluteClamp = 0.001f;
 
+        // Is Bounds Control host selected?
+        private bool isHostSelected;
+
+        // Scalar movement distance of Bounds Control throughout the time it was selected
+        private float movementDistance;
+
         private void Awake()
         {
             if (Interactable == null)
@@ -535,6 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             TransformTarget();
+            CalculatePerFrameDistance();
         }
 
         private void OnDestroy()
@@ -546,12 +567,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // Track where the interactable was when it was selected.
             // We compare against this when the selection ends.
+            isHostSelected = true;
             startMovePosition = Target.localPosition;
+            movementDistance = 0;
         }
 
         private void OnHostDeselected(SelectExitEventArgs args)
         {
-            if (Vector3.Distance(startMovePosition, Target.localPosition) < dragToggleThreshold && toggleHandlesOnClick)
+            float dragDistance = useScalarToggleDistance ? movementDistance : Vector3.Distance(startMovePosition, Target.localPosition);
+            if (dragDistance < dragToggleThreshold && toggleHandlesOnClick)
             {
                 HandlesActive = !HandlesActive;
             }
@@ -853,6 +877,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         }
                     }
                 }
+            }
+        }
+
+        private void CalculatePerFrameDistance()
+        {
+            if(isHostSelected && useScalarToggleDistance)
+            {
+                var distance = Vector3.Distance(startMovePosition, Target.localPosition);
+                movementDistance += distance;
+                startMovePosition = Target.localPosition;
             }
         }
     }
