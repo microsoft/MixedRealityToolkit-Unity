@@ -207,12 +207,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         public float DragToggleThreshold { get => dragToggleThreshold; set => dragToggleThreshold = value; }
 
         [SerializeField]
-        [Tooltip("Enabling this will track total distance the object was moved, instead of displacement to determine if the interactable is dragged/moded or clicked")]
+        [Tooltip("Enabling this will track total distance the object was moved, instead of displacement to determine if the interactable is dragged/moved or clicked")]
         bool useScalarToggleDistance;
 
         /// <summary>
         /// Enabling this will track total distance the object was moved throughout the frames, instead of final displacement to determine
-        /// if the interactable is dragged/moded or clicked.
+        /// if the interactable is dragged/moved or clicked.
         /// </summary>
         public bool UseScalarToggleDistance
         {
@@ -565,11 +565,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void OnHostSelected(SelectEnterEventArgs args)
         {
+            isHostSelected = true;
+            movementDistance = 0;
             // Track where the interactable was when it was selected.
             // We compare against this when the selection ends.
-            isHostSelected = true;
             startMovePosition = Target.localPosition;
-            movementDistance = 0;
         }
 
         private void OnHostDeselected(SelectExitEventArgs args)
