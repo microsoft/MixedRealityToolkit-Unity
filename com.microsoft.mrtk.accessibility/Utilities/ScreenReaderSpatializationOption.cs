@@ -5,7 +5,7 @@
 namespace Microsoft.MixedReality.Toolkit.Accessibility
 {
     /// <summary>
-    /// 
+    /// Enumeration defining how screen reader audio should be spatialized.
     /// </summary>
     public enum ScreenReaderSpatializationOption
     {

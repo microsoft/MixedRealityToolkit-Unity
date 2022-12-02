@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Accessibility
 {
     /// <summary>
-    ///  
+    /// Settings that configure how the screen reader discovers accessible objects and renders the audio.
     /// </summary>
     public class ScreenReaderObjectSettings
     {
