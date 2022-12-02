@@ -16,3 +16,4 @@ MonoBehaviour:
     of the resource.
   formalName: note
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#note

@@ -15,3 +15,4 @@ MonoBehaviour:
   description: A user input where the user selects a value from within a given range.
   formalName: slider
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#slider

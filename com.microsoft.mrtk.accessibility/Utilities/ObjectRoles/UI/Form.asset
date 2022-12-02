@@ -16,3 +16,4 @@ MonoBehaviour:
     that, as a whole, combine to create a form.
   formalName: form
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#form

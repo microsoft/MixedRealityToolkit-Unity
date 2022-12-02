@@ -16,3 +16,4 @@ MonoBehaviour:
     be expanded or collapsed if it contains a sub-level group of tree item elements.
   formalName: treeitem
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#treeitem

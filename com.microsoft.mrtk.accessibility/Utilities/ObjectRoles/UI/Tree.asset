@@ -16,3 +16,4 @@ MonoBehaviour:
     collapsed and expanded.
   formalName: tree
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#tree

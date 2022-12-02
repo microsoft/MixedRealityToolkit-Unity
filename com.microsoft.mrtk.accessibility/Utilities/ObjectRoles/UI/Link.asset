@@ -16,3 +16,4 @@ MonoBehaviour:
     when activated, causes the user agent to navigate to that resource.
   formalName: link
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#link

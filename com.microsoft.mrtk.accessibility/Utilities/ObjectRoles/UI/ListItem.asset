@@ -15,3 +15,4 @@ MonoBehaviour:
   description: A single item in a list or directory.
   formalName: listitem
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#listitem

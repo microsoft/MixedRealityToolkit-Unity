@@ -17,3 +17,4 @@ MonoBehaviour:
     viewing area.
   formalName: scrollbar
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#scrollbar

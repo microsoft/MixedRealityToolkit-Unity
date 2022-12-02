@@ -16,3 +16,4 @@ MonoBehaviour:
     one of which can be checked at a time.
   formalName: radio
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#radio

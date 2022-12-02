@@ -16,3 +16,4 @@ MonoBehaviour:
     document.
   formalName: contentinfo
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#contentinfo

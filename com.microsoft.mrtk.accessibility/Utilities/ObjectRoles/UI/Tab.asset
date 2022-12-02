@@ -16,3 +16,4 @@ MonoBehaviour:
     that is to be rendered to the user.
   formalName: tab
   isAria: 1
+  referenceLink: https://www.w3.org/TR/wai-aria-1.1/#tab

@@ -51,5 +51,19 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             get => isAria;
             set => isAria = value;
         }
+
+        [SerializeField]
+        [Tooltip("Optional link to additional information about the role.")]
+        private string referenceLink;
+
+
+        /// <summary>
+        /// Optional link to additional information about the role.
+        /// </summary>
+        public string ReferenceLink
+        {
+            get => referenceLink;
+            set => referenceLink = value;
+        }
     }
 }
