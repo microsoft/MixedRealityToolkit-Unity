@@ -579,6 +579,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 HandlesActive = !HandlesActive;
             }
+            isHostSelected = false;
         }
 
         private void SubscribeToInteractable()
