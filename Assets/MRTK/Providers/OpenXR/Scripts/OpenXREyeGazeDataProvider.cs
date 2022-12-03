@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         public event Action OnSaccadeY;
         private void GazeSmoother_OnSaccadeY() => OnSaccadeY?.Invoke();
 
-        private static readonly List<InputDevice> InputDeviceList = new List<InputDevice>();
+        private readonly List<InputDevice> InputDeviceList = new List<InputDevice>();
         private InputDevice eyeTrackingDevice = default(InputDevice);
 
         #region IMixedRealityCapabilityCheck Implementation

@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-        private static readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
+        private readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
 
         private List<UnityTouchController> touchesToRemove = new List<UnityTouchController>();
 
