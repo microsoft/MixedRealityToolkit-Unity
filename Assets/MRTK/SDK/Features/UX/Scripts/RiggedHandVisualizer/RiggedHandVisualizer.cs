@@ -102,15 +102,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SkinnedMeshRenderer HandRenderer => handRenderer;
 
         /// <summary>
-        /// Caching the hand material from CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial
-        /// </summary>
-        private Material handMaterial = null;
-
-        /// <summary>
         /// Hand material to use for hand tracking hand mesh.
         /// </summary>
         [Obsolete("Use the CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial instead")]
-        public Material HandMaterial => handMaterial;
+        public Material HandMaterial { get; private set; }
 
         /// <summary>
         /// Property name for modifying the mesh's appearance based on pinch strength
@@ -163,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Transform[] riggedVisualJointsArray = new Transform[ArticulatedHandPose.JointCount];
 
         /// <summary>
-        /// flag checking that the handRenderer was initialized with its own material
+        /// Flag checking that the handRenderer was initialized with its own material
         /// </summary>
         private bool handRendererInitialized = false;
 
@@ -268,10 +263,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
             MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
-
-            handMaterial = handTrackingProfile.RiggedHandMeshMaterial;
-            Material handMaterialInstance = new Material(handMaterial);
-            handRenderer.sharedMaterial = handMaterialInstance;
+            if (handTrackingProfile != null && handTrackingProfile.RiggedHandMeshMaterial != null)
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                HandMaterial = handTrackingProfile.RiggedHandMeshMaterial;
+#pragma warning restore CS0618 // Type or member is obsolete
+                handRenderer.sharedMaterial = new Material(handTrackingProfile.RiggedHandMeshMaterial);
+            }
             handRendererInitialized = true;
         }
 
@@ -376,10 +374,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     float ringFingerCurl = HandPoseUtils.RingFingerCurl(Controller.ControllerHandedness);
                     float pinkyFingerCurl = HandPoseUtils.PinkyFingerCurl(Controller.ControllerHandedness);
 
-                    if (handMaterial != null && handRendererInitialized)
+                    if (handTrackingProfile.RiggedHandMeshMaterial != null && handRendererInitialized)
                     {
                         float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
-                        gripStrength /= 4.0f;
+                        gripStrength *= 0.25f;
                         gripStrength = gripStrength > 0.8f ? 1.0f : gripStrength;
 
                         pinchStrength = Mathf.Pow(Mathf.Max(pinchStrength, gripStrength), 2.0f);
@@ -391,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // Only show this warning once
                         else if (!displayedMaterialPropertyWarning)
                         {
-                            Debug.LogWarning(String.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchStrengthMaterialProperty));
+                            Debug.LogWarning(string.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchStrengthMaterialProperty));
                             displayedMaterialPropertyWarning = true;
                         }
                     }
