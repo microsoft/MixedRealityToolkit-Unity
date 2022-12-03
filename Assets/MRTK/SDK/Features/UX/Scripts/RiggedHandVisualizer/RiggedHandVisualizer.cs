@@ -120,11 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Precalculated values for LeapMotion testhand fingertip lengths
         /// </summary>
-        private const float thumbFingerTipLength = 0.02167f;
-        private const float indexingerTipLength = 0.01582f;
-        private const float middleFingerTipLength = 0.0174f;
-        private const float ringFingerTipLength = 0.0173f;
-        private const float pinkyFingerTipLength = 0.01596f;
+        private const float ThumbFingerTipLength = 0.02167f;
+        private const float IndexFingerTipLength = 0.01582f;
+        private const float MiddleFingerTipLength = 0.0174f;
+        private const float RingFingerTipLength = 0.0173f;
+        private const float PinkyFingerTipLength = 0.01596f;
 
         /// <summary>
         /// Precalculated fingertip lengths used for scaling the fingertips of the skinnedmesh
@@ -132,11 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private Dictionary<TrackedHandJoint, float> fingerTipLengths = new Dictionary<TrackedHandJoint, float>()
         {
-            {TrackedHandJoint.ThumbTip, thumbFingerTipLength },
-            {TrackedHandJoint.IndexTip, indexingerTipLength },
-            {TrackedHandJoint.MiddleTip, middleFingerTipLength },
-            {TrackedHandJoint.RingTip, ringFingerTipLength },
-            {TrackedHandJoint.PinkyTip, pinkyFingerTipLength }
+            { TrackedHandJoint.ThumbTip, ThumbFingerTipLength },
+            { TrackedHandJoint.IndexTip, IndexFingerTipLength },
+            { TrackedHandJoint.MiddleTip, MiddleFingerTipLength },
+            { TrackedHandJoint.RingTip, RingFingerTipLength },
+            { TrackedHandJoint.PinkyTip, PinkyFingerTipLength }
         };
 
         /// <summary>
