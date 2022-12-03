@@ -292,8 +292,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // The base class takes care of updating all of the joint data
                 _ = base.UpdateHandJoints();
 
-                // Exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform
-                if (ReceivingPlatformHandMesh || MixedRealityHand.IsNull())
+                // Exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform or the display is transparent
+                if (ReceivingPlatformHandMesh
+                    || MixedRealityHand.IsNull()
+                    || (!XRSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? false))
                 {
                     HandRenderer.enabled = false;
                     return false;
@@ -302,8 +304,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
                 MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
 
-                // Only runs if render hand mesh is true
-                bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization && MixedRealityHand.TryGetJoint(TrackedHandJoint.Palm, out _);
+                // Only render the hand mesh if visualization is enabled and the hand joints are tracked
+                bool renderHandmesh = handTrackingProfile != null
+                    && handTrackingProfile.EnableHandMeshVisualization
+                    && MixedRealityHand.TryGetJoint(TrackedHandJoint.Palm, out _);
                 HandRenderer.enabled = renderHandmesh;
                 if (renderHandmesh)
                 {
