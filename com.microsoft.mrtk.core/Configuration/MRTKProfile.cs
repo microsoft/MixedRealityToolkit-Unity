@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -15,7 +16,9 @@ namespace Microsoft.MixedReality.Toolkit
     [CreateAssetMenu(fileName = "MRTKProfile.asset", menuName = "MRTK/MRTKProfile")]
     public class MRTKProfile : BaseMRTKProfile
     {
-        /// <summary>Static instance that will hold the runtime asset instance we created in our build process.</summary>
+        /// <summary>
+        /// Static instance that will hold the runtime asset instance we created in our build process.
+        /// </summary>
         /// <see cref="SampleBuildProcessor"/>
         private static MRTKProfile instance = null;
 
@@ -60,6 +63,20 @@ namespace Microsoft.MixedReality.Toolkit
                 config = null;
                 return false;
             }
+        }
+
+        [SerializeField]
+        protected AudioMixerGroup spatializationMixer = null;
+
+        /// <summary>
+        /// The mixer group to use for sounds that are to be spatialized.
+        /// </summary>
+        public AudioMixerGroup SpatializationMixer
+        {
+            get => spatializationMixer;
+#if UNITY_EDITOR
+            set => spatializationMixer = value;
+#endif
         }
 
 #if !UNITY_EDITOR
