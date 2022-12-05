@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -24,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         Positive = 0,
         Negative = 1,
         Neutral = 2,
-        Other
+        Other = 255
     }
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// of the dialog view. IDialogs are spawned, pooled, and killed
     /// by DialogPools. Generally, developers should not directly
     /// manage or instantiate instances of their dialogs, as it is
-    /// essential that they are pooled and managed correctly by a spawner.
+    /// essential that they are pooled and managed correctly by a pooler.
     /// </summary>
     public interface IDialog
     {
@@ -58,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="label"/> The text to affix to the button.</param>
         /// <param name="action"/> The action to invoke when the button is selected.</param>
         /// <returns> Itself, for chaining. </returns>
-        IDialog SetPositive(string label, UnityAction<DialogButtonEventArgs> action);
+        IDialog SetPositive(string label, Action<DialogButtonEventArgs> action = null);
 
         /// <summary>
         /// Adds a negative option on the Dialog. <paramref name="action"/> will be invoked
@@ -68,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="label"/> The text to affix to the button.</param>
         /// <param name="action"/> The action to invoke when the button is selected.</param>
         /// <returns> Itself, for chaining. </returns>
-        IDialog SetNegative(string label, UnityAction<DialogButtonEventArgs> action);
+        IDialog SetNegative(string label, Action<DialogButtonEventArgs> action = null);
 
         /// <summary>
         /// Adds a neutral option on the Dialog. <paramref name="action"/> will be invoked
@@ -78,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="label"/> The text to affix to the button.</param>
         /// <param name="action"/> The action to invoke when the button is selected.</param>
         /// <returns> Itself, for chaining. </returns>
-        IDialog SetNeutral(string label, UnityAction<DialogButtonEventArgs> action);
+        IDialog SetNeutral(string label, Action<DialogButtonEventArgs> action = null);
         
         /// <summary>
         /// This event is fired when the dialog is dismissed, either
@@ -88,9 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <remarks>
         /// For other actions (such as button presses, text field submits, etc)
         /// provide your own delegates through the fluent methods, such as
-        /// <see cref="SetPositive(string label, UnityAction<DialogButtonEventArgs> action)"/>
+        /// <see cref="SetPositive(string label, Action<DialogButtonEventArgs> action)"/>
+        /// Any async methods awaiting on the result of <see cref="ShowAsync()"/> will
+        /// be unblocked when this event is fired.
         /// </remarks>
-        UnityEvent<Dialog> OnDismissed { get; }
+        Action<DialogDismissedEventArgs> OnDismissed { get; set; }
 
         /// <summary>
         /// Clears all content, events, and configuration from the dialog.
@@ -106,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Shows the dialog. Call this method after the content and actions
         /// have been specified with the fluent methods <see cref="SetHeader(string)"/>,
-        /// <see cref="SetBody(string)"/>, <see cref="SetPositive(string, UnityAction{DialogButtonEventArgs})"/>, etc.
+        /// <see cref="SetBody(string)"/>, <see cref="SetPositive(string, Action{DialogButtonEventArgs})"/>, etc.
         /// </summary>
         /// <remarks>
         /// When implementing custom dialog types, be sure to override this to
@@ -116,14 +119,31 @@ namespace Microsoft.MixedReality.Toolkit.UX
         IDialog Show();
 
         /// <summary>
+        /// Returns a Task<DialogDismissedEventArgs> representing the result
+        /// of the user's choice. The task will complete when the dialog is
+        /// dismissed, either by user action or by some other foreground action.
+        /// If the user didn't select an option, the DialogDismissedEventArgs.Choice
+        /// will be null.
+        /// </summary>
+        /// <remarks>
+        /// This is usually implemented by a TaskCompletionSource listening on the
+        /// the <see cref="OnDismissed"/> delegate. This allows for either synchronous
+        /// or async usage of the <see cref="IDialog"/>.
+        /// </remarks>
+        Task<DialogDismissedEventArgs> ShowAsync();
+
+        /// <summary>
         /// Dismisses the dialog. Unsubscribes all listeners from the dialog's
         /// events, plays the dismiss animation, and then invokes onDismissed.
+        /// OnDismissed may not be invoked immediately.
         /// </summary>
         /// <remarks>
         /// Those writing subclassed Dialogs should unsubscribe listeners from their custom
         /// events, if any, as well. Also, this base implementation should be called
         /// after your derived implementation, as it will trigger the dismissal animation
         /// and invoke the onDismissed event for you.
+        /// Any async methods awaiting on the result of ShowAsync() will be completed at the
+        /// same time as the OnDismissed delegate is invoked.
         /// </remarks>
         void Dismiss();
 

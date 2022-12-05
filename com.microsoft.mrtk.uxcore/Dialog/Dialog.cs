@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -57,22 +58,30 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private string body = null;
 
-        private DialogButtonEvent positiveAction = null;
+        private Action<DialogButtonEventArgs> positiveAction = null;
 
-        private DialogButtonEvent negativeAction = null;
+        private Action<DialogButtonEventArgs> negativeAction = null;
 
-        private DialogButtonEvent neutralAction = null;
+        private Action<DialogButtonEventArgs> neutralAction = null;
 
-        private UnityEvent<Dialog> onDismissed = new UnityEvent<Dialog>();
+        private Action<DialogDismissedEventArgs> onDismissed;
 
         /// <inheritdoc />
-        public UnityEvent<Dialog> OnDismissed => onDismissed;
+        public Action<DialogDismissedEventArgs> OnDismissed
+        {
+            get => onDismissed;
+            set => onDismissed = value;
+        }
 
         #endregion
 
         #region Private helper fields
 
         private bool hasDismissed = false;
+
+        // If the dialog has had some choice made on it,
+        // that choice will be recorded here.
+        private DialogButtonEventArgs buttonClickedArgs = null;
 
         #endregion
 
@@ -91,32 +100,29 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
         
         /// <inheritdoc />
-        public IDialog SetPositive(string label, UnityAction<DialogButtonEventArgs> action)
+        public IDialog SetPositive(string label, Action<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
             positiveButton.Label.text = label;
-            positiveAction = new DialogButtonEvent();
-            positiveAction.AddListener(action);
+            positiveAction = action ?? ((args) => {});
             return this;
         }
 
         /// <inheritdoc />
-        public IDialog SetNegative(string label, UnityAction<DialogButtonEventArgs> action)
+        public IDialog SetNegative(string label, Action<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
             negativeButton.Label.text = label;
-            negativeAction = new DialogButtonEvent();
-            negativeAction.AddListener(action);
+            negativeAction = action ?? ((args) => {});
             return this;
         }
 
         /// <inheritdoc />
-        public IDialog SetNeutral(string label, UnityAction<DialogButtonEventArgs> action)
+        public IDialog SetNeutral(string label, Action<DialogButtonEventArgs> action)
         {
             if (label == null) { return this; }
             neutralButton.Label.text = label;
-            neutralAction = new DialogButtonEvent();
-            neutralAction.AddListener(action);
+            neutralAction = action ?? ((args) => {});
             return this;
         }
 
@@ -125,12 +131,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             header = null;
             body = null;
-            positiveAction?.RemoveAllListeners();
             positiveAction = null;
-            negativeAction?.RemoveAllListeners();
             negativeAction = null;
-            neutralAction?.RemoveAllListeners();
             neutralAction = null;
+            buttonClickedArgs = null;
+            OnDismissed = null;
 
             hasDismissed = false;
         }
@@ -144,11 +149,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (negativeButton.Interactable != null)
             {
                 negativeButton.Interactable.OnClicked.AddListener( () => {
-                    negativeAction.Invoke(new DialogButtonEventArgs() {
+                    var args = new DialogButtonEventArgs() {
                         ButtonType = DialogButtonType.Negative,
                         ButtonText = negativeButton.Label.text,
                         Dialog = this
-                    });
+                    };
+                    buttonClickedArgs = args;
+                    negativeAction.Invoke(args);
                     Dismiss();
                 });
             }
@@ -156,11 +163,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (positiveButton.Interactable != null)
             {
                 positiveButton.Interactable.OnClicked.AddListener( () => {
-                    positiveAction.Invoke(new DialogButtonEventArgs() {
+                    var args = new DialogButtonEventArgs() {
                         ButtonType = DialogButtonType.Positive,
                         ButtonText = positiveButton.Label.text,
                         Dialog = this
-                    });
+                    };
+                    buttonClickedArgs = args;
+                    positiveAction.Invoke(args);
                     Dismiss();
                 });
             }
@@ -168,11 +177,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (neutralButton.Interactable != null)
             {
                 neutralButton.Interactable.OnClicked.AddListener( () => {
-                    neutralAction.Invoke(new DialogButtonEventArgs() {
+                    var args = new DialogButtonEventArgs() {
                         ButtonType = DialogButtonType.Neutral,
                         ButtonText = neutralButton.Label.text,
                         Dialog = this
-                    });
+                    };
+                    buttonClickedArgs = args;
+                    neutralAction.Invoke(args);
                     Dismiss();
                 });
             }
@@ -207,12 +218,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return this;
         }
 
+        public virtual async Task<DialogDismissedEventArgs> ShowAsync()
+        {
+            Show();
+            var tcs = new TaskCompletionSource<DialogDismissedEventArgs>();
+            OnDismissed += (args) => {
+                tcs.SetResult(args);
+            };
+            
+            return await tcs.Task;
+        }
+
         /// <inheritdoc />
         public virtual void Dismiss()
         {
-            negativeAction?.RemoveAllListeners();
-            positiveAction?.RemoveAllListeners();
-            neutralAction?.RemoveAllListeners();
+            negativeAction = null;
+            positiveAction = null;
+            neutralAction = null;
             
             // Lock. Dismissal idempotent.
             if (hasDismissed) { return; }
@@ -243,7 +265,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             
             gameObject.SetActive(false);
-            onDismissed.Invoke(this);
+            onDismissed(new DialogDismissedEventArgs()
+            {
+                Dialog = this,
+                Choice = buttonClickedArgs
+            });
         }
     }
 

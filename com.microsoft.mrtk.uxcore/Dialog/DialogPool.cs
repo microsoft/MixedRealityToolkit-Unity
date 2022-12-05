@@ -126,27 +126,27 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             
             dialog.VisibleRoot.SetActive(false);
-            dialog.OnDismissed.AddListener(OnDialogDismissed);
+            dialog.OnDismissed += OnDialogDismissed;
             
             // Put it on the pile of dialogs we're managing.
             dialogInstance = dialog;
             return dialog;
         }
 
-        private void OnDialogDismissed(IDialog dismissedDialog)
+        private void OnDialogDismissed(DialogDismissedEventArgs args)
         {
-            dismissedDialog.Reset(); // Reset the dialog to its default state for next use out of the pool.
-            dismissedDialog.OnDismissed?.RemoveListener(OnDialogDismissed);
-            if (dialogInstance == dismissedDialog) dialogInstance = null;
+            args.Dialog.Reset(); // Reset the dialog to its default state for next use out of the pool.
+            args.Dialog.OnDismissed -= OnDialogDismissed;
+            if (dialogInstance == args.Dialog) dialogInstance = null;
 
             // Return dialog instance back to pool.
-            Type dialogType = dismissedDialog.GetType();
+            Type dialogType = args.Dialog.GetType();
             if (!dialogPool.ContainsKey(dialogType))
             {
                 dialogPool[dialogType] = new Queue<IDialog>();
             }
             
-            dialogPool[dialogType].Enqueue(dismissedDialog);
+            dialogPool[dialogType].Enqueue(args.Dialog);
         }
 
         // Checks the MonoBehaviour-specific null check, which

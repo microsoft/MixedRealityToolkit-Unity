@@ -9,12 +9,6 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// DialogButtonEvents are fired when the user makes a selection on a dialog.
-    /// </summary>
-    [Serializable]
-    public sealed class DialogButtonEvent : UnityEvent<DialogButtonEventArgs> { }
-
-    /// <summary>
     /// Every dialog event emits these parameters.
     /// </summary>
     public abstract class BaseDialogEventArgs
@@ -23,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// A reference to the <see cref="Dialog"/> that
         /// emitted this event.
         /// </summary>
-        public Dialog Dialog { get; set; }
+        public IDialog Dialog { get; set; }
     }
 
     /// <summary>
@@ -49,6 +43,15 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// The text on the button that generated this event.
         /// </summary>
         public string ButtonText { get; set; }
+    }
+
+    public class DialogDismissedEventArgs : BaseDialogEventArgs
+    {
+        /// <summary>
+        /// If the user selected an option, this is the result
+        /// of the associated DialogButtonEvent. Null otherwise.
+        /// </summary>
+        public DialogButtonEventArgs Choice { get; set; }
     }
 
 }

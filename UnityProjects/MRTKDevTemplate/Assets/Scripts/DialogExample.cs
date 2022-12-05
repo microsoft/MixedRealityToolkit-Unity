@@ -51,5 +51,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             dialog.Show();
         }
+
+        public void SpawnDialogWithAsync()
+        {
+            ShowAsyncDialog();
+        }
+
+        private async void ShowAsyncDialog()
+        {
+            DialogDismissedEventArgs result = await DialogPool.Get()
+                .SetHeader("This dialog is spawned from an async method.")
+                .SetBody("The async method that spawned this dialog will await for the dialog's result.")
+                .SetPositive("Yes, please!")
+                .SetNegative("No, thanks.")
+                .ShowAsync();
+
+            Debug.Log("Async dialog says " + result.Choice?.ButtonText);
+        }
     }
 }

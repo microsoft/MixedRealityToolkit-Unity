@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         internal struct Option
         {
             public string Text;
-            public DialogButtonEvent Action;
+            public UnityEvent<DialogButtonEventArgs> Action;
         }
         
         [SerializeField]

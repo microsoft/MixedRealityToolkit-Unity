@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections;
+using System.Threading.Tasks;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
@@ -106,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 .SetNeutral("OK", ( args ) => { optionSelected = true; })
                 .Show();
 
-            dialog.OnDismissed.AddListener(( args ) => { wasDismissed = true; });
+            dialog.OnDismissed += ( args ) => { wasDismissed = true; };
 
             // How many buttons got spawned?
             PressableButton[] buttons = dialog.VisibleRoot.GetComponentsInChildren<PressableButton>(false);
@@ -190,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 .SetNeutral("OK", ( args ) => {  })
                 .Show();
 
-            dialog.OnDismissed.AddListener(( args ) => { wasDismissed = true; });
+            dialog.OnDismissed += ( args ) => { wasDismissed = true; };
 
             IDialog anotherDialog = spawner.Get(spawnPolicy: DialogPool.Policy.DismissExisting)
                 .SetHeader("This is a test header.")
@@ -261,6 +262,102 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             object[] dialogs = GameObject.FindObjectsOfType(typeof(Dialog), true);
             Assert.AreEqual(5, dialogs.Length, "There should have been 5 total dialogs used.");
             
+        }
+
+        /// <summary>
+        /// Tests using async methods for awaiting on dialog results.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAsyncDialog()
+        {
+            Task<bool> task = AsyncTestDialog();
+
+            // Ew!
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            Assert.IsTrue(task.Result, "Something in the dialog test failed.");
+        }
+
+        private async Task<bool> AsyncTestDialog()
+        {
+            // We're in an async context so Assert won't work.
+            // We'll check our own conditions here and Assert the result.
+            bool testPassed = true;
+
+            bool wasDismissed = false;
+
+            var dialog = spawner.Get()
+                .SetHeader("This is a test header.")
+                .SetBody("This is a test body.")
+                .SetNeutral("OK");
+
+            dialog.OnDismissed += ( args ) => { wasDismissed = true; };
+
+            // Fire off an async click. This is pretty gross, don't do this outside of testing.
+            ClickAsync(dialog as Dialog);
+            
+            var result = await dialog.ShowAsync();
+
+            if (result == null)
+            {
+                Debug.LogError("Dialog result was null.");
+                return false;
+            }
+
+            if (result.Choice.ButtonType != DialogButtonType.Neutral)
+            {
+                Debug.LogError("Dialog result was not the expected button choice.");
+                return false;
+            }
+
+            if (wasDismissed == false)
+            {
+                Debug.LogError("Dialog was not dismissed after ShowAsync's Task resolved.");
+                return false;
+            }
+
+            if (result.Choice.ButtonText != "OK")
+            {
+                Debug.LogError("Dialog result was not the expected button text.");
+                return false;
+            }
+
+            if (result.Choice.Dialog != dialog)
+            {
+                Debug.LogError("Dialog instance returned in event args was not the expected dialog instance.");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Super gross way of issuing an async fake click on a dialog
+        // from another async method. Don't do this outside of testing.
+        private async Task ClickAsync(Dialog dialog)
+        {
+            // Waits for the dialog to spawn.
+            while (!dialog.VisibleRoot.activeInHierarchy) { await Task.Yield(); }
+            PressableButton[] buttons = dialog.VisibleRoot.GetComponentsInChildren<PressableButton>(false);
+
+            // Select the option, test the result.
+            testInteractor.StartManualInteraction(buttons[0] as IXRSelectInteractable);
+            await WaitAsyncFrames(1);
+            testInteractor.EndManualInteraction();
+            await WaitAsyncFrames(1);
+        }
+
+        // Gross way of waiting frames in an async context.
+        // Do not use outside of testing.
+        private async Task WaitAsyncFrames(int frames)
+        {
+            var start = Time.frameCount;
+            while (Time.frameCount < start + frames)
+            {
+                await Task.Yield();
+            }
         }
     }
 }
