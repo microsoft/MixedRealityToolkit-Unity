@@ -14,6 +14,20 @@ using UnityEngine.XR.OpenXR;
 using UnityEngine.XR.OpenXR.Features.Interactions;
 #endif // UNITY_OPENXR
 
+#if MSFT_OPENXR
+#if WINDOWS_UWP
+using Windows.Perception;
+using Windows.Perception.People;
+using Windows.Perception.Spatial;
+using Windows.UI.Input.Spatial;
+#elif UNITY_WSA && DOTNETWINRT_PRESENT
+using Microsoft.Windows.Perception;
+using Microsoft.Windows.Perception.People;
+using Microsoft.Windows.Perception.Spatial;
+using Microsoft.Windows.UI.Input.Spatial;
+#endif
+#endif // MSFT_OPENXR
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     [MixedRealityDataProvider(
@@ -163,12 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
                     if (!eyeTrackingDevice.isValid)
                     {
-                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
+                        UpdateEyeTrackingCalibrationStatus(false);
                         return;
                     }
                 }
 
-                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+                UpdateEyeTrackingCalibrationStatus(true);
 
 #if UNITY_OPENXR
                 if (eyeTrackingDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool gazeTracked)
@@ -190,6 +204,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 }
 #endif // UNITY_OPENXR
             }
+        }
+
+        private void UpdateEyeTrackingCalibrationStatus(bool defaultValue)
+        {
+#if MSFT_OPENXR && (WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT))
+            SpatialCoordinateSystem worldOrigin = MixedReality.OpenXR.PerceptionInterop.GetSceneCoordinateSystem(Pose.identity) as SpatialCoordinateSystem;
+            SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+            if (pointerPose != null)
+            {
+                EyesPose eyes = pointerPose.Eyes;
+                if (eyes != null)
+                {
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                    return;
+                }
+            }
+#endif // MSFT_OPENXR && (WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT))
+
+            Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, defaultValue);
         }
     }
 }

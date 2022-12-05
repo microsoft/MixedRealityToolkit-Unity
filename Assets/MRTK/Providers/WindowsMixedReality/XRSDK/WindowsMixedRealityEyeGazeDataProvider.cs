@@ -12,6 +12,18 @@ using UnityEngine;
 using Unity.Profiling;
 using Unity.XR.WindowsMR;
 using UnityEngine.XR;
+
+#if WINDOWS_UWP
+using Windows.Perception;
+using Windows.Perception.People;
+using Windows.Perception.Spatial;
+using Windows.UI.Input.Spatial;
+#elif UNITY_WSA && DOTNETWINRT_PRESENT
+using Microsoft.Windows.Perception;
+using Microsoft.Windows.Perception.People;
+using Microsoft.Windows.Perception.Spatial;
+using Microsoft.Windows.UI.Input.Spatial;
+#endif
 #endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
@@ -172,18 +184,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     centerEye = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
                     if (!centerEye.isValid)
                     {
-                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
+                        UpdateEyeTrackingCalibrationStatus(false);
                         return;
                     }
                 }
 
                 if (!centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeAvailable, out bool gazeAvailable) || !gazeAvailable)
                 {
-                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
+                    UpdateEyeTrackingCalibrationStatus(false);
                     return;
                 }
 
-                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+                UpdateEyeTrackingCalibrationStatus(true);
 
                 if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeTracked, out bool gazeTracked)
                     && gazeTracked
@@ -203,6 +215,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, DateTime.UtcNow);
                 }
             }
+        }
+
+        private void UpdateEyeTrackingCalibrationStatus(bool defaultValue)
+        {
+#if WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT)
+            SpatialCoordinateSystem worldOrigin = Toolkit.WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
+            SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+            if (pointerPose != null)
+            {
+                EyesPose eyes = pointerPose.Eyes;
+                if (eyes != null)
+                {
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                    return;
+                }
+            }
+#endif // WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT)
+
+            Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, defaultValue);
         }
 #endif // WMR_2_7_0_OR_NEWER || WMR_4_4_2_OR_NEWER || WMR_5_2_2_OR_NEWER
     }
