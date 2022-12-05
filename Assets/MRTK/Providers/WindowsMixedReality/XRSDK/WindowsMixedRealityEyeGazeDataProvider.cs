@@ -221,14 +221,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
 #if WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT)
             SpatialCoordinateSystem worldOrigin = Toolkit.WindowsMixedReality.WindowsMixedRealityUtilities.SpatialCoordinateSystem;
-            SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-            if (pointerPose != null)
+            if (worldOrigin != null)
             {
-                EyesPose eyes = pointerPose.Eyes;
-                if (eyes != null)
+                SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                if (pointerPose != null)
                 {
-                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
-                    return;
+                    EyesPose eyes = pointerPose.Eyes;
+                    if (eyes != null)
+                    {
+                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                        return;
+                    }
                 }
             }
 #endif // WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT)

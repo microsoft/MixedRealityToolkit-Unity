@@ -209,15 +209,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private void UpdateEyeTrackingCalibrationStatus(bool defaultValue)
         {
 #if MSFT_OPENXR && (WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT))
-            SpatialCoordinateSystem worldOrigin = MixedReality.OpenXR.PerceptionInterop.GetSceneCoordinateSystem(Pose.identity) as SpatialCoordinateSystem;
-            SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-            if (pointerPose != null)
+            if (MixedReality.OpenXR.PerceptionInterop.GetSceneCoordinateSystem(Pose.identity) is SpatialCoordinateSystem worldOrigin)
             {
-                EyesPose eyes = pointerPose.Eyes;
-                if (eyes != null)
+                SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                if (pointerPose != null)
                 {
-                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
-                    return;
+                    EyesPose eyes = pointerPose.Eyes;
+                    if (eyes != null)
+                    {
+                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                        return;
+                    }
                 }
             }
 #endif // MSFT_OPENXR && (WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT))
