@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit
     {
         private void Start()
         {
-            AudioSource audioSource = GetComponent<AudioSource>());
+            AudioSource audioSource = GetComponent<AudioSource>();
 
             audioSource.spatialize = true;
             audioSource.spatializePostEffects = true;
