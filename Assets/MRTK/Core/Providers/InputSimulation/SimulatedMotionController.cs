@@ -132,10 +132,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     case DeviceInputType.GripPress:
                     case DeviceInputType.TriggerPress:
-                        Interactions[i].FloatData = motionControllerData.ButtonState.IsGrabbing ? 1 : 0;
+                        Interactions[i].BoolData = motionControllerData.ButtonState.IsGrabbing;
                         if (Interactions[i].Changed)
                         {
-                            CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, motionControllerData.ButtonState.IsGrabbing ? 1 : 0);
+                            if (Interactions[i].BoolData)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                            }
                         }
                         break;
                     case DeviceInputType.Menu:
