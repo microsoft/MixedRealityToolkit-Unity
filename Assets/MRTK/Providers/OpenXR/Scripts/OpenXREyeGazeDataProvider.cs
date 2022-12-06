@@ -14,6 +14,13 @@ using UnityEngine.XR.OpenXR;
 using UnityEngine.XR.OpenXR.Features.Interactions;
 #endif // UNITY_OPENXR
 
+#if MSFT_OPENXR && WINDOWS_UWP
+using Windows.Perception;
+using Windows.Perception.People;
+using Windows.Perception.Spatial;
+using Windows.UI.Input.Spatial;
+#endif // MSFT_OPENXR && WINDOWS_UWP
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     [MixedRealityDataProvider(
@@ -75,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         public event Action OnSaccadeY;
         private void GazeSmoother_OnSaccadeY() => OnSaccadeY?.Invoke();
 
-        private static readonly List<InputDevice> InputDeviceList = new List<InputDevice>();
+        private readonly List<InputDevice> InputDeviceList = new List<InputDevice>();
         private InputDevice eyeTrackingDevice = default(InputDevice);
 
         #region IMixedRealityCapabilityCheck Implementation
@@ -163,12 +170,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
                     if (!eyeTrackingDevice.isValid)
                     {
-                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
+                        UpdateEyeTrackingCalibrationStatus(false);
                         return;
                     }
                 }
 
-                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+                UpdateEyeTrackingCalibrationStatus(true);
 
 #if UNITY_OPENXR
                 if (eyeTrackingDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool gazeTracked)
@@ -190,6 +197,27 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 }
 #endif // UNITY_OPENXR
             }
+        }
+
+        private void UpdateEyeTrackingCalibrationStatus(bool defaultValue)
+        {
+#if MSFT_OPENXR && WINDOWS_UWP
+            if (MixedReality.OpenXR.PerceptionInterop.GetSceneCoordinateSystem(Pose.identity) is SpatialCoordinateSystem worldOrigin)
+            {
+                SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                if (pointerPose != null)
+                {
+                    EyesPose eyes = pointerPose.Eyes;
+                    if (eyes != null)
+                    {
+                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                        return;
+                    }
+                }
+            }
+#endif // MSFT_OPENXR && WINDOWS_UWP
+
+            Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, defaultValue);
         }
     }
 }
