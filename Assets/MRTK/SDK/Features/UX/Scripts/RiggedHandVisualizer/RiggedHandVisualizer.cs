@@ -102,15 +102,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SkinnedMeshRenderer HandRenderer => handRenderer;
 
         /// <summary>
-        /// Caching the hand material from CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial
-        /// </summary>
-        private Material handMaterial = null;
-
-        /// <summary>
         /// Hand material to use for hand tracking hand mesh.
         /// </summary>
         [Obsolete("Use the CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.RiggedHandMeshMaterial instead")]
-        public Material HandMaterial => handMaterial;
+        public Material HandMaterial { get; private set; }
 
         /// <summary>
         /// Property name for modifying the mesh's appearance based on pinch strength
@@ -125,11 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Precalculated values for LeapMotion testhand fingertip lengths
         /// </summary>
-        private const float thumbFingerTipLength = 0.02167f;
-        private const float indexingerTipLength = 0.01582f;
-        private const float middleFingerTipLength = 0.0174f;
-        private const float ringFingerTipLength = 0.0173f;
-        private const float pinkyFingerTipLength = 0.01596f;
+        private const float ThumbFingerTipLength = 0.02167f;
+        private const float IndexFingerTipLength = 0.01582f;
+        private const float MiddleFingerTipLength = 0.0174f;
+        private const float RingFingerTipLength = 0.0173f;
+        private const float PinkyFingerTipLength = 0.01596f;
 
         /// <summary>
         /// Precalculated fingertip lengths used for scaling the fingertips of the skinnedmesh
@@ -137,11 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private Dictionary<TrackedHandJoint, float> fingerTipLengths = new Dictionary<TrackedHandJoint, float>()
         {
-            {TrackedHandJoint.ThumbTip, thumbFingerTipLength },
-            {TrackedHandJoint.IndexTip, indexingerTipLength },
-            {TrackedHandJoint.MiddleTip, middleFingerTipLength },
-            {TrackedHandJoint.RingTip, ringFingerTipLength },
-            {TrackedHandJoint.PinkyTip, pinkyFingerTipLength }
+            { TrackedHandJoint.ThumbTip, ThumbFingerTipLength },
+            { TrackedHandJoint.IndexTip, IndexFingerTipLength },
+            { TrackedHandJoint.MiddleTip, MiddleFingerTipLength },
+            { TrackedHandJoint.RingTip, RingFingerTipLength },
+            { TrackedHandJoint.PinkyTip, PinkyFingerTipLength }
         };
 
         /// <summary>
@@ -163,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Transform[] riggedVisualJointsArray = new Transform[ArticulatedHandPose.JointCount];
 
         /// <summary>
-        /// flag checking that the handRenderer was initialized with its own material
+        /// Flag checking that the handRenderer was initialized with its own material
         /// </summary>
         private bool handRendererInitialized = false;
 
@@ -268,10 +263,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Give the hand mesh its own material to avoid modifying both hand materials when making property changes
             MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
-
-            handMaterial = handTrackingProfile.RiggedHandMeshMaterial;
-            Material handMaterialInstance = new Material(handMaterial);
-            handRenderer.sharedMaterial = handMaterialInstance;
+            if (handTrackingProfile != null && handTrackingProfile.RiggedHandMeshMaterial != null)
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                HandMaterial = handTrackingProfile.RiggedHandMeshMaterial;
+#pragma warning restore CS0618 // Type or member is obsolete
+                handRenderer.sharedMaterial = new Material(handTrackingProfile.RiggedHandMeshMaterial);
+            }
             handRendererInitialized = true;
         }
 
@@ -294,8 +292,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // The base class takes care of updating all of the joint data
                 _ = base.UpdateHandJoints();
 
-                // Exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform
-                if (ReceivingPlatformHandMesh || MixedRealityHand.IsNull())
+                // Exit early and disable the rigged hand model if we've gotten a hand mesh from the underlying platform or the display is transparent
+                if (ReceivingPlatformHandMesh
+                    || MixedRealityHand.IsNull()
+                    || (!XRSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? false))
                 {
                     HandRenderer.enabled = false;
                     return false;
@@ -304,8 +304,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
                 MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
 
-                // Only runs if render hand mesh is true
-                bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization && MixedRealityHand.TryGetJoint(TrackedHandJoint.Palm, out _);
+                // Only render the hand mesh if visualization is enabled and the hand joints are tracked
+                bool renderHandmesh = handTrackingProfile != null
+                    && handTrackingProfile.EnableHandMeshVisualization
+                    && MixedRealityHand.TryGetJoint(TrackedHandJoint.Palm, out _);
                 HandRenderer.enabled = renderHandmesh;
                 if (renderHandmesh)
                 {
@@ -376,10 +378,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     float ringFingerCurl = HandPoseUtils.RingFingerCurl(Controller.ControllerHandedness);
                     float pinkyFingerCurl = HandPoseUtils.PinkyFingerCurl(Controller.ControllerHandedness);
 
-                    if (handMaterial != null && handRendererInitialized)
+                    if (handTrackingProfile.RiggedHandMeshMaterial != null && handRendererInitialized)
                     {
                         float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
-                        gripStrength /= 4.0f;
+                        gripStrength *= 0.25f;
                         gripStrength = gripStrength > 0.8f ? 1.0f : gripStrength;
 
                         pinchStrength = Mathf.Pow(Mathf.Max(pinchStrength, gripStrength), 2.0f);
@@ -391,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // Only show this warning once
                         else if (!displayedMaterialPropertyWarning)
                         {
-                            Debug.LogWarning(String.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchStrengthMaterialProperty));
+                            Debug.LogWarning(string.Format("The property {0} for reacting to pinch strength was not found. A material with this property is required to visualize pinch strength.", pinchStrengthMaterialProperty));
                             displayedMaterialPropertyWarning = true;
                         }
                     }
