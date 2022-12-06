@@ -21,12 +21,9 @@ namespace Microsoft.MixedReality.Toolkit
             audioSource.spatializePostEffects = true;
             audioSource.spatialBlend = 1f;
 
-            audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
-            audioSource.minDistance = 1f;
-            audioSource.maxDistance = 45f;
-
             MRTKProfile profile = MRTKProfile.Instance;
-            if (profile != null)
+            if ((profile != null) &&
+                (audioSource.outputAudioMixerGroup == null))
             {
                 audioSource.outputAudioMixerGroup = profile.SpatializationMixer;
             }
