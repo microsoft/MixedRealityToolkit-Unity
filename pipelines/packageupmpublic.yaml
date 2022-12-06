@@ -11,8 +11,7 @@ parameters:
 jobs:
 - job: UPMPublicRelease
   timeoutInMinutes: 30
-  pool:
-    vmImage: Analog-1ES-WindowsLatest
+  pool: Analog-1ES-WindowsLatest
   steps:
   - task: DownloadPipelineArtifact@2
     displayName: Download tarballs
