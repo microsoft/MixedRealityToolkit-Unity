@@ -34,11 +34,6 @@
             "name": "com.unity.xr.openxr",
             "expression": "",
             "define": "UNITY_OPENXR"
-        },
-        {
-            "name": "com.microsoft.windows.mixedreality.dotnetwinrt",
-            "expression": "",
-            "define": "DOTNETWINRT_PRESENT"
         }
     ],
     "noEngineReferences": false

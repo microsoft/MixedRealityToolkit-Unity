@@ -14,19 +14,12 @@ using UnityEngine.XR.OpenXR;
 using UnityEngine.XR.OpenXR.Features.Interactions;
 #endif // UNITY_OPENXR
 
-#if MSFT_OPENXR
-#if WINDOWS_UWP
+#if MSFT_OPENXR && WINDOWS_UWP
 using Windows.Perception;
 using Windows.Perception.People;
 using Windows.Perception.Spatial;
 using Windows.UI.Input.Spatial;
-#elif UNITY_WSA && DOTNETWINRT_PRESENT
-using Microsoft.Windows.Perception;
-using Microsoft.Windows.Perception.People;
-using Microsoft.Windows.Perception.Spatial;
-using Microsoft.Windows.UI.Input.Spatial;
-#endif
-#endif // MSFT_OPENXR
+#endif // MSFT_OPENXR && WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
@@ -208,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
         private void UpdateEyeTrackingCalibrationStatus(bool defaultValue)
         {
-#if MSFT_OPENXR && (WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT))
+#if MSFT_OPENXR && WINDOWS_UWP
             if (MixedReality.OpenXR.PerceptionInterop.GetSceneCoordinateSystem(Pose.identity) is SpatialCoordinateSystem worldOrigin)
             {
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -222,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     }
                 }
             }
-#endif // MSFT_OPENXR && (WINDOWS_UWP || (UNITY_WSA && DOTNETWINRT_PRESENT))
+#endif // MSFT_OPENXR && WINDOWS_UWP
 
             Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, defaultValue);
         }
