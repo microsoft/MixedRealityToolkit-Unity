@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <see cref="https://github.com/microsoft/spatialaudio-unity"/>.
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
-    public class ConfigureSpaitializationSettings : MonoBehaviour
+    internal class ConfigureSpatializationSettings : MonoBehaviour
     {
         private void Start()
         {
