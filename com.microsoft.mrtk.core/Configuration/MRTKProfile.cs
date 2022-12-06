@@ -74,9 +74,7 @@ namespace Microsoft.MixedReality.Toolkit
         public AudioMixerGroup SpatializationMixer
         {
             get => spatializationMixer;
-#if UNITY_EDITOR
             set => spatializationMixer = value;
-#endif
         }
 
 #if !UNITY_EDITOR
