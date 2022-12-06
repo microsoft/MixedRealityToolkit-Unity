@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             serializedSubsystems = serializedObject.FindProperty("loadedSubsystems");
             serializedConfigs = serializedObject.FindProperty("subsystemConfigs");
-            serializedMixerGroup = serializedObject.FindProperty("spatializationMixer");
+            serializedMixerGroup = serializedObject.FindProperty(InspectorUIUtility.GetBackingField("SpatializationMixer"));
         }
 
         public override void OnInspectorGUI()
