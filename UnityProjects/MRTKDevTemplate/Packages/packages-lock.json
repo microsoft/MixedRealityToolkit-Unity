@@ -183,7 +183,7 @@
       }
     },
     "com.microsoft.spatialaudio.spatializer.unity": {
-      "version": "file:C:/git-mrtk/spatialize/ExternalDependencies/com.microsoft.spatialaudio.spatializer.unity-2.0.37.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.spatialaudio.spatializer.unity-2.0.37.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {}
