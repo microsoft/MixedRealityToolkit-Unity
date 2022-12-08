@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// A container class, intended to wrap all information about a subsystem
         /// relevant to this custom editor.
         /// </summary>
-        internal class SubsystemItem
+        private class SubsystemItem
         {
             /// <summary>
             /// Constructs a <see cref="SubsystemItem"> from a <see cref="Type">.
