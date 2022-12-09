@@ -97,8 +97,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <summary>
             /// Attempts to synthesize the specified phrase.
             /// </summary>
-            /// <param name="phrase"></param>
-            /// <param name="waveData"></param>
+            /// <param name="phrase">The phrase to be synthesized.</param>
+            /// <param name="waveData">Receives the audio (wave) data upon successful synthesis.</param>
             /// <returns>True if the phrase was successfully synthesized, or false.</returns>
             private bool TrySynthesize(string phrase, out byte[] waveData)
             {
