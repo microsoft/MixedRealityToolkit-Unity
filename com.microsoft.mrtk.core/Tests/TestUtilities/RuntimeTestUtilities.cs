@@ -84,13 +84,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         /// <summary>
         /// Ensures TextMeshProEssentials are installed.
         /// </summary>
-        public static void InstallTextMeshProEssentials()
+        public static void EnsureTMPro()
         {
 #if UNITY_EDITOR
+            string assetsFullPath = Path.GetFullPath("Assets/TextMesh Pro");
+            if (Directory.Exists(assetsFullPath))
+            {
+                Debug.Log("TMPro Essentials already installed to Assets.");
+                return;
+            }
+
             // Import the TMP Essential Resources package
             string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
             if (Directory.Exists(packageFullPath))
             {
+                Debug.Log("Importing TextMesh Pro...");
                 AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
             }
             else
