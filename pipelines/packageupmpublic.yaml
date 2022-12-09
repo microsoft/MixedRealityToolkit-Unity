@@ -4,12 +4,6 @@ variables:
 - template: config/settings.yml
 
 parameters:
-- name: SourcePipeline
-  type: string
-  default: stabilization_ci
-  values:
-    - stabilization_ci
-    - mrtk_ci
 - name: PreviewNumber
   type: number
   default: -1
@@ -17,18 +11,14 @@ parameters:
 jobs:
 - job: UPMPublicRelease
   timeoutInMinutes: 30
-  pool:
-    vmImage: windows-2019
+  pool: Analog-1ES-WindowsLatest
   steps:
   - task: DownloadPipelineArtifact@2
     displayName: Download tarballs
     inputs:
       source: specific
       project: $(System.TeamProjectId)
-      ${{ if eq(parameters.SourcePipeline, 'stabilization_ci') }}:
-        pipeline: 32
-      ${{ if eq(parameters.SourcePipeline, 'mrtk_ci') }}:
-        pipeline: 15
+      pipeline: 41531
       runVersion: latestFromBranch
       runBranch: $(Build.SourceBranch)
       artifactName: mrtk-upm
