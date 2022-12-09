@@ -15,6 +15,7 @@
     "com.microsoft.mrtk.spatialmanipulation": "file:../../../com.microsoft.mrtk.spatialmanipulation",
     "com.microsoft.mrtk.standardassets": "file:../../../com.microsoft.mrtk.standardassets",
     "com.microsoft.mrtk.tools": "file:../../../com.microsoft.mrtk.tools",
+    "com.microsoft.mrtk.tts.windows": "file:../../../ExternalDependencies/com.microsoft.mrtk.tts.windows-1.0.0.tgz",
     "com.microsoft.mrtk.uxcomponents": "file:../../../com.microsoft.mrtk.uxcomponents",
     "com.microsoft.mrtk.uxcomponents.noncanvas": "file:../../../com.microsoft.mrtk.uxcomponents.noncanvas",
     "com.microsoft.mrtk.uxcore": "file:../../../com.microsoft.mrtk.uxcore",
