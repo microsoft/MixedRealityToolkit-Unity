@@ -66,7 +66,7 @@ steps:
       $resultFile = Join-Path $(Build.ArtifactStagingDirectory) "test-results-playmode.xml"
       New-Item -Path $resultFile -ItemType File -Force
 
-      $setupMethod = Microsoft.MixedReality.Toolkit.Examples.Build.BuildApp.EnsureTMPro
+      $setupMethod = "Microsoft.MixedReality.Toolkit.Examples.Build.BuildApp.EnsureTMPro"
 
       try {
       if ("${{ parameters.UnityVersion }}" -eq "Latest") {
