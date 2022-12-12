@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     [Preserve]
     [MRTKSubsystem(
-        Name = "com.microsoft.mixedreality.speech",
+        Name = "com.microsoft.mrtk.windowsspeech.texttospeech",
         DisplayName = "Windows Text-To-Speech Subsystem",
         Author = "Microsoft",
         ProviderType = typeof(WindowsTextToSpeechSubsystemProvider),
@@ -55,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             }
 
             #region ITextToSpeechSubsystem implementation
+
+#if !(WINDOWS_UWP || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+            private bool haveLogged = false;
+#endif
 
             /// <inheritdoc/>
             public override bool TrySpeak(string phrase, AudioSource audioSource)
@@ -154,6 +158,13 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 Marshal.Copy(nativeData, waveData, 0, length);
                 // We can safely free the native data.
                 WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
+#else
+                if (!haveLogged)
+                {
+                    Debug.LogError("The Windows Text-To-Speech subsystem is not supported on the current platform.");
+                    haveLogged = true;
+                    return false;
+                }
 #endif
                 return true;
             }
