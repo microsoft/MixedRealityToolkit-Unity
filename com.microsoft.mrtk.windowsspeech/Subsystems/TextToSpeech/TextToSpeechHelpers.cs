@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             out float[] floatData)
         {
             // Validate the array data by ensuring that key chunks contain the expected data.
-            if ((waveBytes[(int)WaveHeaderOffset.Riff + 0]  != 0x52) || // 'R'
+            if ((waveBytes[(int)WaveHeaderOffset.Riff + 0] != 0x52) || // 'R'
                 (waveBytes[(int)WaveHeaderOffset.Riff + 1] != 0x49) || // 'I'
                 (waveBytes[(int)WaveHeaderOffset.Riff + 2] != 0x46) || // 'F'
                 (waveBytes[(int)WaveHeaderOffset.Riff + 3] != 0x46) || // 'F'
