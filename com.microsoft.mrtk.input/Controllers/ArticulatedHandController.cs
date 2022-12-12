@@ -107,6 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerState.selectInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
                         controllerState.selectInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
 
+                        // Also make sure we update the UI press state.
+                        controllerState.uiPressInteractionState.active = isPinched;
+                        controllerState.uiPressInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
+                        controllerState.uiPressInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+
                         pinchedLastFrame = isPinched;
                     }
                 }
