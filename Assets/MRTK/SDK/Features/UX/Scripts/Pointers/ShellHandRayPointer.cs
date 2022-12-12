@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     foreach (var lr in LineRenderers)
                     {
                         var lineRenderer = lr as MixedRealityLineRenderer;
-                        
+
                         if (lineRenderer != null)
                         {
                             lineRenderer.LineMaterial = currentMaterial;

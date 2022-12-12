@@ -254,10 +254,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 IMixedRealityInputSystem inputSystem = CoreServices.InputSystem;
                 MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile != null ? inputSystem.InputSystemProfile.HandTrackingProfile : null;
-                if (newMesh &&  handTrackingProfile != null)
+                if (newMesh && handTrackingProfile != null)
                 {
                     // Create the hand mesh in the scene and assign the proper material to it
-                    if(handTrackingProfile.SystemHandMeshMaterial.IsNotNull())
+                    if (handTrackingProfile.SystemHandMeshMaterial.IsNotNull())
                     {
                         handMeshFilter = new GameObject("System Hand Mesh").EnsureComponent<MeshFilter>();
                         handMeshFilter.EnsureComponent<MeshRenderer>().material = handTrackingProfile.SystemHandMeshMaterial;

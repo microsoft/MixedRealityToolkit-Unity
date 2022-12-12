@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
             var blocking = CreateTouchable<NearInteractionTouchableVolume>(new Vector3(10f, 10f, 1f));
-            blocking.transform.localPosition = objectPosition - new Vector3(touchable.TouchableCollider.bounds.extents.z + blocking.TouchableCollider.bounds.extents.z, 0f, 0f); 
+            blocking.transform.localPosition = objectPosition - new Vector3(touchable.TouchableCollider.bounds.extents.z + blocking.TouchableCollider.bounds.extents.z, 0f, 0f);
 
             yield return new WaitForFixedUpdate();
             yield return null;

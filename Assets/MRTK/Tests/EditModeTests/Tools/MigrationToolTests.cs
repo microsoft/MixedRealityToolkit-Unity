@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
 
                     // Active state of game object and component is kept
                     Assert.IsFalse(sceneGameObject.activeSelf, $"Active state of migrated game object was not kept during migration with type {migrationHandlerType.Name}");
-                    Assert.IsFalse(((MonoBehaviour)sceneGameObject.GetComponent(newType)).enabled, $"Active state of migrated component was not kept during migration with type { migrationHandlerType.Name}");
+                    Assert.IsFalse(((MonoBehaviour)sceneGameObject.GetComponent(newType)).enabled, $"Active state of migrated component was not kept during migration with type {migrationHandlerType.Name}");
 
                     Object.DestroyImmediate(sceneGameObject);
                 }

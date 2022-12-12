@@ -1,7 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {

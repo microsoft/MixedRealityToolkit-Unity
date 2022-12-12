@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {

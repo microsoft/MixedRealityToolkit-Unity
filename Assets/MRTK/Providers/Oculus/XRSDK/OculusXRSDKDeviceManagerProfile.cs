@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             set { ovrCameraRigPrefab = value; }
         }
 
-
         [SerializeField]
         [FormerlySerializedAs("renderAvatarHandsInsteadOfControllers")]
         [Tooltip("Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed. \n\n" +
@@ -170,7 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             get => lowConfidenceTimeThreshold;
             set => lowConfidenceTimeThreshold = value;
         }
-        
 
 #if OCULUSINTEGRATION_PRESENT
         [Header("Super sampling")]
@@ -201,6 +199,4 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 #endif
         }
     }
-
 }
-
