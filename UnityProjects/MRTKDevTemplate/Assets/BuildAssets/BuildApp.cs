@@ -53,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             string assetsFullPath = Path.GetFullPath("Assets/TextMesh Pro");
             if (Directory.Exists(assetsFullPath))
             {
+                Debug.Log("TMPro assets folder already imported. Skipping import.");
                 return;
             }
 
