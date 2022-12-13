@@ -330,92 +330,92 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         /// <summary>
         /// This tests the release behavior of a button
         /// </summary>
-        // [UnityTest]
-        // public IEnumerator ReleaseButton([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
-        // {
-        //     GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
-        //     testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
+        [UnityTest]
+        public IEnumerator ReleaseButton([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
+        {
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+            testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
-        //     PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
-        //     Assert.IsNotNull(buttonComponent);
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
 
-        //     bool buttonPressed = false;
-        //     buttonComponent.selectEntered.AddListener((_) => { buttonPressed = true; });
+            bool buttonPressed = false;
+            buttonComponent.selectEntered.AddListener((_) => { buttonPressed = true; });
 
-        //     bool buttonReleased = false;
-        //     buttonComponent.selectExited.AddListener((_) => { buttonReleased = true; });
+            bool buttonReleased = false;
+            buttonComponent.selectExited.AddListener((_) => { buttonReleased = true; });
 
-        //     bool buttonClicked = false;
-        //     buttonComponent.OnClicked.AddListener(() => { buttonClicked = true; });
+            bool buttonClicked = false;
+            buttonComponent.OnClicked.AddListener(() => { buttonClicked = true; });
 
-        //     // test release
-        //     yield return PressAndReleaseButtonWithHand(testButton.transform.position);
+            // test release
+            yield return PressAndReleaseButtonWithHand(testButton.transform.position);
 
-        //     Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
-        //     Assert.IsTrue(buttonReleased, $"Button did not get released.");
-        //     Assert.IsTrue(buttonClicked, $"Button did not get clicked.");
+            Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
+            Assert.IsTrue(buttonReleased, $"Button did not get released.");
+            Assert.IsTrue(buttonClicked, $"Button did not get clicked.");
 
-        //     buttonPressed = false;
-        //     buttonReleased = false;
-        //     buttonClicked = false;
+            buttonPressed = false;
+            buttonReleased = false;
+            buttonClicked = false;
 
-        //     // test XY rolloff
-        //     Assert.IsTrue(buttonComponent.RejectXYRolloff, "Default behavior of button should be to reject XY rolloff");
-        //     Assert.IsFalse(buttonComponent.RejectZRolloff, "Default behavior of button should be to  *not* reject Z rolloff");
+            // test XY rolloff
+            Assert.IsTrue(buttonComponent.RejectXYRolloff, "Default behavior of button should be to reject XY rolloff");
+            Assert.IsFalse(buttonComponent.RejectZRolloff, "Default behavior of button should be to  *not* reject Z rolloff");
 
-        //     yield return PressButtonWithHand(testButton.transform.position);
-        //     yield return ReleaseButtonWithHand(testButton.transform.position, doRolloff: true);
+            yield return PressButtonWithHand(testButton.transform.position);
+            yield return ReleaseButtonWithHand(testButton.transform.position, doRolloff: true);
 
-        //     Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
-        //     Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
-        //     Assert.IsFalse(buttonClicked, $"Button should not have fired OnClicked when the finger rolls off the edge.");
+            Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
+            Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
+            Assert.IsFalse(buttonClicked, $"Button should not have fired OnClicked when the finger rolls off the edge.");
 
-        //     buttonPressed = false;
-        //     buttonReleased = false;
-        //     buttonClicked = false;
+            buttonPressed = false;
+            buttonReleased = false;
+            buttonClicked = false;
 
-        //     // test XY rolloff rejection disabled
-        //     buttonComponent.RejectXYRolloff = false;
+            // test XY rolloff rejection disabled
+            buttonComponent.RejectXYRolloff = false;
 
-        //     yield return PressButtonWithHand(testButton.transform.position);
-        //     yield return ReleaseButtonWithHand(testButton.transform.position, doRolloff: true);
+            yield return PressButtonWithHand(testButton.transform.position);
+            yield return ReleaseButtonWithHand(testButton.transform.position, doRolloff: true);
 
-        //     Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
-        //     Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
-        //     Assert.IsTrue(buttonClicked, $"OnClicked should have been fired despite rolloff, because RejectXYRolloff = false.");
+            Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
+            Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
+            Assert.IsTrue(buttonClicked, $"OnClicked should have been fired despite rolloff, because RejectXYRolloff = false.");
 
-        //     buttonPressed = false;
-        //     buttonReleased = false;
-        //     buttonClicked = false;
+            buttonPressed = false;
+            buttonReleased = false;
+            buttonClicked = false;
 
-        //     // test Z rolloff rejection = true;
-        //     buttonComponent.RejectZRolloff = true;
+            // test Z rolloff rejection = true;
+            buttonComponent.RejectZRolloff = true;
 
-        //     // Press *through* the button
-        //     yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
+            // Press *through* the button
+            yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
 
-        //     Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
-        //     Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
-        //     Assert.IsFalse(buttonClicked, $"Button should not have fired OnClicked when the finger goes all the way through the button w/ RejectZRolloff = true.");
+            Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
+            Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
+            Assert.IsFalse(buttonClicked, $"Button should not have fired OnClicked when the finger goes all the way through the button w/ RejectZRolloff = true.");
 
-        //     buttonPressed = false;
-        //     buttonReleased = false;
-        //     buttonClicked = false;
+            buttonPressed = false;
+            buttonReleased = false;
+            buttonClicked = false;
 
-        //     // test Z rolloff rejection = true;
-        //     buttonComponent.RejectZRolloff = false;
+            // test Z rolloff rejection = true;
+            buttonComponent.RejectZRolloff = false;
 
-        //     // Press *through* the button
-        //     yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
+            // Press *through* the button
+            yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
 
-        //     Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
-        //     Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
-        //     Assert.IsTrue(buttonClicked, $"Button should have fired OnClicked when the finger goes all the way through the button w/ RejectZRolloff = false.");
+            Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
+            Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
+            Assert.IsTrue(buttonClicked, $"Button should have fired OnClicked when the finger goes all the way through the button w/ RejectZRolloff = false.");
 
-        //     Object.Destroy(testButton);
+            Object.Destroy(testButton);
 
-        //     yield return null;
-        // }
+            yield return null;
+        }
 
 
         /// <summary>
@@ -816,6 +816,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             // Slowly move the hand to touch the button
             yield return hand.MoveTo(buttonPosition + p2, 15);
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         /// <summary>

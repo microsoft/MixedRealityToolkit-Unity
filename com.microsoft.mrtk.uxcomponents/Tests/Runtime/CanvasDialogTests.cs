@@ -283,10 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
         private async Task<bool> AsyncTestDialog()
         {
-            // We're in an async context so Assert won't work.
-            // We'll check our own conditions here and Assert the result.
-            bool testPassed = true;
-
             bool wasDismissed = false;
 
             var dialog = spawner.Get()
@@ -297,9 +293,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             dialog.OnDismissed += ( args ) => { wasDismissed = true; };
 
             // Fire off an async click. This is pretty gross, don't do this outside of testing.
-            ClickAsync(dialog as Dialog);
+            var _ = ClickAsync(dialog as Dialog);
             
             var result = await dialog.ShowAsync();
+
+            // In async contexts, Assert.IsTrue/False will not work.
+            // We'll just log errors and return early.
 
             if (result == null)
             {
