@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 EnableIfLoaderBecomesActive();
                 return;
             }
-            
+
             if (!IsActiveLoader.Value)
             {
                 IsEnabled = false;

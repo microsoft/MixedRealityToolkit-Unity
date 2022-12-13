@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit
             sceneSystem = null;
             spatialAwarenessSystem = null;
             teleportSystem = null;
-        } 
+        }
 
         /// <summary>
         /// Clears the cache of the reference with key of given type if present and applicable
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit
         // We do not want to keep a service around so use WeakReference
         private static readonly Dictionary<Type, WeakReference<IMixedRealityService>> serviceCache = new Dictionary<Type, WeakReference<IMixedRealityService>>();
 
-        private static T GetService<T>() where T : IMixedRealityService 
+        private static T GetService<T>() where T : IMixedRealityService
         {
             Type serviceType = typeof(T);
 

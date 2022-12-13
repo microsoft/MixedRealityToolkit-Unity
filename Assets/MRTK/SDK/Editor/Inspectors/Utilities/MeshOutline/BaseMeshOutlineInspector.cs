@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
                     outlineMaterial.objectReferenceValue = CreateNewMaterial();
                 }
             }
-            else if(!IsCorrectMaterial(currentMat))
+            else if (!IsCorrectMaterial(currentMat))
             {
                 EditorGUILayout.HelpBox($"Material may not be configured correctly, check or reset to default", MessageType.Info);
 
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
                         break;
                     case nameof(System.Boolean):
                         var val = (bool)pair.Value;
-                        if (val) 
+                        if (val)
                         {
                             material.EnableKeyword(pair.Key);
                         }
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.MeshOutline
                 return false;
             }
 
-            return defaultOutlineMaterialSettings.All(x => 
+            return defaultOutlineMaterialSettings.All(x =>
             {
                 switch (x.Value.GetType().Name)
                 {

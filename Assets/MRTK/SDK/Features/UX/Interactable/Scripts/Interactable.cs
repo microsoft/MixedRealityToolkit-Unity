@@ -1225,7 +1225,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             for (int i = 0; i < focusingPointers.Count; i++)
             {
                 if (focusingPointers[i].InputSourceParent != null &&
-                    focusingPointers[i].InputSourceParent.SourceId == eventData.InputSource.SourceId && 
+                    focusingPointers[i].InputSourceParent.SourceId == eventData.InputSource.SourceId &&
                     focusingPointers[i] is IMixedRealityNearPointer)
                 {
                     isAnyNearpointerFocusing = true;
