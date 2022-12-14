@@ -1,18 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
 {
     /// <summary>
     /// This class implements the abstract class Dialog.
     /// DialogShell class manages a dialog object that can have one or two option buttons.
     /// If you try to open a dialog with more than two option buttons, it will show the first two.
     /// </summary>
-    [AddComponentMenu("MRTK/UX/Dialog Shell")]
+    [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
     public class DialogShell : Dialog
     {
         [SerializeField]
@@ -22,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Title text of the dialog
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public TMP_Text TitleText
         {
             get { return titleText; }
@@ -35,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Description text of the dialog
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public TMP_Text DescriptionText
         {
             get { return descriptionText; }
@@ -42,9 +45,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <inheritdoc />
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         protected override void FinalizeLayout() { }
 
         /// <inheritdoc />
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         protected override void GenerateButtons()
         {
             // Find all buttons on dialog...
@@ -69,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
         }
-
+        
         private void SetButtonsActiveStates(List<DialogButton> buttons, int count)
         {
             for (int i = 0; i < buttons.Count; ++i)
@@ -101,6 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Set Title and Text on the Dialog.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         protected override void SetTitleAndMessage()
         {
             if (titleText != null)

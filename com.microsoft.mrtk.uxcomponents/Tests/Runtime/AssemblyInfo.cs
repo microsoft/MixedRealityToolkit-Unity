@@ -2,15 +2,9 @@
 // Licensed under the MIT License.
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit UX Core")]
+[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit UX Components Runtime Tests")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
-
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXComponents.Runtime.Tests")]
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXComponents.NonCanvas.Runtime.Tests")]
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXCore.Runtime.Tests")]
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXCore.Editor")]
 
 // The AssemblyVersion attribute is checked-in and is recommended not to be changed often.
 // https://docs.microsoft.com/troubleshoot/visualstudio/general/assembly-version-assembly-file-version
