@@ -22,7 +22,8 @@
     "com.unity.xr.interaction.toolkit": "2.2.0"
   },
   "msftOptionalPackages": {
-    "com.microsoft.mrtk.data": "1.0.0-development"
+    "com.microsoft.mrtk.data": "1.0.0-development",
+    "com.microsoft.mrtk.spatialmanipulation": "3.0.0-development"
   },
   "msftTestDependencies": {
     "com.microsoft.mrtk.input": "3.0.0-development"

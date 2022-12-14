@@ -3,11 +3,12 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
 {
     /// <summary>
     /// The style of button on a dialog.
     /// </summary>
+    [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
     public enum DialogButtonType
     {
         None = 0,
@@ -23,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// The style of button on a dialog.
     /// </summary>
-    [Flags, Obsolete("Use DialogButtonType instead.")]
+    [Flags]
+    [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
     public enum DialogButtonTypes
     {
         None = 0 << 0,
