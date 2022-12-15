@@ -105,9 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// </summary>
             /// <param name="phrase">The phrase to be synthesized.</param>
             /// <returns>The audio (wave) data upon successful synthesis, or null.</returns>
-#if !WINDOWS_UWP
-#pragma warning disable 1998
-#endif
             private async Task<byte[]> Synthesize(string phrase)
             {
                 if (string.IsNullOrWhiteSpace(phrase))
@@ -138,32 +135,37 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                         reader.ReadBytes(waveData);
                     }
                 }
-#elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-                if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
-                {
-                    Debug.LogError("Failed to synthesize the phrase");
-                    return null;
-                }
 
-                byte[] waveData = new byte[length];
-                Marshal.Copy(nativeData, waveData, 0, length);
-                // We can safely free the native data.
-                WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
+                return waveData;
+#elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+                return await Task<byte[]>.Run(() =>
+                {
+                    if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
+                    {
+                        Debug.LogError("Failed to synthesize the phrase");
+                        return null;
+                    }
+
+                    byte[] waveData = new byte[length];
+                    Marshal.Copy(nativeData, waveData, 0, length);
+                    // We can safely free the native data.
+                    WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
+
+                    return waveData;
+                });
 #else
+                await Task.CompletedTask;
                 if (!haveLogged)
                 {
                     Debug.LogError("The Windows Text-To-Speech subsystem is not supported on the current platform.");
                     haveLogged = true;
-                    return null;
                 }
+                return null;
 #endif
-                return waveData;
             }
-#if !WINDOWS_UWP
-#pragma warning restore 1998
-#endif
 
 #if WINDOWS_UWP
+
             private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
 #endif
 
