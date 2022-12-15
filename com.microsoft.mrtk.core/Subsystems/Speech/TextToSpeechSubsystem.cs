@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.SubsystemsImplementation;
@@ -25,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             #region ITextToSpeechSubsystem implementation
 
             /// <inheritdoc/>
-            public abstract bool TrySpeak(string phrase, AudioSource audioSource);
+            public abstract Task<bool> TrySpeak(string phrase, AudioSource audioSource);
 
             #endregion ITextToSpeechSubsystem implementation
         }
@@ -33,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         #region ITextToSpeechSubsystem implementation
 
         /// <inheritdoc/>
-        public virtual bool TrySpeak(string phrase, AudioSource audioSource) => provider.TrySpeak(phrase, audioSource);
+        public virtual Task<bool> TrySpeak(string phrase, AudioSource audioSource) => provider.TrySpeak(phrase, audioSource);
 
         #endregion ITextToSpeechSubsystem implementation
 

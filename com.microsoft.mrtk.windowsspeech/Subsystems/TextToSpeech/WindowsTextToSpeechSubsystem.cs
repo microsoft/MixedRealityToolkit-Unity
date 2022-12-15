@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Scripting;
 #if WINDOWS_UWP
@@ -61,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 #endif
 
             /// <inheritdoc/>
-            public override bool TrySpeak(string phrase, AudioSource audioSource)
+            public override async Task<bool> TrySpeak(string phrase, AudioSource audioSource)
             {
                 if (audioSource == null)
                 {
@@ -69,7 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     return false;
                 }
 
-                if (!TrySynthesize(phrase, out byte[] waveData))
+                byte[] waveData = await Synthesize(phrase);
+                if (waveData == null)
                 {
                     return false;
                 }
@@ -99,19 +101,19 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             }
 
             /// <summary>
-            /// Attempts to synthesize the specified phrase.
+            /// Synthesizes the specified phrase.
             /// </summary>
             /// <param name="phrase">The phrase to be synthesized.</param>
-            /// <param name="waveData">Receives the audio (wave) data upon successful synthesis.</param>
-            /// <returns>True if the phrase was successfully synthesized, or false.</returns>
-            private bool TrySynthesize(string phrase, out byte[] waveData)
+            /// <returns>The audio (wave) data upon successful synthesis, or null.</returns>
+#if !WINDOWS_UWP
+#pragma warning disable 1998
+#endif
+            private async Task<byte[]> Synthesize(string phrase)
             {
-                waveData = null;
-
                 if (string.IsNullOrWhiteSpace(phrase))
                 {
                     Debug.LogWarning("Nothing to speek");
-                    return false;
+                    return null;
                 }
 
 #if WINDOWS_UWP
@@ -119,15 +121,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 // the voice selected, in Settings, by the user.
                 synthesizer.Voice = SpeechSynthesizer.DefaultVoice;
 
-                Task<SpeechSynthesisStream> synthTask = synthesizer.SynthesizeTextToStreamAsync(phrase).AsTask<SpeechSynthesisStream>();
-                while (!synthTask.IsCompleted)
-                {
-                    System.Threading.Thread.Sleep(0);
-                }
-                SpeechSynthesisStream synthStream = synthTask.Result;
+                SpeechSynthesisStream synthStream = await synthesizer.SynthesizeTextToStreamAsync(phrase);
 
                 // Allocate a byte array to receive the wave data
-                waveData = new byte[(uint)synthStream.Size];
+                byte[] waveData = new byte[(uint)synthStream.Size];
 
                 // Read the wave data.
                 using (IInputStream stream = synthStream.GetInputStreamAt(0))
@@ -137,13 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 
                     using (DataReader reader = new DataReader(stream))
                     {
-                        Task<uint> loadTask = reader.LoadAsync((uint)waveData.Length).AsTask<uint>();
-                        while (!loadTask.IsCompleted)
-                        {
-                            System.Threading.Thread.Sleep(0);
-                        }
-                        // No real need to look at the Result property of the loadTask.
-
+                        await reader.LoadAsync((uint)waveData.Length);
                         reader.ReadBytes(waveData);
                     }
                 }
@@ -151,10 +142,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
                 {
                     Debug.LogError("Failed to synthesize the phrase");
-                    return false;
+                    return null;
                 }
 
-                waveData = new byte[length];
+                byte[] waveData = new byte[length];
                 Marshal.Copy(nativeData, waveData, 0, length);
                 // We can safely free the native data.
                 WinRTTextToSpeechPInvokes.FreeSynthesizedData(nativeData);
@@ -163,17 +154,20 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 {
                     Debug.LogError("The Windows Text-To-Speech subsystem is not supported on the current platform.");
                     haveLogged = true;
-                    return false;
+                    return null;
                 }
 #endif
-                return true;
+                return waveData;
             }
+#if !WINDOWS_UWP
+#pragma warning restore 1998
+#endif
 
 #if WINDOWS_UWP
             private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
 #endif
 
-#endregion TextToSpeechSubsystem implementation
+            #endregion TextToSpeechSubsystem implementation
         }
     }
 }
