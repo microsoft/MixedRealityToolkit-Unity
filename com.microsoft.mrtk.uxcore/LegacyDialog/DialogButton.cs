@@ -5,12 +5,12 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
 {
     /// <summary>
     /// Handling click event and dismiss dialog
     /// </summary>
-    [AddComponentMenu("MRTK/UX/Dialog Button")]
+    [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
     public class DialogButton : MonoBehaviour
     {
         [SerializeField, Tooltip("The TextMeshPro component for displaying text on the button itself.")]
@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// The TextMeshPro component for displaying text on the button itself.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public TMP_Text ButtonText
         {
             get => buttonText;
@@ -28,12 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// A reference to the Dialog that this button is on.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public Dialog ParentDialog { get; set; }
 
         /// <summary>
         /// The type description of the button.
         /// </summary>
-        [Obsolete("Use ButtonContext instead.")]
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public DialogButtonTypes ButtonTypeEnum => DialogProperty.Convert(ButtonContext.ButtonType);
 
         [SerializeField, Tooltip("The type description of the button.")]
@@ -42,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// The context, including type and an optional label, of the button.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public DialogButtonContext ButtonContext => buttonContext;
 
         private void OnValidate()
@@ -53,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Event handler that runs when button is clicked.
         /// Dismisses the parent dialog.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public void OnButtonClicked()
         {
             if (ParentDialog != null)
@@ -69,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Sets the label text on the button.
         /// </summary>
         /// <param name="label">New label text for the button.</param>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public void SetLabel(string label)
         {
             buttonContext.Label = label;
@@ -83,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Sets the button context and the label text on the button.
         /// </summary>
         /// <param name="buttonContext">New button context for this button.</param>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public void SetButtonContext(DialogButtonContext buttonContext)
         {
             this.buttonContext = buttonContext;

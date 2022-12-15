@@ -36,7 +36,7 @@
     "com.unity.xr.arcore": "4.1.12",
     "com.unity.xr.interaction.toolkit": "2.2.0",
     "com.unity.xr.management": "4.2.1",
-    "com.unity.xr.openxr": "1.5.3",
+    "com.unity.xr.openxr": "1.6.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -80,6 +80,7 @@
     "com.microsoft.mrtk.spatialmanipulation",
     "com.microsoft.mrtk.standardassets",
     "com.microsoft.mrtk.uxcomponents",
+    "com.microsoft.mrtk.uxcomponents.noncanvas",
     "com.microsoft.mrtk.uxcore",
     "com.microsoft.mrtk.windowsspeech"
   ]
