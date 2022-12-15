@@ -4,11 +4,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
 {
     /// <summary>
     /// Object containing properties about a dialog.
     /// </summary>
+    [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
     public class DialogProperty
     {
         /// <summary>
@@ -17,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="title">The title bar string (top-most) on the dialog.</param>
         /// <param name="message">The message content string of the dialog.</param>
         /// <param name="buttonContexts">The button type(s) available on the dialog.</param>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public DialogProperty(string title, string message, params DialogButtonContext[] buttonContexts)
         {
             Title = title;
@@ -33,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             ButtonContexts = buttonContexts;
         }
 
-        [Obsolete("Use the constructor that takes in explicit DialogButtonContext instances to create the buttons.")]
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public DialogProperty(string title, string message, DialogButtonTypes buttonTypes) : this(title, message)
         {
             List<DialogButtonContext> buttonTypesList = new List<DialogButtonContext>();
@@ -49,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             ButtonContexts = buttonTypesList.ToArray();
         }
 
-        [Obsolete("Only used for back compat. Do not use elsewhere.")]
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         private static DialogButtonType Convert(DialogButtonTypes dialogButtonTypes)
         {
             switch (dialogButtonTypes)
@@ -66,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        [Obsolete("Only used for back compat. Do not use elsewhere.")]
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         internal static DialogButtonTypes Convert(DialogButtonType dialogButtonTypes)
         {
             switch (dialogButtonTypes)
@@ -86,38 +88,43 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// The title bar string (top-most) on the dialog.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public string Title { get; } = string.Empty;
 
         /// <summary>
         /// The message content string of the dialog.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public string Message { get; } = string.Empty;
 
         /// <summary>
         /// The button type(s) available on the dialog.
         /// </summary>
-        [Obsolete("Query ButtonContexts instead.")]
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public DialogButtonTypes ButtonTypes { get; } = DialogButtonTypes.Close;
 
         /// <summary>
         /// Contexts for the buttons, in order of their appearance on the dialog.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public IReadOnlyList<DialogButtonContext> ButtonContexts { get; } = null;
 
         /// <summary>
         /// Which button was clicked to dismiss the dialog.
         /// </summary>
-        [Obsolete("Use ResultContext.ButtonType instead.")]
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public DialogButtonTypes Result => Convert(ResultContext.ButtonType);
 
         /// <summary>
         /// Which button was clicked to dismiss the dialog.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public DialogButtonContext ResultContext { get; internal set; } = default;
 
         /// <summary>
         /// Reference to the dialog this property applies to.
         /// </summary>
+        [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog. See uxcore/LegacyDialog/README.md")]
         public Dialog TargetDialog { get; internal set; }
     }
 }

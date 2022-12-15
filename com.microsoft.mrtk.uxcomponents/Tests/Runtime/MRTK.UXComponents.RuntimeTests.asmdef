@@ -10,7 +10,8 @@
         "Microsoft.MixedReality.Toolkit.Input.Runtime.Tests",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
-        "Unity.XR.Interaction.Toolkit"
+        "Unity.XR.Interaction.Toolkit",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

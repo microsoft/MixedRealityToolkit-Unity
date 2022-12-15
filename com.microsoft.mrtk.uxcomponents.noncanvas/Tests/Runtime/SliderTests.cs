@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
 
             // clean up
@@ -59,12 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
-            Assert.AreEqual(0.5f, slider.SliderValue, sliderValueDelta, "Slider should have value 0.5 at start");
+            Assert.AreEqual(0.5f, slider.Value, sliderValueDelta, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
             // Allow some leeway due to grab positions shifting on open
-            Assert.AreEqual(1.0f, slider.SliderValue, sliderValueDelta, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(1.0f, slider.Value, sliderValueDelta, "Slider should have value 1.0 after being manipulated at start");
 
             //// clean up
             GameObject.Destroy(sliderObject);
@@ -79,14 +79,14 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            InstantiateDefaultSliderPrefab(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
             slider.SnapToPosition = false;
             slider.IsTouchable = false;
 
-            Assert.AreEqual(0.5f, slider.SliderValue, sliderValueDelta, "Slider should have value 0.5 at start");
+            Assert.AreEqual(0.5f, slider.Value, sliderValueDelta, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
             // Allow some leeway due to grab positions shifting on open
-            Assert.AreEqual(1.0f, slider.SliderValue, sliderValueDelta, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(1.0f, slider.Value, sliderValueDelta, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(sliderObject);
@@ -104,14 +104,14 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
-            Assert.IsTrue(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            Assert.IsTrue(slider.Value == 0.5, "Slider should have value 0.5 at start");
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.05f, -0.08f, 0.3f);
+            Vector3 initialPos = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, -0.08f, 0.3f));
             yield return rightHand.Show(initialPos);
-            yield return rightHand.MoveTo(new Vector3(0.05f, -0.08f, 0.3f), 60);
+            yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(new Vector3(0.05f, -0.08f, 0.3f)), 60);
 
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
 
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(!slider.isSelected, "Slider wasn't deselected");
             Assert.IsTrue(!slider.IsGazePinchSelected, "Slider wasn't de-gaze-pinch-selected");
 
-            Assert.That(slider.SliderValue, Is.GreaterThan(0.5), "Slider didn't move after gaze-pinch manipulation.");
+            Assert.That(slider.Value, Is.GreaterThan(0.5), "Slider didn't move after gaze-pinch manipulation.");
 
             // clean up
             GameObject.Destroy(sliderObject);
@@ -145,10 +145,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+            Vector3 initialPos = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, 0, 1.0f));
 
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Assert.IsTrue(interactionEnded, "Slider did not raise interaction ended.");
 
-            Assert.That(slider.SliderValue, Is.GreaterThan(0.5));
+            Assert.That(slider.Value, Is.GreaterThan(0.5));
 
             GameObject.Destroy(sliderObject);
         }
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
             // Set the slider to use step divisions
             slider.UseSliderStepDivisions = true;
@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+            Vector3 initialPos = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, 0, 1.0f));
 
             bool interactionStarted = false;
             slider.selectEntered.AddListener((x) => interactionStarted = true);
@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Assert.IsTrue(interactionEnded, "Slider did not raise interaction ended.");
 
-            Assert.AreEqual(0.75f, slider.SliderValue);
+            Assert.AreEqual(0.75f, slider.Value);
 
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return rightHand.Move(new Vector3(-0.5f, 0, 0));
@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             yield return rightHand.Hide();
 
-            Assert.AreEqual(0.25f, slider.SliderValue);
+            Assert.AreEqual(0.25f, slider.Value);
 
             GameObject.Destroy(sliderObject);
         }
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
             // Set the slider to use step divisions
             slider.UseSliderStepDivisions = true;
@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.3f, 0, 0.0f);
+            Vector3 initialPos = InputTestUtilities.InFrontOfUser(new Vector3(0.3f, 0, 0.0f));
 
             yield return rightHand.Show(initialPos);
             yield return rightHand.SetHandshape(HandshapeId.Open);
@@ -275,14 +275,14 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
             Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
 
-            Assert.AreEqual(0.75f, slider.SliderValue);
+            Assert.AreEqual(0.75f, slider.Value);
 
             yield return rightHand.Move(new Vector3(-0.5f, 0, 0));
-            Assert.AreEqual(0.25f, slider.SliderValue);
+            Assert.AreEqual(0.25f, slider.Value);
 
             // Ensure the step divisions work (that a small motion doesn't adjust the slider)
             yield return rightHand.Move(new Vector3(-0.1f, 0, 0));
-            Assert.AreEqual(0.25f, slider.SliderValue);
+            Assert.AreEqual(0.25f, slider.Value);
 
             bool interactionEnded = false;
             slider.selectExited.AddListener((x) => interactionEnded = true);
@@ -306,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
             // Set the slider to use step divisions
             slider.UseSliderStepDivisions = true;
@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             slider.OnValueUpdated.AddListener((x) => interactionUpdated = true);
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.3f, 0, 0.0f);
+            Vector3 initialPos = InputTestUtilities.InFrontOfUser(new Vector3(0.3f, 0, 0.0f));
             yield return rightHand.Show(initialPos);
             yield return rightHand.Move(new Vector3(0, 0, 1.0f));
 
@@ -333,13 +333,13 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(interactionStarted, "Slider did not raise interaction started.");
             Assert.IsTrue(interactionUpdated, "Slider did not raise SliderUpdated event.");
 
-            Assert.AreEqual(0.75f, slider.SliderValue);
+            Assert.AreEqual(0.75f, slider.Value);
 
             yield return rightHand.Move(new Vector3(-0.5f, 0, 0));
-            Assert.AreEqual(0.25f, slider.SliderValue);
+            Assert.AreEqual(0.25f, slider.Value);
 
             yield return rightHand.Move(new Vector3(0.3f, 0, 0));
-            Assert.AreEqual(0.5f, slider.SliderValue);
+            Assert.AreEqual(0.5f, slider.Value);
 
             bool interactionEnded = false;
             slider.selectExited.AddListener((x) => interactionEnded = true);
@@ -372,14 +372,14 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            AssembleSlider(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
             // Set slider to not snap with touch
             slider.SnapToPosition = false;
             slider.IsTouchable = true;
             slider.UseSliderStepDivisions = false;
 
-            Assert.AreEqual(0.5f, slider.SliderValue, "Slider did not initialize to the correct value");
+            Assert.AreEqual(0.5f, slider.Value, "Slider did not initialize to the correct value");
 
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return rightHand.MoveTo(firstPoint, 60);
             Assert.IsFalse(interactionStarted, "Slider started interactdion when we didn't touch the handle and snapToPosition = false");
             Assert.IsFalse(interactionUpdated, "Slider upated value when we didn't touch the handle and snapToPosition = false");
-            Assert.AreEqual(0.5f, slider.SliderValue, "Slider shouldn't have snapped to the finger point when SnapToPosition = false");
+            Assert.AreEqual(0.5f, slider.Value, "Slider shouldn't have snapped to the finger point when SnapToPosition = false");
 
             yield return rightHand.MoveTo(Vector3.zero, 60);
 
@@ -409,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(slider.IsPokeSelected, "Slider should be poked!");
             Assert.IsTrue(interactionStarted, "Slider didn't start interaction when we poked the handle");
             Assert.IsTrue(interactionUpdated, "Slider didn't invoke OnValueUpdated when we poked the handle");
-            Assert.AreEqual(0.5f, slider.SliderValue, 0.001f, "Slider should still be roughly the same value");
+            Assert.AreEqual(0.5f, slider.Value, 0.001f, "Slider should still be roughly the same value");
 
             interactionUpdated = false;
 
@@ -418,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Assert.IsTrue(slider.IsPokeSelected, "Slider should still be poked.");
             Assert.IsTrue(interactionUpdated, "Slider didn't invoke OnValueUpdated when we dragged the handle");
-            Assert.AreEqual(0.2f, slider.SliderValue, 0.001f, "Slider value should roughly be 0.2");
+            Assert.AreEqual(0.2f, slider.Value, 0.001f, "Slider value should roughly be 0.2");
 
             GameObject.Destroy(sliderObject);
         }
@@ -434,7 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            InstantiateDefaultSliderPrefab(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
             slider.SnapToPosition = false;
 
             // Remove visuals
@@ -442,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             // Test that the slider still works and no errors are thrown
             yield return RuntimeTestUtilities.WaitForUpdates();
-            Assert.AreEqual(0.5f, slider.SliderValue, sliderValueDelta, "Slider should have value 0.5 at start");
+            Assert.AreEqual(0.5f, slider.Value, sliderValueDelta, "Slider should have value 0.5 at start");
 
             // clean up
             GameObject.Destroy(sliderObject);
@@ -460,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             SliderVisuals sliderVisuals;
 
             // This should not throw exception
-            InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
+            InstantiateDefaultSliderPrefab(InputTestUtilities.InFrontOfUser(Vector3.forward), Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
             slider.SliderStart.localPosition = Vector3.left;
             slider.SliderEnd.localPosition = Vector3.right;
@@ -495,7 +495,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         //     // This should not throw exception
         //     AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
-        //     Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+        //     Debug.Assert(slider.Value == 0.5, "Slider should have value 0.5 at start");
 
         //     // Single mode needed to reject incoming interactors once we are already selected.
         //     Debug.Assert(slider.selectMode == InteractableSelectMode.Single, "Slider should be in single select mode");
@@ -520,13 +520,13 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         //     yield return rightHand.MoveTo(new Vector3(-0.1f, 0, 1.0f));
 
         //     yield return RuntimeTestUtilities.WaitForUpdates();
-        //     Debug.Assert(Mathf.Abs(slider.SliderValue - 0.5f) < 0.01f, "Slider should not have moved");
+        //     Debug.Assert(Mathf.Abs(slider.Value - 0.5f) < 0.01f, "Slider should not have moved");
 
         //     // Now we move the left (new) hand to the right, and the slider should now move.
         //     yield return leftHand.MoveTo(new Vector3(0.1f, 0, 1.0f));
 
         //     yield return RuntimeTestUtilities.WaitForUpdates();
-        //     Assert.That(slider.SliderValue, Is.GreaterThan(0.5), "Slider didn't move after moving new grab");
+        //     Assert.That(slider.Value, Is.GreaterThan(0.5), "Slider didn't move after moving new grab");
 
         //     // clean up
         //     GameObject.Destroy(sliderObject);
@@ -545,7 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         //     // This should not throw exception
         //     AssembleSlider(Vector3.forward, Vector3.zero, out sliderObject, out slider, out sliderVisuals);
 
-        //     Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+        //     Debug.Assert(slider.Value == 0.5, "Slider should have value 0.5 at start");
 
         //     // Single mode needed to reject incoming interactors once we are already selected.
         //     Debug.Assert(slider.selectMode == InteractableSelectMode.Single, "Slider should be in single select mode");
@@ -562,7 +562,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         //     Debug.Assert(slider.IsGazePinchSelected == true, "Slider should specifically be gaze-pinch selected");
         //     Debug.Assert(slider.interactorsSelecting.Count == 1, "Only one interactor should be selecting so far.");
 
-        //     float initialSliderValue = slider.SliderValue;
+        //     float initialSliderValue = slider.Value;
 
         //     var leftHand = new TestHand(Handedness.Left);
         //     yield return leftHand.Show(initialPos);
@@ -577,13 +577,13 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         //     yield return rightHand.MoveTo(new Vector3(-0.1f, 0, 1.0f));
 
         //     yield return RuntimeTestUtilities.WaitForUpdates();
-        //     Debug.Assert(Mathf.Abs(slider.SliderValue - initialSliderValue) < 0.01f, "Slider should have detached from the first interactor");
+        //     Debug.Assert(Mathf.Abs(slider.Value - initialSliderValue) < 0.01f, "Slider should have detached from the first interactor");
 
         //     // Now we move the left (new) hand to the right, and the slider should now move.
         //     yield return leftHand.MoveTo(new Vector3(0.1f, 0, 1.0f));
 
         //     yield return RuntimeTestUtilities.WaitForUpdates();
-        //     Assert.That(slider.SliderValue, Is.GreaterThan(initialSliderValue), "Slider didn't move after moving the new interactor");
+        //     Assert.That(slider.Value, Is.GreaterThan(initialSliderValue), "Slider didn't move after moving the new interactor");
 
         //     // clean up
         //     GameObject.Destroy(sliderObject);
@@ -600,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Debug.Log($"moving hand to value {toSliderValue}");
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
+            Vector3 initialPos = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, 0, 1.0f));
             yield return rightHand.Show(initialPos);
 
             SliderVisuals sliderVisuals = slider.GetComponent<SliderVisuals>();

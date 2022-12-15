@@ -66,12 +66,14 @@ steps:
       $resultFile = Join-Path $(Build.ArtifactStagingDirectory) "test-results-playmode.xml"
       New-Item -Path $resultFile -ItemType File -Force
 
+      $setupMethod = "Microsoft.MixedReality.Toolkit.Examples.Build.BuildApp.EnsureTMPro"
+
       try {
       if ("${{ parameters.UnityVersion }}" -eq "Latest") {
-        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Latest -ExecuteMethod $setupMethod -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
       }
       else {
-        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
+        $proc = Start-UnityEditor -Project "${{ parameters.PathToProject }}" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $setupMethod -RunTests -TestPlatform PlayMode -BuildTarget ${{ parameters.BuildTarget }} -BatchMode -PassThru -LogFile $logFile -EditorTestsResultFile $resultFile -AdditionalArguments "${{ parameters.AdditionalArguments }}"
       }
 
       $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile
@@ -129,3 +131,4 @@ steps:
       testResultsFiles: 'test*.xml'
       searchFolder: $(Build.ArtifactStagingDirectory)
       failTaskOnFailedTests: true
+      continueOnError: false
