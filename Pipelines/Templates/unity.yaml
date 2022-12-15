@@ -22,17 +22,14 @@ parameters:
   type: boolean
   default: false
 
-- name: BuildStandalone
-  type: boolean
-  default: false
-
-- name: BuildUWP
-  type: boolean
-  default: false
-
-- name: BuildAndroid
-  type: boolean
-  default: false
+- name: Platform
+  type: string
+  default: None
+  values:
+  - None
+  - Standalone
+  - UWP
+  - Android
 
 steps:
 - pwsh: Install-Module PowerShellGet -Force
@@ -45,7 +42,7 @@ steps:
 
   # Standalone x64 tasks
 
-- ${{ if eq(parameters.BuildStandalone, true) }}:
+- ${{ if eq(parameters.Platform, 'Standalone') }}:
   - template: Tasks/build-unity.yaml
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
@@ -66,7 +63,7 @@ steps:
 
   # UWP tasks
 
-- ${{ if eq(parameters.BuildUWP, true) }}:
+- ${{ if eq(parameters.Platform, 'UWP') }}:
   - template: Tasks/build-unity.yaml
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
@@ -90,7 +87,7 @@ steps:
 
   # Android tasks
 
-- ${{ if eq(parameters.BuildAndroid, true) }}:
+- ${{ if eq(parameters.Platform, 'Android') }}:
   - template: Tasks/build-unity.yaml
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
@@ -101,8 +98,9 @@ steps:
 
   # Publishing tasks
 
-- task: PublishPipelineArtifact@1
-  displayName: Publish apps
-  inputs:
-    targetPath: $(Build.ArtifactStagingDirectory)/Apps
-    artifactName: Apps-${{ parameters.ProjectName }}
+- ${{ if not(eq(parameters.Platform, 'None')) }}:
+  - task: PublishPipelineArtifact@1
+    displayName: Publish apps
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)/Apps
+      artifactName: Apps-${{ parameters.ProjectName }}-${{ parameters.Platform }}
