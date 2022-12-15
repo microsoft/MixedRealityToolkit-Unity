@@ -44,9 +44,15 @@ jobs:
 
   - template: Templates/unity.yaml
     parameters:
-      BuildStandalone: true
-      BuildUWP: true
-      BuildAndroid: true
+      Platform: Standalone
+
+  - template: Templates/unity.yaml
+    parameters:
+      Platform: UWP
+
+  - template: Templates/unity.yaml
+    parameters:
+      Platform: Android
 
   - template: Templates/upm.yaml
     parameters:

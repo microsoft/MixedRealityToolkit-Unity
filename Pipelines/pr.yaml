@@ -19,7 +19,7 @@ trigger: none # disable CI
 stages:
   - stage: UnityValidation
     jobs:
-      - job: BuildStandalone
+      - job: BuildStandaloneAndTest
         pool: Unity_2021.3.3f1_Pool
         steps:
           - checkout: self
@@ -29,8 +29,7 @@ stages:
 
           - template: Templates/unity.yaml
             parameters:
-              BuildStandalone: true
-              BuildUWP: true
+              Platform: Standalone
               RunTests: true
 
       - job: BuildUWP
@@ -43,4 +42,16 @@ stages:
 
           - template: Templates/unity.yaml
             parameters:
-              BuildUWP: true
+              Platform: UWP
+
+      - job: BuildAndroid
+        pool: Unity_2021.3.3f1_Pool
+        steps:
+          - checkout: self
+            fetchDepth: 3
+
+          - checkout: PipelineTools
+
+          - template: Templates/unity.yaml
+            parameters:
+              Platform: Android
