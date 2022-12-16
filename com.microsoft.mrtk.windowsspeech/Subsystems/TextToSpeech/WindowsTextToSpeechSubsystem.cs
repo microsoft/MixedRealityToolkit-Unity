@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             {
                 if (string.IsNullOrWhiteSpace(phrase))
                 {
-                    Debug.LogWarning("Nothing to speek");
+                    Debug.LogWarning("Nothing to speak");
                     return null;
                 }
 
