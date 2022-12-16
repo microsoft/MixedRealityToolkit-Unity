@@ -154,13 +154,12 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     return waveData;
                 });
 #else
-                await Task.CompletedTask;
                 if (!haveLogged)
                 {
                     Debug.LogError("The Windows Text-To-Speech subsystem is not supported on the current platform.");
                     haveLogged = true;
                 }
-                return null;
+                return await Task.FromResult(null);
 #endif
             }
 
