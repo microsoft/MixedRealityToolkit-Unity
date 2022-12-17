@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Scripting;
+
 #if WINDOWS_UWP
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -159,12 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     Debug.LogError("The Windows Text-To-Speech subsystem is not supported on the current platform.");
                     haveLogged = true;
                 }
-                return await Task.FromResult(null);
+                return await Task.FromResult<byte[]>(null);
 #endif
             }
 
 #if WINDOWS_UWP
-
             private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
 #endif
 
