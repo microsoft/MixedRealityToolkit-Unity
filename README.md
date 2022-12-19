@@ -9,16 +9,19 @@ MRTK-Unity is a Microsoft-driven project that provides a set of components and f
 * Provides the **cross-platform input system and building blocks for spatial interactions and UI**.
 * Enables **rapid prototyping** via in-editor simulation that allows you to see changes immediately.
 * Operates as an **extensible framework** that provides developers the ability to swap out core components.
-* **Supports a wide range of platforms**:
+* **Supports a wide range of devices**:
 
-| Platform | Supported Devices |
-|:---|:---|
-| OpenXR (Unity 2020.3.8+) | Microsoft HoloLens 2 <br> Windows Mixed Reality headsets |
-| Windows Mixed Reality | Microsoft HoloLens <br> Microsoft HoloLens 2 <br> Windows Mixed Reality headsets  |
-| Oculus (Unity 2019.3 or newer) | Oculus Quest |
-| OpenVR |  Windows Mixed Reality headsets <br> HTC Vive <br> Oculus Rift |
-| Ultraleap Hand Tracking | Ultraleap Leap Motion controller |
-| Mobile | iOS and Android |
+| XR SDK Plugin (Unity XR Plugin Management Providers) | Supported Devices |
+|---|---|
+| Unity OpenXR Plugin (Unity 2020 or 2021 LTS) <br> (Mixed Reality OpenXR Plugin required for certain features on certain devices) | Microsoft HoloLens 2 <br> Windows Mixed Reality headsets <br> Meta Quest <br> Device running on SteamVR via OpenXR |
+| Windows XR Plugin | Microsoft HoloLens <br> Microsoft HoloLens 2 <br> Windows Mixed Reality headsets |
+| Oculus XR Plugin (Unity 2019 or newer LTS) | Meta Quest (via Oculus Integration Package) |
+| ARCore XR Plug-in | Android (via AR Foundation) |
+| ARKit XR Plug-in | iOS (via AR Foundation) |
+
+**Additional devices supported:**
+
+* Ultraleap Leap Motion controller for hand tracking (via Ultraleap's OpenXR API layer (recommended) or via [Ultraleap's Plugin for Unity](https://learn.microsoft.com/windows/mixed-reality/mrtk-unity/mrtk2/supported-devices/leap-motion-mrtk))
 
 | NOTE: We have introduced the public preview of MRTK3, the next chapter of MRTK. For documentation, please go to the [MRTK3 documentation](https://aka.ms/mrtk3). For code, please go to the [mrtk3 branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk3). |
 | --- |
@@ -117,13 +120,13 @@ See [Mixed Reality Dev Days](https://docs.microsoft.com/windows/mixed-reality/mr
 
 # Engage with the community
 
-- Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/). You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
+* Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/). You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
-- Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
+* Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
 
-- Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
+* Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
-- For questions about contributing to MRTK, go to the [mixed-reality-toolkit](https://holodevelopers.slack.com/messages/C2H4HT858) channel on slack.
+* For questions about contributing to MRTK, go to the [mixed-reality-toolkit](https://holodevelopers.slack.com/messages/C2H4HT858) channel on slack.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
