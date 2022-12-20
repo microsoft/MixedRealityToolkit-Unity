@@ -248,11 +248,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
                 {
                     if (result < 0) { return false; } //
                     result += (ch - '0') * multiplier;
-                    multiplier = multiplier * 10;
+                    multiplier *= 10;
                 }
                 else if (ch == '-')
                 {
-                    result = result * -1;
+                    result *= -1;
                 }
                 else
                 {

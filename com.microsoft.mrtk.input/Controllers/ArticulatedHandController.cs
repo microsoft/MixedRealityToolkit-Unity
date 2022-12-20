@@ -167,11 +167,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        devicePose.rotation = devicePose.rotation * leftPalmOffset;
+                        devicePose.rotation *= leftPalmOffset;
                         poseRetrieved = true;
                         break;
                     case Handedness.Right:
-                        devicePose.rotation = devicePose.rotation * rightPalmOffset;
+                        devicePose.rotation *= rightPalmOffset;
                         poseRetrieved = true;
                         break;
                     default:
