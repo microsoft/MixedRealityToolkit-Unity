@@ -354,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <returns>The new goal rotation.</returns>
         protected virtual Quaternion CalculateGoalRotation()
         {
-            using (CalculateGoalPositionPerfMarker.Auto())
+            using (CalculateGoalRotationPerfMarker.Auto())
             {
                 Quaternion goalRotation = SolverHandler.TransformTarget.rotation;
 
