@@ -4,65 +4,71 @@
 # CI build producing developer packages.
 
 variables:
-- template: Config/settings.yaml
-- name: Version.Revision
-  value: $[counter(variables['MRTKVersion'], 1)]
-- name: Version.PreReleaseRevision
-  value: $[counter(variables['MRTKReleaseTag'], 1)]
+  - template: Config/settings.yaml
+  - name: Version.Revision
+    value: $[counter(variables['MRTKVersion'], 1)]
+  - name: Version.PreReleaseRevision
+    value: $[counter(variables['MRTKReleaseTag'], 1)]
 
 resources:
   repositories:
-  - repository: PipelineTools
-    type: git
-    endpoint: ToolsAccess
-    name: tools.internal
-    ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
-  - repository: DocToolUnityProject
-    type: git
-    endpoint: ToolsAccess
-    name: lib.doctools
-    ref: f6dcb5efd248fbe486757cb5a7198aed81c180d5
+    - repository: PipelineTools
+      type: git
+      endpoint: ToolsAccess
+      name: tools.internal
+      ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
+    - repository: DocToolUnityProject
+      type: git
+      endpoint: ToolsAccess
+      name: lib.doctools
+      ref: f6dcb5efd248fbe486757cb5a7198aed81c180d5
 
 pr: none # disable PR validation
 
 jobs:
-- job: UnityValidation
-  pool: Unity_2021.3.3f1_Pool
-  steps:
-  - checkout: self
+  - job: UnityValidation
+    pool: Unity_2021.3.3f1_Pool
+    steps:
+      - checkout: self
 
-  - checkout: PipelineTools
+      - checkout: PipelineTools
 
-  - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.PreReleaseRevision)"
-    displayName: 'Set Build Number'
+      - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.PreReleaseRevision)"
+        displayName: Set Build Number
 
-  - task: ComponentGovernanceComponentDetection@0
-    inputs:
-      scanType: 'Register'
-      alertWarningLevel: 'Medium'
-      failOnAlert: true
+      - task: ComponentGovernanceComponentDetection@0
+        inputs:
+          scanType: Register
+          alertWarningLevel: Medium
+          failOnAlert: true
 
-  - template: Templates/unity.yaml
-    parameters:
-      BuildStandalone: true
-      BuildUWP: true
-      BuildAndroid: true
+      - template: Templates/unity.yaml
+        parameters:
+          Platform: Standalone
 
-  - template: Templates/upm.yaml
-    parameters:
-      buildNumber: $(Version.Revision)
-      previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
-      publishToFeed: true
+      - template: Templates/unity.yaml
+        parameters:
+          Platform: UWP
 
-- job: DocsBinariesGeneration
-  pool: Unity_2021.3.3f1_Pool
-  steps:
-  - checkout: self
+      - template: Templates/unity.yaml
+        parameters:
+          Platform: Android
 
-  - checkout: PipelineTools
+      - template: Templates/upm.yaml
+        parameters:
+          buildNumber: $(Version.Revision)
+          previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
+          publishToFeed: true
 
-  - checkout: DocToolUnityProject
+  - job: DocsBinariesGeneration
+    pool: Unity_2021.3.3f1_Pool
+    steps:
+      - checkout: self
 
-  - template: Templates/license-unity.yaml@PipelineTools
+      - checkout: PipelineTools
 
-  - template: Templates/docs.yaml
+      - checkout: DocToolUnityProject
+
+      - template: Templates/license-unity.yaml@PipelineTools
+
+      - template: Templates/docs.yaml

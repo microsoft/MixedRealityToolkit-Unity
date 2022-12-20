@@ -23,7 +23,7 @@
       "hash": "7747a48d5e994db800b4c60a0a8b95a5ae2ce39f"
     },
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.6.0.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.7.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
@@ -142,14 +142,22 @@
         "com.microsoft.mrtk.core": "3.0.0-development"
       }
     },
+    "com.microsoft.mrtk.tts.windows": {
+      "version": "file:../../../ExternalDependencies/com.microsoft.mrtk.tts.windows-1.0.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.microsoft.mrtk.uxcomponents": {
       "version": "file:../../../com.microsoft.mrtk.uxcomponents",
       "depth": 0,
       "source": "local",
       "dependencies": {
+        "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
         "com.microsoft.mrtk.uxcore": "3.0.0-development",
         "com.microsoft.mrtk.spatialmanipulation": "3.0.0-development",
-        "com.microsoft.mrtk.standardassets": "3.0.0-development"
+        "com.microsoft.mrtk.standardassets": "3.0.0-development",
+        "com.unity.xr.interaction.toolkit": "2.2.0"
       }
     },
     "com.microsoft.mrtk.uxcomponents.noncanvas": {
@@ -179,11 +187,12 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.microsoft.mrtk.core": "3.0.0-development"
+        "com.microsoft.mrtk.core": "3.0.0-development",
+        "com.microsoft.mrtk.tts.windows": "1.0.0"
       }
     },
     "com.microsoft.spatialaudio.spatializer.unity": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.spatialaudio.spatializer.unity-1.0.246.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.spatialaudio.spatializer.unity-2.0.37.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {}
@@ -431,13 +440,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.openxr": {
-      "version": "1.5.3",
+      "version": "1.6.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.xr.management": "4.0.1",
         "com.unity.xr.legacyinputhelpers": "2.1.2",
-        "com.unity.inputsystem": "1.4.2"
+        "com.unity.inputsystem": "1.4.4"
       },
       "url": "https://packages.unity.com"
     },

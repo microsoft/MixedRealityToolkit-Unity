@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXComponents.Runtime.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXComponents.NonCanvas.Runtime.Tests")]
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXCore.Runtime.Tests")]
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.UXCore.Editor")]
 
