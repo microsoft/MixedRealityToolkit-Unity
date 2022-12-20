@@ -109,17 +109,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Undo.RecordObject(rt, "Set Canvas Position");
 
             // No GraphicRaycaster by default. Users can add one, if they like.
-            GraphicRaycaster raycaster = canvas.GetComponent<GraphicRaycaster>();
-            if (raycaster != null)
+            if (canvas.TryGetComponent(out GraphicRaycaster raycaster))
             {
                 Undo.DestroyObjectImmediate(raycaster);
             }
 
             // CanvasScaler should be there by default.
-            CanvasScaler scaler = canvas.GetComponent<CanvasScaler>();
-            if (scaler == null)
+            if (!canvas.TryGetComponent(out CanvasScaler _))
             {
-                scaler = Undo.AddComponent<CanvasScaler>(canvas.gameObject);
+                Undo.AddComponent<CanvasScaler>(canvas.gameObject);
             }
         }
 
