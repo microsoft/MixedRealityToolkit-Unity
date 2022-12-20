@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <remarks>
     /// This encodes either a KeyCode with optional modifiers or a mouse button index.
     /// </remarks>
-    [System.Serializable]
+    [Serializable]
     public struct KeyBinding
     {
         /// <summary>
