@@ -14,25 +14,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     internal abstract class SimulatedControllerState
     {
-        protected Handedness handedness = Handedness.None;
-        public Handedness Handedness => handedness;
+        public Handedness Handedness { get; protected set; } = Handedness.None;
 
-        // Show a tracked controller
-        public bool IsTracked = false;
+        /// <summary>
+        /// Show a tracked controller.
+        /// </summary>
+        public bool IsTracked { get; set; } = false;
 
-        // Position of the controller in viewport space
-        public Vector3 ViewportPosition = Vector3.zero;
-        // Rotation of the controller relative to the camera
-        public Vector3 ViewportRotation = Vector3.zero;
-        // Random offset to simulate tracking inaccuracy
-        public Vector3 JitterOffset = Vector3.zero;
+        private Vector3 viewportPosition = Vector3.zero;
+
+        /// <summary>
+        /// Position of the controller in viewport space.
+        /// </summary>
+        public Vector3 ViewportPosition
+        {
+            get => viewportPosition;
+            set => viewportPosition = value;
+        }
+
+        private Vector3 viewportRotation = Vector3.zero;
+
+        /// <summary>
+        /// Rotation of the controller relative to the camera.
+        /// </summary>
+        public Vector3 ViewportRotation
+        {
+            get => viewportRotation;
+            set => viewportRotation = value;
+        }
+
+        /// <summary>
+        /// Random offset to simulate tracking inaccuracy.
+        /// </summary>
+        public Vector3 JitterOffset { get; set; } = Vector3.zero;
 
         protected float viewportPositionZTarget;
         protected readonly float smoothScrollSpeed = 5f;
 
-        public SimulatedControllerState(Handedness _handedness)
+        public SimulatedControllerState(Handedness handedness)
         {
-            handedness = _handedness;
+            Handedness = handedness;
         }
 
         public void SimulateInput(MouseDelta mouseDelta, bool useMouseRotation, float rotationSensitivity, float rotationScale, float noiseAmount)
@@ -49,8 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                ViewportPosition.x += mouseDelta.viewportDelta.x;
-                ViewportPosition.y += mouseDelta.viewportDelta.y;
+                viewportPosition.x += mouseDelta.viewportDelta.x;
+                viewportPosition.y += mouseDelta.viewportDelta.y;
                 viewportPositionZTarget += mouseDelta.viewportDelta.z;
             }
 
@@ -77,9 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         internal void Update()
         {
-            ViewportPosition.z = Mathf.Lerp(ViewportPosition.z, viewportPositionZTarget, smoothScrollSpeed * Time.deltaTime);
+            viewportPosition.z = Mathf.Lerp(ViewportPosition.z, viewportPositionZTarget, smoothScrollSpeed * Time.deltaTime);
         }
-
     }
 
     /// <summary>
@@ -102,11 +122,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         internal SimulatedControllerState InputStateRight;
         internal SimulatedControllerState InputStateGaze;
 
-        private bool isSimulatingGaze => !IsSimulatingLeft && !IsSimulatingRight && !IsAlwaysVisibleLeft && !IsAlwaysVisibleRight && !DeviceUtility.IsPresent;
+        private bool IsSimulatingGaze => !IsSimulatingLeft && !IsSimulatingRight && !IsAlwaysVisibleLeft && !IsAlwaysVisibleRight && !DeviceUtility.IsPresent;
+
         /// <summary>
         /// Left controller is controlled by user input.
         /// </summary>
         public bool IsSimulatingLeft { get; private set; } = false;
+
         /// <summary>
         /// Right controller is controlled by user input.
         /// </summary>
@@ -179,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     IsSimulatingRight = false;
                 }
-                if (isSimulatingGaze)
+                if (IsSimulatingGaze)
                 {
                     lastSimulationGaze = time;
                 }
@@ -189,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             SimulateInput(ref lastInputTrackedTimestampLeft, InputStateLeft, IsSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, mouseRotation.IsRotating);
             SimulateInput(ref lastInputTrackedTimestampRight, InputStateRight, IsSimulatingRight, IsAlwaysVisibleRight, mouseDelta, mouseRotation.IsRotating);
-            SimulateInput(ref lastInputTrackedTimestampGaze, InputStateGaze, isSimulatingGaze, false, mouseDelta, mouseRotation.IsRotating);
+            SimulateInput(ref lastInputTrackedTimestampGaze, InputStateGaze, IsSimulatingGaze, false, mouseDelta, mouseRotation.IsRotating);
 
         }
 
