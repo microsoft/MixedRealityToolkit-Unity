@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <remarks>
     /// This encodes either a KeyCode with optional modifiers or a mouse button index.
     /// </remarks>
-    [System.Serializable]
+    [Serializable]
     public struct KeyBinding
     {
         /// <summary>
@@ -205,8 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public static class KeyInputSystem
     {
-        private static bool isSimulated;
-        public static bool SimulatingInput => isSimulated;
+        public static bool SimulatingInput { get; private set; }
 
         private static HashSet<int> SimulatedMouseDownSet;
         private static HashSet<KeyCode> SimulatedKeyDownSet;
@@ -223,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static void StartKeyInputStimulation()
         {
             ResetKeyInputSimulation();
-            isSimulated = true;
+            SimulatingInput = true;
         }
 
         /// <summary>
@@ -231,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public static void StopKeyInputSimulation()
         {
-            isSimulated = false;
+            SimulatingInput = false;
         }
 
         /// <summary>
@@ -310,14 +309,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (kb.TryGetMouseButton(out int mouseButton))
             {
-                if (isSimulated)
+                if (SimulatingInput)
                     return SimulatedMouseSet.Contains(mouseButton);
                 else
                     return UnityEngine.Input.GetMouseButton(mouseButton);
             }
             if (kb.TryGetKeyCode(out KeyCode keyCode))
             {
-                if (isSimulated)
+                if (SimulatingInput)
                     return SimulatedKeySet.Contains(keyCode);
                 else
                     return UnityEngine.Input.GetKey(keyCode);
@@ -333,14 +332,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (kb.TryGetMouseButton(out int mouseButton))
             {
-                if (isSimulated)
+                if (SimulatingInput)
                     return SimulatedMouseDownSet.Contains(mouseButton);
                 else
                     return UnityEngine.Input.GetMouseButtonDown(mouseButton);
             }
             if (kb.TryGetKeyCode(out KeyCode keyCode))
             {
-                if (isSimulated)
+                if (SimulatingInput)
                     return SimulatedKeyDownSet.Contains(keyCode);
                 else
                     return UnityEngine.Input.GetKeyDown(keyCode);
@@ -356,14 +355,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (kb.TryGetMouseButton(out int mouseButton))
             {
-                if (isSimulated)
+                if (SimulatingInput)
                     return SimulatedMouseUpSet.Contains(mouseButton);
                 else
                     return UnityEngine.Input.GetMouseButtonUp(mouseButton);
             }
             if (kb.TryGetKeyCode(out KeyCode keyCode))
             {
-                if (isSimulated)
+                if (SimulatingInput)
                     return SimulatedKeyUpSet.Contains(keyCode);
                 else
                     return UnityEngine.Input.GetKeyUp(keyCode);

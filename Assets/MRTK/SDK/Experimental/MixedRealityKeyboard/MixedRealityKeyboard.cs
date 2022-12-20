@@ -19,10 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Returns the committed text.
         /// </summary>
-        public override string Text
-        {
-            get;
-            protected set;
-        } = string.Empty;
+        public override string Text { get; protected set; } = string.Empty;
     }
 }

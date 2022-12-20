@@ -36,11 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Returns the index of the caret within the text.
         /// </summary>
-        public int CaretIndex
-        {
-            get;
-            private set;
-        } = 0;
+        public int CaretIndex { get; private set; } = 0;
 
         [Experimental, SerializeField, Tooltip("Whether disable user's interaction with other UI elements while typing. Use this option to decrease the chance of keyboard getting accidentally closed.")]
         private bool disableUIInteractionWhenTyping = false;
@@ -169,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
