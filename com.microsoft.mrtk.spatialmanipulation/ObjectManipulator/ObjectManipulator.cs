@@ -519,10 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 constraintsManager.Setup(new MixedRealityTransform(HostTransform));
             }
 
-            if (smoothingLogic == null)
-            {
-                smoothingLogic = Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
-            }
+            smoothingLogic ??= Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
 
             InstantiateManipulationLogic();
         }
