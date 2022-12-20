@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <see cref="Equals(PerformanceStatsSubsystemCinfo)"/> also returns `true`; otherwise `false`.</returns>
         public override bool Equals(System.Object obj)
         {
-            return ((obj is PerformanceStatsSubsystemCinfo) && Equals((PerformanceStatsSubsystemCinfo)obj));
+            return (obj is PerformanceStatsSubsystemCinfo cinfo) && Equals(cinfo);
         }
 
         /// <summary>
