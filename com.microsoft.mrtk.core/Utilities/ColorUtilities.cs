@@ -29,12 +29,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Compresses the gradient to the range (p1, p2). The colors at the start and end of the result are the same as the gradient a.
+        /// Compresses the gradient to the interval (p1, p2). The colors at the start and end of the result are the same as the gradient a.
         /// </summary>
         /// <param name="a">The gradient we are trying to compress</param>
         /// <param name="p1">The starting position of the compressed gradient. 0 <= p1 < p2 <= 1</param>
         /// <param name="p2">The ending position of the compressed gradient. 0 <= p1 < p2 <= 1</param>
-        /// <returns></returns>
+        /// <returns>A new gradient with the gradient a compressed into the interval (p1, p2)</returns>
         public static Gradient GradientCompress(Gradient a, float p1, float p2)
         {
             if (p2 <= p1)
