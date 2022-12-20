@@ -50,11 +50,11 @@ namespace Microsoft.MixedReality.Toolkit
                 return true;
             }
 
-            switch (propertyToCheck.type)
+            switch (propertyToCheck.type.ToLower())
             {
                 case "bool":
                     return drawIf.ComparisonMode != DrawIfAttribute.ComparisonType.Equal ^ propertyToCheck.boolValue.Equals(drawIf.CompareAgainst);
-                case "Enum":
+                case "enum":
                     return drawIf.ComparisonMode != DrawIfAttribute.ComparisonType.Equal ^ propertyToCheck.enumValueIndex.Equals((int)drawIf.CompareAgainst);
                 default:
                     Debug.LogError($"DrawIfAttribute only supports bool and Enum types. Your property '{drawIf.ComparedPropertyName}' is a {propertyToCheck.type}");
