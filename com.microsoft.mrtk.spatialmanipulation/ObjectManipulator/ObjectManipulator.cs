@@ -519,10 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 constraintsManager.Setup(new MixedRealityTransform(HostTransform));
             }
 
-            if (smoothingLogic == null)
-            {
-                smoothingLogic = Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
-            }
+            smoothingLogic ??= Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
 
             InstantiateManipulationLogic();
         }
@@ -789,7 +786,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             var velocity = rigidBody.velocity;
 
-            var acceleration = -distance * omega * omega;  // acceleration caused by spring force
+            var acceleration = omega * omega * -distance;  // acceleration caused by spring force
 
             var accelerationMagnitude = acceleration.magnitude;
 

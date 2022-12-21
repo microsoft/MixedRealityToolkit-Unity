@@ -111,8 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static Type ResolveType(string classRef)
         {
-            Type type;
-            if (!TypeMap.TryGetValue(classRef, out type))
+            if (!TypeMap.TryGetValue(classRef, out Type type))
             {
                 type = !string.IsNullOrEmpty(classRef) ? Type.GetType(classRef) : null;
                 TypeMap[classRef] = type;

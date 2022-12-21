@@ -102,10 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // in each data source will almost always only return one data source.
             // However, a data source provider may provide access to more than one data source when
             // it is not directly associated with a single data source.  An example is the DataSourceProviderSingleton.
-            if (_dataSourceTypes == null)
-            {
-                _dataSourceTypes = new string[] { DataSourceType };
-            }
+            _dataSourceTypes ??= new string[] { DataSourceType };
 
             return _dataSourceTypes;
         }

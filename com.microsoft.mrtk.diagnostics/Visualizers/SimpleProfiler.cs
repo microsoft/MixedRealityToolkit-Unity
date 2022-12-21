@@ -104,15 +104,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             {
                 ulong limitBytes = PerformanceStatsHelpers.Subsystem.RamLimit;
                 float limitMegabytes = MathUtilities.BytesToMegabytes(limitBytes);
-                RamLimit.text = $"{limitBytes} ({limitMegabytes.ToString("0.00")})";
+                RamLimit.text = $"{limitBytes} ({limitMegabytes:0.00})";
 
                 ulong allocatedBytes = PerformanceStatsHelpers.Subsystem.AllocatedRam;
                 float allocatedMegabytes = MathUtilities.BytesToMegabytes(allocatedBytes);
-                AllocatedRam.text = $"{allocatedBytes} ({allocatedMegabytes.ToString("0.00")})";
+                AllocatedRam.text = $"{allocatedBytes} ({allocatedMegabytes:0.00})";
 
                 ulong peakBytes = PerformanceStatsHelpers.Subsystem.PeakAllocatedRam;
                 float peakMegabytes = MathUtilities.BytesToMegabytes(peakBytes);
-                PeakAllocatedRam.text = $"{peakBytes} ({peakMegabytes.ToString("0.00")})";
+                PeakAllocatedRam.text = $"{peakBytes} ({peakMegabytes:0.00})";
 
                 FrameRate.text = PerformanceStatsHelpers.Subsystem.FrameRate.ToString("0.00");
             }
