@@ -297,10 +297,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             using (CalculateGoalPositionPerfMarker.Auto())
             {
                 Vector3 goalPosition = SolverHandler.TransformTarget.position;
-                Bounds trackedHandBounds;
 
                 if (trackedNode.HasValue &&
-                    handBounds.LocalBounds.TryGetValue(trackedNode.Value.ToHandedness(), out trackedHandBounds))
+                    handBounds.LocalBounds.TryGetValue(trackedNode.Value.ToHandedness(), out Bounds trackedHandBounds))
                 {
                     HandJointPose? palmPose = GetPalmPose(trackedNode);
 
@@ -311,7 +310,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         return goalPosition;
                     }
 
-                    float distance;
                     Ray ray = CalculateGoalPositionRay(
                         goalPosition,
                         SolverHandler.TransformTarget,
@@ -325,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     ray.origin = Quaternion.Inverse(palmPose.Value.Rotation) * (ray.origin - palmPose.Value.Position);
                     ray.direction = Quaternion.Inverse(palmPose.Value.Rotation) * ray.direction;
 
-                    if (trackedHandBounds.IntersectRay(ray, out distance))
+                    if (trackedHandBounds.IntersectRay(ray, out float distance))
                     {
                         var localSpaceHit = ray.origin + ray.direction * distance;
 
@@ -356,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <returns>The new goal rotation.</returns>
         protected virtual Quaternion CalculateGoalRotation()
         {
-            using (CalculateGoalPositionPerfMarker.Auto())
+            using (CalculateGoalRotationPerfMarker.Auto())
             {
                 Quaternion goalRotation = SolverHandler.TransformTarget.rotation;
 

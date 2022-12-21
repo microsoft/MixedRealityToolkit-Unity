@@ -58,10 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         internal void InitializeAssociatedTypes()
         {
             // load contents from the SystemType List into the Type HashSet
-            if (associatedTypesHashSet == null)
-            {
-                associatedTypesHashSet = new HashSet<Type>();
-            }
+            associatedTypesHashSet ??= new HashSet<Type>();
             associatedTypesHashSet.Clear();
 
             foreach (SystemType allowedType in associatedTypes)

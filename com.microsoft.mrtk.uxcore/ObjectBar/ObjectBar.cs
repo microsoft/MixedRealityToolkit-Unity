@@ -269,9 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 if (ObjectBarObjects[i] != null)
                 {
-                    Collider collider = ObjectBarObjects[i].GetComponent<Collider>();
-
-                    if (collider != null)
+                    if (ObjectBarObjects[i].TryGetComponent(out Collider collider))
                     {
                         colliders.Add(collider);
                     }

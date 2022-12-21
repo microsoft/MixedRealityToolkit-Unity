@@ -123,11 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
                             requireComponentAttribute.m_Type1 == genericType ||
                             requireComponentAttribute.m_Type2 == genericType)
                         {
-                            if (requiringTypes == null)
-                            {
-                                requiringTypes = new List<Type>();
-                            }
-
+                            requiringTypes ??= new List<Type>();
                             requiringTypes.Add(monoBehaviourType);
                         }
                     }

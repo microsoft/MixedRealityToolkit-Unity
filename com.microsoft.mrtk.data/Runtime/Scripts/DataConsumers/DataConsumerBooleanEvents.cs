@@ -94,26 +94,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
             if (keyPathToEventLookup.ContainsKey(localKeyPath))
             {
                 BooleanEvent boolEvent = keyPathToEventLookup[localKeyPath];
-
-                if (boolEvent.OnValueChanged != null)
-                {
-                    boolEvent.OnValueChanged?.Invoke();
-                }
+                boolEvent.OnValueChanged?.Invoke();
 
                 // use finalBoolValue to trigger appropriate events
                 if (ConvertToBool(newValue))
                 {
-                    if (boolEvent.OnValueTrue != null)
-                    {
-                        boolEvent.OnValueTrue.Invoke();
-                    }
+                    boolEvent.OnValueTrue?.Invoke();
                 }
                 else
                 {
-                    if (boolEvent.OnValueFalse != null)
-                    {
-                        boolEvent.OnValueFalse.Invoke();
-                    }
+                    boolEvent.OnValueFalse?.Invoke();
                 }
             }
         }

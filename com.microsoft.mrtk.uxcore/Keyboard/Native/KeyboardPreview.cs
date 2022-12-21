@@ -112,9 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public void ToggleSolvers()
         {
 #if MRTK_SPATIAL_PRESENT
-            var solverHandler = GetComponent<SolverHandler>();
-
-            if (solverHandler != null)
+            if (TryGetComponent(out SolverHandler solverHandler))
             {
                 solverHandler.UpdateSolvers = !solverHandler.UpdateSolvers;
 
@@ -187,14 +185,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void ApplyShellSolverParameters()
         {
 #if MRTK_SPATIAL_PRESENT
-            var solver = GetComponent<Follow>();
-
-            if (solver != null)
+            if (TryGetComponent(out Follow solver))
             {
                 // Position the keyboard in a comfortable place with a fixed pitch relative to the forward direction.
-                var solverHandler = solver.GetComponent<SolverHandler>();
-
-                if (solverHandler != null)
+                if (solver.TryGetComponent(out SolverHandler solverHandler))
                 {
                     var forward = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.forward : Vector3.forward;
                     var right = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.right : Vector3.right;

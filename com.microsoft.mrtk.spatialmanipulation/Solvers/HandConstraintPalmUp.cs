@@ -397,7 +397,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 TrackedHandJoint referenceJoint1;
                 TrackedHandJoint referenceJoint2;
                 HandJointPose referenceJointPose1;
-                HandJointPose referenceJointPose2;
                 activationPoint = Vector3.zero;
 
                 switch (SafeZone)
@@ -436,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
 
                 if (!SolverHandler.HandSubsystem.TryGetJoint(referenceJoint1, hand, out referenceJointPose1) ||
-                    !SolverHandler.HandSubsystem.TryGetJoint(referenceJoint2, hand, out referenceJointPose2))
+                    !SolverHandler.HandSubsystem.TryGetJoint(referenceJoint2, hand, out HandJointPose referenceJointPose2))
                 {
                     return false;
                 }
