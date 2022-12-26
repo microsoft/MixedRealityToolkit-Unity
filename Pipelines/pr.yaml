@@ -4,29 +4,54 @@
 # Build for PR validation
 
 variables:
-- template: Config/settings.yaml
+  - template: Config/settings.yaml
 
 resources:
   repositories:
-  - repository: PipelineTools
-    type: git
-    endpoint: ToolsAccess
-    name: tools.internal
-    ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
+    - repository: PipelineTools
+      type: git
+      endpoint: ToolsAccess
+      name: tools.internal
+      ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
 
 trigger: none # disable CI
 
-jobs:
-- job: UnityValidation
-  pool: Unity_2021.3.3f1_Pool
-  steps:
-  - checkout: self
-    fetchDepth: 3
+stages:
+  - stage: UnityValidation
+    jobs:
+      - job: BuildStandaloneAndTest
+        pool: Unity_2021.3.3f1_Pool
+        steps:
+          - checkout: self
+            fetchDepth: 3
 
-  - checkout: PipelineTools
+          - checkout: PipelineTools
 
-  - template: Templates/unity.yaml
-    parameters:
-      BuildStandalone: true
-      BuildUWP: true
-      RunTests: true
+          - template: Templates/unity.yaml
+            parameters:
+              Platform: Standalone
+              RunTests: true
+
+      - job: BuildUWP
+        pool: Unity_2021.3.3f1_Pool
+        steps:
+          - checkout: self
+            fetchDepth: 3
+
+          - checkout: PipelineTools
+
+          - template: Templates/unity.yaml
+            parameters:
+              Platform: UWP
+
+      - job: BuildAndroid
+        pool: Unity_2021.3.3f1_Pool
+        steps:
+          - checkout: self
+            fetchDepth: 3
+
+          - checkout: PipelineTools
+
+          - template: Templates/unity.yaml
+            parameters:
+              Platform: Android
