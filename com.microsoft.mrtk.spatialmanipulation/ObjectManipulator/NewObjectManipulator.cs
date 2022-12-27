@@ -438,7 +438,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         {
                             rotateManipulation.interactorsSelecting = interactorsSelecting;
                             rotateManipulation.useCenteredAnchor = useCenteredAnchor;
-                            //targetTransform.Rotation = ManipulationLogic.rotateLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                         }
                     }
 
@@ -448,7 +447,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         {
                             moveManipulation.interactorsSelecting = interactorsSelecting;
                             moveManipulation.useCenteredAnchor = useCenteredAnchor;
-                            //targetTransform.Position = ManipulationLogic.moveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                         }
                     }
                 }

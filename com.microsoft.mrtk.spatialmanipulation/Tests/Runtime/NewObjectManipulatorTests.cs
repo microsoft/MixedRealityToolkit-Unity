@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// respects the various interactor filtering/interaction type rules.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestObjManipInteractorRules()
+        public IEnumerator TestNewObjectManipulatorInteractorRules()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NewObjectManipulator>();
@@ -33,9 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             cube.transform.localScale = Vector3.one * 0.2f;
 
             yield return RuntimeTestUtilities.WaitForUpdates();
-
-            // Verify that a ConstraintManager was automatically added.
-            Assert.IsTrue(cube.GetComponent<ConstraintManager>() != null, "Runtime-spawned ObjManip didn't also spawn ConstraintManager");
 
             NewObjectManipulator objManip = cube.GetComponent<NewObjectManipulator>();
 
@@ -113,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// Verifies that an NewObjectManipulator created at runtime has proper smoothing characteristics.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestObjManipSmoothingDrift()
+        public IEnumerator TestNewObjectManipulatorSmoothingDrift()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             NewObjectManipulator objManip = cube.AddComponent<NewObjectManipulator>();
@@ -136,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return new WaitForSeconds(2.0f);
 
             Assert.IsTrue(objManip.IsGrabSelected, "ObjManip didn't report IsGrabSelected");
 
@@ -158,13 +156,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return new WaitForSeconds(6.0f);
             attachTransform = objManip.firstInteractorSelecting.GetAttachTransform(objManip).position;
             attachOffset = attachTransform - cube.transform.position;
-            Debug.Log(attachTransform.ToString("F3"));
-            Debug.Log(originalAttachOffset.ToString("F3"));
             Assert.IsTrue((attachOffset - originalAttachOffset).magnitude < 0.001f,
                 "Cube didn't catch up with the hand after waiting for a bit. Magnitude: " + (attachOffset - originalAttachOffset).magnitude.ToString("F4"));
 
             // Disable smoothing, to check that it properly sticks to the hand once disabled.
             objManip.SmoothingNear = false;
+
+            yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            originalAttachOffset = attachTransform - cube.transform.position;
 
             newPosition = originalPosition - Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
@@ -187,12 +189,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
-            var NewObjectManipulator = testObject.AddComponent<NewObjectManipulator>();
+            testObject.AddComponent<NewObjectManipulator>();
             // Wait for two frames to make sure we don't get null pointer exception.
             yield return null;
             yield return null;
 
-            GameObject.Destroy(testObject);
+            UnityEngine.Object.Destroy(testObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
@@ -798,6 +800,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var NewObjectManipulator = testObject.AddComponent<NewObjectManipulator>();
             NewObjectManipulator.SmoothingFar = false;
             NewObjectManipulator.SmoothingNear = false;
+            var placementHub = testObject.GetComponent<PlacementHub>();
+            placementHub.UseForces = true;
 
             var collisionListener = testObject.AddComponent<TestCollisionListener>();
 
@@ -814,10 +818,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Grab the cube and move towards the collider
             yield return hand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
-
             yield return hand.Move(Vector3.forward * 3f);
             yield return RuntimeTestUtilities.WaitForFixedUpdates();
-
             Assert.Less(testObject.transform.position.z, backgroundObject.transform.position.z);
             Assert.AreEqual(1, collisionListener.CollisionCount);
         }

@@ -58,6 +58,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         [SerializeField]
         private bool useForces;
+
+        // A little unsure of how the placement hub should manage UseForces, since
+        // its rigidbody can be set to IsKinematic during manipulation.
+        internal bool UseForces
+        {
+            get { return useForces; }
+            set { useForces = value; }
+        }
+
         private Rigidbody rigidBody => transform.GetComponent<Rigidbody>();
 
         private void FixedUpdate()
