@@ -35,16 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool PinchSelectReady => (currentControllerState is ArticulatedHandControllerState handControllerState) && handControllerState.PinchSelectReady;
 
-        [Obsolete("Please use the selectInteractionState.value instead.")]
-        public float PinchSelectProgress => currentControllerState.selectInteractionState.value;
-
-        /// <summary>
-        /// The worldspace pose of the pinch selection.
-        /// </summary>
-        [Obsolete("We are moving away from querying the pinch select pose via the specific XR controller reference. It should be accessed via an IPoseSource interface or directly from the subsystem")]
-        public Pose PinchSelectPose => (currentControllerState is ArticulatedHandControllerState handControllerState) ?
-                                                handControllerState.PinchPose : Pose.identity;
-
         #endregion Associated hand select values
 
         #region Properties
@@ -120,19 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 handControllerState.PinchSelectReady = isPinchReady;
-
-#pragma warning disable CS0618 // Type or member is obsolete
-                if (isPinching && HandsAggregator.TryGetPinchingPoint(handNode, out HandJointPose pinchPose))
-                {
-                    handControllerState.PinchPose.position = pinchPose.Position;
-                    handControllerState.PinchPose.rotation = pinchPose.Rotation;
-                }
-                else
-                {
-                    handControllerState.PinchPose.position = controllerState.position;
-                    handControllerState.PinchPose.rotation = controllerState.rotation;
-                }
-#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
