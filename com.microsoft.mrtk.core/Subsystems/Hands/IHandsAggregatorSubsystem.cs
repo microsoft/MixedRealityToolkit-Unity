@@ -31,15 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         bool TryGetNearInteractionPoint(XRNode hand, out HandJointPose jointPose);
 
         /// <summary>
-        /// The playspace-local pose of the "root" of the hand. This is used for
-        /// hand rays, or any other case where a reasonable palm root position is
-        /// needed. This will return the controller position if no hand data is
-        /// available on the platform.
-        /// </summary>
-        [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
-        bool TryGetHandCenter(XRNode hand, out HandJointPose jointPose);
-
-        /// <summary>
         /// The playspace-local pose of the grab/pinch location. This is typically
         /// halfway between the thumb tip and the index tip.
         /// </summary>
