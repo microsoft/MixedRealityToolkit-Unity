@@ -140,13 +140,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 base.ProcessFrame(playable, info, playerData);
 
                 float factor = (float)(playable.GetTime() / playable.GetDuration());
-                Color currentColor, targetColor;
+                Color targetColor;
 
                 for (int i = 0; i < tintables.Count; i++)
                 {
                     // We grab the *current* color, because this behavior isn't necessarily
                     // the only thing tinting this tintable! TintBehaviors can stack and blend.
-                    if (!GetColor(tintables[i], out currentColor)) { continue; }
+                    if (!GetColor(tintables[i], out Color currentColor)) { continue; }
 
                     // Compute our target color based on the specified mix mode.
                     if (BlendMode == BlendType.Override)

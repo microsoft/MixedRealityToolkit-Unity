@@ -85,9 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             for (int i = 0; i < items.Length - 1; i++)
             {
                 int j = rand.Next(i, items.Length);
-                string temp = items[i];
-                items[i] = items[j];
-                items[j] = temp;
+                (items[j], items[i]) = (items[i], items[j]);
             }
         }
 
