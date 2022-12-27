@@ -90,7 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // If we got pinch data, write it into our select interaction state.
                 if (gotPinchData)
                 {
-                    controllerState.selectInteractionState.value = pinchAmount;
 
                     // Workaround for missing select actions on devices without interaction profiles
                     // for hands, such as Varjo and Quest. Should be removed once we have universal
@@ -105,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerState.selectInteractionState.active = isPinched;
                         controllerState.selectInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
                         controllerState.selectInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+                        controllerState.selectInteractionState.value = pinchAmount;
                     }
 
                     // Also make sure we update the UI press state.
@@ -113,6 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerState.uiPressInteractionState.active = isPinched;
                         controllerState.uiPressInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
                         controllerState.uiPressInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+                        controllerState.uiPressInteractionState.value = pinchAmount;
                     }
                     
                     pinchedLastFrame = isPinched;
