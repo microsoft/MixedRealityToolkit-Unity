@@ -124,7 +124,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             ObjectManipulator objManip = cube.GetComponent<ObjectManipulator>();
-            objManip.SmoothingNear = false;
+
+            // Enable smoothing for near interaction.
+            objManip.SmoothingNear = true;
+            objManip.AllowedManipulations = TransformFlags.Move;
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
@@ -137,11 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return new WaitForSeconds(2.0f);
 
             Assert.IsTrue(objManip.IsGrabSelected, "ObjManip didn't report IsGrabSelected");
-
-            // Enable smoothing for near interaction.
-            objManip.SmoothingNear = true;
 
             // Move the hand to the right.
             Vector3 originalPosition = cube.transform.position;
@@ -167,6 +168,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // Disable smoothing, to check that it properly sticks to the hand once disabled.
             objManip.SmoothingNear = false;
+
+            yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            originalAttachOffset = attachTransform - cube.transform.position;
 
             newPosition = originalPosition - Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
