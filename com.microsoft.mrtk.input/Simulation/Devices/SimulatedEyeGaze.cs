@@ -126,8 +126,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         ~SimulatedEyeGaze()
         {
+#if !USE_INPUT_SYSTEM_POSE_CONTROL
             // Remove/unregister the layout that we added as a workaround for the Unity bug.
             InputSystem.RemoveLayout("InputSystemPose");
+#endif
             Dispose();
         }
 
