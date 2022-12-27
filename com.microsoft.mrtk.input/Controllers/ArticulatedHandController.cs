@@ -72,8 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Cast to expose hand state.
                 ArticulatedHandControllerState handControllerState = controllerState as ArticulatedHandControllerState;
 
-                Debug.Assert(handControllerState != null);
-
                 // If we still don't have an aggregator, then don't update selects.
                 if (HandsAggregator == null) { return; }
 
@@ -82,22 +80,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // If we got pinch data, write it into our select interaction state.
                 if (gotPinchData)
                 {
-                    controllerState.selectInteractionState.value = pinchAmount;
 
                     // Workaround for missing select actions on devices without interaction profiles
                     // for hands, such as Varjo and Quest. Should be removed once we have universal
                     // hand interaction profile(s) across vendors.
+                    
+                    // Debounce the polyfill pinch action value.
+                    bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);
+
+                    // Inject our own polyfilled state into the Select state if no other control is bound.
                     if (!selectAction.action.HasAnyControls())
                     {
-                        // Debounced.
-                        bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);
-
                         controllerState.selectInteractionState.active = isPinched;
                         controllerState.selectInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
                         controllerState.selectInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
-
-                        pinchedLastFrame = isPinched;
+                        controllerState.selectInteractionState.value = pinchAmount;
                     }
+
+                    // Also make sure we update the UI press state.
+                    if (!uiPressAction.action.HasAnyControls())
+                    {
+                        controllerState.uiPressInteractionState.active = isPinched;
+                        controllerState.uiPressInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
+                        controllerState.uiPressInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+                        controllerState.uiPressInteractionState.value = pinchAmount;
+                    }
+                    
+                    pinchedLastFrame = isPinched;
                 }
 
                 handControllerState.PinchSelectReady = isPinchReady;
