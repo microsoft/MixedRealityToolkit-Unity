@@ -410,6 +410,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  maxGradientLength: 0.1
   lineWidth:
     serializedVersion: 2
     m_Curve:
@@ -1101,7 +1102,7 @@ GameObject:
   - component: {fileID: 4299642553989019653}
   - component: {fileID: 6450185055475174866}
   - component: {fileID: 7678414244376504105}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: NearInteractionModeDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1456,7 +1457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1051247791254679178}
   - component: {fileID: 6800936895746535163}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AttachTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
