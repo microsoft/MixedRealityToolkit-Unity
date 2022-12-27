@@ -483,10 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null)
         {
-            if (style == null)
-            {
-                style = EditorStyles.foldout;
-            }
+            style ??= EditorStyles.foldout;
 
             using (new EditorGUI.IndentLevelScope())
             {
@@ -548,10 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public static List<ListSettings> AdjustListSettings(List<ListSettings> listSettings, int count)
         {
-            if (listSettings == null)
-            {
-                listSettings = new List<ListSettings>();
-            }
+            listSettings ??= new List<ListSettings>();
 
             int diff = count - listSettings.Count;
             if (diff > 0)

@@ -77,14 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             if (!isActiveAndEnabled)
             { return; }
 
-            AudioSource audioSource = soundEmittingObject.GetComponent<AudioSource>();
-            if (audioSource == null)
+            if (!soundEmittingObject.TryGetComponent(out AudioSource audioSource))
             {
                 Debug.LogWarning("The specified emitter does not have an attached AudioSource component.");
                 return;
             }
 
-            // Audio occlusion is performed using a low pass filter.                
+            // Audio occlusion is performed using a low pass filter.
             AudioLowPassFilter lowPass = soundEmittingObject.EnsureComponent<AudioLowPassFilter>();
             lowPass.enabled = true;
 
@@ -99,13 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// <inheritdoc />
         public void RemoveEffect(GameObject soundEmittingObject)
         {
-            // Audio occlusion is performed using a low pass filter.                
-            AudioLowPassFilter lowPass = soundEmittingObject.GetComponent<AudioLowPassFilter>();
-            if (lowPass == null) { return; }
+            // Audio occlusion is performed using a low pass filter.
+            if (!soundEmittingObject.TryGetComponent(out AudioLowPassFilter lowPass)) { return; }
 
             float neutralFrequency = AudioInfluencerController.NeutralHighFrequency;
-            AudioInfluencerController influencerController = soundEmittingObject.GetComponent<AudioInfluencerController>();
-            if (influencerController != null)
+            if (soundEmittingObject.TryGetComponent(out AudioInfluencerController influencerController))
             {
                 neutralFrequency = influencerController.NativeLowPassCutoffFrequency;
             }

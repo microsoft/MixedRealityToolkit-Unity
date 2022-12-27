@@ -274,8 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public static void EditorDrawTMPGlyph(Rect position, uint unicode, TMP_FontAsset fontAsset, bool selected = false, Material fontRenderMaterial = null)
         {
-            TMP_Character character;
-            if (fontAsset.characterLookupTable.TryGetValue(unicode, out character))
+            if (fontAsset.characterLookupTable.TryGetValue(unicode, out TMP_Character character))
             {
                 EditorDrawTMPGlyph(position, fontAsset, character, selected, fontRenderMaterial);
             }

@@ -12,28 +12,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         {
             Assert.That((actual - expected).magnitude,
                         Is.EqualTo(0.0f).Within(tolerance),
-                        $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+                        $"{message}, expected {expected:0.000}, was {actual:0.000}");
         }
 
         public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message, float tolerance = 0.01f)
         {
             Assert.That(Quaternion.Angle(actual, expected),
                         Is.EqualTo(0.0f).Within(tolerance),
-                        $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+                        $"{message}, expected {expected:0.000}, was {actual:0.000}");
         }
 
         public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message, float tolerance = 0.01f)
         {
             Assert.That((val1 - val2).magnitude,
                         Is.GreaterThan(tolerance),
-                        $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+                        $"{message}, val1 {val1:0.000} almost equals val2 {val2:0.000}");
         }
 
         public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message, float tolerance = 0.01f)
         {
             Assert.That(Quaternion.Angle(val1, val2),
                         Is.GreaterThan(tolerance),
-                        $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+                        $"{message}, val1 {val1:0.000} almost equals val2 {val2:0.000}");
         }
 
         /// <summary>
