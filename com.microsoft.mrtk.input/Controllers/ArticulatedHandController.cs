@@ -83,8 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Cast to expose hand state.
                 ArticulatedHandControllerState handControllerState = controllerState as ArticulatedHandControllerState;
 
-                Debug.Assert(handControllerState != null);
-
                 // If we still don't have an aggregator, then don't update selects.
                 if (HandsAggregator == null) { return; }
 
