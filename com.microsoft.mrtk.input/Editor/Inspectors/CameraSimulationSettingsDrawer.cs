@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 {
     /// <summary>
-    /// Custom inspector drawing for the CameraSettings object.
+    /// Custom drawer for the CameraSettings object.
     /// </summary>
     [CustomPropertyDrawer(typeof(CameraSimulationSettings))]
     public class CameraSimulationSettingsDrawer : PropertyDrawer

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(PressableButton), true)]
-    public class PressableButtonEditor : StatefulInteractableInspector
+    public class PressableButtonEditor : StatefulInteractableEditor
     {
         // Struct used to store state of preview.
         // This lets us display accurate info while button is being pressed.

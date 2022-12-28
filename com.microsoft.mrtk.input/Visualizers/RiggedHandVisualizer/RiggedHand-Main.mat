@@ -31,8 +31,8 @@ Material:
     - _Fade_In_End_: 0
     - _Fade_In_Start_: 0
     - _HandThickness: 0
-    - _IlluminationAmount: 0.04
-    - _IlluminationExponent: 1.78
+    - _IlluminationAmount: 0.01
+    - _IlluminationExponent: 0.56
     - _Intensity_: 0.81
     - _Metallic: 0
     - _OutlineExponent: 1
@@ -45,7 +45,7 @@ Material:
     m_Colors:
     - _Center_: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Color_: {r: 1, g: 1, b: 1, a: 1}
-    - _HandColor: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0.7137255}
+    - _HandColor: {r: 0.01886791, g: 0.01886791, b: 0.01886791, a: 0.8}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 0.2901961}
     - _OutlineColorPinching: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

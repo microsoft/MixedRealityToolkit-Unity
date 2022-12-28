@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     /// <summary>
-    /// Custom inspector for constraint manager.
+    /// Custom editor for constraint manager.
     /// Offers two modes depending on if auto constraint selection is active or not.
     /// In auto constraint selection mode, all constraints attached to the current game object
     /// will be displayed with respective goto buttons as well as an add button that allows adding 
@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
     /// </summary>
     [CustomEditor(typeof(ConstraintManager), true)]
     [CanEditMultipleObjects]
-    public class ConstraintManagerInspector : UnityEditor.Editor
+    public class ConstraintManagerEditor : UnityEditor.Editor
     {
         private SerializedProperty autoConstraintSelection;
         private SerializedProperty selectedConstraints;

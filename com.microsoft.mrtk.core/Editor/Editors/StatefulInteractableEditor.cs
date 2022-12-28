@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(StatefulInteractable), true)]
     [CanEditMultipleObjects]
-    public class StatefulInteractableInspector : BaseInteractableEditor
+    public class StatefulInteractableEditor : BaseInteractableEditor
     {
         private SerializedProperty IsToggled;
         private SerializedProperty IsToggledStateActive;

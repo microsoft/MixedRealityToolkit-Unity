@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 {
     /// <summary>
-    /// Custom inspector drawing for the EyeGazeSimulationSettings object.
+    /// Custom drawer for the EyeGazeSimulationSettings object.
     /// </summary>
     [CustomPropertyDrawer(typeof(EyeGazeSimulationSettings))]
     public class EyeGazeSimulationSettingsDrawer : PropertyDrawer

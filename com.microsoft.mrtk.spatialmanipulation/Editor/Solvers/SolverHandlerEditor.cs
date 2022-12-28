@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     [CustomEditor(typeof(SolverHandler))]
     [CanEditMultipleObjects]
-    public class SolverHandlerInspector : UnityEditor.Editor
+    public class SolverHandlerEditor : UnityEditor.Editor
     {
         private SerializedProperty trackedTargetProperty;
         private SerializedProperty trackedHandednessProperty;

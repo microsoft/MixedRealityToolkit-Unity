@@ -1,8 +1,8 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.UXComponents.Editor.Tests",
+    "name": "Microsoft.MixedReality.Toolkit.UXCore.Editor.Tests",
     "rootNamespace": "",
     "references": [
-        "Microsoft.MixedReality.Toolkit.UXComponents",
+        "Microsoft.MixedReality.Toolkit.UXCore",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner"
     ],
