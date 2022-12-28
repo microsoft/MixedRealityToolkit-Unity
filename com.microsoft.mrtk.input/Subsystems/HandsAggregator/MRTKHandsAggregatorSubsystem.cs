@@ -244,13 +244,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <inheritdoc/>
-            [Obsolete("Use TryGetJoint(TrackedHandJoint.Palm...) instead.")]
-            public override bool TryGetHandCenter(XRNode handNode, out HandJointPose jointPose)
-            {
-                return TryGetJoint(TrackedHandJoint.Palm, handNode, out jointPose);
-            }
-
-            /// <inheritdoc/>
             public override bool TryGetPinchingPoint(XRNode handNode, out HandJointPose jointPose)
             {
                 // GetJoint will reuse existing joint data if the hand was already queried this frame.
