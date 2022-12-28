@@ -2,8 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.Input.Editor.Tests",
     "rootNamespace": "",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Core",
-        "Microsoft.MixedReality.Toolkit.Core.Editor",
+        "Microsoft.MixedReality.Toolkit.Input",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner"
     ],
