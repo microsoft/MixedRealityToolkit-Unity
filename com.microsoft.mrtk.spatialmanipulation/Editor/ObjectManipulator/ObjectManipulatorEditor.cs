@@ -8,12 +8,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     /// <summary>
-    /// A custom inspector for ObjectManipulator used to separate
+    /// A custom editor for ObjectManipulator used to separate
     /// ObjectManipulator options into distinct foldout panels.
     /// </summary>
     [CustomEditor(typeof(ObjectManipulator))]
     [CanEditMultipleObjects]
-    public class ObjectManipulatorInspector : StatefulInteractableEditor
+    public class ObjectManipulatorEditor : StatefulInteractableEditor
     {
         private ObjectManipulator instance;
         private SerializedProperty hostTransform;
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             ObjectManipulator objectManipulator = (ObjectManipulator)target;
             Rigidbody rb = objectManipulator.HostTransform.GetComponent<Rigidbody>();
 
-            constraintsFoldout = ConstraintManagerInspector.DrawConstraintManagerFoldout(objectManipulator.gameObject,
+            constraintsFoldout = ConstraintManagerEditor.DrawConstraintManagerFoldout(objectManipulator.gameObject,
                                                                                         enableConstraints,
                                                                                         constraintManager,
                                                                                         constraintsFoldout);
