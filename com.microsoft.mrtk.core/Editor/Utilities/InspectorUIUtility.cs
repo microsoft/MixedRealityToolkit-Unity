@@ -99,6 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         // StandardAssets/Textures/MRTK_Logo_Black.png
         private const string LogoLightThemeGuid = "fa0038d8d2df1dd4c99f346c8ec9e746";
+        
         // StandardAssets/Textures/MRTK_Logo_White.png
         private const string LogoDarkThemeGuid = "fe5cc215f12ea5e40b5021c4040bce24";
 
@@ -109,11 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public static readonly Texture2D LogoDarkTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoDarkThemeGuid));
 
         #endregion Handy icon textures
-
-        #region Reusable GUIStyles
-
-
-        #endregion Reusable GUIStyles
 
         #region Handy drawables/controls
 
