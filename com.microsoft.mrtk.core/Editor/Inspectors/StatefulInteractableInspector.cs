@@ -10,24 +10,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     [CanEditMultipleObjects]
     public class StatefulInteractableInspector : BaseInteractableEditor
     {
-        private SerializedProperty isToggled;
-        private SerializedProperty isToggledStateActive;
-        private SerializedProperty selectThreshold;
-        private SerializedProperty deselectThreshold;
-        private SerializedProperty toggleMode;
-        private SerializedProperty triggerOnRelease;
+        private SerializedProperty IsToggled;
+        private SerializedProperty IsToggledStateActive;
+        private SerializedProperty SelectThreshold;
+        private SerializedProperty DeselectThreshold;
+        private SerializedProperty ToggleMode;
+        private SerializedProperty TriggerOnRelease;
         private SerializedProperty allowSelectByVoice;
         private SerializedProperty speechRecognitionKeyword;
-        private SerializedProperty voiceRequiresFocus;
-        private SerializedProperty useGazeDwell;
-        private SerializedProperty gazeDwellTime;
-        private SerializedProperty useFarDwell;
-        private SerializedProperty farDwellTime;
-        private SerializedProperty onClicked;
-        private SerializedProperty onToggled;
-        private SerializedProperty onDetoggled;
-        private SerializedProperty onEnabled;
-        private SerializedProperty onDisabled;
+        private SerializedProperty VoiceRequiresFocus;
+        private SerializedProperty UseGazeDwell;
+        private SerializedProperty GazeDwellTime;
+        private SerializedProperty UseFarDwell;
+        private SerializedProperty FarDwellTime;
+        private SerializedProperty OnClicked;
+        private SerializedProperty OnToggled;
+        private SerializedProperty OnDetoggled;
+        private SerializedProperty OnEnabled;
+        private SerializedProperty OnDisabled;
         private static bool advancedFoldout = false;
         private static bool enabledEventsFoldout = false;
 
@@ -35,32 +35,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
-            isToggled = SetUpProperty(nameof(isToggled));
-            isToggledStateActive = isToggled.FindPropertyRelative("active");
+            IsToggled = SetUpAutoProp(nameof(IsToggled));
+            IsToggledStateActive = IsToggled.FindPropertyRelative("active");
 
-            selectThreshold = SetUpProperty(nameof(selectThreshold));
-            deselectThreshold = SetUpProperty(nameof(deselectThreshold));
+            SelectThreshold = SetUpAutoProp(nameof(SelectThreshold));
+            DeselectThreshold = SetUpAutoProp(nameof(DeselectThreshold));
 
-            toggleMode = SetUpProperty(nameof(toggleMode));
-            triggerOnRelease = SetUpProperty(nameof(triggerOnRelease));
+            ToggleMode = SetUpAutoProp(nameof(ToggleMode));
+            TriggerOnRelease = SetUpAutoProp(nameof(TriggerOnRelease));
 
             allowSelectByVoice = SetUpProperty(nameof(allowSelectByVoice));
             speechRecognitionKeyword = SetUpProperty(nameof(speechRecognitionKeyword));
-            voiceRequiresFocus = SetUpProperty(nameof(voiceRequiresFocus));
+            VoiceRequiresFocus = SetUpAutoProp(nameof(VoiceRequiresFocus));
 
-            useGazeDwell = SetUpProperty(nameof(useGazeDwell));
-            gazeDwellTime = SetUpProperty(nameof(gazeDwellTime));
-            useFarDwell = SetUpProperty(nameof(useFarDwell));
-            farDwellTime = SetUpProperty(nameof(farDwellTime));
+            UseGazeDwell = SetUpAutoProp(nameof(UseGazeDwell));
+            GazeDwellTime = SetUpAutoProp(nameof(GazeDwellTime));
+            UseFarDwell = SetUpAutoProp(nameof(UseFarDwell));
+            FarDwellTime = SetUpAutoProp(nameof(FarDwellTime));
 
-            onClicked = SetUpProperty(nameof(onClicked));
+            OnClicked = SetUpAutoProp(nameof(OnClicked));
 
-            onEnabled = SetUpProperty(nameof(onEnabled));
-            onDisabled = SetUpProperty(nameof(onDisabled));
+            OnEnabled = SetUpAutoProp(nameof(OnEnabled));
+            OnDisabled = SetUpAutoProp(nameof(OnDisabled));
 
             // OnToggle/Detoggle aliases to IsToggled.OnEntered/IsToggled.OnExited
-            onToggled = isToggled.FindPropertyRelative("onEntered");
-            onDetoggled = isToggled.FindPropertyRelative("onExited");
+            OnToggled = IsToggled.FindPropertyRelative("onEntered");
+            OnDetoggled = IsToggled.FindPropertyRelative("onExited");
         }
 
         protected override void DrawProperties()
@@ -91,33 +91,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Some subclasses can choose to hide this section, as it won't be relevant.
             if (showToggleMode)
             {
-                EditorGUILayout.PropertyField(toggleMode, new GUIContent("Selection Mode", "Does this interactable fire toggle events, or does it only act like a button?"));
+                EditorGUILayout.PropertyField(ToggleMode, new GUIContent("Selection Mode", "Does this interactable fire toggle events, or does it only act like a button?"));
 
                 serializedObject.ApplyModifiedProperties();
                 serializedObject.Update();
 
-                if ((StatefulInteractable.ToggleType)toggleMode.intValue != StatefulInteractable.ToggleType.Button)
+                if ((StatefulInteractable.ToggleType)ToggleMode.intValue != StatefulInteractable.ToggleType.Button)
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
                         EditorGUI.BeginChangeCheck();
-                        EditorGUILayout.PropertyField(isToggledStateActive, new GUIContent("Is Toggled", "Directly set the internal IsToggled state at edit-time"));
+                        EditorGUILayout.PropertyField(IsToggledStateActive, new GUIContent("Is Toggled", "Directly set the internal IsToggled state at edit-time"));
                         if (EditorGUI.EndChangeCheck())
                         {
                             // Actually set the toggle state with the public setter so that events fire.
-                            interactable.ForceSetToggled(isToggledStateActive.boolValue);
+                            interactable.ForceSetToggled(IsToggledStateActive.boolValue);
                         }
                     }
                 }
 
                 EditorGUILayout.Space();
 
-                EditorGUILayout.PropertyField(onClicked);
+                EditorGUILayout.PropertyField(OnClicked);
 
-                if ((StatefulInteractable.ToggleType)toggleMode.intValue != StatefulInteractable.ToggleType.Button)
+                if ((StatefulInteractable.ToggleType)ToggleMode.intValue != StatefulInteractable.ToggleType.Button)
                 {
-                    EditorGUILayout.PropertyField(onToggled, new GUIContent("On Toggled", "Fired when the toggle state has changed from false to true."));
-                    EditorGUILayout.PropertyField(onDetoggled, new GUIContent("On Detoggled", "Fired when the toggle state has changed from true to false."));
+                    EditorGUILayout.PropertyField(OnToggled, new GUIContent("On Toggled", "Fired when the toggle state has changed from false to true."));
+                    EditorGUILayout.PropertyField(OnDetoggled, new GUIContent("On Detoggled", "Fired when the toggle state has changed from true to false."));
                 }
             }
 
@@ -128,23 +128,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.PropertyField(selectThreshold);
-                    EditorGUILayout.PropertyField(deselectThreshold);
+                    EditorGUILayout.PropertyField(SelectThreshold);
+                    EditorGUILayout.PropertyField(DeselectThreshold);
 
-                    EditorGUILayout.PropertyField(useGazeDwell);
-                    if (useGazeDwell.boolValue)
+                    EditorGUILayout.PropertyField(UseGazeDwell);
+                    if (UseGazeDwell.boolValue)
                     {
                         using (new EditorGUI.IndentLevelScope())
                         {
-                            EditorGUILayout.PropertyField(gazeDwellTime);
+                            EditorGUILayout.PropertyField(GazeDwellTime);
                         }
                     }
 
-                    EditorGUILayout.PropertyField(useFarDwell);
-                    if (useFarDwell.boolValue)
+                    EditorGUILayout.PropertyField(UseFarDwell);
+                    if (UseFarDwell.boolValue)
                     {
                         {
-                            EditorGUILayout.PropertyField(farDwellTime);
+                            EditorGUILayout.PropertyField(FarDwellTime);
                         }
                     }
 
@@ -154,11 +154,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         using (new EditorGUI.IndentLevelScope())
                         {
                             EditorGUILayout.PropertyField(speechRecognitionKeyword);
-                            EditorGUILayout.PropertyField(voiceRequiresFocus);
+                            EditorGUILayout.PropertyField(VoiceRequiresFocus);
                         }
                     }
 
-                    EditorGUILayout.PropertyField(triggerOnRelease);
+                    EditorGUILayout.PropertyField(TriggerOnRelease);
                 }
             }
 
@@ -175,14 +175,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField("StatefulInteractable Events", EditorStyles.boldLabel);
                 EditorGUILayout.Space();
 
-                DrawTimedFlag(isToggled, interactable.IsToggled, previousGUIColor, Color.cyan);
+                DrawTimedFlag(IsToggled, interactable.IsToggled, previousGUIColor, Color.cyan);
                 
                 enabledEventsFoldout = EditorGUILayout.Foldout(enabledEventsFoldout, "OnEnable/Disable", true);
                 
                 if (enabledEventsFoldout)
                 {
-                    EditorGUILayout.PropertyField(onEnabled);
-                    EditorGUILayout.PropertyField(onDisabled);
+                    EditorGUILayout.PropertyField(OnEnabled);
+                    EditorGUILayout.PropertyField(OnDisabled);
                 }
             }
 

@@ -49,8 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            interactor = GetComponent<XRBaseInteractor>();
-            if (interactor == null)
+            if (!TryGetComponent(out interactor))
             {
                 Debug.LogError("Cannot locate an XRBaseInteractor on this GameObject, which is required by InteractorDwellManager.");
             }

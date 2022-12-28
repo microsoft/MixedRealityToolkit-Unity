@@ -26,24 +26,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         ThumbMetacarpal,
 
-        [Obsolete("Use ThumbMetacarpal instead.")]
-        ThumbMetacarpalJoint = ThumbMetacarpal,
-
         /// <summary>
         /// The thumb's second (middle-ish) joint.
         /// </summary>
         ThumbProximal,
 
-        [Obsolete("Use ThumbProximal instead.")]
-        ThumbProximalJoint = ThumbProximal,
-
         /// <summary>
         /// The thumb's first (furthest) joint.
         /// </summary>
         ThumbDistal,
-
-        [Obsolete("Use ThumbDistal instead.")]
-        ThumbDistalJoint = ThumbDistal,
 
         /// <summary>
         /// The tip of the thumb.
@@ -60,24 +51,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         IndexProximal,
 
-        [Obsolete("Use IndexProximal instead.")]
-        IndexKnuckle = IndexProximal,
-
         /// <summary>
         /// The middle joint of the index finger.
         /// </summary>
         IndexIntermediate,
 
-        [Obsolete("Use IndexIntermediate instead.")]
-        IndexMiddleJoint = IndexIntermediate,
-
         /// <summary>
         /// The joint nearest the tip of the index finger.
         /// </summary>
         IndexDistal,
-
-        [Obsolete("Use IndexDistal instead.")]
-        IndexDistalJoint = IndexDistal,
 
         /// <summary>
         /// The tip of the index finger.
@@ -94,24 +76,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         MiddleProximal,
 
-        [Obsolete("Use MiddleProximal instead.")]
-        MiddleKnuckle = MiddleProximal,
-
         /// <summary>
         /// The middle joint of the middle finger.
         /// </summary>
         MiddleIntermediate,
 
-        [Obsolete("Use MiddleIntermediate instead.")]
-        MiddleMiddleJoint = MiddleIntermediate,
-
         /// <summary>
         /// The joint nearest the tip of the finger.
         /// </summary>
         MiddleDistal,
-
-        [Obsolete("Use MiddleDistal instead.")]
-        MiddleDistalJoint = MiddleDistal,
 
         /// <summary>
         /// The tip of the middle finger.
@@ -128,24 +101,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         RingProximal,
 
-        [Obsolete("Use RingProximal instead.")]
-        RingKnuckle = RingProximal,
-
         /// <summary>
         /// The middle joint of the ring finger.
         /// </summary>
         RingIntermediate,
 
-        [Obsolete("Use RingIntermediate instead.")]
-        RingMiddleJoint = RingIntermediate,
-
         /// <summary>
         /// The joint nearest the tip of the ring finger.
         /// </summary>
         RingDistal,
-
-        [Obsolete("Use RingDistal instead.")]
-        RingDistalJoint = RingDistal,
 
         /// <summary>
         /// The tip of the ring finger.
@@ -157,40 +121,25 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         LittleMetacarpal,
 
-        [Obsolete("Use LittleMetacarpal instead.")]
-        PinkyMetacarpal = LittleMetacarpal,
-
         /// <summary>
         /// The knuckle joint of the little finger.
         /// </summary>
         LittleProximal,
-
-        [Obsolete("Use LittleProximal instead.")]
-        PinkyKnuckle = LittleProximal,
 
         /// <summary>
         /// The middle joint of the little finger.
         /// </summary>
         LittleIntermediate,
 
-        [Obsolete("Use LittleIntermediate instead.")]
-        PinkyMiddleJoint = LittleIntermediate,
-
         /// <summary>
         /// The joint nearest the tip of the little finger.
         /// </summary>
         LittleDistal,
 
-        [Obsolete("Use LittleDistal instead.")]
-        PinkyDistalJoint = LittleDistal,
-
         /// <summary>
         /// The tip of the little finger.
         /// </summary>
         LittleTip,
-
-        [Obsolete("Use LittleTip instead.")]
-        PinkyTip = LittleTip,
 
         /// <summary>
         /// Number of joints total (not counting None).

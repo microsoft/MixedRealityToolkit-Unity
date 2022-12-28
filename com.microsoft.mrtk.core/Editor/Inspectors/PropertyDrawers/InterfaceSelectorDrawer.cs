@@ -47,12 +47,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Add a dropdown menu to select an interface, and generate an instance of it
             float labelWidth = labelStyle.CalcSize(label).x + EditorGUIUtility.singleLineHeight;
             Rect dropdownRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, EditorGUIUtility.singleLineHeight);
-            dropLabel.text = $"{fieldInfo.FieldType.Name} - {typeName}";
+
+            Type fieldType = fieldInfo.FieldType;
+
+            if (fieldType.IsArray)
+            {
+                fieldType = fieldType.GetElementType();
+            }
+            else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                fieldType = fieldType.GetGenericArguments()[0];
+            }
+
+            dropLabel.text = $"{fieldType.Name} - {typeName}";
             if (EditorGUI.DropdownButton(dropdownRect, dropLabel, FocusType.Passive))
             {
                 // Grab a list of all Types currently loaded that implement our
                 // field's type.
-                List<Type> allDerivedTypes = TypeCache.GetTypesDerivedFrom(fieldInfo.FieldType)
+                List<Type> allDerivedTypes = TypeCache.GetTypesDerivedFrom(fieldType)
                     .Where(type => !type.IsAbstract && !type.IsInterface)
                     .ToList();
 

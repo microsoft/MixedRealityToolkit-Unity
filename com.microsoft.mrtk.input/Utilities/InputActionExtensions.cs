@@ -10,6 +10,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public static class InputActionExtensions
     {
+        /// <summary>
+        /// Checks if any active controls match this InputAction's bindings.
+        /// </summary>
+        /// <returns>True if <paramref name="action"/> is non-null and there are any number of controls matching its bindings.</returns>
+        public static bool HasAnyControls(this InputAction action)
+        {
+            return action?.controls.Count > 0;
+        }
+
         /* todo: as needed
         public static bool RaisedByGameController(this InputAction action)
         {

@@ -81,25 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             }
         }
 
-        /// <summary>
-        /// Ensures TextMeshProEssentials are installed.
-        /// </summary>
-        public static void InstallTextMeshProEssentials()
-        {
-#if UNITY_EDITOR
-            // Import the TMP Essential Resources package
-            string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
-            if (Directory.Exists(packageFullPath))
-            {
-                AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
-            }
-            else
-            {
-                Debug.LogError("Unable to locate the Text Mesh Pro package.");
-            }
-#endif
-        }
-
         private static bool testPaused;
         /// <summary>
         /// Used for debugging. Pauses the test until the dialog is cleared.
@@ -160,6 +141,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             for (int i = 0; i < frameCount; i++)
             {
                 yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Waits for the specified number of FixedUpdate intervals.
+        /// </summary>
+        public static IEnumerator WaitForFixedUpdates(int frameCount = 10)
+        {
+            for (int i = 0; i < frameCount; i++)
+            {
+                yield return new WaitForFixedUpdate();
             }
         }
     }

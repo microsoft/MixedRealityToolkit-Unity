@@ -371,11 +371,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
                         Debug.LogWarning("Already attached externally and attaching again before detaching with different data.  Will automatically detach to correct. KeyPath: " + resolvedKeyPathPrefix);
                     }
 
-                    if (resolvedKeyPathPrefix == null)
-                    {
-                        // if no new prefix provided, preserve any existing prefix through the Detach()
-                        resolvedKeyPathPrefix = ResolvedKeyPathPrefix;
-                    }
+                    // if no new prefix provided, preserve any existing prefix through the Detach()
+                    resolvedKeyPathPrefix ??= ResolvedKeyPathPrefix;
 
                     Detach();
                     AttachAllResources(dataSources, dataController, resolvedKeyPathPrefix);
@@ -441,10 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected void AttachDataSources(Dictionary<string, IDataSource> dataSources)
         {
-            if (DataSources == null)
-            {
-                DataSources = new Dictionary<string, IDataSource>();
-            }
+            DataSources ??= new Dictionary<string, IDataSource>();
 
             if (dataSourceTypes != null && dataSourceTypes.Length > 0)
             {
@@ -456,7 +450,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
                     }
                 }
             }
-            else if (!System.Object.ReferenceEquals(dataSources, DataSources))
+            else if (!ReferenceEquals(dataSources, DataSources))
             {
                 foreach (KeyValuePair<string, IDataSource> kv in dataSources)
                 {
@@ -578,10 +572,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (specificDataSource != null)
             {
-                if (fullyResolvedKeyPath == null)
-                {
-                    fullyResolvedKeyPath = specificDataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
-                }
+                fullyResolvedKeyPath ??= specificDataSource.ResolveKeyPath(ResolvedKeyPathPrefix, localKeyPath);
 
                 if (fullyResolvedKeyPath != null)
                 {
@@ -601,10 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected HashSet<Component> FindComponentsToManage()
         {
             // For perf, reuse a common set so allocs only occur first time during initialization.
-            if (_componentsToManage == null)
-            {
-                _componentsToManage = new HashSet<Component>();
-            }
+            _componentsToManage ??= new HashSet<Component>();
 
             if (_componentsToManage.Count == 0)
             {
@@ -696,10 +684,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (defaultDataSources == null || defaultDataSources.Count == 0)
             {
-                if (dataSourcesOut == null)
-                {
-                    dataSourcesOut = new Dictionary<string, IDataSource>();
-                }
+                dataSourcesOut ??= new Dictionary<string, IDataSource>();
 
                 FindDataSourcesInParents(dataSourceTypes, dataSourcesOut);
                 FindDataSourcesInSingleton(dataSourceTypes, dataSourcesOut);

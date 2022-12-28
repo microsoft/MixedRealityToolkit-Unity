@@ -241,11 +241,19 @@ namespace Microsoft.MixedReality.Toolkit
             // In editor, this is set in an Editor-only OnEnable() function to the
             // profile associated with the Standalone build target group.
             MRTKProfile profile = MRTKProfile.Instance;
-            Debug.Assert(profile != null, "MRTK Profile could not be retrieved");
+
+            if (profile == null)
+            {
+                Debug.LogError("MRTK Profile could not be retrieved.");
+                return null;
+            }
 
             // Attempt to retrieve the config associated with the indicated subsystem.
-            profile.TryGetConfigForSubsystem(typeof(SubsystemT), out BaseSubsystemConfig config);
-            Debug.Assert(config != null, "Configuration could not be retrieved for " + typeof(SubsystemT));
+            if (!profile.TryGetConfigForSubsystem(typeof(SubsystemT), out BaseSubsystemConfig config) || config == null)
+            {
+                Debug.LogError($"Configuration could not be retrieved for {typeof(SubsystemT)}.", profile);
+                return null;
+            }
 
             // Cast the config down to the requested config type for client's convenience.
             return config as ConfigT;

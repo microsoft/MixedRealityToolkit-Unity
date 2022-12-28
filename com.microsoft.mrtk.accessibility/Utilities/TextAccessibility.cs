@@ -31,8 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </returns>
         private void GetTextMaterial()
         {
-            TMP_Text tmpText = GetComponent<TMP_Text>();
-            if (tmpText != null)
+            if (TryGetComponent(out TMP_Text tmpText))
             {
                 material = tmpText.fontMaterial;
                 return;

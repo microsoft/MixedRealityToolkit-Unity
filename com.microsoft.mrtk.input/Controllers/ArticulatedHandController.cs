@@ -33,18 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// represents whether the hand is in a pinching pose,
         /// within the FOV set by the aggregator config.
         /// </summary>
-        public bool PinchSelectReady => (currentControllerState is ArticulatedHandControllerState handControllerState) ?
-                                                handControllerState.PinchSelectReady : false;
-
-        [Obsolete("Please use the selectInteractionState.value instead.")]
-        public float PinchSelectProgress => currentControllerState.selectInteractionState.value;
-
-        /// <summary>
-        /// The worldspace pose of the pinch selection.
-        /// </summary>
-        [Obsolete("We are moving away from querying the pinch select pose via the specific XR controller reference. It should be accessed via an IPoseSource interface or directly from the subsystem")]
-        public Pose PinchSelectPose => (currentControllerState is ArticulatedHandControllerState handControllerState) ?
-                                                handControllerState.PinchPose : Pose.identity;
+        public bool PinchSelectReady => (currentControllerState is ArticulatedHandControllerState handControllerState) && handControllerState.PinchSelectReady;
 
         #endregion Associated hand select values
 
@@ -83,8 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Cast to expose hand state.
                 ArticulatedHandControllerState handControllerState = controllerState as ArticulatedHandControllerState;
 
-                Debug.Assert(handControllerState != null);
-
                 // If we still don't have an aggregator, then don't update selects.
                 if (HandsAggregator == null) { return; }
 
@@ -93,38 +80,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // If we got pinch data, write it into our select interaction state.
                 if (gotPinchData)
                 {
-                    controllerState.selectInteractionState.value = pinchAmount;
 
                     // Workaround for missing select actions on devices without interaction profiles
                     // for hands, such as Varjo and Quest. Should be removed once we have universal
                     // hand interaction profile(s) across vendors.
-                    if ((selectAction.action?.controls.Count ?? 0) == 0)
-                    {
-                        // Debounced.
-                        bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);
+                    
+                    // Debounce the polyfill pinch action value.
+                    bool isPinched = pinchAmount >= (pinchedLastFrame ? 0.9f : 1.0f);
 
+                    // Inject our own polyfilled state into the Select state if no other control is bound.
+                    if (!selectAction.action.HasAnyControls())
+                    {
                         controllerState.selectInteractionState.active = isPinched;
                         controllerState.selectInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
                         controllerState.selectInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
-
-                        pinchedLastFrame = isPinched;
+                        controllerState.selectInteractionState.value = pinchAmount;
                     }
+
+                    // Also make sure we update the UI press state.
+                    if (!uiPressAction.action.HasAnyControls())
+                    {
+                        controllerState.uiPressInteractionState.active = isPinched;
+                        controllerState.uiPressInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
+                        controllerState.uiPressInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+                        controllerState.uiPressInteractionState.value = pinchAmount;
+                    }
+                    
+                    pinchedLastFrame = isPinched;
                 }
 
                 handControllerState.PinchSelectReady = isPinchReady;
-
-#pragma warning disable CS0618 // Type or member is obsolete
-                if (isPinching && HandsAggregator.TryGetPinchingPoint(handNode, out HandJointPose pinchPose))
-                {
-                    handControllerState.PinchPose.position = pinchPose.Position;
-                    handControllerState.PinchPose.rotation = pinchPose.Rotation;
-                }
-                else
-                {
-                    handControllerState.PinchPose.position = controllerState.position;
-                    handControllerState.PinchPose.rotation = controllerState.rotation;
-                }
-#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
@@ -136,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // In case the position input action is not provided, we will try to polyfill it with the device position.
             // Should be removed once we have universal hand interaction profile(s) across vendors.
 
-            if ((positionAction.action?.controls.Count ?? 0) == 0 && TryGetPolyfillDevicePose(out Pose devicePose))
+            if (!positionAction.action.HasAnyControls() && TryGetPolyfillDevicePose(out Pose devicePose))
             {
                 controllerState.position = devicePose.position;
                 controllerState.rotation = devicePose.rotation;
@@ -168,11 +153,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        devicePose.rotation = devicePose.rotation * leftPalmOffset;
+                        devicePose.rotation *= leftPalmOffset;
                         poseRetrieved = true;
                         break;
                     case Handedness.Right:
-                        devicePose.rotation = devicePose.rotation * rightPalmOffset;
+                        devicePose.rotation *= rightPalmOffset;
                         poseRetrieved = true;
                         break;
                     default:

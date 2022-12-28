@@ -34,33 +34,33 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         {
             #region IAccessibilitySubsystem implementation
 
-            #region Describable object management
+            #region Accessible object management
 
             /// <summary>
-            /// Attempts to get the collection of describable objects based on the specified constraints.
+            /// Attempts to get the collection of accessible objects based on the specified constraints.
             /// </summary>
             /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
             /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
             /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
-            /// <param name="describableObjectsList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
-            /// <returns>True if the collection of (zero or more) describable objects is being returned, or false.</returns>
+            /// <param name="accessibleObjectsList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+            /// <returns>True if the collection of (zero or more) accessible objects is being returned, or false.</returns>
             /// <remarks>
             /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
             /// <para/>
             /// The contents of the objectList collection is indeterminate when this method returns false.
             /// </remarks>
-            internal abstract bool TryGetDescribableObjects(List<DescribableObjectClassification> classifications, DescribableObjectVisibility readerView, float maxDistance, List<GameObject> describableObjectsList);
+            internal abstract bool TryGetAccessibleObjects(List<AccessibleObjectClassification> classifications, AccessibleObjectVisibility readerView, float maxDistance, List<GameObject> accessibleObjectsList);
 
             /// <inheritdoc/>
-            public abstract bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications);
+            public abstract bool TryGetAccessibleObjectClassifications(List<AccessibleObjectClassification> classifications);
 
             /// <inheritdoc/>
-            public abstract bool TryRegisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
+            public abstract bool TryRegisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification);
 
             /// <inheritdoc/>
-            public abstract bool TryUnregisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
+            public abstract bool TryUnregisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification);
 
-            #endregion Describable object management
+            #endregion Accessible object management
 
             #region Text color inversion
 
@@ -80,37 +80,37 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
         #region IAccessibilitySubsystem implementation
 
-        #region Describable object management
+        #region Accessible object management
 
         /// <summary>
-        /// Attempts to get the collection of describable objects based on the specified constraints.
+        /// Attempts to get the collection of accessible objects based on the specified constraints.
         /// </summary>
         /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
         /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
         /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
-        /// <param name="describableObjectList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
-        /// <returns>True if the collection of (zero or more) describable objects is being returned, or false.</returns>
+        /// <param name="accessibleObjectList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+        /// <returns>True if the collection of (zero or more) accessible objects is being returned, or false.</returns>
         /// <remarks>
         /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
         /// <para/>
         /// The contents of the objectList collection is indeterminate when this method returns false.
         /// </remarks>
-        internal bool TryGetDescribableObjects(List<DescribableObjectClassification> classifications, DescribableObjectVisibility readerView, float maxDistance, List<GameObject> describableObjectList) =>
-            provider.TryGetDescribableObjects(classifications, readerView, maxDistance, describableObjectList);
+        internal bool TryGetAccessibleObjects(List<AccessibleObjectClassification> classifications, AccessibleObjectVisibility readerView, float maxDistance, List<GameObject> accessibleObjectList) =>
+            provider.TryGetAccessibleObjects(classifications, readerView, maxDistance, accessibleObjectList);
 
         /// <inheritdoc/>
-        public bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications) =>
-            provider.TryGetDescribableObjectClassifications(classifications);
+        public bool TryGetAccessibleObjectClassifications(List<AccessibleObjectClassification> classifications) =>
+            provider.TryGetAccessibleObjectClassifications(classifications);
 
         /// <inheritdoc/>
-        public bool TryRegisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification) =>
-            provider.TryRegisterDescribableObject(describableObject, classification);
+        public bool TryRegisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification) =>
+            provider.TryRegisterAccessibleObject(accessibleObject, classification);
 
         /// <inheritdoc/>
-        public bool TryUnregisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification) =>
-            provider.TryUnregisterDescribableObject(describableObject, classification);
+        public bool TryUnregisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification) =>
+            provider.TryUnregisterAccessibleObject(accessibleObject, classification);
 
-        #endregion Describable object management
+        #endregion Accessible object management
 
         #region Text color inversion
 

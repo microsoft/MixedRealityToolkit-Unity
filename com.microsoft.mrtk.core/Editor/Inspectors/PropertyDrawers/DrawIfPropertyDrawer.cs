@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit
             DrawIfAttribute drawIf = attribute as DrawIfAttribute;
             if (drawIf == null) { return true; }
 
-            string path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, drawIf.ComparedPropertyName) : drawIf.ComparedPropertyName;
+            string path = drawIf.ComparedPropertyName;
 
             SerializedProperty propertyToCheck = property.serializedObject.FindProperty(path);
             if (propertyToCheck == null)
@@ -50,11 +50,11 @@ namespace Microsoft.MixedReality.Toolkit
                 return true;
             }
 
-            switch (propertyToCheck.type)
+            switch (propertyToCheck.type.ToLower())
             {
                 case "bool":
                     return drawIf.ComparisonMode != DrawIfAttribute.ComparisonType.Equal ^ propertyToCheck.boolValue.Equals(drawIf.CompareAgainst);
-                case "Enum":
+                case "enum":
                     return drawIf.ComparisonMode != DrawIfAttribute.ComparisonType.Equal ^ propertyToCheck.enumValueIndex.Equals((int)drawIf.CompareAgainst);
                 default:
                     Debug.LogError($"DrawIfAttribute only supports bool and Enum types. Your property '{drawIf.ComparedPropertyName}' is a {propertyToCheck.type}");

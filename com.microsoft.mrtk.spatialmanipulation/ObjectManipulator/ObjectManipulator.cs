@@ -133,23 +133,72 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         [SerializeField]
         [Tooltip(
-             "Whether physics forces are used to move the object when performing near manipulations. " +
-             "Off will make the object feel more directly connected to the hand. On will honor the mass and inertia of the object. " +
-             "The default is off.")]
-        private bool useForcesForNearManipulation = false;
+            "Apply torque to control orientation of the body")]
+        private bool applyTorque = true;
 
         /// <summary>
-        /// Whether physics forces are used to move the object when performing near manipulations.
+        /// Apply torque to control orientation of the body
         /// </summary>
-        /// <remarks>
-        /// <para>Setting this to <c>false</c> will make the object feel more directly connected to the
-        /// users hand. Setting this to <c>true</c> will honor the mass and inertia of the object,
-        /// but may feel as though the object is connected through a spring. The default is <c>false</c>.</para>
-        /// </remarks>
-        public bool UseForcesForNearManipulation
+        public bool ApplyTorque
         {
-            get => useForcesForNearManipulation;
-            set => useForcesForNearManipulation = value;
+            get => applyTorque;
+            set => applyTorque = value;
+        }
+
+        [SerializeField]
+        [Range(0.001f, 2.0f)]
+        [Tooltip("The time scale at which a Rigidbody reacts to input movement defined as oscillation period of the dampened spring force.")]
+        private float springForceSoftness = 0.1f;
+
+        /// <summary>
+        /// The time scale at which a Rigidbody reacts to input movement defined as oscillation period of the dampened spring force.
+        /// </summary>
+        public float SpringForceSoftness
+        {
+            get => springForceSoftness;
+            set => springForceSoftness = value;
+        }
+
+        [SerializeField]
+        [Range(0.001f, 2.0f)]
+        [Tooltip("The time scale at which a Rigidbody reacts to input rotation defined as oscillation period of the dampened spring torque.")]
+        private float springTorqueSoftness = 0.1f;
+
+        /// <summary>
+        /// The time scale at which a Rigidbody reacts to input rotation defined as oscillation period of the dampened angular spring force.
+        /// </summary>
+        public float SpringTorqueSoftness
+        {
+            get => springTorqueSoftness;
+            set => springTorqueSoftness = value;
+        }
+
+        [SerializeField]
+        [Range(0, 2.0f)]
+        [Tooltip("The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
+        private float springDamping = 1.0f;
+
+        /// <summary>
+        /// The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).
+        /// </summary>
+        public float SpringDamping
+        {
+            get => springDamping;
+            set => springDamping = value;
+        }
+
+        [SerializeField]
+        [Range(0, 10000f)]
+        [Tooltip("The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.")]
+        private float springForceLimit = 100.0f;
+
+        /// <summary>
+        /// The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.
+        /// </summary>
+        public float SpringForceLimit
+        {
+            get => springForceLimit;
+            set => springForceLimit = value;
         }
 
         [SerializeField]
@@ -470,10 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 constraintsManager.Setup(new MixedRealityTransform(HostTransform));
             }
 
-            if (smoothingLogic == null)
-            {
-                smoothingLogic = Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
-            }
+            smoothingLogic ??= Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
 
             InstantiateManipulationLogic();
         }
@@ -522,8 +568,27 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             return base.IsSelectableBy(interactor) && AllowedInteractionTypes.IsMaskSet(GetInteractionFlagsFromInteractor(interactor));
         }
 
+        // When the player is carrying a Rigidbody, the physics damping of interaction should act within the moving frame of reference of the player.
+        // The reference frame logic allows compensating for that 
+        private Transform referenceFrameTransform = null;
+        private bool referenceFrameHasLastPos = false;
+        private Vector3 referenceFrameLastPos;
+
+        private MixedRealityTransform targetTransform;
+        private bool useForces;
+
         private static readonly ProfilerMarker OnSelectEnteredPerfMarker =
             new ProfilerMarker("[MRTK] ObjectManipulator.OnSelectEntered");
+
+        /// <summary>
+        /// Override this class to provide the transform of the reference frame (e.g. the camera) against which to compute the damping.
+        ///
+        /// This intended for the situation of FPS-style controllers moving forward at constant speed while holding an object,
+        /// to prevent damping from pushing the body towards the player.
+        /// </summary>
+        /// <param name="args">Arguments of the OnSelectEntered event that called this function</param>
+        /// <returns>The Transform that should be used to define the reference frame or null to use the global reference frame</returns>
+        protected virtual Transform GetReferenceFrameTransform(SelectEnterEventArgs args) => null;
 
         /// <inheritdoc />
         protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -544,7 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     rigidBody.isKinematic = false;
                 }
 
-                MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
+                targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
                 ManipulationLogic.scaleLogic.Setup(interactorsSelecting, this, targetTransform);
                 ManipulationLogic.rotateLogic.Setup(interactorsSelecting, this, targetTransform);
@@ -554,6 +619,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     constraintsManager.OnManipulationStarted(targetTransform);
                 }
+
+                useForces = rigidBody != null && !rigidBody.isKinematic;
+
+                // ideally, the reference frame should be that of the camera. Here the interactorObject transform is the best available alternative.
+                referenceFrameTransform = GetReferenceFrameTransform(args);
+                referenceFrameHasLastPos = false;
             }
         }
 
@@ -573,8 +644,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     ReleaseRigidBody(rigidBody.velocity, rigidBody.angularVelocity);
                 }
-
-                MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
             }
         }
 
@@ -592,121 +661,198 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 base.ProcessInteractable(updatePhase);
 
-                // Update during Fixed if we are using physics.
-                // Update during Dynamic if we are not.
-                // TODO: Why does FixedUpdate make querying deviceRotation break???
-                // This is 99% a Unity bug. deviceRotation returns (0,0,0,0) when queried
-                // during a fixed update cycle.
+                if(!isSelected)
+                {
+                    return;
+                }
+
+                // Evaluate user input in the UI Update() function.
+                // If we are using physics, targetTransform is not applied directly but instead deferred
+                // to the ApplyForcesToRigidbody() function called from FixedUpdate()
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
-                    if (isSelected)
+                    RotateAnchorType rotateType = CurrentInteractionType == InteractionFlags.Near ? RotationAnchorNear : RotationAnchorFar;
+                    bool useCenteredAnchor = rotateType == RotateAnchorType.RotateAboutObjectCenter;
+                    bool isOneHanded = interactorsSelecting.Count == 1;
+
+                    targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
+
+                    using (ScaleLogicMarker.Auto())
                     {
-                        RotateAnchorType rotateType = CurrentInteractionType == InteractionFlags.Near ? RotationAnchorNear : RotationAnchorFar;
-                        bool useCenteredAnchor = rotateType == RotateAnchorType.RotateAboutObjectCenter;
-                        bool isOneHanded = interactorsSelecting.Count == 1;
-
-                        MixedRealityTransform targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
-
-                        using (ScaleLogicMarker.Auto())
+                        if (allowedManipulations.IsMaskSet(TransformFlags.Scale))
                         {
-                            if (allowedManipulations.IsMaskSet(TransformFlags.Scale))
-                            {
-                                targetTransform.Scale = ManipulationLogic.scaleLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
-                            }
+                            targetTransform.Scale = ManipulationLogic.scaleLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                         }
-
-                        // Immediately apply scale constraints after computing the user's desired scale input.
-                        if (EnableConstraints && constraintsManager != null)
-                        {
-                            constraintsManager.ApplyScaleConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
-                        }
-
-                        using (RotateLogicMarker.Auto())
-                        {
-                            if (allowedManipulations.IsMaskSet(TransformFlags.Rotate))
-                            {
-                                targetTransform.Rotation = ManipulationLogic.rotateLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
-                            }
-                        }
-
-                        // Immediately apply rotation constraints after computing the user's desired rotation input.
-                        if (EnableConstraints && constraintsManager != null)
-                        {
-                            constraintsManager.ApplyRotationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
-                        }
-
-                        using (MoveLogicMarker.Auto())
-                        {
-                            if (allowedManipulations.IsMaskSet(TransformFlags.Move))
-                            {
-                                targetTransform.Position = ManipulationLogic.moveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
-                            }
-                        }
-
-                        // Immediately apply translation constraints after computing the user's desired scale input.
-                        if (EnableConstraints && constraintsManager != null)
-                        {
-                            constraintsManager.ApplyTranslationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
-                        }
-
-                        ApplyTargetPose(targetTransform);
                     }
+
+                    // Immediately apply scale constraints after computing the user's desired scale input.
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyScaleConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                    }
+
+                    using (RotateLogicMarker.Auto())
+                    {
+                        if (allowedManipulations.IsMaskSet(TransformFlags.Rotate))
+                        {
+                            targetTransform.Rotation = ManipulationLogic.rotateLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
+                        }
+                    }
+
+                    // Immediately apply rotation constraints after computing the user's desired rotation input.
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyRotationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                    }
+
+                    using (MoveLogicMarker.Auto())
+                    {
+                        if (allowedManipulations.IsMaskSet(TransformFlags.Move))
+                        {
+                            targetTransform.Position = ManipulationLogic.moveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
+                        }
+                    }
+
+                    // Immediately apply translation constraints after computing the user's desired scale input.
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyTranslationConstraints(ref targetTransform, isOneHanded, IsGrabSelected);
+                    }
+
+                    ApplyTargetTransform();
+                }
+                else if (useForces && updatePhase == XRInteractionUpdateOrder.UpdatePhase.Fixed)
+                {
+                    ApplyForcesToRigidbody();
                 }
             }
         }
 
         /// <summary>
-        /// Once the <paramref name="targetPose"/> has been determined, this method is called
+        /// Once the <paramref name="targetTransform"/> has been determined, this method is called
         /// to apply the target pose to the object. Calls <see cref="ModifyTargetPose"/> before
         /// applying, to adjust the pose with smoothing, constraints, etc.
         /// </summary>
-        /// <param name="targetPose">
-        /// The target position, rotation, and scale to set the object to.
-        /// <param/>
-        private void ApplyTargetPose(MixedRealityTransform targetPose)
+        private void ApplyTargetTransform()
         {
             // modifiedTransformFlags currently unused.
             TransformFlags modifiedTransformFlags = TransformFlags.None;
-            ModifyTargetPose(ref targetPose, ref modifiedTransformFlags);
+            ModifyTargetPose(ref targetTransform, ref modifiedTransformFlags);
 
             if (rigidBody == null)
             {
-                HostTransform.SetPositionAndRotation(targetPose.Position, targetPose.Rotation);
-                HostTransform.localScale = targetPose.Scale;
+                HostTransform.SetPositionAndRotation(targetTransform.Position, targetTransform.Rotation);
+                HostTransform.localScale = targetTransform.Scale;
             }
             else
             {
                 // There is a Rigidbody. Potential different paths for near vs far manipulation
-                if (IsGrabSelected && !useForcesForNearManipulation)
+                if (!useForces)
                 {
-                    rigidBody.MovePosition(targetPose.Position);
-                    rigidBody.MoveRotation(targetPose.Rotation);
-                }
-                else
-                {
-                    // We are using forces
-                    rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetPose.Position - HostTransform.position);
-
-                    var relativeRotation = targetPose.Rotation * Quaternion.Inverse(HostTransform.rotation);
-                    relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
-
-                    if (axis.IsValidVector())
-                    {
-                        if (angle > 180f)
-                        {
-                            angle -= 360f;
-                        }
-                        rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (angle * Mathf.Deg2Rad * axis.normalized);
-                    }
+                    rigidBody.MovePosition(targetTransform.Position);
+                    rigidBody.MoveRotation(targetTransform.Rotation);
                 }
 
-                HostTransform.localScale = targetPose.Scale;
+                HostTransform.localScale = targetTransform.Scale;
             }
         }
 
         /// <summary>
-        /// Called by ApplyTargetPose to apply smoothing and give subclassed implementations the chance to apply their
-        /// own modifications to the object's pose.
+        /// In case a Rigidbody gets the targetTransform applied using physical forcees, this function is called within the
+        /// FixedUpdate() routine with physics-conforming time stepping.
+        /// </summary>
+        private void ApplyForcesToRigidbody()
+        {
+            var referenceFrameVelocity = Vector3.zero;
+
+            if (referenceFrameTransform != null)
+            {
+                if (referenceFrameHasLastPos)
+                {
+                    referenceFrameVelocity = (referenceFrameTransform.position - referenceFrameLastPos) / Time.fixedDeltaTime;
+                }
+
+                referenceFrameLastPos = referenceFrameTransform.position;
+                referenceFrameHasLastPos = true;
+            }
+
+            // implement critically dampened spring force, scaled to mass-independent frequency
+            float omega = Mathf.PI / springForceSoftness;  // angular frequency, sqrt(k/m)
+
+            Vector3 distance = HostTransform.position - targetTransform.Position;
+
+            // when player is moving, we need to anticipate where the targetTransform is going to be one time step from now
+            distance -= referenceFrameVelocity * Time.fixedDeltaTime;
+
+            var velocity = rigidBody.velocity;
+
+            var acceleration = omega * omega * -distance;  // acceleration caused by spring force
+
+            var accelerationMagnitude = acceleration.magnitude;
+
+            // apply springForceLimit only for slow-moving body (e.g. pressed against wall)
+            // when body is already moving fast, also allow strong acceleration
+            var maxAcceleration = Mathf.Max(springForceLimit, 10 * velocity.magnitude / Time.fixedDeltaTime);
+
+            if (accelerationMagnitude > maxAcceleration)
+            {
+                acceleration *= maxAcceleration / accelerationMagnitude;
+            }
+
+            // Apply damping - mathematically, we need e^(-2 * omega * dt)
+            // To compensate for the finite time step, this is split in two equal factors,
+            // one applied before, the other after the spring force
+            // equivalent with applying damping as well as spring force continuously
+            float halfDampingFactor = Mathf.Exp(-springDamping * omega * Time.fixedDeltaTime);
+
+            velocity -= referenceFrameVelocity;  // change to the player's frame of reference before damping
+
+            velocity *= halfDampingFactor;  // 1/2 damping
+            velocity += acceleration * Time.fixedDeltaTime; // integration step of spring force
+            velocity *= halfDampingFactor;  // 1/2 damping
+
+            velocity += referenceFrameVelocity;  // change back to global frame of reference
+
+            rigidBody.velocity = velocity;
+
+            if (applyTorque)
+            {
+                // Torque calculations: same calculation & parameters as for linear velocity
+                // skipping referenceFrameVelocity and springForceLimit which do not exactly apply here
+
+                // implement critically dampened spring force, scaled to mass-independent frequency
+                float angularOmega = Mathf.PI / springTorqueSoftness;  // angular frequency, sqrt(k/m)
+
+                var angularDistance = HostTransform.rotation * Quaternion.Inverse(targetTransform.Rotation);
+                angularDistance.ToAngleAxis(out float angle, out Vector3 axis);
+
+                if (!axis.IsValidVector())
+                {
+                    // ToAngleAxis is numerically unstable, returning NaN axis for near-zero angles
+                    angle = 0;
+                    axis = Vector3.up;
+                }
+
+                if (angle > 180f)
+                {
+                    angle -= 360f;
+                }
+
+                var angularVelocity = rigidBody.angularVelocity;
+
+                var angularAcceleration = -angle * angularOmega * angularOmega;  // acceleration caused by spring force
+
+                angularVelocity *= halfDampingFactor;  // 1/2 damping
+                angularVelocity += angularAcceleration * Time.fixedDeltaTime * Mathf.Deg2Rad * axis.normalized; // integration step of spring force
+                angularVelocity *= halfDampingFactor;  // 1/2 damping
+
+                rigidBody.angularVelocity = angularVelocity;
+            }
+        }
+
+        /// <summary>
+        /// Called by ApplyTargetPose to modify the target pose with the relevant constraints, smoothing,
+        /// elastic, or any other derived/overridden behavior.
         /// </summary>
         /// <param name="targetPose">
         /// The target position, rotation, and scale, pre-smoothing, but post-input and post-constraints. Modified by-reference.
@@ -719,10 +865,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // TODO: Elastics. Compute elastics here and apply to modifiedTransformFlags.
 
-            bool applySmoothing = ShouldSmooth && smoothingLogic != null && (rigidBody == null || rigidBody.isKinematic);
+            bool applySmoothing = ShouldSmooth && smoothingLogic != null;
 
-            targetPose.Position = applySmoothing ? smoothingLogic.SmoothPosition(HostTransform.position, targetPose.Position, moveLerpTime, Time.deltaTime) : targetPose.Position;
-            targetPose.Rotation = applySmoothing ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetPose.Rotation, rotateLerpTime, Time.deltaTime) : targetPose.Rotation;
+            targetPose.Position = (applySmoothing && !useForces) ? smoothingLogic.SmoothPosition(HostTransform.position, targetPose.Position, moveLerpTime, Time.deltaTime) : targetPose.Position;
+            targetPose.Rotation = (applySmoothing && !useForces) ? smoothingLogic.SmoothRotation(HostTransform.rotation, targetPose.Rotation, rotateLerpTime, Time.deltaTime) : targetPose.Rotation;
             targetPose.Scale = applySmoothing ? smoothingLogic.SmoothScale(HostTransform.localScale, targetPose.Scale, scaleLerpTime, Time.deltaTime) : targetPose.Scale;
         }
 
