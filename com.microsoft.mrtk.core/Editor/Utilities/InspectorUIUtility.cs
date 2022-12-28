@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         // StandardAssets/Textures/MRTK_Logo_Black.png
         private const string LogoLightThemeGuid = "fa0038d8d2df1dd4c99f346c8ec9e746";
-        
+
         // StandardAssets/Textures/MRTK_Logo_White.png
         private const string LogoDarkThemeGuid = "fe5cc215f12ea5e40b5021c4040bce24";
 
@@ -593,7 +593,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed GameObject.
         /// Adds a button for adding any of the component (or derived types) and a follow button to highlight existing attached components.
         /// </summary>
-        static public bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
+        public static bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
         {
             isExpanded = EditorGUILayout.Foldout(isExpanded, typeDescription + "s", true);
 
