@@ -1,18 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
-using UnityEngine.TestTools;
+using NUnit.Framework;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Tests.EditMode
 {
     public class SmokeTest
     {
-        [UnityTest]
-        public IEnumerator CorePackageTest()
+        [Test]
+        public void CorePackageTest()
         {
-            yield return null;
+            Assert.IsTrue(true);
         }
     }
 }
-

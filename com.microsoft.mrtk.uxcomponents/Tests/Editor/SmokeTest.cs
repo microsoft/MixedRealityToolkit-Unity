@@ -3,14 +3,15 @@
 
 using NUnit.Framework;
 
-namespace Microsoft.MixedReality.Toolkit.Performance.Tests.EditMode
+namespace Microsoft.MixedReality.Toolkit.UX.Tests.EditMode
 {
     public class SmokeTest
     {
         [Test]
-        public void PerformancePackageTest()
+        public void UXPackageTest()
         {
             Assert.IsTrue(true);
         }
     }
 }
+
