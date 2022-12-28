@@ -800,6 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var NewObjectManipulator = testObject.AddComponent<NewObjectManipulator>();
             NewObjectManipulator.SmoothingFar = false;
             NewObjectManipulator.SmoothingNear = false;
+
             var placementHub = testObject.GetComponent<PlacementHub>();
             placementHub.UseForces = true;
 
@@ -845,6 +846,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             NewObjectManipulator.SmoothingFar = false;
             NewObjectManipulator.SmoothingNear = false;
 
+            var placementHub = testObject.GetComponent<PlacementHub>();
+            placementHub.UseForces = true;
+
             var collisionListener = testObject.AddComponent<TestCollisionListener>();
 
             // set up static cube to collide with
@@ -864,7 +868,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return hand.Move(Vector3.forward * 3f);
-            yield return RuntimeTestUtilities.WaitForFixedUpdates();
+            yield return new WaitForSeconds(1.0f);
 
             Assert.AreNotEqual(Vector3.zero, backgroundRigidbody.velocity);
             Assert.AreEqual(1, collisionListener.CollisionCount);
