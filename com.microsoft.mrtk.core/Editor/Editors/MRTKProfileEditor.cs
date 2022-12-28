@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// as the configurations assigned to each subsystem.
     /// </summary>
     [CustomEditor(typeof(MRTKProfile))]
-    public class MRTKProfileInspector : UnityEditor.Editor
+    public class MRTKProfileEditor : UnityEditor.Editor
     {
         /// <summary>
         /// A container class, intended to wrap all information about a subsystem

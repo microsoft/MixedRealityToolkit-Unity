@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
     /// </summary>
     [CustomEditor(typeof(ObjectManipulator))]
     [CanEditMultipleObjects]
-    public class ObjectManipulatorInspector : StatefulInteractableInspector
+    public class ObjectManipulatorInspector : StatefulInteractableEditor
     {
         private ObjectManipulator instance;
         private SerializedProperty hostTransform;
