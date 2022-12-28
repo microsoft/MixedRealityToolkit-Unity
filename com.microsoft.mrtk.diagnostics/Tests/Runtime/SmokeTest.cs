@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Performance.Tests
 {
-    public class SmokeTest
+    internal class SmokeTest
     {
         [UnityTest]
         public IEnumerator PerformancePackageTest()
@@ -15,4 +15,3 @@ namespace Microsoft.MixedReality.Toolkit.Performance.Tests
         }
     }
 }
-
