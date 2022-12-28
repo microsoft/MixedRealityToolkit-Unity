@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     [CustomEditor(typeof(Solver))]
     [CanEditMultipleObjects]
-    public class SolverInspector : UnityEditor.Editor
+    public class SolverEditor : UnityEditor.Editor
     {
         private SerializedProperty updateLinkedTransformProperty;
         private SerializedProperty moveLerpTimeProperty;

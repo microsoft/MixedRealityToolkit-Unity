@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     [CustomEditor(typeof(InBetween))]
     [CanEditMultipleObjects]
-    public class InBetweenEditor : SolverInspector
+    public class InBetweenEditor : SolverEditor
     {
         private SerializedProperty secondTrackedTargetTypeProperty;
         private SerializedProperty secondTrackedHandednessProperty;

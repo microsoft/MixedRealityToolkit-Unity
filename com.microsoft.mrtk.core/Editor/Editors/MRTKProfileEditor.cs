@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// as the configurations assigned to each subsystem.
     /// </summary>
     [CustomEditor(typeof(MRTKProfile))]
-    public class MRTKProfileInspector : UnityEditor.Editor
+    public class MRTKProfileEditor : UnityEditor.Editor
     {
         /// <summary>
         /// A container class, intended to wrap all information about a subsystem
@@ -290,13 +290,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new EditorGUILayout.VerticalScope(Styles.SubsystemSelectionPanel, GUILayout.Width(Styles.SubsystemListWidth), GUILayout.ExpandWidth(true)))
             {
-                EditorGUILayout.LabelField("Available MRTK Subsystems", MixedRealityStylesUtility.BoldLargeTitleStyle);
+                EditorGUILayout.LabelField("Available MRTK Subsystems", MRTKEditorStyles.BoldLargeTitleStyle);
 
                 foreach (KeyValuePair<string, List<SubsystemItem>> pair in allSubsystemTypes)
                 {
                     using (new EditorGUILayout.VerticalScope(Styles.SubsystemListStyle, GUILayout.ExpandHeight(true)))
                     {
-                        EditorGUILayout.LabelField(pair.Key, MixedRealityStylesUtility.BoldLargeTitleStyle);
+                        EditorGUILayout.LabelField(pair.Key, MRTKEditorStyles.BoldLargeTitleStyle);
 
                         foreach (SubsystemItem subsystemItem in pair.Value)
                         {
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new EditorGUILayout.VerticalScope(Styles.SubsystemDetailsPanel))
             {
-                EditorGUILayout.LabelField("Subsystem Details", MixedRealityStylesUtility.BoldLargeTitleStyle);
+                EditorGUILayout.LabelField("Subsystem Details", MRTKEditorStyles.BoldLargeTitleStyle);
 
                 if (selectedItem == null)
                 {

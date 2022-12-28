@@ -5,6 +5,8 @@ namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Describes the type of display provided by the device.
+    /// Maps to the value returned by the <see cref="XRDisplaySubsystem"/> when
+    /// querying displayOpaque.
     /// </summary>
     public enum DisplayType
     {
