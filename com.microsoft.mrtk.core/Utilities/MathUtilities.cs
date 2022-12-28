@@ -8,7 +8,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Math Utilities class.
+    /// Useful utilities for manipulating datatype sizes, conversion factors,
+    /// quaternions, matrices, and other mathematical tasks.
     /// </summary>
     public static class MathUtilities
     {

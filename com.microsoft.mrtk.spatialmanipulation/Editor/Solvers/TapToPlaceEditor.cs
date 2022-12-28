@@ -8,11 +8,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     /// <summary>
-    /// Custom inspector for the Tap to Place component.
+    /// Custom editor for the Tap to Place component.
     /// </summary>
     [CustomEditor(typeof(TapToPlace))]
     [CanEditMultipleObjects]
-    public class TapToPlaceInspector : UnityEditor.Editor
+    public class TapToPlaceEditor : UnityEditor.Editor
     {
         private TapToPlace instance;
 
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         {
             // Render Advanced Settings
             if (InspectorUIUtility.DrawSectionFoldoutWithKey("Advanced Properties", AdvancedPropertiesFoldoutKey,
-                MixedRealityStylesUtility.TitleFoldoutStyle, false))
+                MRTKEditorStyles.TitleFoldoutStyle, false))
             {
                 using (new EditorGUI.IndentLevelScope())
                 {

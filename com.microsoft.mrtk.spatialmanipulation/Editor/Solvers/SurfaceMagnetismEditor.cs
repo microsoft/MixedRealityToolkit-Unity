@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     [CustomEditor(typeof(SurfaceMagnetism))]
     [CanEditMultipleObjects]
-    public class SurfaceMagnetismInspector : SolverInspector
+    public class SurfaceMagnetismEditor : SolverEditor
     {
         private SerializedProperty magneticSurfacesProperty;
         private SerializedProperty maxDistanceProperty;
