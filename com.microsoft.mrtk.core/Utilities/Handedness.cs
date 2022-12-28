@@ -6,27 +6,30 @@ using System;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Defines in which hand a controller is currently being used.
+    /// Represents handedness; as a bitflag, it can represent left-handedness,
+    /// right-handedness, both, or neither.
     /// </summary>
     [Flags]
     public enum Handedness
     {
         /// <summary>
-        /// No hand specified by the SDK for the controller.
+        /// No handedness. Represents a non-handed controller or object.
         /// </summary>
-        /// <remarks>
-        /// This value is used for controllers such as a gamepad or a mouse.
-        /// </remarks>
         None = 0 << 0,
 
         /// <summary>
-        /// The controller is identified as being provided in a Left hand
+        /// The user's left hand or controller.
         /// </summary>
         Left = 1 << 0,
 
         /// <summary>
-        /// The controller is identified as being provided in a Right hand
+        /// The user's right hand or controller.
         /// </summary>
-        Right = 1 << 1
+        Right = 1 << 1,
+
+        /// <summary>
+        /// Both, or either, hands.
+        /// </summary>
+        Both = Left | Right,
     }
 }

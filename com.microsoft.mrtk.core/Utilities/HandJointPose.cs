@@ -141,5 +141,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         #endregion IEqualityComparer Implementation
+
+        #region Conversions
+
+        public static implicit operator Pose(HandJointPose pose) => pose.pose;
+        
+        #endregion
     }
 }
