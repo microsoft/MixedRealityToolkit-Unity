@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         {
             // Render Advanced Settings
             if (InspectorUIUtility.DrawSectionFoldoutWithKey("Advanced Properties", AdvancedPropertiesFoldoutKey,
-                MixedRealityStylesUtility.TitleFoldoutStyle, false))
+                MRTKEditorStyles.TitleFoldoutStyle, false))
             {
                 using (new EditorGUI.IndentLevelScope())
                 {

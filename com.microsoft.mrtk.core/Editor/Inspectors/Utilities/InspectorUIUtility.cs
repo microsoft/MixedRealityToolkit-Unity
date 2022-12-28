@@ -8,6 +8,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
+using Object = UnityEngine.Object;
+
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
@@ -15,6 +17,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public static class InspectorUIUtility
     {
+        #region Color
+
+        /// <summary>
+        /// Default background color, depending
+        /// on light/dark theme.
+        /// </summary>
+        public static Color DefaultBackgroundColor => EditorGUIUtility.isProSkin
+                    ? new Color32(56, 56, 56, 255)
+                    : new Color32(194, 194, 194, 255);
+
         // Colors
         private static readonly Color PersonalThemeColorTint100 = new Color(1f, 1f, 1f);
         private static readonly Color PersonalThemeColorTint75 = new Color(0.75f, 0.75f, 0.75f);
@@ -34,11 +46,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public static Color ColorTint25 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint25 : PersonalThemeColorTint25;
         public static Color ColorTint10 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint10 : PersonalThemeColorTint10;
 
+        public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
+        public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
+        public static readonly Color ErrorColor = new Color(1f, 0.55f, 0.5f);
+        public static readonly Color SuccessColor = new Color(0.8f, 1f, 0.75f);
+        public static readonly Color SectionColor = new Color(0.85f, 0.9f, 1f);
+        public static readonly Color DarkColor = new Color(0.1f, 0.1f, 0.1f);
+        public static readonly Color HandleColorSquare = new Color(0.0f, 0.9f, 1f);
+        public static readonly Color HandleColorCircle = new Color(1f, 0.5f, 1f);
+        public static readonly Color HandleColorSphere = new Color(1f, 0.5f, 1f);
+        public static readonly Color HandleColorAxis = new Color(0.0f, 1f, 0.2f);
+        public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
+        public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
+        public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
+
+        #endregion Color
+
+        #region Sizes
+
         // default UI sizes
         public const int TitleFontSize = 14;
         public const int HeaderFontSize = 11;
         public const int DefaultFontSize = 10;
         public const float DocLinkWidth = 175f;
+
+        #endregion Sizes
+
+        #region Special unicode characters
 
         // special characters
         public static readonly string Minus = "\u2212";
@@ -54,10 +88,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public static readonly string Emoji = "\u263A";
         public static readonly string Reload = "\u21BB";
 
+        #endregion Special unicode characters
+
+        #region Handy icon textures
+
         public static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
         public static readonly Texture SuccessIcon = EditorGUIUtility.IconContent("Collab").image;
         public static readonly Texture WarningIcon = EditorGUIUtility.IconContent("console.warnicon").image;
         public static readonly Texture InfoIcon = EditorGUIUtility.IconContent("console.infoicon").image;
+
+        // StandardAssets/Textures/MRTK_Logo_Black.png
+        private const string LogoLightThemeGuid = "fa0038d8d2df1dd4c99f346c8ec9e746";
+        // StandardAssets/Textures/MRTK_Logo_White.png
+        private const string LogoDarkThemeGuid = "fe5cc215f12ea5e40b5021c4040bce24";
+
+        /// <summary> MRTK Logo texture suitable for light theme. </summary>
+        public static readonly Texture2D LogoLightTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoLightThemeGuid));
+
+        /// <summary> MRTK Logo texture suitable for light theme. </summary>
+        public static readonly Texture2D LogoDarkTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoDarkThemeGuid));
+
+        #endregion Handy icon textures
+
+        #region Reusable GUIStyles
+
+
+        #endregion Reusable GUIStyles
+
+        #region Handy drawables/controls
 
         /// <summary>
         /// A data container for managing scrolling lists or nested drawers in custom inspectors.
@@ -82,39 +140,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="prop">A serialize property containing information needed if the button was clicked</param>
         public delegate void MultiListButtonEvent(int[] indexArray, SerializedProperty prop = null);
 
-        /// <summary>
-        /// Box style with left margin
-        /// </summary>
-        public static GUIStyle Box(int margin)
+        internal static bool IsMixedRealityToolkitLogoAssetPresent()
         {
-            GUIStyle box = new GUIStyle(GUI.skin.box);
-            box.margin.left = margin;
-            return box;
+            return EditorGUIUtility.isProSkin ? LogoDarkTheme != null : LogoLightTheme != null;
         }
 
         /// <summary>
-        /// Help box style with left margin
+        /// Render the Mixed Reality Toolkit Logo.
         /// </summary>
-        /// <param name="margin">amount of left margin</param>
-        /// <returns>Configured helpbox GUIStyle</returns>
-        public static GUIStyle HelpBox(int margin)
+        /// <returns>True if the logo was loadable and renderable or false if a text fallback was used.</returns>
+        public static bool RenderMixedRealityToolkitLogo()
         {
-            GUIStyle box = new GUIStyle(EditorStyles.helpBox);
-            box.margin.left = margin;
-            return box;
-        }
-
-        /// <summary>
-        /// Create a custom label style based on color and size
-        /// </summary>
-        public static GUIStyle LabelStyle(int size, Color color)
-        {
-            GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel);
-            labelStyle.fontStyle = FontStyle.Bold;
-            labelStyle.fontSize = size;
-            labelStyle.fixedHeight = size * 2;
-            labelStyle.normal.textColor = color;
-            return labelStyle;
+            if (IsMixedRealityToolkitLogoAssetPresent())
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Label(EditorGUIUtility.isProSkin ? LogoDarkTheme : LogoLightTheme, GUILayout.MaxHeight(96f));
+                    GUILayout.FlexibleSpace();
+                }
+                GUILayout.Space(3f);
+                return true;
+            }
+            else
+            {
+                EditorGUILayout.LabelField("Microsoft Mixed Reality Toolkit", MRTKEditorStyles.ProductNameStyle);
+                GUILayout.Space(3f);
+                return false;
+            }
         }
 
         /// <summary>
@@ -385,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public static void DrawTitle(string title)
         {
-            GUIStyle labelStyle = LabelStyle(TitleFontSize, ColorTint50);
+            GUIStyle labelStyle = MRTKEditorStyles.LabelStyle(TitleFontSize, ColorTint50);
             EditorGUILayout.LabelField(new GUIContent(title), labelStyle);
             GUILayout.Space(TitleFontSize * 0.5f);
         }
@@ -396,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="header">string content to render</param>
         public static void DrawHeader(string header)
         {
-            GUIStyle labelStyle = LabelStyle(HeaderFontSize, ColorTint10);
+            GUIStyle labelStyle = MRTKEditorStyles.LabelStyle(HeaderFontSize, ColorTint10);
             EditorGUILayout.LabelField(new GUIContent(header), labelStyle);
         }
 
@@ -405,7 +458,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public static void DrawLabel(string title, int size, Color color)
         {
-            GUIStyle labelStyle = LabelStyle(size, color);
+            GUIStyle labelStyle = MRTKEditorStyles.LabelStyle(size, color);
             EditorGUILayout.LabelField(new GUIContent(title), labelStyle);
         }
 
@@ -416,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Color prevColor = GUI.color;
 
-            GUI.color = MixedRealityInspectorUtility.WarningColor;
+            GUI.color = WarningColor;
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             EditorGUILayout.LabelField(warning, EditorStyles.wordWrappedMiniLabel);
             EditorGUILayout.EndVertical();
@@ -447,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Color prevColor = GUI.color;
 
-            GUI.color = MixedRealityInspectorUtility.SuccessColor;
+            GUI.color = SuccessColor;
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             EditorGUILayout.LabelField(notice, EditorStyles.wordWrappedMiniLabel);
             EditorGUILayout.EndVertical();
@@ -462,7 +515,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             Color prevColor = GUI.color;
 
-            GUI.color = MixedRealityInspectorUtility.ErrorColor;
+            GUI.color = ErrorColor;
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             EditorGUILayout.LabelField(error, EditorStyles.wordWrappedMiniLabel);
             EditorGUILayout.EndVertical();
@@ -541,169 +594,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// adjust list settings as things change
-        /// </summary>
-        public static List<ListSettings> AdjustListSettings(List<ListSettings> listSettings, int count)
-        {
-            listSettings ??= new List<ListSettings>();
-
-            int diff = count - listSettings.Count;
-            if (diff > 0)
-            {
-                for (int i = 0; i < diff; i++)
-                {
-                    listSettings.Add(new ListSettings() { Show = false, Scroll = new Vector2() });
-                }
-            }
-            else if (diff < 0)
-            {
-                int removeCnt = 0;
-                for (int i = listSettings.Count - 1; i > -1; i--)
-                {
-                    if (removeCnt > diff)
-                    {
-                        listSettings.RemoveAt(i);
-                        removeCnt--;
-                    }
-                }
-            }
-
-            return listSettings;
-        }
-
-        /// <summary>
-        /// Get an array of strings from a serialized list of strings, pop-up field helper
-        /// </summary>
-        public static string[] GetOptions(SerializedProperty options)
-        {
-            List<string> list = new List<string>();
-            for (int i = 0; i < options.arraySize; i++)
-            {
-                list.Add(options.GetArrayElementAtIndex(i).stringValue);
-            }
-
-            return list.ToArray();
-        }
-
-        /// <summary>
-        /// Get the index of a serialized array item based on its name, pop-up field helper
-        /// </summary>
-        public static int GetOptionsIndex(SerializedProperty options, string selection)
-        {
-            for (int i = 0; i < options.arraySize; i++)
-            {
-                if (options.GetArrayElementAtIndex(i).stringValue == selection)
-                {
-                    return i;
-                }
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Draws the contents of a scriptable inline inside a foldout. Depending on if there's an actual scriptable
-        /// linked, the values will be greyed out or editable in case the scriptable is created inside the serialized object.
-        /// </summary>
-        static public bool DrawScriptableFoldout<T>(SerializedProperty scriptable, string description, bool isExpanded) where T : ScriptableObject
-        {
-            isExpanded = EditorGUILayout.Foldout(isExpanded, description, true, MixedRealityStylesUtility.BoldFoldoutStyle);
-            if (isExpanded)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    if (scriptable.objectReferenceValue == null)
-                    {
-                        // If there's no scriptable linked we're creating a local instance that allows to store a 
-                        // local version of the scriptable in the serialized object owning the scriptable property.
-                        scriptable.objectReferenceValue = ScriptableObject.CreateInstance<T>();
-                    }
-
-                    // We have currently 5 different states to display to the user:
-                    // 1. the scriptable is local to the object instance
-                    // 2. the scriptable is a linked nested scriptable inside of the currently displayed prefab
-                    // 3. the scriptable is a linked nested scriptable inside of another prefab
-                    // 4. the scriptable is a shared standalone asset
-                    // 5. the scriptable slot is empty but inside of a prefab asset which needs special handling as 
-                    // prefabs can only display linked or nested scriptables.
-
-                    // Depending on the type of link we show the user the scriptable configuration either:
-                    // case 1 &2: editable inlined 
-                    // case 3 & 4: greyed out readonly
-                    // case 5: only show the link
-
-                    // case 5 -> can't create and/or store the local scriptable above - show link
-                    bool isStoredAsset = scriptable.objectReferenceValue != null && AssetDatabase.Contains(scriptable.objectReferenceValue);
-                    bool isEmptyInStagedPrefab = !isStoredAsset && ((Component)scriptable.serializedObject.targetObject).gameObject.scene.path == "";
-                    if (scriptable.objectReferenceValue == null || isEmptyInStagedPrefab)
-                    {
-                        EditorGUILayout.HelpBox("No scriptable " + scriptable.displayName + " linked to this prefab. Prefabs can't store " +
-                            "local versions of scriptables and need to be linked to a scriptable asset.", MessageType.Warning);
-                        EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Empty): "));
-                    }
-                    else
-                    {
-                        bool isNestedInCurrentPrefab = false;
-#if UNITY_2021_2_OR_NEWER
-                        var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
-#else
-                        var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
-#endif
-                        if (prefabStage != null)
-                        {
-                            var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
-                            isNestedInCurrentPrefab = instancePath != "" &&
-#if UNITY_2020_1_OR_NEWER
-                                instancePath == prefabStage.assetPath
-#else
-                                instancePath == prefabStage.prefabAssetPath
-#endif
-                            ;
-                        }
-
-                        if (isStoredAsset && !isNestedInCurrentPrefab)
-                        {
-                            // case 3 & 4 - greyed out drawer
-                            bool isMainAsset = AssetDatabase.IsMainAsset(scriptable.objectReferenceValue);
-                            var sharedAssetPath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
-                            if (isMainAsset)
-                            {
-                                EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
-                            }
-                            else
-                            {
-                                EditorGUILayout.HelpBox("Editing a nested " + scriptable.displayName + ", located inside of " + sharedAssetPath, MessageType.Warning);
-                            }
-                            EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
-
-                            // In case there's a shared scriptable linked we're disabling the inlined scriptable properties 
-                            // (this will render them grayed out) so users won't accidentally modify the shared scriptable.
-                            GUI.enabled = false;
-                            DrawScriptableSubEditor(scriptable);
-                            GUI.enabled = true;
-                        }
-                        else
-                        {
-                            // case 1 & 2 - inline editable drawer
-                            if (isNestedInCurrentPrefab)
-                            {
-                                EditorGUILayout.HelpBox("Editing a nested version of " + scriptable.displayName + ".", MessageType.Info);
-                            }
-                            else
-                            {
-                                EditorGUILayout.HelpBox("Editing a local version of " + scriptable.displayName + ".", MessageType.Info);
-                            }
-                            EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
-                            DrawScriptableSubEditor(scriptable);
-                        }
-                    }
-                }
-            }
-
-            return isExpanded;
-        }
-
-        /// <summary>
         /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed GameObject.
         /// Adds a button for adding any of the component (or derived types) and a follow button to highlight existing attached components.
         /// </summary>
@@ -764,6 +654,348 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        #endregion Handy drawables/controls
+
+        #region Utilities
+
         public static string GetBackingField(string propertyName) => $"<{propertyName}>k__BackingField";
+
+        /// <summary>
+        /// Found at https://answers.unity.com/questions/960413/editor-window-how-to-center-a-window.html
+        /// </summary>
+        public static Rect GetEditorMainWindowPos()
+        {
+            var containerWinType = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(ScriptableObject)).FirstOrDefault(t => t.Name == "ContainerWindow");
+
+            if (containerWinType == null)
+            {
+                throw new MissingMemberException("Can't find internal type ContainerWindow. Maybe something has changed inside Unity");
+            }
+
+            var showModeField = containerWinType.GetField("m_ShowMode", BindingFlags.NonPublic | BindingFlags.Instance);
+            var positionProperty = containerWinType.GetProperty("position", BindingFlags.Public | BindingFlags.Instance);
+
+            if (showModeField == null || positionProperty == null)
+            {
+                throw new MissingFieldException("Can't find internal fields 'm_ShowMode' or 'position'. Maybe something has changed inside Unity");
+            }
+
+            var windows = Resources.FindObjectsOfTypeAll(containerWinType);
+
+            foreach (var win in windows)
+            {
+
+                var showMode = (int)showModeField.GetValue(win);
+                if (showMode == 4) // main window
+                {
+                    var pos = (Rect)positionProperty.GetValue(win, null);
+                    return pos;
+                }
+            }
+
+            throw new NotSupportedException("Can't find internal main window. Maybe something has changed inside Unity");
+        }
+
+        private static Type[] GetAllDerivedTypes(this AppDomain appDomain, Type aType)
+        {
+            var result = new List<Type>();
+            var assemblies = appDomain.GetAssemblies();
+
+            foreach (var assembly in assemblies)
+            {
+                var types = assembly.GetLoadableTypes();
+                result.AddRange(types.Where(type => type.IsSubclassOf(aType)));
+            }
+
+            return result.ToArray();
+        }
+
+        /// <summary>
+        /// Centers an editor window on the main display.
+        /// </summary>
+        public static void CenterOnMainWin(this EditorWindow window)
+        {
+            var main = GetEditorMainWindowPos();
+            var pos = window.position;
+            float w = (main.width - pos.width) * 0.5f;
+            float h = (main.height - pos.height) * 0.5f;
+            pos.x = main.x + w;
+            pos.y = main.y + h;
+            window.position = pos;
+        }
+
+        #endregion Utilities
+
+        #region Handles
+
+        // Magic number for dashed lines for editor handles/affordances.
+        private const float DottedLineScreenSpace = 4.65f;
+
+        /// <summary>
+        /// Draw an axis move handle.
+        /// </summary>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="origin">The initial position of the axis.</param>
+        /// <param name="direction">The direction the axis is facing.</param>
+        /// <param name="distance">Distance from the axis.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see cref="float"/> value.</returns>
+        public static float AxisMoveHandle(Object target, Vector3 origin, Vector3 direction, float distance, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
+        {
+            Vector3 position = origin + (direction.normalized * distance);
+
+            Handles.color = HandleColorAxis;
+
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            Handles.DrawDottedLine(origin, position, DottedLineScreenSpace);
+            Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(direction), handleSize * 2, EventType.Repaint);
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
+
+            if (recordUndo)
+            {
+                float newDistance = Vector3.Distance(origin, newPosition);
+
+                if (!distance.Equals(newDistance))
+                {
+                    Undo.RegisterCompleteObjectUndo(target, target.name);
+                    distance = newDistance;
+                }
+            }
+
+            return distance;
+        }
+
+        /// <summary>
+        /// Draw a Circle Move Handle.
+        /// </summary>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="zScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
+        public static Vector3 CircleMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
+        {
+            Handles.color = HandleColorCircle;
+
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
+
+            if (recordUndo && position != newPosition)
+            {
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                position.x = Mathf.Lerp(position.x, newPosition.x, Mathf.Clamp01(xScale));
+                position.y = Mathf.Lerp(position.z, newPosition.y, Mathf.Clamp01(yScale));
+                position.z = Mathf.Lerp(position.y, newPosition.z, Mathf.Clamp01(zScale));
+            }
+
+            return position;
+        }
+
+        /// <summary>
+        /// Draw a square move handle.
+        /// </summary>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="zScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
+        public static Vector3 SquareMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
+        {
+            Handles.color = HandleColorSquare;
+
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            // Multiply square handle to match other types
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 0.8f, Vector3.zero, Handles.RectangleHandleCap);
+
+            if (recordUndo && position != newPosition)
+            {
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                position.x = Mathf.Lerp(position.x, newPosition.x, Mathf.Clamp01(xScale));
+                position.y = Mathf.Lerp(position.z, newPosition.y, Mathf.Clamp01(yScale));
+                position.z = Mathf.Lerp(position.y, newPosition.z, Mathf.Clamp01(zScale));
+            }
+
+            return position;
+        }
+
+        /// <summary>
+        /// Draw a sphere move handle.
+        /// </summary>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="zScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
+        public static Vector3 SphereMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
+        {
+            Handles.color = HandleColorSphere;
+
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            // Multiply sphere handle size to match other types
+            Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 2, Vector3.zero, Handles.SphereHandleCap);
+
+            if (recordUndo && position != newPosition)
+            {
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+
+                position.x = Mathf.Lerp(position.x, newPosition.x, Mathf.Clamp01(xScale));
+                position.y = Mathf.Lerp(position.z, newPosition.y, Mathf.Clamp01(yScale));
+                position.z = Mathf.Lerp(position.y, newPosition.z, Mathf.Clamp01(zScale));
+            }
+
+            return position;
+        }
+
+        /// <summary>
+        /// Draw a vector handle.
+        /// </summary>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="normalize">Optional, Normalize the new vector value.</param>
+        /// <param name="clamp">Optional, Clamp new vector's value based on the distance to the origin.</param>
+        /// <param name="handleLength">Optional, handle length.</param>
+        /// <param name="handleSize">Optional, handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
+        public static Vector3 VectorHandle(Object target, Vector3 origin, Vector3 vector, bool normalize = true, bool clamp = true, float handleLength = 1f, float handleSize = 0.1f, bool recordUndo = true, bool autoSize = true)
+        {
+            Handles.color = HandleColorTangent;
+
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(origin) * handleSize, 0.75f);
+            }
+
+            Vector3 handlePosition = origin + (vector * handleLength);
+            float distanceToOrigin = Vector3.Distance(origin, handlePosition) / handleLength;
+
+            if (normalize)
+            {
+                vector.Normalize();
+            }
+            else
+            {
+                // If the handle isn't normalized, brighten based on distance to origin
+                Handles.color = Color.Lerp(Color.gray, HandleColorTangent, distanceToOrigin * 0.85f);
+
+                if (clamp)
+                {
+                    // To indicate that we're at the clamped limit, make the handle 'pop' slightly larger
+                    if (distanceToOrigin >= 0.98f)
+                    {
+                        Handles.color = Color.Lerp(HandleColorTangent, Color.white, 0.5f);
+                        handleSize *= 1.5f;
+                    }
+                }
+            }
+
+            // Draw a line from origin to origin + direction
+            Handles.DrawLine(origin, handlePosition);
+
+            Quaternion rotation = Quaternion.identity;
+            if (vector != Vector3.zero)
+            {
+                rotation = Quaternion.LookRotation(vector);
+            }
+
+            Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, rotation, handleSize, Vector3.zero, Handles.DotHandleCap);
+
+            if (recordUndo && handlePosition != newPosition)
+            {
+                Undo.RegisterCompleteObjectUndo(target, target.name);
+                vector = (newPosition - origin).normalized;
+
+                // If we normalize, we're done
+                // Otherwise, multiply the vector by the distance between origin and target
+                if (!normalize)
+                {
+                    distanceToOrigin = Vector3.Distance(origin, newPosition) / handleLength;
+
+                    if (clamp)
+                    {
+                        distanceToOrigin = Mathf.Clamp01(distanceToOrigin);
+                    }
+
+                    vector *= distanceToOrigin;
+                }
+            }
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Draw a rotation handle.
+        /// </summary>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="rotation">The rotation to draw the handle.</param>
+        /// <param name="handleSize">Optional, handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Quaternion.html">Quaternion</see> value.</returns>
+        public static Quaternion RotationHandle(Object target, Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
+        {
+            Handles.color = HandleColorRotation;
+
+            if (autoSize)
+            {
+                handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
+            }
+
+            // Make rotation handles larger so they can overlay movement handles
+            Quaternion newRotation = Handles.FreeRotateHandle(rotation, position, handleSize * 2);
+
+            if (recordUndo)
+            {
+                Handles.color = Handles.zAxisColor;
+                Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.forward), handleSize * 2, EventType.Repaint);
+                Handles.color = Handles.xAxisColor;
+                Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.right), handleSize * 2, EventType.Repaint);
+                Handles.color = Handles.yAxisColor;
+                Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(newRotation * Vector3.up), handleSize * 2, EventType.Repaint);
+
+                if (rotation != newRotation)
+                {
+                    Undo.RegisterCompleteObjectUndo(target, target.name);
+                    rotation = newRotation;
+                }
+            }
+
+            return rotation;
+        }
+
+        #endregion Handles
     }
 }
