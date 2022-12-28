@@ -3,14 +3,15 @@
 
 using NUnit.Framework;
 
-namespace Microsoft.MixedReality.Toolkit.Input.Tests.EditMode
+namespace Microsoft.MixedReality.Toolkit.UX.Tests.EditMode
 {
     internal class SmokeTest
     {
         [Test]
-        public void InputPackageTest()
+        public void UXPackageTest()
         {
             Assert.IsTrue(true);
         }
     }
 }
+
