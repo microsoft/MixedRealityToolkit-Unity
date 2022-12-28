@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// A helper class to provide easier access to XR subsystems.
     /// </summary>
-    /// <remarks>These properties are only valid for the XR SDK pipeline.</remarks>
     public static class XRSubsystemHelpers
     {
         private static Dictionary<Type, IList> scratchCaches = new Dictionary<Type, IList>();
