@@ -206,20 +206,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public float DragToggleThreshold { get => dragToggleThreshold; set => dragToggleThreshold = value; }
 
-        [SerializeField]
-        [Tooltip("Enabling this will track total distance the object was moved, instead of displacement to determine if the interactable is dragged/moved or clicked")]
-        bool useScalarToggleDistance;
-
-        /// <summary>
-        /// Enabling this will track total distance the object was moved throughout the frames, instead of final displacement to determine
-        /// if the interactable is dragged/moved or clicked.
-        /// </summary>
-        public bool UseScalarToggleDistance
-        {
-            get => useScalarToggleDistance;
-            set => useScalarToggleDistance = value;
-        }
-
         [Header("Manipulation")]
 
         [SerializeField]
@@ -381,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private float translateLerpTime = 0.00001f;
 
         /// <summary>
-        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 
+        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0
         /// means no smoothing. Max value means no change to value.
         /// </summary>
         public float TranslateLerpTime
@@ -394,6 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [Tooltip("Enable or disable constraint support of this component. When enabled, transform " +
             "changes will be post processed by the linked constraint manager.")]
         private bool enableConstraints = true;
+
         /// <summary>
         /// Enable or disable constraint support of this component. When enabled, transform
         /// changes will be post processed by the linked constraint manager.
@@ -508,10 +495,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private const float lowerAbsoluteClamp = 0.001f;
 
         // Is Bounds Control host selected?
-        private bool isHostSelected;
+        private bool isHostSelected = false;
 
-        // Scalar movement distance of Bounds Control throughout the time it was selected
-        private float movementDistance;
+        // Has the bounds control moved past the toggle threshold throughout the time it was selected?
+        private bool hasPassedToggleThreshold = false;
 
         private void Awake()
         {
@@ -524,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 SubscribeToInteractable();
             }
 
-            // Clamp all scaling operations to a tiny fraction the initial scale, 
+            // Clamp all scaling operations to a tiny fraction the initial scale,
             // regardless if the user has applied a MinMaxScaleConstraint or not.
             minimumScale = Target.transform.localScale * lowerAbsoluteClamp;
 
@@ -545,7 +532,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void Update()
         {
-            // If we need to recompute bounds (usually because we found a 
+            // If we need to recompute bounds (usually because we found a
             // UGUI element), make sure we've waited enough frames since
             // startup, then recompute.
             if (needsBoundsRecompute && waitForFrames-- <= 0)
@@ -555,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             TransformTarget();
-            CalculatePerFrameDistance();
+            CheckToggleThreshold();
         }
 
         private void OnDestroy()
@@ -566,7 +553,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private void OnHostSelected(SelectEnterEventArgs args)
         {
             isHostSelected = true;
-            movementDistance = 0;
+            hasPassedToggleThreshold = false;
             // Track where the interactable was when it was selected.
             // We compare against this when the selection ends.
             startMovePosition = Target.localPosition;
@@ -574,11 +561,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void OnHostDeselected(SelectExitEventArgs args)
         {
-            float dragDistance = useScalarToggleDistance ? movementDistance : Vector3.Distance(startMovePosition, Target.localPosition);
-            if (dragDistance < dragToggleThreshold && toggleHandlesOnClick)
+            if (!hasPassedToggleThreshold && toggleHandlesOnClick)
             {
                 HandlesActive = !HandlesActive;
             }
+            hasPassedToggleThreshold = false;
             isHostSelected = false;
         }
 
@@ -881,13 +868,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        private void CalculatePerFrameDistance()
+        private void CheckToggleThreshold()
         {
-            if(isHostSelected && useScalarToggleDistance)
+            if (isHostSelected && !hasPassedToggleThreshold && Vector3.Distance(startMovePosition, Target.localPosition) >= dragToggleThreshold)
             {
-                var distance = Vector3.Distance(startMovePosition, Target.localPosition);
-                movementDistance += distance;
-                startMovePosition = Target.localPosition;
+                hasPassedToggleThreshold = true;
             }
         }
     }
