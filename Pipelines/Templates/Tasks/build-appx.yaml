@@ -4,40 +4,44 @@
 # [Template] Build appx from a Unity-built sln.
 
 parameters:
-- name: ProjectName
-  type: string
+  - name: ProjectName
+    type: string
 
-- name: Architectures
-  type: object
-  default: []
+  - name: Architectures
+    type: object
+    default: []
 
-- name: BuildFolderPath
-  type: string
+  - name: BuildFolderPath
+    type: string
 
-- name: Version
-  type: string
+  - name: Version
+    type: string
 
-- name: AdditionalSteps
-  type: stepList
-  default: []
+  - name: AdditionalSteps
+    type: stepList
+    default: []
+
+  - name: TargetFolder
+    type: string
+    default: $(Build.ArtifactStagingDirectory)/Apps
 
 steps:
-- ${{ each arch in parameters.Architectures }}:
-  - task: MSBuild@1
-    displayName: Build ${{ arch }} AppX
-    inputs:
-      solution: ${{ parameters.BuildFolderPath }}/${{ parameters.ProjectName }}.sln
-      platform: ${{ arch }}
-      configuration: Master
+  - ${{ each arch in parameters.Architectures }}:
+      - task: MSBuild@1
+        displayName: Build ${{ arch }} AppX
+        inputs:
+          solution: ${{ parameters.BuildFolderPath }}/${{ parameters.ProjectName }}.sln
+          platform: ${{ arch }}
+          configuration: Master
 
-  - ${{ each additionalStep in parameters.AdditionalSteps }}:
-    - ${{ additionalStep }}
+      - ${{ each additionalStep in parameters.AdditionalSteps }}:
+          - ${{ additionalStep }}
 
-  - task: CopyFiles@2
-    displayName: Copy ${{ arch }} AppX to artifacts staging directory
-    inputs:
-      ${{ if eq(arch, 'x86') }}:
-        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_${{ parameters.Version }}.0_Win32_Master_Test
-      ${{ if not(eq(arch, 'x86')) }}:
-        sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_${{ parameters.Version }}.0_${{ arch }}_Master_Test
-      targetFolder: $(Build.ArtifactStagingDirectory)/Apps/uwp-${{ arch }}
+      - task: CopyFiles@2
+        displayName: Copy ${{ arch }} AppX to artifacts staging directory
+        inputs:
+          ${{ if eq(arch, 'x86') }}:
+            sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_${{ parameters.Version }}.0_Win32_Master_Test
+          ${{ if not(eq(arch, 'x86')) }}:
+            sourceFolder: ${{ parameters.BuildFolderPath }}/AppPackages/${{ parameters.ProjectName }}/${{ parameters.ProjectName }}_${{ parameters.Version }}.0_${{ arch }}_Master_Test
+          targetFolder: ${{ parameters.TargetFolder }}/uwp-${{ arch }}

@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 string stateFoldoutID = stateName + "State" + "_" + target.name;
 
-                if (InspectorUIUtility.DrawSectionFoldoutWithKey(stateName, stateFoldoutID, MixedRealityStylesUtility.TitleFoldoutStyle, false))
+                if (InspectorUIUtility.DrawSectionFoldoutWithKey(stateName, stateFoldoutID, MRTKEditorStyles.TitleFoldoutStyle, false))
                 {
                     GUI.color = previousColor;
                     using (new EditorGUI.IndentLevelScope())

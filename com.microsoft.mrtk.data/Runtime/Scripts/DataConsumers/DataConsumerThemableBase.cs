@@ -263,10 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             binding = _bindingInfoList[whichSlot];
 
-            if (binding.Components == null)
-            {
-                binding.Components = new HashSet<Component>();
-            }
+            binding.Components ??= new HashSet<Component>();
             // Add these here so we don't incur the expense of a 2nd regex in AddKeyPaths
             binding.Components.Add(component);
         }

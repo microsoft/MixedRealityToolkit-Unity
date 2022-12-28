@@ -27,9 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
             // This is done for back compat with the obsolete property.
             foreach (DialogButtonContext buttonContext in buttonContexts)
             {
-#pragma warning disable CS0618 // Type or member is obsolete
                 ButtonTypes |= Convert(buttonContext.ButtonType);
-#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             ButtonContexts = buttonContexts;

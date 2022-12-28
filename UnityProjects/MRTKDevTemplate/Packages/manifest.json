@@ -2,7 +2,7 @@
   "dependencies": {
     "com.atteneder.gltfast": "https://github.com/atteneder/glTFast.git#v4.8.3",
     "com.atteneder.ktx": "https://github.com/atteneder/KtxUnity.git#v2.1.2",
-    "com.microsoft.mixedreality.openxr": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.6.0.tgz",
+    "com.microsoft.mixedreality.openxr": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.7.0.tgz",
     "com.microsoft.mixedreality.visualprofiler": "https://github.com/microsoft/VisualProfiler-Unity.git#v2.2.0",
     "com.microsoft.mrtk.accessibility": "file:../../../com.microsoft.mrtk.accessibility",
     "com.microsoft.mrtk.audio": "file:../../../com.microsoft.mrtk.audio",
@@ -15,6 +15,7 @@
     "com.microsoft.mrtk.spatialmanipulation": "file:../../../com.microsoft.mrtk.spatialmanipulation",
     "com.microsoft.mrtk.standardassets": "file:../../../com.microsoft.mrtk.standardassets",
     "com.microsoft.mrtk.tools": "file:../../../com.microsoft.mrtk.tools",
+    "com.microsoft.mrtk.tts.windows": "file:../../../ExternalDependencies/com.microsoft.mrtk.tts.windows-1.0.0.tgz",
     "com.microsoft.mrtk.uxcomponents": "file:../../../com.microsoft.mrtk.uxcomponents",
     "com.microsoft.mrtk.uxcomponents.noncanvas": "file:../../../com.microsoft.mrtk.uxcomponents.noncanvas",
     "com.microsoft.mrtk.uxcore": "file:../../../com.microsoft.mrtk.uxcore",

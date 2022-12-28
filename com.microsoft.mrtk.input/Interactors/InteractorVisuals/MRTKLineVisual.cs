@@ -70,6 +70,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("Controls the length of the visual that the gradient is applied relative to the ray interactor's max raycast distance")]
+        [Range(0.01f, 1)]
+        float maxGradientLength = 0.1f;
+
+        /// <summary>
+        /// Controls the length of the visual that the gradient is applied relative to the ray interactor's max raycast distance
+        /// </summary>
+        public float MaxGradientLength
+        {
+            get => maxGradientLength;
+            set => maxGradientLength = value;
+        }
+
+        [SerializeField]
         [Tooltip("The width of the line.")]
         private AnimationCurve lineWidth = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
@@ -358,6 +372,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         lineRenderer.colorGradient = NoTargetColorGradient;
                     }
+
+                    var compressionAmount = Mathf.Clamp(rayInteractor.maxRaycastDistance * MaxGradientLength / hitDistance, 0.0f, 1.0f);
+                    lineRenderer.colorGradient = ColorUtilities.GradientCompress(lineRenderer.colorGradient, 0.0f, compressionAmount);
                 }
 
                 // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object

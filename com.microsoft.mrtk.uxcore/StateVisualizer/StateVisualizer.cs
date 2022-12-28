@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // Have we been "done" long enough to go to sleep?
 #pragma warning disable UNT0004 // Using fixedDeltaTime to avoid going to sleep too early when frames hang (like at startup)
                 sleepTimer -= Time.fixedDeltaTime;
-#pragma warning disable UNT0004 // Using fixedDeltaTime to avoid going to sleep too early when frames hang (like at startup)
+#pragma warning restore UNT0004 // Using fixedDeltaTime to avoid going to sleep too early when frames hang (like at startup)
 
                 // Only sleep if we're not currently selected or hovered.
                 // This seems counter-intuitive, but we do this because an animation may need to be

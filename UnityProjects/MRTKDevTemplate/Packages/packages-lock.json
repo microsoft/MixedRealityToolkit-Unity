@@ -23,7 +23,7 @@
       "hash": "7747a48d5e994db800b4c60a0a8b95a5ae2ce39f"
     },
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.6.0.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.7.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
@@ -142,6 +142,12 @@
         "com.microsoft.mrtk.core": "3.0.0-development"
       }
     },
+    "com.microsoft.mrtk.tts.windows": {
+      "version": "file:../../../ExternalDependencies/com.microsoft.mrtk.tts.windows-1.0.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.microsoft.mrtk.uxcomponents": {
       "version": "file:../../../com.microsoft.mrtk.uxcomponents",
       "depth": 0,
@@ -181,7 +187,8 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.microsoft.mrtk.core": "3.0.0-development"
+        "com.microsoft.mrtk.core": "3.0.0-development",
+        "com.microsoft.mrtk.tts.windows": "1.0.0"
       }
     },
     "com.microsoft.spatialaudio.spatializer.unity": {

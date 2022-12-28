@@ -155,10 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             string[] dates = { "February 26, 2020", "January 1, 2000", "March 1, 2018", "April 29, 2017", "May 5, 1999", "June 21, 1980" };
             string[] words = { "mixed reality", "MRTK", "HoloLens", "Unity", "Visual Studio", "Middleware", "Microsoft", "XR", "VR", "AR", "MR", "C#", "Azure" };
 
-            if (_dataSourceObject.images == null)
-            {
-                _dataSourceObject.images = new ObservableCollection<ImageInfo>();
-            }
+            _dataSourceObject.images ??= new ObservableCollection<ImageInfo>();
 
             imageUrlTemplate = imageUrlTemplate.Trim();
 
@@ -192,9 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             for (int i = 0; i < items.Length - 1; i++)
             {
                 int j = rand.Next(i, items.Length);
-                string temp = items[i];
-                items[i] = items[j];
-                items[j] = temp;
+                (items[j], items[i]) = (items[i], items[j]);
             }
         }
     }

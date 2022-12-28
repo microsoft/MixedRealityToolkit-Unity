@@ -84,10 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     // Compute pixel coords as a fraction of the texture dimension
                     Vector2 pixelCoordinate = Vector2.Scale(new Vector2(TextureSize, TextureSize), uvTouchPosition);
 
-                    Vector2 lastPosition;
-
                     // Have we seen this interactor before? If not, last position = current position.
-                    if(!lastPositions.TryGetValue(interactor, out lastPosition))
+                    if (!lastPositions.TryGetValue(interactor, out Vector2 lastPosition))
                     {
                         lastPosition = pixelCoordinate;
                     }

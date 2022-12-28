@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 InspectorUIUtility.DrawError($"Duplicate interaction mode definitions detected in the interaction mode manager on {interactionModeManager.gameObject.name}. " +
                                     $"Please check the following interaction modes: {duplicatedNameString}");
 
-                GUI.color = MixedRealityInspectorUtility.ErrorColor;
+                GUI.color = InspectorUIUtility.ErrorColor;
             }
 
             // Handle the rest of the UI
