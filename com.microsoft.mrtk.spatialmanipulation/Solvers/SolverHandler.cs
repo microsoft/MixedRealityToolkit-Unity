@@ -292,10 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private float lastUpdateTime;
 
-        private HandsAggregatorSubsystem handSubsystem = null;
-
-        internal HandsAggregatorSubsystem HandSubsystem => handSubsystem ??= HandsUtils.GetSubsystem();
-
         private const string TrackingTargetName = "SolverHandler Tracking Target";
 
         #region MonoBehaviour Implementation
@@ -468,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
                 else if (TrackedTargetType == TrackedObjectType.HandJoint)
                 {
-                    if (HandSubsystem != null)
+                    if (XRSubsystemHelpers.HandsAggregator != null)
                     {
                         currentTrackedHandedness = TrackedHandedness;
 
@@ -510,7 +506,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 XRNode? handNode = currentTrackedHandedness.ToXRNode();
 
-                if (handNode.HasValue && HandSubsystem.TryGetJoint(TrackedHandJoint, handNode.Value, out HandJointPose jointPos))
+                if (handNode.HasValue &&
+                    XRSubsystemHelpers.HandsAggregator != null &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint, handNode.Value, out HandJointPose jointPos))
                 {
                     if (cachedHandJointTransform == null)
                     {
@@ -598,10 +596,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </returns>
         private bool IsHandTracked(Handedness hand)
         {
-            Debug.Assert(HandSubsystem != null);
-
-            // todo - when HandAggregationSubsystem implements IsHandTracked, make that call here.
-            return HandSubsystem != null;
+            return XRSubsystemHelpers.HandsAggregator != null &&
+                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, hand.ToXRNode().Value, out HandJointPose pose);
         }
 
         /// <summary>

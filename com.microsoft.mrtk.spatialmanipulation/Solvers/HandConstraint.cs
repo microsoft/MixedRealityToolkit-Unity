@@ -653,7 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Debug.Assert(hand.HasValue);
                 HandJointPose? jointPose = null;
 
-                if (SolverHandler.HandSubsystem.TryGetJoint(
+                if (XRSubsystemHelpers.HandsAggregator != null &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(
                     TrackedHandJoint.Palm,
                     hand.Value,
                     out HandJointPose pose))
