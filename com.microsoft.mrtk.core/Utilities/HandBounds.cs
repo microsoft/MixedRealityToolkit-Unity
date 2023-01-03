@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// (or the proxy visualizer of a motion controller).
     /// </summary>
     [AddComponentMenu("MRTK/Core/Hand Bounds")]
-    public class HandBounds : MonoBehaviour // todo, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+    public class HandBounds : MonoBehaviour
     {
         /// <summary>
         /// Accessor for the bounds associated with a handedness, calculated in global-axis-aligned space.

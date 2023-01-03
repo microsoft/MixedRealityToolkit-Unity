@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Utilities for manipulating and interpolating between colors and gradients.
+    /// </summary>
     public static class ColorUtilities
     {
         /// <summary>
@@ -18,11 +21,21 @@ namespace Microsoft.MixedReality.Toolkit
             return GradientLerp(a, b, t, false, false);
         }
 
+        /// <summary>
+        /// Linearly interpolate between two gradients, without interpolating alpha.
+        /// </summary>
+        /// <remarks>Taken from https://forum.unity.com/threads/lerp-from-one-gradient-to-another.342561/ </remarks>
+        /// <returns>The linearly interpolated gradient</returns>
         public static Gradient GradientLerpNoAlpha(Gradient a, Gradient b, float t)
         {
             return GradientLerp(a, b, t, true, false);
         }
 
+        /// <summary>
+        /// Linearly interpolate between two gradients using only the alpha channel.
+        /// </summary>
+        /// <remarks>Taken from https://forum.unity.com/threads/lerp-from-one-gradient-to-another.342561/ </remarks>
+        /// <returns>The linearly interpolated gradient</returns>
         public static Gradient GradientLerpNoColor(Gradient a, Gradient b, float t)
         {
             return GradientLerp(a, b, t, false, true);

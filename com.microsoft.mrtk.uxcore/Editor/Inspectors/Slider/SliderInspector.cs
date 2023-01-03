@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(Slider), true)]
-    public class SliderInspector : StatefulInteractableInspector
+    public class SliderInspector : StatefulInteractableEditor
     {
         private static GUIStyle labelStyle;
 

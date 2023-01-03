@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
     [CustomEditor(typeof(Follow))]
     [CanEditMultipleObjects]
-    public class FollowEditor : SolverInspector
+    public class FollowEditor : SolverEditor
     {
         // Orientation
         private SerializedProperty orientationType;
