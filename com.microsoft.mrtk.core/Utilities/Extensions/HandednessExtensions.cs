@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>
         /// True if the <see cref="Handedness"/> value being checked is Right, otherwise false.
         /// </returns>
+        [Obsolete("Use flags instead (e.g. Handedness.Right | Handedness.Left)")]
         public static bool IsRight(this Handedness current)
         {
             return current == Handedness.Right;
@@ -51,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>
         /// True if the <see cref="Handedness"/> value being checked is Left, otherwise false.
         /// </returns>
+        [Obsolete("Use flags instead (e.g. Handedness.Right | Handedness.Left)")]
         public static bool IsLeft(this Handedness current)
         {
             return current == Handedness.Left;
@@ -62,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>
         /// True if the <see cref="Handedness"/> value being checked is None, otherwise false.
         /// </returns>
+        [Obsolete("Use flags instead (e.g. Handedness.Right | Handedness.Left)")]
         public static bool IsNone(this Handedness current)
         {
             return current == Handedness.None;
@@ -79,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets the XRNode representing the specified handedness.
+        /// Gets the XRNode representing the specified handedness. If the Handedness
+        /// flags include both Left and Right, returns null.
         /// </summary>
         /// <param name="hand">The <see cref="Handedness"/> value for
         /// which the XRNode is requested.</param>
@@ -88,10 +92,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static XRNode? ToXRNode(this Handedness hand)
         {
-            if (hand.IsNone()) { return null; }
-
-            Debug.Assert(hand.IsLeft() || hand.IsRight());
-            return (hand.IsLeft() ? XRNode.LeftHand : XRNode.RightHand);
+            if (hand == Handedness.Left) { return XRNode.LeftHand; }
+            if (hand == Handedness.Right) { return XRNode.RightHand; }
+            return null;
         }
     }
 }
