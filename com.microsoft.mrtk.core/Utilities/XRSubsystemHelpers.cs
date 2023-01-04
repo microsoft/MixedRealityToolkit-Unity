@@ -37,10 +37,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// Get the first active and running subsystem of type T.
         /// </summary>
         /// <remarks>
-        /// Caution: this method allocs a new list of subsystems.
-        /// For performance critical (frame loop) applications,
-        /// consider calling SubsystemManager.GetSubsystems directly
-        /// with a pre-allocated list.
+        /// This method allocates on the first invocation with a new, unique type T.
+        /// Subsequent invocations with the same type T will no longer allocate.
         /// </remarks>
         public static T GetFirstRunningSubsystem<T>() where T : ISubsystem
         {
