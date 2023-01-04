@@ -364,9 +364,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 rotateManipulation.logic.Setup(interactorsSelecting, this, initialTransform);
                 scaleManipulation.logic.Setup(interactorsSelecting, this, initialTransform);
 
-                placementHub.transformations.Add(scaleManipulation);
-                placementHub.transformations.Add(rotateManipulation);
-                placementHub.transformations.Add(moveManipulation);
+                placementHub.Transformations.Add(scaleManipulation);
+                placementHub.Transformations.Add(rotateManipulation);
+                placementHub.Transformations.Add(moveManipulation);
             }
         }
 
@@ -389,9 +389,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     ReleaseRigidBody(rigidBody.velocity, rigidBody.angularVelocity);
                 }
 
-                placementHub.transformations.Remove(moveManipulation);
-                placementHub.transformations.Remove(rotateManipulation);
-                placementHub.transformations.Remove(scaleManipulation);
+                placementHub.Transformations.Remove(moveManipulation);
+                placementHub.Transformations.Remove(rotateManipulation);
+                placementHub.Transformations.Remove(scaleManipulation);
             }
         }
 
