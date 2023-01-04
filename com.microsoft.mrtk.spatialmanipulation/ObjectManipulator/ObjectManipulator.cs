@@ -922,7 +922,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
     }
 
-    #region ReleaseBehaviorEnum Extenions
+    #region ReleaseBehaviorEnum Extensions
     /// <summary>
     /// Extension methods specific to the <see cref="ReleaseBehaviorType"/> enum.
     /// </summary>
