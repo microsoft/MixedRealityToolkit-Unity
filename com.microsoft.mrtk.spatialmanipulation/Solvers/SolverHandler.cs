@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             get => preferredTrackedHandedness;
             set
             {
-                if ((value.IsLeft() || value.IsRight())
+                if ((value == Handedness.Left || value == Handedness.Left)
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
@@ -575,7 +575,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // If we were tracking a particular hand, check that our transform is still valid
             // The HandJointService does not destroy its own hand joint tracked GameObjects even when a hand is no longer tracked
             // Those HandJointService's GameObjects though are the parents of our tracked transform and thus will not be null/destroyed
-            if (TrackedTargetType == TrackedObjectType.HandJoint && !currentTrackedHandedness.IsNone())
+            if (TrackedTargetType == TrackedObjectType.HandJoint && currentTrackedHandedness != Handedness.None)
             {
                 bool trackingLeft = IsHandTracked(Handedness.Left);
                 bool trackingRight = IsHandTracked(Handedness.Right);
