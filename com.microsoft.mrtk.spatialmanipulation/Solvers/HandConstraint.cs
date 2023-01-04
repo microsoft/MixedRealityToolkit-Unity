@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     var additionalRotation = SolverHandler.AdditionalRotation;
 
                     // Invert the yaw based on handedness to allow the rotation to look similar on both hands.
-                    if (trackedNode.Value.ToHandedness().IsRight())
+                    if (trackedNode.Value == XRNode.RightHand)
                     {
                         additionalRotation.y *= -1.0f;
                     }
@@ -520,7 +520,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             HandJointPose? palmPose = GetPalmPose(hand);
                             if (palmPose.HasValue)
                             {
-                                direction = Quaternion.AngleAxis((hand.Value.IsLeftHand()) ? angleOffset : -angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
+                                direction = Quaternion.AngleAxis((hand.Value == XRNode.LeftHand) ? angleOffset : -angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
                             }
                             else
                             {

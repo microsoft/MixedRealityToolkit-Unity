@@ -580,8 +580,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 bool trackingLeft = IsHandTracked(Handedness.Left);
                 bool trackingRight = IsHandTracked(Handedness.Right);
 
-                return (currentTrackedHandedness.IsLeft() && !trackingLeft) ||
-                       (currentTrackedHandedness.IsRight() && !trackingRight);
+                return (currentTrackedHandedness == Handedness.Left && !trackingLeft) ||
+                       (currentTrackedHandedness == Handedness.Right && !trackingRight);
             }
 
             return false;
