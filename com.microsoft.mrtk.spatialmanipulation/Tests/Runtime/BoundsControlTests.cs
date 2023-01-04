@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
-            Assert.IsNull(bc);
+            Assert.IsTrue(bc == null);
         }
 
         [UnityTest]
@@ -97,6 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+            Assert.IsTrue(bc == null);
         }
 
         [UnityTest]
@@ -134,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+            Assert.IsTrue(bc == null);
         }
 
         [UnityTest]
@@ -179,6 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+            Assert.IsTrue(bc == null);
         }
 
         [UnityTest]
