@@ -4,7 +4,7 @@
 # [Template] Generate binaries for API reference docs.
 
 parameters:
-  unityDirectory: 'C:/Program Files/Unity/Hub/Editor/2021.3.3f1'
+  unityDirectory: 'C:/Program Files/Unity/Hub/Editor/2021.3.16f1'
   docToolProjectRoot: $(Build.SourcesDirectory)/lib.doctools
   mrtkProjectRoot: $(Build.SourcesDirectory)/MixedRealityToolkit-Unity
   outputDirectory: $(Build.ArtifactStagingDirectory)/docs
