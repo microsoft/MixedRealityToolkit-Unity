@@ -367,14 +367,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, rayInteractor.hasSelection ? 1 : 0);
                         }
+
+                        var compressionAmount = Mathf.Clamp(rayInteractor.maxRaycastDistance * MaxGradientLength / hitDistance, 0.0f, 1.0f);
+                        lineRenderer.colorGradient = ColorUtilities.GradientCompress(lineRenderer.colorGradient, 0.0f, compressionAmount);
                     }
                     else
                     {
                         lineRenderer.colorGradient = NoTargetColorGradient;
                     }
-
-                    var compressionAmount = Mathf.Clamp(rayInteractor.maxRaycastDistance * MaxGradientLength / hitDistance, 0.0f, 1.0f);
-                    lineRenderer.colorGradient = ColorUtilities.GradientCompress(lineRenderer.colorGradient, 0.0f, compressionAmount);
                 }
 
                 // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
