@@ -601,7 +601,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             XRNode? node = hand.ToXRNode();
             if (!node.HasValue) { return false; }
             return XRSubsystemHelpers.HandsAggregator != null &&
-                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node, out HandJointPose pose);
+                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
         }
 
         /// <summary>
