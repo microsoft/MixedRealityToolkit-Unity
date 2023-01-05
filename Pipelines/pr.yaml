@@ -20,7 +20,7 @@ stages:
   - stage: UnityValidation
     jobs:
       - job: BuildStandaloneAndTest
-        pool: Unity_2021.3.16f1_Pool
+        pool: Unity_2021.3.3f1_Pool
         steps:
           - checkout: self
             fetchDepth: 3
@@ -33,7 +33,7 @@ stages:
               RunTests: true
 
       - job: BuildUWP
-        pool: Unity_2021.3.16f1_Pool
+        pool: Unity_2021.3.3f1_Pool
         steps:
           - checkout: self
             fetchDepth: 3
@@ -45,7 +45,7 @@ stages:
               Platform: UWP
 
       - job: BuildAndroid
-        pool: Unity_2021.3.16f1_Pool
+        pool: Unity_2021.3.3f1_Pool
         steps:
           - checkout: self
             fetchDepth: 3
