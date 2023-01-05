@@ -25,6 +25,14 @@ MonoBehaviour:
   subsystemConfigs:
     entries:
     - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsPhraseRecognitionSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: 610e76a350bf5e24b95a8b7d7024ded7, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsSpeechRecognitionSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: c1ec3a5357948504fac70f304d21881a, type: 2}
+    - key:
         reference: Microsoft.MixedReality.Toolkit.Accessibility.MRTKAccessibilitySubsystem,
           Microsoft.MixedReality.Toolkit.Accessibility
       value: {fileID: 11400000, guid: 3aa94a99d7ce5e845a6a78409e004670, type: 2}
