@@ -4,7 +4,7 @@
   "description": "Common assets used by the MRTK packages, including common fonts, materials, and models. Relies on the Graphics Tools collection of shaders.",
   "displayName": "MRTK Standard Assets",
   "msftFeatureCategory": "MRTK3",
-  "unity": "2020.3",
+  "unity": "2021.3",
   "author": "Microsoft",
   "license": "MIT",
   "repository": {
