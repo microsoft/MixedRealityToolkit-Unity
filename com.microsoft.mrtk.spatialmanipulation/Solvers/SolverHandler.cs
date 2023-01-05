@@ -596,8 +596,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </returns>
         private bool IsHandTracked(Handedness hand)
         {
+            // Early out if the hand isn't a valid XRNode
+            // (i.e., Handedness.None or Handedness.Both)
+            XRNode? node = hand.ToXRNode();
+            if (!node.HasValue) { return false; }
             return XRSubsystemHelpers.HandsAggregator != null &&
-                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, hand.ToXRNode().Value, out HandJointPose pose);
+                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node, out HandJointPose pose);
         }
 
         /// <summary>
