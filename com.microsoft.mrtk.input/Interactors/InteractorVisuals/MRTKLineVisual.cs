@@ -70,12 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Controls the length of the visual that the gradient is applied relative to the ray interactor's max raycast distance")]
+        [Tooltip("On hit, the gradient will be applied evenly along the line renderer until it's total length is longer than this value multiplied by the ray interactor's max raycast distance")]
         [Range(0.01f, 1)]
-        float maxGradientLength = 0.1f;
+        float maxGradientLength = 0.3f;
 
         /// <summary>
-        /// Controls the length of the visual that the gradient is applied relative to the ray interactor's max raycast distance
+        /// On hit, the gradient will be applied evenly along the line renderer until it's total length is longer than this value multiplied by the ray interactor's max raycast distance.
         /// </summary>
         public float MaxGradientLength
         {
@@ -267,6 +267,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region LineVisual Updates
 
         private static readonly ProfilerMarker UpdateLinePerfMarker = new ProfilerMarker("[MRTK] MRTKLineVisual.UpdateLineVisual");
+        private static readonly ProfilerMarker UpdateLinePerfMarker2 = new ProfilerMarker("[MRTK] MRTKLineVisual.UpdateLineVisual2");
+
+        // Cached value of the current gradient. Used to avoid making calls to lineRenderer.colorGradient, which allocs
+        private Gradient cachedGradient = new Gradient();
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateLineVisual()
@@ -307,21 +311,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Finally enable the line renderer if we pass the other checks
                 lineRenderer.enabled = rayInteractor.isHoverActive;
 
+                // Exit early if the line renderer is ultimately disabled
+                if (!lineRenderer.enabled)
+                {
+                    ClearLineRenderer();
+                    return;
+                }
+
                 // Assign the first point to the ray origin
                 lineDataProvider.FirstPoint = rayPositions[0];
 
-                IVariableSelectInteractor variableSelectInteractor = rayInteractor as IVariableSelectInteractor;
-
-                if (variableSelectInteractor != null)
-                {
-                    lineRenderer.GetPropertyBlock(propertyBlock);
-                    propertyBlock.SetFloat("_Shift_", variableSelectInteractor.SelectProgress);
-                    lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, variableSelectInteractor.SelectProgress);
-                    lineRenderer.SetPropertyBlock(propertyBlock);
-                }
-
                 // If the interactor is currently selecting, lock the end of the ray to the selected object
-                if (rayInteractor.interactablesSelected.Count > 0)
+                if (rayInteractor.hasSelection)
                 {
                     // Assign the last point to the one saved by the callback
                     lineDataProvider.LastPoint = hitTargetTransform.TransformPoint(targetLocalHitPoint);
@@ -355,26 +356,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // Assign the last point to last point in the data structure
                     lineDataProvider.LastPoint = rayPositions[rayPositionsCount - 1];
-
-                    // If we are hovering over a valid object, lerp the color based on pinchedness if applicable
-                    if (rayHasHit)
-                    {
-                        if (variableSelectInteractor != null)
-                        {
-                            lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, variableSelectInteractor.SelectProgress);
-                        }
-                        else
-                        {
-                            lineRenderer.colorGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, rayInteractor.hasSelection ? 1 : 0);
-                        }
-
-                        var compressionAmount = Mathf.Clamp(rayInteractor.maxRaycastDistance * MaxGradientLength / hitDistance, 0.0f, 1.0f);
-                        lineRenderer.colorGradient = ColorUtilities.GradientCompress(lineRenderer.colorGradient, 0.0f, compressionAmount);
-                    }
-                    else
-                    {
-                        lineRenderer.colorGradient = NoTargetColorGradient;
-                    }
                 }
 
                 // Project forward based on pointer direction to get an 'expected' position of the first control point if we've hit an object
@@ -407,6 +388,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     rendererPositions[i] = lineDataProvider.GetPoint(normalizedDistance);
                 }
                 lineRenderer.SetPositions(rendererPositions);
+
+                // Now handle coloring the line visual
+                // If our interactor is a variable select interactor, change the material property based on select progress
+                IVariableSelectInteractor variableSelectInteractor = rayInteractor as IVariableSelectInteractor;
+                if (variableSelectInteractor != null)
+                {
+                    lineRenderer.GetPropertyBlock(propertyBlock);
+                    propertyBlock.SetFloat("_Shift_", variableSelectInteractor.SelectProgress);
+                    lineRenderer.SetPropertyBlock(propertyBlock);
+                }
+
+                // If we are hovering over a valid object or are currently selecting one, lerp the color based on selectedness
+                if (rayHasHit || rayInteractor.hasSelection)
+                {
+                    if (variableSelectInteractor != null)
+                    {
+                        cachedGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, variableSelectInteractor.SelectProgress);
+                    }
+                    else
+                    {
+                        cachedGradient = ColorUtilities.GradientLerp(ValidColorGradient, SelectActiveColorGradient, rayInteractor.hasSelection ? 1 : 0);
+                    }
+
+                    // apply the compression effect
+                    var compressionAmount = Mathf.Clamp(rayInteractor.maxRaycastDistance * MaxGradientLength / hitDistance, 0.0f, 1.0f);
+                    cachedGradient = ColorUtilities.GradientCompress(cachedGradient, 0.0f, compressionAmount);
+                }
+                else
+                {
+                    cachedGradient = NoTargetColorGradient;
+                }
+
+                lineRenderer.colorGradient = cachedGradient;
             }
         }
 
