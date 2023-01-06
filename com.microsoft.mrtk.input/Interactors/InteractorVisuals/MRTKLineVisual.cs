@@ -267,7 +267,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region LineVisual Updates
 
         private static readonly ProfilerMarker UpdateLinePerfMarker = new ProfilerMarker("[MRTK] MRTKLineVisual.UpdateLineVisual");
-        private static readonly ProfilerMarker UpdateLinePerfMarker2 = new ProfilerMarker("[MRTK] MRTKLineVisual.UpdateLineVisual2");
 
         // Cached value of the current gradient. Used to avoid making calls to lineRenderer.colorGradient, which allocs
         private Gradient cachedGradient = new Gradient();
