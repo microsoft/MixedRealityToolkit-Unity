@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private float translateLerpTime = 0.00001f;
 
         /// <summary>
-        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 
+        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0
         /// means no smoothing. Max value means no change to value.
         /// </summary>
         public float TranslateLerpTime
@@ -380,6 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [Tooltip("Enable or disable constraint support of this component. When enabled, transform " +
             "changes will be post processed by the linked constraint manager.")]
         private bool enableConstraints = true;
+
         /// <summary>
         /// Enable or disable constraint support of this component. When enabled, transform
         /// changes will be post processed by the linked constraint manager.
@@ -493,6 +494,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // BC cannot scale below this "epsilon" value
         private const float lowerAbsoluteClamp = 0.001f;
 
+        // Is Bounds Control host selected?
+        private bool isHostSelected = false;
+
+        // Has the bounds control moved past the toggle threshold throughout the time it was selected?
+        private bool hasPassedToggleThreshold = false;
+
         private void Awake()
         {
             if (Interactable == null)
@@ -504,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 SubscribeToInteractable();
             }
 
-            // Clamp all scaling operations to a tiny fraction the initial scale, 
+            // Clamp all scaling operations to a tiny fraction the initial scale,
             // regardless if the user has applied a MinMaxScaleConstraint or not.
             minimumScale = Target.transform.localScale * lowerAbsoluteClamp;
 
@@ -525,7 +532,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void Update()
         {
-            // If we need to recompute bounds (usually because we found a 
+            // If we need to recompute bounds (usually because we found a
             // UGUI element), make sure we've waited enough frames since
             // startup, then recompute.
             if (needsBoundsRecompute && waitForFrames-- <= 0)
@@ -535,6 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             TransformTarget();
+            CheckToggleThreshold();
         }
 
         private void OnDestroy()
@@ -544,6 +552,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void OnHostSelected(SelectEnterEventArgs args)
         {
+            isHostSelected = true;
+            hasPassedToggleThreshold = false;
             // Track where the interactable was when it was selected.
             // We compare against this when the selection ends.
             startMovePosition = Target.localPosition;
@@ -551,10 +561,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private void OnHostDeselected(SelectExitEventArgs args)
         {
-            if (Vector3.Distance(startMovePosition, Target.localPosition) < dragToggleThreshold && toggleHandlesOnClick)
+            if (!hasPassedToggleThreshold && toggleHandlesOnClick)
             {
                 HandlesActive = !HandlesActive;
             }
+            hasPassedToggleThreshold = false;
+            isHostSelected = false;
         }
 
         private void SubscribeToInteractable()
@@ -853,6 +865,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         }
                     }
                 }
+            }
+        }
+
+        private void CheckToggleThreshold()
+        {
+            if (isHostSelected && !hasPassedToggleThreshold && Vector3.Distance(startMovePosition, Target.localPosition) >= dragToggleThreshold)
+            {
+                hasPassedToggleThreshold = true;
             }
         }
     }

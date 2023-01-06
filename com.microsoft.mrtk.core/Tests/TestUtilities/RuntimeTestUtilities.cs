@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using System.Collections;
-using System.IO;
 using UnityEngine.SceneManagement;
 
 #if ENABLE_INPUT_SYSTEM
@@ -26,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
     public static class RuntimeTestUtilities
     {
         // Unity's default scene name for a recently created scene
-        const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
+        private const string PlayModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
 
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
@@ -42,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene playModeTestScene = SceneManager.GetSceneAt(i);
-                if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
+                if (playModeTestScene.name == PlayModeTestSceneName && playModeTestScene.isLoaded)
                 {
                     SceneManager.SetActiveScene(playModeTestScene);
                     sceneExists = true;
@@ -51,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 
             if (!sceneExists)
             {
-                Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
+                Scene playModeTestScene = SceneManager.CreateScene(PlayModeTestSceneName);
                 SceneManager.SetActiveScene(playModeTestScene);
             }
         }
@@ -61,12 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         /// </summary>
         public static void TeardownScene()
         {
-            Scene playModeTestScene = SceneManager.GetSceneByName(playModeTestSceneName);
+            Scene playModeTestScene = SceneManager.GetSceneByName(PlayModeTestSceneName);
             if (playModeTestScene.isLoaded)
             {
                 foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
                 {
-                    GameObject.Destroy(gameObject);
+                    Object.Destroy(gameObject);
                 }
             }
 
@@ -81,20 +80,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             }
         }
 
-        private static bool testPaused;
         /// <summary>
         /// Used for debugging. Pauses the test until the dialog is cleared.
         /// </summary>
         public static IEnumerator PauseTest()
         {
 #if UNITY_EDITOR
-            if(!Application.isBatchMode)
+            if (!Application.isBatchMode)
             {
                 PauseDialogWindow.ShowWindow();
-                while (testPaused)
+                while (EditorWindow.HasOpenInstances<PauseDialogWindow>())
                 {
                     yield return null;
-                };
+                }
             }
 #endif
         }
@@ -103,9 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         {
             public static void ShowWindow()
             {
-                testPaused = true;
                 var window = GetWindow(typeof(PauseDialogWindow));
-                var position = window.position;
+                Rect position = window.position;
                 position.center = new Rect(0f, 0f, Screen.currentResolution.width, Screen.currentResolution.height).center;
                 window.position = position;
                 window.Show();
@@ -116,15 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
                 GUILayout.Label("Test Paused for Debugging", EditorStyles.boldLabel);
                 if (GUILayout.Button("Resume Test"))
                 {
-                    testPaused = false;
                     Close();
                 }
-            }
-
-            // Make sure that we unpause the test if this window is closed
-            void OnDestroy()
-            {
-                testPaused = false;
             }
         }
 
