@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit
             return new BuildValidationRule()
             {
                 Category = "MRTK3",
-                Message = "For UI and other visuals to appear correctly, we strongly recommend Linear color space.",
+                Message = "For MRTK UI and other visuals to appear correctly, we strongly recommend Linear color space.",
                 CheckPredicate = () => PlayerSettings.colorSpace == ColorSpace.Linear,
                 FixIt = () => PlayerSettings.colorSpace = ColorSpace.Linear,
                 FixItMessage = "Change the color space from Gamma to Linear under Project Settings -> Player Settings.",
