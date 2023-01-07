@@ -78,6 +78,15 @@
         "com.unity.textmeshpro": "3.0.6"
       }
     },
+    "com.microsoft.mrtk.databinding": {
+      "version": "file:C:/Users/finnn/src/MixedRealityToolkit-Unity-TENTED/ExternalDependencies/com.microsoft.mrtk.databinding-0.1.0-preview.0 (1).tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.microsoft.mrtk.editortools": "0.1.1-preview.0",
+        "com.unity.textmeshpro": "3.0.6"
+      }
+    },
     "com.microsoft.mrtk.diagnostics": {
       "version": "file:../../../com.microsoft.mrtk.diagnostics",
       "depth": 0,
@@ -86,6 +95,12 @@
         "com.microsoft.mrtk.core": "3.0.0-development",
         "com.unity.xr.management": "4.2.1"
       }
+    },
+    "com.microsoft.mrtk.editortools": {
+      "version": "file:C:/Users/finnn/src/MixedRealityToolkit-Unity-TENTED/ExternalDependencies/com.microsoft.mrtk.editortools-0.1.1-preview.1 (1).tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
     },
     "com.microsoft.mrtk.extendedassets": {
       "version": "file:../../../com.microsoft.mrtk.extendedassets",
