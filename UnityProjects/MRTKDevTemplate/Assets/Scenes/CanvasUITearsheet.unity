@@ -152,6 +152,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 65389176}
   m_RootOrder: 2
@@ -491,6 +492,7 @@ GameObject:
   - component: {fileID: 14468909}
   - component: {fileID: 14468908}
   - component: {fileID: 14468907}
+  - component: {fileID: 14468911}
   m_Layer: 5
   m_Name: Button Bar_Horizontal
   m_TagString: Untagged
@@ -508,6 +510,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1395554708}
   - {fileID: 87540892}
@@ -593,6 +596,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14468905}
   m_CullTransparentMesh: 1
+--- !u!114 &14468911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14468905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 14468909}
 --- !u!1001 &30053973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -996,6 +1033,7 @@ GameObject:
   - component: {fileID: 47797543}
   - component: {fileID: 47797542}
   - component: {fileID: 47797541}
+  - component: {fileID: 47797545}
   m_Layer: 5
   m_Name: ListItems
   m_TagString: Untagged
@@ -1013,6 +1051,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 173788764}
   - {fileID: 1955009909}
@@ -1100,6 +1139,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47797539}
   m_CullTransparentMesh: 1
+--- !u!114 &47797545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47797539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 47797543}
 --- !u!1001 &47838181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1401,6 +1474,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2100425382}
   - {fileID: 86645936}
@@ -1626,6 +1700,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1482164461}
   m_RootOrder: 0
@@ -1763,6 +1838,7 @@ GameObject:
   - component: {fileID: 85912328}
   - component: {fileID: 85912330}
   - component: {fileID: 85912329}
+  - component: {fileID: 85912331}
   m_Layer: 5
   m_Name: Menu Plate with Slider
   m_TagString: Untagged
@@ -1780,6 +1856,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 906057049}
   m_Father: {fileID: 311062483}
@@ -1822,6 +1899,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 85912327}
   m_CullTransparentMesh: 1
+--- !u!114 &85912331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85912327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 85912329}
 --- !u!1 &86645935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,6 +1962,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 65389176}
   m_RootOrder: 1
@@ -2192,6 +2304,7 @@ GameObject:
   - component: {fileID: 101034064}
   - component: {fileID: 101034063}
   - component: {fileID: 101034062}
+  - component: {fileID: 101034066}
   m_Layer: 5
   m_Name: Button Grid_4x2
   m_TagString: Untagged
@@ -2209,6 +2322,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1767162170}
   - {fileID: 47838182}
@@ -2296,6 +2410,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101034060}
   m_CullTransparentMesh: 1
+--- !u!114 &101034066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101034060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 101034064}
 --- !u!1001 &101484291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3062,6 +3210,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1488121688}
   - {fileID: 1854885402}
@@ -3273,7 +3422,11 @@ MonoBehaviour:
   hostTransform: {fileID: 1369683957}
   allowedManipulations: 7
   allowedInteractionTypes: -1
-  useForcesForNearManipulation: 0
+  applyTorque: 1
+  springForceSoftness: 0.1
+  springTorqueSoftness: 0.1
+  springDamping: 1
+  springForceLimit: 100
   rotationAnchorNear: 1
   rotationAnchorFar: 1
   releaseBehavior: 3
@@ -3500,6 +3653,7 @@ GameObject:
   - component: {fileID: 154440646}
   - component: {fileID: 154440645}
   - component: {fileID: 154440644}
+  - component: {fileID: 154440648}
   m_Layer: 5
   m_Name: Button_IconAndText_128x32mm
   m_TagString: Untagged
@@ -3517,6 +3671,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1936164015}
   m_Father: {fileID: 2118576653}
@@ -3599,6 +3754,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 154440642}
   m_CullTransparentMesh: 1
+--- !u!114 &154440648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154440642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 154440646}
 --- !u!1 &163304837
 GameObject:
   m_ObjectHideFlags: 0
@@ -3628,6 +3817,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 311062483}
   m_RootOrder: 0
@@ -4558,6 +4748,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 311062483}
   m_RootOrder: 5
@@ -4680,6 +4871,7 @@ GameObject:
   - component: {fileID: 201720336}
   - component: {fileID: 201720335}
   - component: {fileID: 201720334}
+  - component: {fileID: 201720338}
   m_Layer: 5
   m_Name: Button Bar_Vertical
   m_TagString: Untagged
@@ -4697,6 +4889,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1914810143}
   - {fileID: 1662388757}
@@ -4782,6 +4975,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201720332}
   m_CullTransparentMesh: 1
+--- !u!114 &201720338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201720332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 201720336}
 --- !u!224 &258012437 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -4816,6 +5043,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1093577527}
   m_RootOrder: 1
@@ -5556,6 +5784,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1653004003}
   m_RootOrder: 4
@@ -5711,6 +5940,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 163304838}
   - {fileID: 1600123138}
@@ -5819,6 +6049,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1714867591}
   m_RootOrder: 1
@@ -5958,6 +6189,7 @@ GameObject:
   - component: {fileID: 335940730}
   - component: {fileID: 335940729}
   - component: {fileID: 335940728}
+  - component: {fileID: 335940732}
   m_Layer: 5
   m_Name: Button Grid_3x3
   m_TagString: Untagged
@@ -5975,6 +6207,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 198110456}
   - {fileID: 475336116}
@@ -6063,6 +6296,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335940726}
   m_CullTransparentMesh: 1
+--- !u!114 &335940732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335940726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 335940730}
 --- !u!1001 &357876115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6276,6 +6543,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1503675470}
   - {fileID: 1935111449}
@@ -7114,6 +7382,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1704462485}
   m_Father: {fileID: 311062483}
@@ -7292,8 +7561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
-        Assembly-CSharp
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -7309,8 +7577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
-        Assembly-CSharp
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -7683,6 +7950,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1424732237}
   m_RootOrder: 0
@@ -9285,6 +9553,7 @@ GameObject:
   - component: {fileID: 553395888}
   - component: {fileID: 553395887}
   - component: {fileID: 553395886}
+  - component: {fileID: 553395890}
   m_Layer: 5
   m_Name: ListMenu (2)
   m_TagString: Untagged
@@ -9302,6 +9571,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1894806653}
   - {fileID: 1773838171}
@@ -9387,6 +9657,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 553395884}
   m_CullTransparentMesh: 1
+--- !u!114 &553395890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553395884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 553395888}
 --- !u!1001 &576536706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9510,8 +9814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
-        Assembly-CSharp
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -9527,8 +9830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
-        Assembly-CSharp
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -10319,6 +10621,7 @@ GameObject:
   - component: {fileID: 682545842}
   - component: {fileID: 682545841}
   - component: {fileID: 682545840}
+  - component: {fileID: 682545844}
   m_Layer: 5
   m_Name: ListMenu
   m_TagString: Untagged
@@ -10336,6 +10639,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 759505760}
   - {fileID: 1238271666}
@@ -10423,6 +10727,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 682545838}
   m_CullTransparentMesh: 1
+--- !u!114 &682545844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682545838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 682545842}
 --- !u!1 &692976826
 GameObject:
   m_ObjectHideFlags: 0
@@ -10452,6 +10790,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2118576653}
   m_RootOrder: 1
@@ -11046,6 +11385,7 @@ Transform:
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -11280,6 +11620,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 682545839}
   m_RootOrder: 0
@@ -11494,6 +11835,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1051477455}
   - {fileID: 1270681976}
@@ -12020,6 +12362,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4.000008}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1290511386}
   - {fileID: 861724339}
@@ -12332,6 +12675,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 831863309}
   m_RootOrder: 1
@@ -12667,6 +13011,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 443057978}
   - {fileID: 2137575391}
@@ -12800,6 +13145,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1125450390}
   m_Father: {fileID: 85912328}
@@ -13659,6 +14005,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2118576653}
   m_Father: {fileID: 1369683957}
@@ -13700,6 +14047,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.100016594}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1371947327}
   m_Father: {fileID: 1277251431}
@@ -13889,6 +14237,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2118576653}
   m_RootOrder: 0
@@ -14028,6 +14377,7 @@ GameObject:
   - component: {fileID: 1031621825}
   - component: {fileID: 1031621824}
   - component: {fileID: 1031621823}
+  - component: {fileID: 1031621827}
   m_Layer: 5
   m_Name: Button_IconAndText_32x32mm
   m_TagString: Untagged
@@ -14045,6 +14395,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2115835485}
   m_Father: {fileID: 2118576653}
@@ -14127,6 +14478,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1031621821}
   m_CullTransparentMesh: 1
+--- !u!114 &1031621827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031621821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1031621825}
 --- !u!1001 &1042814118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14241,6 +14626,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1093577527}
   m_RootOrder: 0
@@ -14968,6 +15354,7 @@ GameObject:
   - component: {fileID: 1073055408}
   - component: {fileID: 1073055407}
   - component: {fileID: 1073055406}
+  - component: {fileID: 1073055410}
   m_Layer: 5
   m_Name: Button Bar_Horizontal
   m_TagString: Untagged
@@ -14985,6 +15372,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 943981974}
   - {fileID: 138829974}
@@ -15070,6 +15458,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1073055404}
   m_CullTransparentMesh: 1
+--- !u!114 &1073055410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073055404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1073055408}
 --- !u!1 &1092179571
 GameObject:
   m_ObjectHideFlags: 0
@@ -15160,6 +15582,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 149389691}
   m_Father: {fileID: 1369683957}
@@ -15260,6 +15683,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1045922680}
   - {fileID: 272965572}
@@ -15664,6 +16088,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 311062483}
   m_RootOrder: 8
@@ -15785,6 +16210,7 @@ GameObject:
   - component: {fileID: 1122818196}
   - component: {fileID: 1122818195}
   - component: {fileID: 1122818194}
+  - component: {fileID: 1122818198}
   m_Layer: 5
   m_Name: Menu Plate with Slider
   m_TagString: Untagged
@@ -15802,6 +16228,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 703335399}
   - {fileID: 1277251431}
@@ -15885,6 +16312,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122818192}
   m_CullTransparentMesh: 1
+--- !u!114 &1122818198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122818192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1122818196}
 --- !u!1001 &1125450389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16575,6 +17036,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1714867591}
   m_RootOrder: 0
@@ -16793,6 +17255,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 371654821}
   m_Father: {fileID: 1369683957}
@@ -17069,6 +17532,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1714867591}
   m_RootOrder: 2
@@ -18340,6 +18804,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2056942515}
   - {fileID: 1729846266}
@@ -18405,6 +18870,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1817612630}
   - {fileID: 1665223376}
@@ -18472,6 +18938,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 831863309}
   m_RootOrder: 0
@@ -18610,6 +19077,7 @@ GameObject:
   - component: {fileID: 1290890166}
   - component: {fileID: 1290890165}
   - component: {fileID: 1290890164}
+  - component: {fileID: 1290890167}
   m_Layer: 5
   m_Name: Menu Plate with Slider
   m_TagString: Untagged
@@ -18627,6 +19095,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1796335078}
   - {fileID: 891825324}
@@ -18696,6 +19165,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1290890162}
   m_CullTransparentMesh: 1
+--- !u!114 &1290890167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290890162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1290890165}
 --- !u!1001 &1298861445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18893,6 +19396,7 @@ GameObject:
   - component: {fileID: 1304147007}
   - component: {fileID: 1304147006}
   - component: {fileID: 1304147005}
+  - component: {fileID: 1304147009}
   m_Layer: 5
   m_Name: Button_IconAndText_96x32mm
   m_TagString: Untagged
@@ -18910,6 +19414,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 151622003}
   m_Father: {fileID: 2118576653}
@@ -18992,6 +19497,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1304147003}
   m_CullTransparentMesh: 1
+--- !u!114 &1304147009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304147003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1304147007}
 --- !u!1001 &1311646144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19288,6 +19827,7 @@ GameObject:
   - component: {fileID: 1329564639}
   - component: {fileID: 1329564638}
   - component: {fileID: 1329564637}
+  - component: {fileID: 1329564641}
   m_Layer: 5
   m_Name: ActionButtons
   m_TagString: Untagged
@@ -19305,6 +19845,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1637717373}
   - {fileID: 773317072}
@@ -19388,6 +19929,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329564635}
   m_CullTransparentMesh: 1
+--- !u!114 &1329564641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329564635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1329564639}
 --- !u!1001 &1349327196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19515,6 +20090,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1170466719}
   - {fileID: 65389176}
@@ -20330,6 +20906,7 @@ GameObject:
   - component: {fileID: 1424732240}
   - component: {fileID: 1424732239}
   - component: {fileID: 1424732238}
+  - component: {fileID: 1424732242}
   m_Layer: 5
   m_Name: Button Bar (1)
   m_TagString: Untagged
@@ -20347,6 +20924,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 446671469}
   - {fileID: 30664519}
@@ -20433,6 +21011,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1424732236}
   m_CullTransparentMesh: 1
+--- !u!114 &1424732242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424732236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1424732240}
 --- !u!1001 &1427191247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20844,6 +21456,7 @@ GameObject:
   - component: {fileID: 1482164464}
   - component: {fileID: 1482164463}
   - component: {fileID: 1482164462}
+  - component: {fileID: 1482164466}
   m_Layer: 5
   m_Name: ListMenu (1)
   m_TagString: Untagged
@@ -20861,6 +21474,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 83153272}
   - {fileID: 386957939}
@@ -20948,6 +21562,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1482164460}
   m_CullTransparentMesh: 1
+--- !u!114 &1482164466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482164460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1482164464}
 --- !u!1 &1488121687
 GameObject:
   m_ObjectHideFlags: 0
@@ -20977,6 +21625,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 149389691}
   m_RootOrder: 0
@@ -21132,6 +21781,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 371654821}
   m_RootOrder: 0
@@ -21753,6 +22403,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 311062483}
   m_RootOrder: 2
@@ -22385,6 +23036,7 @@ Transform:
   m_LocalRotation: {x: 0.28939572, y: -0, z: -0, w: 0.9572095}
   m_LocalPosition: {x: -0.01144, y: -0.37624, z: 0.09883}
   m_LocalScale: {x: 0.23897779, y: 0.0437293, z: 0.1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 735511181}
   m_RootOrder: 5
@@ -22414,6 +23066,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -22876,6 +23529,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 311062483}
   m_RootOrder: 1
@@ -23324,6 +23978,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1944714597}
   m_RootOrder: 0
@@ -23540,6 +24195,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 311062483}
   m_Father: {fileID: 1369683957}
@@ -23778,6 +24434,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1653004003}
   m_Father: {fileID: 1369683957}
@@ -23817,6 +24474,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1653004003}
   m_RootOrder: 5
@@ -23970,6 +24628,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 968557651}
   - {fileID: 280014428}
@@ -24008,6 +24667,56 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1651702601 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4095427112833100003, guid: beb27f14f40963b45a9fb5d2523f4711, type: 3}
+  m_PrefabInstance: {fileID: 1506166576}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1651702602 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4095427112833100001, guid: beb27f14f40963b45a9fb5d2523f4711, type: 3}
+  m_PrefabInstance: {fileID: 1506166576}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651702601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4220fa33d0e48745b2cb5c52731e75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1651702604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651702601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1651702602}
 --- !u!1 &1653004002
 GameObject:
   m_ObjectHideFlags: 0
@@ -24034,6 +24743,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 682545839}
   - {fileID: 1482164461}
@@ -24434,6 +25144,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2087755156}
   m_RootOrder: 0
@@ -25053,6 +25764,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1148378776}
   - {fileID: 332225186}
@@ -25158,6 +25870,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.100016594}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1630388037}
   - {fileID: 1995220997}
@@ -25363,8 +26076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
-        Assembly-CSharp
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -25380,8 +26092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample,
-        Assembly-CSharp
+      value: Microsoft.MixedReality.Toolkit.Examples.Demos.DialogPoolExample, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -26074,6 +26785,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1706338808}
   - {fileID: 630532475}
@@ -26910,6 +27622,7 @@ GameObject:
   - component: {fileID: 1854885406}
   - component: {fileID: 1854885404}
   - component: {fileID: 1854885408}
+  - component: {fileID: 1854885410}
   m_Layer: 5
   m_Name: Dialog Spawner
   m_TagString: Untagged
@@ -26927,6 +27640,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 378970881}
   - {fileID: 258012437}
@@ -27070,6 +27784,40 @@ MonoBehaviour:
     Action:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &1854885410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854885401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1854885406}
 --- !u!1001 &1856862788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27483,6 +28231,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 831863309}
   m_RootOrder: 4
@@ -27638,6 +28387,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 553395885}
   m_RootOrder: 0
@@ -28745,6 +29495,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 371654821}
   m_RootOrder: 1
@@ -29071,6 +29822,7 @@ GameObject:
   - component: {fileID: 1944714600}
   - component: {fileID: 1944714599}
   - component: {fileID: 1944714598}
+  - component: {fileID: 1944714602}
   m_Layer: 5
   m_Name: ListItems
   m_TagString: Untagged
@@ -29088,6 +29840,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1622854744}
   - {fileID: 519434938}
@@ -29175,6 +29928,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1944714596}
   m_CullTransparentMesh: 1
+--- !u!114 &1944714602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944714596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1944714600}
 --- !u!1001 &1945241970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29748,6 +30535,7 @@ GameObject:
   - component: {fileID: 1983684640}
   - component: {fileID: 1983684639}
   - component: {fileID: 1983684638}
+  - component: {fileID: 1983684642}
   m_Layer: 5
   m_Name: Button Grid_2x4
   m_TagString: Untagged
@@ -29765,6 +30553,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1250963981}
   - {fileID: 101484292}
@@ -29852,6 +30641,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1983684636}
   m_CullTransparentMesh: 1
+--- !u!114 &1983684642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983684636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 1983684640}
 --- !u!1001 &1990262477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30409,6 +31232,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1138145396}
   - {fileID: 545482699}
@@ -30579,6 +31403,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.100016594}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1137517786}
   - {fileID: 1125611905}
@@ -30898,6 +31723,7 @@ GameObject:
   - component: {fileID: 2087755159}
   - component: {fileID: 2087755158}
   - component: {fileID: 2087755157}
+  - component: {fileID: 2087755161}
   m_Layer: 5
   m_Name: ListMenu (3)
   m_TagString: Untagged
@@ -30915,6 +31741,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1674269240}
   - {fileID: 109335092}
@@ -31001,6 +31828,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087755155}
   m_CullTransparentMesh: 1
+--- !u!114 &2087755161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087755155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 2087755159}
 --- !u!1 &2100425381
 GameObject:
   m_ObjectHideFlags: 0
@@ -31030,6 +31891,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 65389176}
   m_RootOrder: 0
@@ -31362,6 +32224,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1023697616}
   - {fileID: 692976827}
@@ -31466,6 +32329,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.002}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 831863309}
   m_Father: {fileID: 1369683957}
@@ -31702,6 +32566,35 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5677198132984834578, guid: f64620d502cdf0f429efa27703913cb7, type: 3}
   m_PrefabInstance: {fileID: 2137575390}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2141301564 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2351505567455720334, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+  m_PrefabInstance: {fileID: 525252187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2141301565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141301564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb79622c7765274da3bfb5139c0edf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2141301566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141301564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d55e005abaeca504eb060bfe0de6c4c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &3399680778966325520
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31720,6 +32613,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1288869893}
   - {fileID: 1999519067}
@@ -31744,6 +32638,7 @@ GameObject:
   - component: {fileID: 6515328879105725118}
   - component: {fileID: 6080929707917674036}
   - component: {fileID: 6080929707917674035}
+  - component: {fileID: 6515328879105725119}
   m_Layer: 5
   m_Name: ActionButtons
   m_TagString: Untagged
@@ -31815,3 +32710,37 @@ MonoBehaviour:
   thickness: 2
   wedges: 8
   calculateSmoothEdges: 1
+--- !u!114 &6515328879105725119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6080929707917674034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239178
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239178
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Menu Plate Material
+        targetValueId: 1934966859
+        MaterialSwapTarget: {fileID: 6515328879105725118}

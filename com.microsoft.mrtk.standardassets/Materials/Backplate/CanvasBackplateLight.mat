@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CanvasBackplateLight
+  m_Shader: {fileID: 4800000, guid: 29b058829dc4dbf449bc59c038dfa631, type: 3}
+  m_ValidKeywords:
+  - _EDGE_ONLY_
+  - _GRADIENT_DISABLED_
+  - _SMOOTH_EDGES_
+  m_InvalidKeywords:
+  - _LINE_ENABLE_
+  - _REFLECTED__ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Iridescent_Map_:
+        m_Texture: {fileID: 2800000, guid: 1c53ac3264b9f9b478ba62ee57b2f159, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OccludedTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Angle_: -45
+    - _DstBlend: 0
+    - _Edge_Only_: 1
+    - _Edge_Power_: 0
+    - _Edge_Width_: 0.5
+    - _Fade_Out_: 1
+    - _Filter_Width_: 1
+    - _Frequency_: 0.96
+    - _Gradient_Disabled_: 1
+    - _Gradient_Enable_: 0
+    - _GridScale: 0.02
+    - _Highlight_: 0
+    - _Highlight_Width_: 0.25
+    - _Iridescence_Edge_Intensity_: 1
+    - _Iridescence_Enable_: 0
+    - _Iridescence_Intensity_: 0.35
+    - _Line_Disabled_: 0
+    - _Line_Enable_: 1
+    - _Line_Gradient_Blend_: 0
+    - _Line_Width_: 1
+    - _Occluded_Intensity_: 1
+    - _Orthographic_Distance_: 400
+    - _Rate_: 0
+    - _Reflected_: 1
+    - _Smooth_Edges_: 1
+    - _SrcBlend: 1
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
+    - _Vertical_Offset_: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _Base_Color_: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
+    - _Bottom_Left_: {r: 0, g: 0.33, b: 0.88, a: 1}
+    - _Bottom_Right_: {r: 1, g: 1, b: 1, a: 1}
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _ClipRectRadii: {r: 10, g: 10, b: 10, a: 10}
+    - _Gradient_Color_: {r: 0.631373, g: 0.631373, b: 0.631373, a: 1}
+    - _Highlight_Color_: {r: 0.2392157, g: 0.43529415, b: 0.82745105, a: 1}
+    - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
+    - _Iridescence_Tint_: {r: 1, g: 1, b: 1, a: 1}
+    - _Line_Color_: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
+    - _OccludedColor: {r: 0, g: 0.5, b: 1, a: 1}
+    - _Top_Left_: {r: 1, g: 0.690196, b: 0.976471, a: 1}
+    - _Top_Right_: {r: 0, g: 0.33, b: 0.88, a: 1}
+  m_BuildTextureStacks: []

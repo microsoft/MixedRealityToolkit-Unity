@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2741324015689417758}
   - component: {fileID: 5095746839500215027}
   - component: {fileID: 7245587814888172855}
+  - component: {fileID: 4996904458102606288}
   m_Layer: 0
   m_Name: UIButtonFontIcon
   m_TagString: Untagged
@@ -29,6 +30,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7216918420766221479}
   m_RootOrder: 1
@@ -151,6 +153,41 @@ MonoBehaviour:
   currentIconName: Icon 117
   textMeshProComponent: {fileID: 5095746839500215027}
   iconFontAsset: {fileID: 0}
+--- !u!114 &4996904458102606288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201938300658660728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239177
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239177
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Primary Text Color
+        targetValueId: 629473106
+        ColorSwapTarget: {fileID: 5095746839500215027}
+        AlsoSetAlpha: 1
 --- !u!1 &410843422125320171
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +215,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3103173967884524515}
   - {fileID: 6412008622008300943}
@@ -240,6 +278,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4185972052008607586}
   m_RootOrder: 0
@@ -346,6 +385,7 @@ GameObject:
   - component: {fileID: 6308192756412013337}
   - component: {fileID: 1922220768106560367}
   - component: {fileID: 2325143273400926206}
+  - component: {fileID: 3186977325409946080}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -363,6 +403,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6922469056340231698}
   m_RootOrder: 1
@@ -489,6 +530,41 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 0
+--- !u!114 &3186977325409946080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142167140070017856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239179
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239179
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Primary Text Color
+        targetValueId: 629473106
+        ColorSwapTarget: {fileID: 1922220768106560367}
+        AlsoSetAlpha: 0
 --- !u!1 &2302024426645924609
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,6 +594,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7216918420766221479}
   m_RootOrder: 0
@@ -589,6 +666,7 @@ GameObject:
   - component: {fileID: 4770749099995753258}
   - component: {fileID: 8493469810320727241}
   - component: {fileID: 2318240793594773292}
+  - component: {fileID: 7628949791798193976}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -606,6 +684,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7216918420766221479}
   m_RootOrder: 2
@@ -732,6 +811,41 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 0
+--- !u!114 &7628949791798193976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7594107385585372191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 2096456570607239179
+  themeViewModelRecord: {fileID: 0}
+  materialSwaps:
+    _items: []
+  objectVisibilityToggles:
+    _items: []
+  colorSwaps:
+    _items: []
+  textureSwaps:
+    _items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2096456570607239179
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      data:
+        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        TargetValueName: Primary Text Color
+        targetValueId: 629473106
+        ColorSwapTarget: {fileID: 8493469810320727241}
+        AlsoSetAlpha: 0
 --- !u!1001 &5139722473249402816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -840,6 +954,110 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.GraphicTintEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.GraphicTintEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].name
+      value: GraphicTint
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].name
+      value: GraphicTint
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].blendMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].blendMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].playbackMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].playbackMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].transitionDuration
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].transitionDuration
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].tintables.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].tintables.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].tintables.Array.data[0]
+      value: 
+      objectReference: {fileID: 2228947736508096533}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].tintables.Array.data[1]
+      value: 
+      objectReference: {fileID: 8493469810320727241}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].tintables.Array.data[2]
+      value: 
+      objectReference: {fileID: 8467006667157818416}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].tintables.Array.data[3]
+      value: 
+      objectReference: {fileID: 1922220768106560367}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239175].tintables.Array.data[4]
+      value: 
+      objectReference: {fileID: 5095746839500215027}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[2096456570607239176].tintables.Array.data[0]
+      value: 
+      objectReference: {fileID: 8467006667157818416}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -849,11 +1067,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1]
-      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.GraphicTintEffect
+      value: 2096456570607239175
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1]
-      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.GraphicTintEffect
+      value: 2096456570607239176
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.data[1].name
@@ -953,24 +1171,14 @@ PrefabInstance:
       objectReference: {fileID: 8467006667157818416}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
---- !u!224 &6922469056340231698 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2828958436599032274, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-  m_PrefabInstance: {fileID: 5139722473249402816}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6922469056340231697 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2828958436599032273, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
-  m_PrefabInstance: {fileID: 5139722473249402816}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4185972052008607586 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9026472854072389794, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
   m_PrefabInstance: {fileID: 5139722473249402816}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &8376646494505211229 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3705378105823492765, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+--- !u!1 &6922469056340231697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2828958436599032273, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
   m_PrefabInstance: {fileID: 5139722473249402816}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3015392985318836008
@@ -999,3 +1207,13 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!224 &6922469056340231698 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2828958436599032274, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+  m_PrefabInstance: {fileID: 5139722473249402816}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &8376646494505211229 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3705378105823492765, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+  m_PrefabInstance: {fileID: 5139722473249402816}
+  m_PrefabAsset: {fileID: 0}
