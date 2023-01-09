@@ -58,7 +58,8 @@ namespace Microsoft.MixedReality.Toolkit
                 GenerateProfileRule(BuildTargetGroup.Standalone),
                 GenerateVisibleMetaFilesRule(),
                 GenerateForceTextSerializationRule(),
-                GenerateSpatializerRule()
+                GenerateSpatializerRule(),
+                GenerateLinearColorSpaceRule()
             };
             AddTargetIndependentRules(mrtkCoreTargetIndependentRules);
 
@@ -164,6 +165,19 @@ namespace Microsoft.MixedReality.Toolkit
                 FixIt = () => SettingsService.OpenProjectSettings("Project/Audio"),
                 FixItMessage = "Specify a spatializer under Project Settings -> Audio -> Spatializer plugin",
                 FixItAutomatic = false,
+                Error = false
+            };
+        }
+
+        private static BuildValidationRule GenerateLinearColorSpaceRule()
+        {
+            return new BuildValidationRule()
+            {
+                Category = "MRTK3",
+                Message = "For MRTK UI and other visuals to appear correctly, we strongly recommend Linear color space.",
+                CheckPredicate = () => PlayerSettings.colorSpace == ColorSpace.Linear,
+                FixIt = () => PlayerSettings.colorSpace = ColorSpace.Linear,
+                FixItMessage = "Change the color space from Gamma to Linear under Project Settings -> Player Settings.",
                 Error = false
             };
         }

@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             GameObject boundsControlGameObject;
             if (target != null)
             {
-                boundsControlGameObject = GameObject.Instantiate(target);
+                boundsControlGameObject = Object.Instantiate(target);
             }
             else
             {
@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+            Assert.IsTrue(bc == null);
         }
 
         [UnityTest]
@@ -96,6 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+            Assert.IsTrue(bc == null);
         }
 
         [UnityTest]
@@ -133,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+            Assert.IsTrue(bc == null);
         }
 
         [UnityTest]
@@ -178,6 +181,124 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+            Assert.IsTrue(bc == null);
+        }
+
+        [UnityTest]
+        public IEnumerator TestHandlesToggleWithObjectManipulator([ValueSource(nameof(BoundsVisualsPrefabs))] string visualsPath)
+        {
+            // Temporarily turn this test off until the synthesized hands are fixed.
+            // Currently, this test is broken because a simple pinch and release with the synthesized hand causes the cube to move.
+            if (BoundsVisualsPrefabs.Contains(visualsPath))
+            {
+                yield break;
+            }
+
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
+            InputTestUtilities.DisableGaze();
+
+            BoundsControl bc = InstantiateSceneAndDefaultBoundsControl(visualsPath);
+            yield return null;
+
+            Assert.IsNotNull(bc);
+            Assert.IsFalse(bc.HandlesActive, "Handles should start inactive by default.");
+
+            // Set up cube with object manipulator
+            Vector3 initialObjectPosition = bc.transform.position;
+            ObjectManipulator objectManipulator = bc.gameObject.AddComponent<ObjectManipulator>();
+            objectManipulator.HostTransform = bc.transform;
+            objectManipulator.SmoothingFar = false;
+            objectManipulator.SmoothingNear = false;
+            bc.Interactable = objectManipulator;
+
+            yield return new WaitForFixedUpdate();
+
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(0.5f);
+            Vector3 initialGrabPosition = InputTestUtilities.InFrontOfUser(new Vector3(-0.05f, -0.05f, initialObjectPosition.z)); // grab around the left bottom corner of the cube
+            Quaternion initialGrabRotation = Quaternion.identity;
+            TestHand hand = new TestHand(Handedness.Right);
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsFalse(bc.IsManipulated, "BC thought we were already manipulated.");
+
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(initialGrabPosition);
+            yield return hand.RotateTo(initialGrabRotation);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            yield return hand.Click();
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsFalse(objectManipulator.IsGrabSelected, "ObjectManipulator should have been released!");
+            Assert.IsTrue(bc.HandlesActive, "Handles should have been toggled.");
+
+            TestUtilities.AssertAboutEqual(bc.transform.position, initialObjectPosition, $"Object should not have moved! Actual position: {bc.transform.position:F5}, should be {initialObjectPosition}", 0.00001f);
+
+            Object.Destroy(bc.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+            Assert.IsTrue(bc == null);
+        }
+
+        [UnityTest]
+        public IEnumerator TestNoHandlesToggleWhenMovingWithObjectManipulator([ValueSource(nameof(BoundsVisualsPrefabs))] string visualsPath)
+        {
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
+            InputTestUtilities.DisableGaze();
+
+            BoundsControl bc = InstantiateSceneAndDefaultBoundsControl(visualsPath);
+            yield return null;
+
+            Assert.IsNotNull(bc);
+            Assert.IsFalse(bc.HandlesActive, "Handles should start inactive by default.");
+
+            // Set up cube with object manipulator
+            Vector3 initialObjectPosition = bc.transform.position;
+            ObjectManipulator objectManipulator = bc.gameObject.AddComponent<ObjectManipulator>();
+            objectManipulator.HostTransform = bc.transform;
+            objectManipulator.SmoothingFar = false;
+            objectManipulator.SmoothingNear = false;
+            bc.Interactable = objectManipulator;
+
+            yield return new WaitForFixedUpdate();
+
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(0.5f);
+            Vector3 initialGrabPosition = InputTestUtilities.InFrontOfUser(new Vector3(-0.05f, -0.05f, initialObjectPosition.z)); // grab around the left bottom corner of the cube
+            Quaternion initialGrabRotation = Quaternion.identity;
+            TestHand hand = new TestHand(Handedness.Right);
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsFalse(bc.IsManipulated, "BC thought we were already manipulated.");
+
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(initialGrabPosition);
+            yield return hand.RotateTo(initialGrabRotation);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            yield return hand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(objectManipulator.IsGrabSelected, "ObjectManipulator didn't get grabbed on pinch!");
+
+            yield return hand.Move(Vector3.left);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return hand.Move(Vector3.right);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            yield return hand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsFalse(objectManipulator.IsGrabSelected, "ObjectManipulator should have been released!");
+            Assert.IsFalse(bc.HandlesActive, "Handles should not have been toggled.");
+
+            TestUtilities.AssertAboutEqual(bc.transform.position, initialObjectPosition, $"Object should be placed generally in the same position! Actual position: {bc.transform.position:F5}, should be {initialObjectPosition}", 0.00001f);
+
+            Object.Destroy(bc.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+            Assert.IsTrue(bc == null);
         }
     }
 }
