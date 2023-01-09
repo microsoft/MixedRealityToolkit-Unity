@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
@@ -61,22 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         public MixedRealityTransform targetTransform;
         public bool isManipulated;
 
-        [SerializeField]
-        private bool useForces;
-
-        // A little unsure of how the placement hub should manage UseForces, since
-        // its rigidbody can be set to IsKinematic during manipulation.
-        internal bool UseForces
-        {
-            get { return useForces; }
-            set { useForces = value; }
-        }
-
         private Rigidbody rigidBody => transform.GetComponent<Rigidbody>();
 
         private void FixedUpdate()
         {
-            if (useForces && rigidBody != null && GetTargetTransform())
+            if (UseForces && rigidBody != null && GetTargetTransform())
             {
                 ApplyForcesToRigidbody();
             }
@@ -103,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             else
             {
                 // There is a Rigidbody. Potential different paths for near vs far manipulation
-                if (!useForces)
+                if (!UseForces)
                 {
                     rigidBody.MovePosition(targetTransform.Position);
                     rigidBody.MoveRotation(targetTransform.Rotation);
@@ -123,50 +113,60 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set { useSmoothing = value; }
         }
 
-        [SerializeReference, InterfaceSelector(false)]
-        [DrawIf("shouldSmooth")]
-        private ITransformSmoothingLogic smoothingLogic = new DefaultTransformSmoothingLogic();
-
         [SerializeField]
-        [Range(0, 1)]
-        [Tooltip("Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.")]
-        private float moveLerpTime = 0.001f;
+        [DrawIf("useSmoothing")]
+        private SmoothingSettings smoothingSettings;
+
+        [Serializable]
+        private struct SmoothingSettings
+        {
+            [SerializeReference, InterfaceSelector(false)]
+            internal ITransformSmoothingLogic smoothingLogic;
+
+            [SerializeField]
+            [Range(0, 1)]
+            [DefaultValue("0.001f")]
+            [Tooltip("Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+            internal float moveLerpTime;
+
+            [SerializeField]
+            [Range(0, 1)]
+            [DefaultValue("0.001f")]
+            [Tooltip("Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+            internal float rotateLerpTime;
+
+            [SerializeField]
+            [Range(0, 1)]
+            [DefaultValue("0.001f")]
+            [Tooltip("Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+            internal float scaleLerpTime;
+        }
 
         /// <summary>
         /// Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.
         /// </summary>
         public float MoveLerpTime
         {
-            get => moveLerpTime;
-            set => moveLerpTime = value;
+            get => smoothingSettings.moveLerpTime;
+            set => smoothingSettings.moveLerpTime = value;
         }
-
-        [SerializeField]
-        [Range(0, 1)]
-        [Tooltip("Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
-        private float rotateLerpTime = 0.001f;
 
         /// <summary>
         /// Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
         /// </summary>
         public float RotateLerpTime
         {
-            get => rotateLerpTime;
-            set => rotateLerpTime = value;
+            get => smoothingSettings.rotateLerpTime;
+            set => smoothingSettings.rotateLerpTime = value;
         }
-
-        [SerializeField]
-        [Range(0, 1)]
-        [Tooltip("Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.")]
-        private float scaleLerpTime = 0.001f;
 
         /// <summary>
         /// Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.
         /// </summary>
         public float ScaleLerpTime
         {
-            get => scaleLerpTime;
-            set => scaleLerpTime = value;
+            get => smoothingSettings.scaleLerpTime;
+            set => smoothingSettings.scaleLerpTime = value;
         }
 
         /// <summary>
@@ -184,84 +184,107 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // TODO: Elastics. Compute elastics here and apply to modifiedTransformFlags.
 
-            bool applySmoothing = UseSmoothing && smoothingLogic != null;
+            bool applySmoothing = UseSmoothing && smoothingSettings.smoothingLogic != null;
 
-            targetPose.Position = (applySmoothing && !useForces) ? smoothingLogic.SmoothPosition(transform.position, targetPose.Position, moveLerpTime, Time.deltaTime) : targetPose.Position;
-            targetPose.Rotation = (applySmoothing && !useForces) ? smoothingLogic.SmoothRotation(transform.rotation, targetPose.Rotation, rotateLerpTime, Time.deltaTime) : targetPose.Rotation;
-            targetPose.Scale = applySmoothing ? smoothingLogic.SmoothScale(transform.localScale, targetPose.Scale, scaleLerpTime, Time.deltaTime) : targetPose.Scale;
+            targetPose.Position = (applySmoothing && !UseForces) ? smoothingSettings.smoothingLogic.SmoothPosition(transform.position, targetPose.Position, MoveLerpTime, Time.deltaTime) : targetPose.Position;
+            targetPose.Rotation = (applySmoothing && !UseForces) ? smoothingSettings.smoothingLogic.SmoothRotation(transform.rotation, targetPose.Rotation, RotateLerpTime, Time.deltaTime) : targetPose.Rotation;
+            targetPose.Scale = applySmoothing ? smoothingSettings.smoothingLogic.SmoothScale(transform.localScale, targetPose.Scale, ScaleLerpTime, Time.deltaTime) : targetPose.Scale;
         }
 
         #endregion
 
         #region rigidbodies
         [SerializeField]
-        [Tooltip(
-                "Apply torque to control orientation of the body")]
-        private bool applyTorque = true;
+        private bool useForces;
 
-        /// <summary>
-        /// Apply torque to control orientation of the body
-        /// </summary>
-        public bool ApplyTorque
+        // A little unsure of how the placement hub should manage UseForces, since
+        // its rigidbody can be set to IsKinematic during manipulation.
+        internal bool UseForces
         {
-            get => applyTorque;
-            set => applyTorque = value;
+            get { return useForces; }
+            set { useForces = value; }
         }
 
         [SerializeField]
-        [Range(0.001f, 2.0f)]
-        [Tooltip("The time scale at which a Rigidbody reacts to input movement defined as oscillation period of the dampened spring force.")]
-        private float springForceSoftness = 0.1f;
+        [DrawIf("useForces")]
+        private PhysicsSettings physicsSettings;
+
+        [Serializable]
+        private struct PhysicsSettings
+        {
+            [SerializeField]
+            [Range(0.001f, 2.0f)]
+            [DefaultValue("0.1f")]
+            [Tooltip("The time scale at which a Rigidbody reacts to input movement defined as oscillation period of the dampened spring force.")]
+            internal float springForceSoftness;
+
+            [SerializeField]
+            [DefaultValue(true)]
+            [Tooltip("Apply torque to control orientation of the body")]
+            internal bool applyTorque;
+
+            [SerializeField]
+            [Range(0.001f, 2.0f)]
+            [DefaultValue(0.1f)]
+            [Tooltip("The time scale at which a Rigidbody reacts to input rotation defined as oscillation period of the dampened spring torque.")]
+            internal float springTorqueSoftness;
+
+            [SerializeField]
+            [Range(0, 2.0f)]
+            [DefaultValue(1.0f)]
+            [Tooltip("The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
+            internal float springDamping;
+
+            [SerializeField]
+            [Range(0, 10000f)]
+            [DefaultValue(100.0f)]
+            [Tooltip("The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.")]
+            internal float springForceLimit;
+        }
 
         /// <summary>
         /// The time scale at which a Rigidbody reacts to input movement defined as oscillation period of the dampened spring force.
         /// </summary>
         public float SpringForceSoftness
         {
-            get => springForceSoftness;
-            set => springForceSoftness = value;
+            get => physicsSettings.springForceSoftness;
+            set => physicsSettings.springForceSoftness = value;
         }
 
-        [SerializeField]
-        [Range(0.001f, 2.0f)]
-        [Tooltip("The time scale at which a Rigidbody reacts to input rotation defined as oscillation period of the dampened spring torque.")]
-        private float springTorqueSoftness = 0.1f;
+        /// <summary>
+        /// Apply torque to control orientation of the body
+        /// </summary>
+        public bool ApplyTorque
+        {
+            get => physicsSettings.applyTorque;
+            set => physicsSettings.applyTorque = value;
+        }
 
         /// <summary>
         /// The time scale at which a Rigidbody reacts to input rotation defined as oscillation period of the dampened angular spring force.
         /// </summary>
         public float SpringTorqueSoftness
         {
-            get => springTorqueSoftness;
-            set => springTorqueSoftness = value;
+            get => physicsSettings.springTorqueSoftness;
+            set => physicsSettings.springTorqueSoftness = value;
         }
-
-        [SerializeField]
-        [Range(0, 2.0f)]
-        [Tooltip("The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
-        private float springDamping = 1.0f;
 
         /// <summary>
         /// The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).
         /// </summary>
         public float SpringDamping
         {
-            get => springDamping;
-            set => springDamping = value;
+            get => physicsSettings.springDamping;
+            set => physicsSettings.springDamping = value;
         }
-
-        [SerializeField]
-        [Range(0, 10000f)]
-        [Tooltip("The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.")]
-        private float springForceLimit = 100.0f;
 
         /// <summary>
         /// The maximum acceleration applied by the spring force to avoid trembling when pushing a body against a static object.
         /// </summary>
         public float SpringForceLimit
         {
-            get => springForceLimit;
-            set => springForceLimit = value;
+            get => physicsSettings.springForceLimit;
+            set => physicsSettings.springForceLimit = value;
         }
 
         /// <summary>
@@ -297,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // implement critically dampened spring force, scaled to mass-independent frequency
-            float omega = Mathf.PI / springForceSoftness;  // angular frequency, sqrt(k/m)
+            float omega = Mathf.PI / SpringForceSoftness;  // angular frequency, sqrt(k/m)
 
             Vector3 distance = transform.position - targetTransform.Position;
 
@@ -312,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             // apply springForceLimit only for slow-moving body (e.g. pressed against wall)
             // when body is already moving fast, also allow strong acceleration
-            var maxAcceleration = Mathf.Max(springForceLimit, 10 * velocity.magnitude / Time.fixedDeltaTime);
+            var maxAcceleration = Mathf.Max(SpringForceLimit, 10 * velocity.magnitude / Time.fixedDeltaTime);
 
             if (accelerationMagnitude > maxAcceleration)
             {
@@ -323,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // To compensate for the finite time step, this is split in two equal factors,
             // one applied before, the other after the spring force
             // equivalent with applying damping as well as spring force continuously
-            float halfDampingFactor = Mathf.Exp(-springDamping * omega * Time.fixedDeltaTime);
+            float halfDampingFactor = Mathf.Exp(-SpringDamping * omega * Time.fixedDeltaTime);
 
             velocity -= referenceFrameVelocity;  // change to the player's frame of reference before damping
 
@@ -335,13 +358,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             rigidBody.velocity = velocity;
 
-            if (applyTorque)
+            if (ApplyTorque)
             {
                 // Torque calculations: same calculation & parameters as for linear velocity
                 // skipping referenceFrameVelocity and springForceLimit which do not exactly apply here
 
                 // implement critically dampened spring force, scaled to mass-independent frequency
-                float angularOmega = Mathf.PI / springTorqueSoftness;  // angular frequency, sqrt(k/m)
+                float angularOmega = Mathf.PI / SpringTorqueSoftness;  // angular frequency, sqrt(k/m)
 
                 var angularDistance = transform.rotation * Quaternion.Inverse(targetTransform.Rotation);
                 angularDistance.ToAngleAxis(out float angle, out Vector3 axis);

@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (ShouldShow(property))
             {
-                EditorGUI.PropertyField(position, property, label);
+                EditorGUI.PropertyField(position, property, label, true);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return 0f;
             }
 
-            return base.GetPropertyHeight(property, label);
+            return EditorGUI.GetPropertyHeight(property, true);
         }
 
         private bool ShouldShow(SerializedProperty property)
