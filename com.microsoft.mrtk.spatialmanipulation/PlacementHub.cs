@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// The target pose 
         /// </summary>
-        private (Vector3, Quaternion, Vector3) targetPose;
+        private MixedRealityTransform targetTransform;
 
         // Make this it's own class so we can potentially allow for alternate implementations which "blend" transformations or
         // use a transformation's execution order differently.
@@ -30,17 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 return false;
             }
 
-            Vector3 currentPosition = transform.position;
-            Quaternion currentRotation = transform.rotation;
-            Vector3 currentLocalScale = transform.localScale;
+            MixedRealityTransform localTargetTransform = new MixedRealityTransform(transform);
 
             for (int i = 0; i < transformations.Count; i++)
             {
                 var t = transformations[i];
-                (currentPosition, currentRotation, currentLocalScale) = t.ApplyTransformation(currentPosition, currentRotation, currentLocalScale);
+                localTargetTransform = t.ApplyTransformation(localTargetTransform);
             }
 
-            targetPose = (currentPosition, currentRotation, currentLocalScale);
+            targetTransform = localTargetTransform;
             return true;
         }
 
@@ -59,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private Transform referenceFrameTransform = null;
         private bool referenceFrameHasLastPos = false;
         private Vector3 referenceFrameLastPos;
-        public MixedRealityTransform targetTransform;
         public bool isManipulated;
 
         private Rigidbody rigidBody => transform.GetComponent<Rigidbody>();
@@ -79,8 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void ApplyTargetTransform()
         {
-            targetTransform = new MixedRealityTransform(targetPose.Item1, targetPose.Item2, targetPose.Item3);
-
             // modifiedTransformFlags currently unused.
             TransformFlags modifiedTransformFlags = TransformFlags.None;
             SmoothTargetPose(ref targetTransform, ref modifiedTransformFlags);

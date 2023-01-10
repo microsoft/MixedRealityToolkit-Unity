@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// </summary>
     public interface ITransformation
     {
-        public (Vector3, Quaternion, Vector3) ApplyTransformation(Vector3 initialPosition, Quaternion initialRotation, Vector3 initialLocalScale);
+        public MixedRealityTransform ApplyTransformation(MixedRealityTransform initialTransform);
 
         /// <summary>
         /// Execution order priority of this constraint. Lower numbers will be executed before higher numbers.

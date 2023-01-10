@@ -19,12 +19,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         public int ExecutionPriority => throw new NotImplementedException();
 
-        public (Vector3, Quaternion, Vector3) ApplyTransformation(Vector3 initialPosition, Quaternion initialRotation, Vector3 initialLocalScale)
+        public MixedRealityTransform ApplyTransformation(MixedRealityTransform initialTransform)
         {
-            initialLocalScale.x = Mathf.Clamp(initialLocalScale.x, minScale.x, maxScale.x);
-            initialLocalScale.y = Mathf.Clamp(initialLocalScale.y, minScale.y, maxScale.y);
-            initialLocalScale.z = Mathf.Clamp(initialLocalScale.z, minScale.z, maxScale.z);
-            return (initialPosition, initialRotation, initialLocalScale);
+            Vector3 newScale = new Vector3()
+            {
+                x = Mathf.Clamp(initialTransform.Scale.x, minScale.x, maxScale.x),
+                y = Mathf.Clamp(initialTransform.Scale.y, minScale.y, maxScale.y),
+                z = Mathf.Clamp(initialTransform.Scale.z, minScale.z, maxScale.z)
+            };
+
+            initialTransform.Scale = newScale;
+            return initialTransform;
         }
     }
 }

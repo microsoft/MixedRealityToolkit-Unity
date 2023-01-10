@@ -503,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
 
-        public class MoveTransformation : ITransformation
+        protected class MoveTransformation : ITransformation
         {
             private IXRSelectInteractable interactable;
 
@@ -518,15 +518,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             public int ExecutionPriority => throw new NotImplementedException();
 
-            public (Vector3, Quaternion, Vector3) ApplyTransformation(Vector3 initialPosition, Quaternion initialRotation, Vector3 initialLocalScale)
+            public MixedRealityTransform ApplyTransformation(MixedRealityTransform initialTransform)
             {
-                var targetTransform = new MixedRealityTransform(initialPosition, initialRotation, initialLocalScale);
-                Vector3 newPosition = logic.Update(interactorsSelecting, interactable, targetTransform, useCenteredAnchor);
-                return (newPosition, initialRotation, initialLocalScale);
+                initialTransform.Position = logic.Update(interactorsSelecting, interactable, initialTransform, useCenteredAnchor);
+                return initialTransform;
             }
         }
 
-        public class RotateTransformation : ITransformation
+        protected class RotateTransformation : ITransformation
         {
             private IXRSelectInteractable interactable;
 
@@ -541,15 +540,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             public int ExecutionPriority => throw new NotImplementedException();
 
-            public (Vector3, Quaternion, Vector3) ApplyTransformation(Vector3 initialPosition, Quaternion initialRotation, Vector3 initialLocalScale)
+            public MixedRealityTransform ApplyTransformation(MixedRealityTransform initialTransform)
             {
-                var targetTransform = new MixedRealityTransform(initialPosition, initialRotation, initialLocalScale);
-                Quaternion newRotation = logic.Update(interactorsSelecting, interactable, targetTransform, useCenteredAnchor);
-                return (initialPosition, newRotation, initialLocalScale);
+                initialTransform.Rotation = logic.Update(interactorsSelecting, interactable, initialTransform, useCenteredAnchor);
+                return initialTransform;
             }
         }
 
-        public class ScaleTransformation : ITransformation
+        protected class ScaleTransformation : ITransformation
         {
             private IXRSelectInteractable interactable;
 
@@ -564,11 +562,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             public int ExecutionPriority => throw new NotImplementedException();
 
-            public (Vector3, Quaternion, Vector3) ApplyTransformation(Vector3 initialPosition, Quaternion initialRotation, Vector3 initialLocalScale)
+            public MixedRealityTransform ApplyTransformation(MixedRealityTransform initialTransform)
             {
-                var targetTransform = new MixedRealityTransform(initialPosition, initialRotation, initialLocalScale);
-                Vector3 newScale = logic.Update(interactorsSelecting, interactable, targetTransform, useCenteredAnchor);
-                return (initialPosition, initialRotation, newScale);
+                initialTransform.Scale = logic.Update(interactorsSelecting, interactable, initialTransform, useCenteredAnchor);
+                return initialTransform;
             }
         }
     }
