@@ -167,7 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             public override void StopRecognition()
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                if (dictationRecognizer == null)
                 if (dictationRecognizer != null)
                 {
                     dictationRecognizer.Stop();
