@@ -117,6 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 if (dictationRecognizer != null)
                 {
                     DeregisterDictationEvents();
+                    if (dictationRecognizer.Status == SpeechSystemStatus.Running)
+                    {
+                        dictationRecognizer.Stop();
+                    }
                     dictationRecognizer.Dispose();
                     dictationRecognizer = null;
                 }
@@ -164,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
                 if (dictationRecognizer == null)
+                if (dictationRecognizer != null)
                 {
                     dictationRecognizer.Stop();
                 }

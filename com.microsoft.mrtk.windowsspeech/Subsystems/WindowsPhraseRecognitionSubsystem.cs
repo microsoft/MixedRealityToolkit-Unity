@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <inheritdoc/>
             public override void Start()
             {
-                config = XRSubsystemHelpers.GetConfiguration<WindowsPhraseRecognitionSubsystemConfig, WindowsPhraseRecognitionProvider>();
+                config = XRSubsystemHelpers.GetConfiguration<WindowsPhraseRecognitionSubsystemConfig, WindowsPhraseRecognitionSubsystem>();
                 confidenceLevel = config.ConfidenceLevel;
                 if (keywordRecognizer != null)
                 {
