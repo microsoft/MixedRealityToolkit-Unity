@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             void GUIHandler(string searchContext)
             {
-                EditorGUILayout.HelpBox("These settings are serialized into ProjectPreferences.asset in the MixedRealityToolkit-Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
+                EditorGUILayout.HelpBox("These settings are serialized into ProjectPreferences.asset in the MixedRealityToolkit.Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
 
                 var prevLabelWidth = EditorGUIUtility.labelWidth;
                 EditorGUIUtility.labelWidth = 300f;
