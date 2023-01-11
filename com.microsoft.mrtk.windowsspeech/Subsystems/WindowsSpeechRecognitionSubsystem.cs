@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <summary>
             /// Start dictation using the specified ConfidenceLevel.
             /// </summary>
-            public void StartRecognition(ConfidenceLevel confidenceLevel)
+            public void StartDictation(ConfidenceLevel confidenceLevel)
             {
                 if (dictationRecognizer == null || this.confidenceLevel != confidenceLevel)
                 {
@@ -157,9 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             public override void StartDictation()
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                StartRecognition(confidenceLevel);
+                StartDictation(confidenceLevel);
 #else
-                Debug.LogError("Cannot call StartRecognition because WindowsDictationSubsystem is only supported on Windows Editor, Standalone Windows and UWP.");
+                Debug.LogError("Cannot call StartDictation because WindowsDictationSubsystem is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
             }
 
