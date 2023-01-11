@@ -80,6 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected override void DrawProperties()
         {
+            EditorGUILayout.PropertyField(disabledInteractorTypes);
+
             xriBaseFoldout = EditorGUILayout.Foldout(xriBaseFoldout, EditorGUIUtility.TrTempContent("Base XRI Settings"), true, EditorStyles.foldoutHeader);
             if (xriBaseFoldout)
             {
@@ -92,8 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected override void DrawInteractableEvents()
         {
-            EditorGUILayout.PropertyField(disabledInteractorTypes);
-
             mrtkExpanded = EditorGUILayout.Foldout(mrtkExpanded, EditorGUIUtility.TrTempContent("MRTK Events"), true);
 
             if (mrtkExpanded)
