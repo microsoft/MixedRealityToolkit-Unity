@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0962b4f006b11247b948d9705f1da6b, type: 3}
-  m_Name: MRTKWinPhraseRecogConfig
+  m_Name: MRTKWinKeyRecogConfig
   m_EditorClassIdentifier: 
   confidenceLevel: 1
