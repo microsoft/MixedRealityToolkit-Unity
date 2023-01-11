@@ -9,9 +9,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// A SpeechInteractor that is driven by PhraseRecognitionSubsystem.
+    /// A SpeechInteractor that is driven by KeywordRecognitionSubsystem.
     /// StatefulInteractables register themselves with this interactor to receive
-    /// events when the associated keyword is heard by PhraseRecognitionSubsystem.
+    /// events when the associated keyword is heard by KeywordRecognitionSubsystem.
     /// </summary>
     /// <remarks>
     /// <para>As XRI does not support selecting more than one interactable at a time,
@@ -54,11 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var subsystem = SpeechUtils.GetSubsystem();
                 if (subsystem != null)
                 {
-                    subsystem.CreateOrGetEventForPhrase(keyword).AddListener(() => OnKeywordRecognized(keyword));
+                    subsystem.CreateOrGetEventForKeyword(keyword).AddListener(() => OnKeywordRecognized(keyword));
                 }
                 else
                 {
-                    Debug.LogError("Failed to retrieve a running PhraseRecognitionSubsystem while registering an interactable. " +
+                    Debug.LogError("Failed to retrieve a running KeywordRecognitionSubsystem while registering an interactable. " +
                         "Please make sure the subsystem is correctly set up or disable this speech interactor.");
                 }
             }

@@ -9,10 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Demonstration script showing how to subscribe to and handle
-    /// events fired by SpeechRecognitionSubsystem.
+    /// events fired by DictationSubsystem.
     /// </summary>
-    [AddComponentMenu("MRTK/Examples/Speech Recognition Handler")]
-    public class SpeechRecognitionHandler : MonoBehaviour
+    [AddComponentMenu("MRTK/Examples/Dictation Handler")]
+    public class DictationHandler : MonoBehaviour
     {
 
         /// <summary>
@@ -41,65 +41,65 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public StringUnityEvent OnRecognitionFaulted;
 
-        private SpeechRecognitionSubsystem speechRecognitionSubsystem;
+        private DictationSubsystem dictationSubsystem;
 
         /// <summary>
-        /// Start speech recognition on a SpeechRecognitionSubsystem.
+        /// Start dictation on a DictationSubsystem.
         /// </summary>
         public void StartRecognition()
         {
             // Make sure there isn't an ongoing recognition session
             StopRecognition();
 
-            speechRecognitionSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<SpeechRecognitionSubsystem>();
-            if (speechRecognitionSubsystem != null)
+            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
+            if (dictationSubsystem != null)
             {
-                speechRecognitionSubsystem.Recognizing += SpeechRecognitionSubsystem_Recognizing;
-                speechRecognitionSubsystem.Recognized += SpeechRecognitionSubsystem_Recognized;
-                speechRecognitionSubsystem.RecognitionFinished += SpeechRecognitionSubsystem_RecognitionFinished;
-                speechRecognitionSubsystem.RecognitionFaulted += SpeechRecognitionSubsystem_RecognitionFaulted;
-                speechRecognitionSubsystem.StartRecognition();
+                dictationSubsystem.Recognizing += DictationSubsystem_Recognizing;
+                dictationSubsystem.Recognized += DictationSubsystem_Recognized;
+                dictationSubsystem.RecognitionFinished += DictationSubsystem_RecognitionFinished;
+                dictationSubsystem.RecognitionFaulted += DictationSubsystem_RecognitionFaulted;
+                dictationSubsystem.StartDictation();
             }
             else
             {
-                Debug.LogError("Cannot find a running SpeechRecognitionSubsystem. Please check the MRTK profile settings " +
-                    "(Project Settings -> MRTK3) and/or ensure a SpeechRecognitionSubsystem is running.");
+                Debug.LogError("Cannot find a running DictationSubsystem. Please check the MRTK profile settings " +
+                    "(Project Settings -> MRTK3) and/or ensure a DictationSubsystem is running.");
             }
         }
 
-        private void SpeechRecognitionSubsystem_RecognitionFaulted(SpeechRecognitionSessionEventArgs obj)
+        private void DictationSubsystem_RecognitionFaulted(DictationSessionEventArgs obj)
         {
             OnRecognitionFaulted.Invoke("Recognition faulted. Reason: " + obj.ReasonString);
         }
 
-        private void SpeechRecognitionSubsystem_RecognitionFinished(SpeechRecognitionSessionEventArgs obj)
+        private void DictationSubsystem_RecognitionFinished(DictationSessionEventArgs obj)
         {
             OnRecognitionFinished.Invoke("Recognition finished. Reason: " + obj.ReasonString);
         }
 
-        private void SpeechRecognitionSubsystem_Recognized(SpeechRecognitionResultEventArgs obj)
+        private void DictationSubsystem_Recognized(DictationResultEventArgs obj)
         {
             OnSpeechRecognized.Invoke("Recognized:" + obj.Result);
         }
 
-        private void SpeechRecognitionSubsystem_Recognizing(SpeechRecognitionResultEventArgs obj)
+        private void DictationSubsystem_Recognizing(DictationResultEventArgs obj)
         {
             OnSpeechRecognizing.Invoke("Recognizing:" + obj.Result);
         }
 
         /// <summary>
-        /// Stop speech recognition on the current SpeechRecognitionSubsystem.
+        /// Stop dictation on the current DictationSubsystem.
         /// </summary>
         public void StopRecognition()
         {
-            if (speechRecognitionSubsystem != null)
+            if (dictationSubsystem != null)
             {
-                speechRecognitionSubsystem.StopRecognition();
-                speechRecognitionSubsystem.Recognizing += SpeechRecognitionSubsystem_Recognizing;
-                speechRecognitionSubsystem.Recognized += SpeechRecognitionSubsystem_Recognized;
-                speechRecognitionSubsystem.RecognitionFinished += SpeechRecognitionSubsystem_RecognitionFinished;
-                speechRecognitionSubsystem.RecognitionFaulted += SpeechRecognitionSubsystem_RecognitionFaulted;
-                speechRecognitionSubsystem = null;
+                dictationSubsystem.StopDictation();
+                dictationSubsystem.Recognizing -= DictationSubsystem_Recognizing;
+                dictationSubsystem.Recognized -= DictationSubsystem_Recognized;
+                dictationSubsystem.RecognitionFinished -= DictationSubsystem_RecognitionFinished;
+                dictationSubsystem.RecognitionFaulted -= DictationSubsystem_RecognitionFaulted;
+                dictationSubsystem = null;
             }
         }
     }

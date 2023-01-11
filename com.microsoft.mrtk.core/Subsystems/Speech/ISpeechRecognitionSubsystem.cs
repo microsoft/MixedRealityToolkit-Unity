@@ -6,42 +6,42 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// Specification for what a SpeechRecognitionSubsystem needs to be able to provide.
-    /// Both the SpeechRecognitionSubsystem implementation and the associated provider
+    /// Specification for what a DictationSubsystem needs to be able to provide.
+    /// Both the DictationSubsystem implementation and the associated provider
     /// MUST implement this interface, preferably with a direct 1:1 mapping
     /// between the provider surface and the subsystem surface.
     /// </summary>
-    public interface ISpeechRecognitionSubsystem
+    public interface IDictationSubsystem
     {
         /// <summary>
-        /// Start speech recognition with default configurations.
+        /// Start dictation with default configurations.
         /// There may be other overloads with parameters to specify configurations depending on the implementation.
         /// </summary>
-        void StartRecognition();
+        void StartDictation();
 
         /// <summary>
-        /// Stop speech recognition.
+        /// Stop dictation.
         /// </summary>
-        void StopRecognition();
+        void StopDictation();
 
         /// <summary>
         /// Action triggered when the recognizer is processing the input and has a tentative result.
         /// </summary>
-        public event Action<SpeechRecognitionResultEventArgs> Recognizing;
+        public event Action<DictationResultEventArgs> Recognizing;
 
         /// <summary>
         /// Action triggered when the recognizer recognized the input and returns a final result.
         /// </summary>
-        public event Action<SpeechRecognitionResultEventArgs> Recognized;
+        public event Action<DictationResultEventArgs> Recognized;
 
         /// <summary>
         /// Action triggered when the recognition session is finished.
         /// </summary>
-        public event Action<SpeechRecognitionSessionEventArgs> RecognitionFinished;
+        public event Action<DictationSessionEventArgs> RecognitionFinished;
 
         /// <summary>
         /// Action triggered when the recognition is faulted (i.e. error occurred).
         /// </summary>
-        public event Action<SpeechRecognitionSessionEventArgs> RecognitionFaulted;
+        public event Action<DictationSessionEventArgs> RecognitionFaulted;
     }
 }

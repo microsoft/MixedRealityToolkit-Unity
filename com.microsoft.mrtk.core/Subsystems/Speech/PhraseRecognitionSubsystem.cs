@@ -9,73 +9,73 @@ using UnityEngine.SubsystemsImplementation;
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// A subsystem that exposes information about the user's PhraseRecognition.
+    /// A subsystem that exposes information about the user's KeywordRecognition.
     /// </summary>
     [Preserve]
-    public class PhraseRecognitionSubsystem :
-        MRTKSubsystem<PhraseRecognitionSubsystem, PhraseRecognitionSubsystemDescriptor, PhraseRecognitionSubsystem.Provider>,
-        IPhraseRecognitionSubsystem
+    public class KeywordRecognitionSubsystem :
+        MRTKSubsystem<KeywordRecognitionSubsystem, KeywordRecognitionSubsystemDescriptor, KeywordRecognitionSubsystem.Provider>,
+        IKeywordRecognitionSubsystem
     {
         /// <summary>
-        /// Construct the <c>PhraseRecognitionSubsystem</c>.
+        /// Construct the <c>KeywordRecognitionSubsystem</c>.
         /// </summary>
-        public PhraseRecognitionSubsystem()
+        public KeywordRecognitionSubsystem()
         { }
 
         /// <summary>
         /// Interface for providing recognition functionality for the implementation.
         /// </summary>
-        public abstract class Provider : MRTKSubsystemProvider<PhraseRecognitionSubsystem>, IPhraseRecognitionSubsystem
+        public abstract class Provider : MRTKSubsystemProvider<KeywordRecognitionSubsystem>, IKeywordRecognitionSubsystem
         {
-            #region IPhraseRecognitionSubsystem implementation
+            #region IKeywordRecognitionSubsystem implementation
 
             /// <inheritdoc/>
-            public abstract UnityEvent CreateOrGetEventForPhrase(string phrase);
+            public abstract UnityEvent CreateOrGetEventForKeyword(string keyword);
 
             /// <inheritdoc/>
-            public abstract void RemovePhrase(string phrase);
+            public abstract void RemoveKeyword(string keyword);
 
             /// <inheritdoc/>
-            public abstract void RemoveAllPhrases();
+            public abstract void RemoveAllKeywords();
 
             /// <inheritdoc/>
-            public abstract IReadOnlyDictionary<string, UnityEvent> GetAllPhrases();
+            public abstract IReadOnlyDictionary<string, UnityEvent> GetAllKeywords();
 
-            #endregion IPhraseRecognitionSubsystem implementation
+            #endregion IKeywordRecognitionSubsystem implementation
 
             /// <summary>
-            /// The dictionary storing the current phrases and their associated actions.
+            /// The dictionary storing the current keywords and their associated actions.
             /// </summary>
-            protected Dictionary<string, UnityEvent> phraseDictionary = new Dictionary<string, UnityEvent>();
+            protected Dictionary<string, UnityEvent> keywordDictionary = new Dictionary<string, UnityEvent>();
         }
 
-        #region IPhraseRecognitionSubsystem implementation
+        #region IKeywordRecognitionSubsystem implementation
 
         /// <inheritdoc/>
-        public UnityEvent CreateOrGetEventForPhrase(string phrase) => provider.CreateOrGetEventForPhrase(phrase);
+        public UnityEvent CreateOrGetEventForKeyword(string keyword) => provider.CreateOrGetEventForKeyword(keyword);
 
         /// <inheritdoc/>
-        public void RemovePhrase(string phrase) => provider.RemovePhrase(phrase);
+        public void RemoveKeyword(string keyword) => provider.RemoveKeyword(keyword);
 
         /// <inheritdoc/>
-        public void RemoveAllPhrases() => provider.RemoveAllPhrases();
+        public void RemoveAllKeywords() => provider.RemoveAllKeywords();
 
         ///<inheritdoc/>
-        public IReadOnlyDictionary<string, UnityEvent> GetAllPhrases() => provider.GetAllPhrases();
+        public IReadOnlyDictionary<string, UnityEvent> GetAllKeywords() => provider.GetAllKeywords();
 
-        #endregion IPhraseRecognitionSubsystem implementation
+        #endregion IKeywordRecognitionSubsystem implementation
 
         /// <summary>
-        /// Registers a PhraseRecognition subsystem implementation based on the given subsystem parameters.
+        /// Registers a KeywordRecognition subsystem implementation based on the given subsystem parameters.
         /// </summary>
-        /// <param name="phraseRecognitionSubsystemParams">The parameters defining the PhraseRecognition subsystem functionality implemented
+        /// <param name="keywordRecognitionSubsystemParams">The parameters defining the KeywordRecognition subsystem functionality implemented
         /// by the subsystem provider.</param>
         /// <returns>
         /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
         /// </returns>
-        public static bool Register(PhraseRecognitionSubsystemCinfo phraseRecognitionSubsystemParams)
+        public static bool Register(KeywordRecognitionSubsystemCinfo keywordRecognitionSubsystemParams)
         {
-            var descriptor = PhraseRecognitionSubsystemDescriptor.Create(phraseRecognitionSubsystemParams);
+            var descriptor = KeywordRecognitionSubsystemDescriptor.Create(keywordRecognitionSubsystemParams);
             SubsystemDescriptorStore.RegisterDescriptor(descriptor);
             return true;
         }

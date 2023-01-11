@@ -7,66 +7,66 @@ using UnityEngine.SubsystemsImplementation;
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// Encapsulates the parameters for creating a new <see cref="PhraseRecognitionSubsystemDescriptor"/>.
+    /// Encapsulates the parameters for creating a new <see cref="KeywordRecognitionSubsystemDescriptor"/>.
     /// </summary>
-    public class PhraseRecognitionSubsystemCinfo : MRTKSubsystemCinfo
+    public class KeywordRecognitionSubsystemCinfo : MRTKSubsystemCinfo
     {
         /// <summary>
-        /// Specifies whether the <c>PhraseRecognitionSubsystem</c> is cloud based.
+        /// Specifies whether the <c>KeywordRecognitionSubsystem</c> is cloud based.
         /// </summary>
         public bool IsCloudBased { get; set; }
 
         /// <summary>
         /// Tests for equality.
         /// </summary>
-        /// <param name="other">The other <see cref="PhraseRecognitionSubsystemCinfo"/> to compare against.</param>
-        /// <returns>`True` if every field in <paramref name="other"/> is equal to this <see cref="PhraseRecognitionSubsystemCinfo"/>, otherwise false.</returns>
+        /// <param name="other">The other <see cref="KeywordRecognitionSubsystemCinfo"/> to compare against.</param>
+        /// <returns>`True` if every field in <paramref name="other"/> is equal to this <see cref="KeywordRecognitionSubsystemCinfo"/>, otherwise false.</returns>
         public override bool Equals(MRTKSubsystemCinfo other)
         {
-            return base.Equals(other) && IsCloudBased == (other as PhraseRecognitionSubsystemCinfo)?.IsCloudBased;
+            return base.Equals(other) && IsCloudBased == (other as KeywordRecognitionSubsystemCinfo)?.IsCloudBased;
         }
     }
 
     /// <summary>
     /// Specifies a functionality description that may be registered for each implementation that provides the
-    /// <see cref="PhraseRecognitionSubsystem"/> interface.
+    /// <see cref="KeywordRecognitionSubsystem"/> interface.
     /// </summary>
-    public class PhraseRecognitionSubsystemDescriptor :
-        MRTKSubsystemDescriptor<PhraseRecognitionSubsystem, PhraseRecognitionSubsystem.Provider>
+    public class KeywordRecognitionSubsystemDescriptor :
+        MRTKSubsystemDescriptor<KeywordRecognitionSubsystem, KeywordRecognitionSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>PhraseRecognitionSubsystemDescriptor</c> based on the given parameters.
+        /// Constructs a <c>KeywordRecognitionSubsystemDescriptor</c> based on the given parameters.
         /// </summary>
-        /// <param name='PhraseRecognitionSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
-        PhraseRecognitionSubsystemDescriptor(PhraseRecognitionSubsystemCinfo cinfo) : base(cinfo)
+        /// <param name='KeywordRecognitionSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        KeywordRecognitionSubsystemDescriptor(KeywordRecognitionSubsystemCinfo cinfo) : base(cinfo)
         {
             IsCloudBased = cinfo.IsCloudBased;
         }
 
         /// <summary>
-        /// Specifies whether the <c>PhraseRecognitionSubsystem</c> is cloud based.
+        /// Specifies whether the <c>KeywordRecognitionSubsystem</c> is cloud based.
         /// </summary>
         public bool IsCloudBased { get; set; }
 
         /// <summary>
-        /// Creates a <c>PhraseRecognitionSubsystemDescriptor</c> based on the given parameters validating that the
+        /// Creates a <c>KeywordRecognitionSubsystemDescriptor</c> based on the given parameters validating that the
         /// <c>id</c> and <c>implentationType</c> properties are specified.
         /// </summary>
-        /// <param name='PhraseRecognitionSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <param name='KeywordRecognitionSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>PhraseRecognitionSubsystemDescriptor</c>.
+        /// The created <c>KeywordRecognitionSubsystemDescriptor</c>.
         /// </returns>
-        internal static PhraseRecognitionSubsystemDescriptor Create(PhraseRecognitionSubsystemCinfo cinfo)
+        internal static KeywordRecognitionSubsystemDescriptor Create(KeywordRecognitionSubsystemCinfo cinfo)
         {
            // Validates cinfo.
-           if (!XRSubsystemHelpers.CheckTypes<PhraseRecognitionSubsystem, PhraseRecognitionSubsystem.Provider>(cinfo.Name,
+           if (!XRSubsystemHelpers.CheckTypes<KeywordRecognitionSubsystem, KeywordRecognitionSubsystem.Provider>(cinfo.Name,
                                                                                                                cinfo.SubsystemTypeOverride,
                                                                                                                cinfo.ProviderType))
            {
-               throw new ArgumentException("Could not create PhraseRecognitionSubsystemDescriptor.");
+               throw new ArgumentException("Could not create KeywordRecognitionSubsystemDescriptor.");
            }
 
-           return new PhraseRecognitionSubsystemDescriptor(cinfo);
+           return new KeywordRecognitionSubsystemDescriptor(cinfo);
         }
     }
 }

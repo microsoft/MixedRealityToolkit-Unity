@@ -11,12 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public static class SpeechUtils
     {
         /// <summary>
-        /// Gets the first running <see cref="PhraseRecognitionSubsystem"/> instance.
+        /// Gets the first running <see cref="KeywordRecognitionSubsystem"/> instance.
         /// </summary>
-        /// <returns>The running <see cref="PhraseRecognitionSubsystemInstance"/>, or null.</returns>
-        public static PhraseRecognitionSubsystem GetSubsystem()
+        /// <returns>The running <see cref="KeywordRecognitionSubsystemInstance"/>, or null.</returns>
+        public static KeywordRecognitionSubsystem GetSubsystem()
         {
-            return XRSubsystemHelpers.GetFirstRunningSubsystem<PhraseRecognitionSubsystem>() as PhraseRecognitionSubsystem;
+            return XRSubsystemHelpers.GetFirstRunningSubsystem<KeywordRecognitionSubsystem>() as KeywordRecognitionSubsystem;
         }
     }
 }

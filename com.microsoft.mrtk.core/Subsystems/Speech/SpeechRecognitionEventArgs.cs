@@ -4,25 +4,25 @@
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// Event data associated with the result of speech recognition.
+    /// Event data associated with the result of dictation.
     /// </summary>
-    public class SpeechRecognitionResultEventArgs
+    public class DictationResultEventArgs
     {
         /// <summary>
-        /// The result of speech recognition.
+        /// The result of dictation.
         /// </summary>
         public string Result { get; private set; }
 
         /// <summary>
-        /// The confidence of the speech recognition result on a scale of 0 to 1.
+        /// The confidence of the dictation result on a scale of 0 to 1.
         /// Null when the confidence is not available.
         /// </summary>
         public float? Confidence { get; private set; }
 
         /// <summary>
-        /// Construct the <c>SpeechRecognitionResultEventArgs</c>.
+        /// Construct the <c>DictationResultEventArgs</c>.
         /// </summary>
-        public SpeechRecognitionResultEventArgs(string result, float? confidence)
+        public DictationResultEventArgs(string result, float? confidence)
         {
             Confidence = confidence;
             Result = result;
@@ -30,23 +30,23 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     }
 
     /// <summary>
-    ///  Event data associated with the session of speech recognition.
+    ///  Event data associated with the session of dictation.
     /// </summary>
-    public class SpeechRecognitionSessionEventArgs
+    public class DictationSessionEventArgs
     {
         /// <summary>
-        /// The reason for this speech recognition session event.
+        /// The reason for this dictation session event.
         /// </summary>
-        public SpeechRecognitionEventReason Reason { get; private set; }
+        public DictationEventReason Reason { get; private set; }
         /// <summary>
-        /// The reason for this speech recognition session event in string.
+        /// The reason for this dictation session event in string.
         /// </summary>
         public string ReasonString { get; private set; }
 
         /// <summary>
-        /// Construct the <c>SpeechRecognitionSessionEventArgs</c>.
+        /// Construct the <c>DictationSessionEventArgs</c>.
         /// </summary>
-        public SpeechRecognitionSessionEventArgs(SpeechRecognitionEventReason reason, string reasonString)
+        public DictationSessionEventArgs(DictationEventReason reason, string reasonString)
         {
             Reason = reason;
             ReasonString = reasonString;

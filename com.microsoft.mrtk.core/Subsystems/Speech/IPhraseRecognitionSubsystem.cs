@@ -7,32 +7,31 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// Specification for what a PhraseRecognitionSubsystem needs to be able to provide.
-    /// Both the PhraseRecognitionSubsystem implementation and the associated provider
+    /// Specification for what a KeywordRecognitionSubsystem needs to be able to provide.
+    /// Both the KeywordRecognitionSubsystem implementation and the associated provider
     /// MUST implement this interface, preferably with a direct 1:1 mapping
     /// between the provider surface and the subsystem surface.
     /// </summary>
-    public interface IPhraseRecognitionSubsystem
+    public interface IKeywordRecognitionSubsystem
     {
         /// <summary>
-        /// Add or update a phrase to recognize.
+        /// Add or update a keyword to recognize.
         /// </summary>
-        UnityEvent CreateOrGetEventForPhrase(string phrase);
+        UnityEvent CreateOrGetEventForKeyword(string keyword);
 
         /// <summary>
-        /// Remove a phrase to recognize.
+        /// Remove a keyword to recognize.
         /// </summary>
-        void RemovePhrase(string phrase);
+        void RemoveKeyword(string keyword);
 
         /// <summary>
-        /// Remove all phrases to recognize.
+        /// Remove all keywords to recognize.
         /// </summary>
-        /// <param name="joint">Identifier of the requested joint.</param>
-        void RemoveAllPhrases();
+        void RemoveAllKeywords();
 
         /// <summary>
-        /// Get a read-only reference to the all phrases that are currently registered with the recognizer.
+        /// Get a read-only reference to the all keywords that are currently registered with the recognizer.
         /// </summary>
-        IReadOnlyDictionary<string, UnityEvent> GetAllPhrases();
+        IReadOnlyDictionary<string, UnityEvent> GetAllKeywords();
     }
 }
