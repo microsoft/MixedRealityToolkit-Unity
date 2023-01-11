@@ -36,4 +36,4 @@ MonoBehaviour:
         reference: Microsoft.MixedReality.Toolkit.Input.MRTKHandsAggregatorSubsystem,
           Microsoft.MixedReality.Toolkit.Input
       value: {fileID: 11400000, guid: b8da41358d218754494ea49599e7b0fb, type: 2}
-  <SpatializationMixer>k__BackingField: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+  <SpatializationMixer>k__BackingField: {fileID: 0}
