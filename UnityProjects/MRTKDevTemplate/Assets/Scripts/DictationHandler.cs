@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             else
             {
-                Debug.LogError("Cannot find a running DictationSubsystem. Please check the MRTK profile settings " +
+                OnRecognitionFaulted.Invoke("Cannot find a running DictationSubsystem. Please check the MRTK profile settings " +
                     "(Project Settings -> MRTK3) and/or ensure a DictationSubsystem is running.");
             }
         }
