@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 keywordDictionary.Add(keyword, new List<StatefulInteractable> { interactable });
-                var subsystem = SpeechUtils.GetSubsystem();
+                var subsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
                 if (subsystem != null)
                 {
                     subsystem.CreateOrGetEventForKeyword(keyword).AddListener(() => OnKeywordRecognized(keyword));

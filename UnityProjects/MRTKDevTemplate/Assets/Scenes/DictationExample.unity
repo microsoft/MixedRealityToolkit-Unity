@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 563e12f6d25dc7e489d0c596e537be42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnSpeechRecognizing:
+  <OnSpeechRecognizing>k__BackingField:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1245148838}
@@ -365,7 +365,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSpeechRecognized:
+  <OnSpeechRecognized>k__BackingField:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1245148838}
@@ -380,7 +380,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnRecognitionFinished:
+  <OnRecognitionFinished>k__BackingField:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1245148838}
@@ -419,7 +419,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnRecognitionFaulted:
+  <OnRecognitionFaulted>k__BackingField:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1245148838}

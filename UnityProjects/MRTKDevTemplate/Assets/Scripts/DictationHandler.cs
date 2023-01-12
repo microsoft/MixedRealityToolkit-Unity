@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     [AddComponentMenu("MRTK/Examples/Dictation Handler")]
     public class DictationHandler : MonoBehaviour
     {
-
         /// <summary>
         /// Wrapper of UnityEvent&lt;string&gt; for serialization.
         /// </summary>
@@ -24,22 +23,26 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// Event raised while the user is talking. As the recognizer listens, it provides text of what it's heard so far.
         /// </summary>
-        public StringUnityEvent OnSpeechRecognizing;
+        [field: SerializeField]
+        public StringUnityEvent OnSpeechRecognizing { get; }
 
         /// <summary>
         /// Event raised after the user pauses, typically at the end of a sentence. Contains the full recognized string so far.
         /// </summary>
-        public StringUnityEvent OnSpeechRecognized;
+        [field: SerializeField]
+        public StringUnityEvent OnSpeechRecognized { get; }
 
         /// <summary>
         /// Event raised when the recognizer stops. Contains the final recognized string.
         /// </summary>
-        public StringUnityEvent OnRecognitionFinished;
+        [field: SerializeField]
+        public StringUnityEvent OnRecognitionFinished { get; }
 
         /// <summary>
         /// Event raised when an error occurs. Contains the string representation of the error reason.
         /// </summary>
-        public StringUnityEvent OnRecognitionFaulted;
+        [field: SerializeField]
+        public StringUnityEvent OnRecognitionFaulted { get; }
 
         private DictationSubsystem dictationSubsystem;
 

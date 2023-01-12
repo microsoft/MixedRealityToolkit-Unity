@@ -6,18 +6,18 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// <summary>
     /// Event data associated with the result of dictation.
     /// </summary>
-    public class DictationResultEventArgs
+    public readonly struct DictationResultEventArgs
     {
         /// <summary>
         /// The result of dictation.
         /// </summary>
-        public string Result { get; private set; }
+        public string Result { get; }
 
         /// <summary>
         /// The confidence of the dictation result on a scale of 0 to 1.
         /// Null when the confidence is not available.
         /// </summary>
-        public float? Confidence { get; private set; }
+        public float? Confidence { get; }
 
         /// <summary>
         /// Construct the <c>DictationResultEventArgs</c>.
@@ -32,16 +32,16 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// <summary>
     ///  Event data associated with the session of dictation.
     /// </summary>
-    public class DictationSessionEventArgs
+    public readonly struct DictationSessionEventArgs
     {
         /// <summary>
         /// The reason for this dictation session event.
         /// </summary>
-        public DictationEventReason Reason { get; private set; }
+        public DictationEventReason Reason { get; }
         /// <summary>
         /// The reason for this dictation session event in string.
         /// </summary>
-        public string ReasonString { get; private set; }
+        public string ReasonString { get; }
 
         /// <summary>
         /// Construct the <c>DictationSessionEventArgs</c>.
