@@ -24,25 +24,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// Event raised while the user is talking. As the recognizer listens, it provides text of what it's heard so far.
         /// </summary>
         [field: SerializeField]
-        public StringUnityEvent OnSpeechRecognizing { get; }
+        public StringUnityEvent OnSpeechRecognizing { get; private set; }
 
         /// <summary>
         /// Event raised after the user pauses, typically at the end of a sentence. Contains the full recognized string so far.
         /// </summary>
         [field: SerializeField]
-        public StringUnityEvent OnSpeechRecognized { get; }
+        public StringUnityEvent OnSpeechRecognized { get; private set; }
 
         /// <summary>
         /// Event raised when the recognizer stops. Contains the final recognized string.
         /// </summary>
         [field: SerializeField]
-        public StringUnityEvent OnRecognitionFinished { get; }
+        public StringUnityEvent OnRecognitionFinished { get; private set; }
 
         /// <summary>
         /// Event raised when an error occurs. Contains the string representation of the error reason.
         /// </summary>
         [field: SerializeField]
-        public StringUnityEvent OnRecognitionFaulted { get; }
+        public StringUnityEvent OnRecognitionFaulted { get; private set; }
 
         private DictationSubsystem dictationSubsystem;
 
