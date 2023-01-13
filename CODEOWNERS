@@ -18,13 +18,13 @@
 # first in this file, followed by more specific rules.
 
 # Build / CI Pipeline YAML
-/pipelines/ @MenelvagorMilsom @macborow
+/pipelines/ @keveleigh @MaxWang-MS
 
 # Build / CI C#
-/Assets/MRTK/Core/Utilities/BuildAndDeploy/ @MenelvagorMilsom @macborow
+/Assets/MRTK/Core/Utilities/BuildAndDeploy/ @keveleigh @MaxWang-MS
 
 # Build / CI Powershell Scripts
-/scripts/ci/ @MenelvagorMilsom @macborow
+/scripts/ci/ @keveleigh @MaxWang-MS
 
 # Packaging files
 *.asmdef @davidkline-ms @keveleigh
@@ -37,19 +37,19 @@ packagetemplate.json @davidkline-ms @keveleigh
 
 # Services and Providers
 /Assets/MRTK/Providers/ @davidkline-ms @keveleigh
-/Assets/MRTK/Providers/LeapMotion/ @davidkline-ms @keveleigh @CDiaz-MS
+/Assets/MRTK/Providers/LeapMotion/ @davidkline-ms @keveleigh
 /Assets/MRTK/Providers/Oculus/ @davidkline-ms @keveleigh @RogPodge
-/Assets/MRTK/Providers/UnityInput/ @davidkline-ms @keveleigh @CDiaz-MS
+/Assets/MRTK/Providers/UnityInput/ @davidkline-ms @keveleigh
 /Assets/MRTK/Services/ @davidkline-ms @keveleigh
-/Assets/MRTK/Services/InputSystem/ @davidkline-ms @keveleigh @julenka
-/Assets/MRTK/Services/SceneSystem/ @davidkline-ms @keveleigh @Railboy
+/Assets/MRTK/Services/InputSystem/ @davidkline-ms @keveleigh
+/Assets/MRTK/Services/SceneSystem/ @davidkline-ms @keveleigh
 
 # SDK
 /Assets/MRTK/SDK/ @davidkline-ms
-/Assets/MRTK/SDK/Features/Input/ @davidkline-ms @keveleigh @julenka @CDiaz-MS
+/Assets/MRTK/SDK/Features/Input/ @davidkline-ms @keveleigh
 
 # UX
-/Assets/MRTK/SDK/Features/UX/ @julenka @CDiaz-MS
+/Assets/MRTK/SDK/Features/UX/ @Zee2
 
 # Tools
 /Assets/MRTK/Tools/ @davidkline-ms @keveleigh @MenelvagorMilsom
@@ -58,14 +58,14 @@ packagetemplate.json @davidkline-ms @keveleigh
 /Assets/MRTK/Extensions/ @davidkline-ms @keveleigh
 
 # Standard Assets
-/Assets/MRTK/StandardAssets/ @davidkline-ms @cre8ivepark @julenka
+/Assets/MRTK/StandardAssets/ @davidkline-ms
 /Assets/MRTK/StandardAssets/Shaders/ @Cameron-Micka
-/Assets/MRTK/SDK/StandardAssets/ @davidkline-ms @cre8ivepark @julenka
+/Assets/MRTK/SDK/StandardAssets/ @davidkline-ms
 /Assets/MRTK/SDK/StandardAssets/Shaders/ @Cameron-Micka
-/Assets/MRTK/Examples/StandardAssets/ @davidkline-ms @cre8ivepark @julenka
+/Assets/MRTK/Examples/StandardAssets/ @davidkline-ms
 
 # Examples
-/Assets/MRTK/Examples/ @davidkline-ms @keveleigh @julenka @CDiaz-MS @cre8ivepark
+/Assets/MRTK/Examples/ @davidkline-ms @keveleigh
 
 # Tests
-/Assets/MRTK/Tests/ @davidkline-ms @keveleigh @julenka @CDiaz-MS
+/Assets/MRTK/Tests/ @davidkline-ms @keveleigh
