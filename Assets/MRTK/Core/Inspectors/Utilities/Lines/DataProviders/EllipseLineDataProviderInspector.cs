@@ -35,39 +35,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             EditorGUILayout.LabelField("Ellipse Settings");
 
-            EditorGUI.indentLevel++;
-
-            EditorGUILayout.PropertyField(resolution);
-
-            var prevRadius = radius.vector2Value;
-
-            EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(radius);
-
-            if (EditorGUI.EndChangeCheck())
+            using (new EditorGUI.IndentLevelScope())
             {
-                bool update = false;
-                tempRadius = radius.vector2Value;
+                EditorGUILayout.PropertyField(resolution);
 
-                if (radius.vector2Value.x <= 0)
-                {
-                    tempRadius.x = prevRadius.x;
-                    update = true;
-                }
+                var prevRadius = radius.vector2Value;
 
-                if (radius.vector2Value.y <= 0)
-                {
-                    tempRadius.y = prevRadius.x;
-                    update = true;
-                }
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(radius);
 
-                if (update)
+                if (EditorGUI.EndChangeCheck())
                 {
-                    radius.vector2Value = tempRadius;
+                    bool update = false;
+                    tempRadius = radius.vector2Value;
+
+                    if (radius.vector2Value.x <= 0)
+                    {
+                        tempRadius.x = prevRadius.x;
+                        update = true;
+                    }
+
+                    if (radius.vector2Value.y <= 0)
+                    {
+                        tempRadius.y = prevRadius.x;
+                        update = true;
+                    }
+
+                    if (update)
+                    {
+                        radius.vector2Value = tempRadius;
+                    }
                 }
             }
-
-            EditorGUI.indentLevel--;
 
             serializedObject.ApplyModifiedProperties();
         }
