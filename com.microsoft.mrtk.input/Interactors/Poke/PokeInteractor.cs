@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using PokePath = Microsoft.MixedReality.Toolkit.IPokeInteractor.PokePath;
 
@@ -42,6 +40,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return PokePoseSource != null && PokePoseSource.TryGetPose(out pose);
         }
 
+        protected virtual bool TryGetPokeRadius(out float radius)
+        {
+            if (xrController is ArticulatedHandController handController
+                && HandsUtils.GetSubsystem() != null
+                && HandsUtils.GetSubsystem().TryGetNearInteractionPoint(handController.HandNode, out HandJointPose jointPose))
+            {
+                radius = jointPose.Radius;
+                return true;
+            }
+
+            radius = default;
+            return false;
+        }
+
         #endregion PokeInteractor
 
         #region IHandedInteractor
@@ -59,8 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private const float DefaultPokeRadius = 0.005f;
 
+        private float pokeRadius = 0.0f;
         /// <inheritdoc />
-        public virtual float PokeRadius => DefaultPokeRadius;
+        public virtual float PokeRadius => pokeRadius > 0 ? pokeRadius : DefaultPokeRadius;
 
         /// <inheritdoc />
         public virtual PokePath PokeTrajectory => pokeTrajectory;
@@ -134,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pokeTrajectory.Start = pokeTrajectory.End;
 
                     // pokePointTracked is used to help set isHoverActive.
-                    pokePointTracked = TryGetPokePose(out Pose pose);
+                    pokePointTracked = TryGetPokePose(out Pose pose) && TryGetPokeRadius(out pokeRadius);
                     if (pokePointTracked)
                     {
                         // If we can get a joint pose, set our transform accordingly.
