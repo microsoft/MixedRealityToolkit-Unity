@@ -168,6 +168,40 @@ namespace Microsoft.MixedReality.Toolkit
                 return handsAggregator;
             }
         }
+        
+        private static DictationSubsystem dictationSubsystem = null;
+
+        /// <summary>
+        /// The currently loaded and running dictation subsystem, if any.
+        /// </summary>
+        public static DictationSubsystem DictationSubsystem
+        {
+            get
+            {
+                if (dictationSubsystem == null || !dictationSubsystem.running)
+                {
+                    dictationSubsystem = GetFirstRunningSubsystem<DictationSubsystem>();
+                }
+                return dictationSubsystem;
+            }
+        }
+
+        private static KeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
+
+        /// <summary>
+        /// The currently loaded and running keyword recognition subsystem, if any.
+        /// </summary>
+        public static KeywordRecognitionSubsystem KeywordRecognitionSubsystem
+        {
+            get
+            {
+                if (keywordRecognitionSubsystem == null || !keywordRecognitionSubsystem.running)
+                {
+                    keywordRecognitionSubsystem = GetFirstRunningSubsystem<KeywordRecognitionSubsystem>();
+                }
+                return keywordRecognitionSubsystem;
+            }
+        }
 
         #region Subsystem internal utilities
 

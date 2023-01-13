@@ -6,12 +6,12 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// Describes the reasons for a speech recognition event.
+    /// Describes the reasons for a dictation event.
     /// </summary>
-    public enum SpeechRecognitionEventReason
+    public enum DictationEventReason
     {
         /// <summary>
-        /// The speech recognition session is successfully completed.
+        /// The dictation session is successfully completed.
         /// </summary>
         Complete = 0,
 
