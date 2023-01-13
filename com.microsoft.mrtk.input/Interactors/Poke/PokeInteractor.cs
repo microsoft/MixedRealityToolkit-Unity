@@ -40,6 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return PokePoseSource != null && PokePoseSource.TryGetPose(out pose);
         }
 
+        /// <summary>
+        /// Called during ProcessInteractor to obtain the poking radius. All raycasts and other physics detections
+        /// are done according to this radius. Override to customize how the radius is calculated.
+        /// </summary>
         protected virtual bool TryGetPokeRadius(out float radius)
         {
             if (xrController is ArticulatedHandController handController
@@ -71,9 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private const float DefaultPokeRadius = 0.005f;
 
-        private float pokeRadius = 0.0f;
         /// <inheritdoc />
         public virtual float PokeRadius => pokeRadius > 0 ? pokeRadius : DefaultPokeRadius;
+        private float pokeRadius = 0.0f;
 
         /// <inheritdoc />
         public virtual PokePath PokeTrajectory => pokeTrajectory;
