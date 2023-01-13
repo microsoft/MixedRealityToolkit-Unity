@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -18,7 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     public class MixedRealityBuildPreferences : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
-        private static readonly GUIContent AppLauncherModelLabel = new GUIContent("3D App Launcher Model", "Location of .glb model to use as a 3D App Launcher");
+        private const string AppLauncherDocsUrl = @"https://docs.microsoft.com/windows/mixed-reality/distribute/creating-3d-models-for-use-in-the-windows-mixed-reality-home";
+
+        private static GUIContent appLauncherModelLabel = null;
+        private static GUIContent buttonContent = null;
         private static UnityEditor.Editor gameObjectEditor = null;
         private static GUIStyle appLauncherPreviewBackgroundColor = null;
         private static bool isBuilding = false;
@@ -33,13 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var provider = new SettingsProvider("Project/Mixed Reality Toolkit/Build Settings", SettingsScope.Project)
             {
                 guiHandler = GUIHandler,
-
                 keywords = new HashSet<string>(new[] { "Mixed", "Reality", "Toolkit", "Build" })
             };
 
             void GUIHandler(string searchContext)
             {
-                EditorGUILayout.HelpBox("These settings are serialized into ProjectPreferences.asset in the MixedRealityToolkit-Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
+                EditorGUILayout.HelpBox("These settings are serialized into ProjectPreferences.asset in the MixedRealityToolkit.Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
                 DrawAppLauncherModelField();
             }
 
@@ -52,33 +53,59 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <remarks>See <see href="https://docs.microsoft.com/en-us/windows/mixed-reality/distribute/3d-app-launcher-design-guidance">3D app launcher design guidance</see> for more information.</remarks>
         public static void DrawAppLauncherModelField(bool showInteractivePreview = true)
         {
+            if (appLauncherModelLabel == null)
+            {
+                appLauncherModelLabel = new GUIContent("3D App Launcher Model (UWP)", "Location of .glb model to use as a 3D App Launcher");
+            }
+
+            if (buttonContent == null)
+            {
+                buttonContent = new GUIContent(string.Empty, EditorGUIUtility.IconContent("_Help").image, "Click for documentation");
+            }
+
             using (new EditorGUILayout.HorizontalScope())
             {
-                GltfAsset newGlbModel;
+                GameObject newGlbModel;
                 bool appLauncherChanged = false;
 
                 // 3D launcher model
                 string curAppLauncherModelLocation = BuildDeployPreferences.AppLauncherModelLocation;
-                var curGlbModel = AssetDatabase.LoadAssetAtPath(curAppLauncherModelLocation, typeof(GltfAsset));
+                Object curGlbModel = AssetDatabase.LoadAssetAtPath(curAppLauncherModelLocation, typeof(GameObject));
 
                 using (new EditorGUILayout.VerticalScope())
                 {
-                    EditorGUILayout.LabelField(AppLauncherModelLabel);
-                    newGlbModel = EditorGUILayout.ObjectField(curGlbModel, typeof(GltfAsset), false, GUILayout.MaxWidth(256)) as GltfAsset;
-                    string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
-                    if (newAppLauncherModelLocation != curAppLauncherModelLocation)
+                    EditorGUILayout.HelpBox("This field will only accept .glb files. Any other file type will be silently rejected.", MessageType.Info);
+
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        BuildDeployPreferences.AppLauncherModelLocation = newAppLauncherModelLocation;
-                        appLauncherChanged = true;
+                        EditorGUILayout.LabelField(appLauncherModelLabel);
+
+                        if (GUILayout.Button(buttonContent, EditorStyles.label))
+                        {
+                            Help.BrowseURL(AppLauncherDocsUrl);
+                        }
+                    }
+
+                    using (var check = new EditorGUI.ChangeCheckScope())
+                    {
+                        newGlbModel = EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false, GUILayout.MaxWidth(256)) as GameObject;
+                        string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
+                        if (check.changed
+                            && (newAppLauncherModelLocation.EndsWith(".glb")
+                                || string.IsNullOrWhiteSpace(newAppLauncherModelLocation)))
+                        {
+                            BuildDeployPreferences.AppLauncherModelLocation = newAppLauncherModelLocation;
+                            appLauncherChanged = true;
+                        }
                     }
                 }
 
                 // The preview GUI has a problem during the build, so we don't render it
-                if (newGlbModel != null && newGlbModel.Model != null && showInteractivePreview && !isBuilding)
+                if (showInteractivePreview && newGlbModel != null && !isBuilding)
                 {
                     if (gameObjectEditor == null || appLauncherChanged)
                     {
-                        gameObjectEditor = UnityEditor.Editor.CreateEditor(newGlbModel.Model);
+                        gameObjectEditor = UnityEditor.Editor.CreateEditor(newGlbModel);
                     }
 
                     if (appLauncherPreviewBackgroundColor == null)
