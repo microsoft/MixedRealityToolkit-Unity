@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     DebugUtilities.LogVerboseFormat(
                         "Attempting to register input system data provider {0}, {1}, {2}",
-                        configuration.ComponentType.Type,
+                        configuration.ComponentType,
                         configuration.ComponentName,
                         configuration.RuntimePlatform);
 
