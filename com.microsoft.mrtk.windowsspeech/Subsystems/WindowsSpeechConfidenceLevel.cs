@@ -8,7 +8,7 @@ using UnityEngine.Windows.Speech;
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     /// <summary>
-    /// The recognition confidence level for WindowsSpeechRecognitionSubsystem and WindowsPhraseRecognitionSubsystem.
+    /// The recognition confidence level for WindowsDictationSubsystem and WindowsKeywordRecognitionSubsystem.
     /// Mirrors UnityEngine.Windows.Speech.ConfidenceLevel
     /// </summary>
     internal enum WindowsSpeechConfidenceLevel
