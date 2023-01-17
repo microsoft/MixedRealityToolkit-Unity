@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             // We only adapt drags for selectable interactables,
             // and if we have a valid proxy interactor.
-            if (ThisInteractable is IXRSelectInteractable selectInteractable &&
-                ProxyInteractor != null)
+            if (!(ThisInteractable is IXRSelectInteractable selectInteractable) ||
+                ProxyInteractor == null)
             { return; }
 
             // If we have no event camera at all, abort!
