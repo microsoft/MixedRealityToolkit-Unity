@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Automatically configure an audio source to use a mixer-based
@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <see cref="https://github.com/microsoft/spatialaudio-unity"/>.
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
-    internal class ConfigureSpatializationSettings : MonoBehaviour
+    public class ConfigureSpatializationSettings : MonoBehaviour
     {
         private void Start()
         {

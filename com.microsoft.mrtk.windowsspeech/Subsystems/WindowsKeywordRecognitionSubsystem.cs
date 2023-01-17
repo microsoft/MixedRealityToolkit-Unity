@@ -21,19 +21,19 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     [Preserve]
     [MRTKSubsystem(
-        Name = "com.microsoft.mixedreality.windowsphraserecognition",
-        DisplayName = "MRTK Windows PhraseRecognition Subsystem",
+        Name = "com.microsoft.mixedreality.windowskeywordrecognition",
+        DisplayName = "MRTK Windows KeywordRecognition Subsystem",
         Author = "Microsoft",
-        ProviderType = typeof(WindowsPhraseRecognitionProvider),
-        SubsystemTypeOverride = typeof(WindowsPhraseRecognitionSubsystem),
-        ConfigType = typeof(WindowsPhraseRecognitionSubsystemConfig))]
-    public class WindowsPhraseRecognitionSubsystem : PhraseRecognitionSubsystem
+        ProviderType = typeof(WindowsKeywordRecognitionProvider),
+        SubsystemTypeOverride = typeof(WindowsKeywordRecognitionSubsystem),
+        ConfigType = typeof(WindowsKeywordRecognitionSubsystemConfig))]
+    public class WindowsKeywordRecognitionSubsystem : KeywordRecognitionSubsystem
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Register()
         {
             // Fetch subsystem metadata from the attribute.
-            var cinfo = XRSubsystemHelpers.ConstructCinfo<WindowsPhraseRecognitionSubsystem, PhraseRecognitionSubsystemCinfo>();
+            var cinfo = XRSubsystemHelpers.ConstructCinfo<WindowsKeywordRecognitionSubsystem, KeywordRecognitionSubsystemCinfo>();
 
             if (!Register(cinfo))
             {
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         }
 
         [Preserve]
-        class WindowsPhraseRecognitionProvider : Provider
+        class WindowsKeywordRecognitionProvider : Provider
         {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
             /// <summary>
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 }
             }
 
-            private WindowsPhraseRecognitionSubsystemConfig config;
+            private WindowsKeywordRecognitionSubsystemConfig config;
             private ConfidenceLevel confidenceLevel;
             private KeywordRecognizer keywordRecognizer;
 #if MSFT_OPENXR_1_5_0_OR_NEWER
@@ -75,15 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 #endif
 
             /// <summary>
-            /// Constructor of WindowsPhraseRecognitionProvider.
+            /// Constructor of WindowsKeywordRecognitionProvider.
             /// </summary>
-            public WindowsPhraseRecognitionProvider()
+            public WindowsKeywordRecognitionProvider()
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
                 eventQueue = new ConcurrentQueue<UnityEvent>();
                 reinitRecognizerRequired = false;
 #else
-                Debug.LogError("Cannot create WindowsPhraseRecognitionProvider because WindowsPhraseRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
+                Debug.LogError("Cannot create WindowsKeywordRecognitionProvider because WindowsKeywordRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
             }
 
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             /// <inheritdoc/>
             public override void Start()
             {
-                config = XRSubsystemHelpers.GetConfiguration<WindowsPhraseRecognitionSubsystemConfig, WindowsPhraseRecognitionProvider>();
+                config = XRSubsystemHelpers.GetConfiguration<WindowsKeywordRecognitionSubsystemConfig, WindowsKeywordRecognitionSubsystem>();
                 confidenceLevel = config.ConfidenceLevel;
                 if (keywordRecognizer != null)
                 {
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             }
 
             private static readonly ProfilerMarker UpdatePerfMarker =
-                new ProfilerMarker("[MRTK] WindowsPhraseRecognitionSubsystem.Update");
+                new ProfilerMarker("[MRTK] WindowsKeywordRecognitionSubsystem.Update");
 
             /// <inheritdoc/>
             public override void Update()
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                     {
                         reinitRecognizerRequired = false;
                         Destroy();
-                        keywordRecognizer = new KeywordRecognizer(phraseDictionary.Keys.ToArray(), confidenceLevel);
+                        keywordRecognizer = new KeywordRecognizer(keywordDictionary.Keys.ToArray(), confidenceLevel);
 #if MSFT_OPENXR_1_5_0_OR_NEWER
                         if (SelectKeywordRecognizer.IsSupported)
                         {
@@ -172,13 +172,13 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             }
 #endif
 
-            #region IPhraseRecognitionSubsystem implementation
+            #region IKeywordRecognitionSubsystem implementation
 
             /// <inheritdoc/>
-            public override UnityEvent CreateOrGetEventForPhrase(string phrase)
+            public override UnityEvent CreateOrGetEventForKeyword(string keyword)
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                if (phraseDictionary.TryGetValue(phrase, out UnityEvent e))
+                if (keywordDictionary.TryGetValue(keyword, out UnityEvent e))
                 {
                     return e;
                 }
@@ -186,56 +186,56 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 {
                     reinitRecognizerRequired = true;
                     UnityEvent unityEvent = new UnityEvent();
-                    phraseDictionary.Add(phrase, unityEvent);
+                    keywordDictionary.Add(keyword, unityEvent);
                     return unityEvent;
                 }
 #else
-                Debug.LogError("Cannot call CreateOrGetEventForPhrase because WindowsPhraseRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
+                Debug.LogError("Cannot call CreateOrGetEventForKeyword because WindowsKeywordRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
                 return null;
 #endif
             }
 
             /// <inheritdoc/>
-            public override void RemovePhrase(string phrase)
+            public override void RemoveKeyword(string keyword)
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                phraseDictionary.Remove(phrase);
+                keywordDictionary.Remove(keyword);
                 reinitRecognizerRequired = true;
 #else
-                Debug.LogError("Cannot call RemovePhrase because WindowsPhraseRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
+                Debug.LogError("Cannot call RemoveKeyword because WindowsKeywordRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
             }
 
             /// <inheritdoc/>
-            public override void RemoveAllPhrases()
+            public override void RemoveAllKeywords()
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                phraseDictionary.Clear();
+                keywordDictionary.Clear();
                 Destroy();
 #else
-                Debug.LogError("Cannot call RemoveAllPhrases because WindowsPhraseRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
+                Debug.LogError("Cannot call RemoveAllKeywords because WindowsKeywordRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
 #endif
             }
 
             /// <inheritdoc/>
-            public override IReadOnlyDictionary<string, UnityEvent> GetAllPhrases()
+            public override IReadOnlyDictionary<string, UnityEvent> GetAllKeywords()
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                return phraseDictionary;
+                return keywordDictionary;
 #else
-                Debug.LogError("Cannot call GetAllPhrases because WindowsPhraseRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
+                Debug.LogError("Cannot call GetAllKeywords because WindowsKeywordRecognitionProvider is only supported on Windows Editor, Standalone Windows and UWP.");
                 return null;
 #endif
             }
 
-            #endregion IPhraseRecognitionSubsystem implementation
+            #endregion IKeywordRecognitionSubsystem implementation
 
             #region Helpers
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
             private void Recognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
             {
-                if (phraseDictionary.TryGetValue(args.text, out UnityEvent e))
+                if (keywordDictionary.TryGetValue(args.text, out UnityEvent e))
                 {
                     eventQueue.Enqueue(e);
                 }

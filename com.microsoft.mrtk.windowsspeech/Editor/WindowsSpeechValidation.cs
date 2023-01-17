@@ -23,9 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows.Editor
         {
             return new BuildValidationRule()
             {
-                IsRuleEnabled = () => (MRTKProjectValidation.GetLoadedSubsystemsForBuildTarget(BuildTargetGroup.WSA)?.Contains(typeof(WindowsPhraseRecognitionSubsystem))).GetValueOrDefault(),
+                IsRuleEnabled = () => (MRTKProjectValidation.GetLoadedSubsystemsForBuildTarget(BuildTargetGroup.WSA)?.Contains(typeof(WindowsKeywordRecognitionSubsystem))).GetValueOrDefault() ||
+                (MRTKProjectValidation.GetLoadedSubsystemsForBuildTarget(BuildTargetGroup.WSA)?.Contains(typeof(WindowsDictationSubsystem))).GetValueOrDefault(),
                 Category = "MRTK3",
-                Message = "WindowsPhraseRecognitionSubsystem requires the WSA Microphone capability to be set to true.",
+                Message = "WindowsKeywordRecognition/DictationSubsystem requires the WSA Microphone capability to be set to true.",
                 CheckPredicate = () => PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.Microphone),
                 FixIt = () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true),
                 FixItMessage = "Set the WSA Microphone capability to true",
