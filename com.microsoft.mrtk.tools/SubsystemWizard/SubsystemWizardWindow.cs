@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             window.subsystemGenerator = new SubsystemGenerator();
             window.titleContent = new GUIContent("MRTK3 Subsystem Wizard", EditorGUIUtility.IconContent("d_CustomTool").image); ;
 
-            if (MixedRealityInspectorUtility.IsMixedRealityToolkitLogoAssetPresent())
+            if (InspectorUIUtility.IsMixedRealityToolkitLogoAssetPresent())
             {
                 window.minSize = WindowSizeWithLogo;
             }
@@ -88,14 +88,14 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         private void RenderCommonElements()
         {
             EditorGUILayout.Space(2);
-            if (!MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo())
+            if (!InspectorUIUtility.RenderMixedRealityToolkitLogo())
             {
                 // Only add additional space if the text fallback is used in RenderMixedRealityToolkitLogo().
                 EditorGUILayout.Space(3);
             }
             EditorGUILayout.LabelField(
                 "MRTK3 Subsystem Wizard",
-                MixedRealityInspectorUtility.ProductNameStyle);
+                MRTKEditorStyles.ProductNameStyle);
             EditorGUILayout.Space(9);
             using (new EditorGUILayout.HorizontalScope())
             {
