@@ -2,7 +2,7 @@
   "name": "com.microsoft.mrtk.data",
   "version": "1.0.0-development",
   "description": "*** Please note ***\nThe MRTK3 data binding and theming features contained within this package are experimental. They are not recommended for use in production applications and may be changed or removed.\n",
-  "displayName": "MRTK Experimental Data Binding and Theming",
+  "displayName": "MRTK3 Data Binding and Theming (Experimental)",
   "msftFeatureCategory": "Experimental",
   "author": "Microsoft",
   "license": "MIT",
