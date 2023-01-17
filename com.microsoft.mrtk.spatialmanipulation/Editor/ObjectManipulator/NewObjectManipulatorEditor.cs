@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
     /// </summary>
     [CustomEditor(typeof(NewObjectManipulator))]
     [CanEditMultipleObjects]
-    public class NewObjectManipulatorInspector : StatefulInteractableInspector
+    public class NewObjectManipulatorEditor : StatefulInteractableEditor
     {
         private NewObjectManipulator instance;
         private SerializedProperty allowedManipulations;
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             // Physics
             releaseBehavior = SetUpProperty(nameof(releaseBehavior));
 
-            //Smoothing
+            // Smoothing
             smoothingFar = SetUpProperty(nameof(smoothingFar));
             smoothingNear = SetUpProperty(nameof(smoothingNear));
 
