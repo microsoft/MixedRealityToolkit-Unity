@@ -10,12 +10,12 @@ using UnityEngine.Windows.Speech;
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     /// <summary>
-    /// The configuration object for WindowsSpeechRecognitionSubsystem.
+    /// The configuration object for WindowsDictationSubsystem.
     /// </summary>
     [CreateAssetMenu(
-        fileName = "WindowsSpeechRecognitionSubsystemConfig.asset",
-        menuName = "MRTK/Subsystems/Windows Speech Recognition Subsystem Config")]
-    public class WindowsSpeechRecognitionSubsystemConfig : BaseSubsystemConfig
+        fileName = "WindowsDictationSubsystemConfig.asset",
+        menuName = "MRTK/Subsystems/Windows Dictation Subsystem Config")]
+    public class WindowsDictationSubsystemConfig : BaseSubsystemConfig
     {
         /// <summary>
         /// The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.

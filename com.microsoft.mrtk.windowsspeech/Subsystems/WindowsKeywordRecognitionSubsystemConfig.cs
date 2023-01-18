@@ -10,12 +10,12 @@ using UnityEngine.Windows.Speech;
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     /// <summary>
-    /// The configuration object for WindowsPhraseRecognitionSubsystem.
+    /// The configuration object for WindowsKeywordRecognitionSubsystem.
     /// </summary>
     [CreateAssetMenu(
-        fileName = "WindowsPhraseRecognitionSubsystemConfig.asset",
-        menuName = "MRTK/Subsystems/Windows Phrase Recognition Subsystem Config")]
-    public class WindowsPhraseRecognitionSubsystemConfig : BaseSubsystemConfig
+        fileName = "WindowsKeywordRecognitionSubsystemConfig.asset",
+        menuName = "MRTK/Subsystems/Windows Keyword Recognition Subsystem Config")]
+    public class WindowsKeywordRecognitionSubsystemConfig : BaseSubsystemConfig
     {
         [SerializeField, Tooltip("The confidence threshold for the recognizer to return its result.")]
         private WindowsSpeechConfidenceLevel confidenceLevel = WindowsSpeechConfidenceLevel.Medium;

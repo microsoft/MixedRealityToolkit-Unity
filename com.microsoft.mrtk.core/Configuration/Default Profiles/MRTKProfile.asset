@@ -25,6 +25,14 @@ MonoBehaviour:
   subsystemConfigs:
     entries:
     - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: 610e76a350bf5e24b95a8b7d7024ded7, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsDictationSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: c1ec3a5357948504fac70f304d21881a, type: 2}
+    - key:
         reference: Microsoft.MixedReality.Toolkit.Accessibility.MRTKAccessibilitySubsystem,
           Microsoft.MixedReality.Toolkit.Accessibility
       value: {fileID: 11400000, guid: 3aa94a99d7ce5e845a6a78409e004670, type: 2}
@@ -36,4 +44,4 @@ MonoBehaviour:
         reference: Microsoft.MixedReality.Toolkit.Input.MRTKHandsAggregatorSubsystem,
           Microsoft.MixedReality.Toolkit.Input
       value: {fileID: 11400000, guid: b8da41358d218754494ea49599e7b0fb, type: 2}
-  <SpatializationMixer>k__BackingField: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+  <SpatializationMixer>k__BackingField: {fileID: 0}
