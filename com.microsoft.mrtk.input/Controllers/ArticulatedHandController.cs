@@ -38,8 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion Associated hand select values
 
         #region Properties
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
+        
+        [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
+        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator;
 
         #endregion Properties
 
@@ -73,14 +74,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ArticulatedHandControllerState handControllerState = controllerState as ArticulatedHandControllerState;
 
                 // If we still don't have an aggregator, then don't update selects.
-                if (HandsAggregator == null) { return; }
+                if (XRSubsystemHelpers.HandsAggregator == null) { return; }
 
-                bool gotPinchData = HandsAggregator.TryGetPinchProgress(handNode, out bool isPinchReady, out bool isPinching, out float pinchAmount);
+                bool gotPinchData = XRSubsystemHelpers.HandsAggregator.TryGetPinchProgress(
+                    handNode,
+                    out bool isPinchReady,
+                    out bool isPinching,
+                    out float pinchAmount
+                );
 
                 // If we got pinch data, write it into our select interaction state.
                 if (gotPinchData)
                 {
-
                     // Workaround for missing select actions on devices without interaction profiles
                     // for hands, such as Varjo and Quest. Should be removed once we have universal
                     // hand interaction profile(s) across vendors.
@@ -131,9 +136,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-
-        private static readonly Quaternion rightPalmOffset = Quaternion.Inverse(new Quaternion(Mathf.Sqrt(0.125f), Mathf.Sqrt(0.125f), -Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f));
-        private static readonly Quaternion leftPalmOffset = Quaternion.Inverse(new Quaternion(Mathf.Sqrt(0.125f), -Mathf.Sqrt(0.125f), Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f));
+        private static readonly Quaternion rightPalmOffset = Quaternion.Inverse(
+            new Quaternion(
+                Mathf.Sqrt(0.125f),
+                Mathf.Sqrt(0.125f),
+                -Mathf.Sqrt(1.5f) / 2.0f,
+                Mathf.Sqrt(1.5f) / 2.0f));
+        private static readonly Quaternion leftPalmOffset = Quaternion.Inverse(
+            new Quaternion(
+                Mathf.Sqrt(0.125f),
+                -Mathf.Sqrt(0.125f),
+                Mathf.Sqrt(1.5f) / 2.0f,
+                Mathf.Sqrt(1.5f) / 2.0f));
 
         // Workaround for missing device pose on devices without interaction profiles
         // for hands, such as Varjo and Quest. Should be removed once we have universal
@@ -144,7 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Handedness handedness = HandNode.ToHandedness();
 
             // palmPose retrieved in global space.
-            if (HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, HandNode, out HandJointPose palmPose))
+            if (XRSubsystemHelpers.HandsAggregator != null &&
+                XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, HandNode, out HandJointPose palmPose))
             {
                 // XRControllers work in OpenXR scene-origin-space, so we need to transform
                 // our global palm pose back into scene-origin-space.
