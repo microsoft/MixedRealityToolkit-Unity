@@ -83,6 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     out float pinchAmount
                 );
 
+                Debug.Log("Got pinch data: " + gotPinchData + ", isPinchReady: " + isPinchReady + ", isPinching: " + isPinching + ", pinchAmount: " + pinchAmount);
+
                 // If we got pinch data, write it into our select interaction state.
                 if (gotPinchData)
                 {
@@ -99,6 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerState.selectInteractionState.active = isPinched;
                         controllerState.selectInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
                         controllerState.selectInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+                    }
+
+                    if (!selectActionValue.action.HasAnyControls())
+                    {
                         controllerState.selectInteractionState.value = pinchAmount;
                     }
 
@@ -108,6 +114,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerState.uiPressInteractionState.active = isPinched;
                         controllerState.uiPressInteractionState.activatedThisFrame = isPinched && !pinchedLastFrame;
                         controllerState.uiPressInteractionState.deactivatedThisFrame = !isPinched && pinchedLastFrame;
+                    }
+
+                    if (!uiPressActionValue.action.HasAnyControls())
+                    {
                         controllerState.uiPressInteractionState.value = pinchAmount;
                     }
                     
