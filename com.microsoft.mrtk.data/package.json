@@ -1,9 +1,9 @@
 {
   "name": "com.microsoft.mrtk.data",
   "version": "1.0.0-development",
-  "description": "*** Please note ***\nThe MRTK3 data binding and theming features are in early preview and may not contain all planned features. Early preview releases also may undergo significant, breaking architectural changes before release.\n\nData binding and theming for MRTK. Enables one-way runtime binding of most common datatypes, as well as runtime theming/styling.\n",
-  "displayName": "MRTK Data Binding and Theming Early Preview",
-  "msftFeatureCategory": "MRTK3",
+  "description": "*** Please note ***\nThe MRTK3 data binding and theming features contained within this package are experimental. They are not recommended for use in production applications and may be changed or removed.\n",
+  "displayName": "MRTK3 Data Binding and Theming (Experimental)",
+  "msftFeatureCategory": "Experimental",
   "author": "Microsoft",
   "license": "MIT",
   "repository": {

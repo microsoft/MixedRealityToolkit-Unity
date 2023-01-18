@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             get => preferredTrackedHandedness;
             set
             {
-                if ((value.IsLeft() || value.IsRight())
+                if ((value == Handedness.Left || value == Handedness.Left)
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
@@ -291,10 +291,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private XRBaseInteractor controllerInteractor;
 
         private float lastUpdateTime;
-
-        private HandsAggregatorSubsystem handSubsystem = null;
-
-        internal HandsAggregatorSubsystem HandSubsystem => handSubsystem ??= HandsUtils.GetSubsystem();
 
         private const string TrackingTargetName = "SolverHandler Tracking Target";
 
@@ -468,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
                 else if (TrackedTargetType == TrackedObjectType.HandJoint)
                 {
-                    if (HandSubsystem != null)
+                    if (XRSubsystemHelpers.HandsAggregator != null)
                     {
                         currentTrackedHandedness = TrackedHandedness;
 
@@ -510,7 +506,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 XRNode? handNode = currentTrackedHandedness.ToXRNode();
 
-                if (handNode.HasValue && HandSubsystem.TryGetJoint(TrackedHandJoint, handNode.Value, out HandJointPose jointPos))
+                if (handNode.HasValue &&
+                    XRSubsystemHelpers.HandsAggregator != null &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint, handNode.Value, out HandJointPose jointPos))
                 {
                     if (cachedHandJointTransform == null)
                     {
@@ -577,13 +575,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // If we were tracking a particular hand, check that our transform is still valid
             // The HandJointService does not destroy its own hand joint tracked GameObjects even when a hand is no longer tracked
             // Those HandJointService's GameObjects though are the parents of our tracked transform and thus will not be null/destroyed
-            if (TrackedTargetType == TrackedObjectType.HandJoint && !currentTrackedHandedness.IsNone())
+            if (TrackedTargetType == TrackedObjectType.HandJoint && currentTrackedHandedness != Handedness.None)
             {
                 bool trackingLeft = IsHandTracked(Handedness.Left);
                 bool trackingRight = IsHandTracked(Handedness.Right);
 
-                return (currentTrackedHandedness.IsLeft() && !trackingLeft) ||
-                       (currentTrackedHandedness.IsRight() && !trackingRight);
+                return (currentTrackedHandedness == Handedness.Left && !trackingLeft) ||
+                       (currentTrackedHandedness == Handedness.Right && !trackingRight);
             }
 
             return false;
@@ -598,10 +596,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </returns>
         private bool IsHandTracked(Handedness hand)
         {
-            Debug.Assert(HandSubsystem != null);
-
-            // todo - when HandAggregationSubsystem implements IsHandTracked, make that call here.
-            return HandSubsystem != null;
+            // Early out if the hand isn't a valid XRNode
+            // (i.e., Handedness.None or Handedness.Both)
+            XRNode? node = hand.ToXRNode();
+            if (!node.HasValue) { return false; }
+            return XRSubsystemHelpers.HandsAggregator != null &&
+                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
         }
 
         /// <summary>

@@ -249,13 +249,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 // Calculate if events should be fired
                 Handedness newHandedness = trackedNode.HasValue ? trackedNode.Value.ToHandedness() : Handedness.None;
-                if (previousHandedness.IsNone() && !newHandedness.IsNone())
+                if (previousHandedness == Handedness.None && newHandedness != Handedness.None)
                 {
                     previousHandedness = newHandedness;
                     OnFirstHandDetected.Invoke();
                     OnHandActivate.Invoke();
                 }
-                else if (!previousHandedness.IsNone() && newHandedness.IsNone())
+                else if (previousHandedness != Handedness.None && newHandedness == Handedness.None)
                 {
                     previousHandedness = newHandedness;
                     OnLastHandLost.Invoke();
@@ -281,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         protected virtual bool IsValidController(XRNode? hand)
         {
             return (hand.HasValue &&
-                ((hand.Value.IsLeftHand()) || (hand.Value.IsRightHand())));
+                ((hand.Value == XRNode.LeftHand) || (hand.Value == XRNode.RightHand)));
         }
 
         private static readonly ProfilerMarker CalculateGoalPositionPerfMarker =
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     var additionalRotation = SolverHandler.AdditionalRotation;
 
                     // Invert the yaw based on handedness to allow the rotation to look similar on both hands.
-                    if (trackedNode.Value.ToHandedness().IsRight())
+                    if (trackedNode.Value == XRNode.RightHand)
                     {
                         additionalRotation.y *= -1.0f;
                     }
@@ -520,7 +520,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             HandJointPose? palmPose = GetPalmPose(hand);
                             if (palmPose.HasValue)
                             {
-                                direction = Quaternion.AngleAxis((hand.Value.IsLeftHand()) ? angleOffset : -angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
+                                direction = Quaternion.AngleAxis((hand.Value == XRNode.LeftHand) ? angleOffset : -angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
                             }
                             else
                             {
@@ -653,7 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Debug.Assert(hand.HasValue);
                 HandJointPose? jointPose = null;
 
-                if (SolverHandler.HandSubsystem.TryGetJoint(
+                if (XRSubsystemHelpers.HandsAggregator != null &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(
                     TrackedHandJoint.Palm,
                     hand.Value,
                     out HandJointPose pose))
