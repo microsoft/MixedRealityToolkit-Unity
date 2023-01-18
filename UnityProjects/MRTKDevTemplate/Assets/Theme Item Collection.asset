@@ -59,7 +59,7 @@ MonoBehaviour:
       lightThemeValue:
         dataItemType: 1
         MaterialValue: {fileID: 0}
-        ColorValue: {r: 0, g: 0, b: 0, a: 1}
+        ColorValue: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
         GradientValue:
           serializedVersion: 2
           key0: {r: 0, g: 0, b: 0, a: 0}
