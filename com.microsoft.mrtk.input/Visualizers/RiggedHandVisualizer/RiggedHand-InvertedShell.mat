@@ -37,7 +37,7 @@ Material:
     - _Metallic: 0
     - _OutlineExponent: 1
     - _OutlineSmoothing: 0.05
-    - _OutlineThickness: 0.0000119
+    - _OutlineThickness: 0.00001337
     - _OutlineThreshold: 0.474
     - _PinchAmount: 0
     - _Radius_: 0.09
@@ -46,6 +46,6 @@ Material:
     - _Center_: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Color_: {r: 1, g: 1, b: 1, a: 1}
     - _HandColor: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0.7137255}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0.2901961}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0.03529412}
     - _OutlineColorPinching: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

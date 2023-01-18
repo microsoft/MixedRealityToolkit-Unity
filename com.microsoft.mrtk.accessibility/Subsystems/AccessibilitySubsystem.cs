@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.SubsystemsImplementation;
@@ -33,6 +34,36 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         {
             #region IAccessibilitySubsystem implementation
 
+            #region Accessible object management
+
+            /// <summary>
+            /// Attempts to get the collection of accessible objects based on the specified constraints.
+            /// </summary>
+            /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
+            /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
+            /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
+            /// <param name="accessibleObjectsList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+            /// <returns>True if the collection of (zero or more) accessible objects is being returned, or false.</returns>
+            /// <remarks>
+            /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
+            /// <para/>
+            /// The contents of the objectList collection is indeterminate when this method returns false.
+            /// </remarks>
+            internal abstract bool TryGetAccessibleObjects(List<AccessibleObjectClassification> classifications, AccessibleObjectVisibility readerView, float maxDistance, List<GameObject> accessibleObjectsList);
+
+            /// <inheritdoc/>
+            public abstract bool TryGetAccessibleObjectClassifications(List<AccessibleObjectClassification> classifications);
+
+            /// <inheritdoc/>
+            public abstract bool TryRegisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification);
+
+            /// <inheritdoc/>
+            public abstract bool TryUnregisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification);
+
+            #endregion Accessible object management
+
+            #region Text color inversion
+
             /// <inheritdoc/>
             public abstract bool InvertTextColor { get; set; }
 
@@ -42,10 +73,46 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             /// <inheritdoc/>
             public abstract void ApplyTextColorInversion(Material material, bool enable);
 
+            #endregion Text color inversion
+
             #endregion IAccessibilitySubsystem implementation
         }
 
         #region IAccessibilitySubsystem implementation
+
+        #region Accessible object management
+
+        /// <summary>
+        /// Attempts to get the collection of accessible objects based on the specified constraints.
+        /// </summary>
+        /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
+        /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
+        /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
+        /// <param name="accessibleObjectList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+        /// <returns>True if the collection of (zero or more) accessible objects is being returned, or false.</returns>
+        /// <remarks>
+        /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
+        /// <para/>
+        /// The contents of the objectList collection is indeterminate when this method returns false.
+        /// </remarks>
+        internal bool TryGetAccessibleObjects(List<AccessibleObjectClassification> classifications, AccessibleObjectVisibility readerView, float maxDistance, List<GameObject> accessibleObjectList) =>
+            provider.TryGetAccessibleObjects(classifications, readerView, maxDistance, accessibleObjectList);
+
+        /// <inheritdoc/>
+        public bool TryGetAccessibleObjectClassifications(List<AccessibleObjectClassification> classifications) =>
+            provider.TryGetAccessibleObjectClassifications(classifications);
+
+        /// <inheritdoc/>
+        public bool TryRegisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification) =>
+            provider.TryRegisterAccessibleObject(accessibleObject, classification);
+
+        /// <inheritdoc/>
+        public bool TryUnregisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification) =>
+            provider.TryUnregisterAccessibleObject(accessibleObject, classification);
+
+        #endregion Accessible object management
+
+        #region Text color inversion
 
         /// <inheritdoc/>
         public bool InvertTextColor
@@ -65,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         public void ApplyTextColorInversion(
             Material material,
             bool enable) => provider.ApplyTextColorInversion(material, enable);
+
+        #endregion Text color inversion
 
         #endregion IAccessibilitySubsystem implementation
 

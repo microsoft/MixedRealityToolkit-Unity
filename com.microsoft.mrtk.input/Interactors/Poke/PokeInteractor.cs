@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Subsystems;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using PokePath = Microsoft.MixedReality.Toolkit.IPokeInteractor.PokePath;
 
@@ -18,8 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class PokeInteractor :
         XRBaseControllerInteractor,
         IPokeInteractor,
-        IHandedInteractor,
-        IMRTKInteractorVisuals
+        IHandedInteractor
     {
         #region PokeInteractor
 
@@ -43,6 +40,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return PokePoseSource != null && PokePoseSource.TryGetPose(out pose);
         }
 
+        /// <summary>
+        /// Called during ProcessInteractor to obtain the poking radius. All raycasts and other physics detections
+        /// are done according to this radius. Override to customize how the radius is calculated.
+        /// </summary>
+        protected virtual bool TryGetPokeRadius(out float radius)
+        {
+            if (xrController is ArticulatedHandController handController
+                && HandsUtils.GetSubsystem() != null
+                && HandsUtils.GetSubsystem().TryGetNearInteractionPoint(handController.HandNode, out HandJointPose jointPose))
+            {
+                radius = jointPose.Radius;
+                return true;
+            }
+
+            radius = default;
+            return false;
+        }
+
         #endregion PokeInteractor
 
         #region IHandedInteractor
@@ -51,44 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Handedness IHandedInteractor.Handedness => (xrController is ArticulatedHandController handController) ? handController.HandNode.ToHandedness() : Handedness.None;
 
         #endregion IHandedInteractor
-
-        #region IMRTKInteractorVisuals
-
-        [Header("Interactor visuals settings")]
-
-        [SerializeField]
-        [Tooltip("The visuals representing the interaction point, such as a cursor, donut, or other marker.")]
-        private GameObject touchVisuals;
-
-        /// <summary>
-        /// The visuals representing the interaction point, such as a cursor, donut, or other marker.
-        /// </summary>
-        public GameObject TouchVisuals { get => touchVisuals; set => touchVisuals = value; }
-
-        private static readonly ProfilerMarker SetVisualsPerfMarker =
-            new ProfilerMarker("[MRTK] PokeInteractor.SetVisuals");
-
-        /// <inheritdoc/>
-        public virtual void SetVisuals(bool isVisible)
-        {
-            using (SetVisualsPerfMarker.Auto())
-            {
-                if (TouchVisuals == null) { return; }
-
-                TouchVisuals.SetActive(isVisible);
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void UpdateVisuals(XRBaseInteractable interactable)
-        {
-            if (TouchVisuals != null)
-            {
-                TouchVisuals.transform.SetPositionAndRotation(pokeTrajectory.End, attachTransform.rotation);
-            }
-        }
-
-        #endregion IMRTKInteractorVisuals
 
         #region IPokeInteractor
 
@@ -99,7 +76,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float DefaultPokeRadius = 0.005f;
 
         /// <inheritdoc />
-        public virtual float PokeRadius => DefaultPokeRadius;
+        public virtual float PokeRadius => pokeRadius > 0 ? pokeRadius : DefaultPokeRadius;
+        private float pokeRadius = 0.0f;
 
         /// <inheritdoc />
         public virtual PokePath PokeTrajectory => pokeTrajectory;
@@ -114,14 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Awake();
             pokeTrajectory.Start = attachTransform.position;
             pokeTrajectory.End = attachTransform.position;
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            // Hiding interactor visuals
-            SetVisuals(false);
         }
 
         private void OnDrawGizmos()
@@ -180,9 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // The start of our new trajectory is the end of the last frame's trajectory.
                     pokeTrajectory.Start = pokeTrajectory.End;
 
-                    // If we can get a joint pose, set out attachTransform accordingly.
                     // pokePointTracked is used to help set isHoverActive.
-                    pokePointTracked = TryGetPokePose(out Pose pose);
+                    pokePointTracked = TryGetPokePose(out Pose pose) && TryGetPokeRadius(out pokeRadius);
                     if (pokePointTracked)
                     {
                         // If we can get a joint pose, set our transform accordingly.
@@ -242,10 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                         }
                     }
-
-                    // Update visuals (cursor)
-                    SetVisuals(isHoverActive);
-                    UpdateVisuals(interactablesHovered.Count > 0 ? interactablesHovered[0] as XRBaseInteractable : null);
                 }
             }
         }

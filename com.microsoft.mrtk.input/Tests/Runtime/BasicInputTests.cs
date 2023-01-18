@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var interactable = cube.AddComponent<MRTKBaseInteractable>();
 
-            Vector3 cubePos = new Vector3(0.1f, 0.1f, 1);
+            Vector3 cubePos = InputTestUtilities.InFrontOfUser();
             cube.transform.position = cubePos;
             cube.transform.localScale = Vector3.one * 1.0f;
             
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<StatefulInteractable>();
-            cube.transform.position = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.2f, 0.2f, 0.5f));
             cube.transform.localScale = Vector3.one * 0.1f;
 
             // For this test, we won't use poke selection.
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube2.AddComponent<StatefulInteractable>();
-            cube2.transform.position = new Vector3(-0.1f, -0.1f, 1);
+            cube2.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(-0.2f, -0.2f, 0.5f));
             cube2.transform.localScale = Vector3.one * 0.1f;
 
             // For this test, we won't use poke selection.
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             var rightHand = new TestHand(Handedness.Right);
 
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             bool shouldTestToggle = false;
 
@@ -213,13 +213,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 secondCubeInteractable.ToggleMode = shouldTestToggle ? StatefulInteractable.ToggleType.Toggle : StatefulInteractable.ToggleType.Button;
                 secondCubeInteractable.TriggerOnRelease = (i % 2) == 0;
 
-                yield return rightHand.MoveTo(new Vector3(0, 0, 0.5f));
+                yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(0.5f));
                 yield return rightHand.RotateTo(Quaternion.Euler(0, -45, 0));
 
                 Assert.IsFalse(secondCubeInteractable.IsGrabHovered,
                                "StatefulInteractable was already hovered.");
 
-                yield return rightHand.MoveTo(new Vector3(-0.1f, -0.1f, 1));
+                yield return rightHand.MoveTo(secondCubeInteractable.transform.position);
                 yield return RuntimeTestUtilities.WaitForUpdates();
                 Assert.IsTrue(secondCubeInteractable.IsGrabHovered,
                               "StatefulInteractable did not get hovered.");
@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                     Assert.IsFalse(secondCubeInteractable.IsToggled, "StatefulInteractable shouldn't have been toggled, but it was.");
                 }
 
-                yield return rightHand.MoveTo(new Vector3(0, 0, 0.5f));
+                yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(0.5f));
             }
 
             yield return null;
@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             StatefulInteractable interactable = cube.AddComponent<StatefulInteractable>();
-            cube.transform.position = new Vector3(0,0,1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser();
             cube.transform.localScale = Vector3.one * 0.1f;
 
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -279,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.IsFalse(interactable.IsGazePinchHovered);
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0.1f, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser() + new Vector3(0.2f, 0, 0f));
 
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -291,6 +291,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             Assert.IsTrue(interactable.isSelected);
             Assert.IsTrue(interactable.IsGazePinchSelected);
+
+            yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            
+            Assert.IsFalse(interactable.isSelected);
+            Assert.IsFalse(interactable.IsGazePinchSelected);
+            Assert.IsTrue(interactable.isHovered);
+            Assert.IsTrue(interactable.IsGazePinchHovered);
         }
 
         /// <summary>
@@ -391,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public IEnumerator InteractableDisabledDuringInteraction()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(1.0f, 0.1f, 1.0f);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(1.0f, 0.1f, 1.0f));
             cube.transform.localScale = Vector3.one * 0.1f;
             cube.AddComponent<StatefulInteractable>();
 
@@ -399,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             cube.GetComponent<StatefulInteractable>().selectMode = InteractableSelectMode.Multiple;
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
@@ -444,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         {
             // Spawn our hand.
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 1));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Prox detector should start out un-triggered.
@@ -460,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.IsFalse(rightHandController.GetComponentInChildren<GrabInteractor>().enabled, "Grab started active, when it shouldn't");
 
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(0, 0, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser();
             cube.transform.localScale = Vector3.one * 0.1f;
             cube.AddComponent<StatefulInteractable>();
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -487,15 +495,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Tests to make sure that untracked controllers can't initiate any new interactions and that their interactos can no longer hover.
+        /// Tests to make sure that untracked controllers can't initiate any new interactions and that their interactors can no longer hover.
         /// However, the interactions should still maintaining any original selected states, as the loss of tracking is usually just temporary
-        /// i.e. we don't want to immeidately let go of a gripped object due to a momentary loss in tracking
+        /// i.e. we don't want to immediately let go of a gripped object due to a momentary loss in tracking
         /// </summary>
         [UnityTest]
         public IEnumerator UntrackedControllerNearInteractions()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(1.0f, 0.1f, 1.0f);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(1.0f, 0.1f, 1.0f));
             cube.transform.localScale = Vector3.one * 0.1f;
             cube.AddComponent<StatefulInteractable>();
 
@@ -503,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             cube.GetComponent<StatefulInteractable>().selectMode = InteractableSelectMode.Multiple;
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             // First ensure that the interactor can interact with a cube normally
             yield return rightHand.MoveTo(cube.transform.position);
@@ -532,7 +540,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Check that the hand cannot interact with any new interactables
             var newCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            newCube.transform.position = new Vector3(-3.0f, 0.1f, 1.0f);
+            newCube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(-3.0f, 0.1f, 1.0f));
             newCube.transform.localScale = Vector3.one * 0.1f;
             newCube.AddComponent<StatefulInteractable>();
 

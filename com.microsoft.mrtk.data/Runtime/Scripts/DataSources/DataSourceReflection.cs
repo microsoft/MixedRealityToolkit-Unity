@@ -410,8 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 // MemberInfo lookups cost a lot of time and GC, so we'll cache
                 // them in a lookup dictionary instead.
-                MemberInfo[] members;
-                if (!memberInfoCache.TryGetValue(objType, out members))
+                if (!memberInfoCache.TryGetValue(objType, out MemberInfo[] members))
                 {
                     members = objType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
                     memberInfoCache[objType] = members;

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Configuration for the MRTK-specific hands aggregator.
     /// </summary>
-    public class MRTKHandsAggregatorConfig : HandsAggregatorConfig
+    public class MRTKHandsAggregatorConfig : BaseSubsystemConfig
     {
         [SerializeField]
         [Tooltip("The normalized thumb-forefinger distance at which the pinch is considered 'un-pinched'. " +

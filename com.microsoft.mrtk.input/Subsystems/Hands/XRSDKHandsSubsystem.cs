@@ -95,8 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return false;
                         }
 
-                        Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
-                        if (playspaceTransform == null)
+                        // Joints are relative to the camera floor offset object.
+                        Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
+                        if (origin == null)
                         {
                             pose = handJoints[HandsUtils.ConvertToIndex(joint)];
                             return false;
@@ -106,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (joint == TrackedHandJoint.Palm)
                         {
                             handDevice.Value.TryGetRootBone(out Bone rootBone);
-                            thisQueryValid |= TryUpdateJoint(TrackedHandJoint.Palm, rootBone, playspaceTransform);
+                            thisQueryValid |= TryUpdateJoint(TrackedHandJoint.Palm, rootBone, origin);
                         }
                         else
                         {
@@ -114,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             if (handDevice.Value.TryGetFingerBones(finger, fingerBones))
                             {
                                 Bone bone = fingerBones[HandsUtils.GetOffsetFromBase(joint)];
-                                thisQueryValid |= TryUpdateJoint(joint, bone, playspaceTransform);
+                                thisQueryValid |= TryUpdateJoint(joint, bone, origin);
                             }
                         }
                     }
@@ -200,8 +201,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Null checks against Unity objects can be expensive, especially when you do
                     // it 52 times per frame (26 hand joints across 2 hands). Instead, we manage
                     // the playspace transformation internally for hand joints.
-                    Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
-                    if (playspaceTransform == null)
+                    // Joints are relative to the camera floor offset object.
+                    Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
+                    if (origin == null)
                     {
                         return;
                     }
@@ -213,14 +215,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             for (int i = 0; i < fingerBones.Count; i++)
                             {
-                                FullQueryValid &= TryUpdateJoint(HandsUtils.ConvertToTrackedHandJoint(finger, i), fingerBones[i], playspaceTransform);
+                                FullQueryValid &= TryUpdateJoint(HandsUtils.ConvertToTrackedHandJoint(finger, i), fingerBones[i], origin);
                             }
                         }
                     }
 
                     // Write root bone into handJoints as palm joint.
                     handDevice.Value.TryGetRootBone(out Bone rootBone);
-                    FullQueryValid &= TryUpdateJoint(TrackedHandJoint.Palm, rootBone, playspaceTransform);
+                    FullQueryValid &= TryUpdateJoint(TrackedHandJoint.Palm, rootBone, origin);
 
                     // Mark this hand as having been fully queried this frame.
                     // If any joint is queried again this frame, we'll reuse the

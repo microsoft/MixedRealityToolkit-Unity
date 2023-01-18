@@ -31,7 +31,7 @@ MRTK3 is currently in **public preview.** We appreciate your feedback and contri
 
 ## Requirements
 
-MRTK3 requires Unity 2020.3 or 2021.3 and higher. In addition, you need the [Mixed Reality Feature Tool for Unity](https://aka.ms/mrfeaturetool) to find, download, and add the packages to your project.
+MRTK3 requires Unity 2020.3.42, 2021.3.14 or higher. In addition, you need the [Mixed Reality Feature Tool for Unity](https://aka.ms/mrfeaturetool) to find, download, and add the packages to your project.
 
 ## Getting started
 [Follow the documentation for setting up MRTK3 packages as dependencies in your project here.](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/mrtk3-overview/setup) Alternatively, you can clone this repo directly to experiment with our template project. However, we *strongly* recommend adding MRTK3 packages as dependencies through the Feature Tool, as it makes updating, managing, and consuming MRTK3 packages far easier and less error-prone.
@@ -69,7 +69,6 @@ As of June 2022, the following components are considered to be in early preview.
 | --- | --- |
 | Accessibility | com.microsoft.mrtk.accessibility |
 | Data Binding and Theming | com.microsoft.mrtk.data |
-| Environment | com.microsoft.mrtk.environment |
  
 The MRTK team is fully committed to releasing this functionality. It is important to note that the packages may not contain the complete feature set that is planned to be released or they may undergo major, breaking architectural changes before release.
 
@@ -83,4 +82,4 @@ The roadmap from public preview to GA is detailed in the following table.
 | --- | --- |
 | Public Preview | June 8, 2022 |
 | Preview updates | Approximately every 2-4 weeks until GA |
-| General Availability | Fall / Winter 2022 |
+| General Availability | First quarter of 2023 |

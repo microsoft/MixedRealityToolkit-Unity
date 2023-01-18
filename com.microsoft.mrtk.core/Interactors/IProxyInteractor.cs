@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// End selecting the interactable. The interactable will receive
         /// an OnSelectExiting/Exited. SuppressEvents will prevent StatefulInteractables
-        /// from recieving click or toggle events.
+        /// from receiving click or toggle events.
         /// </summary>
         void EndSelect(IXRSelectInteractable interactable, bool suppressEvents = false);
     }

@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using System.Collections;
-using System.IO;
 using UnityEngine.SceneManagement;
 
 #if ENABLE_INPUT_SYSTEM
@@ -26,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
     public static class RuntimeTestUtilities
     {
         // Unity's default scene name for a recently created scene
-        const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
+        private const string PlayModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
 
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
@@ -42,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene playModeTestScene = SceneManager.GetSceneAt(i);
-                if (playModeTestScene.name == playModeTestSceneName && playModeTestScene.isLoaded)
+                if (playModeTestScene.name == PlayModeTestSceneName && playModeTestScene.isLoaded)
                 {
                     SceneManager.SetActiveScene(playModeTestScene);
                     sceneExists = true;
@@ -51,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 
             if (!sceneExists)
             {
-                Scene playModeTestScene = SceneManager.CreateScene(playModeTestSceneName);
+                Scene playModeTestScene = SceneManager.CreateScene(PlayModeTestSceneName);
                 SceneManager.SetActiveScene(playModeTestScene);
             }
         }
@@ -61,12 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         /// </summary>
         public static void TeardownScene()
         {
-            Scene playModeTestScene = SceneManager.GetSceneByName(playModeTestSceneName);
+            Scene playModeTestScene = SceneManager.GetSceneByName(PlayModeTestSceneName);
             if (playModeTestScene.isLoaded)
             {
                 foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
                 {
-                    GameObject.Destroy(gameObject);
+                    Object.Destroy(gameObject);
                 }
             }
 
@@ -82,41 +81,41 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         /// <summary>
-        /// Ensures TextMeshProEssentials are installed.
+        /// Used for debugging. Pauses the test until the dialog is cleared.
         /// </summary>
-        public static void InstallTextMeshProEssentials()
+        public static IEnumerator PauseTest()
         {
 #if UNITY_EDITOR
-            // Import the TMP Essential Resources package
-            string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
-            if (Directory.Exists(packageFullPath))
+            if (!Application.isBatchMode)
             {
-                AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
-            }
-            else
-            {
-                Debug.LogError("Unable to locate the Text Mesh Pro package.");
+                PauseDialogWindow.ShowWindow();
+                while (EditorWindow.HasOpenInstances<PauseDialogWindow>())
+                {
+                    yield return null;
+                }
             }
 #endif
         }
 
-        /// <summary>
-        /// Used for debugging. Pauses the test until the enter key is pressed.
-        /// </summary>
-        public static IEnumerator WaitForEnterKey()
+        private class PauseDialogWindow : EditorWindow
         {
-            Debug.Log(Time.time + " | Press Enter...");
-#if ENABLE_INPUT_SYSTEM
-            while (!Keyboard.current[Key.Enter].wasPressedThisFrame)
+            public static void ShowWindow()
             {
-                yield return null;
+                var window = GetWindow(typeof(PauseDialogWindow));
+                Rect position = window.position;
+                position.center = new Rect(0f, 0f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+                window.position = position;
+                window.Show();
             }
-#else
-            while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+
+            void OnGUI()
             {
-                yield return null;
+                GUILayout.Label("Test Paused for Debugging", EditorStyles.boldLabel);
+                if (GUILayout.Button("Resume Test"))
+                {
+                    Close();
+                }
             }
-#endif
         }
 
         /// <summary>
@@ -132,6 +131,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             for (int i = 0; i < frameCount; i++)
             {
                 yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Waits for the specified number of FixedUpdate intervals.
+        /// </summary>
+        public static IEnumerator WaitForFixedUpdates(int frameCount = 10)
+        {
+            for (int i = 0; i < frameCount; i++)
+            {
+                yield return new WaitForFixedUpdate();
             }
         }
     }

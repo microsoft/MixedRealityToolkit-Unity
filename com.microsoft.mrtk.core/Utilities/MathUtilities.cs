@@ -8,7 +8,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Math Utilities class.
+    /// Useful utilities for manipulating datatype sizes, conversion factors,
+    /// quaternions, matrices, and other mathematical tasks.
     /// </summary>
     public static class MathUtilities
     {
@@ -32,6 +33,55 @@ namespace Microsoft.MixedReality.Toolkit
         public static float BytesToMegabytes(ulong bytes)
         {
             return ((float)bytes / (float)Megabyte);
+        }
+
+        /// <summary>
+        /// Converts two bytes to one float in the range -1 to 1.
+        /// </summary>
+        /// <param name="a">The least significant byte.</param>
+        /// <param name="b"> The most significant byte.</param>
+        /// <returns>Float value between -1 and 1.</returns>
+        public static float BytesToFloat(byte a, byte b)
+        {
+            // Convert two bytes to one short (little endian)
+            short s = (short)((b << 8) | a);
+
+            // Convert to range from -1 to 1
+            // Note: This does not overflow the short since the 1 is considered
+            // by the compiler to be an int, which promotes the short.
+            return s / (float)(short.MaxValue + 1);
+        }
+
+        /// <summary>
+        /// Converts an array of four bytes to an integer.
+        /// </summary>
+        /// <param name="bytes">Array of bytes (must be at least four bytes in length).</param>
+        /// <param name="offset">Offset within the array at which to begin reading.</param>
+        /// <returns>Integer value created the provided bytes.</returns>
+        public static int BytesToInt(byte[] bytes, int offset = 0)
+        {
+            int value = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                value |= ((int)bytes[offset + i]) << (i * 8);
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Converts an array of two bytes to a short integer.
+        /// </summary>
+        /// <param name="bytes">Array of bytes (must be at least two bytes in length).</param>
+        /// <param name="offset">Offset within the array at which to begin reading.</param>
+        /// <returns>Short integer value created the provided bytes.</returns>
+        public static short BytesToShort(byte[] bytes, int offset = 0)
+        {
+            int value = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                value |= ((int)bytes[offset + i]) << (i * 8);
+            }
+            return (short)value;
         }
 
         /// <summary>

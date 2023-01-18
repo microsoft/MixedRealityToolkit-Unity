@@ -387,7 +387,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Click the interactable. This will result in the interactable being selected and
         /// then deselected after a short period of time; this is the same behavior that occurs
-        /// when this adapter recieves a UGUI OnSubmit event.
+        /// when this adapter receives a UGUI OnSubmit event.
         /// </summary>
         /// <remarks> This is useful for accessibility features that need to induce a full
         /// "OnSubmit"-like behavior from a UnityEvent that can't call the OnSubmit directly.

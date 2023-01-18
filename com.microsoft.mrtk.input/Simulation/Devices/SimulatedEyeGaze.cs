@@ -27,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     /// ship a corresponding PoseState struct along with their version of PoseControl, and
     /// thus we cannot inject simulated input data into that control from the managed layer.
     /// 
-    /// When the duplicated PoseControl version is either removed, or recieves a corresponding
+    /// When the duplicated PoseControl version is either removed, or receives a corresponding
     /// state struct, we can inherit directly from the OpenXR eye device.
     /// </remarks>
     [InputControlLayout(
         displayName = "Eye Gaze (MRTK)",
         isGenericTypeOfDevice = false),
         Preserve]
-    internal class SimulatedEyeGazeDevice : InputDevice
+    public class SimulatedEyeGazeDevice : InputDevice
     {
         /// <summary>
         /// A <see cref="PoseControl"/> representing the <see cref="EyeGazeInteraction.pose"/> OpenXR binding.
@@ -74,6 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         public SimulatedEyeGaze()
         {
+            // Unity fixed this bug in an opt-in fashion by defining USE_INPUT_SYSTEM_POSE_CONTROL to be the indicator
+            // to use the Unity Input System's PoseControl and to deprecate the OpenXR package's PoseControl.
+            // This is opt-in as of Unity's 1.6.0 OpenXR Plugin, so we'll adapt to the presence of USE_INPUT_SYSTEM_POSE_CONTROL.
+
+            // The following write-up is left as-is until Unity makes this workaround unnecessary in all cases:
+
             // This RegisterLayout call is a workaround for a significant bug in the Unity Input System.
             // The Input System stores these Control types in a backend data structure.
             // However, these types are stored by their *short* name, not their fully
@@ -96,9 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             // We work around this by registering a *third* control type, with a separate, disambiguating
             // name argument. This ensures that the InputSystem version of the PoseControl is actually
             // registered, and not clobbered by the OpenXR version.
-            //
-            // Unity could fix this by either (ideally) removing the duplicate control type from the OpenXR package,
-            // or by registering the two types under distinct names (less ideal).
 
             // The reason we must use the Unity Input System package's version of the PoseControl control
             // is that it offers us the PoseState struct which we need to be able to modify the PoseControl
@@ -106,7 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             // offer a corresponding PoseState, and as far as I can tell, cannot be used with a 3rd-party
             // state struct.
 
+#if !USE_INPUT_SYSTEM_POSE_CONTROL
             InputSystem.RegisterLayout<PoseControl>("InputSystemPose");
+#endif
 
             simulatedEyeDevice = InputSystem.AddDevice<SimulatedEyeGazeDevice>();
             if (simulatedEyeDevice == null)
@@ -121,8 +126,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         ~SimulatedEyeGaze()
         {
+#if !USE_INPUT_SYSTEM_POSE_CONTROL
             // Remove/unregister the layout that we added as a workaround for the Unity bug.
             InputSystem.RemoveLayout("InputSystemPose");
+#endif
             Dispose();
         }
 

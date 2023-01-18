@@ -102,11 +102,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("The direction of the slider. Setting this will flip/reoganize the slider.")]
+        [Tooltip("The direction of the slider. Setting this will flip/reorganize the slider.")]
         private Direction sliderDirection;
 
         /// <summary>
-        /// The direction of the slider. Setting this will flip/reoganize the slider.
+        /// The direction of the slider. Setting this will flip/reorganize the slider.
         /// </summary>
         public Direction SliderDirection
         {
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             SliderState.OnValueUpdated.AddListener(UpdateHandle);
 
             // Initial update. We may miss the first OnValueUpdated, depending on execution order.
-            UpdateHandle(SliderState.SliderValue);
+            UpdateHandle(SliderState.NormalizedValue);
             SetLayout(sliderDirection);
         }
 
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
             // Update handle in editor view.
-            UpdateHandle(SliderState.SliderValue);
+            UpdateHandle(SliderState.NormalizedValue);
         }
 #endif // UNITY_EDITOR
 
@@ -314,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
 
-            UpdateHandle(SliderState.SliderValue);
+            UpdateHandle(SliderState.NormalizedValue);
         }
     }
 }

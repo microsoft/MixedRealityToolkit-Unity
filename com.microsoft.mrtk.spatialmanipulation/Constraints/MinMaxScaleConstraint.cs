@@ -9,31 +9,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Component for setting the min/max scale values for ObjectManipulator
     /// or BoundsControl
+    /// We're looking to rework this system in the future. These existing components will be deprecated then.
     /// </summary>
     [AddComponentMenu("MRTK/Spatial Manipulation/Min Max Scale Constraint")]
     public class MinMaxScaleConstraint : TransformConstraint
     {
-        #region Obsolete Properties
-
-        /// <summary>
-        /// Minimum scaling allowed
-        /// </summary>
-        [Obsolete("Use MinimumScale instead")]
-        public float ScaleMinimum
-        {
-            get => minimumScale.x;
-            set => minimumScale = Vector3.one * value;
-        }
-
-        [Obsolete("Use MaximumScale instead")]
-        public float ScaleMaximum
-        {
-            get => maximumScale.x;
-            set => maximumScale = Vector3.one * value;
-        }
-
-        #endregion Obsolete Properties
-
         #region Properties
 
         [SerializeField]

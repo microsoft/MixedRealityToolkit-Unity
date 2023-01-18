@@ -7,7 +7,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// Base class for all constraints
+    /// Base class for all constraints.
+    /// We're looking to rework this system in the future. These existing components will be deprecated then.
     /// </summary>
     public abstract class TransformConstraint : MonoBehaviour
     {
@@ -63,9 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        [Obsolete("Use WorldPoseOnManipulationStart instead.")]
-        protected MixedRealityTransform worldPoseOnManipulationStart;
-
         /// <summary>
         /// The world pose of the object when the manipulation began.
         /// </summary>
@@ -89,9 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             InitialWorldPose = worldPose;
         }
-
-        [Obsolete("Use OnManipulationStarted instead")]
-        public virtual void Initialize(MixedRealityTransform worldPose) => OnManipulationStarted(worldPose);
 
         /// <summary>
         /// Called when manipulation starts on the attached object.

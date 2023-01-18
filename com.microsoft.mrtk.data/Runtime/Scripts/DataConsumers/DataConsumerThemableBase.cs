@@ -263,10 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             binding = _bindingInfoList[whichSlot];
 
-            if (binding.Components == null)
-            {
-                binding.Components = new HashSet<Component>();
-            }
+            binding.Components ??= new HashSet<Component>();
             // Add these here so we don't incur the expense of a 2nd regex in AddKeyPaths
             binding.Components.Add(component);
         }
@@ -327,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="resolvedKeyPath">Fully resolved keypath for datum that changed.</param>
         /// <param name="localKeyPath">Local keypath for the datum that changed.</param>
         /// <param name="inDataValue">The current value of the datum</param>
-        /// <param name="dataChangeType">The type of change that has occured.</param>
+        /// <param name="dataChangeType">The type of change that has occurred.</param>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object inDataOrThemeValue, DataChangeType dataChangeType)
         {
             if (_themeKeypathToBindingLookup.TryGetValue(localKeyPath, out BindingInfo binding))

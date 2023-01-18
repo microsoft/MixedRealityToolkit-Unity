@@ -31,8 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </returns>
         private void GetTextMaterial()
         {
-            TMP_Text tmpText = GetComponent<TMP_Text>();
-            if (tmpText != null)
+            if (TryGetComponent(out TMP_Text tmpText))
             {
                 material = tmpText.fontMaterial;
                 return;
@@ -81,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
         }
 
-        #region Monobehaviour
+        #region MonoBehaviour
 
         private void Start()
         {
@@ -105,6 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             accessibilitySubsystem = null;
         }
 
-        #endregion Monobehaviour
+        #endregion MonoBehaviour
     }
 }

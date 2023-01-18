@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Interactions;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Composites;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
@@ -32,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             {
                 if (cachedInteractionManager == null)
                 {
-                    cachedInteractionManager = UnityEngine.Object.FindObjectOfType<XRInteractionManager>();
+                    cachedInteractionManager = Object.FindObjectOfType<XRInteractionManager>();
                 }
                 return cachedInteractionManager;
             }
@@ -63,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public override IEnumerator Setup()
         {
             yield return base.Setup();
+
             input.Setup();
 
             // XRI needs these... ugh
@@ -71,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             InputSystem.RegisterBindingComposite<QuaternionFallbackComposite>();
 
             InputTestUtilities.InstantiateRig();
-            InputTestUtilities.SetupSimulation();
+            InputTestUtilities.SetupSimulation(0.0f);
             yield return null;
         }
 
@@ -82,7 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             InputTestUtilities.TeardownSimulation();
             cachedInteractionManager = null;
             cachedLookup = null;
+
             input.TearDown();
+
             yield return base.TearDown();
         }
     }

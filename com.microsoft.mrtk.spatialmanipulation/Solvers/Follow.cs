@@ -322,8 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public void RecalculateBoundsExtents()
         {
-            Bounds bounds;
-            GetBounds(gameObject, angularClampMode, out bounds);
+            GetBounds(gameObject, angularClampMode, out Bounds bounds);
             boundsExtents = bounds.extents * boundsScaler;
         }
 

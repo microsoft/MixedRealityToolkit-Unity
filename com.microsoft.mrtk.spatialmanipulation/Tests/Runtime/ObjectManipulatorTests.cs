@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
+using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -27,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<ObjectManipulator>();
-            cube.transform.position = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.1f, 1));
             cube.transform.localScale = Vector3.one * 0.2f;
 
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -44,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                 "ObjManip started out with incorrect AllowedManipulations");
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -77,11 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // We don't have full gaze support in sim yet, so this is an approximation.
             // Set cube's position to straight ahead.
-            cube.transform.position = new Vector3(0, 0, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(1.0f);
 
             // Put hand out in front, in-FOV, but not too close to cube as to
             // disable the far interactors.
-            yield return rightHand.MoveTo(new Vector3(0.1f, 0, 0.5f));
+            yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0, 0.5f)));
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(objManip.IsGazePinchHovered,
@@ -116,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<ObjectManipulator>();
-            cube.transform.position = new Vector3(0.1f, 0.1f, 1);
+            cube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.1f, 1));
             cube.transform.localScale = Vector3.one * 0.2f;
 
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -125,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             objManip.SmoothingNear = false;
 
             var rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -146,14 +148,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Vector3 attachTransform = objManip.firstInteractorSelecting.GetAttachTransform(objManip).position;
             Vector3 originalAttachOffset = attachTransform - originalPosition;
 
-            Vector3 newPosition = originalPosition + Vector3.right * 0.5f;
+            Vector3 newPosition = originalPosition + Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Smoothing should mean that the cube has lagged behind the hand.
             attachTransform = objManip.firstInteractorSelecting.GetAttachTransform(objManip).position;
             Vector3 attachOffset = attachTransform - cube.transform.position;
-            Assert.IsTrue((attachOffset - originalAttachOffset).magnitude > 0.2f,
+            Assert.IsTrue((attachOffset - originalAttachOffset).magnitude > 0.1f,
                 "Smoothing didn't seem to work. Current attachTransform offset should be different than the original, indicating lag.");
 
             // Wait long enough for the object to catch up.
@@ -166,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Disable smoothing, to check that it properly sticks to the hand once disabled.
             objManip.SmoothingNear = false;
 
-            newPosition = originalPosition - Vector3.right * 0.5f;
+            newPosition = originalPosition - Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -214,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             objectManipulator.hoverEntered.AddListener((eventData) => hoverEnterCount++);
             objectManipulator.hoverExited.AddListener((eventData) => hoverExitCount++);
 
-            testObject.transform.position = new Vector3(0, 0, 1.0f);
+            testObject.transform.position = InputTestUtilities.InFrontOfUser(1.0f);
 
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -250,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// This tests the one hand near movement while camera (character) is moving around.
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test should be the same in all rotation setups
-        /// This test also has a santity check to ensure behavior is still the same for objects of different scale
+        /// This test also has a sanity check to ensure behavior is still the same for objects of different scale
         /// </summary>
         [UnityTest]
         public IEnumerator ObjectManipulatorOneHandMoveNear()
@@ -264,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Vector3 initialObjectPosition = InputTestUtilities.InFrontOfUser(1f);
             testObject.transform.position = initialObjectPosition;
             var objectManipulator = testObject.AddComponent<ObjectManipulator>();
             objectManipulator.HostTransform = testObject.transform;
@@ -276,8 +278,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             const int numCircleSteps = 10;
 
-            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            Vector3 initialGrabPosition = new Vector3(-0.05f, -0.05f, 1f); // grab around the left bottom corner of the cube
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(0.5f);
+            Vector3 initialGrabPosition = InputTestUtilities.InFrontOfUser(new Vector3(-0.05f, -0.05f, 1f)); // grab around the left bottom corner of the cube
             Quaternion initialGrabRotation = Quaternion.identity;
             TestHand hand = new TestHand(Handedness.Right);
 
@@ -382,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test is the same for all objects that won't change
         /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
-        /// This test also has a santity check to ensure behavior is still the same for objects of different scale
+        /// This test also has a sanity check to ensure behavior is still the same for objects of different scale
         /// </summary>
         [UnityTest]
         public IEnumerator ObjectManipulatorOneHandMoveFar()
@@ -393,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.3f;
-            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Vector3 initialObjectPosition = InputTestUtilities.InFrontOfUser(1f);
             testObject.transform.position = initialObjectPosition;
             var objectManipulator = testObject.AddComponent<ObjectManipulator>();
             objectManipulator.HostTransform = testObject.transform;
@@ -406,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             const int numCircleSteps = 10;
 
             // Hand pointing at the cube
-            Vector3 initialHandPosition = new Vector3(0, 0.0f, 0.6f);
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(0.6f);
             Quaternion initialHandRotation = Quaternion.identity;
             TestHand hand = new TestHand(Handedness.Right);
 
@@ -525,7 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // Set up cube with ObjectManipulator
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Vector3 initialObjectPosition = InputTestUtilities.InFrontOfUser(1f);
             testObject.transform.position = initialObjectPosition;
             var objectManipulator = testObject.AddComponent<ObjectManipulator>();
             objectManipulator.HostTransform = testObject.transform;
@@ -537,7 +539,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             const int numCircleSteps = 10;
 
-            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f); // Hand hovers in the center of the fov, but the hand ray misses the cube
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(0.5f); // Hand hovers in the center of the fov, but the hand ray misses the cube
             Quaternion initialHandRotation = Quaternion.identity;
             TestHand hand = new TestHand(Handedness.Right);
 
@@ -605,7 +607,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                         Quaternion objectRotation = objectManipulator.transform.rotation;
                         TestUtilities.AssertAboutEqual(Quaternion.AngleAxis(degreeStep * i, Vector3.up).normalized, objectRotation.normalized, $"Rotation incorrect using {rotationAnchorType}");
 
-                        // Also check that the object stays approximately infront of the hand
+                        // Also check that the object stays approximately in front of the hand
                         Assert.IsTrue(objectManipulator.firstInteractorSelecting.transform.InverseTransformPoint(objectManipulator.transform.position).z > 0);
                     }
 
@@ -635,6 +637,81 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
                     testObject.transform.position = initialObjectPosition;
                 }
             }
+        }
+
+        /// <summary>
+        /// Verifies that changing the ObjectManipulator's target transform at runtime works as expected.
+        /// (GH#10889)
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestObjManipTargetChange()
+        {
+            GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ObjectManipulator objmanip1 = cube1.AddComponent<ObjectManipulator>();
+            objmanip1.SmoothingNear = false;
+            cube1.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0.1f, 1));
+            cube1.transform.localScale = Vector3.one * 0.2f;
+
+            // First cube gets a FaceUserConstraint
+            cube1.AddComponent<FaceUserConstraint>();
+
+            GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ObjectManipulator objmanip2 = cube2.AddComponent<ObjectManipulator>();
+            objmanip2.SmoothingNear = false;
+            cube2.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.5f, 0.1f, 1));
+            cube2.transform.localScale = Vector3.one * 0.2f;
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Verify that a ConstraintManager was automatically added.
+            Assert.IsTrue(cube1.GetComponent<ConstraintManager>() != null, "Runtime-spawned ObjManip didn't also spawn ConstraintManager");
+            Assert.IsTrue(cube2.GetComponent<ConstraintManager>() != null, "Runtime-spawned ObjManip didn't also spawn ConstraintManager");
+
+            // Assert that HostTransform defaults to the object's transform.
+            Assert.IsTrue(objmanip1.HostTransform == cube1.transform, "ObjManip's HostTransform didn't default to the object itself!");
+            Assert.IsTrue(objmanip2.HostTransform == cube2.transform, "ObjManip's HostTransform didn't default to the object itself!");
+
+            var rightHand = new TestHand(Handedness.Right);
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Left, ControllerAnchorPoint.Grab);
+            yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+
+            yield return rightHand.MoveTo(cube1.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsFalse(objmanip1.IsPokeHovered, "ObjManip shouldn't get IsPokeHovered");
+            Assert.IsTrue(objmanip1.IsGrabHovered, "ObjManip didn't report IsGrabHovered");
+
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(objmanip1.IsGrabSelected, "ObjManip didn't report IsGrabSelected");
+            Assert.IsFalse(objmanip1.IsPokeSelected, "ObjManip was PokeSelected. Should not be possible.");
+
+            yield return rightHand.Move(Vector3.left * 0.5f); // Move the hand, cube should stay facing user.
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(cube1.transform.forward.CloseEnoughTo(-(cube1.transform.position - Camera.main.transform.position).normalized), "Cube1 didn't stay facing user!");
+
+            yield return rightHand.SetHandshape(HandshapeId.Open);
+
+            // Reassign the HostTransform to cube2.
+            objmanip1.HostTransform = cube2.transform;
+
+            yield return rightHand.SetHandshape(HandshapeId.Pinch);
+
+            Vector3 cube1Pos = cube1.transform.position;
+            Vector3 cube2Pos = cube2.transform.position;
+
+            yield return rightHand.Move(Vector3.right * 0.5f); // Move hand. Cube1 should stay in place, cube2 should move.
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(cube1.transform.position.CloseEnoughTo(cube1Pos), "Cube1 moved when it shouldn't have!");
+            Assert.IsTrue(!cube2.transform.position.CloseEnoughTo(cube2Pos), "Cube2 didn't move when it should have!");
+            
+            // Cube2 should be facing the user.
+            Assert.IsTrue(cube2.transform.forward.CloseEnoughTo(-(cube2.transform.position - Camera.main.transform.position).normalized), "Cube2 didn't stay facing user!");
+
         }
 
         #endregion
@@ -793,7 +870,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.5f;
-            testObject.transform.position = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = InputTestUtilities.InFrontOfUser(1f);
 
             var rigidbody = testObject.AddComponent<Rigidbody>();
             rigidbody.useGravity = false;
@@ -808,18 +885,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // set up static cube to collide with
             var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             backgroundObject.transform.localScale = Vector3.one;
-            backgroundObject.transform.position = new Vector3(0f, 0f, 2f);
+            backgroundObject.transform.position = InputTestUtilities.InFrontOfUser(2f);
             backgroundObject.GetComponent<MeshRenderer>().material.color = Color.green;
 
             TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.Show(new Vector3(0.1f, -0.1f, 0.5f));
-            yield return null;
+            yield return hand.Show(testObject.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Grab the cube and move towards the collider
             yield return hand.SetHandshape(HandshapeId.Pinch);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return hand.Move(Vector3.forward * 3f);
+            yield return RuntimeTestUtilities.WaitForFixedUpdates();
 
             Assert.Less(testObject.transform.position.z, backgroundObject.transform.position.z);
             Assert.AreEqual(1, collisionListener.CollisionCount);
@@ -837,7 +915,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.5f;
-            testObject.transform.position = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = InputTestUtilities.InFrontOfUser(1f);
 
             var rigidbody = testObject.AddComponent<Rigidbody>();
             rigidbody.useGravity = false;
@@ -852,20 +930,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // set up static cube to collide with
             var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             backgroundObject.transform.localScale = Vector3.one;
-            backgroundObject.transform.position = new Vector3(0f, 0f, 2f);
+            backgroundObject.transform.position = InputTestUtilities.InFrontOfUser(2f);
             backgroundObject.GetComponent<MeshRenderer>().material.color = Color.green;
             var backgroundRigidbody = backgroundObject.AddComponent<Rigidbody>();
             backgroundRigidbody.useGravity = false;
 
             TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.Show(new Vector3(0.1f, -0.1f, 0.5f));
-            yield return null;
+            yield return hand.Show(testObject.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Grab the cube and move towards the collider
             yield return hand.SetHandshape(HandshapeId.Pinch);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return hand.Move(Vector3.forward * 3f);
+            yield return RuntimeTestUtilities.WaitForFixedUpdates();
 
             Assert.AreNotEqual(Vector3.zero, backgroundRigidbody.velocity);
             Assert.AreEqual(1, collisionListener.CollisionCount);

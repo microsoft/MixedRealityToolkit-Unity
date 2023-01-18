@@ -181,9 +181,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             // Read the box properties out of the material. This will inform our (un)pinchScaleOffsets to keep
             // the handles aligned.
-            GetBoxProperties(boundsRenderer, out float padding, out float shrinkFraction);
-            unpinchScaleOffset = (Vector3.one * (2.0f * (padding)));
-            pinchScaleOffset = (Vector3.one * (2.0f * (padding * shrinkFraction)));
+            if (boundsRenderer != null)
+            {
+                GetBoxProperties(boundsRenderer, out float padding, out float shrinkFraction);
+                unpinchScaleOffset = (Vector3.one * (2.0f * (padding)));
+                pinchScaleOffset = (Vector3.one * (2.0f * (padding * shrinkFraction)));
+            }
+            
 
             // Compute flatten vector at startup.
             flattenVector = BoundsCalculator.CalculateFlattenVector(transform.lossyScale);
@@ -192,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private void Update()
         {
             // Read state off of the BoundsControl component.
-            bool handlesActive = boundsControl != null ? boundsControl.HandlesActive : false;
-            bool isManipulated = boundsControl != null ? boundsControl.IsManipulated : false;
+            bool handlesActive = boundsControl != null && boundsControl.HandlesActive;
+            bool isManipulated = boundsControl != null && boundsControl.IsManipulated;
 
             // Compute smoothed focus, activation, and shrink values.
             float targetActiveFocus = 0;
@@ -253,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 UpdateHandles(handlesActive,
                               boundsControl != null ? boundsControl.EnabledHandles : HandleType.None,
-                              boundsControl != null ? boundsControl.IsFlat : false);
+                              boundsControl != null && boundsControl.IsFlat);
             }
         }
 
@@ -446,7 +450,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        // Peek the seocnd-from-top item on the stack.
+        // Peek the second-from-top item on the stack.
         private T PeekSecond<T>(Stack<T> stack)
         {
             T temp = stack.Pop();

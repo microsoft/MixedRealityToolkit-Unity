@@ -31,9 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private void GetNearestDataSource(string dataSourceTypeToFind)
         {
             IDataSourceProvider[] components = GetComponentsInParent<IDataSourceProvider>();
-            foreach (Component providerComponent in components)
+            foreach (IDataSourceProvider providerToCheck in components)
             {
-                IDataSourceProvider providerToCheck = providerComponent as IDataSourceProvider;
                 string[] dataSourceTypes = providerToCheck.GetDataSourceTypes();
                 foreach (string dataSourceTypeToCheck in dataSourceTypes)
                 {

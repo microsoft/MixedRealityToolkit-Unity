@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <see cref="Equals(MRTKSubsystemCinfo)"/> also returns `true`; otherwise `false`.</returns>
         public override bool Equals(System.Object obj)
         {
-            return ((obj is MRTKSubsystemCinfo) && Equals((MRTKSubsystemCinfo)obj));
+            return (obj is MRTKSubsystemCinfo cinfo) && Equals(cinfo);
         }
 
         public override int GetHashCode()

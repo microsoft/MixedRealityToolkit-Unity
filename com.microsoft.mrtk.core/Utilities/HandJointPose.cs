@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// The pose of an individual hand joint. Superset
+    /// of a <see cref="UnityEngine.Pose"/>, adding a
+    /// radius value.
+    /// </summary>
     public struct HandJointPose : IEqualityComparer
     {
         /// <summary>
@@ -23,9 +28,31 @@ namespace Microsoft.MixedReality.Toolkit
             this.radius = radius;
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pose">The pose of the hand joint.</param>
+        /// <param name="radius">The radius of the hand joint.</param>
+        public HandJointPose(
+            Pose pose,
+            float radius)
+        {
+            this.pose = pose;
+            this.radius = radius;
+        }
+
         [SerializeField]
         [Tooltip("The pose of the hand joint.")]
         private Pose pose;
+
+        /// <summary>
+        /// The pose of the hand joint.
+        /// </summary>
+        public Pose Pose
+        {
+            get => pose;
+            set => pose = value;
+        }
 
         /// <summary>
         /// The position of the hand joint.

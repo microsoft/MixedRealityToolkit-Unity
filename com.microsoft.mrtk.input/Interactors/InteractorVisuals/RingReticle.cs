@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -59,7 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // if we want to re-enable fading after disabling it (through InitializeShaderFadeEnabled).
                 previousNearFadeValue = reticleRenderer.material.GetFloat("_Fade_Near_Distance_");
             }
+        }
 
+        protected void OnEnable()
+        {
             InitializeFadeBehavior(fadeEnabled);
 
             // Set the initial size of the reticle.

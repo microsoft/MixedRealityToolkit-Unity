@@ -24,4 +24,22 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         ZAxis = 1 << 2
     }
+
+    /// <summary>
+    /// Extension methods specific to the <see cref="InteractionFlags"/> enum.
+    /// </summary>
+    public static class AxisFlagsExtensions
+    {
+        /// <summary>
+        /// Checks to determine if all bits in a provided mask are set.
+        /// </summary>
+        /// <param name="a"><see cref="AxisFlags"/> value.</param>
+        /// <param name="b"><see cref="AxisFlags"/> mask.</param>
+        /// <returns>True if all of the bits in the specified mask are set in the
+        /// current value.</returns>
+        public static bool IsMaskSet(this AxisFlags a, AxisFlags b)
+        {
+            return ((a & b) == b);
+        }
+    }
 }

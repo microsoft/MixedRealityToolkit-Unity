@@ -27,26 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private List<SystemType> associatedTypes = new List<SystemType>();
 
         private HashSet<Type> associatedTypesHashSet = new HashSet<Type>();
+        
         /// <summary>
         /// Stores the types associated with this Interaction Mode Definition
         /// </summary>
         internal HashSet<Type> AssociatedTypes => associatedTypesHashSet;
 
-        [SerializeField]
-        private bool isEnabled = true;
-
-        [Obsolete("This property is no longer used")]
-        public bool IsEnabled
-        {
-            get => isEnabled;
-            set => isEnabled = value;
-        }
-
-        [Obsolete("This property is no longer used")]
-        public int Id { get; internal set; }
-
         /// <summary>
-        /// Constructor for a mode definintion, requires a name and the interactor types which are to be enabled while in this mode.
+        /// Constructor for a mode definition, requires a name and the interactor types which are to be enabled while in this mode.
         /// </summary>
         public InteractionModeDefinition(string name, List<SystemType> associatedTypes)
         {
@@ -58,10 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         internal void InitializeAssociatedTypes()
         {
             // load contents from the SystemType List into the Type HashSet
-            if (associatedTypesHashSet == null)
-            {
-                associatedTypesHashSet = new HashSet<Type>();
-            }
+            associatedTypesHashSet ??= new HashSet<Type>();
             associatedTypesHashSet.Clear();
 
             foreach (SystemType allowedType in associatedTypes)

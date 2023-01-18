@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 using UnityEngine.XR;
-
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.HandshapeId;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -19,21 +19,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Name = "com.microsoft.mixedreality.synthhands",
         DisplayName = "Subsystem for Hand Synthesis",
         Author = "Microsoft",
-        ProviderType = typeof(SynthesisProvider),
+        ProviderType = typeof(SyntheticHandsProvider),
         SubsystemTypeOverride = typeof(SyntheticHandsSubsystem),
         ConfigType = typeof(SyntheticHandsConfig))]
     public class SyntheticHandsSubsystem : HandsSubsystem
     {
-        private SynthesisProvider m_synthesisProvider;
-        private SynthesisProvider synthesisProvider
+        private SyntheticHandsProvider syntheticProvider;
+        private SyntheticHandsProvider SyntheticProvider
         {
             get
             {
-                if (m_synthesisProvider == null || m_synthesisProvider != provider)
+                if (syntheticProvider == null || syntheticProvider != provider)
                 {
-                    m_synthesisProvider = provider as SynthesisProvider;
+                    syntheticProvider = provider as SyntheticHandsProvider;
                 }
-                return m_synthesisProvider;
+                return syntheticProvider;
             }
         }
 
@@ -68,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </returns>
         [Obsolete("Please use the GetNeutralHandshape(handNode) instead.")]
         public HandshapeId GetNeutralPose(XRNode handNode) => GetNeutralHandshape(handNode);
+
         /// <summary>
         /// Sets the neutral pose for the specified hand.
         /// </summary>
@@ -103,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </returns>
         public HandshapeId GetNeutralHandshape(XRNode handNode)
         {
-            return synthesisProvider.GetNeutralHandshape(handNode);
+            return SyntheticProvider.GetNeutralHandshape(handNode);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handshapeId">The desired hand handshape.</param>
         public void SetNeutralHandshape(XRNode handNode, HandshapeId handshapeId)
         {
-            synthesisProvider.SetNeutralHandshape(handNode, handshapeId);
+            SyntheticProvider.SetNeutralHandshape(handNode, handshapeId);
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </returns>
         public HandshapeId GetSelectionHandshape(XRNode handNode)
         {
-            return synthesisProvider.GetSelectionHandshape(handNode);
+            return SyntheticProvider.GetSelectionHandshape(handNode);
         }
 
         /// <summary>
@@ -135,20 +136,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handshapeId">The desired hand handshape.</param>
         public void SetSelectionHandshape(XRNode handNode, HandshapeId handshapeId)
         {
-            synthesisProvider.SetSelectionHandshape(handNode, handshapeId);
+            SyntheticProvider.SetSelectionHandshape(handNode, handshapeId);
         }
 
         private class SyntheticHandContainer : HandDataContainer
         {
             // The current handshape in hand-space, untransformed.
             private HandJointPose[] currentHandshape = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
-
-            // The 'neutral' handshape (ex: flat or open) to be displayed.
-            private HandshapeId neutralHandshape = HandshapeId.Open;
-
-            // The 'selection' handshape (ex: pinch) to be displayed.
-            // Does not have to correspond to a selecting action, but the pose lerps based on the value of the selectAction
-            private HandshapeId selectionHandshape = HandshapeId.Pinch;
 
             // The Input Action associated with the root position of this hand.
             private InputActionProperty positionAction;
@@ -185,11 +179,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                         InputActionProperty selectAction,
                                         Vector3 poseOffset) : base(handNode)
             {
-                this.neutralHandshape = baseHandshape;
+                NeturalHandshape = baseHandshape;
+
                 this.positionAction = positionAction;
                 this.rotationAction = rotationAction;
                 this.selectAction = selectAction;
                 this.poseOffset = poseOffset;
+            }
+
+            public void Start()
+            {
+                positionAction.EnableDirectAction();
+                rotationAction.EnableDirectAction();
+                selectAction.EnableDirectAction();
+            }
+
+            public void Stop()
+            {
+                positionAction.DisableDirectAction();
+                rotationAction.DisableDirectAction();
+                selectAction.DisableDirectAction();
             }
 
             private static readonly ProfilerMarker TryGetEntireHandPerfMarker =
@@ -198,20 +207,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Gets or sets the synthetic hand's neutral hand shape.
             /// </summary>
-            public HandshapeId NeturalHandshape
-            {
-                get => neutralHandshape;
-                set => neutralHandshape = value;
-            }
+            public HandshapeId NeturalHandshape { get; set; } = HandshapeId.Open;
 
             /// <summary>
             /// Gets or sets the synthetic hand's selection hand shape.
             /// </summary>
-            public HandshapeId SelectionHandshape
-            {
-                get => selectionHandshape;
-                set => selectionHandshape = value;
-            }
+            public HandshapeId SelectionHandshape { get; set; } = HandshapeId.Pinch;
 
             /// <inheritdoc/>
             public override bool TryGetEntireHand(out IReadOnlyList<HandJointPose> result)
@@ -287,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // binding and grab the control list ourselves, and assume the first control is
                     // the one we want.
                     InputControl positionControl = positionAction.action?.activeControl ??
-                                                    (positionAction.action?.controls.Count > 0 ? positionAction.action?.controls[0] : null);
+                        (positionAction.action.HasAnyControls() ? positionAction.action?.controls[0] : null);
 
                     if (positionControl?.device is TrackedDevice positionTrackedDevice)
                     {
@@ -311,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // binding and grab the control list ourselves, and assume the first control is
                     // the one we want.
                     InputControl rotationControl = rotationAction.action?.activeControl ??
-                                                    (rotationAction.action?.controls.Count > 0 ? rotationAction.action?.controls[0] : null);
+                        (rotationAction.action.HasAnyControls() ? rotationAction.action.controls[0] : null);
 
                     if (rotationControl?.device is TrackedDevice rotationTrackedDevice)
                     {
@@ -333,8 +334,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Null checks against Unity objects can be expensive, especially when you do
                     // it 52 times per frame (26 hand joints across 2 hands). Instead, we manage
                     // the playspace transformation internally for hand joints.
-                    Transform playspaceTransform = PlayspaceUtilities.ReferenceTransform;
-                    if (playspaceTransform == null)
+                    // Joints are relative to the camera floor offset object.
+                    Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
+                    if (origin == null)
                     {
                         return;
                     }
@@ -349,8 +351,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         handJoints[i] = new HandJointPose(
-                            playspaceTransform.TransformPoint((handRotation * currentHandshape[i].Position) + handPosition),
-                            playspaceTransform.rotation * (handRotation * currentHandshape[i].Rotation),
+                            origin.TransformPoint((handRotation * currentHandshape[i].Position) + handPosition),
+                            origin.rotation * (handRotation * currentHandshape[i].Rotation),
                             currentHandshape[i].Radius);
                     }
                 }
@@ -367,8 +369,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 using (UpdatehandshapePerfMarker.Auto())
                 {
-                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(neutralHandshape, out HandJointPose[] baseData);
-                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(selectionHandshape, out HandJointPose[] pinchData);
+                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(NeturalHandshape, out HandJointPose[] baseData);
+                    SimulatedArticulatedHandshapes.GetHandshapeJointPoseData(SelectionHandshape, out HandJointPose[] pinchData);
 
                     selectAmount = selectAction.action.ReadValue<float>();
 
@@ -391,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [Preserve]
-        class SynthesisProvider : Provider
+        class SyntheticHandsProvider : Provider
         {
             protected SyntheticHandsConfig Config { get; private set; }
 
@@ -421,6 +423,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                                                 Config.PoseOffset) }
                 };
 
+                hands[XRNode.LeftHand].Start();
+                hands[XRNode.RightHand].Start();
+
                 InputSystem.onBeforeUpdate += ResetHands;
             }
 
@@ -428,6 +433,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 ResetHands();
                 InputSystem.onBeforeUpdate -= ResetHands;
+
+                hands[XRNode.LeftHand].Stop();
+                hands[XRNode.RightHand].Stop();
+
                 base.Stop();
             }
 
