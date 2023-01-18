@@ -605,29 +605,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 14468905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 14468909}
 --- !u!1001 &30053973
@@ -1148,29 +1139,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 47797539}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 47797543}
 --- !u!1001 &47838181
@@ -1908,29 +1890,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 85912327}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 85912329}
 --- !u!1 &86645935
@@ -2419,29 +2392,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 101034060}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 101034064}
 --- !u!1001 &101484291
@@ -3763,29 +3727,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 154440642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 154440646}
 --- !u!1 &163304837
@@ -4984,29 +4939,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 201720332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 201720336}
 --- !u!224 &258012437 stripped
@@ -6305,29 +6251,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 335940726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 335940730}
 --- !u!1001 &357876115
@@ -9666,29 +9603,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 553395884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 553395888}
 --- !u!1001 &576536706
@@ -10736,29 +10664,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 682545838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 682545842}
 --- !u!1 &692976826
@@ -14487,29 +14406,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1031621821}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1031621825}
 --- !u!1001 &1042814118
@@ -15467,29 +15377,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1073055404}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1073055408}
 --- !u!1 &1092179571
@@ -16321,29 +16222,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1122818192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1122818196}
 --- !u!1001 &1125450389
@@ -19174,29 +19066,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1290890162}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1290890165}
 --- !u!1001 &1298861445
@@ -19506,29 +19389,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1304147003}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1304147007}
 --- !u!1001 &1311646144
@@ -19938,29 +19812,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1329564635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
-    - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
+    - rid: 1017220187265171464
   references:
     version: 2
     RefIds:
-    - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+    - rid: 1017220187265171464
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1329564639}
 --- !u!1001 &1349327196
@@ -21020,29 +20885,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1424732236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1424732240}
 --- !u!1001 &1427191247
@@ -21571,29 +21427,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1482164460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1482164464}
 --- !u!1 &1488121687
@@ -24672,17 +24519,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4095427112833100003, guid: beb27f14f40963b45a9fb5d2523f4711, type: 3}
   m_PrefabInstance: {fileID: 1506166576}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1651702602 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4095427112833100001, guid: beb27f14f40963b45a9fb5d2523f4711, type: 3}
-  m_PrefabInstance: {fileID: 1506166576}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1651702601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4220fa33d0e48745b2cb5c52731e75e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1651702604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24692,31 +24528,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1651702601}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
-        MaterialSwapTarget: {fileID: 1651702602}
+        MaterialSwapTarget: {fileID: 0}
 --- !u!1 &1653004002
 GameObject:
   m_ObjectHideFlags: 0
@@ -27793,29 +27620,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1854885401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1854885406}
 --- !u!1001 &1856862788
@@ -29937,29 +29755,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1944714596}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1944714600}
 --- !u!1001 &1945241970
@@ -30650,29 +30459,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1983684636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 1983684640}
 --- !u!1001 &1990262477
@@ -31837,29 +31637,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 2087755155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
     - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
   references:
     version: 2
     RefIds:
     - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 2087755159}
 --- !u!1 &2100425381
@@ -32595,6 +32386,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d55e005abaeca504eb060bfe0de6c4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2141301570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141301564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1baeca522a926a64f9df02ba504bee0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeDefinitions:
+  - {fileID: 11400000, guid: 816deb604c5011d4baf3b4f7b242a3e4, type: 2}
 --- !u!222 &3399680778966325520
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32719,28 +32524,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6080929707917674034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
-    - rid: 2096456570607239178
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
+    - rid: 1017220187265171466
   references:
     version: 2
     RefIds:
-    - rid: 2096456570607239178
-      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+    - rid: 1017220187265171466
+      type: {class: ThemedMaterialBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Menu Plate Material
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Menu Plate Material
         targetValueId: 1934966859
         MaterialSwapTarget: {fileID: 6515328879105725118}

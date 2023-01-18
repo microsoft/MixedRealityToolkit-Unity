@@ -162,29 +162,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 201938300658660728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
-    - rid: 2096456570607239177
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
+    - rid: 1017220187265171461
   references:
     version: 2
     RefIds:
-    - rid: 2096456570607239177
-      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+    - rid: 1017220187265171461
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Primary Text Color
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Primary Text Color
         targetValueId: 629473106
         ColorSwapTarget: {fileID: 5095746839500215027}
         AlsoSetAlpha: 1
@@ -539,32 +530,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 2142167140070017856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
-    - rid: 2096456570607239179
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
+    - rid: 1017220187265171463
   references:
     version: 2
     RefIds:
-    - rid: 2096456570607239179
-      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+    - rid: 1017220187265171463
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Primary Text Color
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Primary Text Color
         targetValueId: 629473106
         ColorSwapTarget: {fileID: 1922220768106560367}
-        AlsoSetAlpha: 0
+        AlsoSetAlpha: 1
 --- !u!1 &2302024426645924609
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,32 +802,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7594107385585372191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12f1486c4a2482d46abfddc88e1354bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   binders:
     _items:
-    - rid: 2096456570607239179
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
+    - rid: 1017220187265171462
   references:
     version: 2
     RefIds:
-    - rid: 2096456570607239179
-      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+    - rid: 1017220187265171462
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Primary Text Color
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Primary Text Color
         targetValueId: 629473106
         ColorSwapTarget: {fileID: 8493469810320727241}
-        AlsoSetAlpha: 0
+        AlsoSetAlpha: 1
 --- !u!1001 &5139722473249402816
 PrefabInstance:
   m_ObjectHideFlags: 0
