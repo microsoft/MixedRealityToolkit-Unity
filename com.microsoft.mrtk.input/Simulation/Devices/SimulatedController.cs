@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             get
             {
-                if (XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip,
+                if (XRSubsystemHelpers.HandsAggregator?.TryGetJoint(TrackedHandJoint.IndexTip,
                                               Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
                                               out HandJointPose indexPose))
                 {
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             get
             {
-                if (XRSubsystemHelpers.HandsAggregator.TryGetPinchingPoint(Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
+                if (XRSubsystemHelpers.HandsAggregator?.TryGetPinchingPoint(Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
                                                       out HandJointPose grabPose))
                 {
                     return grabPose.Position;
