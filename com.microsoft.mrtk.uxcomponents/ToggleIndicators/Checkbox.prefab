@@ -263,24 +263,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   binders:
     _items:
-    - rid: 2096456570607239185
-  themeViewModelRecord: {fileID: 0}
-  materialSwaps:
-    _items: []
-  objectVisibilityToggles:
-    _items: []
-  colorSwaps:
-    _items: []
-  textureSwaps:
-    _items: []
+    - rid: 2096456823673978882
   references:
     version: 2
     RefIds:
-    - rid: 2096456570607239185
-      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: MRTK.DataBinding}
+    - rid: 2096456823673978882
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
       data:
-        themeRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
-        TargetValueName: Primary Text Color
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Primary Text Color
         targetValueId: 629473106
         ColorSwapTarget: {fileID: 269199439855791924}
         AlsoSetAlpha: 1
