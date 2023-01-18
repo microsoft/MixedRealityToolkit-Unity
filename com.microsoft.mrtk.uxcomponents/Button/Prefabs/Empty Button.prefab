@@ -947,6 +947,7 @@ GameObject:
   - component: {fileID: 9026472854072389799}
   - component: {fileID: 9026472854072389792}
   - component: {fileID: 9026472854072389793}
+  - component: {fileID: 6961646179209836937}
   m_Layer: 5
   m_Name: Backplate
   m_TagString: Untagged
@@ -1021,3 +1022,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fda4953718e0264291c42cb2a637fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6961646179209836937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9026472854072389795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae636f225d21c9a4b8c7089de3fe6f1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binders:
+    _items:
+    - rid: 1017220187265171468
+  references:
+    version: 2
+    RefIds:
+    - rid: 1017220187265171468
+      type: {class: ThemedColorBinder, ns: Microsoft.MixedReality.Toolkit.Theming, asm: Microsoft.MixedReality.Toolkit.DataBinding}
+      data:
+        dataSourceRecord: {fileID: 11400000, guid: 0a194e5338265b74d9a51f8dbae65837, type: 2}
+        itemName: Panel Color
+        targetValueId: 1194890048
+        ColorSwapTarget: {fileID: 9026472854072389792}
+        AlsoSetAlpha: 1
