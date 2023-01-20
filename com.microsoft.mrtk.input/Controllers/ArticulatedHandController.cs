@@ -83,8 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     out float pinchAmount
                 );
 
-                Debug.Log("Got pinch data: " + gotPinchData + ", isPinchReady: " + isPinchReady + ", isPinching: " + isPinching + ", pinchAmount: " + pinchAmount);
-
                 // If we got pinch data, write it into our select interaction state.
                 if (gotPinchData)
                 {
