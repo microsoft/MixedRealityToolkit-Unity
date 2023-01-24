@@ -310,6 +310,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         // TODO: Drive from inspector/simulator options.
         private float triggerSmoothTime = 0.1f;
 
+        // TODO: Drive from inspector/simulator options.
+        private float triggerSmoothDeadzone = 0.005f;
+
         /// <summary>
         /// Enables the simulated controller.
         /// </summary>
@@ -500,11 +503,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // TODO: Currently triggerAxis is driven only from ctrlSettings.TriggerButton.action.
                 // We will eventually drive this from the ctrlSettings.TriggerAxis.action as well.
                 // Needs work to be able to intuitively combine trigger axis from sim input with click.
+                float targetValue = ctrlSettings.TriggerButton.action.IsPressed() ? 1 : 0;
+
                 controls.TriggerAxis = Mathf.SmoothDamp(controls.TriggerAxis,
-                                                        ctrlSettings.TriggerButton.action.IsPressed() ? 1 : 0,
+                                                        targetValue,
                                                         ref triggerSmoothVelocity,
                                                         triggerSmoothTime);
 
+                if(Mathf.Abs(controls.TriggerAxis - targetValue) < triggerSmoothDeadzone)
+                {
+                    controls.TriggerAxis = targetValue;
+                }
 #if LATER
 // TODO: mappings need to be sorted out for these
                 // Axes available to hands and controllers

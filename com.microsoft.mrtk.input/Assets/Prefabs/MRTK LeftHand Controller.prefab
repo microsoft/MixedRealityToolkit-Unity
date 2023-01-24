@@ -410,7 +410,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  maxGradientLength: 0.1
+  maxGradientLength: 0.3
   lineWidth:
     serializedVersion: 2
     m_Curve:
