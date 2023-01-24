@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             get => preferredTrackedHandedness;
             set
             {
-                if ((value == Handedness.Left || value == Handedness.Left)
+                if ((value == Handedness.Left || value == Handedness.Right)
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
@@ -573,8 +573,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // If we were tracking a particular hand, check that our transform is still valid
-            // The HandJointService does not destroy its own hand joint tracked GameObjects even when a hand is no longer tracked
-            // Those HandJointService's GameObjects though are the parents of our tracked transform and thus will not be null/destroyed
             if (TrackedTargetType == TrackedObjectType.HandJoint && currentTrackedHandedness != Handedness.None)
             {
                 bool trackingLeft = IsHandTracked(Handedness.Left);
@@ -591,6 +589,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Determines if the specified hand is being tracked by the subsystem.
         /// </summary>
         /// <param name="hand">The <see cref="Handedness"/> of the hand being queried.</param>
+        /// <remarks>
+        /// Currently, this returns true always.
+        /// </remarks>
         /// <returns>
         /// True if the hand is tracked, or false.
         /// </returns>
@@ -600,8 +601,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // (i.e., Handedness.None or Handedness.Both)
             XRNode? node = hand.ToXRNode();
             if (!node.HasValue) { return false; }
-            return XRSubsystemHelpers.HandsAggregator != null &&
-                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
+            return XRSubsystemHelpers.HandsAggregator != null;
+
+            // TODO: evaluate why this breaks HandConstraints. According to the name
+            // of the function, this should be correct, but return false when the hand isn't tracked
+            // results in no hand ever being recognized by the constraint.
+            // return XRSubsystemHelpers.HandsAggregator != null &&
+            //        XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
         }
 
         /// <summary>
