@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             get => preferredTrackedHandedness;
             set
             {
-                if ((value == Handedness.Left || value == Handedness.Left)
+                if ((value == Handedness.Left || value == Handedness.Right)
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
