@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty ToggleMode;
         private SerializedProperty TriggerOnRelease;
         private SerializedProperty allowSelectByVoice;
+        private SerializedProperty requiresHover;
         private SerializedProperty speechRecognitionKeyword;
         private SerializedProperty VoiceRequiresFocus;
         private SerializedProperty UseGazeDwell;
@@ -47,6 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             allowSelectByVoice = SetUpProperty(nameof(allowSelectByVoice));
             speechRecognitionKeyword = SetUpProperty(nameof(speechRecognitionKeyword));
             VoiceRequiresFocus = SetUpAutoProp(nameof(VoiceRequiresFocus));
+
+            requiresHover = SetUpProperty(nameof(requiresHover));
 
             UseGazeDwell = SetUpAutoProp(nameof(UseGazeDwell));
             GazeDwellTime = SetUpAutoProp(nameof(GazeDwellTime));
@@ -159,6 +162,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
 
                     EditorGUILayout.PropertyField(TriggerOnRelease);
+
+                    EditorGUILayout.PropertyField(requiresHover);
                 }
             }
 
