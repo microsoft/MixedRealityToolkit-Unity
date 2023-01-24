@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
 
@@ -14,8 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Cached reference to hands aggregator for efficient per-frame use.
         /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
+        [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
+        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator;
 
         [SerializeField]
         [Tooltip("The hand on which to track the joint.")]

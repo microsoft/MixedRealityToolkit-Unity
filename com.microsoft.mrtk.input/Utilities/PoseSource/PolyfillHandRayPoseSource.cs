@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             XRNode? handNode = Hand.ToXRNode();
 
             bool poseRetrieved = handNode.HasValue;
-            poseRetrieved &= HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.IndexProximal, handNode.Value, out knuckle);
-            poseRetrieved &= HandsAggregator != null && HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, handNode.Value, out palm);
+            poseRetrieved &= XRSubsystemHelpers.HandsAggregator?.TryGetJoint(TrackedHandJoint.IndexProximal, handNode.Value, out knuckle) ?? false;
+            poseRetrieved &= XRSubsystemHelpers.HandsAggregator?.TryGetJoint(TrackedHandJoint.Palm, handNode.Value, out palm) ?? false;
 
             // Tick the hand ray generator function. Uses index knuckle for position.
             if(poseRetrieved)

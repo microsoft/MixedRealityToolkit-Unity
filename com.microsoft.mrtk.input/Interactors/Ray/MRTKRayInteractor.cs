@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
@@ -48,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Cached reference to hands aggregator for efficient per-frame use.
         /// </summary>
-        protected HandsAggregatorSubsystem HandsAggregator => handsAggregator ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handsAggregator;
+        [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
+        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator;
 
         /// <summary>
         /// How unselected the interactor must be to initiate a new hover or selection on a new target.
@@ -135,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (xrController is ArticulatedHandController handController)
                         {
                             bool isPalmFacingAway = false;
-                            if (HandsAggregator?.TryGetPalmFacingAway(handController.HandNode, out isPalmFacingAway) ?? true)
+                            if (XRSubsystemHelpers.HandsAggregator?.TryGetPalmFacingAway(handController.HandNode, out isPalmFacingAway) ?? true)
                             {
                                 hoverActive &= isPalmFacingAway;
                             }

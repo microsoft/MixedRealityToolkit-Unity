@@ -29,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             XRNode? handNode = Hand.ToXRNode();
             if (handNode.HasValue
-                && HandsAggregator != null
-                && HandsAggregator.TryGetJoint(Joint, handNode.Value, out HandJointPose handJointPose))
+                && XRSubsystemHelpers.HandsAggregator != null
+                && XRSubsystemHelpers.HandsAggregator.TryGetJoint(Joint, handNode.Value, out HandJointPose handJointPose))
             {
                 // Hand Joints are already returned by the subsystem in worldspace, we don't have to do any transformations
                 pose.position = handJointPose.Position;
