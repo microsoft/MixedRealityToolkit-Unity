@@ -9,7 +9,6 @@ using UnityEngine;
 using UnityEngine.Scripting;
 
 #if WINDOWS_UWP
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Media.SpeechSynthesis;
 using Windows.Storage.Streams;
