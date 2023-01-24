@@ -46,9 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual bool TryGetPokeRadius(out float radius)
         {
+            HandJointPose jointPose = default;
             if (xrController is ArticulatedHandController handController
-                && HandsUtils.GetSubsystem() != null
-                && HandsUtils.GetSubsystem().TryGetNearInteractionPoint(handController.HandNode, out HandJointPose jointPose))
+                && (XRSubsystemHelpers.HandsAggregator?.TryGetNearInteractionPoint(handController.HandNode, out jointPose) ?? false))
             {
                 radius = jointPose.Radius;
                 return true;
