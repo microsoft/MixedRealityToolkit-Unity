@@ -600,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.Assert(baseInputEventData != null);
                 Debug.Assert(!baseInputEventData.used);
-                if (baseInputEventData.InputSource == null) { Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}"); }
+                if (!(baseInputEventData is MixedRealityPointerEventData)) { Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}"); }
 
                 // Send the event to global listeners
                 base.HandleEvent(baseInputEventData, eventHandler);
