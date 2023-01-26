@@ -135,15 +135,12 @@ namespace Microsoft.MixedReality.Toolkit
             Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
         public bool VoiceRequiresFocus { get; private set; } = true;
 
-        [SerializeField, Tooltip("If true, then the OnClick event will only get fired while this Interactable is being hovered.")]
-        private bool requiresHover = false;
-
-        /// <inheritdoc />
-        public bool RequiresHover
-        {
-            get => requiresHover;
-            set => requiresHover = value;
-        }
+        /// <summary>
+		/// Does the interactable require the interactor to hover over it?
+        /// If true, then the OnClick event will only get fired while this Interactable is being hovered.
+        /// </summary>
+        [field: SerializeField, Tooltip("If true, then the OnClick event will only get fired while this Interactable is being hovered.")]
+        public bool SelectRequiresHover { get; private set; } = false;
 
         #endregion Settings
 
@@ -354,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit
             // This check will prevent OnClick from firing when the interactable is not being hovered.
             bool IsTargetValid()
             {
-                return !requiresHover ||
+                return !SelectRequiresHover ||
                        !(args.interactableObject is IXRHoverInteractable hoverInteractable) ||
                        hoverInteractable.isHovered;
             }
