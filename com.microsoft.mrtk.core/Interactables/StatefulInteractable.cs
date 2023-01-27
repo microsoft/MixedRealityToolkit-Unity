@@ -135,6 +135,13 @@ namespace Microsoft.MixedReality.Toolkit
             Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
         public bool VoiceRequiresFocus { get; private set; } = true;
 
+        /// <summary>
+		/// Does the interactable require the interactor to hover over it?
+        /// If true, then the OnClick event will only get fired while this Interactable is being hovered.
+        /// </summary>
+        [field: SerializeField, Tooltip("If true, then the OnClick event will only get fired while this Interactable is being hovered.")]
+        public bool SelectRequiresHover { get; private set; } = false;
+
         #endregion Settings
 
         #region Public state
@@ -323,16 +330,31 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>True if the interactable should fire click/toggle event from this current deselect event.</returns>
         internal protected virtual bool CanClickOnLastSelectExited(SelectExitEventArgs args)
         {
+            return TriggerOnRelease && IsRegistered() && IsInteractorTracked() && IsTargetValid();
+
+            // This check will prevent OnClick from firing when the interactable or interactor was unregistered.
+            bool IsRegistered()
+            {
+                return !args.isCanceled;
+            }
+
             // This check will prevent OnClick from firing when the interactor loses tracking.
             // XRI interactor interfaces don't have a good API for "is this interactor tracked?"
             // Hover-active is a good equivalent, though, as MRTK interactors set hoverActive false
             // when their controller loses tracking.
-            if (args.interactorObject is IXRHoverInteractor hoverInteractor)
+            bool IsInteractorTracked()
             {
-                return TriggerOnRelease && hoverInteractor.isHoverActive;
+                return !(args.interactorObject is IXRHoverInteractor hoverInteractor) ||
+                       hoverInteractor.isHoverActive;
             }
 
-            return TriggerOnRelease;
+            // This check will prevent OnClick from firing when the interactable is not being hovered.
+            bool IsTargetValid()
+            {
+                return !SelectRequiresHover ||
+                       !(args.interactableObject is IXRHoverInteractable hoverInteractable) ||
+                       hoverInteractable.isHovered;
+            }
         }
 
         // Attempt to toggle our own IsToggled state.
