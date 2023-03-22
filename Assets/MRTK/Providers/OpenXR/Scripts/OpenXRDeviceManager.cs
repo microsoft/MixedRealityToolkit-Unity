@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     // when you add it to the speech commands profile. Therefore, simulate
                     // the "select" voice command running to ensure that we get a select voice command
                     // registered. This is used by FocusProvider to detect when the select pointer is active.
-                    Service?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("select", KeyCode.Alpha1, MixedRealityInputAction.None));
+                    Service?.RaiseSpeechCommandRecognized(controller.InputSource, RecognitionConfidenceLevel.High, TimeSpan.MinValue, DateTime.Now, new SpeechCommands("Select", KeyCode.Alpha1, new MixedRealityInputAction(1,  "Select", AxisType.Digital)));
                 }
 
                 shouldSendVoiceEvents = false;
