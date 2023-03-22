@@ -18,54 +18,54 @@
 # first in this file, followed by more specific rules.
 
 # Build / CI Pipeline YAML
-/pipelines/ @keveleigh @MaxWang-MS
+/pipelines/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Build / CI C#
-/Assets/MRTK/Core/Utilities/BuildAndDeploy/ @keveleigh @MaxWang-MS
+/Assets/MRTK/Core/Utilities/BuildAndDeploy/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Build / CI Powershell Scripts
-/scripts/ci/ @keveleigh @MaxWang-MS
+/scripts/ci/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Packaging files
-*.asmdef @davidkline-ms @keveleigh
-*.nupkg @davidkline-ms @keveleigh
-packagetemplate.json @davidkline-ms @keveleigh
+*.asmdef @marlenaklein-msft @AMollis @shaynie @srinjoym
+*.nupkg @marlenaklein-msft @AMollis @shaynie @srinjoym
+packagetemplate.json @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Core
-/Assets/MRTK/Core/ @davidkline-ms @keveleigh
-/Assets/MRTK/Core/Providers/InputSimulation/ @davidkline-ms @keveleigh @MaxWang-MS
+/Assets/MRTK/Core/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Core/Providers/InputSimulation/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Services and Providers
-/Assets/MRTK/Providers/ @davidkline-ms @keveleigh
-/Assets/MRTK/Providers/LeapMotion/ @davidkline-ms @keveleigh
-/Assets/MRTK/Providers/Oculus/ @davidkline-ms @keveleigh @RogPodge
-/Assets/MRTK/Providers/UnityInput/ @davidkline-ms @keveleigh
-/Assets/MRTK/Services/ @davidkline-ms @keveleigh
-/Assets/MRTK/Services/InputSystem/ @davidkline-ms @keveleigh
-/Assets/MRTK/Services/SceneSystem/ @davidkline-ms @keveleigh
+/Assets/MRTK/Providers/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Providers/LeapMotion/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Providers/Oculus/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Providers/UnityInput/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Services/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Services/InputSystem/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Services/SceneSystem/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # SDK
-/Assets/MRTK/SDK/ @davidkline-ms
-/Assets/MRTK/SDK/Features/Input/ @davidkline-ms @keveleigh
+/Assets/MRTK/SDK/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/SDK/Features/Input/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # UX
-/Assets/MRTK/SDK/Features/UX/ @Zee2
+/Assets/MRTK/SDK/Features/UX/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Tools
-/Assets/MRTK/Tools/ @davidkline-ms @keveleigh @MenelvagorMilsom
+/Assets/MRTK/Tools/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Extensions
-/Assets/MRTK/Extensions/ @davidkline-ms @keveleigh
+/Assets/MRTK/Extensions/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Standard Assets
-/Assets/MRTK/StandardAssets/ @davidkline-ms
-/Assets/MRTK/StandardAssets/Shaders/ @Cameron-Micka
-/Assets/MRTK/SDK/StandardAssets/ @davidkline-ms
-/Assets/MRTK/SDK/StandardAssets/Shaders/ @Cameron-Micka
-/Assets/MRTK/Examples/StandardAssets/ @davidkline-ms
+/Assets/MRTK/StandardAssets/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/StandardAssets/Shaders/ @Cameron-Micka @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/SDK/StandardAssets/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/SDK/StandardAssets/Shaders/ @Cameron-Micka @marlenaklein-msft @AMollis @shaynie @srinjoym
+/Assets/MRTK/Examples/StandardAssets/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Examples
-/Assets/MRTK/Examples/ @davidkline-ms @keveleigh
+/Assets/MRTK/Examples/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Tests
-/Assets/MRTK/Tests/ @davidkline-ms @keveleigh
+/Assets/MRTK/Tests/ @marlenaklein-msft @AMollis @shaynie @srinjoym
