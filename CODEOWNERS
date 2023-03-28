@@ -18,33 +18,32 @@
 # first in this file, followed by more specific rules.
 
 # Build / CI Pipeline
-/Pipelines/ @keveleigh
+/Pipelines/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Checked-in external dependencies
-/ExternalDependencies/ @keveleigh @davidkline-ms
+/ExternalDependencies/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Tooling
-/Tooling/ @keveleigh @Zee2
+/Tooling/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Feature packages
-/com.microsoft.mrtk.accessibility/ @davidkline-ms
-/com.microsoft.mrtk.audio/ @davidkline-ms
-/com.microsoft.mrtk.core/ @davidkline-ms @keveleigh @Zee2
-/com.microsoft.mrtk.data/ @maluoi @Zee2
-/com.microsoft.mrtk.diagnostics/ @davidkline-ms
-/com.microsoft.mrtk.input/ @Zee2 @RogPodge @MaxWang-MS
-/com.microsoft.mrtk.spatialmanipulation/ @RogPodge @Zee2
-/com.microsoft.mrtk.tools/ @davidkline-ms @keveleigh
-/com.microsoft.mrtk.uxcomponents/ @Zee2 @RogPodge
-/com.microsoft.mrtk.uxcore/ @Zee2 @RogPodge
-/com.microsoft.mrtk.windowsspeech/ @MaxWang-MS
+/com.microsoft.mrtk.accessibility/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.audio/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.core/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.data/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.diagnostics/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.input/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.spatialmanipulation/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.tools/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.uxcomponents/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.uxcore/ @marlenaklein-msft @AMollis @shaynie @srinjoym
+/com.microsoft.mrtk.windowsspeech/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Input Simulation
-/com.microsoft.mrtk.input/Simulation/ @davidkline-ms @Zee2 @RogPodge
+/com.microsoft.mrtk.input/Simulation/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 
 # Examples and templates
-/UnityProjects/ @davidkline-ms @keveleigh @maluoi @MaxWang-MS @RogPodge @Zee2
-
+/UnityProjects/ @marlenaklein-msft @AMollis @shaynie @srinjoym
 # Packaging
-*.asmdef @keveleigh @davidkline-ms
-package.json @davidkline-ms @keveleigh
+*.asmdef @marlenaklein-msft @AMollis @shaynie @srinjoym
+package.json @marlenaklein-msft @AMollis @shaynie @srinjoym
