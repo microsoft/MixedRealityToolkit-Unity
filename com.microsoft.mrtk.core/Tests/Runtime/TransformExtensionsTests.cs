@@ -80,7 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 
             var children = root.EnumerateHierarchy().ToList();
 
-            Assert.AreEqual(3, children.Count()); // 3 because root is also included
+            // 3 because root is also included
+            Assert.AreEqual(3, children.Count());
             Assert.Contains(root, children);
             Assert.Contains(child1, children);
             Assert.Contains(child2, children);
@@ -99,7 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 
             var children = root.EnumerateHierarchy(ignore).ToList();
 
-            Assert.AreEqual(2, children.Count()); // 2 because root is also included, but not child2
+            // 2 because root is also included, but not child2
+            Assert.AreEqual(2, children.Count()); 
             Assert.Contains(root, children);
             Assert.Contains(child1, children);
             Assert.IsFalse(children.Contains(child2));
