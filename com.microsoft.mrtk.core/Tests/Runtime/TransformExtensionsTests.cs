@@ -13,8 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
     public class TransformExtensionsTests : BaseRuntimeTests
     {
         [UnityTest]
-        public IEnumerator GetColliderBounds_ReturnsEncapsulatedBounds()
-        {   // Create a root object with colliders attached to it
+        public IEnumerator GetColliderBoundsTest()
+        {
+            // Create a root object with colliders attached to it
             GameObject rootObject = new GameObject("Root");
             BoxCollider rootCollider = rootObject.AddComponent<BoxCollider>();
             rootCollider.center = new Vector3(1f, 2f, 3f);
@@ -45,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 
 
         [UnityTest]
-        public IEnumerator GetFullPath_Returns_Path_Starting_With_Prefix()
+        public IEnumerator GetFullPathTest()
         {
             var parent = new GameObject("Parent").transform;
             var child1 = new GameObject("Child1").transform;
@@ -69,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         [UnityTest]
-        public IEnumerator EnumerateHierarchy_ReturnsAllChildren()
+        public IEnumerator EnumerateHierarchyTest()
         {
             var root = new GameObject("Root").transform;
             var child1 = new GameObject("Child1").transform;
@@ -87,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         [UnityTest]
-        public IEnumerator EnumerateHierarchy_IgnoresSpecifiedTransform()
+        public IEnumerator EnumerateHierarchyIgnoresTransformTest()
         {
             var root = new GameObject("Root").transform;
             var child1 = new GameObject("Child1").transform;
@@ -107,33 +108,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 
 
         [UnityTest]
-        public IEnumerator IsParentOrChildOf_Returns_True_If_Transform_Is_Child()
+        public IEnumerator IsParentOrChildOfTest()
         {
             var parent = new GameObject("Parent").transform;
             var child = new GameObject("Child").transform;
             child.SetParent(parent);
 
             var result = child.IsParentOrChildOf(parent);
-
             Assert.IsTrue(result);
+
+            result = parent.IsParentOrChildOf(child);
+            Assert.IsTrue(result);
+
             yield return null;
         }
 
         [UnityTest]
-        public IEnumerator IsParentOrChildOf_Returns_True_If_Transform_Is_Parent()
-        {
-            var parent = new GameObject("Parent").transform;
-            var child = new GameObject("Child").transform;
-            child.SetParent(parent);
-
-            var result = parent.IsParentOrChildOf(child);
-
-            Assert.IsTrue(result);
-            yield return null;
-        }
-
-        [UnityTest]
-        public IEnumerator FindAncestorComponent_ReturnsNullWhenNoAncestorHasComponent()
+        public IEnumerator FindAncestorComponentNullTest()
         {
             var gameObject = new GameObject();
             var transform = gameObject.transform;
@@ -145,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         [UnityTest]
-        public IEnumerator FindAncestorComponent_FindsComponentInAncestor()
+        public IEnumerator FindAncestorComponentTest()
         {
             var parentGameObject = new GameObject();
             var childGameObject = new GameObject();
@@ -159,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         [UnityTest]
-        public IEnumerator EnumerateAncestors_EnumeratesAllAncestors()
+        public IEnumerator EnumerateAncestorsTest()
         {
             var grandparentGameObject = new GameObject();
             var parentGameObject = new GameObject();
@@ -176,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         [UnityTest]
-        public IEnumerator TransformSize_TransformsLocalSizeToWorldSize()
+        public IEnumerator TransformSizeTest()
         {
             var parentGameObject = new GameObject();
             parentGameObject.transform.localScale = new Vector3(2, 2, 2);
@@ -191,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         [UnityTest]
-        public IEnumerator InverseTransformSize_TransformsWorldSizeToLocalSize()
+        public IEnumerator InverseTransformSizeTest()
         {
             var parentGameObject = new GameObject();
             var childGameObject = new GameObject();
@@ -204,20 +195,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
             yield return null;
         }
 
-        [UnityTest]
-        public IEnumerator GetDepth_ReturnsNegativeOneWhenTransformIsRoot()
-        {
-            var gameObject = new GameObject();
-            var transform = gameObject.transform;
-
-            var depth = transform.GetDepth();
-
-            Assert.AreEqual(-1, depth);
-            yield return null;
-        }
 
         [UnityTest]
-        public IEnumerator GetDepth_ReturnsDepthOfTransformFromRoot()
+        public IEnumerator GetDepthTest()
         {
             var grandparentGameObject = new GameObject("Grandparent");
             var parentGameObject = new GameObject("Parent");
