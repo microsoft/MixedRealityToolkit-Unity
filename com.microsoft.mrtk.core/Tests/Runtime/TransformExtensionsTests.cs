@@ -217,5 +217,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
 
             yield return null;
         }
+
+        [UnityTest]
+        public IEnumerator GetChildRecursiveTest()
+        {
+            var greatGrandparentGameObject = new GameObject("Greatgrandparent");
+            var grandparentGameObject = new GameObject("Grandparent");
+            var parentGameObject = new GameObject("Parent");
+            var uncleGameObject = new GameObject("Uncle");
+            var childGameObject = new GameObject("Child");
+            var cousinGameObject = new GameObject("Cousin");
+            childGameObject.transform.SetParent(parentGameObject.transform);
+            cousinGameObject.transform.SetParent(uncleGameObject.transform);
+            parentGameObject.transform.SetParent(grandparentGameObject.transform);
+            uncleGameObject.transform.SetParent(grandparentGameObject.transform);
+            grandparentGameObject.transform.SetParent(greatGrandparentGameObject.transform);
+
+            var childResult = TransformExtensions.GetChildRecursive(greatGrandparentGameObject.transform, "Child");
+            Assert.AreSame(childGameObject.transform, childResult);
+            var cousinResult = TransformExtensions.GetChildRecursive(greatGrandparentGameObject.transform, "Cousin");
+            Assert.AreSame(cousinGameObject.transform, cousinResult);
+            var nullResult = TransformExtensions.GetChildRecursive(greatGrandparentGameObject.transform, "Sister");
+            Assert.IsNull(nullResult);
+
+            yield return null;
+        }
     }
 }
