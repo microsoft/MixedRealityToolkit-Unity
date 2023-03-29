@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [SerializeField]
         [Tooltip("If tracking hands or motion controllers, determines which hand(s) are valid attachments")]
         [FormerlySerializedAs("trackedHandness")]
-        private Handedness trackedHandedness = Handedness.Left | Handedness.Right;
+        private Handedness trackedHandedness = Handedness.Both;
 
         /// <summary>
         /// If tracking hands or motion controllers, determines which hand(s) are valid attachments.
@@ -305,8 +305,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if (!IsValidHandedness(trackedHandedness))
             {
-                Debug.LogError("Using invalid SolverHandler.TrackedHandness value. Defaulting to Handedness.Left | Handedness.Right");
-                TrackedHandedness = Handedness.Left | Handedness.Right;
+                Debug.LogError("Using invalid SolverHandler.TrackedHandness value. Defaulting to Handedness.Both");
+                TrackedHandedness = Handedness.Both;
             }
 
             if (!IsValidTrackedObjectType(trackedTargetType))
@@ -435,12 +435,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
                 else if (TrackedTargetType == TrackedObjectType.ControllerRay)
                 {
-                    if (TrackedHandedness == (Handedness.Left | Handedness.Right))
+                    if (TrackedHandedness == (Handedness.Both))
                     {
                         currentTrackedHandedness = PreferredTrackedHandedness;
                         controllerInteractor = GetControllerInteractor(currentTrackedHandedness);
 
-                        if (controllerInteractor == null)
+                        if (controllerInteractor == null || !controllerInteractor.isHoverActive)
                         {
                             // If no interactor found, try again on the opposite hand
                             currentTrackedHandedness = currentTrackedHandedness.GetOppositeHandedness();
@@ -468,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     {
                         currentTrackedHandedness = TrackedHandedness;
 
-                        if (currentTrackedHandedness == (Handedness.Left | Handedness.Right))
+                        if (currentTrackedHandedness == (Handedness.Both))
                         {
                             if (IsHandTracked(PreferredTrackedHandedness))
                             {
@@ -567,7 +567,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             if (TrackedTargetType == TrackedObjectType.ControllerRay &&
-                (controllerInteractor == null))
+                (controllerInteractor == null || !controllerInteractor.isHoverActive))
             {
                 return true;
             }
@@ -619,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </returns>
         public static bool IsValidHandedness(Handedness hand)
         {
-            return hand <= (Handedness.Left | Handedness.Right);
+            return hand <= Handedness.Both;
         }
 
         /// <summary>
