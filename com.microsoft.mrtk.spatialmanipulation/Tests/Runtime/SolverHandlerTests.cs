@@ -218,17 +218,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            Camera.current.transform.position = new Vector3(0.1f, 0.1f, 0.1f);
+            Camera.main.transform.position = new Vector3(0.1f, 0.1f, 0.1f);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if SolverHandler starts at camera pose
-            Assert.IsTrue(solverHandler.TransformTarget.position == Camera.current.transform.position, $"Solver Handler not tracking head");
+            Assert.IsTrue(solverHandler.TransformTarget.position == Camera.main.transform.position, $"Solver Handler not tracking head");
 
-            Camera.current.transform.position = new Vector3(1f, 1f, 1f);
+            Camera.main.transform.position = new Vector3(1f, 1f, 1f);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if SolverHandler starts at camera pose
-            Assert.IsTrue(solverHandler.TransformTarget.position == Camera.current.transform.position, $"Solver Handler not moving with head");
+            Assert.IsTrue(solverHandler.TransformTarget.position == Camera.main.transform.position, $"Solver Handler not moving with head");
         }
 
         /// <summary>
@@ -254,12 +254,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            Camera.current.transform.position = new Vector3(0.1f, 0.1f, 0.1f);
+            Camera.main.transform.position = new Vector3(0.1f, 0.1f, 0.1f);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if SolverHandler is at expected position and rotation
-            Vector3 expectedPos = Camera.current.transform.position + solverHandler.AdditionalOffset;
-            Quaternion expectedDir = Camera.current.transform.rotation*Quaternion.Euler(30f, 30f, 30f);
+            Vector3 expectedPos = Camera.main.transform.position + solverHandler.AdditionalOffset;
+            Quaternion expectedDir = Camera.main.transform.rotation*Quaternion.Euler(30f, 30f, 30f);
             Assert.IsTrue(solverHandler.TransformTarget.position == expectedPos, $"Solver Handler not applying additional offset");
             Assert.IsTrue(solverHandler.TransformTarget.rotation == expectedDir, $"Solver Handler not applying additional rotation");
         }
