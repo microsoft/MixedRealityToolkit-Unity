@@ -114,7 +114,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
                 base.Update();
 
                 // This combination of states is from the Windows XR Plugin docs, describing the combination when positional tracking is inhibited.
-                if (sessionSubsystem.trackingState == UnityEngine.XR.ARSubsystems.TrackingState.None && sessionSubsystem.notTrackingReason == NotTrackingReason.Relocalizing)
+                // OpenXR implementation is less likely to drop all the way to TrackingState.None
+                if (sessionSubsystem.trackingState != UnityEngine.XR.ARSubsystems.TrackingState.Tracking && sessionSubsystem.notTrackingReason == NotTrackingReason.Relocalizing)
                 {
                     SetTrackingLost(true);
                 }
