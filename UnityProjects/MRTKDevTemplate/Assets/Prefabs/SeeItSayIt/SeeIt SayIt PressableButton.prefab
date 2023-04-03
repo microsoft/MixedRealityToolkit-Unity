@@ -83,7 +83,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 115ab046797f807438191bd515b65afe, type: 2}
     - target: {fileID: 1503546110793399400, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: speechRecognitionKeyword
-      value: Button
+      value: select
       objectReference: {fileID: 0}
     - target: {fileID: 2244185730444192509, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: m_IsActive
