@@ -1026,6 +1026,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SeeItSayItLabel-Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2648010737493403592, guid: d9e84b5a8037fd946aa503a059fee93f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 26.3
+      objectReference: {fileID: 0}
     - target: {fileID: 6129546144166981335, guid: d9e84b5a8037fd946aa503a059fee93f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
