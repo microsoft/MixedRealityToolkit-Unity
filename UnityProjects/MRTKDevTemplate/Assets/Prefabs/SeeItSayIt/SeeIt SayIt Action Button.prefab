@@ -759,6 +759,14 @@ PrefabInstance:
       propertyPath: attachedRectTransform
       value: 
       objectReference: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
+    - target: {fileID: 3705378105823492762, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: speechRecognitionKeyword
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705378105823492764, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
     - target: {fileID: 3705378105823492765, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
