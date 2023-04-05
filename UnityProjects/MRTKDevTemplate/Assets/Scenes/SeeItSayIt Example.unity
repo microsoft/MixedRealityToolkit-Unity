@@ -333,6 +333,14 @@ PrefabInstance:
       value: select
       objectReference: {fileID: 0}
     - target: {fileID: 7132080821321547239, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
+      propertyPath: <VoiceRequiresFocus>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132080821321547239, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
+      propertyPath: <SelectRequiresHover>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132080821321547239, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -472,6 +480,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 0.04
       objectReference: {fileID: 0}
+    - target: {fileID: 8696063039455789386, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.04
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
 --- !u!4 &29166496 stripped
@@ -479,24 +491,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7567003437331741793, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
   m_PrefabInstance: {fileID: 29166495}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &29166497 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8601731693327032620, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
-  m_PrefabInstance: {fileID: 29166495}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &29166498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 29166497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13eb2715101546742aeda9e26b346f23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bindingProfile: {fileID: 11400000, guid: c2554c7933796464c965ae0c4acf9561, type: 2}
 --- !u!1001 &176994772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -527,6 +521,14 @@ PrefabInstance:
     - target: {fileID: 4230258990695015354, guid: 1cbb80c45b809f843a32a1760daae189, type: 3}
       propertyPath: speechRecognitionKeyword
       value: select
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230258990695015354, guid: 1cbb80c45b809f843a32a1760daae189, type: 3}
+      propertyPath: <VoiceRequiresFocus>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230258990695015354, guid: 1cbb80c45b809f843a32a1760daae189, type: 3}
+      propertyPath: <SelectRequiresHover>k__BackingField
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4230258990695015354, guid: 1cbb80c45b809f843a32a1760daae189, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
@@ -989,6 +991,10 @@ PrefabInstance:
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7720573869748407015, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6264478733034656630, guid: c2a4036cbd244524d828230f1bf7c12c, type: 3}
     - target: {fileID: 7720573869748407015, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
