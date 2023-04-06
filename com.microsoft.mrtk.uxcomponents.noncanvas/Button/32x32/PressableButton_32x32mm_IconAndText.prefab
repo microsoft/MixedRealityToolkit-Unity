@@ -105,3 +105,27 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 5cddab770339b174eb9a8706f2266e90, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+--- !u!1 &5092507606858315802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2244185731031694095, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+  m_PrefabInstance: {fileID: 6451630387933692693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6269505899227792336 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1047379118214545605, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+  m_PrefabInstance: {fileID: 6451630387933692693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7194565058158224453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092507606858315802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2f8930dde5d014bbc14f27902edba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SeeItSayItPrefab: {fileID: 2535657362945162004, guid: 6f685b60890c0884289dcc35603d03c2, type: 3}
+  PositionControl: {fileID: 6269505899227792336}
