@@ -366,6 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(0.5f, slider.Value, "Slider shouldn't have snapped to the finger point when SnapToPosition = false");
 
             yield return rightHand.MoveTo(Vector3.zero, 60);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Vector3 middlePoint = Vector3.Lerp(slider.SliderStart.position, slider.SliderEnd.position, 0.5f);
             yield return rightHand.MoveTo(middlePoint, 60);
@@ -379,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             interactionUpdated = false;
 
             yield return rightHand.MoveTo(firstPoint, 60);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return RuntimeTestUtilities.WaitForFixedUpdates(frameCount:40);
 
             Assert.IsTrue(slider.IsPokeSelected, "Slider should still be poked.");
             Assert.IsTrue(interactionUpdated, "Slider didn't invoke OnValueUpdated when we dragged the handle");
