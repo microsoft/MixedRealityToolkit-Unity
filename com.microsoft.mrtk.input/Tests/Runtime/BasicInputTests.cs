@@ -410,6 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
 
             yield return rightHand.MoveTo(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -515,6 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // First ensure that the interactor can interact with a cube normally
             yield return rightHand.MoveTo(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
