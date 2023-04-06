@@ -49,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public WeightType WeightMode => weightMode;
 
         [SerializeField]
-        [DrawIf("weightMode", WeightType.Transition)]
         [Tooltip("How long should it take to transition to a weight of 1.0 when the state becomes active?")]
         private float transitionDuration;
 
