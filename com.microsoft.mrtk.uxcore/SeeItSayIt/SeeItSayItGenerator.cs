@@ -13,26 +13,32 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void Awake()
         {
-            //var interactor = FindObjectOfType<SpeechInteractor>();
-            //var subsystem = XRSubsystemHelpers.KeywordRecognitionSystem;
-            //if (interactor != null && subsystem != null)
-            //{
-            GameObject label = Instantiate(SeeItSayItPrefab, transform, false);
+            PressableButton pressablebutton = gameObject.GetComponent<PressableButton>();
+            if (pressablebutton != null && pressablebutton.AllowSelectByVoice)
+            {
+#if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
+                GameObject label = Instantiate(SeeItSayItPrefab, transform, false);
+                RectTransform canvasTransform = label.GetComponent<RectTransform>();
 
-            if (label.GetComponent<RectTransform>())
-            {
-                label.GetComponent<RectTransform>().anchoredPosition = new Vector2(PositionControl.gameObject.GetComponent<RectTransform>().rect.width, 0.5f * PositionControl.gameObject.GetComponent<RectTransform>().rect.height);
-            }
-            else
-            {
-                label.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) -.01f, PositionControl.localPosition.z);
-            }
+                if (canvasTransform != null)
+                {
+                    RectTransform labelTransform = label.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+                    if (labelTransform != null)
+                    {
+                        labelTransform.anchoredPosition = new Vector2(canvasTransform.rect.width / 2f, canvasTransform.rect.height / 2f + (PositionControl.gameObject.GetComponent<RectTransform>().rect.height /  2f * -1) - 10f);
+                    }
+                }
+                else
+                {
+                    label.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) -.007f, PositionControl.localPosition.z);
+                }
 
-            foreach (Transform child in label.transform)
-            {
-                child.gameObject.SetActive(false);
+                foreach (Transform child in label.transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+#endif
             }
-            //}
         }
     }
 }
