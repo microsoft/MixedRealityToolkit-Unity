@@ -466,18 +466,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                     }
                     else
                     {
-                        if (ctrlSettings.Pitch.action.IsPressed() || ctrlSettings.Yaw.action.IsPressed() || ctrlSettings.Roll.action.IsPressed())
-                        {
-                            rotationDelta = Quaternion.Euler(
-                                // Unity appears to invert the controller pitch by default (move forward to look down)
-                                ctrlSettings.Pitch.action.ReadValue<float>() * (!ctrlSettings.InvertPitch ? -1 : 1),
-                                ctrlSettings.Yaw.action.ReadValue<float>(),
-                                ctrlSettings.Roll.action.ReadValue<float>());
+                        rotationDelta = Quaternion.Euler(
+                            // Unity appears to invert the controller pitch by default (move forward to look down)
+                            ctrlSettings.Pitch.action.ReadValue<float>() * (!ctrlSettings.InvertPitch ? -1 : 1),
+                            ctrlSettings.Yaw.action.ReadValue<float>(),
+                            ctrlSettings.Roll.action.ReadValue<float>());
 
-
-                            positionDelta = Vector3.zero;
-                        }
-                        
                         if (rotationDelta != NoRotation) { ctrlSettings.RotationMode = ControllerRotationMode.UserControl; }
                     }
                 }
