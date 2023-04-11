@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
+    [RequireComponent(typeof(PressableButton))]
     [AddComponentMenu("MRTK/UX/See It Say It Label")]
     public class SeeItSayItGenerator : MonoBehaviour
     {
@@ -57,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     if (labelTransform != null && canvasTransform != null && controlTransform != null)
                     {
                         labelTransform.anchoredPosition3D = new Vector3(canvasTransform.rect.width / 2f, canvasTransform.rect.height / 2f + (controlTransform.rect.height /  2f * -1) - 10f, -10f);
-
                     }
                 }
                 else

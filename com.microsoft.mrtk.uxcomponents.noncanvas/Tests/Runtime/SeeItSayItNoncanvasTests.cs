@@ -16,14 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     /// <summary>
     /// Tests for the Canvas See-It Say-It label.
     /// </summary>
-    public class SeeItSayItTests : BaseRuntimeInputTests
+    public class SeeItSayItNonCanvasTests : BaseRuntimeInputTests
     {
         //SeeItSayItLabel/SeeItSayItLabel-NonCanvas.prefab
-        private const string SeeItSayItLabelGuid = "d9e84b5a8037fd946aa503a059fee93f";
+        private const string SeeItSayItLabelGuid = "6f685b60890c0884289dcc35603d03c2";
         private static readonly string SeeItSayItLabelPath = AssetDatabase.GUIDToAssetPath(SeeItSayItLabelGuid);
 
         //Button/Prefabs/Empty Button.prefab
-        private const string EmptyButtonGuid = "b85e005d231192249b7077b40a4d4e45";
+        private const string EmptyButtonGuid = "72dfeb9ecf5ad884b87eff8bc5b49276";
         private static readonly string EmptyButtonPath = AssetDatabase.GUIDToAssetPath(EmptyButtonGuid);
 
         [UnityTest]
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return null;
             StateVisualizer labelStateVisualizerComponent = testLabel.GetComponent<StateVisualizer>();
             Assert.IsNotNull(labelStateVisualizerComponent, "State visualizer component exists on label");
-            Assert.AreEqual(testLabel.transform.childCount, 1, "Label has one child GameObject");
+            Assert.AreEqual(testLabel.transform.childCount, 2, "Label has two child GameObjects");
 
             Object.Destroy(testLabel);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             GameObject testButton = InstantiatePrefab(EmptyButtonPath);
             yield return null;
             SeeItSayItGenerator labelGeneratorComponent = testButton.GetComponent<SeeItSayItGenerator>();
-            Assert.IsNotNull(labelGeneratorComponent, "SeeItSayIt generator component exists on empty button prefab");
+            Assert.IsNotNull(labelGeneratorComponent, "SeeItSayIt generator component exists on pressable button prefab");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             GameObject testButton = InstantiatePrefab(EmptyButtonPath);
             yield return null;
 
-            GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-Canvas(Clone)");
+            GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-NonCanvas(Clone)");
             if (generatedLabel == null)
             {
                 generatedLabel = InstantiateChildPrefab(SeeItSayItLabelPath, testButton.transform);
@@ -126,6 +126,4 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return hand.Hide();
         }
     }
-
-
 }
