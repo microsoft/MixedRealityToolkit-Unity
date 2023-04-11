@@ -14,7 +14,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {
     /// <summary>
-    /// Tests for the Canvas Dialog UX component.
+    /// Tests for the Canvas See-It Say-It label.
     /// </summary>
     public class SeeItSayItTests : BaseRuntimeInputTests
     {
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         private static readonly string EmptyButtonPath = AssetDatabase.GUIDToAssetPath(EmptyButtonGuid);
 
         [UnityTest]
-        public IEnumerator SeeItSayItLabelInstantiate()
+        public IEnumerator TestSeeItSayItLabelInstantiate()
         {
             GameObject testLabel = InstantiatePrefab(SeeItSayItLabelPath);
             yield return null;
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         [UnityTest]
-        public IEnumerator EmptyButtonSeeItSayItLabel()
+        public IEnumerator TestEmptyButtonSeeItSayItLabel()
         {
             GameObject testButton = InstantiatePrefab(EmptyButtonPath);
             yield return null;
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         [UnityTest]
-        public IEnumerator IsLabelChildEnabledOnHover()
+        public IEnumerator TestLabelChildEnabledOnHover()
         {
             GameObject testButton = InstantiatePrefab(EmptyButtonPath);
             yield return null;
@@ -73,16 +73,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
             yield return HoverButtonWithHand(testButton.transform.position);
-
-            for (int i = 0; i < 12; i++)
-            {
-                yield return 0;
-            }
+            yield return RuntimeTestUtilities.WaitForFixedUpdates(frameCount: 50);
 
             Assert.IsTrue(labelChild?.activeInHierarchy == true, "The label is enabled when the button is hovered.");
 
             yield return ReleaseButtonWithHand(testButton.transform.position);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
@@ -115,9 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
-            yield return hand.MoveTo(buttonPosition);
-
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return hand.MoveTo(buttonPosition, 15);
         }
 
         /// <summary>

@@ -6,15 +6,42 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class SeeItSayItGenerator : MonoBehaviour
     {
         [SerializeField]
-        private GameObject SeeItSayItPrefab;
+        private GameObject seeItSayItPrefab;
+
+        /// <summary>
+        /// The Animator to be used as the output for the Playable graph.
+        /// </summary>
+        public GameObject SeeItSayItPrefab
+        {
+            get => seeItSayItPrefab;
+            set => seeItSayItPrefab = value;
+        }
 
         [SerializeField]
-        private Transform PositionControl;
+        private Transform positionControl;
+
+        /// <summary>
+        /// The Animator to be used as the output for the Playable graph.
+        /// </summary>
+        public Transform PositionControl
+        {
+            get => positionControl;
+            set => positionControl = value;
+        }
 
         [SerializeField]
-        private bool IsCanvas;
+        private bool isCanvas;
 
-        private void Awake()
+        /// <summary>
+        /// The Animator to be used as the output for the Playable graph.
+        /// </summary>
+        public bool IsCanvas
+        {
+            get => isCanvas;
+            set => isCanvas = value;
+        }
+
+        private void Start()
         {
             PressableButton pressablebutton = gameObject.GetComponent<PressableButton>();
             if (pressablebutton != null && pressablebutton.AllowSelectByVoice)

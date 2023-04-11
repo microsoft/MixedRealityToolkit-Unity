@@ -1238,8 +1238,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2f8930dde5d014bbc14f27902edba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SeeItSayItPrefab: {fileID: 2535657362945162004, guid: 6f685b60890c0884289dcc35603d03c2, type: 3}
-  PositionControl: {fileID: 7721390834142343731}
+  seeItSayItPrefab: {fileID: 2535657362945162004, guid: 6f685b60890c0884289dcc35603d03c2, type: 3}
+  positionControl: {fileID: 7721390834142343731}
+  isCanvas: 0
 --- !u!1 &8829903863595505675
 GameObject:
   m_ObjectHideFlags: 0

@@ -939,9 +939,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2f8930dde5d014bbc14f27902edba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SeeItSayItPrefab: {fileID: 2542652557800958703, guid: d9e84b5a8037fd946aa503a059fee93f, type: 3}
-  PositionControl: {fileID: 3705378105823492765}
-  IsCanvas: 1
+  seeItSayItPrefab: {fileID: 2542652557800958703, guid: d9e84b5a8037fd946aa503a059fee93f, type: 3}
+  positionControl: {fileID: 3705378105823492765}
+  isCanvas: 1
 --- !u!1 &9026472854072389795
 GameObject:
   m_ObjectHideFlags: 0
