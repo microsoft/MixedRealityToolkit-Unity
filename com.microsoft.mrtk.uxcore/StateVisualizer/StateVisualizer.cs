@@ -183,14 +183,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             OnValidate();
 
-            unsubscribeActions.Add(Subscribe(interactable.hoverEntered, WakeUp));
-            unsubscribeActions.Add(Subscribe(interactable.hoverExited, WakeUp));
-            unsubscribeActions.Add(Subscribe(interactable.selectEntered, WakeUp));
-            unsubscribeActions.Add(Subscribe(interactable.selectExited, WakeUp));
-            unsubscribeActions.Add(Subscribe(interactable.IsToggled.OnEntered, WakeUp));
-            unsubscribeActions.Add(Subscribe(interactable.IsToggled.OnExited, WakeUp));
-            unsubscribeActions.Add(Subscribe(interactable.OnEnabled, WakeUp));
-            unsubscribeActions.Add(Subscribe(interactable.OnDisabled, WakeUp));
+            if (interactable != null)
+            {
+                unsubscribeActions.Add(Subscribe(interactable.hoverEntered, WakeUp));
+                unsubscribeActions.Add(Subscribe(interactable.hoverExited, WakeUp));
+                unsubscribeActions.Add(Subscribe(interactable.selectEntered, WakeUp));
+                unsubscribeActions.Add(Subscribe(interactable.selectExited, WakeUp));
+                unsubscribeActions.Add(Subscribe(interactable.IsToggled.OnEntered, WakeUp));
+                unsubscribeActions.Add(Subscribe(interactable.IsToggled.OnExited, WakeUp));
+                unsubscribeActions.Add(Subscribe(interactable.OnEnabled, WakeUp));
+                unsubscribeActions.Add(Subscribe(interactable.OnDisabled, WakeUp));
+            }
 
             // Creates the graph, the mixer and binds them to the Animator.
             playableGraph = PlayableGraph.Create();
@@ -303,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // This seems counter-intuitive, but we do this because an animation may need to be
                 // kicked off when the float value of a state changes. We don't have a wakeup event
                 // for a "value changed", so we just stay awake while we are hovered (or selected).
-                if (sleepTimer <= 0 && !interactable.isSelected && !interactable.isHovered)
+                if (sleepTimer <= 0 && interactable != null && !interactable.isSelected && !interactable.isHovered)
                 {
                     // All effects are done, let's go to sleep.
                     animator.enabled = false;
@@ -378,16 +381,20 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </returns>
         protected virtual bool UpdateStateValues()
         {
-            using (StateVisualizerUpdateStateValuesMarker.Auto())
+            if (interactable != null)
             {
-                bool parameterChanged = false;
-                parameterChanged |= UpdateStateValue("Disabled", !interactable.enabled ? 1 : 0);
-                parameterChanged |= UpdateStateValue("PassiveHover", interactable.isHovered ? 1 : 0);
-                parameterChanged |= UpdateStateValue("ActiveHover", interactable.IsActiveHovered ? 1 : 0);
-                parameterChanged |= UpdateStateValue("Select", interactable.Selectedness());
-                parameterChanged |= UpdateStateValue("Toggle", interactable.IsToggled ? 1 : 0);
-                return parameterChanged;
+                using (StateVisualizerUpdateStateValuesMarker.Auto())
+                {
+                    bool parameterChanged = false;
+                    parameterChanged |= UpdateStateValue("Disabled", !interactable.enabled ? 1 : 0);
+                    parameterChanged |= UpdateStateValue("PassiveHover", interactable.isHovered ? 1 : 0);
+                    parameterChanged |= UpdateStateValue("ActiveHover", interactable.IsActiveHovered ? 1 : 0);
+                    parameterChanged |= UpdateStateValue("Select", interactable.Selectedness());
+                    parameterChanged |= UpdateStateValue("Toggle", interactable.IsToggled ? 1 : 0);
+                    return parameterChanged;
+                }
             }
+            return false;
         }
 
         /// <summary>

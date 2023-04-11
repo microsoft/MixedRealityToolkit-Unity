@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
                 else
                 {
-                    label.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) -.007f, PositionControl.localPosition.z - .01f);
+                    label.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) -.004f, PositionControl.localPosition.z - .01f);
                 }
 
                 foreach (Transform child in label.transform)
