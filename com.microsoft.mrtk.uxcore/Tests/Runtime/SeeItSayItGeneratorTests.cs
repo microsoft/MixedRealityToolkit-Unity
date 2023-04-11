@@ -10,7 +10,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {
     /// <summary>
@@ -23,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             GameObject testButton = SetUpButton(true, false);
             yield return null;
+
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
             Assert.AreEqual(testButton.transform.childCount, 1, "Generated SeeItSayIt label.");
             Transform label = testButton.transform.GetChild(0);
@@ -39,23 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         [UnityTest]
-        public IEnumerator TestGenerateWhenVoiceCommandsUnavailable()
-        {
-            GameObject testButton = SetUpButton(false, false);
-            yield return null;
-
-            Assert.AreEqual(testButton.transform.childCount, 0, "Did not generate label because voice commands unavailable.");
-
-            Object.Destroy(testButton);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
-        }
-
-        [UnityTest]
         public IEnumerator TestCanvasLabel()
         {
             GameObject testButton = SetUpButton(true, true);
             yield return null;
+
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
             Assert.AreEqual(testButton.transform.childCount, 1, "Generated SeeItSayIt label.");
             RectTransform sublabel = testButton.transform.GetChild(0).GetChild(0) as RectTransform;
@@ -64,6 +52,19 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 #else
             Assert.AreEqual(testButton.transform.childCount, 0, "Did not generate label because input or speech package is missing.");
 #endif
+
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestGenerateWhenVoiceCommandsUnavailable()
+        {
+            GameObject testButton = SetUpButton(false, false);
+            yield return null;
+
+            Assert.AreEqual(testButton.transform.childCount, 0, "Did not generate label because voice commands unavailable.");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object

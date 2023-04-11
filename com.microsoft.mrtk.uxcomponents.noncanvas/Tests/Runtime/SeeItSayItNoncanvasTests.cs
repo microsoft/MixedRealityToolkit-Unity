@@ -10,11 +10,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {
     /// <summary>
-    /// Tests for the Canvas See-It Say-It label.
+    /// Tests for the Non-Canvas See-It Say-It label.
     /// </summary>
     public class SeeItSayItNonCanvasTests : BaseRuntimeInputTests
     {
@@ -22,15 +21,16 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         private const string SeeItSayItLabelGuid = "6f685b60890c0884289dcc35603d03c2";
         private static readonly string SeeItSayItLabelPath = AssetDatabase.GUIDToAssetPath(SeeItSayItLabelGuid);
 
-        //Button/Prefabs/Empty Button.prefab
-        private const string EmptyButtonGuid = "72dfeb9ecf5ad884b87eff8bc5b49276";
-        private static readonly string EmptyButtonPath = AssetDatabase.GUIDToAssetPath(EmptyButtonGuid);
+        //Button/128x32/PressableButton_128x32mm_TextOnly.prefab
+        private const string PressableButtonGuid = "72dfeb9ecf5ad884b87eff8bc5b49276";
+        private static readonly string PressableButtonPath = AssetDatabase.GUIDToAssetPath(PressableButtonGuid);
 
         [UnityTest]
         public IEnumerator TestSeeItSayItLabelInstantiate()
         {
             GameObject testLabel = InstantiatePrefab(SeeItSayItLabelPath);
             yield return null;
+
             StateVisualizer labelStateVisualizerComponent = testLabel.GetComponent<StateVisualizer>();
             Assert.IsNotNull(labelStateVisualizerComponent, "State visualizer component exists on label");
             Assert.AreEqual(testLabel.transform.childCount, 2, "Label has two child GameObjects");
@@ -41,10 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         [UnityTest]
-        public IEnumerator TestEmptyButtonSeeItSayItLabel()
+        public IEnumerator TestPressableButtonSeeItSayItLabel()
         {
-            GameObject testButton = InstantiatePrefab(EmptyButtonPath);
+            GameObject testButton = InstantiatePrefab(PressableButtonPath);
             yield return null;
+
             SeeItSayItGenerator labelGeneratorComponent = testButton.GetComponent<SeeItSayItGenerator>();
             Assert.IsNotNull(labelGeneratorComponent, "SeeItSayIt generator component exists on pressable button prefab");
 
@@ -54,39 +55,42 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         [UnityTest]
-        public IEnumerator TestLabelChildEnabledOnHover()
+        public IEnumerator TestLabelEnabledOnHover()
         {
-            GameObject testButton = InstantiatePrefab(EmptyButtonPath);
+            GameObject testButton = InstantiatePrefab(PressableButtonPath);
             yield return null;
 
+            //Ensure that there is a label 
             GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-NonCanvas(Clone)");
             if (generatedLabel == null)
             {
                 generatedLabel = InstantiateChildPrefab(SeeItSayItLabelPath, testButton.transform);
             }
 
+            //and label child (the part that is enabled and disabled on hover)
             GameObject labelChild = null;
             if (generatedLabel.transform.childCount >= 1)
             {
                 labelChild = generatedLabel.transform.GetChild(0).gameObject;
             }
+
+            //No hover initially -- label should be disabled
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
+            //Move hand to hover the object, wait for the animation to play
             yield return HoverButtonWithHand(testButton.transform.position);
             yield return RuntimeTestUtilities.WaitForFixedUpdates(frameCount: 50);
-
             Assert.IsTrue(labelChild?.activeInHierarchy == true, "The label is enabled when the button is hovered.");
 
+            //Move hand away from the object
             yield return ReleaseButtonWithHand(testButton.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
-
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
-
 
         private GameObject InstantiatePrefab(string prefabPath)
         {
@@ -105,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         /// <summary>
-        /// Move the hand forward to press button
+        /// Move the hand forward to the button
         /// </summary>
         private IEnumerator HoverButtonWithHand(Vector3 buttonPosition)
         {
@@ -115,14 +119,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         /// <summary>
-        /// Move the hand off to the right to release the button
+        /// Move the hand away from the button
         /// </summary>
-        private IEnumerator ReleaseButtonWithHand(Vector3 buttonPosition, bool doRolloff = false)
+        private IEnumerator ReleaseButtonWithHand(Vector3 buttonPosition)
         {
-            Vector3 p3 = new Vector3(doRolloff ? 0.1f : 0.0f, 0, -0.05f);
-
             TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.MoveTo(buttonPosition + p3);
+            yield return hand.MoveTo(buttonPosition + new Vector3(0.0f, 0, -0.05f));
             yield return hand.Hide();
         }
     }
