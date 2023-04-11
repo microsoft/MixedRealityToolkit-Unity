@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 #elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
                 return await Task<byte[]>.Run(() =>
                 {
-                    if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, config.VoiceName, out IntPtr nativeData, out int length))
+                    if (!WinRTTextToSpeechPInvokes.TrySynthesizePhraseWithCustomVoice(phrase, config.VoiceName, out IntPtr nativeData, out int length))
                     {
                         Debug.LogError("Failed to synthesize the phrase");
                         return null;
