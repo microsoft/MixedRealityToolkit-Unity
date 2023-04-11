@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1203832545719423472}
   - {fileID: 1874495531747150209}
@@ -61,7 +62,7 @@ MonoBehaviour:
     - key: PassiveHover
       value:
         effects:
-        - id: 0
+        - rid: 0
         isVariable: 0
     - key: ActiveHover
       value:
@@ -74,28 +75,33 @@ MonoBehaviour:
     - key: Toggle
       value:
         effects:
-        - id: 1
-        - id: 2
+        - rid: 1
+        - rid: 2
         isVariable: 0
   interactable: {fileID: 0}
   animator: {fileID: 4920426125932797076}
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
         clip: {fileID: 7400000, guid: 8a553d183be585243a05eb67656324f7, type: 2}
         speed: 1
         playbackMode: 0
-    00000001:
+        weightMode: 0
+        transitionDuration: 0
+    - rid: 1
       type: {class: TwoWayAnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Two Way Animation
         forwardClip: {fileID: 7400000, guid: 376a441245b6d0e40b11001e28c88df9, type: 2}
         reverseClip: {fileID: 7400000, guid: 8153e68380e78334e9695c9373c9c95e, type: 2}
         speed: 3
-    00000002:
+        weightMode: 0
+        transitionDuration: 0
+    - rid: 2
       type: {class: GraphicTintEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: GraphicTint
@@ -107,7 +113,7 @@ MonoBehaviour:
         blendMode: 0
 --- !u!95 &4920426125932797076
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,10 +126,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1755546517986312659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +181,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3514389556853228399}
   m_RootOrder: 0
@@ -260,6 +269,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1874495531747150209}
   m_RootOrder: 0
@@ -332,6 +342,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7721594729358357529}
   m_Father: {fileID: 3514389556853228399}
@@ -373,3 +384,4 @@ MonoBehaviour:
   radius: 2.5
   thickness: 1
   wedges: 8
+  calculateSmoothEdges: 1

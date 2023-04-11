@@ -69,11 +69,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
---- !u!1 &7048514885650584845 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3670630427193237415, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
-  m_PrefabInstance: {fileID: 5990324192171936426}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3915192362586130041 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7310580969362328787, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
@@ -85,9 +80,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50cdab0cd5a0916419324bb54314773d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!82 &8114860545119125154 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 2574984449296839688, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+--- !u!1 &7048514885650584845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3670630427193237415, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
   m_PrefabInstance: {fileID: 5990324192171936426}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &628273543
@@ -116,6 +111,7 @@ MonoBehaviour:
   handlesActive: 0
   enabledHandles: 3
   rotateAnchor: 1
+  scaleAnchor: 0
   scaleBehavior: 0
   smoothingActive: 1
   rotateLerpTime: 0.0001
@@ -153,3 +149,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!82 &8114860545119125154 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2574984449296839688, guid: 94c09e98ca44a744b876d69345fd1074, type: 3}
+  m_PrefabInstance: {fileID: 5990324192171936426}
+  m_PrefabAsset: {fileID: 0}

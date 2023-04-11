@@ -66,19 +66,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2535657362945162004, guid: 6f685b60890c0884289dcc35603d03c2, type: 3}
   m_PrefabInstance: {fileID: 6084094306107857464}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7645619871504748984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8601731693327032620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a625f0072fb1b4041a9a0843be1b3b7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  control: {fileID: 8696063039455789386}
 --- !u!114 &5893396558118192752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +79,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bindingProfile: {fileID: 11400000, guid: c2554c7933796464c965ae0c4acf9561, type: 2}
+--- !u!114 &7645619871504748984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8601731693327032620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a625f0072fb1b4041a9a0843be1b3b7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  control: {fileID: 8696063039455789386}
 --- !u!1001 &8513939099306787215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -186,6 +186,14 @@ PrefabInstance:
     - target: {fileID: 6397459067767180594, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7535415752403634025, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+      propertyPath: managedReferences[4].clip
+      value: 
+      objectReference: {fileID: 7400000, guid: 1cc7ad771a463724296eca2883548249, type: 2}
+    - target: {fileID: 7535415752403634025, guid: cd0f0697f0939504389ec612388f609a, type: 3}
+      propertyPath: managedReferences[4].playbackMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7535415752403634025, guid: cd0f0697f0939504389ec612388f609a, type: 3}
       propertyPath: stateContainers.entries.Array.data[0].value.effects.Array.size

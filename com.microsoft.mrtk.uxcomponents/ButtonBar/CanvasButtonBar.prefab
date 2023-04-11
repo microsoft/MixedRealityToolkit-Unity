@@ -30,6 +30,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8864547319186590330}
   - {fileID: 8864547321217110511}
@@ -74,6 +75,7 @@ MonoBehaviour:
   radius: 13
   thickness: 2
   wedges: 8
+  calculateSmoothEdges: 1
 --- !u!114 &233999318278807519
 MonoBehaviour:
   m_ObjectHideFlags: 0
