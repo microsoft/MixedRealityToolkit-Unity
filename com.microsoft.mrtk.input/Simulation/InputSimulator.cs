@@ -449,51 +449,60 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 bool isControlledByMouse = ctrlSettings.MoveHorizontal.action.RaisedByMouse() ||
                                            ctrlSettings.MoveVertical.action.RaisedByMouse();
 
-                Vector3 positionDelta;
-                if (isControlledByMouse && !ctrlSettings.ToggleState) // If tracking is latched, we do not want to 1:1 track the mouse location.
-                {
-                    /* TODO: this needs work, also depth moves the hands towards the vanishing point
-                    Vector3 screenDepth = CameraRelativeToScreen(new Vector3(
-                        simCtrl.RelativePosition.z,
-                        0f, ctrlSettings.DefaultPosition.z));
-                    */
+                bool isRotating = ctrlSettings.Pitch.action.IsPressed() ||
+                                  ctrlSettings.Yaw.action.IsPressed() ||
+                                  ctrlSettings.Roll.action.IsPressed();
 
-                    Vector3 mouseScreenPos = new Vector3(
-                        Mouse.current.position.ReadValue().x,
-                        Mouse.current.position.ReadValue().y,
-                        ctrlSettings.DefaultPosition.z);
-                    // TODO: related to the above - screenDepth.x + ctrlSettings.MoveDepth.action.ReadValue<float>());
-
-                    Vector3 inputPosition = ScreenToCameraRelative(mouseScreenPos);
-
-                    positionDelta = inputPosition - simCtrl.CameraRelativePose.position;
-                    positionDelta.z = ctrlSettings.MoveDepth.action.ReadValue<float>();
-                }
-                else
-                {
-                    positionDelta = new Vector3(
-                        ctrlSettings.MoveHorizontal.action.ReadValue<float>(),
-                        ctrlSettings.MoveVertical.action.ReadValue<float>(),
-                        ctrlSettings.MoveDepth.action.ReadValue<float>());
-                }
-
+                Vector3 positionDelta = Vector3.zero;
                 Quaternion rotationDelta = NoRotation;
 
-                // Update the rotation mode
-                if (ctrlSettings.FaceTheCamera.action.WasPerformedThisFrame())
+                if (isRotating)
                 {
-                    ctrlSettings.RotationMode = (ctrlSettings.RotationMode == ControllerRotationMode.FaceCamera) ?
-                        ControllerRotationMode.CameraAligned : ControllerRotationMode.FaceCamera;
+                    // Don't calculate the positionDelta if the controller is rotating, Update the rotation mode
+                    if (ctrlSettings.FaceTheCamera.action.WasPerformedThisFrame())
+                    {
+                        ctrlSettings.RotationMode = (ctrlSettings.RotationMode == ControllerRotationMode.FaceCamera) ?
+                            ControllerRotationMode.CameraAligned : ControllerRotationMode.FaceCamera;
+                    }
+                    else
+                    {
+                        rotationDelta = Quaternion.Euler(
+                            // Unity appears to invert the controller pitch by default (move forward to look down)
+                            ctrlSettings.Pitch.action.ReadValue<float>() * (!ctrlSettings.InvertPitch ? -1 : 1),
+                            ctrlSettings.Yaw.action.ReadValue<float>(),
+                            ctrlSettings.Roll.action.ReadValue<float>());
+
+                        if (rotationDelta != NoRotation) { ctrlSettings.RotationMode = ControllerRotationMode.UserControl; }
+                    }
                 }
                 else
                 {
-                    rotationDelta = Quaternion.Euler(
-                        // Unity appears to invert the controller pitch by default (move forward to look down)
-                        ctrlSettings.Pitch.action.ReadValue<float>() * (!ctrlSettings.InvertPitch ? -1 : 1),
-                        ctrlSettings.Yaw.action.ReadValue<float>(),
-                        ctrlSettings.Roll.action.ReadValue<float>());
+                    if (isControlledByMouse && !ctrlSettings.ToggleState) // If tracking is latched, we do not want to 1:1 track the mouse location.
+                    {
+                        /* TODO: this needs work, also depth moves the hands towards the vanishing point
+                        Vector3 screenDepth = CameraRelativeToScreen(new Vector3(
+                            simCtrl.RelativePosition.z,
+                            0f, ctrlSettings.DefaultPosition.z));
+                        */
 
-                    if (rotationDelta != NoRotation) { ctrlSettings.RotationMode = ControllerRotationMode.UserControl; }
+                        Vector3 mouseScreenPos = new Vector3(
+                            Mouse.current.position.ReadValue().x,
+                            Mouse.current.position.ReadValue().y,
+                            ctrlSettings.DefaultPosition.z);
+                        // TODO: related to the above - screenDepth.x + ctrlSettings.MoveDepth.action.ReadValue<float>());
+
+                        Vector3 inputPosition = ScreenToCameraRelative(mouseScreenPos);
+
+                        positionDelta = inputPosition - simCtrl.CameraRelativePose.position;
+                        positionDelta.z = ctrlSettings.MoveDepth.action.ReadValue<float>();
+                    }
+                    else
+                    {
+                        positionDelta = new Vector3(
+                            ctrlSettings.MoveHorizontal.action.ReadValue<float>(),
+                            ctrlSettings.MoveVertical.action.ReadValue<float>(),
+                            ctrlSettings.MoveDepth.action.ReadValue<float>());
+                    }
                 }
 
                 ControllerControls controls = GetControllerControls(handedness);
