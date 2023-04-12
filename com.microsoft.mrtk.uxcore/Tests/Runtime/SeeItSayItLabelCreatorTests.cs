@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
         private GameObject SetUpButton(bool allowSelectByVoice, bool isCanvas)
         {
-            // Create a pressable button to add SeeItSayItGenerator script to
+            // Create a PressableButton to add SeeItSayItLabelCreator script to
             GameObject testButton = new GameObject("Button");
             PressableButton pressablebutton = testButton.AddComponent<PressableButton>();
             pressablebutton.AllowSelectByVoice = allowSelectByVoice;
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             subLabel.AddComponent<TextMeshProUGUI>();
             float offset = -.004f;
 
-            // For Canvas, set RectTransform
+            // For Canvas buttons, set RectTransform
             if (isCanvas)
             {
                 RectTransform buttonRectTransform = testButton.AddComponent<RectTransform>();
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 offset = -10f;
             }
 
-            // Set up SeeItSayItGenerator script
+            // Set up SeeItSayItCreatorLabel script
             SeeItSayItLabelCreator generator = testButton.AddComponent<SeeItSayItLabelCreator>();
             generator.PositionControl = testButton.transform;
             generator.IsCanvas = isCanvas;

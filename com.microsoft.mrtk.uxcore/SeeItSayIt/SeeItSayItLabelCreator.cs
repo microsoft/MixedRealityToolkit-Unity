@@ -77,23 +77,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void Start()
         {
-            // check if voice commands are enabled for this button
+            // Check if voice commands are enabled for this button
             PressableButton pressablebutton = gameObject.GetComponent<PressableButton>();
             if (pressablebutton != null && pressablebutton.AllowSelectByVoice)
             {
-                // check if input and speech packages are present
+                // Check if input and speech packages are present
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
                 GameObject label = Instantiate(SeeItSayItPrefab, transform, false);
 
                 if (IsCanvas && label.transform.childCount > 0)
                 {
-                    // the control RectTransform used to position the label's height
+                    // The control RectTransform used to position the label's height
                     RectTransform controlTransform = PositionControl.gameObject.GetComponent<RectTransform>();
 
-                    // the parent RectTransform used to center the label
+                    // The parent RectTransform used to center the label
                     RectTransform canvasTransform = label.GetComponent<RectTransform>();
 
-                    // the child RectTransform, sets the final position of the label 
+                    // The child RectTransform used to set the final position of the label 
                     RectTransform labelTransform = label.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
 
                     if (labelTransform != null && canvasTransform != null && controlTransform != null)
@@ -106,13 +106,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     label.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) + bottomOffset, PositionControl.localPosition.z + forwardOffset);
                 }
 
-                // children must be disabled so that they are not initially visible 
+                // Children must be disabled so that they are not initially visible 
                 foreach (Transform child in label.transform)
                 {
                     child.gameObject.SetActive(false);
                 }
 
-                // set the label text to reflect the speech recognition keyword
+                // Set the label text to reflect the speech recognition keyword
                 string keyword = pressablebutton.SpeechRecognitionKeyword;
                 if (keyword != null)
                 {
