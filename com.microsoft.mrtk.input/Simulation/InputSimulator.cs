@@ -449,31 +449,29 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 bool isControlledByMouse = ctrlSettings.MoveHorizontal.action.RaisedByMouse() ||
                                            ctrlSettings.MoveVertical.action.RaisedByMouse();
 
-                bool isRotating = ctrlSettings.Pitch.action.IsPressed() ||
+                bool isControllingRotation = ctrlSettings.Pitch.action.IsPressed() ||
                                   ctrlSettings.Yaw.action.IsPressed() ||
                                   ctrlSettings.Roll.action.IsPressed();
 
                 Vector3 positionDelta = Vector3.zero;
                 Quaternion rotationDelta = NoRotation;
 
-                if (isRotating)
+                // Update the rotation mode if the user wants to face the camera
+                if (ctrlSettings.FaceTheCamera.action.WasPerformedThisFrame())
                 {
-                    // Don't calculate the positionDelta if the controller is rotating, Update the rotation mode
-                    if (ctrlSettings.FaceTheCamera.action.WasPerformedThisFrame())
-                    {
-                        ctrlSettings.RotationMode = (ctrlSettings.RotationMode == ControllerRotationMode.FaceCamera) ?
-                            ControllerRotationMode.CameraAligned : ControllerRotationMode.FaceCamera;
-                    }
-                    else
-                    {
-                        rotationDelta = Quaternion.Euler(
-                            // Unity appears to invert the controller pitch by default (move forward to look down)
-                            ctrlSettings.Pitch.action.ReadValue<float>() * (!ctrlSettings.InvertPitch ? -1 : 1),
-                            ctrlSettings.Yaw.action.ReadValue<float>(),
-                            ctrlSettings.Roll.action.ReadValue<float>());
+                    ctrlSettings.RotationMode = (ctrlSettings.RotationMode == ControllerRotationMode.FaceCamera) ?
+                        ControllerRotationMode.CameraAligned : ControllerRotationMode.FaceCamera;
+                }
+                else if (isControllingRotation)
+                {
+                    // Ignore position delta if the user is trying to manually rotate the hand
+                    rotationDelta = Quaternion.Euler(
+                        // Unity appears to invert the controller pitch by default (move forward to look down)
+                        ctrlSettings.Pitch.action.ReadValue<float>() * (!ctrlSettings.InvertPitch ? -1 : 1),
+                        ctrlSettings.Yaw.action.ReadValue<float>(),
+                        ctrlSettings.Roll.action.ReadValue<float>());
 
-                        if (rotationDelta != NoRotation) { ctrlSettings.RotationMode = ControllerRotationMode.UserControl; }
-                    }
+                    if (rotationDelta != NoRotation) { ctrlSettings.RotationMode = ControllerRotationMode.UserControl; }
                 }
                 else
                 {

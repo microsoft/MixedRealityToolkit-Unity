@@ -143,7 +143,7 @@
       }
     },
     "com.microsoft.mrtk.tts.windows": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mrtk.tts.windows-1.0.0.tgz",
+      "version": "file:../../../ExternalDependencies/com.microsoft.mrtk.tts.windows-1.0.1.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {}
@@ -188,7 +188,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0-development",
-        "com.microsoft.mrtk.tts.windows": "1.0.0"
+        "com.microsoft.mrtk.tts.windows": "1.0.1"
       }
     },
     "com.microsoft.spatialaudio.spatializer.unity": {
