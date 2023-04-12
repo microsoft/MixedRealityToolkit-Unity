@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Subsystems;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         Author = "Microsoft",
         ProviderType = typeof(WindowsTextToSpeechSubsystemProvider),
         SubsystemTypeOverride = typeof(WindowsTextToSpeechSubsystem),
-        ConfigType = typeof(BaseSubsystemConfig))]
+        ConfigType = typeof(WindowsTextToSpeechSubsystemConfig))]
     public class WindowsTextToSpeechSubsystem : TextToSpeechSubsystem
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -41,8 +42,22 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         [Preserve]
         class WindowsTextToSpeechSubsystemProvider : Provider
         {
+            private WindowsTextToSpeechSubsystemConfig config;
+#if WINDOWS_UWP
+            private SpeechSynthesizer synthesizer;
+            private VoiceInformation voiceInfo;
+#endif
+
             public WindowsTextToSpeechSubsystemProvider() : base()
             { }
+
+            public override void Start()
+            {
+                config = XRSubsystemHelpers.GetConfiguration<WindowsTextToSpeechSubsystemConfig, WindowsTextToSpeechSubsystem>();
+#if WINDOWS_UWP
+                synthesizer = new SpeechSynthesizer();
+#endif
+            }
 
             public override void Destroy()
             {
@@ -114,9 +129,30 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 }
 
 #if WINDOWS_UWP
-                // By specifying to use the default synthesizer voice, we will speak in
-                // the voice selected, in Settings, by the user.
-                synthesizer.Voice = SpeechSynthesizer.DefaultVoice;
+                // Change voice?
+                if (config.Voice != TextToSpeechVoice.Default)
+                {
+                    // See if it's never been found or is changing
+                    if ((voiceInfo == null) || (!voiceInfo.DisplayName.Contains(config.VoiceName)))
+                    {
+                        // Search for voice info
+                        voiceInfo = SpeechSynthesizer.AllVoices.Where(v => v.DisplayName.Contains(config.VoiceName)).FirstOrDefault();
+
+                        // If found, select
+                        if (voiceInfo != null)
+                        {
+                            synthesizer.Voice = voiceInfo;
+                        }
+                        else
+                        {
+                            Debug.LogErrorFormat("TTS voice {0} could not be found.", config.VoiceName);
+                        }
+                    }
+                }
+                else
+                {
+                    synthesizer.Voice = SpeechSynthesizer.DefaultVoice;
+                }
 
                 SpeechSynthesisStream synthStream = await synthesizer.SynthesizeTextToStreamAsync(phrase);
 
@@ -140,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 #elif (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
                 return await Task<byte[]>.Run(() =>
                 {
-                    if (!WinRTTextToSpeechPInvokes.TrySynthesizePhrase(phrase, out IntPtr nativeData, out int length))
+                    if (!WinRTTextToSpeechPInvokes.TrySynthesizePhraseWithCustomVoice(phrase, config.VoiceName, out IntPtr nativeData, out int length))
                     {
                         Debug.LogError("Failed to synthesize the phrase");
                         return null;
@@ -162,10 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 return await Task.FromResult<byte[]>(null);
 #endif
             }
-
-#if WINDOWS_UWP
-            private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-#endif
 
             #endregion TextToSpeechSubsystem implementation
         }

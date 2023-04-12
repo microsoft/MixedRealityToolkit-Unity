@@ -16,6 +16,6 @@
   "unity": "2020.3",
   "dependencies": {
     "com.microsoft.mrtk.core": "3.0.0-development",
-    "com.microsoft.mrtk.tts.windows": "1.0.0"
+    "com.microsoft.mrtk.tts.windows": "1.0.1"
   }
 }
