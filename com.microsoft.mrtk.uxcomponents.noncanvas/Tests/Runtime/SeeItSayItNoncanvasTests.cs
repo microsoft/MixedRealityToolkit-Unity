@@ -17,11 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     /// </summary>
     public class SeeItSayItNonCanvasTests : BaseRuntimeInputTests
     {
-        //SeeItSayItLabel/SeeItSayItLabel-NonCanvas.prefab
+        // SeeItSayItLabel/SeeItSayItLabel-NonCanvas.prefab
         private const string SeeItSayItLabelGuid = "6f685b60890c0884289dcc35603d03c2";
         private static readonly string SeeItSayItLabelPath = AssetDatabase.GUIDToAssetPath(SeeItSayItLabelGuid);
 
-        //Button/128x32/PressableButton_128x32mm_TextOnly.prefab
+        // Button/128x32/PressableButton_128x32mm_TextOnly.prefab
         private const string PressableButtonGuid = "72dfeb9ecf5ad884b87eff8bc5b49276";
         private static readonly string PressableButtonPath = AssetDatabase.GUIDToAssetPath(PressableButtonGuid);
 
@@ -60,29 +60,29 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             GameObject testButton = InstantiatePrefab(PressableButtonPath);
             yield return null;
 
-            //Ensure that there is a label 
+            // Ensure that there is a label 
             GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-NonCanvas(Clone)");
             if (generatedLabel == null)
             {
                 generatedLabel = InstantiateChildPrefab(SeeItSayItLabelPath, testButton.transform);
             }
 
-            //and label child (the part that is enabled and disabled on hover)
+            // and label child (the part that is enabled and disabled on hover)
             GameObject labelChild = null;
             if (generatedLabel.transform.childCount >= 1)
             {
                 labelChild = generatedLabel.transform.GetChild(0).gameObject;
             }
 
-            //No hover initially -- label should be disabled
+            // No hover initially -- label should be disabled
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
-            //Move hand to hover the object, wait for the animation to play
+            // Move hand to hover the object, wait for the animation to play
             yield return HoverButtonWithHand(testButton.transform.position);
             yield return RuntimeTestUtilities.WaitForFixedUpdates(frameCount: 50);
             Assert.IsTrue(labelChild?.activeInHierarchy == true, "The label is enabled when the button is hovered.");
 
-            //Move hand away from the object
+            // Move hand away from the object
             yield return ReleaseButtonWithHand(testButton.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
