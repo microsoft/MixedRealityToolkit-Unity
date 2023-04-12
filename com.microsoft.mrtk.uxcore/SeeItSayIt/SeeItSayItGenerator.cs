@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("The Transform that the label will be positioned off of.")]
+        [Tooltip("The Transform that the label will be positioned off of. If this is a Canvas button, this should be a RectTransform.")]
         private Transform positionControl;
 
         /// <summary>
@@ -46,6 +46,32 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             get => isCanvas;
             set => isCanvas = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The offset to bring the label forward by.")]
+        private float forwardOffset;
+
+        /// <summary>
+        /// The offset to bring the button forward by.
+        /// </summary>
+        public float ForwardOffset
+        {
+            get => forwardOffset;
+            set => forwardOffset = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The offset at the bottom of the button.")]
+        private float bottomOffset;
+
+        /// <summary>
+        /// The offset at the bottom of the button.
+        /// </summary>
+        public float BottomOffset
+        {
+            get => bottomOffset;
+            set => bottomOffset = value;
         }
 
         private void Start()
@@ -71,12 +97,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                     if (labelTransform != null && canvasTransform != null && controlTransform != null)
                     {
-                        labelTransform.anchoredPosition3D = new Vector3(canvasTransform.rect.width / 2f, canvasTransform.rect.height / 2f + (controlTransform.rect.height /  2f * -1) - 10f, -10f);
+                        labelTransform.anchoredPosition3D = new Vector3(canvasTransform.rect.width / 2f, canvasTransform.rect.height / 2f + (controlTransform.rect.height /  2f * -1) + bottomOffset, forwardOffset);
                     }
                 }
                 else
                 {
-                    label.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) -.004f, PositionControl.localPosition.z - .01f);
+                    label.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) + bottomOffset, PositionControl.localPosition.z + forwardOffset);
                 }
 
                 //children must be disabled so that they are not initially visible 

@@ -942,6 +942,8 @@ MonoBehaviour:
   seeItSayItPrefab: {fileID: 2542652557800958703, guid: d9e84b5a8037fd946aa503a059fee93f, type: 3}
   positionControl: {fileID: 3705378105823492765}
   isCanvas: 1
+  forwardOffset: -10
+  bottomOffset: -10
 --- !u!1 &9026472854072389795
 GameObject:
   m_ObjectHideFlags: 0
