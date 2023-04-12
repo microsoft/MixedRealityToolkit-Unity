@@ -23,7 +23,7 @@
       "hash": "7747a48d5e994db800b4c60a0a8b95a5ae2ce39f"
     },
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.mixedreality.openxr-1.7.0.tgz",
+      "version": "file:MixedReality/com.microsoft.mixedreality.openxr-1.8.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
@@ -246,7 +246,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.5.0",
+      "version": "1.5.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
