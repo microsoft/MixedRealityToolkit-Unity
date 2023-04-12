@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UX
@@ -109,6 +110,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 foreach (Transform child in label.transform)
                 {
                     child.gameObject.SetActive(false);
+                }
+
+                //set the label text to reflect the speech recognition keyword
+                string keyword = pressablebutton.SpeechRecognitionKeyword;
+                if (keyword != null)
+                {
+                    TMP_Text labelText = label.GetComponentInChildren<TMP_Text>(true);
+                    if (labelText != null)
+                    {
+                        labelText.text = $"Say '{keyword}'";
+                    }
                 }
 #endif
             }

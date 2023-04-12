@@ -9,6 +9,7 @@
         "Microsoft.MixedReality.Toolkit.Input.Runtime.Tests",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
+        "Unity.TextMeshPro",
         "Unity.XR.Interaction.Toolkit"
     ],
     "includePlatforms": [],
