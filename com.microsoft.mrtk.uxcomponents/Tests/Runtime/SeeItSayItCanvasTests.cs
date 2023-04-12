@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             GameObject testButton = InstantiatePrefab(EmptyButtonPath);
             yield return null;
 
-            SeeItSayItLabelCreator labelGeneratorComponent = testButton.GetComponent<SeeItSayItLabelCreator>();
+            SeeItSayItLabelEnabler labelGeneratorComponent = testButton.GetComponent<SeeItSayItLabelEnabler>();
             Assert.IsNotNull(labelGeneratorComponent, "SeeItSayIt generator component exists on empty button prefab");
 
             Object.Destroy(testButton);

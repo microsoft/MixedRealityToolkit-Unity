@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     /// <summary>
     /// Tests for the See-It Say-It label generator
     /// </summary>
-    public class SeeItSayItLabelCreatorTests : BaseRuntimeInputTests
+    public class SeeItSayItLabelEnablerTests : BaseRuntimeInputTests
     {
         [UnityTest]
         public IEnumerator TestNonCanvasLabel()
@@ -98,29 +98,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             GameObject subLabel = new GameObject("SubLabel");
             subLabel.transform.SetParent(label.transform, false);
             subLabel.AddComponent<TextMeshProUGUI>();
-            float offset = -.004f;
-
-            // For Canvas buttons, set RectTransform
-            if (isCanvas)
-            {
-                RectTransform buttonRectTransform = testButton.AddComponent<RectTransform>();
-                buttonRectTransform.offsetMin = new Vector2(-30, -30);
-                buttonRectTransform.offsetMax = new Vector2(30, 30);
-                RectTransform labelRectTransform = label.AddComponent<RectTransform>();
-                labelRectTransform.offsetMin = new Vector2(-10, -10);
-                labelRectTransform.offsetMax = new Vector2(10, 10);
-                subLabel.AddComponent<RectTransform>();
-
-                offset = -10f;
-            }
 
             // Set up SeeItSayItCreatorLabel script
-            SeeItSayItLabelCreator generator = testButton.AddComponent<SeeItSayItLabelCreator>();
-            generator.PositionControl = testButton.transform;
-            generator.IsCanvas = isCanvas;
-            generator.SeeItSayItPrefab = label;
-            generator.BottomOffset = offset;
-            generator.ForwardOffset = offset;
+            SeeItSayItLabelEnabler generator = testButton.AddComponent<SeeItSayItLabelEnabler>();
+            generator.SeeItSayItLabel = label;
 
             return testButton;
         }
