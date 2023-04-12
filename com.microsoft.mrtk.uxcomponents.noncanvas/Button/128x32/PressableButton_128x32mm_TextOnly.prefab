@@ -671,7 +671,7 @@ GameObject:
   - component: {fileID: 8453753501827628428}
   - component: {fileID: 7073700517041118267}
   - component: {fileID: 3766830824125364437}
-  - component: {fileID: 8266510297840610473}
+  - component: {fileID: 783397273378390403}
   m_Layer: 0
   m_Name: PressableButton_128x32mm_TextOnly
   m_TagString: Untagged
@@ -1226,7 +1226,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   movableAxes: 0
   onMoveDelta: 0.01
---- !u!114 &8266510297840610473
+--- !u!114 &783397273378390403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1235,7 +1235,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8829903863008004601}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b2f8930dde5d014bbc14f27902edba3, type: 3}
+  m_Script: {fileID: 11500000, guid: 887413f36d993624185e96e7a5c71622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   seeItSayItPrefab: {fileID: 2535657362945162004, guid: 6f685b60890c0884289dcc35603d03c2, type: 3}

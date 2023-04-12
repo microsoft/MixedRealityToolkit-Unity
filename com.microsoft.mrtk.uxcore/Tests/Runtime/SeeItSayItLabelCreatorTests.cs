@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     /// <summary>
     /// Tests for the See-It Say-It label generator
     /// </summary>
-    public class SeeItSayItGeneratorTests : BaseRuntimeInputTests
+    public class SeeItSayItLabelCreatorTests : BaseRuntimeInputTests
     {
         [UnityTest]
         public IEnumerator TestNonCanvasLabel()
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             }
 
             //Set up SeeItSayItGenerator script
-            SeeItSayItGenerator generator = testButton.AddComponent<SeeItSayItGenerator>();
+            SeeItSayItLabelCreator generator = testButton.AddComponent<SeeItSayItLabelCreator>();
             generator.PositionControl = testButton.transform;
             generator.IsCanvas = isCanvas;
             generator.SeeItSayItPrefab = label;

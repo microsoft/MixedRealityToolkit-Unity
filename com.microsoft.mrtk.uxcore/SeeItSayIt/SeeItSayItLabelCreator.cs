@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 {
     [RequireComponent(typeof(PressableButton))]
     [AddComponentMenu("MRTK/UX/See It Say It Label")]
-    public class SeeItSayItGenerator : MonoBehaviour
+    public class SeeItSayItLabelCreator : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The prefab for the see-it say-it label to be generated.")]
