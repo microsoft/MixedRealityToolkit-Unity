@@ -32,6 +32,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // Check if input and speech packages are present
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
                 SeeItSayItLabel.SetActive(true);
+
+                // Children must be disabled so that they are not initially visible 
+                foreach (Transform child in SeeItSayItLabel.transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+
+                // Set the label text to reflect the speech recognition keyword
+                string keyword = pressablebutton.SpeechRecognitionKeyword;
+                if (keyword != null)
+                {
+                    TMP_Text labelText = SeeItSayItLabel.GetComponentInChildren<TMP_Text>(true);
+                    if (labelText != null)
+                    {
+                        labelText.text = $"Say '{keyword}'";
+                    }
+                }
 #endif
             }
         }

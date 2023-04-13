@@ -41,13 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         [UnityTest]
-        public IEnumerator TestPressableButtonSeeItSayItLabel()
+        public IEnumerator TestPressableButtonSeeItSayItLabelEnabler()
         {
             GameObject testButton = InstantiatePrefab(PressableButtonPath);
             yield return null;
 
-            SeeItSayItLabelEnabler labelGeneratorComponent = testButton.GetComponent<SeeItSayItLabelEnabler>();
-            Assert.IsNotNull(labelGeneratorComponent, "SeeItSayIt generator component exists on pressable button prefab");
+            SeeItSayItLabelEnabler labelEnablerComponent = testButton.GetComponent<SeeItSayItLabelEnabler>();
+            Assert.IsNotNull(labelEnablerComponent, "SeeItSayIt generator component exists on pressable button prefab");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return null;
 
             // Ensure that there is a label 
-            GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-NonCanvas(Clone)");
+            GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-NonCanvas");
             if (generatedLabel == null)
             {
                 generatedLabel = InstantiateChildPrefab(SeeItSayItLabelPath, testButton.transform);
@@ -72,6 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             if (generatedLabel.transform.childCount >= 1)
             {
                 labelChild = generatedLabel.transform.GetChild(0).gameObject;
+                labelChild.SetActive(false);
             }
 
             // No hover initially -- label should be disabled
