@@ -176,10 +176,10 @@ MonoBehaviour:
   m_TrackingStateInput:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Tracking State Input
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: df35a240-9d4e-49c3-9324-a02895bb482c
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -229,7 +229,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2351505566903569412}
-  - component: {fileID: 353802728361921669}
   - component: {fileID: 3712792914886690938}
   m_Layer: 0
   m_Name: Camera Offset
@@ -257,19 +256,6 @@ Transform:
   m_Father: {fileID: 2351505567455720332}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &353802728361921669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2351505566903569413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 520bb47c46cf8624fafb307b7d1b862a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Camera: {fileID: 2351505566771328527}
 --- !u!114 &3712792914886690938
 MonoBehaviour:
   m_ObjectHideFlags: 0
