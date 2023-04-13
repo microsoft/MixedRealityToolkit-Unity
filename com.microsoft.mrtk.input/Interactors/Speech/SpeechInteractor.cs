@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     foreach (var interactable in interactableList)
                     {
-                        if (!interactable.VoiceRequiresFocus || interactable.IsGazeHovered)
+                        if (!interactable.VoiceRequiresFocus || interactable.isHovered)
                         {
                             selectedInteractables.Insert(0, (interactable, VoiceCommandTriggerTime));
                             interactionManager.SelectEnter(this, interactable as IXRSelectInteractable);
