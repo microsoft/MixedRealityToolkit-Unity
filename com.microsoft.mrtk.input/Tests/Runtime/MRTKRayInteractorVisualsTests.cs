@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check that our components are enabled
             var lineVisual = CachedLookup.RightHandController.GetComponentInChildren<MRTKLineVisual>();
@@ -56,7 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Quaternion hoverRotation = Quaternion.identity;
 
             yield return hand.MoveTo(hoverPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.RotateTo(hoverRotation);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check that both are active
             Assert.IsTrue(lineVisual.GetComponentInChildren<LineRenderer>().enabled);
@@ -73,7 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Make sure they are still disabled after moving the hand back to the inital position
             yield return hand.MoveTo(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.RotateTo(Quaternion.identity);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check that both are disabled
             Assert.IsFalse(lineVisual.GetComponentInChildren<LineRenderer>().enabled);

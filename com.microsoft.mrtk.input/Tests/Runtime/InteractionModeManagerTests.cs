@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             XRBaseController rightHandController = CachedLookup.RightHandController;
             Assert.IsTrue(rightHandController != null, "No controllers found for right hand.");
@@ -66,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             XRBaseController rightHandController = CachedLookup.RightHandController;
             Assert.IsTrue(rightHandController != null, "No controllers found for right hand.");
@@ -86,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // move the hand far away and validate that we are in the default mode
             yield return rightHand.SetHandshape(HandshapeTypes.HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.MoveTo(cube.transform.position + new Vector3(3.0f,0,0));
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -104,20 +107,24 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             cube.transform.position = InputTestUtilities.InFrontOfUser(1.5f);
             cube.transform.localScale = Vector3.one * 0.2f;
             cube.AddComponent<StatefulInteractable>();
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             XRBaseController rightHandController = CachedLookup.RightHandController;
             Assert.IsTrue(rightHandController != null, "No controllers found for right hand.");
 
             // Grab stabilization == ray stabilization
             InputTestUtilities.SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.Grab);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Moving the hand to a position where it's far ray is hovering over the cube
             yield return rightHand.AimAt(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             InteractionMode farRayMode = rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnHover;
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.AreEqual(farRayMode, rightHandController.GetComponentInChildren<MRTKRayInteractor>().GetComponent<InteractionDetector>().ModeOnDetection);
             ValidateInteractionModeActive(rightHandController, farRayMode);
 
@@ -126,22 +133,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             InteractionMode nearMode = rightHandController.GetComponentInChildren<ProximityDetector>().ModeOnDetection;
+            yield return RuntimeTestUtilities.WaitForUpdates();
             ValidateInteractionModeActive(rightHandController, nearMode);
             Assert.IsTrue(nearMode.priority > farRayMode.priority);
 
             // Finally move in for a grab
             yield return rightHand.MoveTo(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeTypes.HandshapeId.Grab);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             InteractionMode grabMode = rightHandController.GetComponentInChildren<GrabInteractor>().GetComponent<InteractionDetector>().ModeOnSelect;
             Assert.AreEqual(grabMode, rightHandController.GetComponentInChildren<GrabInteractor>().GetComponent<InteractionDetector>().ModeOnDetection);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             ValidateInteractionModeActive(rightHandController, grabMode);
             Assert.IsTrue(grabMode.priority > nearMode.priority);
 
             // Run it all in reverse and make sure the interaction stack is in order
             // Now move the hand in range for the proximity detector
             yield return rightHand.SetHandshape(HandshapeTypes.HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.MoveTo(cube.transform.position - Vector3.forward * 0.09f);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -149,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Moving the hand to a position where it's far ray is hovering over the cube
             yield return rightHand.MoveTo(cube.transform.position + new Vector3(0.02f, -0.1f, -0.8f));
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:60);
 
             ValidateInteractionModeActive(rightHandController, farRayMode);
         }

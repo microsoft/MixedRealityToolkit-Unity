@@ -40,7 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // Show the hand and confirm the interactable is being hovered but not selected yet
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.AimAt(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(interactable.IsRayHovered,
                           "StatefulInteractable did not get RayHovered.");
