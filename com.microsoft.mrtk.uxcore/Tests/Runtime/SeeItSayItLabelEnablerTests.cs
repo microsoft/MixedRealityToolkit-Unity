@@ -21,18 +21,18 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestEnableAndSetLabel()
         {
-            GameObject testButton = SetUpButton(true);
+            GameObject testButton = SetUpButton(true, Control.None);
             yield return null;
 
-#if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
             Transform label = testButton.transform.GetChild(0);
+#if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
             Transform sublabel = label.transform.GetChild(0);
             Assert.IsTrue(label.gameObject.activeSelf, "Label is enabled");
             Assert.IsTrue(!sublabel.gameObject.activeSelf, "Child objects are disabled");
             TMP_Text text = label.gameObject.GetComponentInChildren<TMP_Text>(true);
             Assert.AreEqual(text.text, "Say 'test'", "Label text was set to voice command keyword.");
 #else
-            Assert.AreEqual(testButton.transform.childCount, 0, "Did not generate label because input or speech package is missing.");
+            Assert.IsTrue(!label.gameObject.activeSelf, "Did not enable label because voice commands unavailable.");
 #endif
 
             Object.Destroy(testButton);
@@ -43,17 +43,55 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestVoiceCommandsUnavailable()
         {
-            GameObject testButton = SetUpButton(false);
+            GameObject testButton = SetUpButton(false, Control.None);
             yield return null;
 
-            Assert.AreEqual(testButton.transform.childCount, 0, "Did not generate label because voice commands unavailable.");
+            Transform label = testButton.transform.GetChild(0);
+            Assert.IsTrue(!label.gameObject.activeSelf, "Did not enable label because voice commands unavailable.");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
 
-        private GameObject SetUpButton(bool allowSelectByVoice)
+        [UnityTest]
+        public IEnumerator TestPositionCanvasLabel()
+        {
+            GameObject testButton = SetUpButton(true, Control.Canvas);
+            yield return null;
+
+            Transform label = testButton.transform.GetChild(0);
+#if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
+            RectTransform sublabel = label.transform.GetChild(0) as RectTransform;
+            Assert.AreEqual(sublabel.anchoredPosition3D, new Vector3(10, -30, -10), "Label is positioned correctly");
+#else
+            Assert.IsTrue(!label.gameObject.activeSelf, "Did not enable label because voice commands unavailable.");
+#endif
+
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestPositionNonCanvasLabel()
+        {
+            GameObject testButton = SetUpButton(true, Control.NonCanvas);
+            yield return null;
+
+            Transform label = testButton.transform.GetChild(0);
+#if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
+            Assert.AreEqual(label.transform.localPosition, new Vector3(10f, -.504f, -.004f), "Label is positioned correctly");
+#else
+            Assert.IsTrue(!label.gameObject.activeSelf, "Did not enable label because voice commands unavailable.");
+#endif
+
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        private GameObject SetUpButton(bool allowSelectByVoice, Control control)
         {
             // Create a PressableButton to add SeeItSayItLabelCreator script to
             GameObject testButton = new GameObject("Button");
@@ -64,15 +102,46 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             // Create a label GameObject to generate 
             GameObject label = new GameObject("Label");
             label.transform.SetParent(testButton.transform, false);
+            label.SetActive(false);
             GameObject subLabel = new GameObject("SubLabel");
             subLabel.transform.SetParent(label.transform, false);
             subLabel.AddComponent<TextMeshProUGUI>();
+            subLabel.SetActive(true);
+
+            // Set positions as necessary to test Canvas and NonCanvas positioning
+            Transform positionControl = null;
+            switch (control)
+            {
+                case Control.Canvas:
+                    RectTransform buttonRectTransform = testButton.AddComponent<RectTransform>();
+                    buttonRectTransform.offsetMin = new Vector2(-30, -30);
+                    buttonRectTransform.offsetMax = new Vector2(30, 30);
+                    RectTransform labelRectTransform = label.AddComponent<RectTransform>();
+                    labelRectTransform.offsetMin = new Vector2(-10, -10);
+                    labelRectTransform.offsetMax = new Vector2(10, 10);
+                    positionControl = buttonRectTransform;
+                    break;
+                case Control.NonCanvas:
+                    testButton.transform.localPosition = new Vector3(10f, 10f, 0f);
+                    positionControl = testButton.transform;
+                    break;
+                default:
+                    break;
+            }
 
             // Set up SeeItSayItCreatorLabel script
             SeeItSayItLabelEnabler enabler = testButton.AddComponent<SeeItSayItLabelEnabler>();
             enabler.SeeItSayItLabel = label;
+            enabler.PositionControl = positionControl;
 
             return testButton;
+        }
+
+        private enum Control
+        {
+            None,
+            Canvas,
+            NonCanvas
         }
     }
 }
