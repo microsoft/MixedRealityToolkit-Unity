@@ -11,11 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class SeeItSayItLabelEnabler : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("The prefab for the see-it say-it label to be enabled.")]
+        [Tooltip("The GameObject for the see-it say-it label to be enabled.")]
         private GameObject seeItSayItLabel;
 
         /// <summary>
-        /// The prefab for the see-it say-it label to be enabled.
+        /// The GameObject for the see-it say-it label to be enabled.
         /// </summary>
         public GameObject SeeItSayItLabel
         {
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private Transform positionControl;
 
         /// <summary>
-        /// The Transform that the label will be dynamically positioned off of. Empty by default. If positioning aCanvas label, this must be a RectTransform.
+        /// The Transform that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a RectTransform.
         /// </summary>
         public Transform PositionControl
         {
