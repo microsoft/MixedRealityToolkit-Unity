@@ -9,6 +9,7 @@
         "Microsoft.MixedReality.Toolkit.Input.Runtime.Tests",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
+        "Unity.TextMeshPro",
         "Unity.XR.Interaction.Toolkit"
     ],
     "includePlatforms": [],
@@ -22,6 +23,17 @@
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mrtk.input",
+            "expression": "",
+            "define": "MRTK_INPUT_PRESENT"
+        },
+        {
+            "name": "com.microsoft.mrtk.windowsspeech",
+            "expression": "",
+            "define": "MRTK_SPEECH_PRESENT"
+        }
+    ],
     "noEngineReferences": false
 }
