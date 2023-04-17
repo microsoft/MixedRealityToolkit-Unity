@@ -312,6 +312,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.0325
       objectReference: {fileID: 0}
+    - target: {fileID: 652446627579709247, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 910060754178903725, guid: dc1ef529359ebb34f8756aa4c6ca9201, type: 3}
       propertyPath: m_text
       value: Say "Select"
@@ -557,6 +561,10 @@ PrefabInstance:
     - target: {fileID: 4230258990695015354, guid: 1cbb80c45b809f843a32a1760daae189, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230258990695015356, guid: 1cbb80c45b809f843a32a1760daae189, type: 3}
+      propertyPath: Spatialize
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4230258990695015357, guid: 1cbb80c45b809f843a32a1760daae189, type: 3}
       propertyPath: m_Pivot.x
