@@ -80,12 +80,18 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
             // Move hand to hover the object, wait for the animation to play
-            yield return HoverButtonWithHand(testButton.transform.position);
-            yield return RuntimeTestUtilities.WaitForFixedUpdates(frameCount: 50);
-            Assert.IsTrue(labelChild?.activeInHierarchy == true, "The label is enabled when the button is hovered.");
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.one);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return hand.MoveTo(testButton.transform.position);
+            // Label show animation takes 1.0 seconds.  Wait for it to finish.
+            yield return new WaitForSecondsRealtime(1.25f);
+            Assert.IsTrue(labelChild?.activeInHierarchy == true, $"The label is enabled when the button is hovered.");
 
             // Move hand away from the object
-            yield return ReleaseButtonWithHand(testButton.transform.position);
+            yield return hand.MoveTo(testButton.transform.position + new Vector3(0.5f, 0, -0.05f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return hand.Hide();
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
@@ -110,28 +116,5 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             return testGO;
         }
 
-        /// <summary>
-        /// Move the hand forward to the button
-        /// </summary>
-        private IEnumerator HoverButtonWithHand(Vector3 buttonPosition)
-        {
-            TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.Show(Vector3.zero);
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            yield return hand.MoveTo(buttonPosition, 15);
-            yield return RuntimeTestUtilities.WaitForUpdates();
-        }
-
-        /// <summary>
-        /// Move the hand away from the button
-        /// </summary>
-        private IEnumerator ReleaseButtonWithHand(Vector3 buttonPosition)
-        {
-            TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.MoveTo(buttonPosition + new Vector3(0.0f, 0, -0.05f));
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            yield return hand.Hide();
-            yield return RuntimeTestUtilities.WaitForUpdates();
-        }
     }
 }
