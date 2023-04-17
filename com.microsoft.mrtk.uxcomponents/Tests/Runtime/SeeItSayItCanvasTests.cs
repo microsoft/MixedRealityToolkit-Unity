@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         public IEnumerator TestLabelEnabledOnHover()
         {
             GameObject testButton = InstantiatePrefab(EmptyButtonPath);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Ensure that there is a label 
             GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-Canvas");
@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 generatedLabel = InstantiateChildPrefab(SeeItSayItLabelPath, testButton.transform);
             }
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
             // and label child (the part that is enabled and disabled on hover)
             GameObject labelChild = null;
             if (generatedLabel.transform.childCount >= 1)
@@ -75,14 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 labelChild.SetActive(false);
             }
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
             // No hover initially -- label should be disabled
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
-
             // Move hand to hover the object, wait for the animation to play
             yield return HoverButtonWithHand(testButton.transform.position);
             yield return RuntimeTestUtilities.WaitForFixedUpdates(frameCount: 50);
             Assert.IsTrue(labelChild?.activeInHierarchy == true, "The label is enabled when the button is hovered.");
-
             // Move hand away from the object
             yield return ReleaseButtonWithHand(testButton.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         private GameObject InstantiatePrefab(string prefabPath)
@@ -116,7 +116,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.MoveTo(buttonPosition, 15);
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         /// <summary>
@@ -126,7 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.MoveTo(buttonPosition + new Vector3(0.0f, 0, -0.05f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
     }
 }

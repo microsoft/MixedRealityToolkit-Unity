@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         public IEnumerator TestLabelEnabledOnHover()
         {
             GameObject testButton = InstantiatePrefab(PressableButtonPath);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Ensure that there is a label 
             GameObject generatedLabel = GameObject.Find("SeeItSayItLabel-NonCanvas");
@@ -75,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 labelChild.SetActive(false);
             }
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
             // No hover initially -- label should be disabled
             Assert.IsTrue(labelChild?.activeInHierarchy == false, "The label is disabled when the button is not hovered.");
 
@@ -116,7 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.MoveTo(buttonPosition, 15);
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         /// <summary>
@@ -126,7 +129,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.MoveTo(buttonPosition + new Vector3(0.0f, 0, -0.05f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
     }
 }
