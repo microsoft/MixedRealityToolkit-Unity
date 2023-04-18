@@ -324,6 +324,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 2783974331088143781, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3872825480149920711, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
       propertyPath: currentIconName
       value: Icon 117
@@ -747,6 +751,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 8376646494505211228, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -138,6 +138,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 2061463795, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2061463797, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -164,6 +168,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 4654093214276311293, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4654093214401527389, guid: 687f7402ad33bb547bea07a0411b2aac, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.0159
@@ -438,6 +446,13 @@ MonoBehaviour:
   m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -470,6 +485,7 @@ MonoBehaviour:
       m_Calls: []
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -590,6 +606,7 @@ MonoBehaviour:
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
   <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
   <IsToggled>k__BackingField:
     active: 0
     onEntered:
@@ -610,7 +627,11 @@ MonoBehaviour:
   hostTransform: {fileID: 1203713056}
   allowedManipulations: 7
   allowedInteractionTypes: -2147483641
-  useForcesForNearManipulation: 0
+  applyTorque: 1
+  springForceSoftness: 0.1
+  springTorqueSoftness: 0.1
+  springDamping: 1
+  springForceLimit: 100
   rotationAnchorNear: 1
   rotationAnchorFar: 1
   releaseBehavior: 3
@@ -1099,6 +1120,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 2082148069247382453, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3045578032311879198, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
       propertyPath: Spatialize
       value: 1
@@ -1107,6 +1132,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 3045578032311879198, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6134130586559970896, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
       propertyPath: Spatialize
       value: 1
@@ -1115,6 +1144,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 6134130586559970896, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7326570055845349072, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
       propertyPath: Spatialize
       value: 1
@@ -1123,6 +1156,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 7326570055845349072, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7372669237086358564, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
       propertyPath: m_Name
       value: HandMenu
@@ -1179,5 +1216,9 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 7618871619398064040, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bfb4497dda968b469f9c0c4a22374d1, type: 3}
