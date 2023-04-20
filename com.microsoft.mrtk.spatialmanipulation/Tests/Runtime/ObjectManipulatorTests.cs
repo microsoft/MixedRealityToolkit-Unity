@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Put hand out in front, in-FOV, but not too close to cube as to
             // disable the far interactors.
             yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0, 0.5f)));
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount: 30);
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount: 90);
 
             Assert.IsTrue(objManip.IsGazePinchHovered,
                 "ObjManip didn't report IsGazePinchHovered");

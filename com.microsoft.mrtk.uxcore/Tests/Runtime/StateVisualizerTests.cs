@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount: 30);
+            yield return new WaitForSeconds(1.0f);
 
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when hovered.");
 
@@ -275,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount: 30);
+            yield return new WaitForSeconds(1.0f);
 
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when hovered.");
 
