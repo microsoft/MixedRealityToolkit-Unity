@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:60);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(objManip.IsPokeHovered, "ObjManip shouldn't get IsPokeHovered");
             Assert.IsTrue(objManip.IsGrabHovered, "ObjManip didn't report IsGrabHovered");

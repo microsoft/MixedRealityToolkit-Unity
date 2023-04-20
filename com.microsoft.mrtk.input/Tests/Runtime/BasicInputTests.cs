@@ -490,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Move hand far away.
             yield return rightHand.MoveTo(new Vector3(2, 2, 2));
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:60);
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:240);
 
             Assert.IsFalse(AnyProximityDetectorsTriggered(), "Prox detectors should no longer be triggered.");
 
