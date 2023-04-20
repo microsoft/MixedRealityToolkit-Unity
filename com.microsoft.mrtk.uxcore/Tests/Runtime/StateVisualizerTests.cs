@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:60);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(cubeToToggle.activeSelf, "The toggle effect should have turned on the cube on active hover.");
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -295,6 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(interactable.isSelected && interactable.IsGrabSelected, "Interactable wasn't selected");
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when selected.");

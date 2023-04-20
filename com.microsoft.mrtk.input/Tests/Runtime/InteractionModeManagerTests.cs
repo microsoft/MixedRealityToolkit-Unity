@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Moving the hand to a position where it's far ray is hovering over the cube
             yield return rightHand.MoveTo(cube.transform.position + new Vector3(0.02f, -0.1f, -0.8f));
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:60);
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:120);
 
             ValidateInteractionModeActive(rightHandController, farRayMode);
         }

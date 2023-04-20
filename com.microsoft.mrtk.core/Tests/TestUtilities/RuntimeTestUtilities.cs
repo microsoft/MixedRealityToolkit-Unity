@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         /// We set it fairly conservatively to ensure that after waiting
         /// all input events have been sent.
         /// </summary>
-        public static IEnumerator WaitForUpdates(int frameCount = 60)
+        public static IEnumerator WaitForUpdates(int frameCount = 90)
         {
             for (int i = 0; i < frameCount; i++)
             {
