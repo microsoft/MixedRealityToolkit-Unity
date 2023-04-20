@@ -76,6 +76,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8716276222904833065, guid: a69170382c049914c9866f5914e0adee, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716276222904833065, guid: a69170382c049914c9866f5914e0adee, type: 3}
       propertyPath: isStatefulToggled.onExited.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}

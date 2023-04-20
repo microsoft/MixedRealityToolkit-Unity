@@ -140,12 +140,32 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
+      propertyPath: managedReferences[1393819269385945103]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.SetTargetsActiveEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
+      propertyPath: managedReferences[1393819269385945103].name
+      value: Set Targets Active/Inactive
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
+      propertyPath: managedReferences[1393819269385945103].invert
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
+      propertyPath: managedReferences[1393819269385945103].targets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
+      propertyPath: managedReferences[1393819269385945103].targets.Array.data[0]
+      value: 
+      objectReference: {fileID: 7051363911311458445}
+    - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0]
-      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.SetTargetsActiveEffect
+      value: 1393819269385945103
       objectReference: {fileID: 0}
     - target: {fileID: 8259050266689090269, guid: ebf6a177e3199274b8bd12a0c8157f29, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0].clip

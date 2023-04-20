@@ -30,6 +30,7 @@ Transform:
   m_LocalRotation: {x: 0.48831657, y: 0, z: 0, w: 0.8726666}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1963561309176567214}
   - {fileID: 1963561308925566221}
@@ -68,8 +69,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -100,6 +109,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -209,18 +221,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -228,13 +241,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -331,6 +344,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.000000014901161, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.049434587, y: 0.049434587, z: 0.011897914}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1963561307345040812}
   m_RootOrder: 1
@@ -354,6 +368,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -410,6 +425,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.000000014901161, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.017477516}
   m_LocalScale: {x: 0.049434587, y: 0.049434587, z: 0.011897914}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1963561309274324387}
   m_Father: {fileID: 1963561307345040812}
@@ -443,6 +459,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0.55}
   m_LocalScale: {x: 0.80000013, y: 0.8000001, z: 1.1072}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1963561309176567214}
   m_RootOrder: 0
@@ -466,6 +483,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

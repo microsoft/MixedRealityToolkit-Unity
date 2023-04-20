@@ -2,15 +2,21 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MRTK_Backplate_Divider_White_1x16
   m_Shader: {fileID: 4800000, guid: c331f6c43a2ef0945864cb668f2653c9, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_REPLACES_ALBEDO _DISABLE_ALBEDO_MAP
-    _IGNORE_Z_SCALE _ROUND_CORNERS
+  m_ValidKeywords:
+  - _ALPHABLEND_ON
+  - _BORDER_LIGHT_REPLACES_ALBEDO
+  - _DISABLE_ALBEDO_MAP
+  - _ROUND_CORNERS
+  - _USE_WORLD_SCALE
+  m_InvalidKeywords:
+  - _IGNORE_Z_SCALE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -73,12 +79,17 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AlbedoAlphaMode: 0
     - _AlbedoAlphaSmoothness: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
     - _BlendedClippingWidth: 1
+    - _BlurBorderIntensity: 0
+    - _BlurMode: 0
+    - _BlurTextureIntensity: 1
+    - _BorderColorMode: 0
     - _BorderLight: 0
     - _BorderLightOpaque: 0
     - _BorderLightOpaqueAlpha: 1
@@ -103,6 +114,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
     - _DstBlend: 1
+    - _EdgeSmoothingMode: 0
     - _EdgeSmoothingValue: 0
     - _EnableChannelMap: 0
     - _EnableEmission: 0
@@ -113,10 +125,12 @@ Material:
     - _EnableNormalMap: 0
     - _EnableProximityLightColorOverride: 0
     - _EnableSSAA: 0
+    - _EnableStencil: 0
     - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
+    - _Fade: 1
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
     - _FadeMinValue: 0
@@ -124,6 +138,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GradientAngle: 180
+    - _GradientMode: 0
     - _HoverLight: 0
     - _HoverLightOpaque: 0
     - _IgnoreZScale: 1
@@ -155,6 +171,7 @@ Material:
     - _RoundCornerMargin: 0
     - _RoundCornerRadius: 0.5
     - _RoundCorners: 1
+    - _RoundCornersHideInterior: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0
@@ -163,9 +180,12 @@ Material:
     - _Stencil: 0
     - _StencilComparison: 0
     - _StencilOperation: 0
+    - _StencilReadMask: 255
     - _StencilReference: 0
+    - _StencilWriteMask: 255
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
+    - _UseWorldScale: 1
     - _VertexColors: 0
     - _VertexExtrusion: 0
     - _VertexExtrusionSmoothNormals: 0
@@ -175,6 +195,8 @@ Material:
     - _ZTest: 4
     - _ZWrite: 0
     m_Colors:
+    - _BlurBackgroundRect: {r: 0, g: 0, b: 1, a: 1}
+    - _BorderColor: {r: 1, g: 1, b: 1, a: 0}
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
@@ -184,6 +206,13 @@ Material:
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _GradientAlpha: {r: 1, g: 1, b: 1, a: 1}
+    - _GradientAlphaTime: {r: 0, g: 0, b: 0, a: 0}
+    - _GradientColor0: {r: 0.631373, g: 0.631373, b: 0.631373, a: 0}
+    - _GradientColor1: {r: 1, g: 0.690196, b: 0.976471, a: 0.25}
+    - _GradientColor2: {r: 0, g: 0.32999998, b: 0.88, a: 0.5}
+    - _GradientColor3: {r: 0, g: 0.32999998, b: 0.88, a: 1}
+    - _GradientColor4: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 0.566}

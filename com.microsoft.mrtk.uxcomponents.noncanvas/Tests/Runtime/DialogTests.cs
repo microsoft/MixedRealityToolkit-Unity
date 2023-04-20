@@ -95,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated.Runtime.Tests
         {
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Testing near interactions
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.OK, true);
@@ -180,7 +181,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated.Runtime.Tests
                 if (button.ButtonContext.ButtonType == dialogButtonType)
                 {
                     yield return hand.MoveTo(button.transform.position - button.transform.forward * 0.05f);
+                    yield return RuntimeTestUtilities.WaitForUpdates();
                     yield return hand.MoveTo(button.transform.position + button.transform.forward * 0.05f);
+                    yield return RuntimeTestUtilities.WaitForUpdates();
                     yield return WaitForDialogClosedAndCheckResult(dialogButtonType);
                     break;
                 }

@@ -45,41 +45,51 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsFalse(cubeToToggle.activeSelf, "Nothing should have happened on hover.");
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(cubeToToggle.activeSelf, "The toggle effect should have turned on the cube on selection.");
             yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsFalse(cubeToToggle.activeSelf, "The toggle effect should have turned off the cube on deselection.");
 
             // Detach the effect from the state.
             sv.RemoveEffect("Select", toggleEffect);
             yield return rightHand.MoveTo(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsFalse(cubeToToggle.activeSelf, "Nothing should have happened on hover.");
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsFalse(cubeToToggle.activeSelf, "The toggle effect should have been removed from the StateVisualizer!");
             yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Attach the same toggle effect to the ActiveHover state instead.
             sv.AddEffect("ActiveHover", toggleEffect);
             yield return rightHand.MoveTo(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(cubeToToggle.activeSelf, "The toggle effect should have turned on the cube on active hover.");
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(cubeToToggle.activeSelf, "The cube should have stayed toggled.");
             yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Detach the effect and attach it to the Toggle state instead.
             sv.RemoveEffect("ActiveHover", toggleEffect);
             sv.AddEffect("Toggle", toggleEffect);
             yield return rightHand.MoveTo(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Have to turn on toggle mode on the interactable, or else toggles won't toggle :)
             interactable.ToggleMode = StatefulInteractable.ToggleType.Toggle;
@@ -88,12 +98,16 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsFalse(cubeToToggle.activeSelf, "Nothing should have happened on hover.");
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsFalse(cubeToToggle.activeSelf, "Nothing should have happened on selection.");
             yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(cubeToToggle.activeSelf, "The toggle effect should have turned on the cube on IsToggled = true.");
 
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsFalse(cubeToToggle.activeSelf, "Cube should be toggled off again.");
         }
 
@@ -145,6 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -152,9 +167,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(cube.transform.localScale.z, 0.1f, 0.00001f, "Nothing should have happened on hover.");
             Assert.AreEqual(customEffect.LastSetParameter, 0.0f, 0.00001f, "The custom effect should have received the parameter value of 0.0f.");
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.AreEqual(cube.transform.localScale.z, 0.2f, 0.00001f, "The custom effect should have made the cube grow in size on selection.");
             Assert.AreEqual(customEffect.LastSetParameter, 1.0f, 0.00001f, "The custom effect should have received the parameter value of 1.0f.");
             yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.AreEqual(cube.transform.localScale.z, 0.1f, 0.00001f, "The custom effect should have returned the cube to its original size on deselection.");
             Assert.AreEqual(customEffect.LastSetParameter, 0.0f, 0.00001f, "The custom effect should have received the parameter value of 0.0f.");
         }
@@ -187,9 +204,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return new WaitForSeconds(1.0f);
 
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when hovered.");
 
@@ -254,9 +272,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return new WaitForSeconds(1.0f);
 
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when hovered.");
 
@@ -276,6 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return rightHand.MoveTo(cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(interactable.isSelected && interactable.IsGrabSelected, "Interactable wasn't selected");
             Assert.IsTrue(sv.Animator.enabled, "The animator should have woken up when selected.");

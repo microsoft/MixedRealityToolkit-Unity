@@ -247,6 +247,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8864547319186590333, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8864547319186590335, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
       propertyPath: m_Size.x
       value: 32
@@ -262,6 +266,10 @@ PrefabInstance:
     - target: {fileID: 8864547319737434737, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
       propertyPath: m_Size.y
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864547319737434739, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8864547319737434740, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
       propertyPath: m_AnchorMax.y
@@ -311,6 +319,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8864547320873569820, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8864547320873569822, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
       propertyPath: m_Size.x
       value: 32
@@ -318,6 +330,10 @@ PrefabInstance:
     - target: {fileID: 8864547320873569822, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
       propertyPath: m_Size.y
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864547321217110504, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8864547321217110506, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
       propertyPath: m_Size.x
@@ -353,25 +369,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
---- !u!1 &7433980890388701983 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6264478733034656630, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
-  m_PrefabInstance: {fileID: 3586316710529740905}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5386334695286782484 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8864547319186590333, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
-  m_PrefabInstance: {fileID: 3586316710529740905}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c32e8a7644144f8419bb881ad588ed0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5386334697014256001 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8864547321217110504, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
   m_PrefabInstance: {fileID: 3586316710529740905}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -402,6 +402,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32e8a7644144f8419bb881ad588ed0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5386334697014256001 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8864547321217110504, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
+  m_PrefabInstance: {fileID: 3586316710529740905}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e8a7644144f8419bb881ad588ed0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &7433980890388701983 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6264478733034656630, guid: 61b1d2477609bc34297ebc4689fffbe8, type: 3}
+  m_PrefabInstance: {fileID: 3586316710529740905}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2863438162968678084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,6 +435,7 @@ MonoBehaviour:
   - {fileID: 5386334697014256001}
   - {fileID: 5386334695803548186}
   - {fileID: 5386334696804417141}
+  allowSwitchOff: 0
   currentIndex: 0
   onToggleSelected:
     m_PersistentCalls:

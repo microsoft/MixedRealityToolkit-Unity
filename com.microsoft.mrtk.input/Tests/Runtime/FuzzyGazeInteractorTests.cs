@@ -103,12 +103,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             fuzzyGazeInteractor.precision = 0;
             fuzzyGazeInteractor.performAdditionalRaycast = false;
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
             // Instantiate one foregound cubes and one background cube for testing
             GameObject foregroundCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             foregroundCube.AddComponent<StatefulInteractable>();
             foregroundCube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.241f, 0, 2));
             foregroundCube.transform.localScale = new Vector3(0.4f, 0.1f, 0.2f);
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
             GameObject backgroundCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             backgroundCube.AddComponent<StatefulInteractable>();
             backgroundCube.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(-0.4f, 0, 2.4f));

@@ -30,6 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.17659213, y: -0.10541058, z: -0.20253398}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3519631994300842074}
   m_Father: {fileID: 0}
@@ -54,8 +55,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -86,6 +95,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -194,18 +206,19 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   disabledInteractorTypes: []
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -213,15 +226,16 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
+  maintainGlobalSize: 1
   handleType: 2
 --- !u!114 &2749020933670473828
 MonoBehaviour:
@@ -240,7 +254,7 @@ MonoBehaviour:
     - key: Disabled
       value:
         effects:
-        - id: 0
+        - rid: 0
         isVariable: 0
     - key: PassiveHover
       value:
@@ -249,12 +263,12 @@ MonoBehaviour:
     - key: ActiveHover
       value:
         effects:
-        - id: 1
+        - rid: 1
         isVariable: 0
     - key: Select
       value:
         effects:
-        - id: 2
+        - rid: 2
         isVariable: 0
     - key: Toggle
       value:
@@ -263,8 +277,9 @@ MonoBehaviour:
   interactable: {fileID: 2474321119437392825}
   animator: {fileID: 9209883187814165077}
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
@@ -273,7 +288,7 @@ MonoBehaviour:
         playbackMode: 0
         weightMode: 1
         transitionDuration: 0.1
-    00000001:
+    - rid: 1
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
@@ -282,7 +297,7 @@ MonoBehaviour:
         playbackMode: 0
         weightMode: 1
         transitionDuration: 0.1
-    00000002:
+    - rid: 2
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
@@ -293,7 +308,7 @@ MonoBehaviour:
         transitionDuration: 0
 --- !u!95 &9209883187814165077
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -306,10 +321,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8541032172729434893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,14 +443,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e082556ff5bdc6847a7caad9e5520a1d, type: 3}
---- !u!1 &4293036597384223456 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e082556ff5bdc6847a7caad9e5520a1d, type: 3}
-  m_PrefabInstance: {fileID: 3986397998448617393}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3519631994300842074 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e082556ff5bdc6847a7caad9e5520a1d, type: 3}
+  m_PrefabInstance: {fileID: 3986397998448617393}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4293036597384223456 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e082556ff5bdc6847a7caad9e5520a1d, type: 3}
   m_PrefabInstance: {fileID: 3986397998448617393}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &6639467426277195561

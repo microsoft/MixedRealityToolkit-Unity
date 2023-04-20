@@ -42,8 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             solverHandler.LeftInteractor = leftInteractor;
             solverHandler.RightInteractor = rightInteractor;
 
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
@@ -57,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // Hide the right hand and make the left hand active at a new position
             yield return rightHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
             var secondHandPosition = new Vector3(-0.05f, -0.05f, 1f);
             yield return leftHand.Show(secondHandPosition);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -66,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // Repeat the test, but hide the left hand this time
             yield return leftHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Vector3 finalPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, 0.05f, 0.5f));
             yield return rightHand.Show(finalPosition);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -88,6 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var solverHandler = testObject.AddComponent<SolverHandler>();
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
             // Set it to track interactors
             solverHandler.TrackedTargetType = TrackedObjectType.Interactor;
             var lookup = GameObject.FindObjectOfType<ControllerLookup>();
@@ -99,8 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Set preferred tracked handedness to right
             solverHandler.PreferredTrackedHandedness = Handedness.Right;
 
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
@@ -108,6 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             var leftHandPos = new Vector3(0.05f, 0.05f, 1f);
 
             yield return rightHand.Show(rightHandPos);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return leftHand.Show(leftHandPos);
             yield return RuntimeTestUtilities.WaitForUpdates();
 

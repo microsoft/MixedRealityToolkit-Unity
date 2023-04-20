@@ -1,7 +1,7 @@
 {
   "name": "com.microsoft.mrtk.data",
   "version": "1.0.0-development",
-  "description": "*** Please note ***\nThe MRTK3 data binding and theming features contained within this package are experimental. They are not recommended for use in production applications and may be changed or removed.\n",
+  "description": "*** Please note ***\nThe MRTK3 data binding and theming features contained within this package are experimental. They are not recommended for use in production applications and may be changed or removed.",
   "displayName": "MRTK3 Data Binding and Theming (Experimental)",
   "msftFeatureCategory": "Experimental",
   "author": "Microsoft",
@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
   },
-  "unity": "2020.3",
+  "unity": "2021.3",
   "dependencies": {
     "com.microsoft.mrtk.core": "3.0.0-development",
     "com.unity.nuget.newtonsoft-json": "2.0.2",

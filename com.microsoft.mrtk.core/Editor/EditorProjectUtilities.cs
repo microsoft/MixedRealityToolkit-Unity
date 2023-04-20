@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </remarks>
         public static void CheckMinimumEditorVersion()
         {
-#if !UNITY_2020_3_OR_NEWER
+#if !UNITY_2021_3_OR_NEWER
             DisplayIncorrectEditorVersionDialog();
 #endif
         }
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (!EditorUtility.DisplayDialog(
                 "Mixed Reality Toolkit",
-                "The Mixed Reality Toolkit requires Unity 2020.3 or newer.\n\nUsing an older version of Unity may result in compile-time errors or incorrect behavior.",
+                "The Mixed Reality Toolkit requires Unity 2021.3 or newer.\n\nUsing an older version of Unity may result in compile-time errors or incorrect behavior.",
                 "Continue", "Close Editor"))
             {
                 EditorApplication.Exit(0);
