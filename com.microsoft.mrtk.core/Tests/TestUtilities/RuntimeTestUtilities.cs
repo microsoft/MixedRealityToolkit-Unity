@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         {
             for (int i = 0; i < frameCount; i++)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
         }
 
