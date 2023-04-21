@@ -27,6 +27,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7818897570117504404}
   - {fileID: 4487134853895481750}
@@ -95,6 +96,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9062819528647497186}
   m_RootOrder: 2
@@ -187,8 +189,8 @@ MonoBehaviour:
   _ZTest: 4
   _ZWrite: 0
   _MainTex: {fileID: 0}
-  _ClipRect: {x: 0, y: 0, z: 0}
-  _ClipRectRadii: {x: 0, y: 0, z: 0}
+  _ClipRect: {x: 0, y: 0, z: 0, w: 0}
+  _ClipRectRadii: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3741865281567285212
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +220,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.000012874603}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1268478249972355035}
   m_RootOrder: 0
@@ -306,6 +309,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.000012874603}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1268478249972355035}
   m_RootOrder: 1
@@ -389,6 +393,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3741865281567285213}
   - {fileID: 9099108670589840320}
@@ -446,6 +451,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9062819528647497186}
   m_RootOrder: 1
@@ -538,8 +544,8 @@ MonoBehaviour:
   _ZTest: 4
   _ZWrite: 0
   _MainTex: {fileID: 0}
-  _ClipRect: {x: 0, y: 0, z: 0}
-  _ClipRectRadii: {x: 0, y: 0, z: 0}
+  _ClipRect: {x: 0, y: 0, z: 0, w: 0}
+  _ClipRectRadii: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7632410789015663020
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +577,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7632410789924292269}
   m_Father: {fileID: 9062819528647497186}
@@ -650,7 +657,7 @@ MonoBehaviour:
   _Edge_Color_: {r: 0.53, g: 0.53, b: 0.53, a: 1}
   _Fade_Out_: 1
   _Blob_Enable_: 1
-  _Blob_Position_: {x: 0.5, y: 0, z: 0.2}
+  _Blob_Position_: {x: 0.5, y: 0, z: 0.2, w: 0}
   _Blob_Intensity_: 1.522
   _Blob_Near_Size_: 0.025
   _Blob_Far_Size_: 0.05
@@ -662,7 +669,7 @@ MonoBehaviour:
   _Blob_Fade_: 1
   _Blob_Pulse_Max_Size_: 0.05
   _Blob_Enable_2_: 1
-  _Blob_Position_2_: {x: 10, y: 10.1, z: -0.6}
+  _Blob_Position_2_: {x: 10, y: 10.1, z: -0.6, w: 0}
   _Blob_Near_Size_2_: 0.025
   _Blob_Inner_Fade_2_: 0.1
   _Blob_Pulse_2_: 0
@@ -691,8 +698,8 @@ MonoBehaviour:
   _ZTest: 4
   _ZWrite: 0
   _MainTex: {fileID: 0}
-  _ClipRect: {x: 0, y: 0, z: 0}
-  _ClipRectRadii: {x: 0, y: 0, z: 0}
+  _ClipRect: {x: 0, y: 0, z: 0, w: 0}
+  _ClipRectRadii: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &2079748658257237023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -732,6 +739,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2377984702296620284}
   m_Father: {fileID: 7632410789015663027}
@@ -770,6 +778,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.000012874603}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2377984702296620284}
   m_RootOrder: 2
@@ -904,6 +913,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.000012874603}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2377984702296620284}
   m_RootOrder: 1
@@ -1038,6 +1048,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.000012874603}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2377984702296620284}
   m_RootOrder: 0
@@ -1179,6 +1190,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.000012874603}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1268478249972355035}
   - {fileID: 7632410788654664888}
@@ -1211,8 +1223,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -1267,6 +1287,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -1376,18 +1399,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -1395,13 +1419,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -1482,13 +1506,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13188787cfbdc945b510e90e9251420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dynamicFitting: 1
   thisCollider: {fileID: 9062819528647497191}
   attachedRectTransform: {fileID: 9062819528647497186}
   padding: {x: 0, y: 0}
+  forceUpdateEveryFrame: 0
 --- !u!95 &9062819528647497185
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1501,10 +1525,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 1
+  m_KeepAnimatorStateOnDisable: 1
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!82 &9062819528647497187
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1622,52 +1648,56 @@ MonoBehaviour:
     - key: PassiveHover
       value:
         effects:
-        - id: 0
+        - rid: 0
         isVariable: 0
     - key: ActiveHover
       value:
         effects:
-        - id: 1
+        - rid: 1
         isVariable: 0
     - key: Select
       value:
         effects:
-        - id: 2
+        - rid: 2
         isVariable: 1
     - key: Toggle
       value:
         effects:
-        - id: 3
+        - rid: 3
         isVariable: 0
   interactable: {fileID: 9062819528647497189}
   animator: {fileID: 9062819528647497185}
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
         clip: {fileID: 7400000, guid: f8bf36502d9096a46abc953712b2eb77, type: 2}
         speed: 1
         playbackMode: 0
-        blendMode: 0
-    00000001:
+        weightMode: 0
+        transitionDuration: 0
+    - rid: 1
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
         clip: {fileID: 7400000, guid: 79c6ab7b5799345418a0d9950c64e20e, type: 2}
         speed: 1
         playbackMode: 0
-        blendMode: 0
-    00000002:
+        weightMode: 0
+        transitionDuration: 0
+    - rid: 2
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
         clip: {fileID: 7400000, guid: fff9d0b22f52a554c9e5b92efc3bf3af, type: 2}
         speed: 1
         playbackMode: 1
-        blendMode: 0
-    00000003:
+        weightMode: 0
+        transitionDuration: 0
+    - rid: 3
       type: {class: SetTargetsActiveEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Set Targets Active/Inactive

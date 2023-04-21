@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: canDeselectToggle
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3966874216475342198, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4392262141974770193, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
       propertyPath: m_Name
       value: TogglePressableButton_160x32mm_Radio_L (3)
@@ -86,6 +90,10 @@ PrefabInstance:
     - target: {fileID: 3966874216475342198, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
       propertyPath: canDeselectToggle
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3966874216475342198, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4392262141974770193, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
       propertyPath: m_Name
@@ -163,6 +171,10 @@ PrefabInstance:
       propertyPath: canDeselectToggle
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3966874216475342198, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4392262141974770193, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
       propertyPath: m_Name
       value: TogglePressableButton_160x32mm_Radio_L
@@ -238,6 +250,10 @@ PrefabInstance:
     - target: {fileID: 3966874216475342198, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
       propertyPath: canDeselectToggle
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3966874216475342198, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4392262141974770193, guid: 3e1e99b2fe1097046bd53bf2066727d3, type: 3}
       propertyPath: m_Name
@@ -389,11 +405,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4730860839926973046, guid: 49b6ad76fc132fc489e1bfbb664b32c7, type: 3}
   m_PrefabInstance: {fileID: 5224889849714196583}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2776112012443186720 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7927516803987453511, guid: 49b6ad76fc132fc489e1bfbb664b32c7, type: 3}
-  m_PrefabInstance: {fileID: 5224889849714196583}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &9102704827051185613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,7 +422,13 @@ MonoBehaviour:
   - {fileID: 2602913337608343760}
   - {fileID: 2136621161476884080}
   - {fileID: 3814334275375410175}
+  allowSwitchOff: 0
   currentIndex: 0
   onToggleSelected:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &2776112012443186720 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7927516803987453511, guid: 49b6ad76fc132fc489e1bfbb664b32c7, type: 3}
+  m_PrefabInstance: {fileID: 5224889849714196583}
+  m_PrefabAsset: {fileID: 0}

@@ -164,6 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsFalse(bc.IsManipulated, "BC thought we were already manipulated");
 
@@ -273,7 +274,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsFalse(bc.IsManipulated, "BC thought we were already manipulated.");
 
             yield return hand.Show(initialHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.MoveTo(initialGrabPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.RotateTo(initialGrabRotation);
             yield return RuntimeTestUtilities.WaitForUpdates();
 

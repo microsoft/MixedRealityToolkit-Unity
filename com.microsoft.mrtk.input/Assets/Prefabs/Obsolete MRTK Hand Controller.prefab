@@ -31,6 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1307666228887773622}
   - {fileID: 3988544559415115452}
@@ -57,6 +58,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_AttachTransform: {fileID: 0}
   m_KeepSelectedTargetValid: 1
+  m_DisableVisualsWhenBlockedInGroup: 1
   m_StartingSelectedInteractable: {fileID: 0}
   m_StartingTargetFilter: {fileID: 0}
   m_HoverEntered:
@@ -141,9 +143,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+  m_RaycastSnapVolumeInteraction: 1
   m_HitClosestOnly: 1
   m_HoverToSelect: 0
   m_HoverTimeToSelect: 0.5
+  m_AutoDeselect: 0
+  m_TimeToAutoDeselect: 3
   m_EnableUIInteraction: 1
   m_AllowAnchorControl: 0
   m_UseForceGrab: 0
@@ -152,26 +157,27 @@ MonoBehaviour:
   m_AnchorRotateReferenceFrame: {fileID: 0}
   m_AnchorRotationMode: 0
   aimPoseSource:
-    id: 0
+    rid: 0
   devicePoseSource:
-    id: 1
+    rid: 1
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSourceList:
-        - id: 2
-        - id: 3
+        - rid: 2
+        - rid: 3
         poseSources: []
-    00000001:
+    - rid: 1
       type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSourceList:
-        - id: 4
-        - id: 5
+        - rid: 4
+        - rid: 5
         poseSources: []
-    00000002:
+    - rid: 2
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         trackingStateActionProperty:
@@ -210,11 +216,11 @@ MonoBehaviour:
             m_SingletonActionBindings: []
             m_Flags: 0
           m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
-    00000003:
+    - rid: 3
       type: {class: PolyfillHandRayPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         hand: 0
-    00000004:
+    - rid: 4
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         trackingStateActionProperty:
@@ -253,7 +259,7 @@ MonoBehaviour:
             m_SingletonActionBindings: []
             m_Flags: 0
           m_Reference: {fileID: -4531104493956672492, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
-    00000005:
+    - rid: 5
       type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         hand: 0
@@ -410,6 +416,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  maxGradientLength: 0.3
   lineWidth:
     serializedVersion: 2
     m_Curve:
@@ -470,6 +477,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1948193616346090106}
   m_RootOrder: 0
@@ -503,6 +511,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1051247791254679178}
   m_Father: {fileID: 1948193615953854875}
@@ -528,6 +537,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_AttachTransform: {fileID: 1051247791254679178}
   m_KeepSelectedTargetValid: 1
+  m_DisableVisualsWhenBlockedInGroup: 1
   m_StartingSelectedInteractable: {fileID: 0}
   m_StartingTargetFilter: {fileID: 0}
   m_HoverEntered:
@@ -593,21 +603,22 @@ MonoBehaviour:
   m_HapticHoverCancelDuration: 0
   m_AllowHoverHapticsWhileSelecting: 1
   pinchPoseSource:
-    id: 0
+    rid: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSourceList:
-        - id: 1
-        - id: 2
+        - rid: 1
+        - rid: 2
         poseSources: []
-    00000001:
+    - rid: 1
       type: {class: PinchPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         hand: 0
-    00000002:
+    - rid: 2
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         trackingStateActionProperty:
@@ -712,6 +723,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4299642553989019655}
   - {fileID: 1948193616346090106}
@@ -928,6 +940,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8443923956584964973}
   - {fileID: 4299642553587339576}
@@ -954,6 +967,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_AttachTransform: {fileID: 8443923956584964973}
   m_KeepSelectedTargetValid: 0
+  m_DisableVisualsWhenBlockedInGroup: 1
   m_StartingSelectedInteractable: {fileID: 0}
   m_StartingTargetFilter: {fileID: 0}
   m_HoverEntered:
@@ -1019,22 +1033,23 @@ MonoBehaviour:
   m_HapticHoverCancelDuration: 0
   m_AllowHoverHapticsWhileSelecting: 1
   pokePoseSource:
-    id: 0
+    rid: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSourceList:
-        - id: 1
-        - id: 2
+        - rid: 1
+        - rid: 2
         poseSources: []
-    00000001:
+    - rid: 1
       type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         hand: 0
         joint: 10
-    00000002:
+    - rid: 2
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         trackingStateActionProperty:
@@ -1118,6 +1133,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1948193615953854875}
   m_RootOrder: 0
@@ -1218,6 +1234,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1948193615953854875}
   m_RootOrder: 4
@@ -1242,6 +1259,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_AttachTransform: {fileID: 0}
   m_KeepSelectedTargetValid: 1
+  m_DisableVisualsWhenBlockedInGroup: 1
   m_StartingSelectedInteractable: {fileID: 0}
   m_StartingTargetFilter: {fileID: 0}
   m_HoverEntered:
@@ -1308,35 +1326,36 @@ MonoBehaviour:
   m_AllowHoverHapticsWhileSelecting: 1
   handController: {fileID: 6164080946324827545}
   devicePoseSource:
-    id: 0
+    rid: 0
   pinchPoseSource:
-    id: 1
+    rid: 1
   aimPoseSource:
-    id: 2
+    rid: 2
   dependentInteractor: {fileID: 0}
   stickyHoverThreshold: 0.5
   relaxationThreshold: 0.1
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSourceList:
-        - id: 3
-        - id: 4
+        - rid: 3
+        - rid: 4
         poseSources: []
-    00000001:
+    - rid: 1
       type: {class: PinchPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         hand: 0
-    00000002:
+    - rid: 2
       type: {class: FallbackCompositePoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         poseSourceList:
-        - id: 5
-        - id: 6
+        - rid: 5
+        - rid: 6
         poseSources: []
-    00000003:
+    - rid: 3
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         trackingStateActionProperty:
@@ -1375,12 +1394,12 @@ MonoBehaviour:
             m_SingletonActionBindings: []
             m_Flags: 0
           m_Reference: {fileID: -4531104493956672492, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
-    00000004:
+    - rid: 4
       type: {class: HandJointPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         hand: 0
         joint: 0
-    00000005:
+    - rid: 5
       type: {class: InputActionPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         trackingStateActionProperty:
@@ -1419,7 +1438,7 @@ MonoBehaviour:
             m_SingletonActionBindings: []
             m_Flags: 0
           m_Reference: {fileID: 8248158260566104461, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
-    00000006:
+    - rid: 6
       type: {class: PolyfillHandRayPoseSource, ns: Microsoft.MixedReality.Toolkit.Input, asm: Microsoft.MixedReality.Toolkit.Input}
       data:
         hand: 0
@@ -1473,6 +1492,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4443155524692848376}
   m_RootOrder: 0
@@ -1519,6 +1539,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4332395624789801014}
   m_RootOrder: 0
@@ -1534,6 +1555,7 @@ LineRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -1751,14 +1773,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 212221299525418658}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8992338914735331379 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
-  m_PrefabInstance: {fileID: 212221299525418658}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4448665028262160152 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_PrefabInstance: {fileID: 212221299525418658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8992338914735331379 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 212221299525418658}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1009008764017234214
@@ -1830,9 +1852,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
---- !u!1 &8086910922498750391 stripped
+--- !u!1 &3552666654439622812 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4299642553587339576 stripped
@@ -1840,9 +1862,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3867428799850922014, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3552666654439622812 stripped
+--- !u!1 &8086910922498750391 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 4561340893587511738, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
   m_PrefabInstance: {fileID: 1009008764017234214}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &943052423812839532

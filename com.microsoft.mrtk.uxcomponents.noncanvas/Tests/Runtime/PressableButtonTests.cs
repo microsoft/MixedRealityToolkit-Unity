@@ -155,11 +155,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsNotNull(buttonComponent);
 
             buttonComponent.OnClicked.AddListener(() => { buttonComponent.enabled = false; });
 
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Press *through* the button
             yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
@@ -238,6 +239,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Vector3 p2 = new Vector3(0, 0, 1f);
 
             yield return hand.Show(testButton.transform.position + p1);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            Assert.IsTrue(!buttonPressed, "Button should not be pressed yet");
 
             // Ony two steps! Very fast.
             yield return hand.MoveTo(testButton.transform.position + p2, 2);
@@ -304,8 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             objectToMoveAndScale.position = InputTestUtilities.InFrontOfUser(new Vector3(0f, 0.0f, 0.8f));
             objectToMoveAndScale.localScale *= 15f; // scale button up so it's easier to hit it with the far interaction pointer
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             bool buttonTriggered = false;
 
@@ -319,12 +321,15 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             TestHand hand = new TestHand(Handedness.Right);
             Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, -0.05f, 0.3f)); // orient hand so far interaction ray will hit button
             yield return hand.Show(initialHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
 
             Object.Destroy(testButton);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         /// <summary>
@@ -812,11 +817,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.MoveTo(buttonPosition + p1);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Slowly move the hand to touch the button
             yield return hand.MoveTo(buttonPosition + p2, 15);
-
             yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
@@ -829,7 +835,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.MoveTo(buttonPosition + p3);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         #endregion Private methods

@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2828958437302116044, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3705378105823492738, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: m_Name
@@ -25,6 +25,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3705378105823492762, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: toggleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705378105823492762, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3705378105823492765, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
@@ -120,6 +124,62 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945109]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.AnimationEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945110]
+      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.TwoWayAnimationEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945109].clip
+      value: 
+      objectReference: {fileID: 7400000, guid: 8a553d183be585243a05eb67656324f7, type: 2}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945109].name
+      value: Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945110].name
+      value: Two Way Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945109].speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945110].speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945109].weightMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945110].weightMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945110].forwardClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 376a441245b6d0e40b11001e28c88df9, type: 2}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945110].reverseClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 8153e68380e78334e9695c9373c9c95e, type: 2}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945109].playbackMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945109].transitionDuration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: managedReferences[1393819269385945110].transitionDuration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[3].value.effects.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -129,11 +189,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[3].value.effects.Array.data[1]
-      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.AnimationEffect
+      value: 1393819269385945109
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[0]
-      value: Microsoft.MixedReality.Toolkit.UXCore Microsoft.MixedReality.Toolkit.UX.TwoWayAnimationEffect
+      value: 1393819269385945110
       objectReference: {fileID: 0}
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.data[1]
@@ -186,6 +246,10 @@ PrefabInstance:
     - target: {fileID: 8714766618717182506, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
       propertyPath: stateContainers.entries.Array.data[3].value.effects.Array.data[1].playbackMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980970493985434242, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b85e005d231192249b7077b40a4d4e45, type: 3}
