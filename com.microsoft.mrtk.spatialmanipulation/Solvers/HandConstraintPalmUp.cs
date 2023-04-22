@@ -314,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Coroutine function called by the ManipulationHandler of the attached object whenever the object is done 
+        /// Coroutine function called by the ObjectManipulator of the attached object whenever the object is done 
         /// being manipulated by the user. This triggers a coroutine that checks to see whether the object should 
         /// reattach to the hand.
         /// </summary>
