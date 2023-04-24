@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
                     EditorGUILayout.LabelField($"Priority {(constraint as TransformConstraint).ExecutionPriority}: {constraint.GetType().Name}");
                     if (GUILayout.Button("Go to component"))
                     {
-                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)}");
                         EditorGUIUtility.ExitGUI();
                     }
                 }
@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
                 else if (buttonAction == EntryAction.Highlight)
                 {
                     string constraintName = constraintProperty.objectReferenceValue.GetType().Name;
-                    Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                    Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)}");
                     EditorGUIUtility.ExitGUI();
                 }
             }

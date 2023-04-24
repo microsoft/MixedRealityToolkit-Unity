@@ -34,7 +34,7 @@ MRTK3 is currently in **public preview.** We appreciate your feedback and contri
 MRTK3 requires Unity 2021.3.22f1 or higher. In addition, you need the [Mixed Reality Feature Tool for Unity](https://aka.ms/mrfeaturetool) to find, download, and add the packages to your project.
 
 ## Getting started
-[Follow the documentation for setting up MRTK3 packages as dependencies in your project here.](https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/mrtk3-overview/setup) Alternatively, you can clone this repo directly to experiment with our template project. However, we *strongly* recommend adding MRTK3 packages as dependencies through the Feature Tool, as it makes updating, managing, and consuming MRTK3 packages far easier and less error-prone.
+[Follow the documentation for setting up MRTK3 packages as dependencies in your project here.](https://learn.microsoft.com/windows/mixed-reality/mrtk-unity/mrtk3-overview/getting-started/setting-up/setup-new-project) Alternatively, you can clone this repo directly to experiment with our template project. However, we *strongly* recommend adding MRTK3 packages as dependencies through the Feature Tool, as it makes updating, managing, and consuming MRTK3 packages far easier and less error-prone.
 
 ## Supported devices
 

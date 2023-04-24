@@ -626,7 +626,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.LabelField(constraintName);
                     if (GUILayout.Button("Go to component"))
                     {
-                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)}");
                         EditorGUIUtility.ExitGUI();
                     }
                     EditorGUILayout.EndHorizontal();

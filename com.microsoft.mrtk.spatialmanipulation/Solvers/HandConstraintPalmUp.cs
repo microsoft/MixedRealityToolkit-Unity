@@ -20,12 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [Header("Palm Up")]
         [SerializeField]
         [FormerlySerializedAs("facingThreshold")]
-        [Tooltip("The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by IMixedRealityHand controllers.")]
+        [Tooltip("The angle (in degrees) of the cone between the palm's up and camera's forward have to match.")]
         [Range(0.0f, 90.0f)]
         private float facingCameraTrackingThreshold = 80.0f;
 
         /// <summary>
-        /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
+        /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match.
         /// </summary>
         public float FacingCameraTrackingThreshold
         {
@@ -34,11 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
-        [Tooltip("Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by IMixedRealityHand controllers.")]
+        [Tooltip("Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape.")]
         private bool requireFlatHand = false;
 
         /// <summary>
-        /// Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
+        /// Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape.
         /// </summary>
         public bool RequireFlatHand
         {
@@ -47,12 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
-        [Tooltip("The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match. Only supported by IMixedRealityHand controllers.")]
+        [Tooltip("The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match.")]
         [Range(0.0f, 90.0f)]
         private float flatHandThreshold = 45.0f;
 
         /// <summary>
-        /// The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
+        /// The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match.
         /// </summary>
         public float FlatHandThreshold
         {
@@ -314,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Coroutine function called by the ManipulationHandler of the attached object whenever the object is done 
+        /// Coroutine function called by the ObjectManipulator of the attached object whenever the object is done 
         /// being manipulated by the user. This triggers a coroutine that checks to see whether the object should 
         /// reattach to the hand.
         /// </summary>
