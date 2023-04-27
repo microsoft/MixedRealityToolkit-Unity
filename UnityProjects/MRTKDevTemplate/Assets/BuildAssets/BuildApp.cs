@@ -61,12 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             bool success;
             try
             {
+                EnsureTMPro();
                 BuildReport buildReport = BuildPipeline.BuildPlayer(options);
                 success = buildReport != null && buildReport.summary.result == BuildResult.Succeeded;
             }
             catch (Exception e)
             {
-                EnsureTMPro();
                 Debug.LogError($"Build Failed!\n{e.Message}\n{e.StackTrace}");
                 success = false;
             }
