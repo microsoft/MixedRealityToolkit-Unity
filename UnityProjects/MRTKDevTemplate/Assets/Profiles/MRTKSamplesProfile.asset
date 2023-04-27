@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee16b2a49d75004f9a35cc55b6bae1b, type: 3}
+  m_Name: MRTKSamplesProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  loadedSubsystems:
+  - reference: Microsoft.MixedReality.Toolkit.Diagnostics.MRTKPerformanceStatsSubsystem,
+      Microsoft.MixedReality.Toolkit.Diagnostics
+  - reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsDictationSubsystem,
+      Microsoft.MixedReality.Toolkit.Speech.Windows
+  - reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystem,
+      Microsoft.MixedReality.Toolkit.Speech.Windows
+  - reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsTextToSpeechSubsystem,
+      Microsoft.MixedReality.Toolkit.Speech.Windows
+  - reference: Microsoft.MixedReality.Toolkit.Accessibility.MRTKAccessibilitySubsystem,
+      Microsoft.MixedReality.Toolkit.Accessibility
+  - reference: Microsoft.MixedReality.Toolkit.Input.OpenXRHandsSubsystem, Microsoft.MixedReality.Toolkit.Input
+  - reference: Microsoft.MixedReality.Toolkit.Input.SyntheticHandsSubsystem, Microsoft.MixedReality.Toolkit.Input
+  - reference: Microsoft.MixedReality.Toolkit.Input.MRTKHandsAggregatorSubsystem,
+      Microsoft.MixedReality.Toolkit.Input
+  subsystemConfigs:
+    entries:
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsTextToSpeechSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: ec06601741075d94188888a307e8ebd7, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: 610e76a350bf5e24b95a8b7d7024ded7, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsDictationSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: c1ec3a5357948504fac70f304d21881a, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Accessibility.MRTKAccessibilitySubsystem,
+          Microsoft.MixedReality.Toolkit.Accessibility
+      value: {fileID: 11400000, guid: 3aa94a99d7ce5e845a6a78409e004670, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Input.SyntheticHandsSubsystem,
+          Microsoft.MixedReality.Toolkit.Input
+      value: {fileID: 11400000, guid: c45788af2ca823a4a904bf8762ff126d, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Input.MRTKHandsAggregatorSubsystem,
+          Microsoft.MixedReality.Toolkit.Input
+      value: {fileID: 11400000, guid: b8da41358d218754494ea49599e7b0fb, type: 2}
+  <SpatializationMixer>k__BackingField: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
