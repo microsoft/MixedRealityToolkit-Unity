@@ -12,7 +12,34 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
 {
     public static class BuildApp
     {
-        private static string[] scenes = { "Assets/Scenes/HandInteractionExamples.unity" };
+        private static string[] scenes = {
+            "Assets/Scenes/Audio/AudioLoFiExample.unity",
+            "Assets/Scenes/Audio/AudioOcclusionExample.unity",
+            "Assets/Scenes/BoundsControlExamples.unity",
+            "Assets/Scenes/CanvasExample.unity",
+            "Assets/Scenes/CanvasUITearsheet.unity",
+            "Assets/Scenes/DialogExample.unity",
+            "Assets/Scenes/DictationExample.unity",
+            "Assets/Scenes/EyeGazeExample.unity",
+            "Assets/Scenes/FontIconExample.unity",
+            "Assets/Scenes/HandInteractionExamples.unity",
+            "Assets/Scenes/HandMenuExamples.unity",
+            "Assets/Scenes/InputFieldExamples.unity",
+            "Assets/Scenes/InteractableButtonExamples.unity",
+            "Assets/Scenes/LegacyConstraintsExample.unity",
+            "Assets/Scenes/MagicWindowExample.unity",
+            "Assets/Scenes/NearMenuExamples.unity",
+            "Assets/Scenes/NonCanvasObjectBarExample.unity",
+            "Assets/Scenes/NonCanvasUIBackplateExample.unity",
+            "Assets/Scenes/NonCanvasUITearSheet.unity",
+            "Assets/Scenes/SeeItSayIt Example.unity",
+            "Assets/Scenes/SlateDrawingExample.unity",
+            "Assets/Scenes/SpatialMappingExample.unity",
+            "Assets/Scenes/ToggleCollectionExample.unity",
+            "Assets/Scenes/TopNavigationExample.unity",
+            "Assets/Scenes/VanillaUGUIExample.unity",
+            "Assets/Scenes/VirtualizedScrollRectList.unity" };
+
         private static string buildPath = "build";
 
         public static void StartCommandLineBuild()
@@ -39,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             }
             catch (Exception e)
             {
+                EnsureTMPro();
                 Debug.LogError($"Build Failed!\n{e.Message}\n{e.StackTrace}");
                 success = false;
             }
