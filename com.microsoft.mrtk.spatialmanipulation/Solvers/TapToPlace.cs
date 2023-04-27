@@ -290,10 +290,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public void StartPlacement()
         {
-            // Checking the amount of time passed between when OnPlacementPerformed is called twice in
-            // succession.  If OnPlacementPerformed is called twice very rapidly, the object will be
-            // selected and then immediately unselected. If two OnPlacementPerformed calls occur within the
+            // Checking the amount of time passed between when StartPlacement or StopPlacement is called twice in
+            // succession. If these methods are called twice very rapidly, the object will be
+            // selected and then immediately unselected. If two calls occur within the
             // double click timeout, then return to prevent an immediate object state switch.
+            // Also, check that time is no 0 to allow for auto start functionality.
             if (Time.time != 0 && (Time.time - LastTimeClicked) < DoubleClickTimeout)
             {
                 return;
@@ -339,9 +340,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public void StopPlacement(InputAction.CallbackContext context)
         {
-            // Checking the amount of time passed between when OnPlacementPerformed is called twice in
-            // succession.  If OnPlacementPerformed is called twice very rapidly, the object will be
-            // selected and then immediately unselected. If two OnPlacementPerformed calls occur within the
+            // Checking the amount of time passed between when StartPlacement or StopPlacement is called twice in
+            // succession. If these methods are called twice very rapidly, the object will be
+            // selected and then immediately unselected. If two calls occur within the
             // double click timeout, then return to prevent an immediate object state switch.
             if ((Time.time - LastTimeClicked) < DoubleClickTimeout)
             {
