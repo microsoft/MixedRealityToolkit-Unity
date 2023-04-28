@@ -61,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             bool success;
             try
             {
-                EnsureTMPro();
                 BuildReport buildReport = BuildPipeline.BuildPlayer(options);
                 success = buildReport != null && buildReport.summary.result == BuildResult.Succeeded;
             }
