@@ -71,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             }
             catch (Exception e)
             {
-                EnsureTMPro();
                 Debug.LogError($"Build Failed!\n{e.Message}\n{e.StackTrace}");
                 success = false;
             }
