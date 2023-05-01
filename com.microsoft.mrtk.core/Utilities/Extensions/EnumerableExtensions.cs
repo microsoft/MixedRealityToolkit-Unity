@@ -26,10 +26,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             for (int i = 0; i < count; i++)
             {
-                if (array[i] != null)
-                {
-                    array[i].Dispose();
-                }
+                array[i]?.Dispose();
             }
         }
 

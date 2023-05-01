@@ -177,14 +177,14 @@ PrefabInstance:
     - {fileID: 8581070781098212652, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
     - {fileID: 6749174556681977289, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
---- !u!1 &5375838424475472903 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 2207115325094281882}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1495361273282308119 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 2207115325094281882}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5375838424475472903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 2207115325094281882}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &6396071451976782228
@@ -206,8 +206,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -238,6 +246,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -347,18 +358,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -366,13 +378,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1

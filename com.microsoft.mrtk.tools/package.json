@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
   },
-  "unity": "2020.3",
+  "unity": "2021.3",
   "dependencies": {
     "com.microsoft.mrtk.core": "3.0.0-development"
   }

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// <summary>
     /// Tap to place is a far interaction component used to place objects on a surface.
     /// </summary>
+    [RequireComponent(typeof(StatefulInteractable))]
     [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Tap To Place")]
     public class TapToPlace : Solver
     {
@@ -236,6 +237,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // Used to mark whether StartPlacement() is called before Start() is called.
         private bool placementRequested;
 
+        // The interactable used to pick up the obect. 
+        private StatefulInteractable interactable;
+
         #region MonoBehaviour Implementation
 
         protected override void Start()
@@ -253,6 +257,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             startCalled = true;
 
+            interactable = gameObject.GetComponent<StatefulInteractable>();
+            RegisterPickupAction();
+
             if (AutoStart || placementRequested)
             {
                 StartPlacement();
@@ -266,6 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         protected override void OnDisable()
         {
             UnregisterPlacementAction();
+            UnregisterPickupAction();
             base.OnDisable();
         }
 
@@ -282,6 +290,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public void StartPlacement()
         {
+            // Checking the amount of time passed between when StartPlacement or StopPlacement is called twice in
+            // succession. If these methods are called twice very rapidly, the object will be
+            // selected and then immediately unselected. If two calls occur within the
+            // double click timeout, then return to prevent an immediate object state switch.
+            // Also, check that time is no 0 to allow for auto start functionality.
+            if (Time.time != 0 && (Time.time - LastTimeClicked) < DoubleClickTimeout)
+            {
+                return;
+            }
+            // Get the time of this click action
+            LastTimeClicked = Time.time;
+
             using (StartPlacementPerfMarker.Auto())
             {
                 // Check to see if Start() has been called, if not set placementRequested to true. This will make sure StartPlacement() will be
@@ -318,8 +338,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Stop the placement of a game object without the need of the OnPointerClicked event. 
         /// </summary>
-        public void StopPlacement()
+        public void StopPlacement(InputAction.CallbackContext context)
         {
+            // Checking the amount of time passed between when StartPlacement or StopPlacement is called twice in
+            // succession. If these methods are called twice very rapidly, the object will be
+            // selected and then immediately unselected. If two calls occur within the
+            // double click timeout, then return to prevent an immediate object state switch.
+            if ((Time.time - LastTimeClicked) < DoubleClickTimeout)
+            {
+                return;
+            }
+            // Get the time of this click action
+            LastTimeClicked = Time.time;
+
             using (StopPlacementPerfMarker.Auto())
             {
                 // Added for code configurability to avoid multiple calls to StopPlacement in a row
@@ -442,7 +473,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Debug.Log("Failed to register the placement action, the action reference was null or contained no action.");
                 return;
             }
-            placementAction.performed += OnPlacementPerformed;
+            placementAction.performed += StopPlacement;
+        }
+
+        /// <summary>
+        /// Registers the event which performs pickup.
+        /// </summary>
+        private void RegisterPickupAction()
+        {
+            if (interactable == null)
+            {
+                Debug.Log("Failed to register the pick up event. There is no StatefulInteractable set.");
+                return;
+            }
+            interactable.OnClicked.AddListener(StartPlacement);
         }
 
         /// <summary>
@@ -456,34 +500,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Debug.Log("Failed to unregister the placement action, the action reference was null or contained no action.");
                 return;
             }
-            placementAction.performed -= OnPlacementPerformed;
+            placementAction.performed -= StopPlacement;
         }
 
         /// <summary>
-        /// Handler called when the user performs the placement action.
+        /// Unregisters the event which performs pickup.
         /// </summary>
-        private void OnPlacementPerformed(InputAction.CallbackContext context)
+        private void UnregisterPickupAction()
         {
-            // Checking the amount of time passed between when OnPlacementPerformed is called twice in
-            // succession.  If OnPlacementPerformed is called twice very rapidly, the object will be
-            // selected and then immediately unselected. If two OnPlacementPerformed calls occur within the
-            // double click timeout, then return to prevent an immediate object state switch.
-            if ((Time.time - LastTimeClicked) < DoubleClickTimeout)
+            if (interactable == null)
             {
+                Debug.Log("Failed to unregister the pick up event. There is no StatefulInteractable set.");
                 return;
             }
-
-            if (!IsBeingPlaced)
-            {
-                StartPlacement();
-            }
-            else
-            {
-                StopPlacement();
-            }
-
-            // Get the time of this click action
-            LastTimeClicked = Time.time;
+            interactable.OnClicked.RemoveListener(StartPlacement);
         }
 
         /// <summary>

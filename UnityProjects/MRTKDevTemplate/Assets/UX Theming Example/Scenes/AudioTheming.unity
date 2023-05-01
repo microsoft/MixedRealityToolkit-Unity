@@ -305,6 +305,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1454368750}
     m_Modifications:
+    - target: {fileID: 3776957073249299029, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776957073249299029, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 3776957073249299029, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3872288973342551568, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1087,6 +1099,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1454368750}
     m_Modifications:
+    - target: {fileID: 3776957073249299029, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776957073249299029, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 3776957073249299029, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3872288973342551568, guid: 6025eb16702e9ea4cb10e484240f9421, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1225,9 +1249,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1167845681}
     m_Modifications:
+    - target: {fileID: 155148266066309764, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155148266066309764, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 155148266066309764, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 217881112830437052, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: m_Name
       value: Note6
+      objectReference: {fileID: 0}
+    - target: {fileID: 303053968431071717, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 303053968431071717, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 303053968431071717, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 364946990060500174, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: m_InteractionManager
@@ -1701,9 +1749,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1918766681897676798, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1918766681897676798, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 1918766681897676798, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1982136961438956486, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: m_Name
       value: Note2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074071492310221335, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074071492310221335, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 2074071492310221335, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2155454255053035055, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: m_Name
@@ -1769,6 +1841,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: Note5
       objectReference: {fileID: 0}
+    - target: {fileID: 3976558279943476820, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3976558279943476820, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 3976558279943476820, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4540244754419273873, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4540244754419273873, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 4540244754419273873, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4719360172523708786, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4719360172523708786, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 4719360172523708786, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5910433181975228633, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: isRaySelected.onEntered.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -1829,6 +1937,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Note4
       objectReference: {fileID: 0}
+    - target: {fileID: 6913780721799234531, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6913780721799234531, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 6913780721799234531, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7123489524880090206, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7123489524880090206, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 7123489524880090206, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7438820363755735746, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: isRaySelected.onEntered.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -1884,6 +2016,30 @@ PrefabInstance:
     - target: {fileID: 7438820363755735746, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: isGazePinchSelected.onEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7513506229924595575, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7513506229924595575, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 7513506229924595575, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7701165343254955965, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7701165343254955965, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 7701165343254955965, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7764533561748804485, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: m_Name
@@ -1944,6 +2100,18 @@ PrefabInstance:
     - target: {fileID: 8188438316254230005, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: isGazePinchSelected.onEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8377650841631071081, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: Spatialize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8377650841631071081, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3526612193736648505, guid: c4ec596b04ef53f4581688939092e813, type: 2}
+    - target: {fileID: 8377650841631071081, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8880479040937481948, guid: 8f6fb5f907837b645a884d67d7b70393, type: 3}
       propertyPath: isRaySelected.onEntered.m_PersistentCalls.m_Calls.Array.size

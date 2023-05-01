@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.2452, y: -0.7967, z: -0.0781}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 368862519019173613}
   - {fileID: 369070640992445871}
@@ -71,6 +72,7 @@ Transform:
   m_LocalRotation: {x: -6.123234e-17, y: 1, z: -6.123234e-17, w: 6.123234e-17}
   m_LocalPosition: {x: 0.2178, y: 0.0166, z: 0.025}
   m_LocalScale: {x: 15.6767, y: 15.5, z: 15.5}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 369246453490017725}
   m_RootOrder: 0
@@ -94,6 +96,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -313,14 +316,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
---- !u!82 &4719360172523708786 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 5457223248840327231, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
-  m_PrefabInstance: {fileID: 776161420231795021}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4635632432343467320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5372910431144486005, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
+  m_PrefabInstance: {fileID: 776161420231795021}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &4719360172523708786 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5457223248840327231, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
   m_PrefabInstance: {fileID: 776161420231795021}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &785986986031235398
@@ -440,11 +443,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f62f188dc6a5f55458ac47e93b3951f4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
---- !u!82 &6913780721799234531 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 785986986031235398}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &38784627857828811 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
@@ -453,11 +451,6 @@ Transform:
 --- !u!1 &6832961046725629915 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 785986986031235398}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6834552045730768809 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 785986986031235398}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &364946990158920389
@@ -479,8 +472,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -523,6 +524,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -632,18 +636,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -651,13 +656,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -683,6 +688,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingVisuals: {fileID: 38784627857828811}
+--- !u!4 &6834552045730768809 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 785986986031235398}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &6913780721799234531 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 785986986031235398}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2593692653886801736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -872,14 +887,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
---- !u!4 &7597234110522532669 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5372910431144486005, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
-  m_PrefabInstance: {fileID: 2593692653886801736}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &7513506229924595575 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 5457223248840327231, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
+  m_PrefabInstance: {fileID: 2593692653886801736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7597234110522532669 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5372910431144486005, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
   m_PrefabInstance: {fileID: 2593692653886801736}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2981458109686359137
@@ -1414,19 +1429,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 4610213787741685016}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7767463763753100279 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+--- !u!82 &7701165343254955965 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 4610213787741685016}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7764533561748804485 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 4610213787741685016}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &7701165343254955965 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 4610213787741685016}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &364946991772111252
@@ -1448,8 +1458,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -1492,6 +1510,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -1601,18 +1622,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -1620,13 +1642,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -1652,6 +1674,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingVisuals: {fileID: 3862801594646884245}
+--- !u!4 &7767463763753100279 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 4610213787741685016}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5319412073189015730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1753,14 +1780,9 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f62f188dc6a5f55458ac47e93b3951f4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
---- !u!1 &2155454255053035055 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 5319412073189015730}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4878508417286007359 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+--- !u!82 &2074071492310221335 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 5319412073189015730}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2153581783840482909 stripped
@@ -1768,9 +1790,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 5319412073189015730}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &2074071492310221335 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+--- !u!1 &2155454255053035055 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 5319412073189015730}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &364946990060500161
@@ -1805,8 +1827,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -1849,6 +1879,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -1958,18 +1991,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -1977,13 +2011,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -1996,6 +2030,11 @@ MonoBehaviour:
   rolloffXYDepth: 3
   rejectZRolloff: 0
   extendSpeed: 0.5
+--- !u!4 &4878508417286007359 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 5319412073189015730}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5744930876700814683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2109,24 +2148,14 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 814f847a105eb454d8c8bc27047dcb9c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
---- !u!4 &5033811243155195862 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+--- !u!82 &1918766681897676798 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 5744930876700814683}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1982136961438956486 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 5744930876700814683}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1984765899938696116 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 5744930876700814683}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1918766681897676798 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 5744930876700814683}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &364946990093234544
@@ -2161,8 +2190,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -2205,6 +2242,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -2314,18 +2354,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -2333,13 +2374,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -2352,6 +2393,16 @@ MonoBehaviour:
   rolloffXYDepth: 3
   rejectZRolloff: 0
   extendSpeed: 0.5
+--- !u!4 &1984765899938696116 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 5744930876700814683}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5033811243155195862 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 5744930876700814683}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5849725025416512320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2485,24 +2536,14 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f62f188dc6a5f55458ac47e93b3951f4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
---- !u!1 &366351551666279901 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 5849725025416512320}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &369070640992445871 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 5849725025416512320}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6579703516827544013 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 5849725025416512320}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &303053968431071717 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 5849725025416512320}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &366351551666279901 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 5849725025416512320}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &364946991423420956
@@ -2524,8 +2565,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -2568,6 +2617,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -2677,18 +2729,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -2696,13 +2749,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -2728,6 +2781,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingVisuals: {fileID: 6579703516827544013}
+--- !u!4 &369070640992445871 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 5849725025416512320}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6579703516827544013 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 5849725025416512320}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6286460579168596001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2834,19 +2897,9 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 6286460579168596001}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &219735984879457998 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 6286460579168596001}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &217881112830437052 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 6286460579168596001}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6727346505438059180 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 6286460579168596001}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &364946991780715570
@@ -2881,8 +2934,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -2925,6 +2986,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -3034,18 +3098,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -3053,13 +3118,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -3072,6 +3137,16 @@ MonoBehaviour:
   rolloffXYDepth: 3
   rejectZRolloff: 0
   extendSpeed: 0.5
+--- !u!4 &219735984879457998 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 6286460579168596001}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6727346505438059180 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 6286460579168596001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7076666566281663729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3177,11 +3252,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f62f188dc6a5f55458ac47e93b3951f4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
---- !u!82 &3976558279943476820 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 7076666566281663729}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3892245459998175774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6066724869436565231, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
@@ -3190,11 +3260,6 @@ Transform:
 --- !u!1 &3895246023161496172 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6069707849138787997, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
-  m_PrefabInstance: {fileID: 7076666566281663729}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7517904336347004540 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
   m_PrefabInstance: {fileID: 7076666566281663729}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &364946990490256241
@@ -3229,8 +3294,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
+  m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -3273,6 +3346,9 @@ MonoBehaviour:
   m_Deactivated:
     m_PersistentCalls:
       m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -3382,18 +3458,19 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
-  toggleMode: 0
-  selectThreshold: 0.9
-  deselectThreshold: 0.1
-  triggerOnRelease: 1
-  useGazeDwell: 0
-  gazeDwellTime: 1
-  useFarDwell: 0
-  farDwellTime: 1
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
   allowSelectByVoice: 1
   speechRecognitionKeyword: select
-  voiceRequiresFocus: 1
-  isToggled:
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
     active: 0
     onEntered:
       m_PersistentCalls:
@@ -3401,13 +3478,13 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  onClicked:
+  <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onEnabled:
+  <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  onDisabled:
+  <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   smoothSelectedness: 1
@@ -3420,6 +3497,16 @@ MonoBehaviour:
   rolloffXYDepth: 3
   rejectZRolloff: 0
   extendSpeed: 0.5
+--- !u!82 &3976558279943476820 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6132438213147574949, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 7076666566281663729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7517904336347004540 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 748064375357500045, guid: e8ad096e4411c7146acb447352e7b520, type: 3}
+  m_PrefabInstance: {fileID: 7076666566281663729}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8410968377456873646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3609,13 +3696,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
---- !u!82 &4540244754419273873 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 5457223248840327231, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
-  m_PrefabInstance: {fileID: 8410968377456873646}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4479299032736855259 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5372910431144486005, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
+  m_PrefabInstance: {fileID: 8410968377456873646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &4540244754419273873 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5457223248840327231, guid: 3092be637eba36446a14b2e6b486f72b, type: 3}
   m_PrefabInstance: {fileID: 8410968377456873646}
   m_PrefabAsset: {fileID: 0}

@@ -13,9 +13,9 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 {
     /// <summary>
-    /// Tests for verifying the behavior of the describable objects.
+    /// Tests for verifying the behavior of the accessible objects.
     /// </summary>
-    public class DescribableObjectTests : BaseRuntimeInputTests
+    public class AccessibleObjectTests : BaseRuntimeInputTests
     {
         #region Test cases
 
@@ -58,14 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
         /// Creates a test object and places it at the specified location.
         /// </summary>
         /// <param name="location">The position at which to place the created object.</param>
-        /// <param name="isDescribable">Should the object have the DescribableObject script attached?</param>
+        /// <param name="isAccessible">Should the object have the AccessibleObject script attached?</param>
         private void CreateTestObject(
             Vector3 location,
-            bool isDescribable)
+            bool isAccessible)
         {
             GameObject gameObj;
 
-            if (isDescribable)
+            if (isAccessible)
             {
                 gameObj = Object.Instantiate(
                     AssetDatabase.LoadAssetAtPath<GameObject>(testCubeAssetPath));
@@ -90,26 +90,26 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
             if (AccessibilityHelpers.Subsystem != null)
             {
-                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
-                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+                List<AccessibleObjectClassification> classifications = new List<AccessibleObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of accessible object classifications.");
 
-                List<GameObject> describableObjects = new List<GameObject>();
-                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                List<GameObject> accessibleObjects = new List<GameObject>();
+                success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjects(
                     classifications,
-                    DescribableObjectVisibility.Surround,
+                    AccessibleObjectVisibility.Surround,
                     float.MaxValue,
-                    describableObjects);
-                Assert.IsTrue(success, "Failed to get the collection of describable objects.");
-                Assert.IsTrue(describableObjects.Count == 0, "Should not have found any describable objects an empty scene.");
+                    accessibleObjects);
+                Assert.IsTrue(success, "Failed to get the collection of accessible objects.");
+                Assert.IsTrue(accessibleObjects.Count == 0, "Should not have found any accessible objects an empty scene.");
             }
         }
 
         /// <summary>
-        /// Test case to verify that a scene with only objects that are not describable is properly handled.
+        /// Test case to verify that a scene with only objects that are not accessible is properly handled.
         /// </summary>
         [UnityTest]
-        public IEnumerator ObjectsNotDescribable()
+        public IEnumerator ObjectsNotAccessible()
         {
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -119,29 +119,29 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
             {
                 foreach (Vector3 pos in inViewPositions)
                 {
-                    // Create the objects without adding DescribableObject.
+                    // Create the objects without adding AccessibleObject.
                     CreateTestObject(pos, false);
                 }
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
-                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+                List<AccessibleObjectClassification> classifications = new List<AccessibleObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of accessible object classifications.");
 
-                List<GameObject> describableObjects = new List<GameObject>();
-                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                List<GameObject> accessibleObjects = new List<GameObject>();
+                success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjects(
                     classifications,
-                    DescribableObjectVisibility.FieldOfView,
+                    AccessibleObjectVisibility.FieldOfView,
                     float.MaxValue,
-                    describableObjects);
-                Assert.IsTrue(success, "Failed to get the collection of describable objects.");
-                Assert.IsTrue(describableObjects.Count == 0, "Should not have found any describable objects in the scene.");
+                    accessibleObjects);
+                Assert.IsTrue(success, "Failed to get the collection of accessible objects.");
+                Assert.IsTrue(accessibleObjects.Count == 0, "Should not have found any accessible objects in the scene.");
             }
         }
 
         /// <summary>
-        /// Test case to verify that only describable objects in the camera view are reported.
+        /// Test case to verify that only accessible objects in the camera view are reported.
         /// </summary>
         [UnityTest]
         public IEnumerator CameraViewObjects()
@@ -166,28 +166,28 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
-                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+                List<AccessibleObjectClassification> classifications = new List<AccessibleObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of accessible object classifications.");
 
-                List<GameObject> describableObjects = new List<GameObject>();
-                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                List<GameObject> accessibleObjects = new List<GameObject>();
+                success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjects(
                     classifications,
-                    DescribableObjectVisibility.FieldOfView,
+                    AccessibleObjectVisibility.FieldOfView,
                     float.MaxValue,
-                    describableObjects);
-                Assert.IsTrue(success, "Failed to get the collection of describable objects.");
+                    accessibleObjects);
+                Assert.IsTrue(success, "Failed to get the collection of accessible objects.");
                 Assert.AreEqual(
                     inViewPositions.Length,
-                    describableObjects.Count,
-                    "Failed to find the correct number of describable objects in the scene.");
+                    accessibleObjects.Count,
+                    "Failed to find the correct number of accessible objects in the scene.");
             }
 
             yield return null;
         }
 
         /// <summary>
-        /// Test case to verify that all describable objects in the scene are reported.
+        /// Test case to verify that all accessible objects in the scene are reported.
         /// </summary>
         [UnityTest]
         public IEnumerator SurroundObjects()
@@ -212,21 +212,21 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility.Tests
 
                 yield return RuntimeTestUtilities.WaitForUpdates();
 
-                List<DescribableObjectClassification> classifications = new List<DescribableObjectClassification>();
-                bool success = AccessibilityHelpers.Subsystem.TryGetDescribableObjectClassifications(classifications);
-                Assert.IsTrue(success, "Failed to get the collection of describable object classifications.");
+                List<AccessibleObjectClassification> classifications = new List<AccessibleObjectClassification>();
+                bool success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjectClassifications(classifications);
+                Assert.IsTrue(success, "Failed to get the collection of accessible object classifications.");
 
-                List<GameObject> describableObjects = new List<GameObject>();
-                success = AccessibilityHelpers.Subsystem.TryGetDescribableObjects(
+                List<GameObject> accessibleObjects = new List<GameObject>();
+                success = AccessibilityHelpers.Subsystem.TryGetAccessibleObjects(
                     classifications,
-                    DescribableObjectVisibility.Surround,
+                    AccessibleObjectVisibility.Surround,
                     float.MaxValue,
-                    describableObjects);
-                Assert.IsTrue(success, "Failed to get the collection of describable objects.");
+                    accessibleObjects);
+                Assert.IsTrue(success, "Failed to get the collection of accessible objects.");
                 Assert.AreEqual(
                     inViewPositions.Length + outOfViewPositions.Length,
-                    describableObjects.Count,
-                    "Failed to find the correct number of describable objects in the scene.");
+                    accessibleObjects.Count,
+                    "Failed to find the correct number of accessible objects in the scene.");
             }
 
             yield return null;

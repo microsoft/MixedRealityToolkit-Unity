@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// The pose of an individual hand joint. Superset
+    /// of a <see cref="UnityEngine.Pose"/>, adding a
+    /// radius value.
+    /// </summary>
     public struct HandJointPose : IEqualityComparer
     {
         /// <summary>
@@ -141,5 +146,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         #endregion IEqualityComparer Implementation
+
+        #region Conversions
+
+        public static implicit operator Pose(HandJointPose pose) => pose.pose;
+        
+        #endregion
     }
 }

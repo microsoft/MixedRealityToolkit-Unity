@@ -1,20 +1,24 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
-using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
+using ObsoleteAttribute = System.ObsoleteAttribute;
+using DialogButtonType = Microsoft.MixedReality.Toolkit.UX.Deprecated.DialogButtonType;
+
+namespace Microsoft.MixedReality.Toolkit.UX.Deprecated.Runtime.Tests
 {
     /// <summary>
     /// Tests for the Static Dialog UX component.
     /// </summary>
-    public class DialogTests : BaseRuntimeInputTests
+    [Obsolete("Tests for obsolete Dialog component. Will be removed in a future release.")]
+    public class LegacyDialogTests : BaseRuntimeInputTests
     {
         // UXComponents/Dialogs/Prefabs/Dialog_168x88mm.prefab
         private const string SmallDialogPrefabAssetGuid = "175cf7e8b8559f342806a0f7d7f3082a";
@@ -28,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
         public override IEnumerator TearDown()
         {
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
+            UnityEngine.Object.Destroy(dialogGameObject);
+            UnityEngine.Object.Destroy(dialogComponent);
             yield return base.TearDown();
         }
 
@@ -91,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Testing near interactions
             InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.OK, true);
@@ -176,7 +181,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
                 if (button.ButtonContext.ButtonType == dialogButtonType)
                 {
                     yield return hand.MoveTo(button.transform.position - button.transform.forward * 0.05f);
+                    yield return RuntimeTestUtilities.WaitForUpdates();
                     yield return hand.MoveTo(button.transform.position + button.transform.forward * 0.05f);
+                    yield return RuntimeTestUtilities.WaitForUpdates();
                     yield return WaitForDialogClosedAndCheckResult(dialogButtonType);
                     break;
                 }

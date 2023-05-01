@@ -495,18 +495,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
         private void SimpleRaycastStepUpdate(ref RayStep rayStep)
         {
-            bool isHit;
-            RaycastHit result;
-
             // Do the cast!
-            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(
+            OnSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(
                 rayStep,
                 maxRaycastDistance,
                 magneticSurfaces,
                 false,
-                out result);
-
-            OnSurface = isHit;
+                out RaycastHit result);
 
             // Enforce CloseDistance
             Vector3 hitDelta = result.point - rayStep.Origin;
@@ -518,7 +513,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // Apply results
-            if (isHit)
+            if (OnSurface)
             {
                 GoalPosition = result.point + surfaceNormalOffset * result.normal + surfaceRayOffset * rayStep.Direction;
                 GoalRotation = CalculateMagnetismOrientation(rayStep.Direction, result.normal);
@@ -531,14 +526,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <param name="rayStep">start/end ray passed by read-only reference to avoid struct-copy performance</param>
         private void SphereRaycastStepUpdate(ref RayStep rayStep)
         {
-            bool isHit;
-            RaycastHit result;
-
             // Do the cast!
             float size = ScaleOverride > 0 ? ScaleOverride : transform.lossyScale.x * sphereSize;
-            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxRaycastDistance, magneticSurfaces, false, out result);
-
-            OnSurface = isHit;
+            OnSurface = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxRaycastDistance, magneticSurfaces, false, out RaycastHit result);
 
             // Enforce CloseDistance
             Vector3 hitDelta = result.point - rayStep.Origin;
@@ -550,7 +540,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
 
             // Apply results
-            if (isHit)
+            if (OnSurface)
             {
                 GoalPosition = result.point + surfaceNormalOffset * result.normal + surfaceRayOffset * rayStep.Direction;
                 GoalRotation = CalculateMagnetismOrientation(rayStep.Direction, result.normal);
@@ -580,17 +570,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             Vector3 extents = boxCollider.size;
 
-            Vector3[] positions;
-            Vector3[] normals;
-            bool[] hits;
-
-            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, false, out positions, out normals, out hits))
+            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, false, out Vector3[] positions, out Vector3[] normals, out bool[] hits))
             {
-                Plane plane;
-                float distance;
-
                 // Place an unconstrained plane down the ray. Don't use vertical constrain.
-                FindPlacementPlane(rayStep.Origin, rayStep.Direction, positions, normals, hits, boxCollider.size.x, maximumNormalVariance, false, orientationMode == OrientationMode.None, out plane, out distance);
+                FindPlacementPlane(rayStep.Origin, rayStep.Direction, positions,
+                    normals, hits, boxCollider.size.x, maximumNormalVariance, false,
+                    orientationMode == OrientationMode.None, out Plane plane, out float distance);
 
                 // If placing on a horizontal surface, need to adjust the calculated distance by half the app height
                 float verticalCorrectionOffset = 0;
@@ -795,9 +780,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // Figure out how far the plane should be.
             if (!useClosestDistance && closestPointIdx >= 0)
             {
-                float centerPlaneDistance;
-
-                if (plane.Raycast(new Ray(origin, originalDirection), out centerPlaneDistance) || !centerPlaneDistance.Equals(0.0f))
+                if (plane.Raycast(new Ray(origin, originalDirection), out float centerPlaneDistance) || !centerPlaneDistance.Equals(0.0f))
                 {
                     // When the plane is nearly parallel to the user, we need to clamp the distance to where the raycasts hit.
                     closestDistance = Mathf.Clamp(centerPlaneDistance, closestDistance, farthestDistance + assetWidth * 0.5f);

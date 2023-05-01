@@ -37,10 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </inheritdoc/>
         public string ResolveKeyPath(string resolvedKeyPathPrefix, string localKeyPath)
         {
-            if (resolvedKeyPathPrefix == null)
-            {
-                resolvedKeyPathPrefix = "";
-            }
+            resolvedKeyPathPrefix ??= string.Empty;
 
             if (_dataKeyPathMapper != null)
             {

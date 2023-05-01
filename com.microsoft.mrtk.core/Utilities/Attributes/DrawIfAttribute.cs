@@ -48,10 +48,7 @@ namespace Microsoft.MixedReality.Toolkit
         public DrawIfAttribute(string comparedPropertyName, object compareAgainst = null, ComparisonType comparisonMode = ComparisonType.Equal)
         {
             // Because we can't use default parameters for reference types other than string.
-            if (compareAgainst == null)
-            {
-                compareAgainst = true;
-            }
+            compareAgainst ??= true;
 
             ComparedPropertyName = comparedPropertyName;
             CompareAgainst = compareAgainst;

@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             window = GetWindow<AboutMRTK>();
             window.titleContent = WindowTitle;
 
-            if (MixedRealityInspectorUtility.IsMixedRealityToolkitLogoAssetPresent())
+            if (InspectorUIUtility.IsMixedRealityToolkitLogoAssetPresent())
             {
                 window.minSize = WindowSizeWithLogo;
                 window.maxSize = WindowSizeWithLogo;
@@ -78,18 +78,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             using (new EditorGUILayout.VerticalScope())
             {
                 EditorGUILayout.Space(2);
-                if (!MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo())
+                if (!InspectorUIUtility.RenderMixedRealityToolkitLogo())
                 {
                     // Only add additional space if the text fallback is used in RenderMixedRealityToolkitLogo().
                     EditorGUILayout.Space(3);
                 }
-                EditorGUILayout.LabelField("Copyright (c) Microsoft Corporation. Licensed under the MIT License.", MixedRealityStylesUtility.LicenseStyle);
+                EditorGUILayout.LabelField("Copyright (c) Microsoft Corporation. Licensed under the MIT License.", MRTKEditorStyles.LicenseStyle);
                 EditorGUILayout.Space(12);
 
                 if (packageListRequest != null && packageListRequest.IsCompleted == false)
                 {
                     EditorGUILayout.Space(30);
-                    EditorGUILayout.LabelField("Loading package information...", MixedRealityStylesUtility.LicenseStyle);
+                    EditorGUILayout.LabelField("Loading package information...", MRTKEditorStyles.LicenseStyle);
                 }
                 else
                 {

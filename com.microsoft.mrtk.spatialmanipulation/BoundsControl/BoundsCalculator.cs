@@ -130,8 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
             {
-                Collider collider = childTransform.GetComponent<Collider>();
-                if (collider != null)
+                if (childTransform.TryGetComponent(out Collider collider))
                 {
                     colliderByTransform = new KeyValuePair<Transform, Collider>(childTransform, collider);
                 }

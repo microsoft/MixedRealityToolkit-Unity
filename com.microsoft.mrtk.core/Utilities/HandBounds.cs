@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// (or the proxy visualizer of a motion controller).
     /// </summary>
     [AddComponentMenu("MRTK/Core/Hand Bounds")]
-    public class HandBounds : MonoBehaviour // todo, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+    public class HandBounds : MonoBehaviour
     {
         /// <summary>
         /// Accessor for the bounds associated with a handedness, calculated in global-axis-aligned space.
@@ -57,9 +57,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         private Dictionary<Handedness, Matrix4x4> boundsTransforms = new Dictionary<Handedness, Matrix4x4>();
 
-        private HandsAggregatorSubsystem HandSubsystem => handSubsystem ??= HandsUtils.GetSubsystem();
-        private HandsAggregatorSubsystem handSubsystem = null;
-
         #region MonoBehaviour Implementation
 
         private void Update()
@@ -97,8 +94,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         private void ComputeNewBounds(Handedness hand)
         {
-            if (HandSubsystem == null ||
-                !HandSubsystem.TryGetEntireHand(hand == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
+            if (XRSubsystemHelpers.HandsAggregator == null ||
+                !XRSubsystemHelpers.HandsAggregator.TryGetEntireHand(hand == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
                                                 out IReadOnlyList<HandJointPose> jointPoses))
             {
                 GlobalBounds.Remove(hand);

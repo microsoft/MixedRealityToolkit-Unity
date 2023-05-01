@@ -135,12 +135,11 @@ namespace Microsoft.MixedReality.Toolkit
                             direction = step.Direction;
                         }
 
-                        RaycastHit rayHit;
                         hits[index] = RaycastSimplePhysicsStep(
                             new RayStep(origin, direction.normalized * maxDistance),
                             prioritizedLayerMasks,
                             focusIndividualCompoundCollider,
-                            out rayHit);
+                            out RaycastHit rayHit);
 
                         if (hits[index])
                         {

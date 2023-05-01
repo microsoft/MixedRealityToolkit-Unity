@@ -2,6 +2,7 @@
 // Licensed under the Apache License.
 
 using System;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -11,7 +12,39 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
 {
     public static class BuildApp
     {
-        private static string[] scenes = { "Assets/Scenes/HandInteractionExamples.unity" };
+        private static string[] scenes = {
+            "Assets/Scenes/Audio/AudioLoFiExample.unity",
+            "Assets/Scenes/Audio/AudioOcclusionExample.unity",
+            "Assets/Scenes/BoundsControlExamples.unity",
+            "Assets/Scenes/CanvasExample.unity",
+            "Assets/Scenes/CanvasUITearsheet.unity",
+            "Assets/Scenes/ClippingExamples.unity",
+            "Assets/Scenes/DialogExample.unity",
+            "Assets/Scenes/DictationExample.unity",
+            "Assets/Scenes/DirectionalIndicatorExample.unity",
+            "Assets/Scenes/EyeGazeExample.unity",
+            "Assets/Scenes/FontIconExample.unity",
+            "Assets/Scenes/HandInteractionExamples.unity",
+            "Assets/Scenes/HandMenuExamples.unity",
+            "Assets/Scenes/InputFieldExamples.unity",
+            "Assets/Scenes/InteractableButtonExamples.unity",
+            "Assets/Scenes/LegacyConstraintsExample.unity",
+            "Assets/Scenes/MagicWindowExample.unity",
+            "Assets/Scenes/NearMenuExamples.unity",
+            "Assets/Scenes/NonCanvasObjectBarExample.unity",
+            "Assets/Scenes/NonCanvasUIBackplateExample.unity",
+            "Assets/Scenes/OutlineExamples.unity",
+            "Assets/Scenes/NonCanvasUITearSheet.unity",
+            "Assets/Scenes/SeeItSayIt Example.unity",
+            "Assets/Scenes/SlateDrawingExample.unity",
+            "Assets/Scenes/SolverExamples.unity",
+            "Assets/Scenes/SpatialMappingExample.unity",
+            "Assets/Scenes/TapToPlaceExample.unity",
+            "Assets/Scenes/ToggleCollectionExample.unity",
+            "Assets/Scenes/TopNavigationExample.unity",
+            "Assets/Scenes/VanillaUGUIExample.unity",
+            "Assets/Scenes/VirtualizedScrollRectList.unity" };
+
         private static string buildPath = "build";
 
         public static void StartCommandLineBuild()
@@ -45,6 +78,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             Debug.Log($"Finished build... Build success? {success}");
 
             EditorApplication.Exit(success ? 0 : 1);
+        }
+
+        public static void EnsureTMPro()
+        {
+            string assetsFullPath = Path.GetFullPath("Assets/TextMesh Pro");
+            if (Directory.Exists(assetsFullPath))
+            {
+                Debug.Log("TMPro assets folder already imported. Skipping import.");
+                return;
+            }
+
+            // Import the TMP Essential Resources package
+            string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
+            if (Directory.Exists(packageFullPath))
+            {
+                Debug.Log("Importing TextMesh Pro...");
+                AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
+            }
+            else
+            {
+                Debug.LogError("Unable to locate the Text Mesh Pro package.");
+            }
         }
 
         private static void ParseBuildCommandLine()

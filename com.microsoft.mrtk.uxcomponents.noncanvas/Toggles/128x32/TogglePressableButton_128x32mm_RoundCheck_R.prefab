@@ -12,6 +12,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: managedReferences[0].tintables.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: managedReferences[0].tintables.Array.data[1]
+      value: 
+      objectReference: {fileID: 2980225933636764412}
+    - target: {fileID: 954131435394119071, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: stateContainers.entries.Array.data[4].value.effects.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -45,6 +53,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8174955776655707806, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
       propertyPath: canDetoggle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174955776655707806, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8174955776655707806, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
@@ -185,6 +197,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+--- !u!4 &5023622194610704398 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6746213747597823087, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
+  m_PrefabInstance: {fileID: 1740676904742476897}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7591774414076744447 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8174955776655707806, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
@@ -196,11 +213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32e8a7644144f8419bb881ad588ed0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5023622194610704398 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6746213747597823087, guid: 72dfeb9ecf5ad884b87eff8bc5b49276, type: 3}
-  m_PrefabInstance: {fileID: 1740676904742476897}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3092925274768343464
 PrefabInstance:
   m_ObjectHideFlags: 0

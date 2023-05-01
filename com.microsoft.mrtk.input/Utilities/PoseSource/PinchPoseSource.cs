@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             XRNode? handNode = Hand.ToXRNode();
             if (handNode.HasValue
-                && HandsAggregator != null
-                && HandsAggregator.TryGetPinchingPoint(handNode.Value, out HandJointPose pinchPose))
+                && XRSubsystemHelpers.HandsAggregator != null
+                && XRSubsystemHelpers.HandsAggregator.TryGetPinchingPoint(handNode.Value, out HandJointPose pinchPose))
             {
                 pose.position = pinchPose.Position;
                 pose.rotation = pinchPose.Rotation;

@@ -74,10 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             InputTestUtilities.SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.Device);
 
             yield return testHand.Show(Vector3.forward);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.That(controller.transform.position.x, Is.EqualTo(0.0f).Within(0.01f));
 
             yield return testHand.Move(Vector3.right * 0.5f, 60);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Debug.Log("Input system update mode: " + InputSystem.settings.updateMode);
 
             Assert.That(controller.positionAction.action.controls, Has.Count.GreaterThanOrEqualTo(1));
@@ -110,8 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
             yield return testHand.MoveTo(cubePos);
             yield return RuntimeTestUtilities.WaitForUpdates();
-
-            yield return new WaitForSeconds(2.0f);
 
             var hands = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
 
@@ -152,6 +152,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
             bool shouldTestToggle = false;
 
             StatefulInteractable firstCubeInteractable = cube.GetComponent<StatefulInteractable>();
@@ -163,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 shouldTestToggle = !shouldTestToggle;
 
                 yield return rightHand.RotateTo(Quaternion.Euler(0, 45, 0));
+                yield return RuntimeTestUtilities.WaitForUpdates();
 
                 // Test the first cube.
                 firstCubeInteractable.ForceSetToggled(false);
@@ -214,7 +217,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 secondCubeInteractable.TriggerOnRelease = (i % 2) == 0;
 
                 yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(0.5f));
+                yield return RuntimeTestUtilities.WaitForUpdates();
                 yield return rightHand.RotateTo(Quaternion.Euler(0, -45, 0));
+                yield return RuntimeTestUtilities.WaitForUpdates();
 
                 Assert.IsFalse(secondCubeInteractable.IsGrabHovered,
                                "StatefulInteractable was already hovered.");
@@ -256,6 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 }
 
                 yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(0.5f));
+                yield return RuntimeTestUtilities.WaitForUpdates();
             }
 
             yield return null;
@@ -409,7 +415,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser());
 
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.MoveTo(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -482,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Move hand far away.
             yield return rightHand.MoveTo(new Vector3(2, 2, 2));
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:240);
 
             Assert.IsFalse(AnyProximityDetectorsTriggered(), "Prox detectors should no longer be triggered.");
 
@@ -511,10 +519,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             cube.GetComponent<StatefulInteractable>().selectMode = InteractableSelectMode.Multiple;
 
             var rightHand = new TestHand(Handedness.Right);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
-
+            yield return RuntimeTestUtilities.WaitForUpdates();
             // First ensure that the interactor can interact with a cube normally
             yield return rightHand.MoveTo(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -523,12 +533,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             // Now check that all hovers are disabled while selection is maintained after we "lose tracking", which is done by hiding the hand
             yield return rightHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(cube.GetComponent<StatefulInteractable>().IsGrabSelected,
                            "StatefulInteractable is no longer GrabSelected.");
 
             // Make sure state is maintained even if the hand gameobject moves
             yield return rightHand.Move(Vector3.left);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(cube.GetComponent<StatefulInteractable>().IsGrabSelected,
                            "StatefulInteractable is no longer GrabSelected.");
 
@@ -545,6 +557,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             newCube.AddComponent<StatefulInteractable>();
 
             yield return rightHand.MoveTo(newCube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -552,6 +565,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                             "The interactor somehow grabbed the new cube");
 
             yield return rightHand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Finish
             yield return RuntimeTestUtilities.WaitForUpdates();

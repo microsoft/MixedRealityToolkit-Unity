@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(PressableButton), true)]
-    public class PressableButtonEditor : StatefulInteractableInspector
+    public class PressableButtonEditor : StatefulInteractableEditor
     {
         // Struct used to store state of preview.
         // This lets us display accurate info while button is being pressed.
@@ -93,16 +93,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
+            serializedObject.Update();
             currentInfo = GatherCurrentInfo();
             DrawButtonInfo(currentInfo, EditingEnabled);
         }
 
         private ButtonInfo GatherCurrentInfo()
         {
+            BoxCollider collider = button.GetComponentInChildren<BoxCollider>();
             return new ButtonInfo
             {
-                LocalCenter = button.GetComponentInChildren<BoxCollider>().center,
-                PlaneExtents = button.GetComponentInChildren<BoxCollider>().size,
+                // null coalesce safe as we're checking it in the same frame as we get it!
+                LocalCenter = collider?.center ?? Vector3.zero,
+                PlaneExtents = collider?.size ?? Vector3.zero,
                 StartPushPlane = startPushPlane.floatValue,
                 EndPushPlane = endPushPlane.floatValue
             };

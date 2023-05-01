@@ -72,9 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         private MRTKSimulatedControllerState simulatedControllerState;
 
-        private HandsAggregatorSubsystem handSubsystem = null;
-        private HandsAggregatorSubsystem HandSubsystem => handSubsystem ??= HandsUtils.GetSubsystem();
-
         private SyntheticHandsSubsystem synthHandsSubsystem = null;
         private SyntheticHandsSubsystem SynthHands =>
             synthHandsSubsystem ??= XRSubsystemHelpers.GetFirstRunningSubsystem<SyntheticHandsSubsystem>();
@@ -110,9 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             get
             {
-                if (HandSubsystem.TryGetJoint(TrackedHandJoint.IndexTip,
+                HandJointPose indexPose = default;
+                if (XRSubsystemHelpers.HandsAggregator?.TryGetJoint(TrackedHandJoint.IndexTip,
                                               Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
-                                              out HandJointPose indexPose))
+                                              out indexPose) ?? false)
                 {
                     return indexPose.Position;
                 }
@@ -133,8 +131,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         {
             get
             {
-                if (HandSubsystem.TryGetPinchingPoint(Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
-                                                      out HandJointPose grabPose))
+                HandJointPose grabPose = default;
+                if (XRSubsystemHelpers.HandsAggregator?.TryGetPinchingPoint(Handedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand,
+                                                      out grabPose) ?? false)
                 {
                     return grabPose.Position;
                 }
@@ -553,9 +552,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 }
 
                 // Then set the pointer pose.
-                if (shouldUseRayVector && Handedness.ToXRNode().HasValue && HandSubsystem != null &&
-                    HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose) &&
-                    HandSubsystem.TryGetJoint(TrackedHandJoint.IndexProximal, Handedness.ToXRNode().Value, out HandJointPose knucklePose))
+                if (shouldUseRayVector && Handedness.ToXRNode().HasValue &&
+                    XRSubsystemHelpers.HandsAggregator != null &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, Handedness.ToXRNode().Value, out HandJointPose palmPose) &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexProximal, Handedness.ToXRNode().Value, out HandJointPose knucklePose))
                 {
                     // If prompted to use the ray vector, this pose is calculated by simulating a hand ray.
                     handRay.Update(

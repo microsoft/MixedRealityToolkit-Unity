@@ -20,12 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [Header("Palm Up")]
         [SerializeField]
         [FormerlySerializedAs("facingThreshold")]
-        [Tooltip("The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by IMixedRealityHand controllers.")]
+        [Tooltip("The angle (in degrees) of the cone between the palm's up and camera's forward have to match.")]
         [Range(0.0f, 90.0f)]
         private float facingCameraTrackingThreshold = 80.0f;
 
         /// <summary>
-        /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
+        /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match.
         /// </summary>
         public float FacingCameraTrackingThreshold
         {
@@ -34,11 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
-        [Tooltip("Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by IMixedRealityHand controllers.")]
+        [Tooltip("Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape.")]
         private bool requireFlatHand = false;
 
         /// <summary>
-        /// Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
+        /// Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape.
         /// </summary>
         public bool RequireFlatHand
         {
@@ -47,12 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
-        [Tooltip("The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match. Only supported by IMixedRealityHand controllers.")]
+        [Tooltip("The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match.")]
         [Range(0.0f, 90.0f)]
         private float flatHandThreshold = 45.0f;
 
         /// <summary>
-        /// The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
+        /// The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match.
         /// </summary>
         public float FlatHandThreshold
         {
@@ -155,7 +155,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 bool palmFacingThresholdMet = false;
 
-                if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
+                if (XRSubsystemHelpers.HandsAggregator != null &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
                 {
                     float dotProduct = Vector3.Dot(palmPose.Up, Camera.main.transform.forward);
                     if (dotProduct >= 0)
@@ -232,8 +233,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (requireFlatHand)
                 {
                     // Check if the triangle's normal formed from the palm, to index, to ring finger tip roughly matches the palm normal.
-                    if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexTip, hand, out HandJointPose indexTipPose) &&
-                        SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.RingTip, hand, out HandJointPose ringTipPose))
+                    if (XRSubsystemHelpers.HandsAggregator != null &&
+                        XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexTip, hand, out HandJointPose indexTipPose) &&
+                        XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.RingTip, hand, out HandJointPose ringTipPose))
                     {
                         var handNormal = Vector3.Cross(indexTipPose.Position - palmPose.Position,
                                                        ringTipPose.Position - indexTipPose.Position).normalized;
@@ -312,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Coroutine function called by the ManipulationHandler of the attached object whenever the object is done 
+        /// Coroutine function called by the ObjectManipulator of the attached object whenever the object is done 
         /// being manipulated by the user. This triggers a coroutine that checks to see whether the object should 
         /// reattach to the hand.
         /// </summary>
@@ -352,9 +354,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 // Generate the hand plane that we're using to generate a distance value.
                 // This is done by using the index knuckle, pinky knuckle, and wrist
-                if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.IndexProximal, hand, out HandJointPose indexKnuckle) &&
-                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.LittleProximal, hand, out HandJointPose pinkyKnuckle) &&
-                    SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Wrist, hand, out HandJointPose wrist))
+                if (XRSubsystemHelpers.HandsAggregator != null &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.IndexProximal, hand, out HandJointPose indexKnuckle) &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.LittleProximal, hand, out HandJointPose pinkyKnuckle) &&
+                    XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Wrist, hand, out HandJointPose wrist))
                 {
                     handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
                     if (TryGenerateActivationPoint(hand, out Vector3 generatedActivationPoint))
@@ -397,7 +400,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 TrackedHandJoint referenceJoint1;
                 TrackedHandJoint referenceJoint2;
                 HandJointPose referenceJointPose1;
-                HandJointPose referenceJointPose2;
                 activationPoint = Vector3.zero;
 
                 switch (SafeZone)
@@ -408,7 +410,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         break;
 
                     case SolverSafeZone.BelowWrist:
-                        if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Wrist, hand, out referenceJointPose1))
+                        if (XRSubsystemHelpers.HandsAggregator != null &&
+                            XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Wrist, hand, out referenceJointPose1))
                         {
                             activationPoint = referenceJointPose1.Position;
                             return true;
@@ -435,8 +438,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         break;
                 }
 
-                if (!SolverHandler.HandSubsystem.TryGetJoint(referenceJoint1, hand, out referenceJointPose1) ||
-                    !SolverHandler.HandSubsystem.TryGetJoint(referenceJoint2, hand, out referenceJointPose2))
+                if (XRSubsystemHelpers.HandsAggregator == null ||
+                    !XRSubsystemHelpers.HandsAggregator.TryGetJoint(referenceJoint1, hand, out referenceJointPose1) ||
+                    !XRSubsystemHelpers.HandsAggregator.TryGetJoint(referenceJoint2, hand, out HandJointPose referenceJointPose2))
                 {
                     return false;
                 }
@@ -460,7 +464,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 if (hand.HasValue)
                 {
-                    if (SolverHandler.HandSubsystem.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
+                    if (XRSubsystemHelpers.HandsAggregator != null &&
+                        XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, hand.Value, out HandJointPose palmPose))
                     {
                         float palmCameraAngle = Vector3.Angle(palmPose.Up, Camera.main.transform.forward);
                         if (IsPalmMeetingThresholdRequirements(hand.Value, palmPose, palmCameraAngle) &&

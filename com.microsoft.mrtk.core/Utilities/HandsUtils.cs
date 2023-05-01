@@ -19,10 +19,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>
         /// The first running <see cref="HandsAggregatorSubsystem"/> instance, or null.
         /// </returns>
-        public static HandsAggregatorSubsystem GetSubsystem()
-        {
-            return XRSubsystemHelpers.GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
-        }
+        [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator")]
+        public static HandsAggregatorSubsystem GetSubsystem() => XRSubsystemHelpers.HandsAggregator;
 
         internal static readonly HandFinger[] HandFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
 

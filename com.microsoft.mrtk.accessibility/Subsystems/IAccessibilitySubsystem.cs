@@ -14,43 +14,43 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     /// </summary>
     public interface IAccessibilitySubsystem
     {
-        #region Describable object management
+        #region Accessible object management
 
         /// <summary>
-        /// Attempts to retrieve the collection of <see cref="DescribableObjectClassification"/>s for the objects
+        /// Attempts to retrieve the collection of <see cref="AccessibleObjectClassification"/>s for the objects
         /// that have been registered.
         /// </summary>
-        /// <param name="classifications">List to receive the collection of registered <see cref="DescribableObjectClassification"/>s.</param>
+        /// <param name="classifications">List to receive the collection of registered <see cref="AccessibleObjectClassification"/>s.</param>
         /// <returns>True if classifications have been successfully retrieved, or false.</returns>
         /// <remarks>
-        /// The passed in list will be cleared then filled with all <see cref="DescribableObjectClassification"/>s that matach
+        /// The passed in list will be cleared then filled with all <see cref="AccessibleObjectClassification"/>s that matach
         /// a previously registered object. Classifications are not removed after all matching objects have been
         /// unregistered.
         /// </remarks>
-        bool TryGetDescribableObjectClassifications(List<DescribableObjectClassification> classifications);
+        bool TryGetAccessibleObjectClassifications(List<AccessibleObjectClassification> classifications);
 
         /// <summary>
-        /// Attempts to register the specified <see cref="GameObject"/> using the associated <see cref="DescribableObjectClassification"/>.
+        /// Attempts to register the specified <see cref="GameObject"/> using the associated <see cref="AccessibleObjectClassification"/>.
         /// </summary>
-        /// <param name="describableObject">The <see cref="GameObject"/> to be registered.</param>
+        /// <param name="accessibleObject">The <see cref="GameObject"/> to be registered.</param>
         /// <param name="classification">The classification (people, places, things, etc.) for the <see cref="GameObject"/>.</param>
         /// <returns>True if successfully registered or false.</returns>
         /// <remarks>
         /// The registration process requires that a <see cref="GameObject"/> belongs to exactly one classification.
         /// </remarks>
-        bool TryRegisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
+        bool TryRegisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification);
 
         /// <summary>
-        /// Attempts to unregister the specified <see cref="GameObject"/> using the associated <see cref="DescribableObjectClassification"/>
+        /// Attempts to unregister the specified <see cref="GameObject"/> using the associated <see cref="AccessibleObjectClassification"/>
         /// </summary>
-        /// <param name="describableObject">The <see cref="GameObject"/> to be unregistered.</param>
+        /// <param name="accessibleObject">The <see cref="GameObject"/> to be unregistered.</param>
         /// <param name="classification">The classification (people, places, things, etc.) for the <see cref="GameObject"/>.</param>
         /// <remarks>
         /// The registration process requires that a <see cref="GameObject"/> belongs to exactly one classification.
         /// </remarks>
-        bool TryUnregisterDescribableObject(GameObject describableObject, DescribableObjectClassification classification);
+        bool TryUnregisterAccessibleObject(GameObject accessibleObject, AccessibleObjectClassification classification);
 
-        #endregion Describable object management
+        #endregion Accessible object management
 
         #region Text color inversion
 

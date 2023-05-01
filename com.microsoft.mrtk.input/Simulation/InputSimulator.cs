@@ -310,6 +310,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         // TODO: Drive from inspector/simulator options.
         private float triggerSmoothTime = 0.1f;
 
+        // TODO: Drive from inspector/simulator options.
+        private float triggerSmoothDeadzone = 0.005f;
+
         /// <summary>
         /// Enables the simulated controller.
         /// </summary>
@@ -446,44 +449,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 bool isControlledByMouse = ctrlSettings.MoveHorizontal.action.RaisedByMouse() ||
                                            ctrlSettings.MoveVertical.action.RaisedByMouse();
 
-                Vector3 positionDelta;
-                if (isControlledByMouse && !ctrlSettings.ToggleState) // If tracking is latched, we do not want to 1:1 track the mouse location.
-                {
-                    /* TODO: this needs work, also depth moves the hands towards the vanishing point
-                    Vector3 screenDepth = CameraRelativeToScreen(new Vector3(
-                        simCtrl.RelativePosition.z,
-                        0f, ctrlSettings.DefaultPosition.z));
-                    */
+                bool isControllingRotation = ctrlSettings.Pitch.action.IsPressed() ||
+                                  ctrlSettings.Yaw.action.IsPressed() ||
+                                  ctrlSettings.Roll.action.IsPressed();
 
-                    Vector3 mouseScreenPos = new Vector3(
-                        Mouse.current.position.ReadValue().x,
-                        Mouse.current.position.ReadValue().y,
-                        ctrlSettings.DefaultPosition.z);
-                    // TODO: related to the above - screenDepth.x + ctrlSettings.MoveDepth.action.ReadValue<float>());
-
-                    Vector3 inputPosition = ScreenToCameraRelative(mouseScreenPos);
-
-                    positionDelta = inputPosition - simCtrl.CameraRelativePose.position;
-                    positionDelta.z = ctrlSettings.MoveDepth.action.ReadValue<float>();
-                }
-                else
-                {
-                    positionDelta = new Vector3(
-                        ctrlSettings.MoveHorizontal.action.ReadValue<float>(),
-                        ctrlSettings.MoveVertical.action.ReadValue<float>(),
-                        ctrlSettings.MoveDepth.action.ReadValue<float>());
-                }
-
+                Vector3 positionDelta = Vector3.zero;
                 Quaternion rotationDelta = NoRotation;
 
-                // Update the rotation mode
+                // Update the rotation mode if the user wants to face the camera
                 if (ctrlSettings.FaceTheCamera.action.WasPerformedThisFrame())
                 {
                     ctrlSettings.RotationMode = (ctrlSettings.RotationMode == ControllerRotationMode.FaceCamera) ?
                         ControllerRotationMode.CameraAligned : ControllerRotationMode.FaceCamera;
                 }
-                else
+                else if (isControllingRotation)
                 {
+                    // Ignore position delta if the user is trying to manually rotate the hand
                     rotationDelta = Quaternion.Euler(
                         // Unity appears to invert the controller pitch by default (move forward to look down)
                         ctrlSettings.Pitch.action.ReadValue<float>() * (!ctrlSettings.InvertPitch ? -1 : 1),
@@ -491,6 +472,35 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                         ctrlSettings.Roll.action.ReadValue<float>());
 
                     if (rotationDelta != NoRotation) { ctrlSettings.RotationMode = ControllerRotationMode.UserControl; }
+                }
+                else
+                {
+                    if (isControlledByMouse && !ctrlSettings.ToggleState) // If tracking is latched, we do not want to 1:1 track the mouse location.
+                    {
+                        /* TODO: this needs work, also depth moves the hands towards the vanishing point
+                        Vector3 screenDepth = CameraRelativeToScreen(new Vector3(
+                            simCtrl.RelativePosition.z,
+                            0f, ctrlSettings.DefaultPosition.z));
+                        */
+
+                        Vector3 mouseScreenPos = new Vector3(
+                            Mouse.current.position.ReadValue().x,
+                            Mouse.current.position.ReadValue().y,
+                            ctrlSettings.DefaultPosition.z);
+                        // TODO: related to the above - screenDepth.x + ctrlSettings.MoveDepth.action.ReadValue<float>());
+
+                        Vector3 inputPosition = ScreenToCameraRelative(mouseScreenPos);
+
+                        positionDelta = inputPosition - simCtrl.CameraRelativePose.position;
+                        positionDelta.z = ctrlSettings.MoveDepth.action.ReadValue<float>();
+                    }
+                    else
+                    {
+                        positionDelta = new Vector3(
+                            ctrlSettings.MoveHorizontal.action.ReadValue<float>(),
+                            ctrlSettings.MoveVertical.action.ReadValue<float>(),
+                            ctrlSettings.MoveDepth.action.ReadValue<float>());
+                    }
                 }
 
                 ControllerControls controls = GetControllerControls(handedness);
@@ -500,11 +510,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // TODO: Currently triggerAxis is driven only from ctrlSettings.TriggerButton.action.
                 // We will eventually drive this from the ctrlSettings.TriggerAxis.action as well.
                 // Needs work to be able to intuitively combine trigger axis from sim input with click.
+                float targetValue = ctrlSettings.TriggerButton.action.IsPressed() ? 1 : 0;
+
                 controls.TriggerAxis = Mathf.SmoothDamp(controls.TriggerAxis,
-                                                        ctrlSettings.TriggerButton.action.IsPressed() ? 1 : 0,
+                                                        targetValue,
                                                         ref triggerSmoothVelocity,
                                                         triggerSmoothTime);
 
+                if(Mathf.Abs(controls.TriggerAxis - targetValue) < triggerSmoothDeadzone)
+                {
+                    controls.TriggerAxis = targetValue;
+                }
 #if LATER
 // TODO: mappings need to be sorted out for these
                 // Axes available to hands and controllers

@@ -115,10 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (toggles == null || toggles.Count == 0)
             {
                 // Make sure our toggles are not null.
-                if (toggles == null)
-                {
-                    toggles = new List<StatefulInteractable>();
-                }
+                toggles ??= new List<StatefulInteractable>();
 
                 // Find some toggles!
                 foreach (Transform child in transform)

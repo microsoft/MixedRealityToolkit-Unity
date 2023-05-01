@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   loadedSubsystems:
+  - reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystem,
+      Microsoft.MixedReality.Toolkit.Speech.Windows
+  - reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsTextToSpeechSubsystem,
+      Microsoft.MixedReality.Toolkit.Speech.Windows
   - reference: Microsoft.MixedReality.Toolkit.Accessibility.MRTKAccessibilitySubsystem,
       Microsoft.MixedReality.Toolkit.Accessibility
   - reference: Microsoft.MixedReality.Toolkit.Input.OpenXRHandsSubsystem, Microsoft.MixedReality.Toolkit.Input
@@ -22,6 +26,18 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.Input
   subsystemConfigs:
     entries:
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsTextToSpeechSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: ec06601741075d94188888a307e8ebd7, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: 610e76a350bf5e24b95a8b7d7024ded7, type: 2}
+    - key:
+        reference: Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsDictationSubsystem,
+          Microsoft.MixedReality.Toolkit.Speech.Windows
+      value: {fileID: 11400000, guid: c1ec3a5357948504fac70f304d21881a, type: 2}
     - key:
         reference: Microsoft.MixedReality.Toolkit.Accessibility.MRTKAccessibilitySubsystem,
           Microsoft.MixedReality.Toolkit.Accessibility
@@ -34,3 +50,4 @@ MonoBehaviour:
         reference: Microsoft.MixedReality.Toolkit.Input.MRTKHandsAggregatorSubsystem,
           Microsoft.MixedReality.Toolkit.Input
       value: {fileID: 11400000, guid: b8da41358d218754494ea49599e7b0fb, type: 2}
+  <SpatializationMixer>k__BackingField: {fileID: 0}

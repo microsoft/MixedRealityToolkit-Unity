@@ -1,8 +1,8 @@
 {
   "name": "com.microsoft.mrtk.windowsspeech",
   "version": "3.0.0-development",
-  "description": "Speech subsystem implementation for native Windows speech APIs. Allows for the use of native Windows speech recognition to fire events and drive XRI interactions.",
-  "displayName": "MRTK Windows Speech Recognition",
+  "description": "Speech subsystem implementation for native Windows speech APIs. Allows for the use of native Windows text to speech and speech recognition (keyword recognition and dictation) to fire events and drive XRI interactions.",
+  "displayName": "MRTK Windows Speech",
   "msftFeatureCategory": "MRTK3",
   "author": "Microsoft",
   "license": "MIT",
@@ -13,8 +13,9 @@
   "bugs": {
     "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
   },
-  "unity": "2020.3",
+  "unity": "2021.3",
   "dependencies": {
-    "com.microsoft.mrtk.core": "3.0.0-development"
+    "com.microsoft.mrtk.core": "3.0.0-development",
+    "com.microsoft.mrtk.tts.windows": "1.0.1"
   }
 }

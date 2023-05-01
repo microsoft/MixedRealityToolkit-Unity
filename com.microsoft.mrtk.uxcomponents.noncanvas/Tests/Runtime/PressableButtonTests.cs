@@ -38,13 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             }
         }
 
-        public override IEnumerator Setup()
-        {
-            yield return base.Setup();
-            InputTestUtilities.InitializeCameraToOriginAndForward();
-            yield return null;
-        }
-
         #region Tests
 
         [UnityTest]
@@ -100,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             // Move the camera to origin looking at +z to more easily see the button.
             InputTestUtilities.InitializeCameraToOriginAndForward();
 
-            testButton.transform.position = new Vector3(0, 0, 1);
+            testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -126,10 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
-            // Move the camera to origin looking at +z to more easily see the button.
-            InputTestUtilities.InitializeCameraToOriginAndForward();
-
-            testButton.transform.position = new Vector3(0, 0, 1);
+            testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -162,17 +152,15 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
-            // Move the camera to origin looking at +z to more easily see the button.
-            InputTestUtilities.InitializeCameraToOriginAndForward();
-
-            testButton.transform.position = new Vector3(0, 0, 1);
+            testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsNotNull(buttonComponent);
 
             buttonComponent.OnClicked.AddListener(() => { buttonComponent.enabled = false; });
 
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Press *through* the button
             yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
@@ -194,9 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             GameObject testButton1 = InstantiateDefaultPressableButton(prefabFilename);
             GameObject testButton2 = InstantiateDefaultPressableButton(prefabFilename);
 
-
-            testButton1.transform.position = new Vector3(0, 0, 1);
-            testButton2.transform.position = new Vector3(0, 0, 1);
+            testButton1.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
+            testButton2.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             // Move the camera to origin looking at +z to more easily see the button.
             InputTestUtilities.InitializeCameraToOriginAndForward();
@@ -225,18 +212,16 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
 
-        /* TODO: Disabled for now because v3 currently doesn't do any interpolation on the interactor position, so we can't detect that we "pressed" the button when moving the interactor at high speeds
         /// <summary>
-        /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled back-press protection
-        /// if hands were moving too fast in low framerate
+        /// Presses the button extremely quickly (to the point where there is no single frame where
+        /// the finger actually overlaps the button!) This tests whether our poke interpolation
+        /// heuristics are working correctly.
         /// </summary>
         [UnityTest]
         public IEnumerator PressButtonFast([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
-
-            // Move the camera to origin looking at +z to more easily see the button.
-            InputTestUtilities.InitializeCameraToOriginAndForward();
+            testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -245,14 +230,20 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             bool buttonPressed = false;
             buttonComponent.selectEntered.AddListener((args) => { buttonPressed = true; });
 
-            // move the hand quickly from very far distance into the button and check if it was pressed
             TestHand hand = new TestHand(Handedness.Right);
-            int numSteps = 2;
-            Vector3 p1 = new Vector3(0, 0, -20.0f);
-            Vector3 p2 = new Vector3(0, 0, 0.02f);
 
-            yield return hand.Show(p1);
-            yield return hand.MoveTo(p2, numSteps);
+            // We have to start the finger near-ish the button, or else
+            // the poke interactor won't even be enabled "in time". TODO: consider
+            // possibly making poke interactions always enabled.
+            Vector3 p1 = new Vector3(0, 0, -0.1f);
+            Vector3 p2 = new Vector3(0, 0, 1f);
+
+            yield return hand.Show(testButton.transform.position + p1);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            Assert.IsTrue(!buttonPressed, "Button should not be pressed yet");
+
+            // Ony two steps! Very fast.
+            yield return hand.MoveTo(testButton.transform.position + p2, 2);
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
 
@@ -260,7 +251,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             yield return null;
         }
-        */
 
         /* TODO: A buttons visuals test which should be put in it's own category
         /// <summary>
@@ -312,15 +302,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
-            InputTestUtilities.InitializeCameraToOriginAndForward();
-
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             var objectToMoveAndScale = testButton.transform;
 
-            objectToMoveAndScale.position += new Vector3(0f, 0.3f, 0.8f);
+            objectToMoveAndScale.position = InputTestUtilities.InFrontOfUser(new Vector3(0f, 0.0f, 0.8f));
             objectToMoveAndScale.localScale *= 15f; // scale button up so it's easier to hit it with the far interaction pointer
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             bool buttonTriggered = false;
 
@@ -332,14 +319,17 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             });
 
             TestHand hand = new TestHand(Handedness.Right);
-            Vector3 initialHandPosition = new Vector3(0.05f, -0.05f, 0.3f); // orient hand so far interaction ray will hit button
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, -0.05f, 0.3f)); // orient hand so far interaction ray will hit button
             yield return hand.Show(initialHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.SetHandshape(HandshapeId.Open);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
 
             Object.Destroy(testButton);
-            yield return null;
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         /// <summary>
@@ -349,9 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         public IEnumerator ReleaseButton([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
-            testButton.transform.position = new Vector3(0, 0, 1);
-
-            InputTestUtilities.InitializeCameraToOriginAndForward();
+            testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -442,9 +430,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         public IEnumerator ToggleButton([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
-            testButton.transform.position = new Vector3(0, 0, 1);
-
-            InputTestUtilities.InitializeCameraToOriginAndForward();
+            testButton.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0, 0, 1));
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -831,11 +817,13 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.MoveTo(buttonPosition + p1);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Slowly move the hand to touch the button
-            // May be prone to errors if the hand moves with too large of a step due to the button not interpolating the hand position
-            yield return hand.MoveTo(buttonPosition + p2, 80);
+            yield return hand.MoveTo(buttonPosition + p2, 15);
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         /// <summary>
@@ -847,7 +835,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.MoveTo(buttonPosition + p3);
+            yield return RuntimeTestUtilities.WaitForUpdates();
             yield return hand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         #endregion Private methods

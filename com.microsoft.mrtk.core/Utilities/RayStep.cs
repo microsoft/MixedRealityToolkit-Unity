@@ -140,14 +140,12 @@ namespace Microsoft.MixedReality.Toolkit
             Debug.Assert(steps != null && steps.Length > 0);
 
             float traveledDistance = 0;
-            float stepLength = 0;
             RayStep currentStep = new RayStep();
-
 
             foreach (var step in steps)
             {
                 currentStep = step;
-                stepLength = step.Length;
+                float stepLength = step.Length;
 
                 if (distance > traveledDistance + stepLength)
                 {

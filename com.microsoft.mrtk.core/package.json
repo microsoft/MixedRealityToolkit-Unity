@@ -13,9 +13,9 @@
   "bugs": {
     "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
   },
-  "unity": "2020.3",
+  "unity": "2021.3",
   "dependencies": {
-    "com.unity.xr.interaction.toolkit": "2.0.3",
+    "com.unity.xr.interaction.toolkit": "2.2.0",
     "com.unity.xr.management": "4.2.1",
     "com.unity.xr.core-utils": "2.1.0"
   }

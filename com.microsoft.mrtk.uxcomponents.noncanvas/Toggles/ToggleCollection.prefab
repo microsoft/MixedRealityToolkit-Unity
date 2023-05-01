@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.044, y: -0.0704, z: 0.552}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1084037951096463951}
   - {fileID: 1084037950028722989}
@@ -50,6 +51,7 @@ MonoBehaviour:
   - {fileID: 356381358237148105}
   - {fileID: 356381359321608875}
   - {fileID: 356381359705215712}
+  allowSwitchOff: 0
   currentIndex: 0
   onToggleSelected:
     m_PersistentCalls:
@@ -109,13 +111,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: ToggleableSpritePressableButton_128x32mm (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7591774414076744447, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
---- !u!4 &1084037950028722989 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7107312069017326457, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
-  m_PrefabInstance: {fileID: 7901979435226554452}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &356381359321608875 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7591774414076744447, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
@@ -127,6 +128,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32e8a7644144f8419bb881ad588ed0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1084037950028722989 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7107312069017326457, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
+  m_PrefabInstance: {fileID: 7901979435226554452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7901979435312431135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -182,13 +188,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: ToggleableSpritePressableButton_128x32mm (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7591774414076744447, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
---- !u!4 &1084037950416786278 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7107312069017326457, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
-  m_PrefabInstance: {fileID: 7901979435312431135}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &356381359705215712 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7591774414076744447, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
@@ -200,6 +205,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32e8a7644144f8419bb881ad588ed0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1084037950416786278 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7107312069017326457, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
+  m_PrefabInstance: {fileID: 7901979435312431135}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7901979436310491446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -255,13 +265,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: ToggleableSpritePressableButton_128x32mm
       objectReference: {fileID: 0}
+    - target: {fileID: 7591774414076744447, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
---- !u!4 &1084037951096463951 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7107312069017326457, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
-  m_PrefabInstance: {fileID: 7901979436310491446}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &356381358237148105 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7591774414076744447, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
@@ -273,3 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32e8a7644144f8419bb881ad588ed0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1084037951096463951 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7107312069017326457, guid: d4ce83b8ab85d86408f92a7184cd4fad, type: 3}
+  m_PrefabInstance: {fileID: 7901979436310491446}
+  m_PrefabAsset: {fileID: 0}
