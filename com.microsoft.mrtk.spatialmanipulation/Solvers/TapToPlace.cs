@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,16 +18,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     public class TapToPlace : Solver
     {
         [SerializeField]
-        [Tooltip("The input action which is to control placement.")]
-        private InputActionReference placementActionReference = null;
+        [Tooltip("The input actions which are to control placement.")]
+        private List<InputActionReference> placementActionReferences = new List<InputActionReference>();
 
         /// <summary>
-        /// The input action which is to control placement.
+        /// The input actions which are to control placement.
         /// </summary>
-        public InputActionReference PlacementActionReference
+        public List<InputActionReference> PlacementActionReferences
         {
-            get => placementActionReference;
-            set => placementActionReference = value;
+            get => placementActionReferences;
+            set => placementActionReferences = value;
         }
 
         // todo: needed? [Space(10)]
@@ -467,13 +468,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void RegisterPlacementAction()
         {
-            InputAction placementAction = GetInputActionFromReference(placementActionReference);
-            if (placementAction == null)
+            foreach(InputActionReference placementActionReference in placementActionReferences)
             {
-                Debug.Log("Failed to register the placement action, the action reference was null or contained no action.");
-                return;
+                InputAction placementAction = GetInputActionFromReference(placementActionReference);
+                if (placementAction == null)
+                {
+                    Debug.Log("Failed to register the placement action, the action reference was null or contained no action.");
+                    return;
+                }
+                placementAction.performed += StopPlacement;
             }
-            placementAction.performed += StopPlacement;
         }
 
         /// <summary>
@@ -494,13 +498,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void UnregisterPlacementAction()
         {
-            InputAction placementAction = GetInputActionFromReference(placementActionReference);
-            if (placementAction == null)
+            foreach (InputActionReference placementActionReference in placementActionReferences)
             {
-                Debug.Log("Failed to unregister the placement action, the action reference was null or contained no action.");
-                return;
+                InputAction placementAction = GetInputActionFromReference(placementActionReference);
+                if (placementAction == null)
+                {
+                    Debug.Log("Failed to unregister the placement action, the action reference was null or contained no action.");
+                    return;
+                }
+                placementAction.performed -= StopPlacement;
             }
-            placementAction.performed -= StopPlacement;
         }
 
         /// <summary>
