@@ -36,9 +36,28 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private string defaultValue;
 
         /// <summary>
+        /// The default string value for this key.
+        /// </summary>
+        public string DefaultValue
+        {
+            get => defaultValue;
+            set => defaultValue = value;
+        }
+
+        /// <summary>
         /// The shifted string value for this key.
         /// </summary>
+        [SerializeField, Tooltip("The shifted string value for this key.")]
         private string shiftedValue = null;
+
+        /// <summary>
+        /// The shifted string value for this key.
+        /// </summary>
+        public string ShiftedValue
+        {
+            get => shiftedValue;
+            set => shiftedValue = value;
+        }
 
         /// <summary>
         /// Reference to child text element.
@@ -56,11 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             CurrentValue = defaultValue;
 
-            if (char.TryParse(defaultValue, out char parsedChar) && char.IsLower(parsedChar))
-            {
-                shiftedValue = char.ToUpperInvariant(parsedChar).ToString();
-            }
-            else
+            if (string.IsNullOrEmpty(shiftedValue))
             {
                 shiftedValue = defaultValue;
             }
@@ -68,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void Start()
         {
-            NonNativeKeyboard.Instance.OnKeyboardShifted.AddListener(Shift);
+            NonNativeKeyboard.Instance?.OnKeyboardShifted?.AddListener(Shift);
         }
 
         private void OnValidate()
@@ -77,7 +92,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 textMeshProText = GetComponentInChildren<TMP_Text>();
             }
-            textMeshProText.text = defaultValue;
+            if (textMeshProText != null)
+            {
+                textMeshProText.text = defaultValue;
+            }
         }
 
         /// <inheritdoc/>

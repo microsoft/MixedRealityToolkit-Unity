@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             Tab,
             ABC,
             Symbol,
+            Previous, 
+            Next,
             Close,
 
             // Editing
@@ -35,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// The function of this key.
         /// </summary>
         [field: SerializeField, Tooltip("The function of this key.")]
-        public Function KeyFunction { get; private set; } = Function.UNDEFINED;
+        public Function KeyFunction { get; set; } = Function.UNDEFINED;
 
         /// <inheritdoc/>
         protected override void FireKey()

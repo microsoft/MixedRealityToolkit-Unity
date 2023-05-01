@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -84,22 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #region Properties
 
         /// <summary>
-        /// Current text of the keyboard.
+        /// The InputField that the keyboard uses to show the currently edited text.
+        /// If you are using the Keyboard prefab you can ignore this field as it will
+        /// be already assigned.
         /// </summary>
-        public string Text
-        {
-            get => text;
-            set
-            {
-                if (text != value)
-                {
-                    text = value;
-                    OnTextUpdate?.Invoke(text);
-                }
-            }
-        }
-
-        private string text;
+        public TMP_InputField InputField = null;
 
         /// <summary>
         /// Whether the keyboard is currently active
@@ -134,6 +124,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public bool IsCapsLocked { get; private set; }
 
+        /// <summary>
+        /// The position of the caret in the text field.
+        /// </summary>
+        private int m_CaretPosition = 0;
         #endregion Properties
 
         #region Keyboard component references
@@ -178,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Time on which the keyboard should close on inactivity
         /// </summary>
         private float timeToClose;
-
         #endregion Private fields
 
         #region MonoBehaviours
@@ -192,14 +185,73 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 return;
             }
             Instance = this;
+
+             
+            if (InputField != null)
+            {
+                // Setting the keyboardType to an undefined TouchScreenKeyboardType,
+                // which prevents the MRTK keyboard from triggering the system keyboard itself.
+                InputField.keyboardType = (TouchScreenKeyboardType)(int.MaxValue);
+            }
+            else
+            {
+                Debug.LogError("You must set an input field for the NonNativeKeyboard.");
+            }
+
+            if (OnKeyPressed == null)
+            {
+                OnKeyPressed = new NonNativeKeyboardPressEvent();
+            }
+            if (OnTextSubmit == null)
+            {
+                OnTextSubmit = new NonNativeKeyboardTextEvent();
+            }
+            if (OnTextUpdate == null)
+            {
+                OnTextUpdate = new NonNativeKeyboardTextEvent();
+            }
+            if (OnClose == null)
+            {
+                OnTextUpdate = new NonNativeKeyboardTextEvent();
+            }
+            if (OnShow == null)
+            {
+                OnShow = new UnityEvent();
+            }
+            if (OnKeyboardShifted == null)
+            {
+                OnKeyboardShifted = new NonNativeKeyboardShiftEvent();
+            }
+
             // Hide the keyboard on Awake
             gameObject.SetActive(false);
         }
+
+        /// <summary>
+        /// Set up Dictation, CanvasEX, and automatically select the TextInput object.
+        /// </summary>
+        protected void Start()
+        {
+            // Delegate Subscription
+            if (InputField != null)
+            {
+                InputField.onValueChanged.AddListener(DoTextUpdated);
+            }
+        }
+
+        /// <summary>
+        /// Intermediary function for text update events.
+        /// Workaround for strange leftover reference when unsubscribing.
+        /// </summary>
+        /// <param name="value">String value.</param>
+        private void DoTextUpdated(string value) => OnTextUpdate?.Invoke(value);
 
         private void LateUpdate()
         {
             CheckForCloseOnInactivityTimeExpired();
         }
+
+        private void UpdateCaretPosition(int newPos) => InputField.caretPosition = newPos;
 
         private void OnDisable()
         {
@@ -232,11 +284,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Opens the default keyboard with start text.
         /// </summary>
-        /// <param name="startText">The initial text to put into <see cref="Text"/>.</param>
+        /// <param name="startText">The initial text to put into <see cref="InputField"/>.</param>
         public void Open(string startText)
         {
             Clear();
-            Text = startText;
+            if (InputField != null)
+            {
+                InputField.text = startText;
+            }
             Open();
         }
 
@@ -249,7 +304,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             ResetClosingTime();
             gameObject.SetActive(true);
             ActivateSpecificKeyboard(keyboardType);
-            OnShow.Invoke();
+            OnShow?.Invoke();
+
+            if (InputField != null)
+            {
+                InputField.ActivateInputField();
+            }
         }
 
         /// <summary>
@@ -260,7 +320,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public void Open(string startText, LayoutType keyboardType)
         {
             Clear();
-            Text = startText;
+            if (InputField != null)
+            {
+                InputField.text = startText;
+            }
             Open(keyboardType);
         }
 
@@ -273,15 +336,28 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void ProcessValueKeyPress(NonNativeValueKey valueKey)
         {
-            ResetClosingTime();
-            OnKeyPressed.Invoke(valueKey);
-
-            Text += valueKey.CurrentValue;
-            OnTextUpdate.Invoke(Text);
-
-            if (!IsCapsLocked)
+            if (InputField != null)
             {
-                Shift(false);
+                ResetClosingTime();
+                OnKeyPressed?.Invoke(valueKey);
+
+                if (InputField != null)
+                {
+                    m_CaretPosition = InputField.caretPosition;
+                    InputField.text = InputField.text.Insert(m_CaretPosition, valueKey.CurrentValue);
+                    m_CaretPosition += valueKey.CurrentValue.Length;
+
+                    UpdateCaretPosition(m_CaretPosition);
+                }
+
+                if (!IsCapsLocked)
+                {
+                    Shift(false);
+                }
+            }
+            else
+            {
+                Debug.LogError("You must set an input field for the NonNativeKeyboard.");
             }
         }
 
@@ -290,49 +366,68 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void ProcessFunctionKeyPress(NonNativeFunctionKey functionKey)
         {
-            ResetClosingTime();
-            OnKeyPressed.Invoke(functionKey);
-            switch (functionKey.KeyFunction)
+            if (InputField != null)
             {
-                case Function.Enter:
-                    Enter();
-                    break;
+                ResetClosingTime();
+                OnKeyPressed?.Invoke(functionKey);
+                switch (functionKey.KeyFunction)
+                {
+                    case Function.Enter:
+                        Enter();
+                        break;
 
-                case Function.Tab:
-                    Tab();
-                    break;
+                    case Function.Tab:
+                        Tab();
+                        break;
 
-                case Function.ABC:
-                    ActivateSpecificKeyboard(lastKeyboardLayout);
-                    break;
+                    case Function.ABC:
+                        ActivateSpecificKeyboard(lastKeyboardLayout);
+                        break;
 
-                case Function.Symbol:
-                    ActivateSpecificKeyboard(LayoutType.Symbol);
-                    break;
+                    case Function.Symbol:
+                        ActivateSpecificKeyboard(LayoutType.Symbol);
+                        break;
 
-                case Function.Close:
-                    Close();
-                    break;
+                    case Function.Previous:
+                        {
+                            MoveCaretLeft();
+                            break;
+                        }
 
-                case Function.Shift:
-                    Shift(!IsShifted);
-                    break;
+                    case Function.Next:
+                        {
+                            MoveCaretRight();
+                            break;
+                        }
 
-                case Function.CapsLock:
-                    CapsLock(!IsCapsLocked);
-                    break;
+                    case Function.Close:
+                        Close();
+                        break;
 
-                case Function.Space:
-                    Space();
-                    break;
+                    case Function.Shift:
+                        Shift(!IsShifted);
+                        break;
 
-                case Function.Backspace:
-                    Backspace();
-                    break;
+                    case Function.CapsLock:
+                        CapsLock(!IsCapsLocked);
+                        break;
 
-                case Function.UNDEFINED:
-                    Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
-                    break;
+                    case Function.Space:
+                        Space();
+                        break;
+
+                    case Function.Backspace:
+                        Backspace();
+                        break;
+
+                    case Function.UNDEFINED:
+                        Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
+                        break;
+                }
+            }
+            else
+            {
+                Debug.LogError("You must set an input field for the NonNativeKeyboard.");
             }
         }
 
@@ -341,9 +436,34 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Backspace()
         {
-            if (Text.Length > 0)
+            // check if text is selected
+            if (InputField.selectionFocusPosition != InputField.caretPosition || InputField.selectionAnchorPosition != InputField.caretPosition)
             {
-                Text = Text.Substring(0, Text.Length - 1);
+                if (InputField.selectionAnchorPosition > InputField.selectionFocusPosition) // right to left
+                {
+                    InputField.text = InputField.text.Substring(0, InputField.selectionFocusPosition) + InputField.text.Substring(InputField.selectionAnchorPosition);
+                    InputField.caretPosition = InputField.selectionFocusPosition;
+                }
+                else // left to right
+                {
+                    InputField.text = InputField.text.Substring(0, InputField.selectionAnchorPosition) + InputField.text.Substring(InputField.selectionFocusPosition);
+                    InputField.caretPosition = InputField.selectionAnchorPosition;
+                }
+
+                m_CaretPosition = InputField.caretPosition;
+                InputField.selectionAnchorPosition = m_CaretPosition;
+                InputField.selectionFocusPosition = m_CaretPosition;
+            }
+            else
+            {
+                m_CaretPosition = InputField.caretPosition;
+
+                if (m_CaretPosition > 0)
+                {
+                    --m_CaretPosition;
+                    InputField.text = InputField.text.Remove(m_CaretPosition, 1);
+                    UpdateCaretPosition(m_CaretPosition);
+                }
             }
         }
 
@@ -355,12 +475,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (SubmitOnEnter)
             {
-                OnTextSubmit.Invoke(Text);
+                OnTextSubmit.Invoke(InputField.text);
                 Close();
             }
             else
             {
-                Text += "\n";
+                string enterString = "\n";
+
+                m_CaretPosition = InputField.caretPosition;
+
+                InputField.text = InputField.text.Insert(m_CaretPosition, enterString);
+                m_CaretPosition += enterString.Length;
+
+                UpdateCaretPosition(m_CaretPosition);
             }
         }
 
@@ -373,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (newShiftState != IsShifted)
             {
                 IsShifted = newShiftState;
-                OnKeyboardShifted.Invoke(IsShifted);
+                OnKeyboardShifted?.Invoke(IsShifted);
             }
 
             if (IsCapsLocked && !newShiftState)
@@ -397,7 +524,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Space()
         {
-            Text += " ";
+            m_CaretPosition = InputField.caretPosition;
+            InputField.text = InputField.text.Insert(m_CaretPosition++, " ");
+
+            UpdateCaretPosition(m_CaretPosition);
         }
 
         /// <summary>
@@ -405,7 +535,42 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Tab()
         {
-            Text += "\t";
+            string tabString = "\t";
+
+            m_CaretPosition = InputField.caretPosition;
+
+            InputField.text = InputField.text.Insert(m_CaretPosition, tabString);
+            m_CaretPosition += tabString.Length;
+
+            UpdateCaretPosition(m_CaretPosition);
+        }
+
+        /// <summary>
+        /// Insert a tab character.
+        /// </summary>
+        public void MoveCaretRight()
+        {
+            m_CaretPosition = InputField.caretPosition;
+
+            if (m_CaretPosition < InputField.text.Length)
+            {
+                ++m_CaretPosition;
+                UpdateCaretPosition(m_CaretPosition);
+            }
+        }
+
+        /// <summary>
+        /// Insert a tab character.
+        /// </summary>
+        public void MoveCaretLeft()
+        {
+            m_CaretPosition = InputField.caretPosition;
+
+            if (m_CaretPosition > 0)
+            {
+                --m_CaretPosition;
+                UpdateCaretPosition(m_CaretPosition);
+            }
         }
 
         /// <summary>
@@ -413,8 +578,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Close()
         {
-            OnClose.Invoke(Text);
-            gameObject.SetActive(false);
+            if (InputField != null)
+            {
+                OnClose.Invoke(InputField.text);
+                gameObject.SetActive(false);
+            }
         }
 
         /// <summary>
@@ -422,8 +590,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Clear()
         {
-            ResetKeyboardState();
-            Text = "";
+            if (InputField != null)
+            {
+                ResetKeyboardState();
+                InputField.text = "";
+                m_CaretPosition = InputField.caretPosition;
+            }
         }
 
         #endregion Keyboard Functions
@@ -432,39 +604,39 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void ShowAlphaKeyboardUpperSection()
         {
-            alphaKeysSection.SetActive(true);
+            alphaKeysSection?.SetActive(true);
         }
 
         private void ShowAlphaKeyboardDefaultBottomKeysSection()
         {
-            if (!defaultBottomKeysSection.transform.parent.gameObject.activeSelf)
+            if (defaultBottomKeysSection?.transform.parent.gameObject.activeSelf == false)
             {
-                defaultBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                defaultBottomKeysSection?.transform.parent.gameObject.SetActive(true);
             }
-            defaultBottomKeysSection.SetActive(true);
+            defaultBottomKeysSection?.SetActive(true);
         }
 
         private void ShowAlphaKeyboardEmailBottomKeysSection()
         {
-            if (!emailBottomKeysSection.transform.parent.gameObject.activeSelf)
+            if (emailBottomKeysSection?.transform.parent.gameObject.activeSelf == false)
             {
-                emailBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                emailBottomKeysSection?.transform.parent.gameObject.SetActive(true);
             }
-            emailBottomKeysSection.SetActive(true);
+            emailBottomKeysSection?.SetActive(true);
         }
 
         private void ShowAlphaKeyboardURLBottomKeysSection()
         {
-            if (!urlBottomKeysSection.transform.parent.gameObject.activeSelf)
+            if (urlBottomKeysSection?.transform.parent.gameObject.activeSelf == false)
             {
-                urlBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                urlBottomKeysSection?.transform.parent.gameObject.SetActive(true);
             }
-            urlBottomKeysSection.SetActive(true);
+            urlBottomKeysSection?.SetActive(true);
         }
 
         private void ShowSymbolKeyboard()
         {
-            symbolKeysSection.gameObject.SetActive(true);
+            symbolKeysSection?.gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -472,11 +644,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void DisableAllKeyboards()
         {
-            alphaKeysSection.SetActive(false);
-            defaultBottomKeysSection.gameObject.SetActive(false);
-            urlBottomKeysSection.gameObject.SetActive(false);
-            emailBottomKeysSection.gameObject.SetActive(false);
-            symbolKeysSection.gameObject.SetActive(false);
+            alphaKeysSection?.SetActive(false);
+            defaultBottomKeysSection?.gameObject.SetActive(false);
+            urlBottomKeysSection?.gameObject.SetActive(false);
+            emailBottomKeysSection?.gameObject.SetActive(false);
+            symbolKeysSection?.gameObject.SetActive(false);
         }
 
         #endregion Keyboard Layout Modes

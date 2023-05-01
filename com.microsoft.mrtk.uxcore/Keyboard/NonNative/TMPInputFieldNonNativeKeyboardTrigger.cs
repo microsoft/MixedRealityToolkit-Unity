@@ -23,19 +23,24 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        private void OnEnable()
+        {
+            field.onSelect.AddListener(OnInputFieldSelected);
+        }
+
+        private void OnInputFieldSelected(string _)
+        {
+            PresentKeyboard();
+        }
         /// <summary>
         /// Show the non native keyboard
         /// </summary>
         public void PresentKeyboard()
         {
             NonNativeKeyboard keyboard = NonNativeKeyboard.Instance;
-            if (keyboard.Active)
-            {
-                keyboard.Close();
-            }
             keyboard.Open(field.text);
-            keyboard.OnClose.AddListener(OnKeyboardClose);
-            keyboard.OnTextUpdate.AddListener(UpdateText);
+            keyboard.OnClose?.AddListener(OnKeyboardClose);
+            keyboard.OnTextUpdate?.AddListener(UpdateText);
         }
 
         private void UpdateText(string text)
@@ -51,8 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void RemoveListeners()
         {
             NonNativeKeyboard keyboard = NonNativeKeyboard.Instance;
-            keyboard.OnTextUpdate.RemoveListener(UpdateText);
-            keyboard.OnClose.RemoveListener(OnKeyboardClose);
+            keyboard.OnTextUpdate?.RemoveListener(UpdateText);
+            keyboard.OnClose?.RemoveListener(OnKeyboardClose);
         }
     }
 }
