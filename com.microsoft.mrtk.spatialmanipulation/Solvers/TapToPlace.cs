@@ -241,6 +241,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // The interactable used to pick up the obect. 
         private StatefulInteractable interactable;
 
+        // Cache of the most recent input actions registered to place the object
+        private List<InputActionReference> lastActionReferences = new List<InputActionReference>();
         #region MonoBehaviour Implementation
 
         protected override void Start()
@@ -478,6 +480,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
                 placementAction.performed += StopPlacement;
             }
+            lastActionReferences = placementActionReferences;
         }
 
         /// <summary>
@@ -498,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void UnregisterPlacementAction()
         {
-            foreach (InputActionReference placementActionReference in placementActionReferences)
+            foreach (InputActionReference placementActionReference in lastActionReferences)
             {
                 InputAction placementAction = GetInputActionFromReference(placementActionReference);
                 if (placementAction == null)
@@ -508,6 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
                 placementAction.performed -= StopPlacement;
             }
+            lastActionReferences = new List<InputActionReference>();
         }
 
         /// <summary>
