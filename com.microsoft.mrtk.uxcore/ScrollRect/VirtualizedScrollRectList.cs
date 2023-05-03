@@ -412,6 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             OnInvisible?.Invoke(go, i);
             poolDict.Remove(i);
+            go.SetActive(false);
             pool.Enqueue(go);
         }
 
@@ -419,6 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             GameObject go = pool.Dequeue();
             go.transform.localPosition = ItemLocation(i);
+            go.SetActive(true);
             poolDict.Add(i, go);
             OnVisible?.Invoke(go, i);
         }
