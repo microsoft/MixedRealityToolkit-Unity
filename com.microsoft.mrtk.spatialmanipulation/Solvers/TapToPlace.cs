@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System; 
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
@@ -281,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Finds all of the select input actions in a scene
         /// </summary>
-        public void FindSelectActions()
+        private void FindSelectActions()
         {
             foreach (ActionBasedController xrController in FindObjectsOfType<ActionBasedController>())
             {
@@ -301,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// game object from following the TrackedTargetType.  The game object layer is changed to IgnoreRaycast temporarily and then
         /// restored to its original layer in StopPlacement().
         /// </summary>
-        public void StartPlacement()
+        private void StartPlacement()
         {
             // Checking the amount of time passed between when StartPlacement or StopPlacement is called twice in
             // succession. If these methods are called twice very rapidly, the object will be
@@ -354,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Helper method to call StopPlacement 
         /// </summary>
-        public void StopPlacementAction(InputAction.CallbackContext context)
+        private void StopPlacementAction(InputAction.CallbackContext context)
         {
             StopPlacement();
         }
@@ -362,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Stop the placement of a game object without the need of the OnPointerClicked event. 
         /// </summary>
-        public void StopPlacement()
+        private void StopPlacement()
         {
             // Checking the amount of time passed between when StartPlacement or StopPlacement is called twice in
             // succession. If these methods are called twice very rapidly, the object will be
@@ -498,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (placementAction == null)
                 {
                     Debug.Log("Failed to register the placement action, the action reference was null or contained no action.");
-                    return;
+                    continue;
                 }
                 placementAction.performed += StopPlacementAction;
             }
@@ -510,12 +511,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void RegisterPickupEvent()
         {
-            if (interactable == null)
+            try
             {
-                Debug.Log("Failed to register the pick up event. There is no StatefulInteractable set.");
-                return;
+                interactable.OnClicked.AddListener(StartPlacement);
             }
-            interactable.OnClicked.AddListener(StartPlacement);
+            catch (Exception e)
+            {
+                Debug.Log($"Failed to register the pick up event: {e}");
+            }
         }
 
         /// <summary>
@@ -523,12 +526,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void RegisterPlacementEvent()
         {
-            if (interactable == null)
+            try
             {
-                Debug.Log("Failed to register the placement event. There is no StatefulInteractable set.");
-                return;
+                interactable.OnClicked.AddListener(StopPlacement);
             }
-            interactable.OnClicked.AddListener(StopPlacement);
+            catch (Exception e)
+            {
+                Debug.Log($"Failed to register the placemenent event: {e}");
+            }
         }
 
         /// <summary>
@@ -536,12 +541,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void UnregisterPlacementAction()
         {
-            foreach (InputAction placementAction in placementActions)
+            foreach (InputAction placementAction in lastActions)
             {
                 if (placementAction == null)
                 {
                     Debug.Log("Failed to unregister the placement action, the action reference was null or contained no action.");
-                    return;
+                    continue;
                 }
                 placementAction.performed -= StopPlacementAction;
             }
@@ -553,12 +558,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void UnregisterPickupEvent()
         {
-            if (interactable == null)
+            try
             {
-                Debug.Log("Failed to unregister the pick up event. There is no StatefulInteractable set.");
-                return;
+                interactable.OnClicked.RemoveListener(StartPlacement);
             }
-            interactable.OnClicked.RemoveListener(StartPlacement);
+            catch (Exception e)
+            {
+                Debug.Log($"Failed to unregister the pick up event: {e}");
+            }
         }
 
         /// <summary>
@@ -566,12 +573,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void UnregisterPlacementEvent()
         {
-            if (interactable == null)
+            try
             {
-                Debug.Log("Failed to unregister the pick up event. There is no StatefulInteractable set.");
-                return;
+                interactable.OnClicked.RemoveListener(StopPlacement);
             }
-            interactable.OnClicked.RemoveListener(StopPlacement);
+            catch (Exception e)
+            {
+                Debug.Log($"Failed to unregister the placemenent event: {e}");
+            }
         }
     }
 }
