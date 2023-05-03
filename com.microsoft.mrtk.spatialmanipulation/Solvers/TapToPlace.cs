@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityPhysics = UnityEngine.Physics;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
@@ -17,19 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Tap To Place")]
     public class TapToPlace : Solver
     {
-        [SerializeField]
-        [Tooltip("The input actions which are to control placement.")]
-        private List<InputActionReference> placementActionReferences = new List<InputActionReference>();
-
-        /// <summary>
-        /// The input actions which are to control placement.
-        /// </summary>
-        public List<InputActionReference> PlacementActionReferences
-        {
-            get => placementActionReferences;
-            set => placementActionReferences = value;
-        }
-
         // todo: needed? [Space(10)]
         [SerializeField]
         [Tooltip("If true, the game object to place will start selected.  The object will immediately start" +
@@ -241,8 +230,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // The interactable used to pick up the obect. 
         private StatefulInteractable interactable;
 
+        // The list of input actions to be registered
+        private List<InputAction> placementActions = new List<InputAction>();
+
         // Cache of the most recent input actions registered to place the object
-        private List<InputActionReference> lastActionReferences = new List<InputActionReference>();
+        private List<InputAction> lastActions = new List<InputAction>();
         #region MonoBehaviour Implementation
 
         protected override void Start()
@@ -250,6 +242,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             base.Start();
 
             Debug.Assert(IsColliderPresent, $"The game object {gameObject.name} does not have a collider attached, please attach a collider to use Tap to Place");
+
+            FindSelectActions();
 
             // When a game object is created via script, the bounds of the collider remain at the default size 
             // of (1, 1, 1) which always returns a 0.5 SurfaceNormalOffset.  Adding SyncTransforms updates the
@@ -261,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             startCalled = true;
 
             interactable = gameObject.GetComponent<StatefulInteractable>();
-            RegisterPickupAction();
+            RegisterPickupEvent();
 
             if (AutoStart || placementRequested)
             {
@@ -276,11 +270,27 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         protected override void OnDisable()
         {
             UnregisterPlacementAction();
-            UnregisterPickupAction();
+            UnregisterPickupEvent();
+            UnregisterPlacementEvent();
             base.OnDisable();
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Finds all of the select input actions in a scene
+        /// </summary>
+        public void FindSelectActions()
+        {
+            foreach (ActionBasedController xrController in FindObjectsOfType<ActionBasedController>())
+            {
+                if (xrController.selectAction.action != null)
+                {
+                    placementActions.Add(xrController.selectAction.action);
+                }
+            }
+        }
 
         private static readonly ProfilerMarker StartPlacementPerfMarker =
             new ProfilerMarker("[MRTK] TapToPlace.StartPlacement");
@@ -331,6 +341,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     OnPlacingStarted?.Invoke();
 
                     RegisterPlacementAction();
+                    RegisterPlacementEvent();
+                    UnregisterPickupEvent();
                 }
             }
         }
@@ -338,10 +350,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker StopPlacementPerfMarker =
             new ProfilerMarker("[MRTK] TapToPlace.StopPlacement");
 
+
+        /// <summary>
+        /// Helper method to call StopPlacement 
+        /// </summary>
+        public void StopPlacementAction(InputAction.CallbackContext context)
+        {
+            StopPlacement();
+        }
+
         /// <summary>
         /// Stop the placement of a game object without the need of the OnPointerClicked event. 
         /// </summary>
-        public void StopPlacement(InputAction.CallbackContext context)
+        public void StopPlacement()
         {
             // Checking the amount of time passed between when StartPlacement or StopPlacement is called twice in
             // succession. If these methods are called twice very rapidly, the object will be
@@ -369,6 +390,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     OnPlacingStopped?.Invoke();
 
                     UnregisterPlacementAction();
+                    UnregisterPlacementEvent();
+                    RegisterPickupEvent();
                 }
             }
         }
@@ -470,23 +493,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         private void RegisterPlacementAction()
         {
-            foreach(InputActionReference placementActionReference in placementActionReferences)
+            foreach(InputAction placementAction in placementActions)
             {
-                InputAction placementAction = GetInputActionFromReference(placementActionReference);
                 if (placementAction == null)
                 {
                     Debug.Log("Failed to register the placement action, the action reference was null or contained no action.");
                     return;
                 }
-                placementAction.performed += StopPlacement;
+                placementAction.performed += StopPlacementAction;
             }
-            lastActionReferences = placementActionReferences;
+            lastActions = placementActions;
         }
 
         /// <summary>
         /// Registers the event which performs pickup.
         /// </summary>
-        private void RegisterPickupAction()
+        private void RegisterPickupEvent()
         {
             if (interactable == null)
             {
@@ -497,27 +519,39 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
+        /// Registers the event which performs placement.
+        /// </summary>
+        private void RegisterPlacementEvent()
+        {
+            if (interactable == null)
+            {
+                Debug.Log("Failed to register the placement event. There is no StatefulInteractable set.");
+                return;
+            }
+            interactable.OnClicked.AddListener(StopPlacement);
+        }
+
+        /// <summary>
         /// Unregisters the input action which performs placement.
         /// </summary>
         private void UnregisterPlacementAction()
         {
-            foreach (InputActionReference placementActionReference in lastActionReferences)
+            foreach (InputAction placementAction in placementActions)
             {
-                InputAction placementAction = GetInputActionFromReference(placementActionReference);
                 if (placementAction == null)
                 {
                     Debug.Log("Failed to unregister the placement action, the action reference was null or contained no action.");
                     return;
                 }
-                placementAction.performed -= StopPlacement;
+                placementAction.performed -= StopPlacementAction;
             }
-            lastActionReferences = new List<InputActionReference>();
+            lastActions = new List<InputAction>();
         }
 
         /// <summary>
         /// Unregisters the event which performs pickup.
         /// </summary>
-        private void UnregisterPickupAction()
+        private void UnregisterPickupEvent()
         {
             if (interactable == null)
             {
@@ -528,16 +562,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Extracts the InputAction from the InputActionReference.
+        /// Unregisters the event which performs placement.
         /// </summary>
-        /// <param name="actionReference">
-        /// The InputActionReference containing the desired InputAction.
-        /// </param>
-        /// <returns>An InputAction, or null.</returns>
-        public static InputAction GetInputActionFromReference(InputActionReference actionReference)
+        private void UnregisterPlacementEvent()
         {
-            if (actionReference == null) { return null; }
-            return actionReference.action;
+            if (interactable == null)
+            {
+                Debug.Log("Failed to unregister the pick up event. There is no StatefulInteractable set.");
+                return;
+            }
+            interactable.OnClicked.RemoveListener(StopPlacement);
         }
     }
 }
