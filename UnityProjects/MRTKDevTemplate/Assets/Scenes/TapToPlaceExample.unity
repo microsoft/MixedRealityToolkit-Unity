@@ -227,9 +227,6 @@ MonoBehaviour:
   maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
-  placementActionReferences:
-  - {fileID: 187161793506945269, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
-  - {fileID: -6131295136447488360, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   autoStart: 0
   defaultPlacementDistance: 1.5
   maxRaycastDistance: 20
@@ -2418,9 +2415,6 @@ MonoBehaviour:
   maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
-  placementActionReferences:
-  - {fileID: 187161793506945269, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
-  - {fileID: -6131295136447488360, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   autoStart: 0
   defaultPlacementDistance: 1.5
   maxRaycastDistance: 20
