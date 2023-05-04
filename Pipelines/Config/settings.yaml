@@ -5,4 +5,19 @@ variables:
   # ProjectSettings/ProjectSettings.asset:  bundleVersion: x.x.x
   # ProjectSettings/ProjectSettings.asset:  metroPackageVersion: x.x.x.0
   MRTKVersion: 3.0.0
-  MRTKReleaseTag: 'pre.14'  # final version component, e.g. 'RC2.1' or empty string
+  MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
+  ReleasePackages:
+    # - com.microsoft.mrtk.accessibility
+    # - com.microsoft.mrtk.audio
+    # - com.microsoft.mrtk.core
+    # - com.microsoft.mrtk.data
+    # - com.microsoft.mrtk.diagnostics
+    # - com.microsoft.mrtk.extendedassets
+    # - com.microsoft.mrtk.input
+    # - com.microsoft.mrtk.spatialmanipulation
+    # - com.microsoft.mrtk.standardassets
+    # - com.microsoft.mrtk.tools
+    # - com.microsoft.mrtk.uxcomponents
+    # - com.microsoft.mrtk.uxcomponents
+    # - com.microsoft.mrtk.uxcore
+    # - com.microsoft.mrtk.windowsspeech
