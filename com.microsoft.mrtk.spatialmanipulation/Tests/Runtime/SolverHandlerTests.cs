@@ -471,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if SolverHandler starts with target on right hand joint
-            XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, rightHandNode, out jointPose);
+            XRSubsystemHelpers.HandsAggregator.TryGetJoint(joint, rightHandNode, out jointPose);
             Assert.IsTrue(solverHandler.TransformTarget.position == jointPose.Position, $"Solver Handler started tracking incorrect hand joint");
 
             // Hide the right hand and make the left hand active at a new position
@@ -482,7 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if the SolverHandler moves the target to the left hand joint
-            XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, leftHandNode, out jointPose);
+            XRSubsystemHelpers.HandsAggregator.TryGetJoint(joint, leftHandNode, out jointPose);
             Assert.IsTrue(solverHandler.TransformTarget.position == jointPose.Position, $"Solver Handler did not switch to active hand joint");
 
             // Repeat the test, but hide the left hand this time
@@ -493,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if the SolverHandler moves the target back to the right hand joint
-            XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, rightHandNode, out jointPose);
+            XRSubsystemHelpers.HandsAggregator.TryGetJoint(joint, rightHandNode, out jointPose);
             Assert.IsTrue(solverHandler.TransformTarget.position == jointPose.Position, $"Solver Handler did not switch to final hand joint");
         }
 
@@ -534,7 +534,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if SolverHandler starts with target on right hand joint
-            XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, rightHandNode, out jointPose);
+            XRSubsystemHelpers.HandsAggregator.TryGetJoint(joint, rightHandNode, out jointPose);
             Assert.IsTrue(solverHandler.TransformTarget.position == jointPose.Position, $"Solver Handler started tracking incorrect hand joint");
 
             // Hide the right hand and make the left hand active at a new position
@@ -545,7 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if the SolverHandler moves the target to the left hand joint
-            XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, leftHandNode, out jointPose);
+            XRSubsystemHelpers.HandsAggregator.TryGetJoint(joint, leftHandNode, out jointPose);
             Assert.IsTrue(solverHandler.TransformTarget.position == jointPose.Position, $"Solver Handler did not switch to active hand joint");
 
             // Repeat the test, but hide the left hand this time
@@ -556,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return RuntimeTestUtilities.WaitForUpdates();
 
             // Check if the SolverHandler moves the target back to the right hand joint
-            XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, rightHandNode, out jointPose);
+            XRSubsystemHelpers.HandsAggregator.TryGetJoint(joint, rightHandNode, out jointPose);
             Assert.IsTrue(solverHandler.TransformTarget.position == jointPose.Position, $"Solver Handler did not switch to final hand joint");
         }
 
