@@ -483,8 +483,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             }
                         }
 
-                        UpdateCachedHandJointTransform();
-                        target = cachedHandJointTransform;
+                        if (UpdateCachedHandJointTransform())
+                        {
+                            target = cachedHandJointTransform;
+                        }
                     }
                 }
                 else if (TrackedTargetType == TrackedObjectType.CustomOverride)
@@ -499,8 +501,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker UpdateCachedHandJointTransformPerfMarker =
             new ProfilerMarker("[MRTK] SolverHandler.UpdateCachedHandJointTransform");
 
-        private void UpdateCachedHandJointTransform()
+        /// <summary>
+        /// Update the cached transform's position to match that of the current track joint. 
+        /// </summary>
+        /// <returns>
+        /// True, if the tracked joint is found and cached transform is updated. False, otherwise.
+        /// </returns>
+        private bool UpdateCachedHandJointTransform()
         {
+            bool updated = false;
             using (UpdateCachedHandJointTransformPerfMarker.Auto())
             {
                 XRNode? handNode = currentTrackedHandedness.ToXRNode();
@@ -515,8 +524,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     }
 
                     cachedHandJointTransform.SetPositionAndRotation(jointPos.Position, jointPos.Rotation);
+                    updated = true;
                 }
             }
+            return updated;
         }
 
         private void TrackTransform(Transform target)
