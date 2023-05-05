@@ -552,7 +552,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </returns>
         private XRBaseInteractor GetControllerInteractor(Handedness handedness)
         {
-            if (!IsValidHandedness(handedness)) { return null; }
+            if (handedness == Handedness.None || !IsValidHandedness(handedness)) { return null; }
 
             return (handedness == Handedness.Left) ? LeftInteractor : RightInteractor;
         }
@@ -614,7 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </returns>
         public static bool IsValidHandedness(Handedness hand)
         {
-            return hand.IsMatch(Handedness.Both);
+            return hand.IsMatch(Handedness.Both) || hand == Handedness.None;
         }
 
         /// <summary>
