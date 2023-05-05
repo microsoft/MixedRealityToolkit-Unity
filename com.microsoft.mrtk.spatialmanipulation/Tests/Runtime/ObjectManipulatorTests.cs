@@ -85,8 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // Put hand out in front, in-FOV, but not too close to cube as to
             // disable the far interactors.
-            yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(new Vector3(0.1f, 0, 0.5f)));
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount: 90);
+            yield return rightHand.MoveTo(InputTestUtilities.InFrontOfUser(new Vector3(0.2f, 0, 0.5f)));
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(objManip.IsGazePinchHovered,
                 "ObjManip didn't report IsGazePinchHovered");
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
             yield return RuntimeTestUtilities.WaitForUpdates();
             yield return rightHand.MoveTo(cube.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return new WaitForSeconds(0.1f);
 
             Assert.IsFalse(objManip.IsPokeHovered, "ObjManip shouldn't get IsPokeHovered");
             Assert.IsTrue(objManip.IsGrabHovered, "ObjManip didn't report IsGrabHovered");
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             Vector3 newPosition = originalPosition + Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return new WaitForSeconds(0.1f);
 
             // Smoothing should mean that the cube has lagged behind the hand.
             attachTransform = objManip.firstInteractorSelecting.GetAttachTransform(objManip).position;
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             newPosition = originalPosition - Vector3.right * 1.5f;
             yield return rightHand.MoveTo(newPosition);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return new WaitForSeconds(0.1f);
 
             // Immediately check to make sure the cube matches our grab exactly.
             attachTransform = objManip.firstInteractorSelecting.GetAttachTransform(objManip).position;

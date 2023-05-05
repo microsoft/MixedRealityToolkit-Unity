@@ -38,11 +38,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.IsNotNull(dwellManager, "InteractorDwellManager does not exist on the MRTK RightHand Controller/Far Ray GameObject.");
 
             // Show the hand and confirm the interactable is being hovered but not selected yet
+            var halfDwellFrameCount = (int)((dwellTime * TargetFrameRate) / 2);
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(InputTestUtilities.InFrontOfUser(0.5f));
             yield return RuntimeTestUtilities.WaitForUpdates();
-            yield return rightHand.AimAt(cube.transform.position);
+            yield return rightHand.AimAt(-cube.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return rightHand.AimAt(cube.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount: halfDwellFrameCount);
 
             Assert.IsTrue(interactable.IsRayHovered,
                           "StatefulInteractable did not get RayHovered.");
@@ -50,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                           "StatefulInteractable gets Selected too early.");
 
             // Wait for the dwell time to pass and confirm the interactable is selected
-            yield return new WaitForSeconds(dwellTime);
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount: halfDwellFrameCount + 1);
             Assert.IsTrue(interactable.isSelected,
                           "StatefulInteractable did not get Selected.");
 
