@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// is set to both left and right.
         /// </summary>
         /// <remarks>
-        /// Allowed <see cref="Handedness"/> values are Left or Right. Borh hands can't be preferred simultaneously.
+        /// Allowed <see cref="Handedness"/> values are Left or Right. Both hands can't be preferred simultaneously.
         /// </remarks>
         public Handedness PreferredTrackedHandedness
         {
@@ -577,12 +577,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // If we were tracking a particular hand, check that our transform is still valid
             if (TrackedTargetType == TrackedObjectType.HandJoint && currentTrackedHandedness != Handedness.None)
             {
-                bool trackingLeft = IsHandTracked(Handedness.Left);
-                bool trackingRight = IsHandTracked(Handedness.Right);
-
-                return
-                    (trackingLeft && currentTrackedHandedness.IsMatch(Handedness.Left)) ||
-                    (trackingRight && currentTrackedHandedness.IsMatch(Handedness.Right));
+                bool trackingLeft = currentTrackedHandedness.IsMatch(Handedness.Left) && IsHandTracked(Handedness.Left);
+                bool trackingRight = currentTrackedHandedness.IsMatch(Handedness.Right) && IsHandTracked(Handedness.Right);
+                return !trackingLeft && !trackingRight;
             }
 
             return false;
@@ -605,7 +602,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             XRNode? node = hand.ToXRNode();
             if (!node.HasValue) { return false; }
             return XRSubsystemHelpers.HandsAggregator != null &&
-                XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
+                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
         }
 
         /// <summary>
