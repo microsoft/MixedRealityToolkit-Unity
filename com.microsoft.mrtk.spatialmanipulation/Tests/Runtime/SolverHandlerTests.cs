@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var solverHandler = testObject.AddComponent<SolverHandler>();
+            solverHandler.TrackedHandedness = Handedness.Both;
 
             // Set it to track interactors
             solverHandler.TrackedTargetType = TrackedObjectType.Interactor;
@@ -73,6 +74,174 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
 
             // Check if the SolverHandler moves the target back to the right hand
             Assert.IsTrue(solverHandler.TransformTarget.position == solverHandler.RightInteractor.transform.position, $"Solver Handler did not switch to final hand");
+        }
+
+        /// <summary>
+        /// This checks if the SolverHandler correctly switches to the active hand when tracking
+        /// two interactors, when the serialized `TrackedHandedness` value to set to Unity's
+        /// Everything value, with is -1 or 0xFFFFFFFF. Everything can be set via Unity's
+        /// inspector window.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SolverHandlerInteractorSwitchesToActiveHandWithEverythingValue()
+        {
+            // Disable gaze interactions for this unit test;
+            InputTestUtilities.DisableGaze();
+
+            // Set up GameObject with a SolverHandler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var solverHandler = testObject.AddComponent<SolverHandler>();
+            solverHandler.TrackedHandedness = (Handedness)(-1);
+
+            // Set it to track interactors
+            solverHandler.TrackedTargetType = TrackedObjectType.Interactor;
+            var lookup = GameObject.FindObjectOfType<ControllerLookup>();
+            var leftInteractor = lookup.LeftHandController.GetComponentInChildren<MRTKRayInteractor>();
+            var rightInteractor = lookup.RightHandController.GetComponentInChildren<MRTKRayInteractor>();
+            solverHandler.LeftInteractor = leftInteractor;
+            solverHandler.RightInteractor = rightInteractor;
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+            var initialHandPosition = InputTestUtilities.InFrontOfUser(0.5f);
+
+            yield return rightHand.Show(initialHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if SolverHandler starts with target on right hand
+            Assert.IsTrue(solverHandler.TransformTarget.position == solverHandler.RightInteractor.transform.position, $"Solver Handler started tracking incorrect hand");
+
+            // Hide the right hand and make the left hand active at a new position
+            yield return rightHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            var secondHandPosition = new Vector3(-0.05f, -0.05f, 1f);
+            yield return leftHand.Show(secondHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if the SolverHandler moves the target to the left hand
+            Assert.IsTrue(solverHandler.TransformTarget.position == solverHandler.LeftInteractor.transform.position, $"Solver Handler did not switch to active hand");
+
+            // Repeat the test, but hide the left hand this time
+            yield return leftHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            Vector3 finalPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, 0.05f, 0.5f));
+            yield return rightHand.Show(finalPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if the SolverHandler moves the target back to the right hand
+            Assert.IsTrue(solverHandler.TransformTarget.position == solverHandler.RightInteractor.transform.position, $"Solver Handler did not switch to final hand");
+        }
+
+        /// <summary>
+        /// This checks if the SolverHandler can be configured to only track left hand only
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SolverHandlerInteractorLeftHandOnly()
+        {
+            // Disable gaze interactions for this unit test;
+            InputTestUtilities.DisableGaze();
+
+            // Set up GameObject with a SolverHandler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var solverHandler = testObject.AddComponent<SolverHandler>();
+            solverHandler.TrackedHandedness = Handedness.Left;
+
+            // Set it to track interactors
+            solverHandler.TrackedTargetType = TrackedObjectType.Interactor;
+            var lookup = GameObject.FindObjectOfType<ControllerLookup>();
+            var leftInteractor = lookup.LeftHandController.GetComponentInChildren<MRTKRayInteractor>();
+            var rightInteractor = lookup.RightHandController.GetComponentInChildren<MRTKRayInteractor>();
+            solverHandler.LeftInteractor = leftInteractor;
+            solverHandler.RightInteractor = rightInteractor;
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+            var initialHandPosition = InputTestUtilities.InFrontOfUser(0.5f);
+
+            yield return rightHand.Show(initialHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if SolverHandler did not start with target on right hand
+            Assert.IsTrue(solverHandler.TransformTarget.position != solverHandler.RightInteractor.transform.position, $"Solver Handler started tracking incorrect hand");
+
+            // Hide the right hand and make the left hand active at a new position
+            yield return rightHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            var secondHandPosition = new Vector3(-0.05f, -0.05f, 1f);
+            yield return leftHand.Show(secondHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if the SolverHandler moves the target to the left hand
+            Assert.IsTrue(solverHandler.TransformTarget.position == solverHandler.LeftInteractor.transform.position, $"Solver Handler did not start to track correct hand");
+
+            // Repeat the test, but hide the left hand this time
+            yield return leftHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            Vector3 finalPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, 0.05f, 0.5f));
+            yield return rightHand.Show(finalPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if the SolverHandler did not moves the target to the right hand
+            Assert.IsTrue(solverHandler.TransformTarget.position != solverHandler.RightInteractor.transform.position, $"Solver Handler switched to incorrect hand");
+        }
+
+        /// <summary>
+        /// This checks if the SolverHandler can be configured to only track right hand only
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SolverHandlerInteractorRightHandOnly()
+        {
+            // Disable gaze interactions for this unit test;
+            InputTestUtilities.DisableGaze();
+
+            // Set up GameObject with a SolverHandler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var solverHandler = testObject.AddComponent<SolverHandler>();
+            solverHandler.TrackedHandedness = Handedness.Right;
+
+            // Set it to track interactors
+            solverHandler.TrackedTargetType = TrackedObjectType.Interactor;
+            var lookup = GameObject.FindObjectOfType<ControllerLookup>();
+            var leftInteractor = lookup.LeftHandController.GetComponentInChildren<MRTKRayInteractor>();
+            var rightInteractor = lookup.RightHandController.GetComponentInChildren<MRTKRayInteractor>();
+            solverHandler.LeftInteractor = leftInteractor;
+            solverHandler.RightInteractor = rightInteractor;
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+            var initialHandPosition = InputTestUtilities.InFrontOfUser(0.5f);
+
+            yield return leftHand.Show(initialHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if SolverHandler did not start with target on left hand
+            Assert.IsTrue(solverHandler.TransformTarget.position != solverHandler.LeftInteractor.transform.position, $"Solver Handler started tracking incorrect hand");
+
+            // Hide the left hand and make the right hand active at a new position
+            yield return leftHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            var secondHandPosition = new Vector3(-0.05f, -0.05f, 1f);
+            yield return rightHand.Show(secondHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if the SolverHandler moves the target to the right hand
+            Assert.IsTrue(solverHandler.TransformTarget.position == solverHandler.RightInteractor.transform.position, $"Solver Handler did not start to track correct hand");
+
+            // Repeat the test, but hide the right hand this time
+            yield return rightHand.Hide();
+            yield return RuntimeTestUtilities.WaitForUpdates();
+            Vector3 finalPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, 0.05f, 0.5f));
+            yield return leftHand.Show(finalPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Check if the SolverHandler did not moves the target to the left hand
+            Assert.IsTrue(solverHandler.TransformTarget.position != solverHandler.LeftInteractor.transform.position, $"Solver Handler switched to incorrect hand");
         }
 
         /// <summary>
