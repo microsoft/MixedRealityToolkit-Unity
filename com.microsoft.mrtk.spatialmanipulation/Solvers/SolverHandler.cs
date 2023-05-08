@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// is set to both left and right.
         /// </summary>
         /// <remarks>
-        /// Allowed <see cref="Handedness"/> values are Left or Right
+        /// Allowed <see cref="Handedness"/> values are Left or Right. Both hands can't be preferred simultaneously.
         /// </remarks>
         public Handedness PreferredTrackedHandedness
         {
@@ -435,7 +435,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 }
                 else if (TrackedTargetType == TrackedObjectType.ControllerRay)
                 {
-                    if (TrackedHandedness == (Handedness.Both))
+                    currentTrackedHandedness = TrackedHandedness;
+                    if ((currentTrackedHandedness & Handedness.Both) == Handedness.Both)
                     {
                         currentTrackedHandedness = PreferredTrackedHandedness;
                         controllerInteractor = GetControllerInteractor(currentTrackedHandedness);
@@ -449,7 +450,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     }
                     else
                     {
-                        currentTrackedHandedness = TrackedHandedness;
                         controllerInteractor = GetControllerInteractor(currentTrackedHandedness);
                     }
 
@@ -467,8 +467,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     if (XRSubsystemHelpers.HandsAggregator != null)
                     {
                         currentTrackedHandedness = TrackedHandedness;
-
-                        if (currentTrackedHandedness == (Handedness.Both))
+                        if ((currentTrackedHandedness & Handedness.Both) == Handedness.Both)
                         {
                             if (IsHandTracked(PreferredTrackedHandedness))
                             {
@@ -484,8 +483,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             }
                         }
 
-                        UpdateCachedHandJointTransform();
-                        target = cachedHandJointTransform;
+                        if (UpdateCachedHandJointTransform())
+                        {
+                            target = cachedHandJointTransform;
+                        }
                     }
                 }
                 else if (TrackedTargetType == TrackedObjectType.CustomOverride)
@@ -500,8 +501,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker UpdateCachedHandJointTransformPerfMarker =
             new ProfilerMarker("[MRTK] SolverHandler.UpdateCachedHandJointTransform");
 
-        private void UpdateCachedHandJointTransform()
+        /// <summary>
+        /// Update the cached transform's position to match that of the current track joint. 
+        /// </summary>
+        /// <returns>
+        /// True, if the tracked joint is found and cached transform is updated. False, otherwise.
+        /// </returns>
+        private bool UpdateCachedHandJointTransform()
         {
+            bool updated = false;
             using (UpdateCachedHandJointTransformPerfMarker.Auto())
             {
                 XRNode? handNode = currentTrackedHandedness.ToXRNode();
@@ -516,8 +524,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     }
 
                     cachedHandJointTransform.SetPositionAndRotation(jointPos.Position, jointPos.Rotation);
+                    updated = true;
                 }
             }
+            return updated;
         }
 
         private void TrackTransform(Transform target)
@@ -544,13 +554,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// The <see cref="Handedness"/> of the controller for which the interactor
         /// is being requested.
         /// </param>
+        /// <remarks>
+        /// If <see cref="Handedness"/> is set to both left and right, the right interactor will be returned.
+        /// </remarks>
         /// <returns>
         /// The associated interactor, attached to the controller with the
         /// specified <see cref="Handedness"/>, or null.
         /// </returns>
         private XRBaseInteractor GetControllerInteractor(Handedness handedness)
         {
-            if (!IsValidHandedness(handedness)) { return null; }
+            if (handedness == Handedness.None || !IsValidHandedness(handedness)) { return null; }
 
             return (handedness == Handedness.Left) ? LeftInteractor : RightInteractor;
         }
@@ -575,11 +588,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // If we were tracking a particular hand, check that our transform is still valid
             if (TrackedTargetType == TrackedObjectType.HandJoint && currentTrackedHandedness != Handedness.None)
             {
-                bool trackingLeft = IsHandTracked(Handedness.Left);
-                bool trackingRight = IsHandTracked(Handedness.Right);
-
-                return (currentTrackedHandedness == Handedness.Left && !trackingLeft) ||
-                       (currentTrackedHandedness == Handedness.Right && !trackingRight);
+                bool trackingLeft = currentTrackedHandedness.IsMatch(Handedness.Left) && IsHandTracked(Handedness.Left);
+                bool trackingRight = currentTrackedHandedness.IsMatch(Handedness.Right) && IsHandTracked(Handedness.Right);
+                return !trackingLeft && !trackingRight;
             }
 
             return false;
@@ -601,13 +612,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // (i.e., Handedness.None or Handedness.Both)
             XRNode? node = hand.ToXRNode();
             if (!node.HasValue) { return false; }
-            return XRSubsystemHelpers.HandsAggregator != null;
-
-            // TODO: evaluate why this breaks HandConstraints. According to the name
-            // of the function, this should be correct, but return false when the hand isn't tracked
-            // results in no hand ever being recognized by the constraint.
-            // return XRSubsystemHelpers.HandsAggregator != null &&
-            //        XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
+            return XRSubsystemHelpers.HandsAggregator != null &&
+                   XRSubsystemHelpers.HandsAggregator.TryGetJoint(TrackedHandJoint.Palm, node.Value, out HandJointPose pose);
         }
 
         /// <summary>
@@ -619,7 +625,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </returns>
         public static bool IsValidHandedness(Handedness hand)
         {
-            return hand <= Handedness.Both;
+            return hand.IsMatch(Handedness.Both) || hand == Handedness.None;
         }
 
         /// <summary>

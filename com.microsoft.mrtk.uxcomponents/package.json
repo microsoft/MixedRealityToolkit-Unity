@@ -19,7 +19,7 @@
     "com.microsoft.mrtk.uxcore": "3.0.0",
     "com.microsoft.mrtk.spatialmanipulation": "3.0.0",
     "com.microsoft.mrtk.standardassets": "3.0.0",
-    "com.unity.xr.interaction.toolkit": "2.2.0"
+    "com.unity.xr.interaction.toolkit": "2.3.0"
   },
   "msftTestDependencies": {
     "com.microsoft.mrtk.input": "3.0.0",
