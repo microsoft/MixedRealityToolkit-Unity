@@ -16,6 +16,10 @@
     The fourth digit (revision) for the full version.
 .PARAMETER PreviewTag
     The tag to append after the version, including the preview number (e.g. "internal.0" or "pre.100")
+.PARAMETER DateCode
+    The encoded date to append to the package names
+.PARAMETER DateCodeRevision
+    The revision number for the date.  This increments with each build on the same day.
 .PARAMETER ReleasePackages
     An array of the package names that are approved for release.  If the package isn't in this array, it will get labeled -Pre
 
