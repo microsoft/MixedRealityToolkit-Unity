@@ -347,7 +347,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Stop the placement of a game object via an interactor's select event.
         /// </summary>
-        /// <param name="args"></param>
         private void StopPlacementViaSelect(SelectEnterEventArgs args)
         {
             StopPlacement();

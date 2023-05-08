@@ -2,10 +2,8 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.SpatialManipulation;
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
