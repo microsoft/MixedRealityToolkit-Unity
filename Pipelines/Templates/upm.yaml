@@ -23,6 +23,9 @@ steps:
       -OutputDirectory: ${{ parameters.outputDirectory }}
       -BuildNumber: ${{ parameters.buildNumber }}
       -PreviewTag: ${{ parameters.previewTag }}
+      -DateCode: $(Version.DateCode)
+      -DateCodeRevision: $(Version.DateCodeRevision)
+      -ReleasePackages: $(ReleasePackages)
 
 - ${{ if eq(parameters.publishToArtifacts, true) }}:
   - task: PublishBuildArtifacts@1

@@ -9,6 +9,10 @@ variables:
     value: $[counter(variables['MRTKVersion'], 1)]
   - name: Version.PreReleaseRevision
     value: $[counter(variables['MRTKReleaseTag'], 1)]
+  - name: Version.DateCode
+    value: $[format('{0:yyMMdd}', pipeline.startTime)]
+  - name: Version.DateCodeRevision
+    value: $[counter(format('{0:yyMMdd}', pipeline.startTime), 0)]
 
 resources:
   repositories:
@@ -33,7 +37,7 @@ jobs:
 
       - checkout: PipelineTools
 
-      - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.PreReleaseRevision)"
+      - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.DateCode).$(Version.DateCodeRevision)"
         displayName: Set Build Number
 
       - task: ComponentGovernanceComponentDetection@0
@@ -57,8 +61,8 @@ jobs:
       - template: Templates/upm.yaml
         parameters:
           buildNumber: $(Version.Revision)
-          previewTag: $(MRTKReleaseTag).$(Version.PreReleaseRevision)
-          publishToFeed: true
+          previewTag: $(MRTKReleaseTag)
+          publishToFeed: false
 
   - job: DocsBinariesGeneration
     pool: Unity_2021.3.21f1_Pool
