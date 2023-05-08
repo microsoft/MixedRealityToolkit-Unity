@@ -16,8 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
     {
         private TapToPlace instance;
 
-        private GUIContent placementActionContent = new GUIContent("Placement action");
-
         // Tap to Place properties
         private SerializedProperty placementAction;
         private SerializedProperty autoStart;
@@ -81,7 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         {
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(placementAction, placementActionContent);
             EditorGUILayout.PropertyField(autoStart);
             EditorGUILayout.PropertyField(defaultPlacementDistance);
             EditorGUILayout.PropertyField(maxRaycastDistance);
