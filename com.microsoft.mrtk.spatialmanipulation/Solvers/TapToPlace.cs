@@ -17,18 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Tap To Place")]
     public class TapToPlace : Solver
     {
-        [SerializeField]
-        [Tooltip("The input action which is to control placement.")]
-        private InputActionReference placementActionReference = null;
-
-        /// <summary>
-        /// The input action which is to control placement.
-        /// </summary>
-        public InputActionReference PlacementActionReference
-        {
-            get => placementActionReference;
-            set => placementActionReference = value;
-        }
 
         // todo: needed? [Space(10)]
         [SerializeField]
