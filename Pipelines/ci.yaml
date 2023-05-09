@@ -7,8 +7,6 @@ variables:
   - template: Config/settings.yaml
   - name: Version.Revision
     value: $[counter(variables['MRTKVersion'], 1)]
-  - name: Version.PreReleaseRevision
-    value: $[counter(variables['MRTKReleaseTag'], 1)]
   - name: Version.DateCode
     value: $[format('{0:yyMMdd}', pipeline.startTime)]
   - name: Version.DateCodeRevision
