@@ -39,7 +39,7 @@ param(
     
     [string]$Revision,
 
-    [string]$ReleasePackages
+    [string]$ReleasePackages = ""
 )
 $releasePkgs = $ReleasePackages.Split(",")
 $versionHash = @{}
