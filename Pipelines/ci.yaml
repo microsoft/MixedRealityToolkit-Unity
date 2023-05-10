@@ -60,7 +60,7 @@ jobs:
         parameters:
           buildNumber: $(Version.Revision)
           previewTag: $(MRTKReleaseTag)
-          publishToFeed: false
+          publishToFeed: true
 
   - job: DocsBinariesGeneration
     pool: Unity_2021.3.21f1_Pool
