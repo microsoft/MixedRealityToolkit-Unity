@@ -15,6 +15,6 @@
   },
   "unity": "2021.3",
   "dependencies": {
-    "com.microsoft.mrtk.standardassets": "3.0.0-development"
+    "com.microsoft.mrtk.standardassets": "3.0.0"
   }
 }

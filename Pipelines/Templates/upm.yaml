@@ -9,7 +9,7 @@ parameters:
   buildNumber: $(Build.BuildNumber)
   previewTag: $(MRTKReleaseTag)
   publishToArtifacts: true
-  publishToFeed: false
+  publishToFeed: true
 
 steps:
 - task: PowerShell@2
@@ -23,6 +23,8 @@ steps:
       -OutputDirectory: ${{ parameters.outputDirectory }}
       -BuildNumber: ${{ parameters.buildNumber }}
       -PreviewTag: ${{ parameters.previewTag }}
+      -Revision: $(Version.DateCode).$(Version.DateCodeRevision)
+      -ReleasePackages: $(ReleasePackages)
 
 - ${{ if eq(parameters.publishToArtifacts, true) }}:
   - task: PublishBuildArtifacts@1
