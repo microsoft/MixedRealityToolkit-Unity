@@ -21,11 +21,20 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 field = GetComponent<TMP_InputField>();
             }
+            if (field != null)
+            {
+                field.keyboardType = (TouchScreenKeyboardType)(-1);
+            }
         }
 
         private void OnEnable()
         {
             field.onSelect.AddListener(OnInputFieldSelected);
+        }
+
+        private void OnDisable()
+        {
+            field.onSelect.RemoveListener(OnInputFieldSelected);
         }
 
         private void OnInputFieldSelected(string _)

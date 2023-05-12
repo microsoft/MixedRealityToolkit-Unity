@@ -54,12 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 Interactable.OnClicked.RemoveListener(FireKey);
             }
-            else
+            else if (KeyButton != null)
             {
-                if (KeyButton != null)
-                {
-                    KeyButton.onClick.RemoveListener(FireKey);
-                }
+                KeyButton.onClick.RemoveListener(FireKey);
             }
         }
 

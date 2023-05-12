@@ -12,7 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// A simple general use keyboard that provides an alternative to the native keyboard offered by each device.
     /// </summary>
-    ///
     ///  <remarks>
     /// NOTE: This keyboard will not automatically appear when you select an InputField in your
     ///       Canvas. In order for the keyboard to appear you must call Keyboard.Instance.PresentKeyboard(string).
@@ -36,9 +35,21 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public enum LayoutType
         {
+            /// <summary>
+            /// Enables the alpha keys section and the alpha space section.
+            /// </summary>
             Alpha,
+            /// <summary>
+            /// Enables the symbol keys section.
+            /// </summary>
             Symbol,
+            /// <summary>
+            /// Enables the alpha keys section and the url space section.
+            /// </summary>
             URL,
+            /// <summary>
+            /// Enables the alpha keys section and the email space section.
+            /// </summary>
             Email,
         }
 
@@ -89,12 +100,22 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// If you are using the Keyboard prefab you can ignore this field as it will
         /// be already assigned.
         /// </summary>
+        [field: SerializeField, Tooltip("The input field used to view the typed text.")]
         public TMP_InputField InputField = null;
 
+
         /// <summary>
-        /// Whether the keyboard is currently active
+        /// A wrapper for InputField.text. 
         /// </summary>
-        public bool Active => gameObject.activeInHierarchy;
+        [SerializeField, Tooltip("The input field used to view the typed text.")]
+        public string Text
+        {
+            get => InputField == null ? null : InputField.text;
+            set
+            {
+                if (InputField != null) InputField.text = value;
+            }
+        }
 
         /// <summary>
         /// Whether submit on enter.
@@ -128,41 +149,38 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// The position of the caret in the text field.
         /// </summary>
         private int m_CaretPosition = 0;
-        #endregion Properties
-
-        #region Keyboard component references
 
         /// <summary>
         /// The panel that contains the alpha keys.
         /// </summary>
         [SerializeField, Tooltip("The panel that contains the alpha keys.")]
-        private GameObject alphaKeysSection = null;
+        public GameObject alphaKeysSection = null;
 
         /// <summary>
         /// The panel that contains the number and symbol keys.
         /// </summary>
         [SerializeField, Tooltip("The panel that contains the number and symbol keys.")]
-        private GameObject symbolKeysSection = null;
+        public GameObject symbolKeysSection = null;
 
         /// <summary>
         /// References the default bottom panel.
         /// </summary>
         [SerializeField, Tooltip("References the default bottom panel.")]
-        private GameObject defaultBottomKeysSection = null;
+        public GameObject defaultBottomKeysSection = null;
 
         /// <summary>
         /// References the .com bottom panel.
         /// </summary>
         [SerializeField, Tooltip("References the .com bottom panel.")]
-        private GameObject urlBottomKeysSection = null;
+        public GameObject urlBottomKeysSection = null;
 
         /// <summary>
         /// References the @ bottom panel.
         /// </summary>
         [SerializeField, Tooltip("References the @ bottom panel.")]
-        private GameObject emailBottomKeysSection = null;
+        public GameObject emailBottomKeysSection = null;
 
-        #endregion Keyboard component references
+        #endregion Properties
 
         #region Private fields
 
@@ -191,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 // Setting the keyboardType to an undefined TouchScreenKeyboardType,
                 // which prevents the MRTK keyboard from triggering the system keyboard itself.
-                InputField.keyboardType = (TouchScreenKeyboardType)(int.MaxValue);
+                InputField.keyboardType = (TouchScreenKeyboardType)(-1);
             }
             else
             {
@@ -290,7 +308,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             Clear();
             if (InputField != null)
             {
-                InputField.text = startText;
+                Text = startText;
+                UpdateCaretPosition(startText.Length);
             }
             Open();
         }
@@ -344,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 if (InputField != null)
                 {
                     m_CaretPosition = InputField.caretPosition;
-                    InputField.text = InputField.text.Insert(m_CaretPosition, valueKey.CurrentValue);
+                    Text = Text.Insert(m_CaretPosition, valueKey.CurrentValue);
                     m_CaretPosition += valueKey.CurrentValue.Length;
 
                     UpdateCaretPosition(m_CaretPosition);
@@ -380,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         Tab();
                         break;
 
-                    case Function.ABC:
+                    case Function.Alpha:
                         ActivateSpecificKeyboard(lastKeyboardLayout);
                         break;
 
@@ -420,7 +439,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         Backspace();
                         break;
 
-                    case Function.UNDEFINED:
+                    case Function.Undefined:
+                    default:
                         Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
                         break;
                 }
@@ -441,12 +461,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 if (InputField.selectionAnchorPosition > InputField.selectionFocusPosition) // right to left
                 {
-                    InputField.text = InputField.text.Substring(0, InputField.selectionFocusPosition) + InputField.text.Substring(InputField.selectionAnchorPosition);
+                    Text = Text.Substring(0, InputField.selectionFocusPosition) + Text.Substring(InputField.selectionAnchorPosition);
                     InputField.caretPosition = InputField.selectionFocusPosition;
                 }
                 else // left to right
                 {
-                    InputField.text = InputField.text.Substring(0, InputField.selectionAnchorPosition) + InputField.text.Substring(InputField.selectionFocusPosition);
+                    Text = Text.Substring(0, InputField.selectionAnchorPosition) + Text.Substring(InputField.selectionFocusPosition);
                     InputField.caretPosition = InputField.selectionAnchorPosition;
                 }
 
@@ -461,7 +481,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 if (m_CaretPosition > 0)
                 {
                     --m_CaretPosition;
-                    InputField.text = InputField.text.Remove(m_CaretPosition, 1);
+                    Text = Text.Remove(m_CaretPosition, 1);
                     UpdateCaretPosition(m_CaretPosition);
                 }
             }
@@ -475,7 +495,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (SubmitOnEnter)
             {
-                OnTextSubmit.Invoke(InputField.text);
+                OnTextSubmit.Invoke(Text);
                 Close();
             }
             else
@@ -484,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 m_CaretPosition = InputField.caretPosition;
 
-                InputField.text = InputField.text.Insert(m_CaretPosition, enterString);
+                Text = Text.Insert(m_CaretPosition, enterString);
                 m_CaretPosition += enterString.Length;
 
                 UpdateCaretPosition(m_CaretPosition);
@@ -525,7 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public void Space()
         {
             m_CaretPosition = InputField.caretPosition;
-            InputField.text = InputField.text.Insert(m_CaretPosition++, " ");
+            Text = Text.Insert(m_CaretPosition++, " ");
 
             UpdateCaretPosition(m_CaretPosition);
         }
@@ -539,7 +559,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             m_CaretPosition = InputField.caretPosition;
 
-            InputField.text = InputField.text.Insert(m_CaretPosition, tabString);
+            Text = Text.Insert(m_CaretPosition, tabString);
             m_CaretPosition += tabString.Length;
 
             UpdateCaretPosition(m_CaretPosition);
@@ -552,7 +572,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             m_CaretPosition = InputField.caretPosition;
 
-            if (m_CaretPosition < InputField.text.Length)
+            if (m_CaretPosition < Text.Length)
             {
                 ++m_CaretPosition;
                 UpdateCaretPosition(m_CaretPosition);
@@ -580,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (InputField != null)
             {
-                OnClose.Invoke(InputField.text);
+                OnClose.Invoke(Text);
                 gameObject.SetActive(false);
             }
         }
@@ -593,7 +613,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (InputField != null)
             {
                 ResetKeyboardState();
-                InputField.text = "";
+                Text = "";
                 m_CaretPosition = InputField.caretPosition;
             }
         }
@@ -604,39 +624,54 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void ShowAlphaKeyboardUpperSection()
         {
-            alphaKeysSection?.SetActive(true);
+            if (alphaKeysSection != null)
+            {
+                alphaKeysSection.SetActive(true);
+            }
         }
 
         private void ShowAlphaKeyboardDefaultBottomKeysSection()
         {
-            if (defaultBottomKeysSection?.transform.parent.gameObject.activeSelf == false)
+            if (defaultBottomKeysSection != null)
             {
-                defaultBottomKeysSection?.transform.parent.gameObject.SetActive(true);
+                if (!defaultBottomKeysSection.transform.parent.gameObject.activeSelf)
+                {
+                    defaultBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                }
+                defaultBottomKeysSection.SetActive(true);
             }
-            defaultBottomKeysSection?.SetActive(true);
         }
 
         private void ShowAlphaKeyboardEmailBottomKeysSection()
         {
-            if (emailBottomKeysSection?.transform.parent.gameObject.activeSelf == false)
+            if (emailBottomKeysSection != null)
             {
-                emailBottomKeysSection?.transform.parent.gameObject.SetActive(true);
+                if (!emailBottomKeysSection.transform.parent.gameObject.activeSelf)
+                {
+                    emailBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                }
+                emailBottomKeysSection.SetActive(true);
             }
-            emailBottomKeysSection?.SetActive(true);
         }
 
         private void ShowAlphaKeyboardURLBottomKeysSection()
         {
-            if (urlBottomKeysSection?.transform.parent.gameObject.activeSelf == false)
+            if (urlBottomKeysSection != null)
             {
-                urlBottomKeysSection?.transform.parent.gameObject.SetActive(true);
+                if (!urlBottomKeysSection.transform.parent.gameObject.activeSelf)
+                {
+                    urlBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                }
+                urlBottomKeysSection.SetActive(true);
             }
-            urlBottomKeysSection?.SetActive(true);
         }
 
         private void ShowSymbolKeyboard()
         {
-            symbolKeysSection?.gameObject.SetActive(true);
+            if (symbolKeysSection != null)
+            {
+                symbolKeysSection.gameObject.SetActive(true);
+            }
         }
 
         /// <summary>
@@ -644,11 +679,26 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void DisableAllKeyboards()
         {
-            alphaKeysSection?.SetActive(false);
-            defaultBottomKeysSection?.gameObject.SetActive(false);
-            urlBottomKeysSection?.gameObject.SetActive(false);
-            emailBottomKeysSection?.gameObject.SetActive(false);
-            symbolKeysSection?.gameObject.SetActive(false);
+            if (alphaKeysSection != null)
+            {
+                alphaKeysSection.SetActive(false);
+            }
+            if (defaultBottomKeysSection != null)
+            {
+                defaultBottomKeysSection.SetActive(false);
+            }
+            if (urlBottomKeysSection != null)
+            {
+                urlBottomKeysSection.SetActive(false);
+            }
+            if (emailBottomKeysSection != null)
+            {
+                emailBottomKeysSection.SetActive(false);
+            }
+            if (symbolKeysSection != null)
+            {
+                symbolKeysSection.gameObject.SetActive(false);
+            }
         }
 
         #endregion Keyboard Layout Modes

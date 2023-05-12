@@ -32,32 +32,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// The default string value for this key.
         /// </summary>
-        [SerializeField, Tooltip("The default string value for this key.")]
-        private string defaultValue;
-
-        /// <summary>
-        /// The default string value for this key.
-        /// </summary>
-        public string DefaultValue
-        {
-            get => defaultValue;
-            set => defaultValue = value;
-        }
+        [field: SerializeField, Tooltip("The default string value for this key.")]
+        public string defaultValue = null;
 
         /// <summary>
         /// The shifted string value for this key.
         /// </summary>
-        [SerializeField, Tooltip("The shifted string value for this key.")]
-        private string shiftedValue = null;
-
-        /// <summary>
-        /// The shifted string value for this key.
-        /// </summary>
-        public string ShiftedValue
-        {
-            get => shiftedValue;
-            set => shiftedValue = value;
-        }
+        [field: SerializeField, Tooltip("The shifted string value for this key.")]
+        public string shiftedValue = null;
 
         /// <summary>
         /// Reference to child text element.

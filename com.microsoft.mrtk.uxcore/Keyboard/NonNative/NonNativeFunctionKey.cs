@@ -15,29 +15,59 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public enum Function
         {
-            // Commands
-            Enter,
-            Tab,
-            ABC,
-            Symbol,
-            Previous, 
-            Next,
-            Close,
+            /// <summary>
+            /// If SubmitOnEnter is enabled, this function key closes the keyboard. Otherwise, adds a new line. 
+            /// </summary>
+            Enter = 1,
+            /// <summary>
+            /// Adds a tab.
+            /// </summary>
+            Tab = 2,
+            /// <summary>
+            /// Switches from the symbol key section to the alpha key section.
+            /// </summary>
+            Alpha = 3,
+            /// <summary>
+            /// Switches from the alpha key section to the symbol key section.
+            /// </summary>
+            Symbol = 4,
+            /// <summary>
+            /// Moves the carat back one index.
+            /// </summary>
+            Previous = 5,
+            /// <summary>
+            /// Moves the carat forward one index.
+            /// </summary>
+            Next = 6,
+            /// <summary>
+            /// Shifts all of the NonNativeValueKeys until the next character is typed.
+            /// </summary>
+            Shift = 7,
+            /// <summary>
+            /// Shifts all of the NonNativeValueKeys until CapsLock is disabled.
+            /// </summary>
+            CapsLock = 8,
+            /// <summary>
+            /// Adds a space.
+            /// </summary>
+            Space = 9,
+            /// <summary>
+            /// Deletes the previous character, or the selected characters.
+            /// </summary>
+            Backspace = 10,
+            /// <summary>
+            /// Closes the keyboard. 
+            /// </summary>
+            Close = 11,
 
-            // Editing
-            Shift,
-            CapsLock,
-            Space,
-            Backspace,
-
-            UNDEFINED = 255,
+            Undefined = 0,
         }
 
         /// <summary>
         /// The function of this key.
         /// </summary>
         [field: SerializeField, Tooltip("The function of this key.")]
-        public Function KeyFunction { get; set; } = Function.UNDEFINED;
+        public Function KeyFunction { get; set; } = Function.Undefined;
 
         /// <inheritdoc/>
         protected override void FireKey()
