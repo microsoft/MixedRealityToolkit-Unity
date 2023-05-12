@@ -632,39 +632,35 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void ShowAlphaKeyboardDefaultBottomKeysSection()
         {
+            if (defaultBottomKeysSection != null && !defaultBottomKeysSection.transform.parent.gameObject.activeSelf)
+            {
+                defaultBottomKeysSection.transform.parent.gameObject.SetActive(true);
+            }
             if (defaultBottomKeysSection != null)
             {
-                if (!defaultBottomKeysSection.transform.parent.gameObject.activeSelf)
-                {
-                    defaultBottomKeysSection.transform.parent.gameObject.SetActive(true);
-                }
                 defaultBottomKeysSection.SetActive(true);
             }
         }
 
         private void ShowAlphaKeyboardEmailBottomKeysSection()
         {
+            if (emailBottomKeysSection != null && !emailBottomKeysSection.transform.parent.gameObject.activeSelf)
+            {
+                emailBottomKeysSection.transform.parent.gameObject.SetActive(true);
+            }
             if (emailBottomKeysSection != null)
             {
-                if (!emailBottomKeysSection.transform.parent.gameObject.activeSelf)
-                {
-                    emailBottomKeysSection.transform.parent.gameObject.SetActive(true);
-                }
                 emailBottomKeysSection.SetActive(true);
             }
         }
 
         private void ShowAlphaKeyboardURLBottomKeysSection()
         {
-            if (urlBottomKeysSection != null)
+            if (!urlBottomKeysSection.transform.parent.gameObject.activeSelf)
             {
-                if (!urlBottomKeysSection.transform.parent.gameObject.activeSelf)
-                {
-                    urlBottomKeysSection.transform.parent.gameObject.SetActive(true);
-                }
-                urlBottomKeysSection.SetActive(true);
+                urlBottomKeysSection.transform.parent.gameObject.SetActive(true);
             }
-        }
+        }   
 
         private void ShowSymbolKeyboard()
         {
@@ -672,7 +668,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 symbolKeysSection.gameObject.SetActive(true);
             }
-        }
+        } 
 
         /// <summary>
         /// Disable GameObjects for all keyboard elements.

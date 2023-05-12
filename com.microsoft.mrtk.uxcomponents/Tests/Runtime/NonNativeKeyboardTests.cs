@@ -300,51 +300,5 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
 			return testGO;
 		}
-
-		/// <summary>
-		/// Move the hand forward to press button, then off to the right to release
-		/// </summary>
-		private IEnumerator PressAndReleaseButtonWithHand(Vector3 buttonPosition)
-		{
-			yield return PressButtonWithHand(buttonPosition);
-			yield return ReleaseButtonWithHand(buttonPosition);
-		}
-
-		/// <summary>
-		/// Move the hand forward to press button
-		/// </summary>
-		private IEnumerator PressButtonWithHand(Vector3 buttonPosition)
-		{
-			// Start the hand a good distance behind the button
-			Vector3 p1 = new Vector3(0, 0, -0.2f);
-
-			// Bring the hand so it fully depresses the button
-			// This depth value is specifically coded for the size of the button prefab for these tests
-			Vector3 p2 = new Vector3(0, 0, 0.013f);
-
-			TestHand hand = new TestHand(Handedness.Right);
-			yield return hand.Show(Vector3.zero);
-			yield return RuntimeTestUtilities.WaitForUpdates();
-			yield return hand.MoveTo(buttonPosition + p1);
-			yield return RuntimeTestUtilities.WaitForUpdates();
-
-			// Slowly move the hand to touch the button
-			yield return hand.MoveTo(buttonPosition + p2, 15);
-			yield return RuntimeTestUtilities.WaitForUpdates();
-		}
-
-		/// <summary>
-		/// Move the hand off to the right to release the button
-		/// </summary>
-		private IEnumerator ReleaseButtonWithHand(Vector3 buttonPosition, bool doRolloff = false)
-		{
-			Vector3 p3 = new Vector3(doRolloff ? 0.1f : 0.0f, 0, -0.05f);
-
-			TestHand hand = new TestHand(Handedness.Right);
-			yield return hand.MoveTo(buttonPosition + p3);
-			yield return RuntimeTestUtilities.WaitForUpdates();
-			yield return hand.Hide();
-			yield return RuntimeTestUtilities.WaitForUpdates();
-		}
 	}
 }

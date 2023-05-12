@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         public void Teardown()
         {
             Object.Destroy(keyboard);
-            // Wait for a frame to give Unity a change to actually destroy the object
         }
 
         [UnityTest]

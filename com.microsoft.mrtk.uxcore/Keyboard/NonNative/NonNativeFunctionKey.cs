@@ -16,6 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public enum Function
         {
             /// <summary>
+            /// No valid function key has been set.
+            /// </summary>
+            Undefined = 0,
+            /// <summary>
             /// If SubmitOnEnter is enabled, this function key closes the keyboard. Otherwise, adds a new line. 
             /// </summary>
             Enter = 1,
@@ -59,8 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             /// Closes the keyboard. 
             /// </summary>
             Close = 11,
-
-            Undefined = 0,
         }
 
         /// <summary>

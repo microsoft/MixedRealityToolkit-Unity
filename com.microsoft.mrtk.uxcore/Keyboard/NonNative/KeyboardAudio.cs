@@ -1,16 +1,17 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// Adds touch events to the NonNativeKeyboard buttons (and a tap sound)
+    /// Adds the chosen tap sound to the NonNativeKeyboard buttons
     /// </summary>
+    [RequireComponent(typeof(AudioSource))]
     public class KeyboardAudio : MonoBehaviour
     {
-        [SerializeField]
-        private AudioClip clickSound = null;
-
         private AudioSource clickSoundPlayer;
 
         private void Start()
@@ -20,9 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void EnableTouch()
         {
-            clickSoundPlayer = gameObject.AddComponent<AudioSource>();
-            clickSoundPlayer.playOnAwake = false;
-            clickSoundPlayer.clip = clickSound;
+            clickSoundPlayer = gameObject.GetComponent<AudioSource>();
             var buttons = GetComponentsInChildren<Button>();
             foreach (var button in buttons)
             {
@@ -32,10 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void PlayClick()
         {
-            if (clickSound != null)
-            {
-                clickSoundPlayer.Play();
-            }
+            clickSoundPlayer.Play();
         }
     }
 }
