@@ -41,13 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             PresentKeyboard();
         }
+
         /// <summary>
         /// Show the non native keyboard
         /// </summary>
         public void PresentKeyboard()
         {
             NonNativeKeyboard keyboard = NonNativeKeyboard.Instance;
-            keyboard.Open(field.text);
+            keyboard.Open();
             keyboard.OnClose?.AddListener(OnKeyboardClose);
             keyboard.OnTextUpdate?.AddListener(UpdateText);
         }

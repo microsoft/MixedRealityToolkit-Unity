@@ -232,9 +232,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			Ainteractable.onClick.Invoke();
 
 
-			yield return new WaitForSeconds(0.015f);
+			yield return new WaitForSeconds(0.05f);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
-			Assert.AreEqual(inputfield.text, "", "The input field is cleared.");
+            Assert.AreEqual(inputfield.text, "", "The input field is cleared.");
 			Assert.IsTrue(!testKeyboard.gameObject.activeInHierarchy, "The keyboard is inactive.");
 			yield return null;
 		}
