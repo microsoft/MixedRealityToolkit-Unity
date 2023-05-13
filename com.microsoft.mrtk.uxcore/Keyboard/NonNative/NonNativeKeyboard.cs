@@ -659,9 +659,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void ShowAlphaKeyboardURLBottomKeysSection()
         {
-            if (!urlBottomKeysSection.transform.parent.gameObject.activeSelf)
+            if (urlBottomKeysSection != null && !urlBottomKeysSection.transform.parent.gameObject.activeSelf)
             {
                 urlBottomKeysSection.transform.parent.gameObject.SetActive(true);
+            }
+            if (urlBottomKeysSection != null)
+            {
+                urlBottomKeysSection.SetActive(true);
             }
         }   
 
