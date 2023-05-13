@@ -31,7 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void PlayClick()
         {
-            clickSoundPlayer.Play();
+            if (clickSoundPlayer.enabled && clickSoundPlayer.gameObject.activeInHierarchy)
+            {
+                clickSoundPlayer.Play();
+            }
         }
     }
 }

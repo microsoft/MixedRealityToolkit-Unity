@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (InputField != null)
             {
                 Text = startText;
-                UpdateCaretPosition(startText.Length);
+                UpdateCaretPosition(Text.Length);
             }
             Open();
         }
@@ -328,6 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (InputField != null)
             {
                 InputField.ActivateInputField();
+                UpdateCaretPosition(Text.Length);
             }
         }
 
@@ -342,6 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (InputField != null)
             {
                 InputField.text = startText;
+                UpdateCaretPosition(Text.Length);
             }
             Open(keyboardType);
         }
@@ -614,6 +616,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 ResetKeyboardState();
                 Text = "";
+                UpdateCaretPosition(Text.Length);
                 m_CaretPosition = InputField.caretPosition;
             }
         }
