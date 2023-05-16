@@ -15438,6 +15438,7 @@ MonoBehaviour:
   <SubmitOnEnter>k__BackingField: 1
   <CloseOnInactivity>k__BackingField: 0
   <CloseOnInactivityTime>k__BackingField: 15
+  <AutoSelectInputField>k__BackingField: 1
   alphaKeysSection: {fileID: 103102}
   symbolKeysSection: {fileID: 173904}
   defaultBottomKeysSection: {fileID: 154526}

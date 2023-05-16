@@ -136,6 +136,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public float CloseOnInactivityTime { get; set; } = 15;
 
         /// <summary>
+        /// If this property is set to `true`, the keyboard's input field will automatically be selected when the keyboard
+        /// is opened and when a key is activated. To prevent this auto select behavior, set this property to `false`. The
+        /// default value is `true`.
+        /// </summary>
+        /// <remarks>
+        /// This select behavior can be used to show the input input fields's cursor (or caret) after the keyboard is opened
+        /// or when a keyboard key is activated.
+        /// </remarks>
+        [field: SerializeField, Tooltip("If this property is set to `true`, the keyboard's input field will automatically be selected when the keyboard is opened and when a key is activated. To prevent this auto select behavior, set this property to `false`. ")]
+        public bool AutoSelectInputField { get; set; } = true;
+
+        /// <summary>
         /// Accessor reporting shift state of keyboard.
         /// </summary>
         public bool IsShifted { get; private set; }
@@ -329,6 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 InputField.ActivateInputField();
                 UpdateCaretPosition(Text.Length);
+                AutoSelectInputFieldIfEnabled();
             }
         }
 
@@ -375,6 +388,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 {
                     Shift(false);
                 }
+
+                AutoSelectInputFieldIfEnabled();
             }
             else
             {
@@ -446,6 +461,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
                         break;
                 }
+
+                AutoSelectInputFieldIfEnabled();
             }
             else
             {
@@ -751,6 +768,21 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        }
+
+        /// <summary>
+        /// If `AutoSelectInputField` is `true`, select the keyboard's input field. 
+        /// </summary>
+        /// <remarks>
+        /// This select behavior can be used to show the input input fields's cursor (or caret) after the keyboard is opened
+        /// or when a keyboard key is activated.
+        /// </remarks>
+        private void AutoSelectInputFieldIfEnabled()
+        {
+            if (AutoSelectInputField && InputField != null)
+            {
+                InputField.Select();
+            }
         }
 
         /// <summary>
