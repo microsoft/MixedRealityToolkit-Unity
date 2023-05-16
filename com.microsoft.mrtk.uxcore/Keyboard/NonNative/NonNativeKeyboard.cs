@@ -276,8 +276,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         protected void Start()
         {
-            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
-
             // Delegate Subscription
             if (InputField != null)
             {
@@ -470,11 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         break;
 
                     case Function.Dictate:
-                        {
-                            if (dictationSubsystem == null) { dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>(); }
-
-                            if (dictationSubsystem == null) { break; }
-
+                        {;
                             if (isRecording)
                             {
                                 EndDictation();
