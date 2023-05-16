@@ -9,7 +9,7 @@ parameters:
   buildNumber: $(Build.BuildNumber)
   previewTag: $(ReleaseTagPrefix)$(MRTKReleaseTag)
   publishToArtifacts: true
-  publishToFeed: true
+  publishToFeed: false
 
 steps:
 - task: PowerShell@2
