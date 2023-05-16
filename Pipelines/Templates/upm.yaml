@@ -7,7 +7,7 @@ parameters:
   projectRoot: $(Build.SourcesDirectory)/MixedRealityToolkit-Unity
   outputDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
   buildNumber: $(Build.BuildNumber)
-  previewTag: $(MRTKReleaseTag)
+  previewTag: $(ReleaseTagPrefix)$(MRTKReleaseTag)
   publishToArtifacts: true
   publishToFeed: true
 

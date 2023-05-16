@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-# CI build producing developer packages.
+# RC build producing release candidate packages.
 
 variables:
   - template: Config/settings.yaml
@@ -35,7 +35,7 @@ jobs:
 
       - checkout: PipelineTools
 
-      - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(ReleaseTagPrefix)$(MRTKReleaseTag).$(Version.DateCode).$(Version.DateCodeRevision)"
+      - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(MRTKReleaseTag).$(Version.DateCode).$(Version.DateCodeRevision)"
         displayName: Set Build Number
 
       - task: ComponentGovernanceComponentDetection@0
