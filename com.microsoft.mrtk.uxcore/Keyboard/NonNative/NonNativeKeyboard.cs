@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using static Microsoft.MixedReality.Toolkit.UX.NonNativeFunctionKey;
+using Microsoft.MixedReality.Toolkit.Subsystems;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -183,6 +184,20 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #endregion Properties
 
         #region Private fields
+        /// <summary>
+        /// Dictation System
+        /// </summary>
+        private DictationSubsystem dictationSubsystem;
+
+        /// <summary>
+        /// The image on the mike key.
+        /// </summary>
+        private Image _recordImage;
+
+        /// <summary>
+        /// The default color of the mike key.
+        /// </summary>        
+        private Color _defaultColor;
 
         private LayoutType lastKeyboardLayout = LayoutType.Alpha;
 
@@ -190,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Time on which the keyboard should close on inactivity
         /// </summary>
         private float timeToClose;
-        #endregion Private fields
+#endregion Private fields
 
         #region MonoBehaviours
 
@@ -204,7 +219,20 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             Instance = this;
 
-             
+            // Actually find microphone key in the keyboard
+            var dictationButton = TransformExtensions.GetChildRecursive(gameObject.transform, "Dictation");
+            if (dictationButton != null)
+            {
+                var dictationIcon = dictationButton.Find("keyboard_dictate");
+                if (dictationIcon != null)
+                {
+                    _recordImage = dictationIcon.GetComponentInChildren<Image>();
+                    var material = new Material(_recordImage.material);
+                    _defaultColor = material.color;
+                    _recordImage.material = material;
+                }
+            }
+
             if (InputField != null)
             {
                 // Setting the keyboardType to an undefined TouchScreenKeyboardType,
@@ -250,6 +278,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         protected void Start()
         {
+            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
+
             // Delegate Subscription
             if (InputField != null)
             {
@@ -440,6 +470,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     case Function.Backspace:
                         Backspace();
                         break;
+
+                    case Function.Dictate:
+                        {
+                            if (dictationSubsystem == null) { dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>(); }
+
+                            if (dictationSubsystem == null) { break; }
+
+                            if (IsMicrophoneActive())
+                            {
+                                EndDictation();
+                            }
+                            else
+                            {
+                                BeginDictation();
+                            }
+                            break;
+                        }
 
                     case Function.Undefined:
                     default:
@@ -705,6 +752,115 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         #endregion Keyboard Layout Modes
+
+        #region Dictation
+        /// <summary>
+        /// Initialize dictation mode.
+        /// </summary>
+        private void BeginDictation()
+        {
+            ResetClosingTime();
+            StartRecognition();
+            SetMicrophoneRecording();
+        }
+
+        private bool IsMicrophoneActive()
+        {
+            var result = _recordImage.color != _defaultColor;
+            Debug.LogWarning(result);
+            return result;
+        }
+
+        /// <summary>
+        /// Set mike default look
+        /// </summary>
+        private void SetMicrophoneDefault()
+        {
+            _recordImage.color = _defaultColor;
+        }
+
+        /// <summary>
+        /// Set mike recording look (red)
+        /// </summary>
+        private void SetMicrophoneRecording()
+        {
+            _recordImage.color = Color.red;
+        }
+
+        /// <summary>
+        /// Terminate dictation mode.
+        /// </summary>
+        public void EndDictation()
+        {
+            StopRecognition();
+            SetMicrophoneDefault();
+        }
+
+        /// <summary>
+        /// Start dictation on a DictationSubsystem.
+        /// </summary>
+        public void StartRecognition()
+        {
+            // Make sure there isn't an ongoing recognition session
+            StopRecognition();
+
+            if  (dictationSubsystem == null) { dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>(); }
+
+            if (dictationSubsystem != null)
+            {
+                dictationSubsystem.Recognized += OnDictationResult;
+                dictationSubsystem.RecognitionFinished += OnDictationComplete;
+                dictationSubsystem.StartDictation();
+            }
+            else
+            {
+                Debug.LogError("Cannot find a running DictationSubsystem. Please check the MRTK profile settings " +
+                    "(Project Settings -> MRTK3) and/or ensure a DictationSubsystem is running.");
+            }
+        }
+
+        /// <summary>
+        /// Stop dictation on the current DictationSubsystem.
+        /// </summary>
+        public void StopRecognition()
+        {
+            if (dictationSubsystem != null)
+            {
+                dictationSubsystem.StopDictation();
+                dictationSubsystem.Recognized -= OnDictationResult;
+                dictationSubsystem.RecognitionFinished -= OnDictationComplete;
+            }
+        }
+
+        /// <summary>
+        /// Called when dictation result is obtained
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        public void OnDictationResult(DictationResultEventArgs eventData)
+        {
+            var text = eventData.Result;
+            ResetClosingTime();
+            if (text != null)
+            {
+                m_CaretPosition = InputField.caretPosition;
+
+                InputField.text = InputField.text.Insert(m_CaretPosition, text);
+                m_CaretPosition += text.Length;
+
+                UpdateCaretPosition(m_CaretPosition);
+            }
+        }
+
+        /// <summary>
+        /// Called when dictation is completed
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        public void OnDictationComplete(DictationSessionEventArgs eventData)
+        {
+            ResetClosingTime();
+            SetMicrophoneDefault();
+        }
+        #endregion Dictation
 
         #region Private Functions
 

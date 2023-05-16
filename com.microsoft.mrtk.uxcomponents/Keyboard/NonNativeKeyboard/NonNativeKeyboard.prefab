@@ -4788,7 +4788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &22435746
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10831,8 +10831,9 @@ GameObject:
   - component: {fileID: 22293264}
   - component: {fileID: 11499970}
   - component: {fileID: 11433396}
+  - component: {fileID: 8683651757102903421}
   m_Layer: 0
-  m_Name: Buffer
+  m_Name: Dictation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10942,6 +10943,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8683651757102903421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e1c442774c417540a752bf2fd6a5768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Interactable>k__BackingField: {fileID: 0}
+  <KeyButton>k__BackingField: {fileID: 0}
+  <KeyFunction>k__BackingField: 12
 --- !u!1 &135164
 GameObject:
   m_ObjectHideFlags: 0
@@ -33731,12 +33747,12 @@ GameObject:
   - component: {fileID: 4223480358051934209}
   - component: {fileID: 3093567306680969604}
   m_Layer: 0
-  m_Name: keyboard_back
+  m_Name: keyboard_dictate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &261783965268383605
 RectTransform:
   m_ObjectHideFlags: 0
