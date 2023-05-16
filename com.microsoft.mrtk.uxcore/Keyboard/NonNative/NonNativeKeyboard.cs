@@ -181,6 +181,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [SerializeField, Tooltip("References the @ bottom panel.")]
         public GameObject emailBottomKeysSection = null;
 
+        /// <summary>
+        /// Used for changing the color of the icon to indicate if recording is active.
+        /// </summary>
+        [SerializeField, Tooltip("Used for changing the color of the icon to indicate if recording is active.")]
+        public Image dictationRecordIcon = null;
         #endregion Properties
 
         #region Private fields
@@ -190,14 +195,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private DictationSubsystem dictationSubsystem;
 
         /// <summary>
-        /// The image on the mike key.
-        /// </summary>
-        private Image _recordImage;
-
-        /// <summary>
         /// The default color of the mike key.
         /// </summary>        
         private Color _defaultColor;
+
+        /// <summary>
+        /// Tracks whether or not dictation is actively recording.
+        /// </summary>        
+        private bool isRecording = false;
 
         private LayoutType lastKeyboardLayout = LayoutType.Alpha;
 
@@ -205,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Time on which the keyboard should close on inactivity
         /// </summary>
         private float timeToClose;
-#endregion Private fields
+        #endregion Private fields
 
         #region MonoBehaviours
 
@@ -219,18 +224,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             Instance = this;
 
-            // Actually find microphone key in the keyboard
-            var dictationButton = TransformExtensions.GetChildRecursive(gameObject.transform, "Dictation");
-            if (dictationButton != null)
+            if (dictationRecordIcon != null)
             {
-                var dictationIcon = dictationButton.Find("keyboard_dictate");
-                if (dictationIcon != null)
-                {
-                    _recordImage = dictationIcon.GetComponentInChildren<Image>();
-                    var material = new Material(_recordImage.material);
-                    _defaultColor = material.color;
-                    _recordImage.material = material;
-                }
+                var material = new Material(dictationRecordIcon.material);
+                _defaultColor = material.color;
+                dictationRecordIcon.material = material;
             }
 
             if (InputField != null)
@@ -477,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                             if (dictationSubsystem == null) { break; }
 
-                            if (IsMicrophoneActive())
+                            if (isRecording)
                             {
                                 EndDictation();
                             }
@@ -764,19 +762,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
             SetMicrophoneRecording();
         }
 
-        private bool IsMicrophoneActive()
-        {
-            var result = _recordImage.color != _defaultColor;
-            Debug.LogWarning(result);
-            return result;
-        }
-
         /// <summary>
         /// Set mike default look
         /// </summary>
         private void SetMicrophoneDefault()
         {
-            _recordImage.color = _defaultColor;
+            dictationRecordIcon.color = _defaultColor;
+            isRecording = false;
         }
 
         /// <summary>
@@ -784,7 +776,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void SetMicrophoneRecording()
         {
-            _recordImage.color = Color.red;
+            dictationRecordIcon.color = Color.red;
+            isRecording = true;
         }
 
         /// <summary>
@@ -804,7 +797,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Make sure there isn't an ongoing recognition session
             StopRecognition();
 
-            if  (dictationSubsystem == null) { dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>(); }
+            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
 
             if (dictationSubsystem != null)
             {
@@ -829,6 +822,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 dictationSubsystem.StopDictation();
                 dictationSubsystem.Recognized -= OnDictationResult;
                 dictationSubsystem.RecognitionFinished -= OnDictationComplete;
+                dictationSubsystem = null;
             }
         }
 
@@ -844,7 +838,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 m_CaretPosition = InputField.caretPosition;
 
-                InputField.text = InputField.text.Insert(m_CaretPosition, text);
+                Text = Text.Insert(m_CaretPosition, text);
                 m_CaretPosition += text.Length;
 
                 UpdateCaretPosition(m_CaretPosition);

@@ -15459,6 +15459,7 @@ MonoBehaviour:
   defaultBottomKeysSection: {fileID: 154526}
   urlBottomKeysSection: {fileID: 100600}
   emailBottomKeysSection: {fileID: 125942}
+  dictationRecordIcon: {fileID: 3093567306680969604}
 --- !u!114 &114593871428788132
 MonoBehaviour:
   m_ObjectHideFlags: 0
