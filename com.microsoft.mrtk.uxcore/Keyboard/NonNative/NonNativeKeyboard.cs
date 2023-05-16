@@ -747,43 +747,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region Dictation
         /// <summary>
-        /// Initialize dictation mode.
-        /// </summary>
-        private void BeginDictation()
-        {
-            ResetClosingTime();
-            StartRecognition();
-            SetMicrophoneRecording();
-        }
-
-        /// <summary>
-        /// Set mike default look
-        /// </summary>
-        private void SetMicrophoneDefault()
-        {
-            dictationRecordIcon.color = _defaultColor;
-            isRecording = false;
-        }
-
-        /// <summary>
-        /// Set mike recording look (red)
-        /// </summary>
-        private void SetMicrophoneRecording()
-        {
-            dictationRecordIcon.color = Color.red;
-            isRecording = true;
-        }
-
-        /// <summary>
-        /// Terminate dictation mode.
-        /// </summary>
-        public void EndDictation()
-        {
-            StopRecognition();
-            SetMicrophoneDefault();
-        }
-
-        /// <summary>
         /// Start dictation on a DictationSubsystem.
         /// </summary>
         public void StartRecognition()
@@ -851,6 +814,48 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #endregion Dictation
 
         #region Private Functions
+        /// <summary>
+        /// Initialize dictation mode.
+        /// </summary>
+        private void BeginDictation()
+        {
+            ResetClosingTime();
+            StartRecognition();
+            SetMicrophoneRecording();
+        }
+
+        /// <summary>
+        /// Set mike default look
+        /// </summary>
+        private void SetMicrophoneDefault()
+        {
+            if (_defaultColor != null && dictationRecordIcon != null)
+            {
+                dictationRecordIcon.color = _defaultColor;
+            }
+            isRecording = false;
+        }
+
+        /// <summary>
+        /// Set mike recording look (red)
+        /// </summary>
+        private void SetMicrophoneRecording()
+        {
+            if (dictationRecordIcon != null)
+            {
+                dictationRecordIcon.color = Color.red;
+            }
+            isRecording = true;
+        }
+
+        /// <summary>
+        /// Terminate dictation mode.
+        /// </summary>
+        private void EndDictation()
+        {
+            StopRecognition();
+            SetMicrophoneDefault();
+        }
 
         /// <summary>
         /// Activates a specific keyboard layout, and any sub keys.
