@@ -22,7 +22,7 @@ steps:
       -ProjectRoot: ${{ parameters.projectRoot }}
       -OutputDirectory: ${{ parameters.outputDirectory }}
       -BuildNumber: ${{ parameters.buildNumber }}
-      -PreviewTag: ${{ parameters.previewTag }}
+      -PreviewTag: $(ReleaseTagPrefix)$(MRTKReleaseTag)
       -Revision: $(Version.DateCode).$(Version.DateCodeRevision)
       -ReleasePackages: $(ReleasePackages)
 
