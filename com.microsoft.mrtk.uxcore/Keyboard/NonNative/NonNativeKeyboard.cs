@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// be already assigned.
         /// </summary>
         [field: SerializeField, Tooltip("The input field used to view the typed text.")]
-        public TMP_InputField InputField = null;
+        public TMP_InputField InputField { get; set; }
 
 
         /// <summary>
@@ -147,45 +147,40 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public bool IsCapsLocked { get; private set; }
 
         /// <summary>
-        /// The position of the caret in the text field.
-        /// </summary>
-        private int m_CaretPosition = 0;
-
-        /// <summary>
         /// The panel that contains the alpha keys.
         /// </summary>
-        [SerializeField, Tooltip("The panel that contains the alpha keys.")]
-        public GameObject alphaKeysSection = null;
+        [field: SerializeField, Tooltip("The panel that contains the alpha keys.")]
+        public GameObject AlphaKeysSection { get; set; }
 
         /// <summary>
         /// The panel that contains the number and symbol keys.
         /// </summary>
-        [SerializeField, Tooltip("The panel that contains the number and symbol keys.")]
-        public GameObject symbolKeysSection = null;
+        [field: SerializeField, Tooltip("The panel that contains the number and symbol keys.")]
+        public GameObject SymbolKeysSection { get; set; }
 
         /// <summary>
         /// References the default bottom panel.
         /// </summary>
-        [SerializeField, Tooltip("References the default bottom panel.")]
-        public GameObject defaultBottomKeysSection = null;
+        [field: SerializeField, Tooltip("References the default bottom panel.")]
+        public GameObject DefaultBottomKeysSection { get; set; }
 
         /// <summary>
         /// References the .com bottom panel.
         /// </summary>
-        [SerializeField, Tooltip("References the .com bottom panel.")]
-        public GameObject urlBottomKeysSection = null;
+        [field: SerializeField, Tooltip("References the .com bottom panel.")]
+        public GameObject UrlBottomKeysSection { get; set; }
 
         /// <summary>
         /// References the @ bottom panel.
         /// </summary>
-        [SerializeField, Tooltip("References the @ bottom panel.")]
-        public GameObject emailBottomKeysSection = null;
+        [field: SerializeField, Tooltip("References the @ bottom panel.")]
+        public GameObject EmailBottomKeysSection { get; set; }
 
         /// <summary>
         /// Used for changing the color of the icon to indicate if recording is active.
         /// </summary>
-        [SerializeField, Tooltip("Used for changing the color of the icon to indicate if recording is active.")]
-        public Image dictationRecordIcon = null;
+        [field: SerializeField, Tooltip("Used for changing the color of the icon to indicate if recording is active.")]
+        public Image DictationRecordIcon { get; set; }
         #endregion Properties
 
         #region Private fields
@@ -195,15 +190,33 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private DictationSubsystem dictationSubsystem;
 
         /// <summary>
+        /// Tracks whether or not dictation is enabled.
+        /// </summary>        
+        private bool isDictationEnabled = false;
+
+        /// <summary>
         /// The default color of the mike key.
         /// </summary>        
-        private Color _defaultColor;
+        private Color defaultColor;
 
         /// <summary>
         /// Tracks whether or not dictation is actively recording.
         /// </summary>        
         private bool isRecording = false;
 
+        /// <summary>
+        /// On the first recording
+        /// </summary>        
+        private bool firstRecording = true;
+
+        /// <summary>
+        /// The position of the caret in the text field.
+        /// </summary>
+        private int m_CaretPosition = 0;
+
+        /// <summary>
+        /// Tracking the previous keyboard layout.
+        /// </summary>
         private LayoutType lastKeyboardLayout = LayoutType.Alpha;
 
         /// <summary>
@@ -224,11 +237,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             Instance = this;
 
-            if (dictationRecordIcon != null)
+            if (DictationRecordIcon != null)
             {
-                var material = new Material(dictationRecordIcon.material);
-                _defaultColor = material.color;
-                dictationRecordIcon.material = material;
+                defaultColor = DictationRecordIcon.material.color;
             }
 
             if (InputField != null)
@@ -276,6 +287,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         protected void Start()
         {
+
+            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
+            if (dictationSubsystem != null)
+            {
+                isDictationEnabled = true;
+            }
+            else
+            {
+                DictationRecordIcon.gameObject.SetActive(false);
+            }
+
             // Delegate Subscription
             if (InputField != null)
             {
@@ -468,14 +490,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         break;
 
                     case Function.Dictate:
-                        {;
-                            if (isRecording)
+                        {
+                            if (isDictationEnabled)
                             {
-                                EndDictation();
-                            }
-                            else
-                            {
-                                BeginDictation();
+                                if (isRecording)
+                                {
+                                    EndDictation();
+                                }
+                                else
+                                {
+                                    BeginDictation();
+                                }
                             }
                             break;
                         }
@@ -639,11 +664,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Close()
         {
+            if (isRecording)
+            {
+                StopRecognition();
+            }
+            SetMicrophoneDefault();
             if (InputField != null)
             {
                 OnClose.Invoke(Text);
-                gameObject.SetActive(false);
             }
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -666,53 +696,53 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void ShowAlphaKeyboardUpperSection()
         {
-            if (alphaKeysSection != null)
+            if (AlphaKeysSection != null)
             {
-                alphaKeysSection.SetActive(true);
+                AlphaKeysSection.SetActive(true);
             }
         }
 
         private void ShowAlphaKeyboardDefaultBottomKeysSection()
         {
-            if (defaultBottomKeysSection != null && !defaultBottomKeysSection.transform.parent.gameObject.activeSelf)
+            if (DefaultBottomKeysSection != null && !DefaultBottomKeysSection.transform.parent.gameObject.activeSelf)
             {
-                defaultBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                DefaultBottomKeysSection.transform.parent.gameObject.SetActive(true);
             }
-            if (defaultBottomKeysSection != null)
+            if (DefaultBottomKeysSection != null)
             {
-                defaultBottomKeysSection.SetActive(true);
+                DefaultBottomKeysSection.SetActive(true);
             }
         }
 
         private void ShowAlphaKeyboardEmailBottomKeysSection()
         {
-            if (emailBottomKeysSection != null && !emailBottomKeysSection.transform.parent.gameObject.activeSelf)
+            if (EmailBottomKeysSection != null && !EmailBottomKeysSection.transform.parent.gameObject.activeSelf)
             {
-                emailBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                EmailBottomKeysSection.transform.parent.gameObject.SetActive(true);
             }
-            if (emailBottomKeysSection != null)
+            if (EmailBottomKeysSection != null)
             {
-                emailBottomKeysSection.SetActive(true);
+                EmailBottomKeysSection.SetActive(true);
             }
         }
 
         private void ShowAlphaKeyboardURLBottomKeysSection()
         {
-            if (urlBottomKeysSection != null && !urlBottomKeysSection.transform.parent.gameObject.activeSelf)
+            if (UrlBottomKeysSection != null && !UrlBottomKeysSection.transform.parent.gameObject.activeSelf)
             {
-                urlBottomKeysSection.transform.parent.gameObject.SetActive(true);
+                UrlBottomKeysSection.transform.parent.gameObject.SetActive(true);
             }
-            if (urlBottomKeysSection != null)
+            if (UrlBottomKeysSection != null)
             {
-                urlBottomKeysSection.SetActive(true);
+                UrlBottomKeysSection.SetActive(true);
             }
         }   
 
         private void ShowSymbolKeyboard()
         {
-            if (symbolKeysSection != null)
+            if (SymbolKeysSection != null)
             {
-                symbolKeysSection.gameObject.SetActive(true);
+                SymbolKeysSection.gameObject.SetActive(true);
             }
         } 
 
@@ -721,25 +751,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void DisableAllKeyboards()
         {
-            if (alphaKeysSection != null)
+            if (AlphaKeysSection != null)
             {
-                alphaKeysSection.SetActive(false);
+                AlphaKeysSection.SetActive(false);
             }
-            if (defaultBottomKeysSection != null)
+            if (DefaultBottomKeysSection != null)
             {
-                defaultBottomKeysSection.SetActive(false);
+                DefaultBottomKeysSection.SetActive(false);
             }
-            if (urlBottomKeysSection != null)
+            if (UrlBottomKeysSection != null)
             {
-                urlBottomKeysSection.SetActive(false);
+                UrlBottomKeysSection.SetActive(false);
             }
-            if (emailBottomKeysSection != null)
+            if (EmailBottomKeysSection != null)
             {
-                emailBottomKeysSection.SetActive(false);
+                EmailBottomKeysSection.SetActive(false);
             }
-            if (symbolKeysSection != null)
+            if (SymbolKeysSection != null)
             {
-                symbolKeysSection.gameObject.SetActive(false);
+                SymbolKeysSection.gameObject.SetActive(false);
             }
         }
 
@@ -754,12 +784,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Make sure there isn't an ongoing recognition session
             StopRecognition();
 
-            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
-
             if (dictationSubsystem != null)
             {
                 dictationSubsystem.Recognized += OnDictationResult;
                 dictationSubsystem.RecognitionFinished += OnDictationComplete;
+                dictationSubsystem.RecognitionFaulted += OnDictationFaulted;
                 dictationSubsystem.StartDictation();
             }
             else
@@ -779,7 +808,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 dictationSubsystem.StopDictation();
                 dictationSubsystem.Recognized -= OnDictationResult;
                 dictationSubsystem.RecognitionFinished -= OnDictationComplete;
-                dictationSubsystem = null;
+                dictationSubsystem.RecognitionFaulted -= OnDictationFaulted;
             }
         }
 
@@ -811,6 +840,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             ResetClosingTime();
             SetMicrophoneDefault();
         }
+
+
+        /// <summary>
+        /// Called when dictation is faulted
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        public void OnDictationFaulted(DictationSessionEventArgs eventData)
+        {
+            Debug.LogError("Dictation faulted. Reason: " + eventData.Reason);
+            ResetClosingTime();
+            SetMicrophoneDefault();
+        }
         #endregion Dictation
 
         #region Private Functions
@@ -829,9 +870,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void SetMicrophoneDefault()
         {
-            if (_defaultColor != null && dictationRecordIcon != null)
+            if (defaultColor != null && DictationRecordIcon != null)
             {
-                dictationRecordIcon.color = _defaultColor;
+                DictationRecordIcon.color = defaultColor;
             }
             isRecording = false;
         }
@@ -841,9 +882,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void SetMicrophoneRecording()
         {
-            if (dictationRecordIcon != null)
+            if (DictationRecordIcon != null)
             {
-                dictationRecordIcon.color = Color.red;
+                DictationRecordIcon.color = Color.red;
             }
             isRecording = true;
         }

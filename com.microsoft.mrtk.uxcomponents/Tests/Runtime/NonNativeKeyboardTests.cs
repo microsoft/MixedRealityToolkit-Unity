@@ -137,8 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 		[UnityTest]
 		public IEnumerator TestNonnativeAlphaSymbolFunctionKeys()
 		{
-			GameObject alphaKeysSection = testKeyboard.alphaKeysSection;
-			GameObject symbolKeysSection = testKeyboard.symbolKeysSection;
+			GameObject alphaKeysSection = testKeyboard.AlphaKeysSection;
+			GameObject symbolKeysSection = testKeyboard.SymbolKeysSection;
 			NonNativeFunctionKey abckey = SetUpFunctionKey(NonNativeFunctionKey.Function.Alpha);
 			NonNativeFunctionKey symbolkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Symbol);;
 
