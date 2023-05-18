@@ -17,30 +17,54 @@ namespace Microsoft.MixedReality.Toolkit.UX
     [AddComponentMenu("MRTK/UX/Keyboard Preview")]
     public class KeyboardPreview : MonoBehaviour
     {
-        [SerializeField, Tooltip("The Text Mesh Pro text field to display the preview text.")]
-        private TextMeshProUGUI previewText = null;
+        [SerializeField, Tooltip("The Text Mesh Pro input field to display the preview text.")]
+        private TMP_InputField previewInput = null;
 
         /// <summary>
         /// The Text Mesh Pro text field to display the preview text.
         /// </summary>
-        public TextMeshProUGUI PreviewText
+        public TMP_InputField PreviewInput
         {
-            get { return previewText; }
+            get { return previewInput; }
             set
             {
-                if (previewText != value)
+                if (previewInput != value)
                 {
-                    previewText = value;
+                    previewInput = value;
 
-                    if (previewText != null)
+                    if (previewInput != null)
                     {
-                        previewText.text = Text;
-
+                        previewInput.text = Text;
                         UpdateCaret();
                     }
                 }
             }
         }
+
+        //[SerializeField, Tooltip("The Text Mesh Pro text field to display the preview text.")]
+        //private TextMeshProUGUI previewText = null;
+
+        /// <summary>
+        /// The Text Mesh Pro text field to display the preview text.
+        /// </summary>
+        public TMP_Text PreviewText => (previewInput == null) ? null : previewInput.textComponent;
+        //{
+        //    get { return previewText; }
+        //    set
+        //    {
+        //        if (previewText != value)
+        //        {
+        //            previewText = value;
+
+        //            if (previewText != null)
+        //            {
+        //                previewText.text = Text;
+
+        //                UpdateCaret();
+        //            }
+        //        }
+        //    }
+        //}
 
         [SerializeField, Tooltip("The transform to move based on the preview caret.")]
         private RectTransform previewCaret = null;
@@ -76,10 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 {
                     text = value;
 
-                    if (PreviewText != null)
+                    if (PreviewInput != null)
                     {
-                        PreviewText.text = text;
-                        PreviewText.ForceMeshUpdate();
+                        PreviewInput.text = text;
                     }
 
                     UpdateCaret();
