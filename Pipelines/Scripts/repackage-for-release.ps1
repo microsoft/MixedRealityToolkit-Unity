@@ -40,7 +40,7 @@ param(
 )
 $releasePkgs = $ReleasePackages.Split(",")
 $versionHash = @{}
-$ProjectRoot = Resolve-Path -Path $ProjectRoot
+$PackageRoot = Resolve-Path -Path $PackageRoot
 
 
 if ($BuildNumber) {
@@ -119,11 +119,12 @@ try {
             ((Get-Content -Path $_ -Raw) -Replace "(assembly: AssemblyInformationalVersion.)`"(?:[0-9.]+)-?[a-zA-Z0-9.]*", "`$1`"$Version-$buildTag") | Set-Content -Path $_ -NoNewline
         }
 
-        Write-Output "Packing $packageFriendlyName"
+        Write-Output "Packing $packageFriendlyName to $OutputDirectory"
         npm pack $packagePath -pack-destination $OutputDirectory
 
     }
 }
 finally {
-        Remove-Item -Force -Recurse $repackTempDirectory
+    Write-Output "Removing temp directory $repackTempDirectory"
+    Remove-Item -Force -Recurse $repackTempDirectory
 }
