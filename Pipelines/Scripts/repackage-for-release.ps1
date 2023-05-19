@@ -3,15 +3,13 @@
 
 <#
 .SYNOPSIS
-    Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packages.
+    Repackages release candidate tgz to  the Mixed Reality Toolkit Unity Package Manager (UPM) packages.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
-.PARAMETER ProjectRoot
+.PARAMETER PackageRoot
     The root folder of the project.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
-.PARAMETER Version
-    What version of the artifacts should we build?
 .PARAMETER BuildNumber
     The fourth digit (revision) for the full version.
 .PARAMETER PreviewTag
@@ -19,12 +17,11 @@
 .PARAMETER Revision
     The revision number for the build.  (e.g. "230508.3" or "2") 
 .PARAMETER ReleasePackages
-    An array of the package names that are approved for release.  If the package isn't in this array, it will get labeled -Pre
-
+    An array of the package names that are approved for release.  If the package isn't in this array, it will get labeled -pre
 #>
 param(
     [Parameter(Mandatory = $true)]
-    [string]$ProjectRoot,
+    [string]$PackageRoot,
 
     [string]$OutputDirectory = "./artifacts/upm",
 
@@ -39,7 +36,7 @@ param(
     
     [string]$Revision,
 
-    [string]$ReleasePackages = ""
+    [string]$ReleasePackages = ""    
 )
 $releasePkgs = $ReleasePackages.Split(",")
 $versionHash = @{}
@@ -60,12 +57,21 @@ Write-Output "OutputDirectory: $OutputDirectory"
 Write-Output "Release packages: $releasePkgs"
 
 try {
-    Push-Location $OutputDirectory
+           
+    $repackTempDirectory = Join-Path $OutputDirectory "tmp"
+    Write-Output "Temp Directory: $repackTempDirectory"
+    if (-not (Test-Path $repackTempDirectory -PathType Container)) {
+        New-Item $repackTempDirectory -ItemType Directory | Out-Null
+    }
+    
+    Get-ChildItem -Path (Join-Path $PackageRoot "*.tgz") | ForEach-Object {
+        New-Item -ItemType Directory -Force (Join-Path $repackTempDirectory $_.BaseName)
+        tar -xzf $_ -C (Join-Path $repackTempDirectory $_.BaseName)
+    }
+    $packageSearchPath = "$repackTempDirectory\*\package\package.json"
 
-    $parseVersion = -not $Version
-
-    Get-ChildItem -Path $ProjectRoot/*/package.json | ForEach-Object {
-        $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
+    Get-ChildItem -Path $packageSearchPath | ForEach-Object {
+        $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_.FullName | Select-Object -First 1
 
         if (-not $packageName) {
             return # this is not an MRTK package, so skip
@@ -75,28 +81,17 @@ try {
         $packageFriendlyName = (Select-String -Pattern "`"displayName`": `"(.+)`"" -Path $_ | Select-Object -First 1).Matches.Groups[1].Value
 
         $packagePath = $_.Directory
-        $docFolder = "$packagePath/Documentation~"
 
         Write-Output ""
         Write-Output "====================="
         Write-Output "Creating $packageName"
         Write-Output "====================="
 
-        Write-Output "Copying Documentation~ to $packageFriendlyName"
 
-        if (Test-Path -Path $docFolder) {
-            Copy-Item -Path "$ProjectRoot/Pipelines/UPM/Documentation~/*" -Destination $docFolder -Recurse
-        }
-        else {
-            Copy-Item -Path "$ProjectRoot/Pipelines/UPM/Documentation~" -Destination $docFolder -Recurse
-        }
+        $inlineVersion = Select-String '"version" *: *"([0-9.]+)(-?[a-zA-Z0-9.]*)' -InputObject (Get-Content -Path $_)
+        $Version = $inlineVersion.Matches.Groups[1].Value
+        $suffix = $inlineVersion.Matches.Groups[2].Value
 
-        if ($parseVersion) {
-            $inlineVersion = Select-String '"version" *: *"([0-9.]+)(-?[a-zA-Z0-9.]*)' -InputObject (Get-Content -Path $_)
-            $Version = $inlineVersion.Matches.Groups[1].Value
-            $suffix = $inlineVersion.Matches.Groups[2].Value
-
-        }
         
         if (!$releasePkgs.Contains( $packageName )) {
             $preview = "$PreviewTag."
@@ -120,29 +115,15 @@ try {
         Write-Output "Patching assembly version to $Version$BuildNumber"
         Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
             (Get-Content -Path $_ -Raw) -Replace '\[assembly:.AssemblyVersion\(.*', "[assembly: AssemblyVersion(`"$Version.0`")]`r" | Set-Content -Path $_ -NoNewline
-            Add-Content -Path $_ -Value "[assembly: AssemblyFileVersion(`"$Version$BuildNumber`")]"
-            Add-Content -Path $_ -Value "[assembly: AssemblyInformationalVersion(`"$Version-$buildTag`")]"
+            ((Get-Content -Path $_ -Raw) -Replace "(assembly: AssemblyFileVersion.)`"(?:[0-9.]+)", "`$1`"$Version$BuildNumber") | Set-Content -Path $_ -NoNewline
+            ((Get-Content -Path $_ -Raw) -Replace "(assembly: AssemblyInformationalVersion.)`"(?:[0-9.]+)-?[a-zA-Z0-9.]*", "`$1`"$Version-$buildTag") | Set-Content -Path $_ -NoNewline
         }
 
         Write-Output "Packing $packageFriendlyName"
-        npm pack $packagePath
+        npm pack $packagePath -pack-destination $OutputDirectory
 
-        if (Test-Path -Path $docFolder) {
-            Write-Output "Cleaning up Documentation~ from $packageFriendlyName"
-            # A documentation folder was created. Remove it.
-            Remove-Item -Path $docFolder -Recurse -Force
-            # But restore anything that's checked-in.
-            if (git ls-files $docFolder) {
-                git -C $packagePath checkout $docFolder
-            }
-        }
-
-        git -C $packagePath checkout $_
-        Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
-            git -C $packagePath checkout $_
-        }
     }
 }
 finally {
-    Pop-Location
+        Remove-Item -Force -Recurse $repackTempDirectory
 }
