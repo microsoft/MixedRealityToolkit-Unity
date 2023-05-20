@@ -67,6 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public NonNativeKeyboardTextEvent OnTextUpdate { get; private set; }
 
         /// <summary>
+        /// Fired every time the caret index changes.
+        /// </summary>
+        [field: SerializeField, Tooltip("Fired every time the caret index changes.")]
+        public NonNativeKeyboardIntEvent OnCaretIndexUpdate { get; private set; }
+
+        /// <summary>
         /// Fired every time the close button is pressed.
         /// </summary>
         [field: SerializeField, Tooltip("Fired every time the close button is pressed.")]
@@ -137,7 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 {
                     Preview.CaretIndex = value;
                 }
-                caretIndex = value;
+
+                if (caretIndex != value)
+                {
+                    caretIndex = value;
+                    DoCaretIndexUpdated(value);
+                }
             }
         }
 
@@ -267,6 +278,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <param name="value">String value.</param>
         private void DoTextUpdated(string value) => OnTextUpdate?.Invoke(value);
+
+        /// <summary>
+        /// Intermediary function for caret index update events.
+        /// </summary>
+        /// <param name="value">Integer value.</param>
+        private void DoCaretIndexUpdated(int value) => OnCaretIndexUpdate?.Invoke(value);
 
         private void LateUpdate()
         {

@@ -4,6 +4,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using System.Globalization;
 
 #if MRTK_SPATIAL_PRESENT
 using Microsoft.MixedReality.Toolkit.SpatialManipulation;
@@ -17,54 +18,30 @@ namespace Microsoft.MixedReality.Toolkit.UX
     [AddComponentMenu("MRTK/UX/Keyboard Preview")]
     public class KeyboardPreview : MonoBehaviour
     {
-        [SerializeField, Tooltip("The Text Mesh Pro input field to display the preview text.")]
-        private TMP_InputField previewInput = null;
+        private bool layoutInvalidated = true;
+
+        [SerializeField, Tooltip("The Text Mesh Pro text field to display the preview text.")]
+        private TMP_Text previewText = null;
 
         /// <summary>
         /// The Text Mesh Pro text field to display the preview text.
         /// </summary>
-        public TMP_InputField PreviewInput
+        public TMP_Text PreviewText
         {
-            get { return previewInput; }
+            get { return previewText; }
             set
             {
-                if (previewInput != value)
+                if (previewText != value)
                 {
-                    previewInput = value;
-
-                    if (previewInput != null)
+                    previewText = value;
+                    if (previewText != null)
                     {
-                        previewInput.text = Text;
-                        UpdateCaret();
+                        previewText.SetText(Text);
                     }
+                    InvalidateLayout();
                 }
             }
         }
-
-        //[SerializeField, Tooltip("The Text Mesh Pro text field to display the preview text.")]
-        //private TextMeshProUGUI previewText = null;
-
-        /// <summary>
-        /// The Text Mesh Pro text field to display the preview text.
-        /// </summary>
-        public TMP_Text PreviewText => (previewInput == null) ? null : previewInput.textComponent;
-        //{
-        //    get { return previewText; }
-        //    set
-        //    {
-        //        if (previewText != value)
-        //        {
-        //            previewText = value;
-
-        //            if (previewText != null)
-        //            {
-        //                previewText.text = Text;
-
-        //                UpdateCaret();
-        //            }
-        //        }
-        //    }
-        //}
 
         [SerializeField, Tooltip("The transform to move based on the preview caret.")]
         private RectTransform previewCaret = null;
@@ -80,8 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 if (previewCaret != value)
                 {
                     previewCaret = value;
-
-                    UpdateCaret();
+                    InvalidateLayout();
                 }
             }
         }
@@ -100,12 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 {
                     text = value;
 
-                    if (PreviewInput != null)
+                    if (PreviewText != null)
                     {
-                        PreviewInput.text = text;
+                        PreviewText.text = text;
                     }
 
-                    UpdateCaret();
+                    CaretIndex = Mathf.Clamp(CaretIndex, 0, Text.Length);
+                    InvalidateLayout();
                 }
             }
         }
@@ -120,11 +97,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
             get { return caretIndex; }
             set
             {
+                value = Mathf.Clamp(value, 0, Text.Length);
                 if (value != caretIndex)
                 {
                     caretIndex = value;
-
-                    UpdateCaret();
+                    InvalidateLayout();
                 }
             }
         }
@@ -159,38 +136,191 @@ namespace Microsoft.MixedReality.Toolkit.UX
             ApplyShellSolverParameters();
         }
 
+        private void LateUpdate()
+        {
+            if (layoutInvalidated)
+            {
+                layoutInvalidated = false;
+                UpdateLayout();
+            }
+            
+        }
+
         #endregion MonoBehaviour Implementation
 
-        private void UpdateCaret()
+        private void InvalidateLayout()
         {
-            caretIndex = Mathf.Clamp(caretIndex, 0, string.IsNullOrEmpty(text) ? 0 : text.Length);
+            layoutInvalidated = true;
+        }
 
-            if (previewCaret != null)
+
+        private void UpdateLayout()
+        {
+            if (previewCaret == null || PreviewText == null) 
             {
-                if (caretIndex == 0)
+                return;
+            }
+
+            var textInfo = PreviewText.GetTextInfo(Text);
+            if (textInfo.lineCount == 0 || textInfo.characterCount == 0)
+            {
+                ResetCaret();
+                ResetView();
+                return;
+            }
+
+            TMP_CharacterInfo nextChar;
+            if (CaretIndex == textInfo.characterCount)
+            {
+                TMP_CharacterInfo prevChar = textInfo.characterInfo[CaretIndex - 1];
+                nextChar = prevChar;
+                nextChar.character = '\0';
+                nextChar.index++;
+                if (PreviewText.isRightToLeftText)
                 {
-                    previewCaret.anchoredPosition = Vector2.zero;
+                    nextChar.origin = nextChar.topLeft.x + 3;
+                    nextChar.topRight.x = nextChar.topLeft.x;
+                    nextChar.bottomRight.x = nextChar.bottomLeft.x;
                 }
                 else
                 {
-                    Vector3 localPosition;
-
-                    if (caretIndex == text.Length)
-                    {
-                        localPosition = PreviewText.textInfo.characterInfo[caretIndex - 1].topRight;
-                    }
-                    else
-                    {
-                        localPosition = PreviewText.textInfo.characterInfo[caretIndex].topLeft;
-                    }
-
-                    localPosition.y = 0.0f;
-                    localPosition.z = previewCaret.localPosition.z;
-
-                    var position = PreviewText.transform.TransformPoint(localPosition);
-                    previewCaret.position = position;
+                    nextChar.origin = nextChar.topRight.x + 3;
+                    nextChar.topLeft.x = nextChar.topRight.x;
+                    nextChar.bottomLeft.x = nextChar.bottomRight.x;
                 }
             }
+            else
+            {
+                nextChar = textInfo.characterInfo[CaretIndex];
+            }
+
+            if (nextChar.lineNumber > textInfo.lineCount)
+            {
+                ResetCaret();
+                ResetView();
+                return;
+            }
+
+            var lineInfo = textInfo.lineInfo[nextChar.lineNumber];
+            ScrollView(ref textInfo, ref lineInfo, ref nextChar);
+            UpdateCaret(ref textInfo, ref lineInfo, ref nextChar);
+        }
+
+        private void UpdateCaret(
+            ref TMP_TextInfo textInfo,
+            ref TMP_LineInfo lineInfo,
+            ref TMP_CharacterInfo nextChar)
+        {
+            // get line info
+            float focusedLineWidth = lineInfo.width;
+            float focusedLineWidthHalf = focusedLineWidth / 2.0f;
+            float focusedLineCurrentChar;
+            float focusedLineStart;
+            float focusedLineEnd;
+            float caretWidthHalf = PreviewCaret.rect.width / 2.0f;
+
+            if (textInfo.textComponent.isRightToLeftText)
+            {
+                //focusedLineStart = focusedLineRight - focusedLineLeft;
+                //focusedLineEnd = nextCharInfo.topRight.x + (nextCharInfo.topLeft.x - nextCharInfo.origin) - focusedLineLeft;
+                focusedLineCurrentChar = nextChar.topRight.x + (focusedLineWidthHalf) + textInfo.textComponent.margin.x;
+                focusedLineStart = focusedLineWidth + textInfo.textComponent.margin.x;
+                focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x - caretWidthHalf;
+
+            }
+            else
+            {
+                //focusedLineStart = 0;
+                //focusedLineEnd = nextCharInfo.topLeft.x - focusedLineLeft;
+                focusedLineCurrentChar = nextChar.topLeft.x + focusedLineWidthHalf + textInfo.textComponent.margin.x;
+                focusedLineStart = textInfo.textComponent.margin.x;
+                focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x + caretWidthHalf;
+            }
+
+            float caretPositionX;
+            float caretPoistionY = lineInfo.baseline - textInfo.lineInfo[0].baseline;
+
+            // if at end of line, text info doesn't go to a new line info, so account for this.
+            if (AtEmptyNewLine(ref textInfo, ref nextChar))
+            {
+                caretPositionX = focusedLineStart;
+                caretPoistionY -= lineInfo.lineHeight;
+            }
+            else if (AtEndOfLine(ref lineInfo, ref nextChar))
+            {
+                caretPositionX = focusedLineEnd;
+            }
+            else
+            {
+                caretPositionX = focusedLineCurrentChar;
+            }
+
+            PreviewCaret.anchoredPosition = new Vector2(caretPositionX, caretPoistionY);  
+        }
+
+        private void ResetCaret()
+        {
+            if (PreviewText.isRightToLeftText)
+            {
+                PreviewCaret.anchoredPosition = new Vector2(PreviewText.rectTransform.rect.width - (PreviewCaret.rect.width / 2.0f) - PreviewText.margin.z, 0);
+            }
+            else
+            {
+                PreviewCaret.anchoredPosition = new Vector2(PreviewText.margin.x, 0);
+            }
+        }
+
+        private void ScrollView(
+            ref TMP_TextInfo textInfo,
+            ref TMP_LineInfo lineInfo,
+            ref TMP_CharacterInfo nextChar)
+        {
+            // get line info
+            //float focusedLineWidth = lineInfo.width - textInfo.textComponent.margin.x - textInfo.textComponent.margin.z;
+            float focusedLineWidth = lineInfo.width;
+            float focusedLineLeft = focusedLineWidth / -2.0f;
+            float focusedLineOffset = textInfo.lineInfo[0].baseline - lineInfo.baseline;
+
+            // get char info
+            float focusedCharacterLeft = nextChar.origin - focusedLineLeft;
+            float focusedCharacterRight = nextChar.topRight.x - focusedLineLeft;
+
+            float textPositionX = 0;
+            float textPositionY = focusedLineOffset;
+
+            // if at end of line, text info doesn't go to a new line info, so account for this.
+            if (AtEmptyNewLine(ref textInfo, ref nextChar))
+            {
+                textPositionX = 0;
+                textPositionY += lineInfo.lineHeight;
+            }
+            else if (focusedCharacterRight > focusedLineWidth)
+            {
+                textPositionX = focusedLineWidth - focusedCharacterRight;
+            }
+            else if (focusedCharacterLeft < 0)
+            {
+                textPositionX = -focusedCharacterLeft;
+            }
+
+            PreviewText.rectTransform.anchoredPosition = new Vector2(textPositionX, textPositionY);
+        }
+
+        private bool AtEmptyNewLine(ref TMP_TextInfo textInfo, ref TMP_CharacterInfo nextChar)
+        {
+            return nextChar.index >= 0 &&
+                nextChar.character == '\0' &&
+                textInfo.characterInfo[nextChar.index - 1].character == '\n'; 
+        }
+
+        private bool AtEndOfLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo nextChar)
+        {
+            return lineInfo.characterCount == nextChar.index;
+        }
+
+        private void ResetView()
+        {
+            PreviewText.rectTransform.anchoredPosition = new Vector2(0, 0);
         }
 
         private IEnumerator BlinkCaret()

@@ -23,4 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// </summary>
     [Serializable]
     public class NonNativeKeyboardTextEvent : UnityEvent<string> { }
+
+    /// <summary>
+    /// Wrapper around UnityEvent&lt;int&gt; for serialization
+    /// </summary>
+    [Serializable]
+    public class NonNativeKeyboardIntEvent : UnityEvent<int> { }
 }
