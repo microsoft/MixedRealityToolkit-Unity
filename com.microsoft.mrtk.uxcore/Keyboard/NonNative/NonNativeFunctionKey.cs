@@ -63,6 +63,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             /// Closes the keyboard. 
             /// </summary>
             Close = 11,
+            /// <summary>
+            /// Starts and ends dictation.
+            /// </summary>
+            Dictate = 12,
         }
 
         /// <summary>
