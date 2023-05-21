@@ -107,8 +107,13 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 initialSilenceTimeoutSeconds = config.InitialSilenceTimeoutSeconds;
                 autoSilenceTimeout = config.AutoSilenceTimeout;
             }
-#endif
 
+            public override void Stop()
+            {
+                base.Stop();
+                StopDictation();
+            }
+#endif
 
             /// <inheritdoc/>
             public override void Destroy()

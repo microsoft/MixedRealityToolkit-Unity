@@ -4788,7 +4788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &22435746
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10831,8 +10831,9 @@ GameObject:
   - component: {fileID: 22293264}
   - component: {fileID: 11499970}
   - component: {fileID: 11433396}
+  - component: {fileID: 1294885287053840268}
   m_Layer: 0
-  m_Name: Buffer
+  m_Name: dictation_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10942,6 +10943,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1294885287053840268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e1c442774c417540a752bf2fd6a5768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Interactable>k__BackingField: {fileID: 0}
+  <KeyButton>k__BackingField: {fileID: 11433396}
+  <KeyFunction>k__BackingField: 12
 --- !u!1 &135164
 GameObject:
   m_ObjectHideFlags: 0
@@ -15425,6 +15441,9 @@ MonoBehaviour:
   <OnTextUpdate>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
+  <OnCaretIndexUpdate>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
   <OnClose>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
@@ -15441,11 +15460,12 @@ MonoBehaviour:
   <SubmitOnEnter>k__BackingField: 0
   <CloseOnInactivity>k__BackingField: 0
   <CloseOnInactivityTime>k__BackingField: 15
-  alphaKeysSection: {fileID: 103102}
-  symbolKeysSection: {fileID: 173904}
-  defaultBottomKeysSection: {fileID: 154526}
-  urlBottomKeysSection: {fileID: 100600}
-  emailBottomKeysSection: {fileID: 125942}
+  <AlphaKeysSection>k__BackingField: {fileID: 103102}
+  <SymbolKeysSection>k__BackingField: {fileID: 173904}
+  <DefaultBottomKeysSection>k__BackingField: {fileID: 154526}
+  <UrlBottomKeysSection>k__BackingField: {fileID: 100600}
+  <EmailBottomKeysSection>k__BackingField: {fileID: 125942}
+  <DictationRecordIcon>k__BackingField: {fileID: 3093567306680969604}
 --- !u!114 &114593871428788132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33857,7 +33877,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &261783965268383605
 RectTransform:
   m_ObjectHideFlags: 0

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -184,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Get if the dictation services are available for this device.
         /// </summary>
-        private bool IsDictationAvailable => dictationSubsystem != null;
+        private bool IsDictationAvailable => XRSubsystemHelpers.DictationSubsystem != null;
 
         /// <summary>
         /// The panel that contains the alpha keys.
@@ -225,9 +227,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region Private fields
         /// <summary>
-        /// Dictation System
+        /// The keyword recongition subsystem that was stopped by this component.
         /// </summary>
-        private DictationSubsystem dictationSubsystem;
+        private KeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
         /// <summary>
         /// The inner text value set via the `Text` property
@@ -321,10 +323,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         protected void Start()
         {
-            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
             if (DictationRecordIcon != null)
             {
-                DictationRecordIcon.gameObject.SetActive(dictationSubsystem != null);
+                DictationRecordIcon.gameObject.SetActive(IsDictationAvailable);
             }
         }
 
@@ -615,18 +616,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void StartDictation()
         {
-            // Make sure there isn't an ongoing recognition session
-            StopDictation();
-
-            if (dictationSubsystem != null)
+            var dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
+            if (dictationSubsystem != null && !isRecording)
             {
+                isRecording = true;
+                UpdateDicationRecordIconColor();
+
+                keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
+                if (keywordRecognitionSubsystem != null)
+                {
+                    keywordRecognitionSubsystem.Stop();
+                }
+
                 ResetClosingTime();
                 dictationSubsystem.Recognized += OnDictationRecognizedResult;
                 dictationSubsystem.RecognitionFinished += OnDictationFinished;
                 dictationSubsystem.RecognitionFaulted += OnDictationFaulted;
                 dictationSubsystem.StartDictation();
-                isRecording = true;
-                UpdateDicationRecordIconColor();
             }
         }
 
@@ -635,14 +641,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void StopDictation()
         {
+            var dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
             if (dictationSubsystem != null)
             {
                 dictationSubsystem.StopDictation();
-                dictationSubsystem.Recognized -= OnDictationRecognizedResult;
-                dictationSubsystem.RecognitionFinished -= OnDictationFinished;
-                dictationSubsystem.RecognitionFaulted -= OnDictationFaulted;
-                isRecording = false;
-                UpdateDicationRecordIconColor();
             }
         }
 
@@ -845,7 +847,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             var text = eventData.Result;
             ResetClosingTime();
 
-            if (string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
                 Text = Text.Insert(CaretIndex, text);
                 CaretIndex += text.Length;
@@ -858,7 +860,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="eventData">Dictation event data</param>
         private void OnDictationFinished(DictationSessionEventArgs eventData)
         {
-            StopDictation();
+            HandleDictationationShutdown();
         }
 
         /// <summary>
@@ -868,7 +870,30 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void OnDictationFaulted(DictationSessionEventArgs eventData)
         {
             Debug.LogError("Dictation faulted. Reason: " + eventData.Reason);
-            StopDictation();
+            HandleDictationationShutdown();
+        }
+
+        /// <summary>
+        /// Release references to dictation events
+        /// </summary>
+        private void HandleDictationationShutdown()
+        {
+            var dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
+            if (dictationSubsystem != null)
+            {
+                dictationSubsystem.RecognitionFinished -= OnDictationFinished;
+                dictationSubsystem.RecognitionFaulted -= OnDictationFaulted;
+                dictationSubsystem.Recognized -= OnDictationRecognizedResult;
+
+                isRecording = false;
+                UpdateDicationRecordIconColor();
+            }
+
+            if (keywordRecognitionSubsystem != null)
+            {
+                keywordRecognitionSubsystem.Start();
+                keywordRecognitionSubsystem = null;
+            }
         }
         #endregion Private Functions
     }
