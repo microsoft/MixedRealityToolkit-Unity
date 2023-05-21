@@ -61,24 +61,30 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(text1, keyboardPreview.Text, "Keyboard Preview text should not have changed with caret index change.");
             Assert.AreEqual(caretIndex1, keyboardPreview.CaretIndex, "Keyboard Preview caret index did not change.");
 
-            int caretIndex2 = text1.Length;
-            keyboardPreview.CaretIndex = caretIndex2;
-            Assert.AreEqual(text1, keyboardPreview.Text, "Keyboard Preview text should not have changed with caret index change.");
-            Assert.AreEqual(caretIndex2, keyboardPreview.CaretIndex, "Keyboard Preview caret index did not change to end of string.");
-
             int caretIndex3TooBig = text1.Length + 1;
             keyboardPreview.CaretIndex = caretIndex3TooBig;
             Assert.AreEqual(text1, keyboardPreview.Text, "Keyboard Preview text should not have changed with caret index change.");
-            Assert.AreEqual(text1.Length, keyboardPreview.CaretIndex, "Keyboard Preview caret index did not get clamped to 0 - Text.length when assugned value was too big.");
+            Assert.AreEqual(text1.Length, keyboardPreview.CaretIndex, "Keyboard Preview caret index did not get clamped to 0 - Text.length when assigned value was too big.");
 
             int caretIndex3TooSmall = -1;
             keyboardPreview.CaretIndex = caretIndex3TooSmall;
             Assert.AreEqual(text1, keyboardPreview.Text, "Keyboard Preview text should not have changed with caret index change.");
             Assert.AreEqual(0, keyboardPreview.CaretIndex, "Keyboard Preview caret index did not get clamped to 0 - Text.length when assigned value was too small.");
 
+            int caretIndex2 = text1.Length;
+            keyboardPreview.CaretIndex = caretIndex2;
+            Assert.AreEqual(text1, keyboardPreview.Text, "Keyboard Preview text should not have changed with caret index change.");
+            Assert.AreEqual(caretIndex2, keyboardPreview.CaretIndex, "Keyboard Preview caret index did not change to end of string.");
+
             string text2 = "A different text string";
             keyboardPreview.Text = text2;
             Assert.AreEqual(text2, keyboardPreview.Text, "Keyboard Preview text was not applied correctly the second time.");
+            Assert.AreEqual(caretIndex2, keyboardPreview.CaretIndex, "Keyboard Preview caret index should have changed.");
+
+            string text3Small = "Small";
+            keyboardPreview.Text = text3Small;
+            Assert.AreEqual(text3Small, keyboardPreview.Text, "Keyboard Preview text was not applied correctly the third time.");
+            Assert.AreEqual(text3Small.Length, keyboardPreview.CaretIndex, "Keyboard Preview caret index did not get clamped to 0 - Text.length when assigned text was made smaller.");
         }
 
         private IEnumerator Initialize()
