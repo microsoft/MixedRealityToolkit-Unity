@@ -25,14 +25,14 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 		private static readonly string NonNativeKeyboardPath = AssetDatabase.GUIDToAssetPath(NonNativeKeyboardGuid);
 
 		private NonNativeKeyboard testKeyboard = null;
-		private MRTKTMPInputField inputfield = null;
+		private KeyboardPreview keyboardPreview = null;
 
 		[SetUp]
 		public void Init()
 		{
 			testKeyboard = InstantiatePrefab(NonNativeKeyboardPath).GetComponent<NonNativeKeyboard>();
-			testKeyboard.Open();
-			inputfield = testKeyboard.gameObject.GetComponentInChildren<MRTKTMPInputField>();
+            keyboardPreview = testKeyboard.Preview;
+            testKeyboard.Open();
 		}
 
 		[TearDown]
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
 			Button interactable = qkey.gameObject.GetComponent<Button>();
 			interactable.onClick.Invoke();
-			Assert.AreEqual(inputfield.text, "q", "Pressing key changes InputField text.");
+			Assert.AreEqual(keyboardPreview.Text, "q", "Pressing key changes InputField text.");
 
 			yield return null;
 		}
@@ -93,12 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
 			Button interactable = mkey.gameObject.GetComponent<Button>();
 			interactable.onClick.Invoke();
-			Assert.AreEqual(inputfield.text, "m", "Values not shifted to start with.");
+			Assert.AreEqual(keyboardPreview.Text, "m", "Values not shifted to start with.");
 			testKeyboard.ProcessFunctionKeyPress(shiftkey);
 			interactable.onClick.Invoke();
-			Assert.AreEqual(inputfield.text, "mM", "The Shift function key works");
+			Assert.AreEqual(keyboardPreview.Text, "mM", "The Shift function key works");
 			interactable.onClick.Invoke();
-			Assert.AreEqual(inputfield.text, "mMm", "Unshift works correctly");
+			Assert.AreEqual(keyboardPreview.Text, "mMm", "Unshift works correctly");
 
 			yield return null;
 		}
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			NonNativeFunctionKey spacekey = SetUpFunctionKey(NonNativeFunctionKey.Function.Space);
 			PressFunctionKey(spacekey);
 
-			Assert.AreEqual(inputfield.text, "a b", "The Space function key works.");
+			Assert.AreEqual(keyboardPreview.Text, "a b", "The Space function key works.");
 			yield return null;
 		}
 
@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			NonNativeFunctionKey enterkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Enter);
 			PressFunctionKey(enterkey);
 
-			Assert.AreEqual(inputfield.text, "a\nb", "The Enter function key works.");
+			Assert.AreEqual(keyboardPreview.Text, "a\nb", "The Enter function key works.");
 			yield return null;
 		}
 
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			NonNativeFunctionKey tabkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Tab);
 			PressFunctionKey(tabkey);
 
-			Assert.AreEqual(inputfield.text, "a\tb", "The Tab function key works.");
+			Assert.AreEqual(keyboardPreview.Text, "a\tb", "The Tab function key works.");
 			yield return null;
 		}
 
@@ -177,12 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			Cinteractable.onClick.Invoke();
 			testKeyboard.ProcessFunctionKeyPress(prevkey);
 			Binteractable.onClick.Invoke();
-			Assert.AreEqual(inputfield.text, "abc", "The Previous function key works.");
+			Assert.AreEqual(keyboardPreview.Text, "abc", "The Previous function key works.");
 
 			Ainteractable.onClick.Invoke();
 			testKeyboard.ProcessFunctionKeyPress(nextkey);
 			Ainteractable.onClick.Invoke();
-			Assert.AreEqual(inputfield.text, "abaca", "The Next function key works");
+			Assert.AreEqual(keyboardPreview.Text, "abaca", "The Next function key works");
 
 			yield return null;
 		}
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			NonNativeFunctionKey closekey = SetUpFunctionKey(NonNativeFunctionKey.Function.Close);
 			testKeyboard.ProcessFunctionKeyPress(closekey);
 
-			Assert.AreEqual(inputfield.text, "", "The input field is cleared.");
+			Assert.AreEqual(keyboardPreview.Text, "", "The input field is cleared.");
 			Assert.IsTrue(!testKeyboard.gameObject.activeInHierarchy, "The keyboard is inactive.");
 			yield return null;
 		}
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			NonNativeFunctionKey backkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Backspace);
 			PressFunctionKey(backkey);
 
-			Assert.AreEqual(inputfield.text, "b", "The Tab function key works.");
+			Assert.AreEqual(keyboardPreview.Text, "b", "The Tab function key works.");
 			testKeyboard.Open();
 			yield return null;
 		}
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			NonNativeFunctionKey enterkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Enter);
 			testKeyboard.ProcessFunctionKeyPress(enterkey);
 
-			Assert.AreEqual(inputfield.text, "", "The input field is cleared.");
+			Assert.AreEqual(keyboardPreview.Text, "", "The input field is cleared.");
 			Assert.IsTrue(!testKeyboard.gameObject.activeInHierarchy, "The keyboard is inactive.");
 			yield return null;
 		}
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 			yield return new WaitForSeconds(0.05f);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
-            Assert.AreEqual(inputfield.text, "", "The input field is cleared.");
+            Assert.AreEqual(keyboardPreview.Text, "", "The input field is cleared.");
 			Assert.IsTrue(!testKeyboard.gameObject.activeInHierarchy, "The keyboard is inactive.");
 			yield return null;
 		}
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
 			yield return RuntimeTestUtilities.WaitForUpdates();
 
-			Assert.AreEqual(inputfield.text, "n", "Pressing key changes InputField text.");
+			Assert.AreEqual(keyboardPreview.Text, "n", "Pressing key changes InputField text.");
 			yield return null;
 		}
 

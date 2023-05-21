@@ -4,7 +4,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using System.Globalization;
 
 #if MRTK_SPATIAL_PRESENT
 using Microsoft.MixedReality.Toolkit.SpatialManipulation;
@@ -206,6 +205,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             UpdateCaret(ref textInfo, ref lineInfo, ref nextChar);
         }
 
+        /// <summary>
+        /// Move the caret transform immediately before the currently focused character.
+        /// </summary>
+        /// <remarks>
+        /// If Right-To-Left text is enabled, this will adjust x-cordinates accordingly.
+        /// </remarks>
         private void UpdateCaret(
             ref TMP_TextInfo textInfo,
             ref TMP_LineInfo lineInfo,
@@ -221,8 +226,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (textInfo.textComponent.isRightToLeftText)
             {
-                //focusedLineStart = focusedLineRight - focusedLineLeft;
-                //focusedLineEnd = nextCharInfo.topRight.x + (nextCharInfo.topLeft.x - nextCharInfo.origin) - focusedLineLeft;
                 focusedLineCurrentChar = nextChar.topRight.x + (focusedLineWidthHalf) + textInfo.textComponent.margin.x;
                 focusedLineStart = focusedLineWidth + textInfo.textComponent.margin.x;
                 focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x - caretWidthHalf;
@@ -230,8 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             else
             {
-                //focusedLineStart = 0;
-                //focusedLineEnd = nextCharInfo.topLeft.x - focusedLineLeft;
                 focusedLineCurrentChar = nextChar.topLeft.x + focusedLineWidthHalf + textInfo.textComponent.margin.x;
                 focusedLineStart = textInfo.textComponent.margin.x;
                 focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x + caretWidthHalf;
@@ -258,6 +259,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             PreviewCaret.anchoredPosition = new Vector2(caretPositionX, caretPoistionY);  
         }
 
+        /// <summary>
+        /// Move the caret transform to the start of the text.
+        /// </summary>
+        /// <remarks>
+        /// If Right-To-Left text is enabled, this will adjust x-cordinates accordingly.
+        /// </remarks>
         private void ResetCaret()
         {
             if (PreviewText.isRightToLeftText)
@@ -270,13 +277,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// Move the text label transform so that the currently focus character is visible.
+        /// </summary>
+        /// <remarks>
+        /// If Right-To-Left text is enabled, this will adjust x-cordinates accordingly.
+        /// </remarks>
         private void ScrollView(
             ref TMP_TextInfo textInfo,
             ref TMP_LineInfo lineInfo,
             ref TMP_CharacterInfo nextChar)
         {
             // get line info
-            //float focusedLineWidth = lineInfo.width - textInfo.textComponent.margin.x - textInfo.textComponent.margin.z;
             float focusedLineWidth = lineInfo.width;
             float focusedLineLeft = focusedLineWidth / -2.0f;
             float focusedLineOffset = textInfo.lineInfo[0].baseline - lineInfo.baseline;
@@ -306,6 +318,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
             PreviewText.rectTransform.anchoredPosition = new Vector2(textPositionX, textPositionY);
         }
 
+        /// <summary>
+        /// Reset the text label transform to it's starting position.
+        /// </summary>
+        private void ResetView()
+        {
+            PreviewText.rectTransform.anchoredPosition = Vector2.zero;
+        }
+
+        /// <summary>
+        /// Is the cursor at the start of new empty line, that is not the very first line.
+        /// </summary>
         private bool AtEmptyNewLine(ref TMP_TextInfo textInfo, ref TMP_CharacterInfo nextChar)
         {
             return nextChar.index >= 0 &&
@@ -313,16 +336,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 textInfo.characterInfo[nextChar.index - 1].character == '\n'; 
         }
 
+        /// <summary>
+        /// Is the cursor at the end of a line
+        /// </summary>
         private bool AtEndOfLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo nextChar)
         {
             return lineInfo.characterCount == nextChar.index;
         }
 
-        private void ResetView()
-        {
-            PreviewText.rectTransform.anchoredPosition = new Vector2(0, 0);
-        }
-
+        /// <summary>
+        /// Continuously blink the caret gameobject until it is destroyed.
+        /// </summary>
         private IEnumerator BlinkCaret()
         {
             while (previewCaret != null)
@@ -335,6 +359,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// If there is a follow solver and a solver handler, update their properties so that the KeyboardPreview transform
+        /// moves ontop of the system's native's keyboard.
+        /// </summary>
         private void ApplyShellSolverParameters()
         {
 #if MRTK_SPATIAL_PRESENT
