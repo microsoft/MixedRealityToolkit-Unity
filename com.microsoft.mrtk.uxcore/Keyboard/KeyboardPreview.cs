@@ -235,21 +235,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
             float focusedLineWidthHalf = focusedLineWidth / 2.0f;
             float focusedLineCurrentChar;
             float focusedLineStart;
-            float focusedLineEnd;
-            float caretWidthHalf = PreviewCaret.rect.width / 2.0f;
 
             if (textInfo.textComponent.isRightToLeftText)
             {
                 focusedLineCurrentChar = prevChar.xAdvance + (focusedLineWidthHalf) + textInfo.textComponent.margin.x;
                 focusedLineStart = focusedLineWidth + textInfo.textComponent.margin.x;
-                focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x - caretWidthHalf;
 
             }
             else
             {
                 focusedLineCurrentChar = prevChar.xAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x;
                 focusedLineStart = textInfo.textComponent.margin.x;
-                focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x + caretWidthHalf;
             }
 
             float caretPositionX;
@@ -265,10 +261,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 caretPositionX = focusedLineStart;
             }
-            //else if (AtEndOfLine(ref lineInfo, ref prevChar))
-            //{
-            //    caretPositionX = focusedLineEnd;
-            //}
             else
             {
                 caretPositionX = focusedLineCurrentChar;
