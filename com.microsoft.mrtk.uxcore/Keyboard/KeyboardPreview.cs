@@ -147,7 +147,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #endregion MonoBehaviour Implementation
 
-        private void InvalidateLayout()
+        /// <summary>
+        /// Force the <see cref="PreviewText"/> label and <see cref="PreviewCaret"/> transform to update their positions on the next update.
+        /// </summary>
+        public void InvalidateLayout()
         {
             layoutInvalidated = true;
         }
