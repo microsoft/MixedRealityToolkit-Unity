@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 layoutInvalidated = false;
                 UpdateLayout();
             }
-            
+
         }
 
         #endregion MonoBehaviour Implementation
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void UpdateLayout()
         {
-            if (previewCaret == null || PreviewText == null) 
+            if (previewCaret == null || PreviewText == null)
             {
                 return;
             }
@@ -171,22 +171,33 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 return;
             }
 
+            // create a fake previous character if at the start
+            TMP_CharacterInfo prevChar;
+            if (CaretIndex == 0)
+            {
+                prevChar = default;
+                prevChar.index = -1;
+            }
+            else
+            {
+                prevChar = textInfo.characterInfo[CaretIndex - 1];
+            }
+
+            // create a fake next character if at the end
             TMP_CharacterInfo nextChar;
             if (CaretIndex == textInfo.characterCount)
             {
-                TMP_CharacterInfo prevChar = textInfo.characterInfo[CaretIndex - 1];
                 nextChar = prevChar;
                 nextChar.character = '\0';
                 nextChar.index++;
+                nextChar.origin = nextChar.xAdvance;
                 if (PreviewText.isRightToLeftText)
                 {
-                    nextChar.origin = nextChar.topLeft.x + 3;
                     nextChar.topRight.x = nextChar.topLeft.x;
                     nextChar.bottomRight.x = nextChar.bottomLeft.x;
                 }
                 else
                 {
-                    nextChar.origin = nextChar.topRight.x + 3;
                     nextChar.topLeft.x = nextChar.topRight.x;
                     nextChar.bottomLeft.x = nextChar.bottomRight.x;
                 }
@@ -196,16 +207,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 nextChar = textInfo.characterInfo[CaretIndex];
             }
 
-            if (nextChar.lineNumber > textInfo.lineCount)
+            if (prevChar.lineNumber > textInfo.lineCount)
             {
                 ResetCaret();
                 ResetView();
                 return;
             }
 
-            var lineInfo = textInfo.lineInfo[nextChar.lineNumber];
-            ScrollView(ref textInfo, ref lineInfo, ref nextChar);
-            UpdateCaret(ref textInfo, ref lineInfo, ref nextChar);
+            var lineInfo = textInfo.lineInfo[prevChar.lineNumber];
+            ScrollView(ref textInfo, ref lineInfo, ref prevChar, ref nextChar);
+            UpdateCaret(ref textInfo, ref lineInfo, ref prevChar);
         }
 
         /// <summary>
@@ -217,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void UpdateCaret(
             ref TMP_TextInfo textInfo,
             ref TMP_LineInfo lineInfo,
-            ref TMP_CharacterInfo nextChar)
+            ref TMP_CharacterInfo prevChar)
         {
             // get line info
             float focusedLineWidth = lineInfo.width;
@@ -229,14 +240,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (textInfo.textComponent.isRightToLeftText)
             {
-                focusedLineCurrentChar = nextChar.topRight.x + (focusedLineWidthHalf) + textInfo.textComponent.margin.x;
+                focusedLineCurrentChar = prevChar.xAdvance + (focusedLineWidthHalf) + textInfo.textComponent.margin.x;
                 focusedLineStart = focusedLineWidth + textInfo.textComponent.margin.x;
                 focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x - caretWidthHalf;
 
             }
             else
             {
-                focusedLineCurrentChar = nextChar.topLeft.x + focusedLineWidthHalf + textInfo.textComponent.margin.x;
+                focusedLineCurrentChar = prevChar.xAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x;
                 focusedLineStart = textInfo.textComponent.margin.x;
                 focusedLineEnd = lineInfo.maxAdvance + focusedLineWidthHalf + textInfo.textComponent.margin.x + caretWidthHalf;
             }
@@ -245,21 +256,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
             float caretPoistionY = lineInfo.baseline - textInfo.lineInfo[0].baseline;
 
             // if at end of line, text info doesn't go to a new line info, so account for this.
-            if (AtEmptyNewLine(ref textInfo, ref nextChar))
+            if (AtEmptyNewLine(ref lineInfo, ref prevChar))
             {
                 caretPositionX = focusedLineStart;
                 caretPoistionY -= lineInfo.lineHeight;
             }
-            else if (AtEndOfLine(ref lineInfo, ref nextChar))
+            else if (AtStartOfLine(ref lineInfo, ref prevChar))
             {
-                caretPositionX = focusedLineEnd;
+                caretPositionX = focusedLineStart;
             }
+            //else if (AtEndOfLine(ref lineInfo, ref prevChar))
+            //{
+            //    caretPositionX = focusedLineEnd;
+            //}
             else
             {
                 caretPositionX = focusedLineCurrentChar;
             }
 
-            PreviewCaret.anchoredPosition = new Vector2(caretPositionX, caretPoistionY);  
+            PreviewCaret.anchoredPosition = new Vector2(caretPositionX, caretPoistionY);
         }
 
         /// <summary>
@@ -289,6 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void ScrollView(
             ref TMP_TextInfo textInfo,
             ref TMP_LineInfo lineInfo,
+            ref TMP_CharacterInfo prevChar,
             ref TMP_CharacterInfo nextChar)
         {
             // get line info
@@ -304,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             float textPositionY = focusedLineOffset;
 
             // if at end of line, text info doesn't go to a new line info, so account for this.
-            if (AtEmptyNewLine(ref textInfo, ref nextChar))
+            if (AtEmptyNewLine(ref lineInfo, ref prevChar))
             {
                 textPositionX = 0;
                 textPositionY += lineInfo.lineHeight;
@@ -332,19 +348,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Is the cursor at the start of new empty line, that is not the very first line.
         /// </summary>
-        private bool AtEmptyNewLine(ref TMP_TextInfo textInfo, ref TMP_CharacterInfo nextChar)
+        private bool AtEmptyNewLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo prevChar)
         {
-            return nextChar.index >= 0 &&
-                nextChar.character == '\0' &&
-                textInfo.characterInfo[nextChar.index - 1].character == '\n'; 
+            return prevChar.character == '\n' && prevChar.index == lineInfo.lastCharacterIndex;
+        }
+
+        /// <summary>
+        /// Is the cursor at a start of the line
+        /// </summary>
+        private bool AtStartOfLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo prevChar)
+        {
+            return lineInfo.characterCount == 0 ? true : lineInfo.firstCharacterIndex > prevChar.index;
         }
 
         /// <summary>
         /// Is the cursor at the end of a line
         /// </summary>
-        private bool AtEndOfLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo nextChar)
+        private bool AtEndOfLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo prevChar)
         {
-            return lineInfo.characterCount == nextChar.index;
+            return lineInfo.lastCharacterIndex <= prevChar.index;
         }
 
         /// <summary>
